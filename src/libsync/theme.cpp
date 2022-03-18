@@ -688,4 +688,10 @@ bool Theme::warnOnMultipleDb() const
     return isVanilla();
 }
 
+bool Theme::allowDuplicatedFolderSyncPair() const
+{
+    return true;
+}
+
+
 } // end namespace client

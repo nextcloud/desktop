@@ -43,17 +43,17 @@
 
 namespace OCC {
 
-QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings) const
+QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings, bool isError) const
 {
     QString ret;
     if (warnings.count() == 1) {
-        ret = tr("<b>Warning:</b> %1").arg(warnings.first());
+        ret = isError ? tr("<b>Error:</b> %1").arg(warnings.first()) : tr("<b>Warning:</b> %1").arg(warnings.first());
     } else if (warnings.count() > 1) {
-        ret = tr("<b>Warning:</b>") + " <ul>";
+        QStringList w2;
         for (const auto &warning : warnings) {
-            ret += QString::fromLatin1("<li>%1</li>").arg(warning);
+            w2.append(QStringLiteral("<li>%1</li>").arg(warning));
         }
-        ret += "</ul>";
+        ret = isError ? tr("<b>Error:</b><ul>%1</ul>").arg(w2.join(QString())) : tr("<b>Warning:</b><ul>%1</ul>").arg(w2.join(QString()));
     }
 
     return ret;
@@ -422,13 +422,21 @@ bool FolderWizardRemotePath::isComplete() const
     }
     wizard()->setProperty("targetPath", dir);
 
+
+    bool ok = true;
+
     for (auto *f : qAsConst(FolderMan::instance()->map())) {
         if (f->accountState()->account() != _account) {
             continue;
         }
         QString curDir = f->remotePathTrailingSlash();
         if (QDir::cleanPath(dir) == QDir::cleanPath(curDir)) {
-            warnStrings.append(tr("This folder is already being synced."));
+            if (Theme::instance()->allowDuplicatedFolderSyncPair()) {
+                warnStrings.append(tr("This folder is already being synced."));
+            } else {
+                ok = false;
+                warnStrings.append(tr("This folder can't be synced. Please choose another one."));
+            }
         } else if (dir.startsWith(curDir)) {
             warnStrings.append(tr("You are already syncing <i>%1</i>, which is a parent folder of <i>%2</i>.").arg(Utility::escape(curDir), Utility::escape(dir)));
         } else if (curDir.startsWith(dir)) {
@@ -436,8 +444,8 @@ bool FolderWizardRemotePath::isComplete() const
         }
     }
 
-    showWarn(formatWarnings(warnStrings));
-    return true;
+    showWarn(formatWarnings(warnStrings, !ok));
+    return ok;
 }
 
 void FolderWizardRemotePath::cleanupPage()
