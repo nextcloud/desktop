@@ -21,10 +21,10 @@
         <source>Copy</source>
         <translation>複製</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"/>
+        <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
