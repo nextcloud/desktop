@@ -272,21 +272,21 @@ void OCUpdater::slotTimedOut()
     setDownloadState(DownloadTimedOut);
 }
 
-QVersionNumber OCUpdater::seenVersion()
+QVersionNumber OCUpdater::previouslySkippedVersion()
 {
     auto settings = ConfigFile::makeQSettings();
-    return QVersionNumber::fromString(settings.value(seenVersionC).toString());
+    return QVersionNumber::fromString(settings.value(previouslySkippedVersionC).toString());
 }
 
-void OCUpdater::setSeenVersion(const QVersionNumber &seenVersion)
+void OCUpdater::setPreviouslySkippedVersion(const QVersionNumber &previouslySkippedVersion)
 {
-    setSeenVersion(seenVersion.toString());
+    setPreviouslySkippedVersion(previouslySkippedVersion.toString());
 }
 
-void OCUpdater::setSeenVersion(const QString &seenVersionString)
+void OCUpdater::setPreviouslySkippedVersion(const QString &previouslySkippedVersionString)
 {
     auto settings = ConfigFile::makeQSettings();
-    settings.setValue(seenVersionC, seenVersionString);
+    settings.setValue(previouslySkippedVersionC, previouslySkippedVersionString);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -353,10 +353,10 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
 {
     auto settings = ConfigFile::makeQSettings();
     const auto infoVersion = QVersionNumber::fromString(info.version());
-    const auto seenVersion = this->seenVersion();
+    const auto previouslySkippedVersion = this->previouslySkippedVersion();
     qCInfo(lcUpdater) << "Version info arrived:"
                       << "Your version:" << Version::versionWithBuildNumber()
-                      << "Skipped version:" << seenVersion
+                      << "Skipped version:" << previouslySkippedVersion
                       << "Available version:" << infoVersion << info.version()
                       << "Available version string:" << info.versionString()
                       << "Web url:" << info.web()
@@ -366,7 +366,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         qCInfo(lcUpdater) << "No version information available at the moment";
         setDownloadState(UpToDate);
     } else if (infoVersion <= Version::versionWithBuildNumber()
-        || infoVersion <= seenVersion) {
+        || infoVersion <= previouslySkippedVersion) {
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
@@ -435,7 +435,7 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     connect(reject, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
-    connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetSeenVersion);
+    connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetPreviouslySkippedVersion);
     connect(getupdate, &QAbstractButton::clicked, this, &NSISUpdater::slotOpenUpdateUrl);
 
     layout->addWidget(bb);
@@ -490,7 +490,7 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 
     connect(skip, &QAbstractButton::clicked, this, [this]() {
         wipeUpdateData();
-        slotSetSeenVersion();
+        slotSetPreviouslySkippedVersion();
     });
     // askagain: do nothing
     connect(retry, &QAbstractButton::clicked, this, [this]() {
@@ -537,9 +537,9 @@ bool NSISUpdater::handleStartup()
     return false;
 }
 
-void NSISUpdater::slotSetSeenVersion()
+void NSISUpdater::slotSetPreviouslySkippedVersion()
 {
-    setSeenVersion(updateInfo().version());
+    setPreviouslySkippedVersion(updateInfo().version());
 }
 
 ////////////////////////////////////////////////////////////////////////

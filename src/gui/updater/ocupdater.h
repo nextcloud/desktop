@@ -130,9 +130,9 @@ private slots:
     void slotTimedOut();
 
 protected:
-    static QVersionNumber seenVersion();
-    static void setSeenVersion(const QVersionNumber &seenVersion);
-    static void setSeenVersion(const QString &seenVersionString);
+    static QVersionNumber previouslySkippedVersion();
+    static void setPreviouslySkippedVersion(const QVersionNumber &previouslySkippedVersion);
+    static void setPreviouslySkippedVersion(const QString &previouslySkippedVersionString);
 
     virtual void versionInfoArrived(const UpdateInfo &info) = 0;
     bool updateSucceeded() const;
@@ -158,7 +158,7 @@ public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
 private slots:
-    void slotSetSeenVersion();
+    void slotSetPreviouslySkippedVersion();
     void slotDownloadFinished();
     void slotWriteFile();
 

@@ -141,9 +141,9 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
         return;
     }
 
-    const auto seenVersion = this->seenVersion();
-    if (seenVersion >= newVersion) {
-        qCInfo(lcUpdater) << "Update" << seenVersion << "was skipped previously by user";
+    const auto previouslySkippedVersion = this->previouslySkippedVersion();
+    if (previouslySkippedVersion >= newVersion) {
+        qCInfo(lcUpdater) << "Update" << previouslySkippedVersion << "was skipped previously by user";
         setDownloadState(UpToDate);
         return;
     }
@@ -165,7 +165,7 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
 
     connect(dialog, &Ui::AppImageUpdateAvailableDialog::skipUpdateButtonClicked, this, [newVersion]() {
         qCInfo(lcUpdater) << "Update" << newVersion << "skipped by user";
-        setSeenVersion(newVersion);
+        setPreviouslySkippedVersion(newVersion);
     });
 
     connect(dialog, &QDialog::accepted, this, [this, appImageUpdaterShim]() {

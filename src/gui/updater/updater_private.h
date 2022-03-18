@@ -18,6 +18,7 @@ namespace OCC {
 static const QString updateAvailableC = "Updater/updateAvailable";
 static const QString updateTargetVersionC = "Updater/updateTargetVersion";
 static const QString updateTargetVersionStringC = "Updater/updateTargetVersionString";
-static const QString seenVersionC = "Updater/seenVersion";
+// the config file key's name is preserved for legacy reasons
+static const QString previouslySkippedVersionC = "Updater/seenVersion";
 static const QString autoUpdateAttemptedC = "Updater/autoUpdateAttempted";
 }
