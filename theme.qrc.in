@@ -92,6 +92,7 @@
         <file>theme/colored/folder@2x.png</file>
         <file>theme/black/control-next.svg</file>
         <file>theme/black/control-prev.svg</file>
+        <file>theme/black/settings.svg</file>
         <file>theme/black/state-error.svg</file>
         <file>theme/black/state-error-16.png</file>
         <file>theme/black/state-offline.svg</file>
@@ -112,10 +113,21 @@
         <file>theme/black/state-warning-64.png</file>
         <file>theme/black/state-warning-128.png</file>
         <file>theme/black/state-warning-256.png</file>
+        <file>theme/white/bell.svg</file>
+        <file>theme/white/calendar.svg</file>
+        <file>theme/white/change.svg</file>
+        <file>theme/white/close.svg</file>
+        <file>theme/white/confirm.svg</file>
         <file>theme/white/control-next.svg</file>
         <file>theme/white/control-prev.svg</file>
+        <file>theme/white/comment.svg</file>
+        <file>theme/white/deck.svg</file>
+        <file>theme/white/edit.svg</file>
+        <file>theme/white/email.svg</file>
+        <file>theme/white/settings.svg</file>
         <file>theme/white/state-error.svg</file>
         <file>theme/white/state-error-16.png</file>
+        <file>theme/white/state-info.svg</file>
         <file>theme/white/state-offline.svg</file>
         <file>theme/white/state-offline-16.png</file>
         <file>theme/white/state-offline-32.png</file>
@@ -136,6 +148,7 @@
         <file>theme/white/state-warning-256.png</file>
         <file>theme/white/wizard-files.png</file>
         <file>theme/white/wizard-files@2x.png</file>
+        <file>theme/white/wizard-groupware.svg</file>
         <file>theme/white/wizard-groupware.png</file>
         <file>theme/white/wizard-groupware@2x.png</file>
         <file>theme/white/wizard-nextcloud.png</file>
@@ -183,6 +196,8 @@
         <file>theme/black/deck.svg</file>
         <file>theme/black/state-info.svg</file>
         <file>theme/close.svg</file>
+        <file>theme/black/close.svg</file>
+        <file>theme/white/close.svg</file>
         <file>theme/files.svg</file>
         <file>theme/public.svg</file>
         <file>theme/settings.svg</file>

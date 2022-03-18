@@ -14,8 +14,8 @@ MouseArea {
     property int titleFontSize: Style.topLinePixelSize
     property int sublineFontSize: Style.subLinePixelSize
 
-    property string titleColor: "black"
-    property string sublineColor: "grey"
+    property color titleColor: Style.ncTextColor
+    property color sublineColor: Style.ncSecondaryTextColor
 
     property string currentFetchMoreInProgressProviderId: ""
 
@@ -33,9 +33,18 @@ MouseArea {
     hoverEnabled: enabled
 
     ToolTip {
+        id: unifiedSearchResultMouseAreaTooltip
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
         delay: Qt.styleHints.mousePressAndHoldInterval
+        contentItem: Label {
+            text: unifiedSearchResultMouseAreaTooltip.text
+            color: Style.ncTextColor
+        }
+        background: Rectangle {
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
     }
 
     Rectangle {

@@ -56,4 +56,10 @@ void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
     [nativeWindow setLevel:NSMainMenuWindowLevel];
 }
 
+bool osXInDarkMode()
+{
+    NSString *osxMode = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppleInterfaceStyle"];
+    return [osxMode containsString:@"Dark"];
+}
+
 }

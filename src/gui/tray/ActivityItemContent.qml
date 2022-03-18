@@ -76,7 +76,12 @@ RowLayout {
             anchors.right: if(model.thumbnail !== undefined) parent.right
             anchors.bottom: if(model.thumbnail !== undefined) parent.bottom
             cache: true
-            source: icon
+
+            property string sourceUrl: Systray.darkMode ?
+                model.icon.replace("__COLOR__", "white").replace("__WHITE_GOES_HERE__", "-white") :
+                model.icon.replace("__COLOR__", "black").replace("__WHITE_GOES_HERE__", "")
+
+            source: sourceUrl
             sourceSize.height: 64
             sourceSize.width: 64
         }
@@ -99,7 +104,8 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
-            color: root.activityData.activityTextTitleColor
+            color: Style.ncTextColor
+            //color: root.activityData.activityTextTitleColor
         }
 
         Label {
@@ -114,6 +120,7 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
+            color: Style.ncTextColor
         }
 
         Label {
@@ -125,8 +132,8 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
-            color: "#808080"
-        }  
+            color: Style.ncSecondaryTextColor
+        }
 
         Loader {
             id: talkReplyTextFieldLoader
@@ -152,9 +159,20 @@ RowLayout {
 
         Layout.margins: Style.roundButtonBackgroundVerticalMargins
 
-        ToolTip.visible: hovered
-        ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-        ToolTip.text: qsTr("Dismiss")
+        ToolTip {
+            id: dismissActionButtonTooltip
+            visible: parent.hovered
+            delay: Qt.styleHints.mousePressAndHoldInterval
+            text: qsTr("Dismiss")
+            contentItem: Label {
+                text: dismissActionButtonTooltip.text
+                color: Style.ncTextColor
+            }
+            background: Rectangle {
+                border.color: Style.menuBorder
+                color: Style.backgroundColor
+            }
+        }
 
         Accessible.name: qsTr("Dismiss")
 
@@ -166,7 +184,9 @@ RowLayout {
 
         contentItem: Image {
             anchors.fill: parent
-            source: parent.hovered ? "image://svgimage-custom-color/clear.svg/black" : "image://svgimage-custom-color/clear.svg/grey"
+            source: parent.hovered ? Systray.darkMode ?
+                "image://svgimage-custom-color/clear.svg/white" : "image://svgimage-custom-color/clear.svg/black" :
+                "image://svgimage-custom-color/clear.svg/grey"
             sourceSize.width: 24
             sourceSize.height: 24
         }
