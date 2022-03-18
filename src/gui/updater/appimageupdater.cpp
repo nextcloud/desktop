@@ -142,7 +142,7 @@ void AppImageUpdater::versionInfoArrived(const UpdateInfo &info)
     }
 
     const auto seenVersion = this->seenVersion();
-    if (seenVersion <= newVersion) {
+    if (seenVersion >= newVersion) {
         qCInfo(lcUpdater) << "Update" << seenVersion << "was skipped previously by user";
         setDownloadState(UpToDate);
         return;
