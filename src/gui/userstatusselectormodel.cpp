@@ -436,7 +436,7 @@ QString UserStatusSelectorModel::clearAtReadable(const Optional<ClearAt> &clearA
         }
 
         case ClearAtType::Timestamp: {
-            const int difference = static_cast<int>(clearAt->_timestamp - _dateTimeProvider->currentDateTime().toTime_t());
+            const int difference = static_cast<int>(clearAt->_timestamp - _dateTimeProvider->currentDateTime().toSecsSinceEpoch());
             return timeDifferenceToString(difference);
         }
 

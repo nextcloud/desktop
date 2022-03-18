@@ -158,7 +158,7 @@ createFakePredefinedStatuses(const QDateTime &currentTime)
     OCC::Optional<OCC::ClearAt> userStatusClearAt;
     OCC::ClearAt clearAt;
     clearAt._type = OCC::ClearAtType::Timestamp;
-    clearAt._timestamp = currentTime.addSecs(60 * 60).toTime_t();
+    clearAt._timestamp = currentTime.addSecs(60 * 60).toSecsSinceEpoch();
     userStatusClearAt = clearAt;
 
     statuses.emplace_back(userStatusId, userStatusMessage, userStatusIcon,
@@ -198,7 +198,7 @@ private slots:
         {
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentDateTime.addDays(1).toTime_t();
+            clearAt._timestamp = currentDateTime.addDays(1).toSecsSinceEpoch();
             userStatusClearAt = clearAt;
         }
 
@@ -488,7 +488,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addSecs(30).toTime_t();
+            clearAt._timestamp = currentTime.addSecs(30).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
@@ -503,7 +503,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addSecs(60).toTime_t();
+            clearAt._timestamp = currentTime.addSecs(60).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
@@ -518,7 +518,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addSecs(60 * 30).toTime_t();
+            clearAt._timestamp = currentTime.addSecs(60 * 30).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
@@ -533,7 +533,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addSecs(60 * 60).toTime_t();
+            clearAt._timestamp = currentTime.addSecs(60 * 60).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
@@ -548,7 +548,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addSecs(60 * 60 * 4).toTime_t();
+            clearAt._timestamp = currentTime.addSecs(60 * 60 * 4).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
@@ -563,7 +563,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addDays(1).toTime_t();
+            clearAt._timestamp = currentTime.addDays(1).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
@@ -578,7 +578,7 @@ private slots:
             OCC::UserStatus userStatus;
             OCC::ClearAt clearAt;
             clearAt._type = OCC::ClearAtType::Timestamp;
-            clearAt._timestamp = currentTime.addDays(7).toTime_t();
+            clearAt._timestamp = currentTime.addDays(7).toSecsSinceEpoch();
             userStatus.setClearAt(clearAt);
 
             auto fakeDateTimeProvider = std::make_unique<FakeDateTimeProvider>();
