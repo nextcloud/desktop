@@ -24,7 +24,7 @@
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filtër</numerusform><numerusform>%n Filtra</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1476,12 +1476,12 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="566"/>
+        <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>Add Folder Sync Connection</source>
         <translation>Shtoni Lidhje Njëkohësimi Dosjesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="568"/>
+        <location filename="../src/gui/folderwizard.cpp" line="576"/>
         <source>Add Sync Connection</source>
         <translation>Shtoni Lidhje Njëkohësimesh</translation>
     </message>
@@ -1542,17 +1542,22 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <translation>Zgjidhni këtë që të njëkohësohet krejt lënda e llogarisë</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="431"/>
+        <location filename="../src/gui/folderwizard.cpp" line="435"/>
         <source>This folder is already being synced.</source>
         <translation>Kjo dosje është duke u njëkohësuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="433"/>
+        <location filename="../src/gui/folderwizard.cpp" line="438"/>
+        <source>This folder can&apos;t be synced. Please choose another one.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="441"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Po e njëkohësoni tashmë &lt;i&gt;%1&lt;/i&gt;, që është dosja mëmë e &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="435"/>
+        <location filename="../src/gui/folderwizard.cpp" line="443"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Po e njëkohësoni tashmë &lt;i&gt;%1&lt;/i&gt;, që është një nëndosje e &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
@@ -1560,17 +1565,17 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="477"/>
+        <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source>Use virtual files instead of downloading content immediately%1</source>
         <translation>Përdor kartela virtuale, në vend të shkarkimit të menjëhershëm të lëndës%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="477"/>
+        <location filename="../src/gui/folderwizard.cpp" line="485"/>
         <source> (experimental)</source>
         <translation> (eksperimentale)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="509"/>
+        <location filename="../src/gui/folderwizard.cpp" line="517"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>S’ka kartela virtuale për dosjen e përzgjedhur</translation>
     </message>
@@ -1583,9 +1588,19 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <translation>&lt;b&gt;Kujdes:&lt;/b&gt; %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="52"/>
-        <source>&lt;b&gt;Warning:&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Kujdes:&lt;/b&gt;</translation>
+        <location filename="../src/gui/folderwizard.cpp" line="50"/>
+        <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="56"/>
+        <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderwizard.cpp" line="56"/>
+        <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2016,53 +2031,53 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="393"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="401"/>
         <source>New Version Available</source>
         <translation>Ka Gati Version të Ri</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="399"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ka të gatshëm një version të ri të Klientit %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; është gati për shkarkim. Versioni i instaluar është %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="412"/>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="420"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="471"/>
         <source>Skip this version</source>
         <translation>Anashkaloje këtë version</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="421"/>
         <source>Skip this time</source>
         <translation>Anashkaloje këtë herë</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="422"/>
         <source>Get update</source>
         <translation>Merre përditësimin</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="444"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="452"/>
         <source>Update Failed</source>
         <translation>Përditësimi Dështoi</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="450"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="458"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ka të gatshëm një version të ri të Klientit %1, por procesi i përditësimit dështoi&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; është shkarkuar. Versioni i instaluar është %3.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="464"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="472"/>
         <source>Ask again later</source>
         <translation>Ripyet më vonë</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="465"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="473"/>
         <source>Restart and update</source>
         <translation>Rinise dhe përditësoje</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="466"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Update manually</source>
         <translation>Përditësojeni dorazi</translation>
     </message>
@@ -2268,64 +2283,64 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="114"/>
         <source>New %1 Update Ready</source>
         <translation>Përditësim i Ri %1 Gati</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="115"/>
         <source>A new update for %1 is about to be installed. The updater may ask
 for additional privileges during the process.</source>
         <translation>Ju ndan një hap nga instalimi i një përditësimi të ri për %1.
 Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
         <translation>S’u shkarkua dot përditësimi. Ju lutemi, klikoni &lt;a href=&apos;%1&apos;&gt;këtu&lt;/a&gt; që ta shkarkoni përditësimin dorazi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
         <source>Could not check for new updates.</source>
         <translation>S’u kontrollua dot për përditësime të reja.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="148"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>Downloading %1. Please wait...</source>
         <translation>Po shkarkohet %1. Ju lutemi, pritni…</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="150"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="156"/>
         <source>%1 available. Restart application to start the update.</source>
         <translation>%1 i gatshëm. Rinisni aplikacionin që të nisë përditësimi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
         <translation>Ka gati %1 të ri. Ju lutemi, klikoni &lt;a href=&apos;%2&apos;&gt;këtu&lt;/a&gt; që të shkarkoni dorazi AppImage-in e ri.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="169"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
         <translation>%1 i ri i gatshëm. Ju lutemi, për ta instaluar, përdorni mjetin e sistemit për përditësime.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
         <source>Checking update server...</source>
         <translation>Po kontrollohet shërbyesi i përditësimeve…</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Gjendja e përditësimit është e panjohur: S’u kontrollua për përditësime të rinj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>S’ka përditësime gati. Instalimi juaj është versioni më i ri.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="190"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="196"/>
         <source>Update Check</source>
         <translation>Kontroll Përditësimesh</translation>
     </message>
