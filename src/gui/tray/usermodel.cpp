@@ -551,33 +551,38 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
             activity._message = messageFromFileAction(activity._fileAction, fileName);
         }
 
-        if(activity._fileAction != "file_deleted") {
+        if(activity._fileAction != "file_deleted" && !item->isEmpty()) {
             auto remotePath = folder->remotePath();
             remotePath.append(activity._fileAction == "file_renamed" ? item->_renameTarget : activity._file);
 
             const auto localFiles = FolderMan::instance()->findFileInLocalFolders(item->_file, account());
             if (!localFiles.isEmpty()) {
-                const QMimeType mimeType = _mimeDb.mimeTypeForFile(QFileInfo(localFiles.constFirst()));
+                const auto firstFilePath = localFiles.constFirst();
+                const auto itemJournalRecord = item->toSyncJournalFileRecordWithInode(firstFilePath);
 
-                // Set the preview data, though for now we can skip setting file ID, link, and view
-                PreviewData preview;
-                preview._mimeType = mimeType.name();
-                preview._filename = fileName;
+                if(!itemJournalRecord.isVirtualFile()) {
+                    const auto mimeType = _mimeDb.mimeTypeForFile(QFileInfo(localFiles.constFirst()));
 
-                if(item->isDirectory()) {
-                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/folder.svg");
-                    preview._isMimeTypeIcon = true;
-                } else if(mimeType.isValid() && mimeType.inherits("text/plain")) {
-                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/text.svg");
-                    preview._isMimeTypeIcon = true;
-                } else if (mimeType.isValid() && mimeType.inherits("application/pdf")) {
-                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/application-pdf.svg");
-                    preview._isMimeTypeIcon = true;
-                } else {
-                    preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/files/api/v1/thumbnail/150/150/") + remotePath;
-                    preview._isMimeTypeIcon = false;
+                    // Set the preview data, though for now we can skip setting file ID, link, and view
+                    PreviewData preview;
+                    preview._mimeType = mimeType.name();
+                    preview._filename = fileName;
+
+                    if(item->isDirectory()) {
+                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/folder.svg");
+                        preview._isMimeTypeIcon = true;
+                    } else if(mimeType.isValid() && mimeType.inherits("text/plain")) {
+                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/text.svg");
+                        preview._isMimeTypeIcon = true;
+                    } else if (mimeType.isValid() && mimeType.inherits("application/pdf")) {
+                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/application-pdf.svg");
+                        preview._isMimeTypeIcon = true;
+                    } else {
+                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/files/api/v1/thumbnail/150/150/") + remotePath;
+                        preview._isMimeTypeIcon = false;
+                    }
+                    activity._previews.append(preview);
                 }
-                activity._previews.append(preview);
             }
         }
 
