@@ -241,7 +241,7 @@ bool Systray::darkMode()
     if (!Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey)) {
         return false;
     }
-    const auto darkMode = Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool();
+    const auto darkMode = !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool();
     return darkMode;
 // Probably Linux
 #else
