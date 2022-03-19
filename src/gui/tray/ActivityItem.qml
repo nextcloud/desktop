@@ -64,7 +64,7 @@ MouseArea {
 
             activityData: model
 
-            Layout.preferredHeight: Style.trayWindowHeaderHeight
+            Layout.minimumHeight: Style.trayWindowHeaderHeight
 
             onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.absolutePath)
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.index)
