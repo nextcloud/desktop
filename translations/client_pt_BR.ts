@@ -2,14 +2,14 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
-        <source>In %1</source>
-        <translation>Em %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
         <source>Open %1 locally</source>
         <translation>Abrir %1 localmente</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
+        <source>In %1</source>
+        <translation>Em %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="80"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="92"/>
         <source>Show more actions</source>
         <translation type="unfinished"/>
     </message>
@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="157"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="159"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="188"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -1175,8 +1175,8 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Na resposta de descoberta do arquivo do servidor está faltando dados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="516"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="541"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="519"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="544"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Erro do servidor: a resposta PROPFIND não está formatada em XML! </translation>
     </message>
@@ -3551,47 +3551,47 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Conflito ao enviar alguns arquivos para uma pasta. Esses, em conflito, serão eliminados! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1137"/>
+        <location filename="../src/libsync/discovery.cpp" line="1136"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Conflito ao enviar uma pasta. Vai ser limpa! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1140"/>
+        <location filename="../src/libsync/discovery.cpp" line="1139"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Conflito ao enviar um arquivo. Vai ser removido! </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1474"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignorado devido à lista negra &quot;escolher o que sincronizar&quot; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1507"/>
+        <location filename="../src/libsync/discovery.cpp" line="1506"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar subpastas a essa pasta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1512"/>
+        <location filename="../src/libsync/discovery.cpp" line="1511"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Não permitido porque você não tem permissão para adicionar arquivos nessa pasta </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1525"/>
+        <location filename="../src/libsync/discovery.cpp" line="1524"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Não é permitido fazer upload deste arquivo porque ele é somente leitura no servidor, restaurando </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1547"/>
+        <location filename="../src/libsync/discovery.cpp" line="1546"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Movido para destino inválido, restaurando </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1561"/>
+        <location filename="../src/libsync/discovery.cpp" line="1560"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Não tem permissão para remover, restaurar </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1699"/>
+        <location filename="../src/libsync/discovery.cpp" line="1698"/>
         <source>Error while reading the database</source>
         <translation>Erro ao ler o banco de dados </translation>
     </message>
@@ -3601,7 +3601,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O servidor respondeu com um erro ao ler o diretório &apos;%1&apos; : %2 </translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1760"/>
+        <location filename="../src/libsync/discovery.cpp" line="1759"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>O servidor respondeu com um erro ao ler o diretório  &quot;%1&quot; : %2</translation>
     </message>
@@ -3648,13 +3648,13 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1149"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1148"/>
         <source>File has changed since discovery</source>
         <translation>O arquivo foi alterado desde a descoberta</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="628"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="627"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
@@ -3664,22 +3664,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo %1 não pode ser baixado devido a um conflito local no nome do arquivo!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="680"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="679"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>O download reduziria o espaço livre no disco local abaixo do limite</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="684"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="683"/>
         <source>Free space on disk is less than %1</source>
         <translation>O espaço livre no disco é inferior a %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="805"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="804"/>
         <source>File was deleted from server</source>
         <translation>O arquivo foi apagado do servidor</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="878"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="877"/>
         <source>The file could not be downloaded completely.</source>
         <translation>O arquivo não pôde ser baixado completamente.</translation>
     </message>
@@ -3689,12 +3689,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O arquivo baixado está vazio apesar do servidor ter anunciado que ele deveria ter %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="885"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="884"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>O arquivo baixado está vazio, mas o servidor disse que deveria ser %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1076"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1075"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>O arquivo %1 não pôde ser salvo devido a um conflito com um nome de arquivo local!</translation>
     </message>
@@ -3704,18 +3704,18 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Ocorreu um erro ao escrever metadados no banco de dados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1082"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1095"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1081"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>O arquivo %1 possui erro na data/hora modificada informado pelo servidor. Não salvar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1220"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
         <source>Error updating metadata: %1</source>
         <translation>Erro ao atualizar metadados: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1223"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>The file %1 is currently in use</source>
         <translation>O arquivo %1 está correntemente em uso</translation>
     </message>
@@ -4897,22 +4897,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>%1 (ignorado devido a um erro anterior, tentando novamente em %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="358"/>
         <source>Could not update file: %1</source>
         <translation>Não foi possível atualizar o arquivo:  %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="367"/>
+        <location filename="../src/libsync/syncengine.cpp" line="370"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>Não foi possível atualizar os metadados do arquivo virtual:  %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="389"/>
+        <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Unresolved conflict.</source>
         <translation>Conflito não solucionado.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="470"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Apenas %1 está disponível, é preciso pelo menos %2 para começar</translation>
@@ -5005,7 +5005,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O nome do arquivo é um nome reservado neste sistema de arquivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="503"/>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Não é possível abrir ou criar o banco de dados de sincronização local. Certifique-se de ter acesso de gravação na pasta de sincronização.</translation>
     </message>
@@ -5035,12 +5035,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O nome do arquivo não pode ser codificado em seu sistema de arquivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="519"/>
+        <location filename="../src/libsync/syncengine.cpp" line="523"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Usando arquivos virtuais com sufixo, mas o sufixo não está definido </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="531"/>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Não é possível ler a lista negra do banco de dados local</translation>
     </message>
@@ -5060,12 +5060,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>A codificação do nome do arquivo é inválida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="567"/>
+        <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Não é possível ler a partir do journal de sincronização.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="650"/>
+        <location filename="../src/libsync/syncengine.cpp" line="654"/>
         <source>Cannot open the sync journal</source>
         <translation>Não é possível abrir o arquivo de sincronização</translation>
     </message>
@@ -5080,17 +5080,17 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O nome do arquivo contém pelo menos um caractere inválido  </translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
         <source>Synchronization will resume shortly.</source>
         <translation>A sincronização será retomada em breve.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>O espaço em disco é pequeno: Os downloads que reduziriam o espaço livre abaixo de %1 foram ignorados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1084"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Não há espaço disponível no servidor para alguns envios.</translation>
     </message>
@@ -5186,7 +5186,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="111"/>
+        <location filename="../src/gui/systray.cpp" line="112"/>
         <source>Help</source>
         <translation type="unfinished"/>
     </message>
@@ -5972,12 +5972,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Nova pasta </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="688"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="710"/>
         <source>Mark as read</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="690"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Reply</source>
         <translation type="unfinished"/>
     </message>
@@ -6410,11 +6410,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Não Perturbe é o status atual do usuário</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="816"/>
-        <source>Share %1</source>
-        <translation>Compartilhar %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="444"/>
         <source>Account switcher and settings menu</source>
         <translation>Alternador de conta e menu de configurações</translation>
@@ -6479,6 +6474,11 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
         <translation>Lista unificada de resultados de pesquisa </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="816"/>
+        <source>Share %1</source>
+        <translation>Compartilhar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>

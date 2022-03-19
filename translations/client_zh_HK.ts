@@ -2,14 +2,14 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
-        <source>In %1</source>
-        <translation>在 %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
         <source>Open %1 locally</source>
         <translation>在近端打開 %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
+        <source>In %1</source>
+        <translation>在 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="80"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="92"/>
         <source>Show more actions</source>
         <translation>顯示更多操作</translation>
     </message>
@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="157"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="159"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
         <source>Dismiss</source>
         <translation>撤銷</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="188"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation>開啟分享對話方塊</translation>
     </message>
@@ -1176,8 +1176,8 @@ This action will abort any currently running synchronization.</source>
         <translation>伺服器回報檔案遺失</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="516"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="541"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="519"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="544"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>伺服器錯誤：PROPFIND回覆未採用XML格式！</translation>
     </message>
@@ -3544,7 +3544,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="846"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>由於修改時間無效，無法同步</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -3552,47 +3552,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>將某些檔案上傳到資料夾時發生衝突。那些有衝突的檔案將被清除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1137"/>
+        <location filename="../src/libsync/discovery.cpp" line="1136"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>上傳資料夾時發生衝突。將被清除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1140"/>
+        <location filename="../src/libsync/discovery.cpp" line="1139"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>上傳檔案時發生衝突。將被清除！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1474"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>被忽略，因為它在“選擇要同步的內容”黑名單中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1507"/>
+        <location filename="../src/libsync/discovery.cpp" line="1506"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>拒絕此操作，您沒有在此新增子資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1512"/>
+        <location filename="../src/libsync/discovery.cpp" line="1511"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>拒絕此操作，您沒有新增檔案在此資料夾的權限。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1525"/>
+        <location filename="../src/libsync/discovery.cpp" line="1524"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>不允許上傳此檔案，因為它在伺服器上是唯讀的，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1547"/>
+        <location filename="../src/libsync/discovery.cpp" line="1546"/>
         <source>Moved to invalid target, restoring</source>
         <translation>已移至無效目標，正在還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1561"/>
+        <location filename="../src/libsync/discovery.cpp" line="1560"/>
         <source>Not allowed to remove, restoring</source>
         <translation>不允許刪除，還原</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1699"/>
+        <location filename="../src/libsync/discovery.cpp" line="1698"/>
         <source>Error while reading the database</source>
         <translation>讀取數據庫時發生錯誤。</translation>
     </message>
@@ -3602,7 +3602,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>伺服器讀取目錄 &apos;%1&apos; 時發生錯誤：%2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1760"/>
+        <location filename="../src/libsync/discovery.cpp" line="1759"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>伺服器在讀取目錄「%1」回覆錯誤：%2</translation>
     </message>
@@ -3649,13 +3649,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1149"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1148"/>
         <source>File has changed since discovery</source>
         <translation>尋找的過程中檔案已經被更改</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="628"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="627"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>檔案 %1 無法被下載，因為近端端的檔案名稱已毀損!</translation>
     </message>
@@ -3665,22 +3665,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>檔案 %1 無法被下載，因為近端端的檔案名稱已毀損!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="680"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="679"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>此項下載將會使剩餘的近端儲存空間降到低於限值</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="684"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="683"/>
         <source>Free space on disk is less than %1</source>
         <translation>可用的硬碟空間已經少於 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="805"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="804"/>
         <source>File was deleted from server</source>
         <translation>檔案已從伺服器被刪除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="878"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="877"/>
         <source>The file could not be downloaded completely.</source>
         <translation>檔案下載無法完成。</translation>
     </message>
@@ -3690,12 +3690,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>已下載的檔案為空，儘管伺服器所宣佈的檔案大小為%1。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="885"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="884"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>已下載的檔案為空，儘管伺服器說檔案大小為%1。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1076"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1075"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>檔案 %1 無法存檔，因為近端端的檔案名稱已毀損!</translation>
     </message>
@@ -3705,18 +3705,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>寫入後設資料（metadata）時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1082"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1095"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1081"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation>伺服器報告檔案 %1 的修改時間無效。 不要保存它。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1220"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元數據時出錯：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1223"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>The file %1 is currently in use</source>
         <translation>檔案 %1 正在使用中</translation>
     </message>
@@ -4898,22 +4898,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1（因先前錯誤而跳過，%2後重試）</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="358"/>
         <source>Could not update file: %1</source>
         <translation>無法更新檔案：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="367"/>
+        <location filename="../src/libsync/syncengine.cpp" line="370"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>無法更新虛擬文件元數據：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="389"/>
+        <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Unresolved conflict.</source>
         <translation>未解決的抵觸。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="470"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>目前僅有 %1 可以使用，至少需要 %2 才能開始</translation>
@@ -5006,7 +5006,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此檔案名已被此檔案系統保留所用。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="503"/>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>無法開啟或新增近端同步數據庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
@@ -5036,12 +5036,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>您的檔案系統無法對此檔案名進行編碼。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="519"/>
+        <location filename="../src/libsync/syncengine.cpp" line="523"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>使用帶後綴的虛擬文件，但未設置後綴</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="531"/>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>無法從近端數據庫讀取黑名單。</translation>
     </message>
@@ -5061,12 +5061,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>檔案名稱編碼是無效的</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="567"/>
+        <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Unable to read from the sync journal.</source>
         <translation>無法讀取同步日誌。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="650"/>
+        <location filename="../src/libsync/syncengine.cpp" line="654"/>
         <source>Cannot open the sync journal</source>
         <translation>同步處理日誌無法開啟</translation>
     </message>
@@ -5081,17 +5081,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>檔案名稱含有不合法的字元</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
         <source>Synchronization will resume shortly.</source>
         <translation>同步會很快恢復</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>剩餘空間不足：下載後將使剩餘空間降至低於%1的檔案一律跳過。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1084"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>伺服器上的剩餘空間不足以容納某些要上載的檔案。</translation>
     </message>
@@ -5187,7 +5187,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="111"/>
+        <location filename="../src/gui/systray.cpp" line="112"/>
         <source>Help</source>
         <translation>支援</translation>
     </message>
@@ -5973,39 +5973,39 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>新資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="688"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="710"/>
         <source>Mark as read</source>
         <translation>標為已讀</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="690"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Reply</source>
         <translation>回覆</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>您已將 %1 重新命名</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="522"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>您刪除了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="524"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>您新增了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="526"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>您改變了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>已同步 %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6097,12 +6097,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="39"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>回覆到 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="72"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>發送聊天回覆訊息</translation>
     </message>
 </context>
 <context>
@@ -6411,11 +6411,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>目前用戶狀態為請勿打擾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="816"/>
-        <source>Share %1</source>
-        <translation>分享 %1</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="444"/>
         <source>Account switcher and settings menu</source>
         <translation>帳戶切換器和設置選項單</translation>
@@ -6480,6 +6475,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
         <translation>統一搜索結果列表</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="816"/>
+        <source>Share %1</source>
+        <translation>分享 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>

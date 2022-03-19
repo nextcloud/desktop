@@ -2,14 +2,14 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
-        <source>In %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="40"/>
         <source>Open %1 locally</source>
         <translation>로컬에서 %1 열기</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="26"/>
+        <source>In %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="78"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="80"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="92"/>
         <source>Show more actions</source>
         <translation type="unfinished"/>
     </message>
@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="157"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="159"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="166"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="188"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -1175,8 +1175,8 @@ This action will abort any currently running synchronization.</source>
         <translation>서버 파일 감지 응답에 데이터가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="516"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="541"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="519"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="544"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"/>
     </message>
@@ -3557,47 +3557,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1137"/>
+        <location filename="../src/libsync/discovery.cpp" line="1136"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1140"/>
+        <location filename="../src/libsync/discovery.cpp" line="1139"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1474"/>
+        <location filename="../src/libsync/discovery.cpp" line="1473"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;동기화 할 대상 선택&quot; 블랙리스트로 인해 무시되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1507"/>
+        <location filename="../src/libsync/discovery.cpp" line="1506"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>해당 폴더에 하위 폴더를 추가 할 수 있는 권한이 없기 때문에 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1512"/>
+        <location filename="../src/libsync/discovery.cpp" line="1511"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>해당 폴더에 파일을 추가 할 권한이 없으므로 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1525"/>
+        <location filename="../src/libsync/discovery.cpp" line="1524"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>이 파일은 서버에서 읽기 전용이므로 업로드 할 수 없습니다. 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1547"/>
+        <location filename="../src/libsync/discovery.cpp" line="1546"/>
         <source>Moved to invalid target, restoring</source>
         <translation>유효하지 않은 목적지로 옮겨짐, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1561"/>
+        <location filename="../src/libsync/discovery.cpp" line="1560"/>
         <source>Not allowed to remove, restoring</source>
         <translation>삭제가 허용되지 않음, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1699"/>
+        <location filename="../src/libsync/discovery.cpp" line="1698"/>
         <source>Error while reading the database</source>
         <translation>데이터베이스를 읽는 중 오류 발생</translation>
     </message>
@@ -3607,7 +3607,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>서버가 디렉토리 &apos;%1&apos;을(를) 읽는 중 오류에 대응함: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1760"/>
+        <location filename="../src/libsync/discovery.cpp" line="1759"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>
@@ -3654,13 +3654,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="496"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1149"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1148"/>
         <source>File has changed since discovery</source>
         <translation>발견 이후 파일이 변경되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="628"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="627"/>
         <source>File %1 cannot be downloaded because of a local file name clash!</source>
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
     </message>
@@ -3670,22 +3670,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 다운로드 할 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="680"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="679"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>다운로드하면 사용 가능한 로컬 디스크 공간이 제한 밑으로 줄어 듭니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="684"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="683"/>
         <source>Free space on disk is less than %1</source>
         <translation>디스크의 여유 공간이 %1보다 작습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="805"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="804"/>
         <source>File was deleted from server</source>
         <translation>파일이 서버에서 삭제되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="878"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="877"/>
         <source>The file could not be downloaded completely.</source>
         <translation>파일을 완전히 다운로드 할 수 없습니다.</translation>
     </message>
@@ -3695,12 +3695,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>서버가 %1이어야한다고 안내 했음에도 불구하고 다운로드한 파일이 비어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="885"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="884"/>
         <source>The downloaded file is empty, but the server said it should have been %1.</source>
         <translation>서버는 %1였으나 다운로드한 파일이 비어 있음.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1076"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1075"/>
         <source>File %1 cannot be saved because of a local file name clash!</source>
         <translation>로컬 파일 이름 충돌로 인해 %1 파일을 저장할 수 없습니다!</translation>
     </message>
@@ -3710,18 +3710,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1082"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1095"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1081"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1220"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1223"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1222"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -4903,22 +4903,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 (이전 오류로 인해 스킵되었으며 %2에서 다시 시도)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="357"/>
+        <location filename="../src/libsync/syncengine.cpp" line="358"/>
         <source>Could not update file: %1</source>
         <translation>파일을 업데이트할 수 없음: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="367"/>
+        <location filename="../src/libsync/syncengine.cpp" line="370"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>가상 파일 메타데이터를 업데이트할 수 없음: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="389"/>
+        <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Unresolved conflict.</source>
         <translation>해결되지 않은 충돌</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="470"/>
+        <location filename="../src/libsync/syncengine.cpp" line="474"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>%1 만 사용할 수 있습니다. 시작하려면 %2 이상이 필요합니다</translation>
@@ -5011,7 +5011,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>해당 파일 이름은 이 파일 시스템에서 예약된 이름입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="503"/>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
@@ -5041,12 +5041,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 시스템에서 파일 이름을 인코딩 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="519"/>
+        <location filename="../src/libsync/syncengine.cpp" line="523"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>가상 파일에 접미사를 사용 중이나, 접미사가 설정되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="531"/>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
     </message>
@@ -5066,12 +5066,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 이름 인코딩이 올바르지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="567"/>
+        <location filename="../src/libsync/syncengine.cpp" line="571"/>
         <source>Unable to read from the sync journal.</source>
         <translation>동기화 저널에서 읽을 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="650"/>
+        <location filename="../src/libsync/syncengine.cpp" line="654"/>
         <source>Cannot open the sync journal</source>
         <translation>동기화 저널을 열 수 없습니다.</translation>
     </message>
@@ -5086,17 +5086,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 이름에 유효하지 않은 문자가 하나 이상 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1056"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1060"/>
         <source>Synchronization will resume shortly.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1073"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1077"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>디스크 공간이 부족합니다. 여유 공간이 %1 미만으로 남으면 다운로드를 건너 뜁니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1080"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1084"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>일부 업로드를 위해 서버에 사용 가능한 공간이 부족합니다.</translation>
     </message>
@@ -5192,7 +5192,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="111"/>
+        <location filename="../src/gui/systray.cpp" line="112"/>
         <source>Help</source>
         <translation type="unfinished"/>
     </message>
@@ -5978,12 +5978,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>새 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="688"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="710"/>
         <source>Mark as read</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="690"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Reply</source>
         <translation type="unfinished"/>
     </message>
@@ -6416,11 +6416,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>현재 사용자 상태가 방해 금지임</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="816"/>
-        <source>Share %1</source>
-        <translation>%1 공유</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="444"/>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished"/>
@@ -6485,6 +6480,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="681"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="816"/>
+        <source>Share %1</source>
+        <translation>%1 공유</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="753"/>
