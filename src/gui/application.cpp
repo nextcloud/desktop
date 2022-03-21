@@ -233,8 +233,11 @@ Application::Application(int &argc, char **argv)
     // Ensure OpenSSL config file is only loaded from app directory
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+#elif defined(Q_OS_LINUX)
+#if defined(OC_PLUGIN_DIR)
+    addLibraryPath(QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)));
 #endif
-
+#endif
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
@@ -246,12 +249,6 @@ Application::Application(int &argc, char **argv)
 
     // needed during commandline options parsing
     setApplicationVersion(_theme->versionSwitchOutput());
-
-#if defined(OC_PLUGIN_DIR) && defined(Q_OS_LINUX)
-    // logged below, must be done once logger has been set up
-    const QString extraPluginDir = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
-    this->addLibraryPath(extraPluginDir);
-#endif
 
     parseOptions(arguments());
 
