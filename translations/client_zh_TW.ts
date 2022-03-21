@@ -3545,7 +3545,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="846"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>由於修改時間無效，因此無法同步</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -5986,27 +5986,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>您已重新命名 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="522"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>您已刪除 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="524"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>您已建立 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="526"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>您已變更 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>已同步 %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6098,12 +6098,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="39"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>回覆至……</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="72"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>傳送回覆至聊天訊息</translation>
     </message>
 </context>
 <context>
