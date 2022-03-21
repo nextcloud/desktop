@@ -105,6 +105,31 @@ namespace {
 
 // ----------------------------------------------------------------------------------
 
+#ifdef Q_OS_WIN
+class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
+public:
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
+        const auto msg = static_cast<MSG *>(message);
+        if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
+            if(!_guiAppInstance) {
+                const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance());
+                if(ptr) {
+                    _guiAppInstance.reset(ptr);
+                }
+            }
+
+            if(_guiAppInstance) {
+                emit _guiAppInstance->paletteChanged(_guiAppInstance->palette());
+            }
+        }
+        return false;
+    }
+
+private:
+    QScopedPointer<QGuiApplication> _guiAppInstance;
+};
+#endif
+
 bool Application::configVersionMigration()
 {
     QStringList deleteKeys, ignoreKeys;
@@ -192,6 +217,9 @@ Application::Application(int &argc, char **argv)
     // Ensure OpenSSL config file is only loaded from app directory
     QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
+
+    // Set up event listener for Windows theme changing
+    installNativeEventFilter(new WindowsNativeEventFilter());
 #endif
 
     // TODO: Can't set this without breaking current config paths

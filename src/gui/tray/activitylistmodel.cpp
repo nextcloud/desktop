@@ -62,7 +62,8 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
     roles[ActionRole] = "type";
-    roles[ActionIconRole] = "icon";
+    roles[DarkIconRole] = "darkIcon";
+    roles[LightIconRole] = "lightIcon";
     roles[ActionTextRole] = "subject";
     roles[ActionsLinksRole] = "links";
     roles[ActionsLinksContextMenuRole] = "linksContextMenu";
@@ -192,31 +193,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         });
     };
 
-    switch (role) {
-    case DisplayPathRole:
-        return getDisplayPath();
-    case PathRole:
-        return QFileInfo(getFilePath()).path();
-    case DisplayLocationRole:
-        return displayLocation();
-    case ActionsLinksRole: {
-        QList<QVariant> customList;
-        foreach (ActivityLink activityLink, a._links) {
-            customList << QVariant::fromValue(activityLink);
-        }
-        return customList;
-    }
-
-    case ActionsLinksContextMenuRole: {
-        return ActivityListModel::convertLinksToMenuEntries(a);
-    }
-    
-    case ActionsLinksForActionButtonsRole: {
-        return ActivityListModel::convertLinksToActionButtons(a);
-    }
-
-    case ActionIconRole: {
-        auto colorIconPath = QStringLiteral("qrc:///client/theme/__COLOR__/"); // We will replace __COLOR__ in QML
+    const auto generateIconPath = [&]() {
+        auto colorIconPath = role == DarkIconRole ? QStringLiteral("qrc:///client/theme/white/") : QStringLiteral("qrc:///client/theme/black/");
         if (a._type == Activity::NotificationType) {
             colorIconPath.append("bell.svg");
             return colorIconPath;
@@ -255,14 +233,40 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         } else {
             // We have an activity
-            if (a._icon.isEmpty()) {
+            if (a._darkIcon.isEmpty()) {
                 colorIconPath.append("activity.svg");
                 return colorIconPath;
             }
-
-            return a._icon;
+            return role == DarkIconRole ? a._darkIcon : a._lightIcon;
         }
+    };
+
+    switch (role) {
+    case DisplayPathRole:
+        return getDisplayPath();
+    case PathRole:
+        return QFileInfo(getFilePath()).path();
+    case DisplayLocationRole:
+        return displayLocation();
+    case ActionsLinksRole: {
+        QList<QVariant> customList;
+        foreach (ActivityLink activityLink, a._links) {
+            customList << QVariant::fromValue(activityLink);
+        }
+        return customList;
     }
+
+    case ActionsLinksContextMenuRole: {
+        return ActivityListModel::convertLinksToMenuEntries(a);
+    }
+    
+    case ActionsLinksForActionButtonsRole: {
+        return ActivityListModel::convertLinksToActionButtons(a);
+    }
+
+    case DarkIconRole:
+    case LightIconRole:
+        return generateIconPath();
     case ObjectTypeRole:
         return a._objectType;
     case ObjectIdRole:
@@ -399,20 +403,6 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
         const auto json = activ.toObject();
 
         auto a = Activity::fromActivityJson(json, _accountState->account());
-
-        auto colorIconPath = QStringLiteral("qrc:///client/theme/__COLOR__/");
-        if(a._icon.contains("change.svg")) {
-            colorIconPath.append("change.svg");
-            a._icon = colorIconPath;
-        } else if(a._icon.contains("calendar.svg")) {
-            colorIconPath.append("calendar.svg");
-            a._icon = colorIconPath;
-        } else if(a._icon.contains("personal.svg")) {
-            colorIconPath.append("user.svg");
-            a._icon = colorIconPath;
-        }  else if(a._icon.contains("core/img/actions")) {
-            a._icon.insert(a._icon.indexOf(".svg"), "__WHITE_GOES_HERE__");
-        }
 
         list.append(a);
         _currentItem = list.last()._id;

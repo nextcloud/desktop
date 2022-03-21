@@ -69,6 +69,7 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
 
     Q_PROPERTY(QPalette systemPalette READ systemPalette NOTIFY systemPaletteChanged)
+    Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
 public:
     enum CustomMediaType {
         oCSetupTop, // ownCloud connect page
@@ -594,6 +595,7 @@ public:
     static constexpr const char *themePrefix = ":/client/theme/";
 
     QPalette systemPalette();
+    bool darkMode();
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
@@ -612,14 +614,21 @@ protected:
 signals:
     void systrayUseMonoIconsChanged(bool);
     void systemPaletteChanged(const QPalette &palette);
+    void darkModeChanged();
 
 private:
     Theme(Theme const &);
     Theme &operator=(Theme const &);
 
+    void connectToPaletteSignal();
+#if defined(Q_OS_WIN)
+    QPalette reserveDarkPalette; // Windows 11 button and window dark colours
+#endif
+
     static Theme *_instance;
     bool _mono = false;
     QScopedPointer<QGuiApplication> _guiAppInstance;
+
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
 #endif
