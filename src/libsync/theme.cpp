@@ -343,6 +343,9 @@ QString Theme::hidpiFileName(const QString &iconName, const QColor &backgroundCo
 Theme::Theme()
     : QObject(nullptr)
 {
+#if defined(Q_OS_WIN)
+    reserveDarkPalette = QPalette(QColor(49,49,49,255), QColor(35,35,35,255)); // Windows 11 button and window dark colours
+#endif
 }
 
 // If this option returns true, the client only supports one folder to sync.
@@ -899,16 +902,44 @@ QColor Theme::errorBoxBorderColor() const
     return QColor{"black"};
 }
 
-QPalette Theme::systemPalette()
+void Theme::connectToPaletteSignal()
 {
     if(!_guiAppInstance) {
         const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance());
         if(ptr) {
             _guiAppInstance.reset(ptr);
-            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
+            connect(_guiAppInstance.data(), &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
+            connect(_guiAppInstance.data(), &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
         }
     }
+}
+
+QPalette Theme::systemPalette()
+{
+    connectToPaletteSignal();
+#if defined(Q_OS_WIN)
+    if(darkMode()) {
+        return reserveDarkPalette;
+    }
+#endif
     return QGuiApplication::palette();
+}
+
+bool Theme::darkMode()
+{
+    connectToPaletteSignal();
+// Windows: Check registry for dark mode
+#if defined(Q_OS_WIN)
+    const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
+    if (Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey) &&
+        !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool()) {
+        return true;
+    }
+
+    return false;
+#else
+    return Theme::isDarkColor(QGuiApplication::palette().window().color());
+#endif
 }
 
 } // end namespace client

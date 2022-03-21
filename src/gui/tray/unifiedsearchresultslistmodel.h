@@ -53,8 +53,10 @@ public:
     enum DataRole {
         ProviderNameRole = Qt::UserRole + 1,
         ProviderIdRole,
-        ImagePlaceholderRole,
-        IconsRole,
+        DarkImagePlaceholderRole,
+        LightImagePlaceholderRole,
+        DarkIconsRole,
+        LightIconsRole,
         TitleRole,
         SublineRole,
         ResourceUrlRole,

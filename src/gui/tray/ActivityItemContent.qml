@@ -77,11 +77,7 @@ RowLayout {
             anchors.bottom: if(model.thumbnail !== undefined) parent.bottom
             cache: true
 
-            property string sourceUrl: Systray.darkMode ?
-                model.icon.replace("__COLOR__", "white").replace("__WHITE_GOES_HERE__", "-white") :
-                model.icon.replace("__COLOR__", "black").replace("__WHITE_GOES_HERE__", "")
-
-            source: sourceUrl
+            source: Theme.darkMode ? model.darkIcon : model.lightIcon
             sourceSize.height: 64
             sourceSize.width: 64
         }
@@ -146,9 +142,9 @@ RowLayout {
                 id: talkReplyMessage
                 anchors.fill: parent
             }
-        }         
-    }    
-    
+        }
+    }
+
     Button {
         id: dismissActionButton
 
@@ -184,7 +180,7 @@ RowLayout {
 
         contentItem: Image {
             anchors.fill: parent
-            source: parent.hovered ? Systray.darkMode ?
+            source: parent.hovered ? Theme.darkMode ?
                 "image://svgimage-custom-color/clear.svg/white" : "image://svgimage-custom-color/clear.svg/black" :
                 "image://svgimage-custom-color/clear.svg/grey"
             sourceSize.width: 24

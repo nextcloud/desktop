@@ -63,8 +63,24 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject json, const AccountPt
     activity._file = json.value(QStringLiteral("object_name")).toString();
     activity._link = QUrl(json.value(QStringLiteral("link")).toString());
     activity._dateTime = QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate);
-    activity._icon = json.value(QStringLiteral("icon")).toString();
+    activity._darkIcon = json.value(QStringLiteral("icon")).toString();  // We have both dark and light for theming purposes
+    activity._lightIcon = json.value(QStringLiteral("icon")).toString(); // Some icons get changed in the ActivityListModel
     activity._isCurrentUserFileActivity = activity._objectType == QStringLiteral("files") && activityUser == account->davUser();
+
+    const auto darkIconPath = QStringLiteral("qrc://:/client/theme/white/");
+    const auto lightIconPath = QStringLiteral("qrc://:/client/theme/black/");
+    if(activity._darkIcon.contains("change.svg")) {
+        activity._darkIcon = darkIconPath + QStringLiteral("change.svg");
+        activity._lightIcon = lightIconPath + QStringLiteral("change.svg");
+    } else if(activity._darkIcon.contains("calendar.svg")) {
+        activity._darkIcon = darkIconPath + QStringLiteral("calendar.svg");
+        activity._lightIcon = lightIconPath + QStringLiteral("calendar.svg");
+    } else if(activity._darkIcon.contains("personal.svg")) {
+        activity._darkIcon = darkIconPath + QStringLiteral("user.svg");
+        activity._lightIcon = lightIconPath + QStringLiteral("user.svg");
+    }  else if(activity._darkIcon.contains("core/img/actions")) {
+        activity._darkIcon.insert(activity._darkIcon.indexOf(".svg"), "-white");
+    }
 
     auto richSubjectData = json.value(QStringLiteral("subject_rich")).toArray();
 
@@ -128,13 +144,21 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject json, const AccountPt
     }
 
     if(!previewsData.isEmpty()) {
-        if(activity._icon.contains(QStringLiteral("add-color.svg"))) {
-            activity._icon = "qrc:///client/theme/colored/add-bordered.svg";
-        } else if(activity._icon.contains(QStringLiteral("delete-color.svg"))) {
-            activity._icon = "qrc:///client/theme/colored/delete-bordered.svg";
-        } else if(activity._icon.contains(QStringLiteral("change.svg"))) {
-            activity._icon = "qrc:///client/theme/colored/change-bordered.svg";
+        if(activity._darkIcon.contains(QStringLiteral("add-color.svg"))) {
+            activity._darkIcon = "qrc:///client/theme/colored/add-bordered.svg";
+            activity._lightIcon = "qrc:///client/theme/colored/add-bordered.svg";
+        } else if(activity._darkIcon.contains(QStringLiteral("delete-color.svg"))) {
+            activity._darkIcon = "qrc:///client/theme/colored/delete-bordered.svg";
+            activity._lightIcon = "qrc:///client/theme/colored/add-bordered.svg";
+        } else if(activity._darkIcon.contains(QStringLiteral("change.svg"))) {
+            activity._darkIcon = "qrc:///client/theme/colored/change-bordered.svg";
+            activity._lightIcon = "qrc:///client/theme/colored/add-bordered.svg";
         }
+    }
+
+    auto actions = json.value("actions").toArray();
+    foreach (auto action, actions) {
+        activity._links.append(ActivityLink::createFomJsonObject(action.toObject()));
     }
 
     return activity;

@@ -40,7 +40,6 @@ public:
 };
 
 #ifdef Q_OS_OSX
-bool osXInDarkMode();
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
@@ -58,7 +57,6 @@ class Systray
 
     Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
-    Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
 
 public:
     static Systray *instance();
@@ -74,7 +72,6 @@ public:
     bool isOpen();
     QString windowTitle() const;
     bool useNormalWindow() const;
-    bool darkMode();
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
@@ -96,8 +93,6 @@ signals:
     void openShareDialog(const QString &sharePath, const QString &localPath);
     void showFileActivityDialog(const QString &objectName, const int objectId);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
-
-    void darkModeChanged();
 
 public slots:
     void slotNewUserSelected();

@@ -61,7 +61,7 @@ MenuItem {
                     Layout.leftMargin: 7
                     verticalAlignment: Qt.AlignCenter
                     cache: false
-                    source: model.avatar != "" ? model.avatar : Systray.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
+                    source: model.avatar != "" ? model.avatar : Theme.darkMode ? "image://avatars/fallbackWhite" : "image://avatars/fallbackBlack"
                     Layout.preferredHeight: Style.accountAvatarSize
                     Layout.preferredWidth: Style.accountAvatarSize
                     Rectangle {

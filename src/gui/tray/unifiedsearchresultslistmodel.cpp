@@ -19,7 +19,6 @@
 #include "guiutility.h"
 #include "folderman.h"
 #include "networkjobs.h"
-#include "systray.h"
 
 #include <algorithm>
 
@@ -27,47 +26,49 @@
 #include <QDesktopServices>
 
 namespace {
-QString imagePlaceholderUrlForProviderId(const QString &providerId)
+QString imagePlaceholderUrlForProviderId(const QString &providerId, const bool darkMode)
 {
+    const auto colorIconPath = darkMode ? QStringLiteral(":/client/theme/white/") : QStringLiteral(":/client/theme/black/");
     if (providerId.contains(QStringLiteral("message"), Qt::CaseInsensitive)
         || providerId.contains(QStringLiteral("talk"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral("qrc:///client/theme/white/wizard-talk.svg") : QStringLiteral("qrc:///client/theme/black/wizard-talk.svg");
+        return colorIconPath % QStringLiteral("wizard-talk.svg");
     } else if (providerId.contains(QStringLiteral("file"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral("qrc:///client/theme/white/edit.svg") : QStringLiteral("qrc:///client/theme/black/edit.svg");
+        return colorIconPath % QStringLiteral("edit.svg");
     } else if (providerId.contains(QStringLiteral("deck"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral("qrc:///client/theme/white/deck.svg") : QStringLiteral("qrc:///client/theme/black/deck.svg");
+        return colorIconPath % QStringLiteral("deck.svg");
     } else if (providerId.contains(QStringLiteral("calendar"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral("qrc:///client/theme/white/calendar.svg") : QStringLiteral("qrc:///client/theme/black/calendar.svg");
+        return colorIconPath % QStringLiteral("calendar.svg");
     } else if (providerId.contains(QStringLiteral("mail"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral("qrc:///client/theme/white/email.svg") : QStringLiteral("qrc:///client/theme/black/email.svg");
+        return colorIconPath % QStringLiteral("email.svg");
     } else if (providerId.contains(QStringLiteral("comment"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral("qrc:///client/theme/white/comment.svg") : QStringLiteral("qrc:///client/theme/black/comment.svg");
+        return colorIconPath % QStringLiteral("comment.svg");
     }
 
-    return QStringLiteral("qrc:///client/theme/change.svg");
+    return colorIconPath % QStringLiteral("change.svg");
 }
 
-QString localIconPathFromIconPrefix(const QString &iconNameWithPrefix)
+QString localIconPathFromIconPrefix(const QString &iconNameWithPrefix, const bool darkMode)
 {
+    const auto colorIconPath = darkMode ? QStringLiteral(":/client/theme/white/") : QStringLiteral(":/client/theme/black/");
     if (iconNameWithPrefix.contains(QStringLiteral("message"), Qt::CaseInsensitive)
         || iconNameWithPrefix.contains(QStringLiteral("talk"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/wizard-talk.svg") : QStringLiteral(":/client/theme/black/wizard-talk.svg");
+        return colorIconPath % QStringLiteral("wizard-talk.svg");
     } else if (iconNameWithPrefix.contains(QStringLiteral("folder"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/folder.svg") : QStringLiteral(":/client/theme/black/folder.svg");
+        return colorIconPath % QStringLiteral("folder.svg");
     } else if (iconNameWithPrefix.contains(QStringLiteral("deck"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/deck.svg") : QStringLiteral(":/client/theme/black/deck.svg");
+        return colorIconPath % QStringLiteral("deck.svg");
     } else if (iconNameWithPrefix.contains(QStringLiteral("contacts"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/wizard-groupware.svg") : QStringLiteral(":/client/theme/black/wizard-groupware.svg");
+        return colorIconPath % QStringLiteral("wizard-groupware.svg");
     } else if (iconNameWithPrefix.contains(QStringLiteral("calendar"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/calendar.svg") : QStringLiteral(":/client/theme/black/calendar.svg");
+        return colorIconPath % QStringLiteral("calendar.svg");
     } else if (iconNameWithPrefix.contains(QStringLiteral("mail"), Qt::CaseInsensitive)) {
-        return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/email.svg") : QStringLiteral(":/client/theme/black/email.svg");
+        return colorIconPath % QStringLiteral("email.svg");
     }
 
-    return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/change.svg") : QStringLiteral(":/client/theme/change.svg");
+    return colorIconPath % QStringLiteral("change.svg");
 }
 
-QString iconUrlForDefaultIconName(const QString &defaultIconName)
+QString iconUrlForDefaultIconName(const QString &defaultIconName, const bool darkMode)
 {
     const QUrl urlForIcon{defaultIconName};
 
@@ -75,15 +76,16 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName)
         return defaultIconName;
     }
     
+    const auto colorIconPath = darkMode ? QStringLiteral(":/client/theme/white/") : QStringLiteral(":/client/theme/black/");
+
     if (defaultIconName.startsWith(QStringLiteral("icon-"))) {
         const auto parts = defaultIconName.split(QLatin1Char('-'));
 
         if (parts.size() > 1) {
-            const QString blackOrWhite = OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/") : QStringLiteral(":/client/theme/black/");
-            const QString blackIconFilePath = blackOrWhite + parts[1] + QStringLiteral(".svg");
+            const QString blackOrWhiteIconFilePath = colorIconPath + parts[1] + QStringLiteral(".svg");
 
-            if (QFile::exists(blackIconFilePath)) {
-                return blackIconFilePath;
+            if (QFile::exists(blackOrWhiteIconFilePath)) {
+                return blackOrWhiteIconFilePath;
             }
 
             const QString iconFilePath = QStringLiteral(":/client/theme/") + parts[1] + QStringLiteral(".svg");
@@ -93,14 +95,14 @@ QString iconUrlForDefaultIconName(const QString &defaultIconName)
             }
         }
 
-        const auto iconNameFromIconPrefix = localIconPathFromIconPrefix(defaultIconName);
+        const auto iconNameFromIconPrefix = localIconPathFromIconPrefix(defaultIconName, darkMode);
 
         if (!iconNameFromIconPrefix.isEmpty()) {
             return iconNameFromIconPrefix;
         }
     }
 
-    return OCC::Systray::instance()->darkMode() ? QStringLiteral(":/client/theme/white/change.svg") : QStringLiteral(":/client/theme/change.svg");
+    return colorIconPath % QStringLiteral("change.svg");
 }
 
 QString generateUrlForThumbnail(const QString &thumbnailUrl, const QUrl &serverUrl)
@@ -125,7 +127,7 @@ QString generateUrlForThumbnail(const QString &thumbnailUrl, const QUrl &serverU
     return thumbnailUrlCopy;
 }
 
-QString generateUrlForIcon(const QString &fallbackIcon, const QUrl &serverUrl)
+QString generateUrlForIcon(const QString &fallbackIcon, const QUrl &serverUrl, const bool darkMode)
 {
     auto serverUrlCopy = serverUrl;
 
@@ -144,7 +146,7 @@ QString generateUrlForIcon(const QString &fallbackIcon, const QUrl &serverUrl)
         }
     } else if (!fallbackIconCopy.isEmpty()) {
         // could be one of names for standard icons (e.g. icon-mail)
-        const auto defaultIconUrl = iconUrlForDefaultIconName(fallbackIconCopy);
+        const auto defaultIconUrl = iconUrlForDefaultIconName(fallbackIconCopy, darkMode);
         if (!defaultIconUrl.isEmpty()) {
             fallbackIconCopy = defaultIconUrl;
         }
@@ -153,7 +155,7 @@ QString generateUrlForIcon(const QString &fallbackIcon, const QUrl &serverUrl)
     return fallbackIconCopy;
 }
 
-QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallbackIcon, const QUrl &serverUrl)
+QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallbackIcon, const QUrl &serverUrl, const bool darkMode)
 {
     if (thumbnailUrl.isEmpty() && fallbackIcon.isEmpty()) {
         return {};
@@ -165,7 +167,7 @@ QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QSt
     }
 
     const auto urlForThumbnail = generateUrlForThumbnail(thumbnailUrl, serverUrl);
-    const auto urlForFallbackIcon = generateUrlForIcon(fallbackIcon, serverUrl);
+    const auto urlForFallbackIcon = generateUrlForIcon(fallbackIcon, serverUrl, darkMode);
 
     qDebug() << "SEARCH" << urlForThumbnail << urlForFallbackIcon;
 
@@ -204,10 +206,14 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
         return _results.at(index.row())._providerName;
     case ProviderIdRole: 
         return _results.at(index.row())._providerId;
-    case ImagePlaceholderRole:
-        return imagePlaceholderUrlForProviderId(_results.at(index.row())._providerId);
-    case IconsRole:
-        return _results.at(index.row())._icons;
+    case DarkImagePlaceholderRole:
+        return imagePlaceholderUrlForProviderId(_results.at(index.row())._providerId, true);
+    case LightImagePlaceholderRole:
+        return imagePlaceholderUrlForProviderId(_results.at(index.row())._providerId, false);
+    case DarkIconsRole:
+        return _results.at(index.row())._darkIcons;
+    case LightIconsRole:
+        return _results.at(index.row())._lightIcons;
     case TitleRole:
         return _results.at(index.row())._title;
     case SublineRole:
@@ -239,8 +245,10 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     auto roles = QAbstractListModel::roleNames();
     roles[ProviderNameRole] = "providerName";
     roles[ProviderIdRole] = "providerId";
-    roles[IconsRole] = "icons";
-    roles[ImagePlaceholderRole] = "imagePlaceholder";
+    roles[DarkIconsRole] = "darkIcons";
+    roles[LightIconsRole] = "lightIcons";
+    roles[DarkImagePlaceholderRole] = "darkImagePlaceholder";
+    roles[LightImagePlaceholderRole] = "lightImagePlaceholder";
     roles[TitleRole] = "resultTitle";
     roles[SublineRole] = "subline";
     roles[ResourceUrlRole] = "resourceUrlRole";
@@ -577,8 +585,10 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
         const auto accountUrl = (_accountState && _accountState->account()) ? _accountState->account()->url() : QUrl();
 
         result._resourceUrl = makeResourceUrl(resourceUrl, accountUrl);
-        result._icons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
-            entryMap.value(QStringLiteral("icon")).toString(), accountUrl);
+        result._darkIcons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
+            entryMap.value(QStringLiteral("icon")).toString(), accountUrl, true);
+        result._lightIcons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
+            entryMap.value(QStringLiteral("icon")).toString(), accountUrl, false);
 
         newEntries.push_back(result);
     }

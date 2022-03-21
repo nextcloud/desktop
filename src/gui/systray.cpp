@@ -130,12 +130,6 @@ Systray::Systray()
     });
 #endif
 
-    const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance());
-    if(ptr) {
-        _guiAppInstance.reset(ptr);
-        connect(ptr, &QGuiApplication::paletteChanged, this, &Systray::darkModeChanged);
-    }
-
     connect(UserModel::instance(), &UserModel::newUserSelected,
         this, &Systray::slotNewUserSelected);
     connect(UserModel::instance(), &UserModel::addAccount,
@@ -229,24 +223,6 @@ bool Systray::useNormalWindow() const
 
     ConfigFile cfg;
     return cfg.showMainDialogAsNormalWindow();
-}
-
-bool Systray::darkMode()
-{
-#if defined(Q_OS_MACOS)
-    return osXInDarkMode();
-// Windows: Check registry for dark mode
-#elif defined(Q_OS_WIN)
-    const auto darkModeSubkey = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Themes\\Personalize");
-    if (!Utility::registryKeyExists(HKEY_CURRENT_USER, darkModeSubkey)) {
-        return false;
-    }
-    const auto darkMode = !Utility::registryGetKeyValue(HKEY_CURRENT_USER, darkModeSubkey, QStringLiteral("AppsUseLightTheme")).toBool();
-    return darkMode;
-// Probably Linux
-#else
-    return Theme::isDarkColor(QGuiApplication::palette().window().color());
-#endif
 }
 
 Q_INVOKABLE void Systray::setOpened()
