@@ -31,6 +31,7 @@ Summary
 * Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
 * Bugfix - If reuqired clear cookies in more scenarios: [#9489](https://github.com/owncloud/client/pull/9489)
 * Bugfix - Improve filter pop-up menu and button: [#9425](https://github.com/owncloud/client/issues/9425)
+* Bugfix - Possible crash when removing non exisitng folder: [#9533](https://github.com/owncloud/client/issues/9533)
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Bugfix - Possible crash when downloading a virtual file on Windows: [#21](https://github.com/owncloud/client-desktop-vfs-win/pull/21)
 * Bugfix - Don't publish upload if we can't finish the transaction in the client: [#5052](https://github.com/owncloud/enterprise/issues/5052)
@@ -41,6 +42,8 @@ Summary
 * Enhancement - Leave password field in share dialog enabled on errors: [#9336](https://github.com/owncloud/client/issues/9336)
 * Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
 * Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
+* Enhancement - Added branding parameter to disallow duplicated folder sync pairs: [#9523](https://github.com/owncloud/client/issues/9523)
+* Enhancement - Retry update after 10 minutes: [#9522](https://github.com/owncloud/client/issues/9522)
 
 Details
 -------
@@ -197,6 +200,10 @@ Details
    https://github.com/owncloud/client/issues/9425
    https://github.com/owncloud/client/pull/9513
 
+* Bugfix - Possible crash when removing non exisitng folder: [#9533](https://github.com/owncloud/client/issues/9533)
+
+   https://github.com/owncloud/client/issues/9533
+
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 
    When a dehydrated file is renamed and immediately opened, the subsequent download might try to
@@ -274,6 +281,21 @@ Details
    We improved the behaviour of logging to a terminal.
 
    https://github.com/owncloud/client/pull/9515
+
+* Enhancement - Added branding parameter to disallow duplicated folder sync pairs: [#9523](https://github.com/owncloud/client/issues/9523)
+
+   We added a branding parameter to disallow the addition of duplicated folder sync pairs in the
+   add folder wizard.
+
+   https://github.com/owncloud/client/issues/9523
+
+* Enhancement - Retry update after 10 minutes: [#9522](https://github.com/owncloud/client/issues/9522)
+
+   When an update (check) fails, it is currently retried only when the regular timeout (10 hours by
+   default) is triggered. With this change, we retry the update (check) after 10 minutes already.
+
+   https://github.com/owncloud/client/issues/9522
+   https://github.com/owncloud/client/pull/9525
 
 Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
 =======================================
