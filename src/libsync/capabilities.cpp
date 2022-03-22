@@ -31,6 +31,11 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
 {
 }
 
+QVariantMap Capabilities::raw() const
+{
+    return _capabilities;
+}
+
 bool Capabilities::shareAPI() const
 {
     // This was later added so if it is not present just assume the API is enabled.

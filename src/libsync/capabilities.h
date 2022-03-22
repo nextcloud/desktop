@@ -199,6 +199,9 @@ public:
     /** Are avatars (profile pictures) available? */
     bool avatarsAvailable() const;
 
+
+    QVariantMap raw() const;
+
 private:
     QVariantMap _capabilities;
     QVariantMap _fileSharingCapabilities;
