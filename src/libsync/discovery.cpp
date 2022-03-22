@@ -41,16 +41,39 @@ Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
 bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
     const std::map<QString, Entries> &entries, Entries &entry)
 {
-    const auto originalFileName = entry.localEntry.isValid() ? entry.localEntry.name : entry.serverEntry.name;
+    if (!entry.localEntry.isValid()) {
+        return true;
+    }
+
+    const auto originalFileName = entry.localEntry.name;
     const auto newFileName = originalFileName.trimmed();
 
     if (originalFileName == newFileName) {
         return true;
     }
 
+    QString errorMessage;
+
+    if (entry.serverEntry.isValid()) {
+        errorMessage = tr("File contains trailing spaces and could not be renamed, because it is already on the server.");
+
+        auto item = SyncFileItemPtr::create();
+        if ((entry.localEntry.isValid() && entry.localEntry.isDirectory) || (entry.serverEntry.isValid() && entry.serverEntry.isDirectory)) {
+            item->_type = CSyncEnums::ItemTypeDirectory;
+        } else {
+            item->_type = CSyncEnums::ItemTypeFile;
+        }
+        item->_file = path._target;
+        item->_originalFile = path._target;
+        item->_instruction = CSYNC_INSTRUCTION_ERROR;
+        item->_status = SyncFileItem::NormalError;
+        item->_errorString = errorMessage;
+        processFileFinalize(item, path, false, ParentNotChanged, ParentNotChanged);
+        return false;
+    }
+
     const auto entriesIter = entries.find(newFileName);
     if (entriesIter != entries.end()) {
-        QString errorMessage;
         const auto newFileNameEntry = entriesIter->second;
         if (entry.serverEntry.isValid() && newFileNameEntry.serverEntry.isValid()) {
             errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.");
