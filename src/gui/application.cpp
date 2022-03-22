@@ -236,7 +236,6 @@ Application::Application(int &argc, char **argv)
     addLibraryPath(QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)));
 #endif
 #endif
-
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));

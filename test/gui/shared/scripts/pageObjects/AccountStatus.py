@@ -32,6 +32,14 @@ class AccountStatus:
         "visible": 1,
     }
 
+    REMOVE_ALL_FILES = {
+        "window": names.remove_All_Files_QMessageBox,
+        "text": "Remove all files",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+    }
+
     settingsdialogToolbutton = None
 
     def __init__(self, context, displayname, host=None):
@@ -66,3 +74,7 @@ class AccountStatus:
 
     def getText(self):
         return str(squish.waitForObjectExists(self.settingsdialogToolbutton).text)
+
+    @staticmethod
+    def confirmRemoveAllFiles():
+        squish.clickButton(squish.waitForObject(AccountStatus.REMOVE_ALL_FILES))

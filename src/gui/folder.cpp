@@ -351,6 +351,9 @@ bool Folder::dueToSync() const
 
 void Folder::setSyncPaused(bool paused)
 {
+    if (hasSetupError()) {
+        return;
+    }
     if (paused == _definition.paused) {
         return;
     }

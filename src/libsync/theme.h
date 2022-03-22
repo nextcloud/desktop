@@ -441,6 +441,12 @@ public:
     virtual bool warnOnMultipleDb() const;
 
 
+    /**
+     * Whether to or not to allow multiple sync folder pairs for the same remote folder.
+     * Default: true
+     */
+    virtual bool allowDuplicatedFolderSyncPair() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;

@@ -308,7 +308,7 @@ Feature: Sharing
         And as "Alice" folder "PARENT" should not exist on the server
         And as "Alice" file "lorem.txt" should not exist on the server
 
-    @skip @issue-9439
+    @issue-9439
     Scenario: sharee deletes a file and folder shared by sharer
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "textfile.txt" on the server
         And user "Alice" has created folder "Folder" on the server
@@ -316,15 +316,14 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "Folder" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for file "textfile.txt" to be synced
-        And the user waits for folder "Folder" to be synced
+        When the user waits for the files to sync
         And the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
         And the user waits for the files to sync
         Then as "Brian" file "textfile.txt" on the server should not exist
         And as "Brian" folder "Folder" on the server should not exist
-        And as "Alice" file "textfile.txt" on the server should not exist
-        And as "Alice" folder "Folder" on the server should not exist
+        And as "Alice" file "textfile.txt" on the server should exist
+        And as "Alice" folder "Folder" on the server should exist
 
 
     Scenario: sharee tries to delete shared file and folder without permissions
@@ -338,8 +337,9 @@ Feature: Sharing
         And the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
         And the user waits for the files to sync
-        Then as "Brian" file "textfile.txt" on the server should exist
-        And as "Brian" folder "Folder" on the server should exist
+        # Sharee can delete (means unshare) the file shared with read permission
+        Then as "Brian" file "textfile.txt" on the server should not exist
+        And as "Brian" folder "Folder" on the server should not exist
         And as "Alice" file "textfile.txt" on the server should exist
         And as "Alice" folder "Folder" on the server should exist
 

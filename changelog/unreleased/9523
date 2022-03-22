@@ -1,0 +1,6 @@
+Enhancement: Added branding parameter to disallow duplicated folder sync pairs
+
+We added a branding parameter to disallow the addition of duplicated folder sync pairs in
+the add folder wizard.
+
+https://github.com/owncloud/client/issues/9523

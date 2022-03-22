@@ -72,7 +72,16 @@ public:
     UpdaterScheduler(QObject *parent);
 
 signals:
+    /**
+     * Show an update-related status message on the UI.
+     * @param title message title
+     * @param msg message content
+     */
     void updaterAnnouncement(const QString &title, const QString &msg);
+
+    /**
+     * Request restart of the entire application. Used when updating in the background to make the user use the new version after the update has finished.
+     */
     void requestRestart();
 
 private slots:
@@ -115,7 +124,16 @@ public:
 signals:
     void downloadStateChanged();
     void newUpdateAvailable(const QString &header, const QString &message);
+
+    /**
+     * Request restart of the entire application. Used when updating in the background to make the user use the new version after the update has finished.
+     */
     void requestRestart();
+
+    /**
+     * Schedule retry of update check in the future. For use when an update failed previously due to a (temporary) problem which might be resolved in a reasonable amount of time.
+     */
+    void retryUpdateCheckLater();
 
 public slots:
     // FIXME Maybe this should be in the NSISUpdater which should have been called WindowsUpdater

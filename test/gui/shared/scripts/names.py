@@ -115,3 +115,4 @@ deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView = {"container
 linkShares_QToolButton_2 = {"container": oCC_ShareLinkWidget_linkShares_QTableWidget, "occurrence": 2, "type": "QToolButton", "unnamed": 1, "visible": 1}
 oCC_ShareLinkWidget_Delete_QPushButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "text": "Delete", "type": "QPushButton", "unnamed": 1, "visible": 1}
 oCC_ShareLinkWidget_pushButton_setPassword_QPushButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "pushButton_setPassword", "type": "QPushButton", "visible": 1}
+remove_All_Files_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Remove All Files?"}

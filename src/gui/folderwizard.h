@@ -41,7 +41,7 @@ class FormatWarningsWizardPage : public QWizardPage
 {
     Q_OBJECT
 protected:
-    QString formatWarnings(const QStringList &warnings) const;
+    QString formatWarnings(const QStringList &warnings, bool isError = false) const;
 };
 
 /**

@@ -1,0 +1,7 @@
+Enhancement: Retry update after 10 minutes
+
+When an update (check) fails, it is currently retried only when the regular timeout (10 hours
+by default) is triggered. With this change, we retry the update (check) after 10 minutes already.
+
+https://github.com/owncloud/client/issues/9522
+https://github.com/owncloud/client/pull/9525

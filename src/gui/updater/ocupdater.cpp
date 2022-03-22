@@ -28,7 +28,7 @@
 #include <QtGui>
 #include <QtWidgets>
 
-#include <stdio.h>
+using namespace std::chrono_literals;
 
 using namespace std::chrono_literals;
 
@@ -44,7 +44,13 @@ UpdaterScheduler::UpdaterScheduler(QObject *parent)
     if (OCUpdater *updater = qobject_cast<OCUpdater *>(Updater::instance())) {
         connect(updater, &OCUpdater::newUpdateAvailable,
             this, &UpdaterScheduler::updaterAnnouncement);
+
         connect(updater, &OCUpdater::requestRestart, this, &UpdaterScheduler::requestRestart);
+
+        connect(updater, &OCUpdater::retryUpdateCheckLater, this, [this]() {
+            qCInfo(lcUpdater) << "Retrying update check in 10 minutes";
+            QTimer::singleShot(10min, this, &UpdaterScheduler::slotTimerFired);
+        });
     }
 
     // at startup, do a check in any case.
@@ -252,6 +258,7 @@ void OCUpdater::slotVersionInfoArrived()
     if (reply->error() != QNetworkReply::NoError) {
         qCWarning(lcUpdater) << "Failed to reach version check url: " << reply->errorString();
         setDownloadState(OCUpdater::Unknown);
+        Q_EMIT retryUpdateCheckLater();
         return;
     }
 
@@ -264,6 +271,7 @@ void OCUpdater::slotVersionInfoArrived()
     } else {
         qCWarning(lcUpdater) << "Could not parse update information.";
         setDownloadState(OCUpdater::Unknown);
+        Q_EMIT retryUpdateCheckLater();
     }
 }
 
