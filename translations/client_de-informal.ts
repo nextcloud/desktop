@@ -759,105 +759,105 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="314"/>
+        <location filename="../src/gui/application.cpp" line="311"/>
         <source>Error accessing the configuration file</source>
         <translation>Fehler beim Zugriff auf die Konfigurationsdatei</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="315"/>
+        <location filename="../src/gui/application.cpp" line="312"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Es ist ein Fehler beim Zugriff auf die Konfigurationsdatei unter %1 aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="318"/>
+        <location filename="../src/gui/application.cpp" line="315"/>
         <source>Quit %1</source>
         <translation>%1 beenden</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="583"/>
+        <location filename="../src/gui/application.cpp" line="580"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 version %2&lt;byte value=&quot;xd&quot;/&gt;
 Datei Synchronisations-Applikation.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="588"/>
+        <location filename="../src/gui/application.cpp" line="585"/>
         <source>For more information, see http://www.owncloud.org</source>
         <translation>Für weitere Informationen, siehe http://www.owncloud.org</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>Show the settings dialog while starting.</source>
         <translation>Den Einstellungs-Dialog beim Start anzeigen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="600"/>
         <source>Quit the running instance.</source>
         <translation>Die laufende Instanz beenden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="604"/>
+        <location filename="../src/gui/application.cpp" line="601"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>Logdatei schreiben (Ausgabe nach stdout).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>Schreibe die Log-Ausgaben pro Sync-Lauf in eine neue Datei im Verzeichnis.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="603"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
         <translation>Entferne Log-Dateien, die älter als &lt;hours&gt; Stunden sind (verwendet mit --logdir).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="607"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Flush the log file after every write.</source>
         <translation>Log-Datei-Puffer nach jedem Schreibvorgang in Datei sichern. </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="608"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>Output debug-level messages in the log.</source>
         <translation>Schreibe Debug Meldungen in das Log.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="607"/>
         <source>Override UI language.</source>
         <translation>Sprache der Benutzeroberfläche nicht berücksichtigen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="608"/>
         <source>Use the given configuration folder.</source>
         <translation>Verwende den angegebenen Konfigurationsordner</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="612"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
         <source>Enable debug mode.</source>
         <translation>Aktivieren des Debug-Modus </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>Virtuelle Filesystemdatei die geöffnet werden soll (optional). </translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="644"/>
+        <location filename="../src/gui/application.cpp" line="641"/>
         <source>Invalid path passed to --confdir</source>
         <translation>Ungültiger Pfad wurde an Parameter --confdir übergeben</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="657"/>
+        <location filename="../src/gui/application.cpp" line="654"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>Fehler: unbekannte Sprache „%1“ (verwenden Sie --list-languages, um eine vollständige Liste der unterstützten Übersetzungen zu erhalten)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="666"/>
+        <location filename="../src/gui/application.cpp" line="663"/>
         <source>Available translations: %1</source>
         <translation>Verfügbare Übersetzungen: %1</translation>
     </message>

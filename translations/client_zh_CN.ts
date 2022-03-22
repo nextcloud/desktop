@@ -757,104 +757,104 @@ This action will abort any currently running synchronization.</source>
         <translation>继续</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="314"/>
+        <location filename="../src/gui/application.cpp" line="311"/>
         <source>Error accessing the configuration file</source>
         <translation>访问配置文件时发生错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="315"/>
+        <location filename="../src/gui/application.cpp" line="312"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>访问配置文件 %1 时发生错误。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="318"/>
+        <location filename="../src/gui/application.cpp" line="315"/>
         <source>Quit %1</source>
         <translation>退出 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="583"/>
+        <location filename="../src/gui/application.cpp" line="580"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="588"/>
+        <location filename="../src/gui/application.cpp" line="585"/>
         <source>For more information, see http://www.owncloud.org</source>
         <translation>更多信息，见 http://www.owncloud.org</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>Show the settings dialog while starting.</source>
         <translation>在启动时显示设置对话框。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="600"/>
         <source>Quit the running instance.</source>
         <translation>退出正在运行的实例。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="604"/>
+        <location filename="../src/gui/application.cpp" line="601"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>将日志写到文件中（用 - 来写到 stdout）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>将每个同步日志输出到文件夹中的一个新文件里。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="603"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="607"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Flush the log file after every write.</source>
         <translation>每次写完后都刷新日志文件。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="608"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>Output debug-level messages in the log.</source>
         <translation>在日志中输出调试级别的信息。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="607"/>
         <source>Override UI language.</source>
         <translation>覆盖用户界面语言。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="608"/>
         <source>Use the given configuration folder.</source>
         <translation>使用给定的配置文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="612"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
         <source>Enable debug mode.</source>
         <translation>启用调试模式。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>要打开的虚拟文件系统文件（可选）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="644"/>
+        <location filename="../src/gui/application.cpp" line="641"/>
         <source>Invalid path passed to --confdir</source>
         <translation>传递给 --confdir 的路径无效</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="657"/>
+        <location filename="../src/gui/application.cpp" line="654"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>错误：未知的语言“%1”（使用 --list-languages 来获得支持的翻译语言的完整列表）。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="666"/>
+        <location filename="../src/gui/application.cpp" line="663"/>
         <source>Available translations: %1</source>
         <translation>可用的翻译: %1</translation>
     </message>

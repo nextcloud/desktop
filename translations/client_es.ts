@@ -761,105 +761,105 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
         <translation>Continuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="314"/>
+        <location filename="../src/gui/application.cpp" line="311"/>
         <source>Error accessing the configuration file</source>
         <translation>Error al acceder al archivo de configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="315"/>
+        <location filename="../src/gui/application.cpp" line="312"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Ha ocurrido un error al acceder al archivo de configuración %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="318"/>
+        <location filename="../src/gui/application.cpp" line="315"/>
         <source>Quit %1</source>
         <translation>Salir de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="583"/>
+        <location filename="../src/gui/application.cpp" line="580"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 version %2&lt;byte value=&quot;xd&quot;/&gt;
 Cliente de escritorio para la sincronización de archivos.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="588"/>
+        <location filename="../src/gui/application.cpp" line="585"/>
         <source>For more information, see http://www.owncloud.org</source>
         <translation>Para más información, consulte: http://www.owncloud.org</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>Show the settings dialog while starting.</source>
         <translation>Mostrar la pestaña de ajustes al inicio</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="600"/>
         <source>Quit the running instance.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="604"/>
+        <location filename="../src/gui/application.cpp" line="601"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="603"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="607"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Flush the log file after every write.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="608"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>Output debug-level messages in the log.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="607"/>
         <source>Override UI language.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="608"/>
         <source>Use the given configuration folder.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="612"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
         <source>Enable debug mode.</source>
         <translation>Habilitar modo de depuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="644"/>
+        <location filename="../src/gui/application.cpp" line="641"/>
         <source>Invalid path passed to --confdir</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="657"/>
+        <location filename="../src/gui/application.cpp" line="654"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="666"/>
+        <location filename="../src/gui/application.cpp" line="663"/>
         <source>Available translations: %1</source>
         <translation>Traducciones disponibles: %1</translation>
     </message>

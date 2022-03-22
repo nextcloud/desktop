@@ -761,105 +761,105 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <translation>Vazhdo</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="314"/>
+        <location filename="../src/gui/application.cpp" line="311"/>
         <source>Error accessing the configuration file</source>
         <translation>Gabim gjatë hyrjes në kartelën e formësimit</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="315"/>
+        <location filename="../src/gui/application.cpp" line="312"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Pati një gabim teksa hyhej te kartela e formësimit në %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="318"/>
+        <location filename="../src/gui/application.cpp" line="315"/>
         <source>Quit %1</source>
         <translation>Dilni nga %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="583"/>
+        <location filename="../src/gui/application.cpp" line="580"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 version %2&lt;byte value=&quot;xd&quot;/&gt;
 Mjet njëkohësimi kartelash për desktop.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="588"/>
+        <location filename="../src/gui/application.cpp" line="585"/>
         <source>For more information, see http://www.owncloud.org</source>
         <translation>Për më tepër hollësi, shihni te http://www.owncloud.org</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>Show the settings dialog while starting.</source>
         <translation>Shfaq dialogun e rregullimeve teksa niset.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="603"/>
+        <location filename="../src/gui/application.cpp" line="600"/>
         <source>Quit the running instance.</source>
         <translation>Dil nga instanca që është duke xhiruar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="604"/>
+        <location filename="../src/gui/application.cpp" line="601"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>Shkruaje regjistrimin te kartelë (përdorni - që të shkruhet në stdout).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="605"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>Shkruaje çdo përfundim regjistrimi njëkohësimesh në një kartelë të re në dosje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="603"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
         <translation>Hiqi regjistrat më të vjetër se &lt;hours&gt; orë (për t’u përdorur me --logdir).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="607"/>
+        <location filename="../src/gui/application.cpp" line="604"/>
         <source>Flush the log file after every write.</source>
         <translation>Zbraze kartelën regjistër pas çdo shkrimi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="608"/>
+        <location filename="../src/gui/application.cpp" line="605"/>
         <source>Output debug-level messages in the log.</source>
         <translation>Kaloji te regjistri mesazhet debug-level.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="606"/>
+        <location filename="../src/gui/application.cpp" line="607"/>
         <source>Override UI language.</source>
         <translation>Anashkalo gjuhë UI.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="608"/>
         <source>Use the given configuration folder.</source>
         <translation>Përdor dosjen e dhënë të formësimit.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="612"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
         <source>Enable debug mode.</source>
         <translation>Aktivizo mënyrën diagnostikim.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>Kartelë sistemi virtual kartelash për t’u hapur (opsionale).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation>[&lt;kartelë vfs&gt;]</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="644"/>
+        <location filename="../src/gui/application.cpp" line="641"/>
         <source>Invalid path passed to --confdir</source>
         <translation>U dha shteg i pavlefshëm te --confdir</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="657"/>
+        <location filename="../src/gui/application.cpp" line="654"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>Gabim: gjuhë &quot;%1&quot; e panjohur (përdorni --list-languages që të merrni një listë të plotë të përkthimeve që mbulohen)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="666"/>
+        <location filename="../src/gui/application.cpp" line="663"/>
         <source>Available translations: %1</source>
         <translation>Përkthime të gatshme: %1</translation>
     </message>
