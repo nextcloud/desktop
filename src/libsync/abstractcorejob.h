@@ -127,7 +127,7 @@ protected:
      * Factory to create QNetworkRequests with properly set timeout.
      */
     template <typename... Params>
-    static OWNCLOUDSYNC_EXPORT QNetworkRequest makeRequest(Params... params)
+    static QNetworkRequest makeRequest(Params... params)
     {
         auto request = QNetworkRequest(params...);
 

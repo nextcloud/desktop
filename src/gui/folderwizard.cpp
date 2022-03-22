@@ -13,16 +13,16 @@
  */
 
 #include "folderwizard.h"
-#include "folderman.h"
-#include "configfile.h"
-#include "theme.h"
-#include "networkjobs.h"
 #include "account.h"
-#include "selectivesyncdialog.h"
 #include "accountstate.h"
-#include "creds/abstractcredentials.h"
-#include "wizard/owncloudwizard.h"
 #include "common/asserts.h"
+#include "configfile.h"
+#include "creds/abstractcredentials.h"
+#include "folderman.h"
+#include "networkjobs.h"
+#include "ocwizard_deprecated.h"
+#include "selectivesyncdialog.h"
+#include "theme.h"
 
 #include <QDesktopServices>
 #include <QDir>
@@ -42,6 +42,8 @@
 #include <stdlib.h>
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcFolderWizard, "gui.folderwizard", QtInfoMsg)
 
 QString FormatWarningsWizardPage::formatWarnings(const QStringList &warnings, bool isError) const
 {
@@ -207,7 +209,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
 
 void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
 {
-    qCDebug(lcWizard) << "webdav mkdir request finished";
+    qCDebug(lcFolderWizard) << "webdav mkdir request finished";
     showWarn(tr("Folder was successfully created on %1.").arg(Theme::instance()->appNameGUI()));
     slotRefreshFolders();
     _ui.folderEntry->setText(static_cast<MkColJob *>(sender())->path());
@@ -216,7 +218,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
 
 void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
-    qCWarning(lcWizard) << "webdav mkdir request failed:" << reply->error();
+    qCWarning(lcFolderWizard) << "webdav mkdir request failed:" << reply->error();
     if (!_account->credentials()->stillValid(reply)) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {

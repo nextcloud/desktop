@@ -113,6 +113,11 @@ public:
       */
     Folder *addFolder(AccountStatePtr accountState, const FolderDefinition &folderDefinition);
 
+    /**
+     * Adds a folder for an account. Used to be part of the wizard code base. Constructs the folder definition from the parameters.
+     */
+    Folder *addFolder(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl);
+
     /** Removes a folder */
     void removeFolder(Folder *);
 

@@ -1,0 +1,8 @@
+Enhancement: Rewrite wizard from scratch
+
+We completely rewrote the wizard from scratch. The new wizard provides greater
+flexibility and makes adding new features easier in the future. It has also
+been redesigned to improve the user experience.
+
+https://github.com/owncloud/client/issues/9249
+https://github.com/owncloud/client/pull/9482

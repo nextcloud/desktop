@@ -28,7 +28,6 @@
 #include "activitywidget.h"
 #include "accountmanager.h"
 #include "protocolwidget.h"
-#include "owncloudsetupwizard.h"
 
 #include <QImage>
 #include <QLabel>

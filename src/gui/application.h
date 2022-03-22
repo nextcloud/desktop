@@ -66,9 +66,9 @@ public:
 
     QString displayLanguage() const;
 
+    AccountStatePtr addNewAccount(AccountPtr newAccount);
+
 public slots:
-    // TODO: this should not be public
-    void slotownCloudWizardDone(int);
     void slotCrash();
     void slotCrashEnforce();
     void slotCrashFatal();

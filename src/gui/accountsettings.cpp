@@ -31,12 +31,10 @@
 #include "folderstatusmodel.h"
 #include "folderwizard.h"
 #include "guiutility.h"
-#include "owncloudsetupwizard.h"
 #include "quotainfo.h"
 #include "settingsdialog.h"
 #include "theme.h"
 #include "tooltipupdater.h"
-#include "wizard/owncloudwizard.h"
 
 #include <math.h>
 
@@ -55,6 +53,7 @@
 #include <qpropertyanimation.h>
 
 #include "account.h"
+#include "ocwizard_deprecated.h"
 
 namespace OCC {
 

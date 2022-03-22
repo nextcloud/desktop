@@ -26,10 +26,6 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     notificationwidget.ui
     logbrowser.ui
-    wizard/owncloudadvancedsetuppage.ui
-    wizard/owncloudhttpcredspage.ui
-    wizard/owncloudoauthcredspage.ui
-    wizard/owncloudsetuppage.ui
 )
 
 set(client_SRCS
@@ -54,7 +50,6 @@ set(client_SRCS
     ocssharejob.cpp
     openfilemanager.cpp
     owncloudgui.cpp
-    owncloudsetupwizard.cpp
     protocolwidget.cpp
     protocolitem.cpp
     issueswidget.cpp
@@ -92,15 +87,6 @@ set(client_SRCS
     models/expandingheaderview.cpp
     models/models.cpp
     models/protocolitemmodel.cpp
-
-    wizard/postfixlineedit.cpp
-    wizard/abstractcredswizardpage.cpp
-    wizard/owncloudadvancedsetuppage.cpp
-    wizard/owncloudhttpcredspage.cpp
-    wizard/owncloudoauthcredspage.cpp
-    wizard/owncloudsetuppage.cpp
-    wizard/owncloudwizardcommon.cpp
-    wizard/owncloudwizard.cpp
 )
 
 set(3rdparty_SRC
@@ -128,10 +114,12 @@ if(TARGET qt5keychain)
     list(APPEND libsync_LINK_TARGETS qt5keychain)
 endif()
 
+add_subdirectory(newwizard)
+
 add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
-                                          libsync)
+                                          libsync newwizard)
 target_compile_definitions(owncloudCore
     PUBLIC QT_USE_QSTRINGBUILDER
            QT_MESSAGELOGCONTEXT  # enable function name and line number in debug output

@@ -34,7 +34,6 @@ class UpdateUrlDialog : public QMessageBox
 public:
     static UpdateUrlDialog *fromAccount(AccountPtr account, const QUrl &newUrl, QWidget *parent = nullptr);
 
-private:
     explicit UpdateUrlDialog(const QString &title, const QString &content, const QUrl &oldUrl, const QUrl &newUrl, QWidget *parent = nullptr);
 
 private:

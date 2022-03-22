@@ -12,25 +12,26 @@
  * for more details.
  */
 
-#include "application.h"
 #include "owncloudgui.h"
-#include "theme.h"
-#include "folderman.h"
-#include "configfile.h"
-#include "progressdispatcher.h"
-#include "owncloudsetupwizard.h"
-#include "sharedialog.h"
-#include "settingsdialog.h"
-#include "logger.h"
-#include "logbrowser.h"
-#include "account.h"
-#include "accountstate.h"
-#include "openfilemanager.h"
-#include "accountmanager.h"
 #include "aboutdialog.h"
+#include "account.h"
+#include "accountmanager.h"
+#include "accountstate.h"
+#include "application.h"
 #include "common/syncjournalfilerecord.h"
+#include "configfile.h"
 #include "creds/abstractcredentials.h"
+#include "folderman.h"
+#include "graphapi/drives.h"
 #include "guiutility.h"
+#include "logbrowser.h"
+#include "logger.h"
+#include "openfilemanager.h"
+#include "progressdispatcher.h"
+#include "settingsdialog.h"
+#include "setupwizardcontroller.h"
+#include "sharedialog.h"
+#include "theme.h"
 
 #include <QDesktopServices>
 #include <QDir>
@@ -44,6 +45,53 @@
 #endif
 
 using namespace std::chrono_literals;
+
+namespace {
+
+using namespace OCC;
+
+QString initLocalFolder()
+{
+    auto localFolder = OCC::Theme::instance()->defaultClientFolder();
+    // Update the local folder - this is not guaranteed to find a good one
+    // if its a relative path, prepend with users home dir, otherwise use as absolute path
+
+    if (!QDir(localFolder).isAbsolute()) {
+        localFolder = QDir::homePath() + QDir::separator() + localFolder;
+    }
+    return OCC::FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder);
+}
+
+void setUpInitialSyncFolder(AccountStatePtr accountStatePtr)
+{
+    QString localFolder = initLocalFolder();
+
+    auto folderMan = FolderMan::instance();
+
+    if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
+        auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
+        QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, folderMan] {
+            if (drive->parseError().error == QJsonParseError::NoError) {
+                const auto &drives = drive->drives();
+                if (!drives.isEmpty()) {
+                    const QDir localDir(localFolder);
+                    localDir.mkdir(".");
+                    for (const auto &d : drives) {
+                        const QDir driveLocalFolder = localDir.filePath(d.getName());
+                        driveLocalFolder.mkdir(".");
+                        folderMan->addFolder(accountStatePtr, driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
+                    }
+                }
+            }
+        });
+
+        drive->start();
+        return;
+    } else {
+        folderMan->addFolder(accountStatePtr, localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
+    }
+}
+}
 
 namespace OCC {
 
@@ -948,14 +996,40 @@ void ownCloudGui::slotPauseAllFolders()
 
 void ownCloudGui::runNewAccountWizard()
 {
-    if (!_wizard) {
-        _wizard = new OwncloudSetupWizard(settingsDialog());
-        connect(_wizard, &OwncloudSetupWizard::ownCloudWizardDone, _wizard, &OwncloudSetupWizard::deleteLater);
-        connect(_wizard, &OwncloudSetupWizard::ownCloudWizardDone, ocApp(), &Application::slotownCloudWizardDone);
+    if (_wizardController.isNull()) {
+        // passing the settings dialog as parent makes sure the wizard will be shown above it
+        // as the settingsDialog's lifetime spans across the entire application but the dialog will live much shorter,
+        // we have to clean it up manually when finished() is emitted
+        _wizardController = new Wizard::SetupWizardController(settingsDialog());
+
+        // while the wizard is shown, new syncs are disabled
         FolderMan::instance()->setSyncEnabled(false);
-        _wizard->startWizard();
+
+        connect(_wizardController, &Wizard::SetupWizardController::finished, ocApp(), [this](AccountPtr newAccount) {
+            // reenable sync, which is disabled while the wizard is shown
+            FolderMan::instance()->setSyncEnabled(true);
+
+            // when the dialog is closed before it has finished, there won't be a new account to set up
+            // the wizard controller signalizes this by passing a null pointer
+            if (!newAccount.isNull()) {
+                // finally, call the slot that finalizes the setup
+                auto accountStatePtr = ocApp()->addNewAccount(newAccount);
+
+                // set up initial sync connection
+                // currently, the user cannot configure this in any way from the wizard, because the "advanced sync options" have been removed intentionally
+                // we opted to implement those later, when the spaces support has been improved
+                setUpInitialSyncFolder(accountStatePtr);
+            }
+
+            // make sure the wizard is cleaned up eventually
+            _wizardController->deleteLater();
+        });
+
+        // all we have to do is show the dialog...
+        _wizardController->window()->show();
+        // ... and bring it to the front
+        raiseDialog(_wizardController->window());
     }
-    raiseDialog(settingsDialog());
 }
 
 void ownCloudGui::setPauseOnAllFoldersHelper(bool pause)

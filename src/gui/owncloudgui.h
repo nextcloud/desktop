@@ -15,9 +15,10 @@
 #ifndef OWNCLOUDGUI_H
 #define OWNCLOUDGUI_H
 
-#include "systray.h"
 #include "connectionvalidator.h"
 #include "progressdispatcher.h"
+#include "setupwizardcontroller.h"
+#include "systray.h"
 
 #include <QObject>
 #include <QPointer>
@@ -159,7 +160,9 @@ private:
 
     QList<QAction *> _recentItemsActions;
     Application *_app;
-    QPointer<OwncloudSetupWizard> _wizard;
+
+    // keeping a pointer on those dialogs allows us to make sure they will be shown only once
+    QPointer<Wizard::SetupWizardController> _wizardController;
     QPointer<AboutDialog> _aboutDialog;
 };
 

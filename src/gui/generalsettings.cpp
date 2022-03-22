@@ -19,7 +19,6 @@
 #include "application.h"
 #include "common/version.h"
 #include "configfile.h"
-#include "owncloudsetupwizard.h"
 #include "theme.h"
 
 #include "updater/updater.h"

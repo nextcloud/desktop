@@ -13,17 +13,18 @@
  */
 
 #include "folderman.h"
+#include "account.h"
+#include "accountmanager.h"
+#include "accountstate.h"
+#include "common/asserts.h"
 #include "configfile.h"
+#include "filesystem.h"
 #include "folder.h"
+#include "lockwatcher.h"
+#include "ocwizard_deprecated.h"
+#include "socketapi/socketapi.h"
 #include "syncresult.h"
 #include "theme.h"
-#include "socketapi/socketapi.h"
-#include "account.h"
-#include "accountstate.h"
-#include "accountmanager.h"
-#include "filesystem.h"
-#include "lockwatcher.h"
-#include "common/asserts.h"
 #include <syncengine.h>
 
 #ifdef Q_OS_MAC
@@ -1566,6 +1567,48 @@ Result<void, QString> FolderMan::unsupportedConfiguration(const QString &path) c
 bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 {
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
+}
+
+Folder *FolderMan::addFolder(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl)
+{
+    // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
+    QDir().mkdir(localFolder);
+
+    qCInfo(lcFolderMan) << "Adding folder definition for" << localFolder << remotePath;
+    FolderDefinition folderDefinition(webDavUrl);
+    folderDefinition.setLocalPath(localFolder);
+    folderDefinition.setTargetPath(remotePath);
+    folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
+
+    // TODO: reinstate this functionality
+    if (OwncloudWizard::useVirtualFileSync()) {
+        folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+    }
+
+#ifdef Q_OS_WIN
+    if (_navigationPaneHelper.showInExplorerNavigationPane())
+        folderDefinition.navigationPaneClsid = QUuid::createUuid();
+#endif
+
+    auto f = addFolder(accountStatePtr, folderDefinition);
+
+    if (f) {
+        if (folderDefinition.virtualFilesMode != Vfs::Off && OwncloudWizard::useVirtualFileSync())
+            f->setRootPinState(PinState::OnlineOnly);
+
+        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
+            OwncloudWizard::selectiveSyncBlacklist());
+        if (!OwncloudWizard::isConfirmBigFolderChecked()) {
+            // The user already accepted the selective sync dialog. everything is in the white list
+            f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                QStringList() << QLatin1String("/"));
+        }
+        qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
+    } else {
+        qCWarning(lcFolderMan) << "Failed to create local sync folder!";
+    }
+
+    return f;
 }
 
 } // namespace OCC
