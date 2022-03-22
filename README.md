@@ -49,6 +49,7 @@ you can join us at
 The current maintainers of this repository are:
 
 * Hannah von Reth <hannah.vonreth@owncloud.com>
+* Fabian Müller <fmueller@owncloud.com>
 * Dominik Schmidt <dev@dominik-schmidt.de>
 
 ownCloud Desktop Client is developed by the ownCloud community and [receives
