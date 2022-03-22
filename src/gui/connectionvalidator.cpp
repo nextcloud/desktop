@@ -24,6 +24,7 @@
 #include "connectionvalidator.h"
 #include "networkjobs.h"
 #include "networkjobs/jsonjob.h"
+#include "theme.h"
 #include <creds/abstractcredentials.h>
 
 using namespace std::chrono_literals;
@@ -181,7 +182,7 @@ void ConnectionValidator::checkAuthentication()
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
 
     // we explicitly use a legacy dav path here
-    PropfindJob *job = new PropfindJob(_account, _account->davUrl(), {}, this);
+    PropfindJob *job = new PropfindJob(_account, _account->url(), Theme::instance()->webDavPath(), this);
     job->setAuthenticationJob(true); // don't retry
     job->setTimeout(timeoutToUse);
     job->setProperties({ QByteArrayLiteral("getlastmodified") });

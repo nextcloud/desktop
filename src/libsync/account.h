@@ -118,7 +118,6 @@ public:
      * @returns the (themeable) dav path for the account.
      */
     QString davPath() const;
-    void setDavPath(const QString &s) { _davPath = s; }
 
     /** Returns webdav entry URL, based on url() */
     QUrl davUrl() const;
@@ -281,7 +280,6 @@ private:
 
     static QString _configFileName;
 
-    QString _davPath; // defaults to value from theme, might be overwritten in brandings
     JobQueue _jobQueue;
     JobQueueGuard _queueGuard;
     CredentialManager *_credentialManager;

@@ -1,0 +1,5 @@
+Enhancement: Remove use of legacy DAV endpoint
+
+We no longer guess the DAV endpoint depending on the chunking-ng feature.
+
+https://github.com/owncloud/client/pull/9538

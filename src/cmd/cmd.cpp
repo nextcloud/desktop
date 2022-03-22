@@ -72,7 +72,6 @@ struct CmdOptions
     bool ignoreHiddenFiles = true;
     QString exclude;
     QString unsyncedfolders;
-    QString davPath;
     int restartTimes = 3;
     int downlimit = 0;
     int uplimit = 0;
@@ -326,7 +325,6 @@ private:
     std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
     std::cout << "  -n                     Use netrc (5) for login" << std::endl;
     std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
-    std::cout << "  --davpath [path]       Custom themed dav path" << std::endl;
     std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
     std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
     std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
@@ -405,8 +403,6 @@ CmdOptions parseOptions(const QStringList &app_args)
             options.exclude = it.next();
         } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
             options.unsyncedfolders = it.next();
-        } else if (option == "--davpath" && !it.peekNext().startsWith("-")) {
-            options.davPath = it.next();
         } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
             options.restartTimes = it.next().toInt();
         } else if (option == "--uplimit" && !it.peekNext().startsWith("-")) {
@@ -448,10 +444,6 @@ int main(int argc, char **argv)
 
     if (!ctx.account) {
         qFatal("Could not initialize account!");
-    }
-
-    if (!ctx.options.davPath.isEmpty()) {
-        ctx.account->setDavPath(ctx.options.davPath);
     }
 
     if (!ctx.options.target_url.contains(ctx.account->davPath())) {

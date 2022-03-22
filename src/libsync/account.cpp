@@ -43,7 +43,6 @@ Account::Account(QObject *parent)
     : QObject(parent)
     , _uuid(QUuid::createUuid())
     , _capabilities(QVariantMap())
-    , _davPath(Theme::instance()->webDavPath())
     , _jobQueue(this)
     , _queueGuard(&_jobQueue)
     , _credentialManager(new CredentialManager(this))
@@ -64,18 +63,7 @@ Account::~Account()
 
 QString Account::davPath() const
 {
-    if (capabilities().chunkingNg()) {
-        // The chunking-ng means the server prefer to use the new webdav URL
-        return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
-    }
-
-    // make sure to have a trailing slash
-    if (!_davPath.endsWith(QLatin1Char('/'))) {
-        QString dp(_davPath);
-        dp.append(QLatin1Char('/'));
-        return dp;
-    }
-    return _davPath;
+    return QLatin1String("/remote.php/dav/files/") + davUser() + QLatin1Char('/');
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)

@@ -214,10 +214,11 @@ private slots:
             if (verb == "PROPFIND") {
                 auto data = stream->readAll();
                 if (data.contains("data-fingerprint")) {
-                    if (request.url().path().endsWith("webdav/"))
+                    if (request.url().path().endsWith(fakeFolder.account()->davPath())) {
                         ++fingerprintRequests;
-                    else
+                    } else {
                         fingerprintRequests = -10000; // fingerprint queried on incorrect path
+                    }
                 }
             }
             return nullptr;
