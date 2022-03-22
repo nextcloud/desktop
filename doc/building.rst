@@ -110,7 +110,7 @@ Then, in Terminal:
 
       % /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-.. note:: Under certain cirumstances, you may get on error along the
+.. note:: Under certain circumstances, you may get on error along the
    lines of ``Permission denied @ apply2files`` when installing certain
    Homebrew packages. This is `a known issue`_ and can be fixed by changing
    the permissions on the affected files with the following command:
@@ -128,9 +128,20 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % brew install git qt qtkeychain cmake openssl glib cmocka
+      % brew install git qt5 qtkeychain cmake openssl glib cmocka
 
-5. Certain Homebrew packages are not automatically linked in places where
+.. note:: Currently the build process will fail if you have both Qt 5
+   and Qt 6 installed. In order to remove Qt 6, run the following:
+
+   .. code-block:: bash
+
+      % brew remove qt6
+
+   Unfortunately, removing Qt 6 will break any other Homebrew packages
+   that depend on it. An update fixing the build process so that it will
+   work with both packages installed is forthcoming.
+
+1. Certain Homebrew packages are not automatically linked in places where
    the build scripts can find them, so you can create a shell-profile script
    that will find and load them dynamically when you run a build:
 
@@ -144,7 +155,7 @@ Then, in Terminal:
       convenience. You can use a different file or create an entire shell
       script, but this way of doing things is the simplest to explain.
 
-6. Clone the Nextcloud repository to a convenient location, such as ``~/Repositories``:
+2. Clone the Nextcloud repository to a convenient location, such as ``~/Repositories``:
 
    .. code-block:: bash
 
@@ -167,14 +178,14 @@ Then, in Terminal:
 
    (See the above section on using GitHub for an explanation of what URL to use.)
 
-7. Create build directory:
+3. Create build directory:
 
    .. code-block:: bash
 
       % cd ~/Repositories/desktop
       % mkdir build
 
-8. Generate the build files:
+4. Generate the build files:
 
 .. note::
 
