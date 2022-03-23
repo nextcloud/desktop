@@ -371,6 +371,12 @@ AccountStatePtr AccountManager::addAccount(const AccountPtr &newAccount)
 
     AccountStatePtr newAccountState(AccountState::fromNewAccount(newAccount));
     addAccountState(newAccountState);
+
+    // saving once after adding makes sure the account is stored in the config in a working state
+    // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
+    // (for instance, when running from a debugger and stopping the process from there)
+    saveAccount(newAccount.get());
+
     return newAccountState;
 }
 
