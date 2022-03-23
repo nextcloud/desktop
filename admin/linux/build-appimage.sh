@@ -32,9 +32,9 @@ cd qtkeychain
 git checkout v0.10.0
 mkdir build
 cd build
-cmake -G Ninja -D CMAKE_INSTALL_PREFIX=/app/usr ..
+cmake -G Ninja -D CMAKE_INSTALL_PREFIX=/usr ..
 cmake --build . --target all
-cmake --build . --target install
+cmake --install . --prefix /app/usr
 
 
 # Build client
@@ -42,14 +42,16 @@ mkdir build-client
 cd build-client
 cmake \
     -G Ninja \
-    -D CMAKE_INSTALL_PREFIX=/app/usr \
+    -D CMAKE_INSTALL_PREFIX=/usr \
     -D BUILD_TESTING=OFF \
     -D BUILD_UPDATER=$BUILD_UPDATER \
     -D MIRALL_VERSION_BUILD=$BUILDNR \
     -D MIRALL_VERSION_SUFFIX="$VERSION_SUFFIX" \
     ${DESKTOP_CLIENT_ROOT}
 cmake --build . --target all
-cmake --build . --target install
+cmake --install . --prefix /app/usr
+mkdir -p /app/usr/etc/Nextcloud
+mv /etc/Nextcloud/sync-exclude.lst /app/usr/etc/Nextcloud/sync-exclude.lst
 
 # Move stuff around
 cd /app
@@ -96,7 +98,7 @@ chmod a+x linuxdeployqt*.AppImage
 ./linuxdeployqt-continuous-x86_64.AppImage --appimage-extract
 rm ./linuxdeployqt-continuous-x86_64.AppImage
 unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/app/usr/lib/
+export LD_LIBRARY_PATH=/usr/lib/
 ./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs -qmldir=${DESKTOP_CLIENT_ROOT}/src/gui
 
 # Set origin
