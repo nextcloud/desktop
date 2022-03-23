@@ -997,30 +997,30 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="468"/>
+        <location filename="../src/gui/folder.cpp" line="471"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="482"/>
+        <location filename="../src/gui/folder.cpp" line="485"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="489"/>
+        <location filename="../src/gui/folder.cpp" line="492"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="496"/>
+        <location filename="../src/gui/folder.cpp" line="499"/>
         <source>%1 has been moved to %2.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="466"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1038,7 +1038,7 @@ File synchronization desktop utility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="473"/>
+        <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1046,13 +1046,13 @@ File synchronization desktop utility.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="475"/>
+        <location filename="../src/gui/folder.cpp" line="478"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="480"/>
+        <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1060,7 +1060,7 @@ File synchronization desktop utility.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="487"/>
+        <location filename="../src/gui/folder.cpp" line="490"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1068,7 +1068,7 @@ File synchronization desktop utility.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="494"/>
+        <location filename="../src/gui/folder.cpp" line="497"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1076,7 +1076,7 @@ File synchronization desktop utility.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="501"/>
+        <location filename="../src/gui/folder.cpp" line="504"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1084,12 +1084,12 @@ File synchronization desktop utility.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="503"/>
+        <location filename="../src/gui/folder.cpp" line="506"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="508"/>
+        <location filename="../src/gui/folder.cpp" line="511"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation type="unfinished">
             <numerusform></numerusform>
@@ -1097,49 +1097,49 @@ File synchronization desktop utility.</source>
         </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="510"/>
+        <location filename="../src/gui/folder.cpp" line="513"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="516"/>
+        <location filename="../src/gui/folder.cpp" line="519"/>
         <source>Sync Activity</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="898"/>
+        <location filename="../src/gui/folder.cpp" line="901"/>
         <source>Could not read system exclude file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1144"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1147"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1145"/>
+        <location filename="../src/gui/folder.cpp" line="1148"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1204"/>
+        <location filename="../src/gui/folder.cpp" line="1207"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1207"/>
+        <location filename="../src/gui/folder.cpp" line="1210"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1218"/>
+        <location filename="../src/gui/folder.cpp" line="1221"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1148,7 +1148,7 @@ This means that the synchronization client might not upload local changes immedi
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1295"/>
+        <location filename="../src/gui/folder.cpp" line="1298"/>
         <source>All files in the sync folder &apos;%1&apos; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1156,24 +1156,24 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1300"/>
+        <location filename="../src/gui/folder.cpp" line="1303"/>
         <source>All the files in your local sync folder &apos;%1&apos; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1304"/>
+        <location filename="../src/gui/folder.cpp" line="1307"/>
         <source>Remove All Files?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1308"/>
+        <location filename="../src/gui/folder.cpp" line="1311"/>
         <source>Remove all files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1309"/>
+        <location filename="../src/gui/folder.cpp" line="1312"/>
         <source>Keep files</source>
         <translation type="unfinished"></translation>
     </message>
