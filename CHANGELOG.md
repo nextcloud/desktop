@@ -44,6 +44,7 @@ Summary
 * Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
 * Enhancement - Added branding parameter to disallow duplicated folder sync pairs: [#9523](https://github.com/owncloud/client/issues/9523)
 * Enhancement - Retry update after 10 minutes: [#9522](https://github.com/owncloud/client/issues/9522)
+* Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 
 Details
 -------
@@ -296,6 +297,12 @@ Details
 
    https://github.com/owncloud/client/issues/9522
    https://github.com/owncloud/client/pull/9525
+
+* Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
+
+   We no longer guess the DAV endpoint depending on the chunking-ng feature.
+
+   https://github.com/owncloud/client/pull/9538
 
 Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
 =======================================
