@@ -4,11 +4,13 @@
  *    any purpose.
  *
  */
-
-#include <QtTest>
-#include "testutils/syncenginetestutils.h"
 #include <syncengine.h>
 #include <common/syncjournaldb.h>
+
+#include "testutils/syncenginetestutils.h"
+#include "testutils/testutils.h"
+
+#include <QtTest>
 
 using namespace OCC;
 
@@ -22,9 +24,14 @@ private slots:
     void testFileUploadNg() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
 
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{
-                {"chunking", "1.0"},
-                {"httpErrorCodesThatResetFailingChunkedUploads", QVariantList{500} } } } });
+        auto httpErrorCodesThatResetFailingChunkedUploadsCapabilities = [](const QVariantList &codes) {
+            auto cap = TestUtils::testCapabilities();
+            auto dav = cap["dav"].toMap();
+            dav.insert({ { "httpErrorCodesThatResetFailingChunkedUploads", codes } });
+            cap["dav"] = dav;
+            return cap;
+        };
+        fakeFolder.syncEngine().account()->setCapabilities(httpErrorCodesThatResetFailingChunkedUploadsCapabilities({ 500 }));
 
         const int size = 100 * 1000 * 1000; // 100 MB
         fakeFolder.localModifier().insert("A/a0", size);

@@ -465,9 +465,9 @@ const Capabilities &Account::capabilities() const
     return _capabilities;
 }
 
-void Account::setCapabilities(const QVariantMap &caps)
+void Account::setCapabilities(const Capabilities &caps)
 {
-    _capabilities = Capabilities(caps);
+    _capabilities = caps;
 }
 
 QString Account::serverVersion() const

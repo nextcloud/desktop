@@ -5,9 +5,12 @@
  *
  */
 
-#include <QtTest>
-#include "testutils/syncenginetestutils.h"
 #include <syncengine.h>
+
+#include "testutils/syncenginetestutils.h"
+#include "testutils/testutils.h"
+
+#include <QtTest>
 
 using namespace std::chrono_literals;
 using namespace OCC;
@@ -592,13 +595,21 @@ private slots:
 #endif
 
         // We can override that by setting the capability
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "" } } } });
+        auto invalidFilenameRegexCapabilities = [](const QString &regex) {
+            auto cap = TestUtils::testCapabilities();
+            auto dav = cap["dav"].toMap();
+            dav.insert({ { "invalidFilenameRegex", regex } });
+            cap["dav"] = dav;
+            return cap;
+        };
+        fakeFolder.syncEngine().account()->setCapabilities(invalidFilenameRegexCapabilities(QString()));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Check that new servers also accept the capability
         fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
-        fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ { "invalidFilenameRegex", "my[fgh]ile" } } } });
+
+        fakeFolder.syncEngine().account()->setCapabilities(invalidFilenameRegexCapabilities("my[fgh]ile"));
         fakeFolder.localModifier().insert("C/myfile.txt");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentRemoteState().find("C/myfile.txt"));
@@ -702,6 +713,10 @@ private slots:
         options._maxChunkSize = 10;
         options._minChunkSize = 10;
         fakeFolder.syncEngine().setSyncOptions(options);
+        auto cap = TestUtils::testCapabilities();
+        // unset chunking v1
+        cap.remove("dav");
+        fakeFolder.account()->setCapabilities(cap);
 
         QObject parent;
         int nPUT = 0;

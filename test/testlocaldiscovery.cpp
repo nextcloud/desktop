@@ -5,10 +5,13 @@
  *
  */
 
-#include <QtTest>
 #include "testutils/syncenginetestutils.h"
+#include "testutils/testutils.h"
+
 #include <syncengine.h>
 #include <localdiscoverytracker.h>
+
+#include <QtTest>
 
 using namespace OCC;
 
@@ -190,8 +193,9 @@ private slots:
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        fakeFolder.syncEngine().account()->setCapabilities({ { "files",
-            QVariantMap { { "blacklisted_files", QVariantList { ".foo", "bar" } } } } });
+        auto cap = TestUtils::testCapabilities();
+        cap.insert({ { "files", QVariantMap { { "blacklisted_files", QVariantList { ".foo", "bar" } } } } });
+        fakeFolder.account()->setCapabilities(cap);
         fakeFolder.localModifier().insert("C/.foo");
         fakeFolder.localModifier().insert("C/bar");
         fakeFolder.localModifier().insert("C/moo");

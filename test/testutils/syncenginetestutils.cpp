@@ -6,6 +6,7 @@
  */
 
 #include "syncenginetestutils.h"
+#include "testutils.h"
 
 #include "httplogger.h"
 #include "accessmanager.h"
@@ -945,6 +946,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
     _account->setCredentials(new FakeCredentials { _fakeQnam });
     _account->setDavDisplayName(QStringLiteral("fakename"));
     _account->setServerVersion(QStringLiteral("10.0.0"));
+    _account->setCapabilities(OCC::TestUtils::testCapabilities());
 
     _journalDb.reset(new OCC::SyncJournalDb(localPath() + QStringLiteral(".sync_test.db")));
     // TODO: davUrl

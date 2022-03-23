@@ -5,11 +5,22 @@
  *
  */
 
-#include <QtTest>
-#include "testutils/syncenginetestutils.h"
 #include <syncengine.h>
 
+#include "testutils/syncenginetestutils.h"
+#include "testutils/testutils.h"
+
+#include <QtTest>
+
 using namespace OCC;
+
+namespace {
+auto uploadConflictFilesCapabilities(bool b)
+{
+    auto cap = TestUtils::testCapabilities();
+    cap.insert({ { "uploadConflictFiles", b } });
+    return cap;
+}
 
 bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
@@ -63,6 +74,8 @@ SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
     return record;
 }
 
+}
+
 class TestSyncConflict : public QObject
 {
     Q_OBJECT
@@ -94,7 +107,8 @@ private slots:
     void testUploadAfterDownload()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QMap<QByteArray, QString> conflictMap;
@@ -144,8 +158,8 @@ private slots:
 
     void testSeparateUpload()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QMap<QByteArray, QString> conflictMap;
@@ -216,8 +230,8 @@ private slots:
     // What happens if we download a conflict file? Is the metadata set up correctly?
     void testDownloadingConflictFile()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // With no headers from the server
@@ -258,8 +272,8 @@ private slots:
     // Check that conflict records are removed when the file is gone
     void testConflictRecordRemoval1()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Make conflict records
@@ -286,8 +300,8 @@ private slots:
     // Same test, but with uploadConflictFiles == false
     void testConflictRecordRemoval2()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", false } });
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(false));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Create two conflicts
@@ -403,8 +417,8 @@ private slots:
 
     void testLocalDirRemoteFileConflict()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         ItemCompletedSpy completeSpy(fakeFolder);
 
         auto cleanup = [&]() {
@@ -481,8 +495,8 @@ private slots:
 
     void testLocalFileRemoteDirConflict()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.syncEngine().account()->setCapabilities({ { "uploadConflictFiles", true } });
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // 1) a NEW/NEW conflict

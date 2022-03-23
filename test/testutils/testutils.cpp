@@ -83,5 +83,14 @@ namespace TestUtils {
         }
         return false;
     }
+
+    const QVariantMap testCapabilities()
+    {
+        return {
+            { "files", QVariantList {} },
+            { "dav", QVariantMap { { "chunking", "1.0" } } },
+            { "checksums", QVariantMap { { "preferredUploadType", "SHA1" }, { "supportedTypes", QVariantList { "SHA1", "MD5" } } } }
+        };
+    }
 }
 }

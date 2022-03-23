@@ -166,7 +166,7 @@ public:
 
     /** Access the server capabilities */
     const Capabilities &capabilities() const;
-    void setCapabilities(const QVariantMap &caps);
+    void setCapabilities(const Capabilities &caps);
 
     /** Access the server version
      *
