@@ -301,6 +301,7 @@ void GeneralSettings::slotUpdateInfo()
     else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
+        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
     }
 #endif
 
@@ -389,7 +390,11 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
 
 void GeneralSettings::slotUpdateCheckNow()
 {
+#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+    auto *updater = qobject_cast<SparkleUpdater *>(Updater::instance());
+#else
     auto *updater = qobject_cast<OCUpdater *>(Updater::instance());
+#endif
     if (ConfigFile().skipUpdateCheck()) {
         updater = nullptr; // don't show update info if updates are disabled
     }
