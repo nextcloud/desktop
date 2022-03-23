@@ -581,20 +581,15 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
 #ifndef Q_OS_WIN  // We can't have local file with these character
-        // For current servers, no characters are forbidden
-        fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
         fakeFolder.localModifier().insert("A/\\:?*\"<>|.txt");
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // For legacy servers, some characters were forbidden by the client
-        fakeFolder.syncEngine().account()->setServerVersion("8.0.0");
-        fakeFolder.localModifier().insert("B/\\:?*\"<>|.txt");
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(!fakeFolder.currentRemoteState().find("B/\\:?*\"<>|.txt"));
 #endif
 
-        // We can override that by setting the capability
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // Check that new servers also accept the capability
         auto invalidFilenameRegexCapabilities = [](const QString &regex) {
             auto cap = TestUtils::testCapabilities();
             auto dav = cap["dav"].toMap();
@@ -602,13 +597,6 @@ private slots:
             cap["dav"] = dav;
             return cap;
         };
-        fakeFolder.syncEngine().account()->setCapabilities(invalidFilenameRegexCapabilities(QString()));
-        QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-
-        // Check that new servers also accept the capability
-        fakeFolder.syncEngine().account()->setServerVersion("10.0.0");
-
         fakeFolder.syncEngine().account()->setCapabilities(invalidFilenameRegexCapabilities("my[fgh]ile"));
         fakeFolder.localModifier().insert("C/myfile.txt");
         QVERIFY(fakeFolder.syncOnce());

@@ -484,19 +484,10 @@ void SyncEngine::startSync()
         return;
     }
 
-    // Check for invalid character in old server version
-    QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
-    if (invalidFilenamePattern.isNull()
-        && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
-        // Server versions older than 8.1 don't support some characters in filenames.
-        // If the capability is not set, default to a pattern that avoids uploading
-        // files with names that contain these.
-        // It's important to respect the capability also for older servers -- the
-        // version check doesn't make sense for custom servers.
-        invalidFilenamePattern = QLatin1String("[\\\\:?*\"<>|]");
-    }
-    if (!invalidFilenamePattern.isEmpty())
+    const QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
+    if (!invalidFilenamePattern.isEmpty()) {
         _discoveryPhase->_invalidFilenameRx = QRegExp(invalidFilenamePattern);
+    }
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
