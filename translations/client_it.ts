@@ -3535,7 +3535,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="846"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile sincronizzare a causa di un orario di modifica non valido</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -5976,27 +5976,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Hai rinominato %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="522"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Hai eliminato %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="524"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Hai creato %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="526"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Hai modificato %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sincronizzato</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6088,12 +6088,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="39"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Rispondi a …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="72"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Invia risposta al messaggio di chat</translation>
     </message>
 </context>
 <context>
