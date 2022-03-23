@@ -7,6 +7,8 @@
 
 OC_TESTING_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.4.0"
 GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
+GUI_TEST_DIR = "/drone/src/test/gui"
+NOTIFICATION_TEMPLATE_DIR = "/drone/src"
 
 dir = {
     "base": "/drone",
@@ -414,10 +416,22 @@ def notification(name, depends_on = [], trigger = {}):
             "os": "linux",
             "arch": "amd64",
         },
-        "clone": {
-            "disable": True,
-        },
         "steps": [
+            {
+                "name": "create-template",
+                "image": "owncloudci/alpine:latest",
+                "environment": {
+                    "CACHE_ENDPOINT": {
+                        "from_secret": "cache_public_s3_server",
+                    },
+                    "CACHE_BUCKET": {
+                        "from_secret": "cache_public_s3_bucket",
+                    },
+                },
+                "commands": [
+                    "bash %s/drone/notification_template.sh %s" % (GUI_TEST_DIR, NOTIFICATION_TEMPLATE_DIR),
+                ],
+            },
             {
                 "name": "notification",
                 "image": "plugins/slack",
@@ -425,7 +439,9 @@ def notification(name, depends_on = [], trigger = {}):
                 "settings": {
                     "webhook": from_secret("private_rocketchat"),
                     "channel": "desktop-internal",
+                    "template": "file:%s/template.md" % NOTIFICATION_TEMPLATE_DIR,
                 },
+                "depends_on": ["create-template"],
             },
         ],
         "trigger": trigger,
