@@ -160,7 +160,13 @@ bool HttpCredentials::ready() const
 
 QString HttpCredentials::fetchUser()
 {
-    _user = _account->credentialSetting(userC()).toString();
+    // it makes no sense to overwrite an existing username with a config file value
+    if (_user.isEmpty()) {
+        qCDebug(lcHttpCredentials) << "user not set, populating from settings";
+        _user = _account->credentialSetting(userC()).toString();
+    } else {
+        qCDebug(lcHttpCredentials) << "user already set, no need to fetch from settings";
+    }
     return _user;
 }
 
