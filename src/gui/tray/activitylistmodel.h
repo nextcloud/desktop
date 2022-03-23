@@ -68,8 +68,8 @@ public:
         ShareableRole,
         IsCurrentUserFileActivityRole,
         ThumbnailRole,
-        TalkConversationTokenRole,
-        TalkMessageIdRole,
+        TalkNotificationConversationTokenRole,
+        TalkNotificationMessageIdRole,
     };
     Q_ENUM(DataRole)
 
