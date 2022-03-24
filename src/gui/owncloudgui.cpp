@@ -64,32 +64,38 @@ QString initLocalFolder()
 
 void setUpInitialSyncFolder(AccountStatePtr accountStatePtr)
 {
-    QString localFolder = initLocalFolder();
-
-    auto folderMan = FolderMan::instance();
-
-    if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
-        auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
-        QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, folderMan] {
-            if (drive->parseError().error == QJsonParseError::NoError) {
-                const auto &drives = drive->drives();
-                if (!drives.isEmpty()) {
-                    const QDir localDir(localFolder);
-                    localDir.mkdir(".");
-                    for (const auto &d : drives) {
-                        const QDir driveLocalFolder = localDir.filePath(d.getName());
-                        driveLocalFolder.mkdir(".");
-                        folderMan->addFolder(accountStatePtr, driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
+    auto account = accountStatePtr->account();
+    // ensure we are connected and fetch the capabilities
+    auto validator = new ConnectionValidator(account, account.data());
+    QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr](ConnectionValidator::Status status, const QStringList &errors) {
+        if (OC_ENSURE(status == ConnectionValidator::Connected)) {
+            QString localFolder = initLocalFolder();
+            auto folderMan = FolderMan::instance();
+            if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
+                auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
+                QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, folderMan] {
+                    if (drive->parseError().error == QJsonParseError::NoError) {
+                        const auto &drives = drive->drives();
+                        if (!drives.isEmpty()) {
+                            const QDir localDir(localFolder);
+                            localDir.mkdir(".");
+                            for (const auto &d : drives) {
+                                const QDir driveLocalFolder = localDir.filePath(d.getName());
+                                driveLocalFolder.mkdir(".");
+                                folderMan->addFolder(accountStatePtr, driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
-        drive->start();
-        return;
-    } else {
-        folderMan->addFolder(accountStatePtr, localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
-    }
+                drive->start();
+                return;
+            } else {
+                folderMan->addFolder(accountStatePtr, localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
+            }
+        }
+    });
+    validator->checkServerAndUpdate();
 }
 }
 
