@@ -545,8 +545,8 @@ def setGuiTestReportDir():
         "image": "owncloud/ubuntu:16.04",
         "pull": "always",
         "commands": [
-            "mkdir %s" % GUI_TEST_REPORT_DIR,
-            "chmod ugo+rwx %s" % GUI_TEST_REPORT_DIR,
+            "mkdir %s/screenshots -p" % GUI_TEST_REPORT_DIR,
+            "chmod 777 %s -R" % GUI_TEST_REPORT_DIR,
         ],
     }]
 
