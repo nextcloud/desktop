@@ -1,6 +1,6 @@
 <!--- 
 Please try to only report a bug if it happens with the latest version
-The latest version can be seen by checking the ChangeLog: https://owncloud.org/changelog/desktop/
+The latest version can be seen by checking the ChangeLog: https://owncloud.com/changelog/desktop/
 
 For support try: https://central.owncloud.org/c/desktop-client
 --->

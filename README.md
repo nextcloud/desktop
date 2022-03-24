@@ -37,7 +37,7 @@ of your report being lost.
 If you created a patch, please submit a [Pull
 Request](https://github.com/owncloud/client/pulls). For non-trivial
 patches, we need you to sign the [Contributor
-Agreement](https://owncloud.org/contribute/agreement) before
+Agreement](https://owncloud.com/contribute/join-the-development/contributor-agreement/) before
 we can accept your patch.
 
 If you want to contact us, e.g. before starting a more complex feature,

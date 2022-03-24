@@ -6,8 +6,8 @@ We are also available on [IRC][irc].
 
 ### Bug Reporting Guidelines
 * __Important__: Report the issue using our [template][template], it includes all the
-  information we need to track down the issue.  
-* __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.org/security/) instead of filing an issue in our bug tracker
+  information we need to track down the issue.
+* __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.com/security/) instead of filing an issue in our bug tracker
 * This repository is *only* for issues within the ownCloud desktop client. 
   Issues in other components should be reported in their own repositores: 
   - [ownCloud server](https://github.com/owncloud/core/issues)
@@ -25,7 +25,7 @@ features, by not reporting duplicate issues.
 
 [template]: https://raw.github.com/owncloud/client/master/.github/issue_template.md
 [mailinglist]: https://mail.kde.org/mailman/listinfo/owncloud
-[forum]: http://forum.owncloud.org/
+[forum]: https://central.owncloud.org/
 [irc]: http://webchat.freenode.net/?channels=owncloud&uio=d4
 
 ## Contributing to Source Code
@@ -39,9 +39,9 @@ Please read the [Desktop Client Manual][desktopman] and the [Developer
 Manuals][devmanual] to get useful info like how to create your first
 application or how to test the ownCloud code with phpunit.
 
-[agreement]: http://owncloud.org/about/contributor-agreement/
-[devmanual]: http://owncloud.org/dev
-[desktopman]: http://doc.owncloud.org/desktop
+[agreement]: https://owncloud.com/contribute/join-the-development/contributor-agreement/
+[devmanual]: https://doc.owncloud.com/desktop/latest/appendices/building.html
+[desktopman]: https://doc.owncloud.com/desktop
 
 ## Translations
 Please submit translations via [Transifex][transifex].

@@ -582,7 +582,7 @@ void Application::parseOptions(const QStringList &arguments)
     if (_theme->appName() == QLatin1String("ownCloud")) {
         descriptionTextStream << endl
                               << endl
-                              << tr("For more information, see http://www.owncloud.org");
+                              << tr("For more information, see %1", "link to homepage").arg(QStringLiteral("https://www.owncloud.com"));
     }
 
     parser.setApplicationDescription(descriptionText);
