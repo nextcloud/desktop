@@ -41,6 +41,7 @@ Summary
 * Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
 * Enhancement - Leave password field in share dialog enabled on errors: [#9336](https://github.com/owncloud/client/issues/9336)
 * Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
+* Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
 * Enhancement - Added branding parameter to disallow duplicated folder sync pairs: [#9523](https://github.com/owncloud/client/issues/9523)
 * Enhancement - Retry update after 10 minutes: [#9522](https://github.com/owncloud/client/issues/9522)
@@ -276,6 +277,15 @@ Details
 
    https://github.com/owncloud/client/issues/9460
    https://github.com/owncloud/client/pull/9502
+
+* Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
+
+   We completely rewrote the wizard from scratch. The new wizard provides greater flexibility
+   and makes adding new features easier in the future. It has also been redesigned to improve the
+   user experience.
+
+   https://github.com/owncloud/client/issues/9249
+   https://github.com/owncloud/client/pull/9482
 
 * Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
 
