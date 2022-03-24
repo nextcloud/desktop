@@ -32,6 +32,7 @@ Summary
 * Bugfix - If reuqired clear cookies in more scenarios: [#9489](https://github.com/owncloud/client/pull/9489)
 * Bugfix - Improve filter pop-up menu and button: [#9425](https://github.com/owncloud/client/issues/9425)
 * Bugfix - Possible crash when removing non exisitng folder: [#9533](https://github.com/owncloud/client/issues/9533)
+* Bugfix - Can't stop basic auth login: [#9545](https://github.com/owncloud/client/issues/9545)
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Bugfix - Possible crash when downloading a virtual file on Windows: [#21](https://github.com/owncloud/client-desktop-vfs-win/pull/21)
 * Bugfix - Don't publish upload if we can't finish the transaction in the client: [#5052](https://github.com/owncloud/enterprise/issues/5052)
@@ -205,6 +206,13 @@ Details
 * Bugfix - Possible crash when removing non exisitng folder: [#9533](https://github.com/owncloud/client/issues/9533)
 
    https://github.com/owncloud/client/issues/9533
+
+* Bugfix - Can't stop basic auth login: [#9545](https://github.com/owncloud/client/issues/9545)
+
+   We fixed a bug where the user was asked for their credentials again and again with no chance to
+   abort.
+
+   https://github.com/owncloud/client/issues/9545
 
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 
