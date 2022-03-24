@@ -87,7 +87,7 @@ signals:
     void headerColorChanged();
     void headerTextColorChanged();
     void accentColorChanged();
-    void sendReplyMessage(const QString &token, const QString &message, const QString &replyTo);
+    void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
 
 public slots:
     void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
@@ -107,7 +107,7 @@ public slots:
     void slotRefreshImmediately();
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
-    void slotSendReplyMessage(const QString &conversationToken, const QString &message, const QString &replyTo);
+    void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
 
 private:
     void slotPushNotificationsReady();
@@ -142,7 +142,6 @@ private:
     // number of currently running notification requests. If non zero,
     // no query for notifications is started.
     int _notificationRequestsRunning;
-    QString textSentStr;
 };
 
 class UserModel : public QAbstractListModel
@@ -255,6 +254,5 @@ private:
 
     AccountAppList _apps;
 };
-
 }
 #endif // USERMODEL_H
