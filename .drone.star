@@ -30,6 +30,7 @@ PLUGINS_SLACK = "plugins/slack"
 PYTHON = "python"
 THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
+OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 
 dir = {
     "base": "/drone",
@@ -178,7 +179,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
             "os": "linux",
             "arch": "amd64",
         },
-        "steps": [
+        "steps": skipIfUnchanged(ctx, "unit-tests") + [
                      {
                          "name": "submodules",
                          "image": DOCKER_GIT,
@@ -224,7 +225,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
             "os": "linux",
             "arch": "amd64",
         },
-        "steps": [
+        "steps": skipIfUnchanged(ctx, "gui-tests") + [
                      {
                          "name": "submodules",
                          "image": DOCKER_GIT,
@@ -688,3 +689,43 @@ def cancelPreviousBuilds():
             ],
         },
     }
+
+def skipIfUnchanged(ctx, type):
+    if ("full-ci" in ctx.build.title.lower()):
+        return []
+
+    base = [
+        "^.github/.*",
+        "^.vscode/.*",
+        "^changelog/.*",
+        "README.md",
+        ".gitignore",
+        "CHANGELOG.md",
+        "CONTRIBUTING.md",
+        "COPYING",
+        "COPYING.documentation",
+    ]
+
+    skip = []
+    if type == "unit-tests":
+        skip = base + [
+            "^test/gui/.*",
+        ]
+
+    if type == "gui-tests":
+        skip = base + [
+            "^test/([^g]|g[^u]|gu[^i]).*",
+        ]
+
+    return [{
+        "name": "skip-if-unchanged",
+        "image": OC_CI_DRONE_SKIP_PIPELINE,
+        "settings": {
+            "ALLOW_SKIP_CHANGED": skip,
+        },
+        "when": {
+            "event": [
+                "pull_request",
+            ],
+        },
+    }]
