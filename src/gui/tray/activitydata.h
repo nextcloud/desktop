@@ -112,6 +112,7 @@ public:
     struct TalkNotificationData {
         QString conversationToken;
         QString messageId;
+        QString messageSent;
     };
 
     Type _type;

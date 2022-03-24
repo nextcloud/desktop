@@ -7,14 +7,20 @@ import com.nextcloud.desktopclient 1.0
 Item {
     id: root
 
+    Connections {
+        target: activityModel
+        function onMessageSent() {
+            replyMessageTextField.clear();
+            replyMessageSent.text = activityModel.talkReplyMessageSent(model.index);
+        }
+    }
+
     function sendReplyMessage() {
         if (replyMessageTextField.text === "") {
             return;
         }
 
-        UserModel.currentUser.sendReplyMessage(model.conversationToken, replyMessageTextField.text, model.messageId);
-        replyMessageSent.text = replyMessageTextField.text;
-        replyMessageTextField.clear();
+        UserModel.currentUser.sendReplyMessage(model.index, model.conversationToken, replyMessageTextField.text, model.messageId);
     }
 
     Text {
