@@ -611,6 +611,12 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
 
     const auto action = activity._links[actionIndex];
 
+    // TODO this will change with https://github.com/nextcloud/desktop/issues/4159
+    if (action._verb == "WEB" && action._label == tr("View chat")) {
+        emit displayTalkReplyOptions(activityIndex);
+        return;
+    }
+
     if (action._verb == "WEB") {
         Utility::openBrowser(QUrl(action._link));
         return;
@@ -832,7 +838,4 @@ QString ActivityListModel::talkReplyMessageSent(const int activityIndex) const
 
     return _finalList[activityIndex]._talkNotificationData.messageSent;
 }
-
-
 }
-
