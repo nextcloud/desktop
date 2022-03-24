@@ -106,6 +106,13 @@ Q_SIGNALS:
     void authenticationStarted();
     void authenticationFailed();
 
+    /*
+     * Request to log out.
+     * The connected account should be marked as logged out
+     * and no automatic tries to connect should be made.
+     */
+    void requestLogout();
+
 protected:
     Account *_account;
     bool _wasFetched;

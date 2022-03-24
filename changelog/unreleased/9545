@@ -1,0 +1,5 @@
+Bugfix: Can't stop basic auth login
+
+We fixed a bug where the user was asked for their credentials again and again with no chance to abort.
+
+https://github.com/owncloud/client/issues/9545

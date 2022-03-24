@@ -151,6 +151,8 @@ void HttpCredentialsGui::showDialog()
             _refreshToken.clear();
             _ready = true;
             persist();
+        } else {
+            Q_EMIT requestLogout();
         }
         emit asked();
     });
