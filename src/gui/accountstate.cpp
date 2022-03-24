@@ -97,6 +97,10 @@ AccountState::AccountState(AccountPtr account)
             checkConnectivity(false);
         },
         Qt::QueuedConnection);
+
+    connect(account->credentials(), &AbstractCredentials::requestLogout, this, [this] {
+        _state = State::SignedOut;
+    });
 }
 
 AccountState::~AccountState()

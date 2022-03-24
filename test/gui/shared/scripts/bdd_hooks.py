@@ -93,6 +93,24 @@ def hook(context):
 
 @OnScenarioEnd
 def hook(context):
+    # capture screenshot if there is error in the scenario execution, and if the test is being run in CI
+    if test.resultCount("errors") > 0 and os.getenv('CI'):
+        import gi
+
+        gi.require_version('Gtk', '3.0')
+        from gi.repository import Gdk
+
+        window = Gdk.get_default_root_window()
+        pb = Gdk.pixbuf_get_from_window(window, *window.get_geometry())
+
+        filename = context._data["title"].replace(" ", "_") + ".png"
+        directory = os.environ["GUI_TEST_REPORT_DIR"] + "/screenshots"
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+
+        pb.savev(os.path.join(directory, filename), "png", [], [])
+
     # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
     for ctx in applicationContextList():
         ctx.detach()
