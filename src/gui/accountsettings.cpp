@@ -432,7 +432,8 @@ void AccountSettings::slotFolderWizardAccepted()
 
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    FolderDefinition definition;
+    // TODO: spaces
+    FolderDefinition definition(_accountState->account()->davUrl());
     definition.setLocalPath(folderWizard->field(QLatin1String("sourceFolder")).toString());
     definition.setTargetPath(folderWizard->property("targetPath").toString());
 

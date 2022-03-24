@@ -51,11 +51,8 @@ class LocalDiscoveryTracker;
 class FolderDefinition
 {
 public:
-    FolderDefinition() = default;
     FolderDefinition(const QUrl &davUrl)
-        : _webDavUrl(davUrl) {
-
-        };
+        : _webDavUrl(davUrl) {};
 
     /// The name of the folder in the ui and internally
     QString alias;
@@ -78,8 +75,7 @@ public:
     static void save(QSettings &settings, const FolderDefinition &folder);
 
     /// Reads a folder definition from the current settings group.
-    static bool load(QSettings &settings, const QString &alias,
-        FolderDefinition *folder);
+    static FolderDefinition load(QSettings &settings, const QString &alias);
 
     /** The highest version in the settings that load() can read
      *

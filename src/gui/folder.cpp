@@ -1365,33 +1365,32 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
         settings.remove(QLatin1String("navigationPaneClsid"));
 }
 
-bool FolderDefinition::load(QSettings &settings, const QString &alias,
-    FolderDefinition *folder)
+FolderDefinition FolderDefinition::load(QSettings &settings, const QString &alias)
 {
-    folder->alias = FolderMan::unescapeAlias(alias);
-    folder->setLocalPath(settings.value(QLatin1String("localPath")).toString());
-    folder->journalPath = settings.value(QLatin1String("journalPath")).toString();
-    folder->setTargetPath(settings.value(QLatin1String("targetPath")).toString());
-    folder->_webDavUrl = settings.value(davUrlC()).toUrl();
-    folder->paused = settings.value(QLatin1String("paused")).toBool();
-    folder->ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
-    folder->navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
+    FolderDefinition folder(settings.value(davUrlC()).toUrl());
+    folder.alias = FolderMan::unescapeAlias(alias);
+    folder.setLocalPath(settings.value(QLatin1String("localPath")).toString());
+    folder.journalPath = settings.value(QLatin1String("journalPath")).toString();
+    folder.setTargetPath(settings.value(QLatin1String("targetPath")).toString());
+    folder.paused = settings.value(QLatin1String("paused")).toBool();
+    folder.ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
+    folder.navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
 
-    folder->virtualFilesMode = Vfs::Off;
+    folder.virtualFilesMode = Vfs::Off;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
     if (!vfsModeString.isEmpty()) {
         if (auto mode = Vfs::modeFromString(vfsModeString)) {
-            folder->virtualFilesMode = *mode;
+            folder.virtualFilesMode = *mode;
         } else {
             qCWarning(lcFolder) << "Unknown virtualFilesMode:" << vfsModeString << "assuming 'off'";
         }
     } else {
         if (settings.value(QLatin1String("usePlaceholders")).toBool()) {
-            folder->virtualFilesMode = Vfs::WithSuffix;
-            folder->upgradeVfsMode = true; // maybe winvfs is available?
+            folder.virtualFilesMode = Vfs::WithSuffix;
+            folder.upgradeVfsMode = true; // maybe winvfs is available?
         }
     }
-    return true;
+    return folder;
 }
 
 void FolderDefinition::setLocalPath(const QString &path)
