@@ -100,7 +100,7 @@ Then, in Terminal:
 
    .. code-block:: bash
 
-      % xcode-select –install
+      % xcode-select --install
 
 3. Install Homebrew from `brew.sh`_ (which will just give you the following):
 
