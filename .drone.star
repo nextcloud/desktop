@@ -610,9 +610,6 @@ def uploadGuiTestLogs():
             "status": [
                 "failure",
             ],
-            "event": [
-                "pull_request",
-            ],
         },
     }]
 
