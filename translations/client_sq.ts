@@ -786,7 +786,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
         <location filename="../src/gui/application.cpp" line="585"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
-        <translation type="unfinished"/>
+        <translation>Për më tepër hollësi, shihni %1</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
