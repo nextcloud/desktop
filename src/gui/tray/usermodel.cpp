@@ -798,7 +798,7 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
     QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
     talkReply->sendReplyMessage(token, message, replyTo);
     connect(talkReply, &TalkReply::replyMessageSent, this, [&](const QString &message) {
-        _activityModel->replyMessageSent(activityIndex, message);
+        _activityModel->setReplyMessageSent(activityIndex, message);
     });
 }
 

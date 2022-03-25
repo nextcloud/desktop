@@ -817,7 +817,7 @@ void ActivityListModel::slotRemoveAccount()
     _showMoreActivitiesAvailableEntry = false;
 }
 
-void ActivityListModel::replyMessageSent(const int activityIndex, const QString &message)
+void ActivityListModel::setReplyMessageSent(const int activityIndex, const QString &message)
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
         qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex << "/ final list size:" << _finalList.size();
@@ -829,7 +829,7 @@ void ActivityListModel::replyMessageSent(const int activityIndex, const QString 
     emit messageSent();
 }
 
-QString ActivityListModel::talkReplyMessageSent(const int activityIndex) const
+QString ActivityListModel::replyMessageSent(const int activityIndex) const
 {
     if (activityIndex < 0 || activityIndex >= _finalList.size()) {
         qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex << "/ final list size:" << _finalList.size();

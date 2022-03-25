@@ -106,8 +106,8 @@ public:
 
     void setCurrentItem(const int currentItem);
 
-    void replyMessageSent(const int activityIndex, const QString &message);
-    Q_INVOKABLE QString talkReplyMessageSent(const int activityIndex) const;
+    void setReplyMessageSent(const int activityIndex, const QString &message);
+    Q_INVOKABLE QString replyMessageSent(const int activityIndex) const;
 
 public slots:
     void slotRefreshActivity();
