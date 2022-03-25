@@ -1,10 +1,7 @@
 from urllib.parse import urlparse
 import squish
-from os import makedirs, environ
+from os import makedirs
 from os.path import exists, join
-import test
-import subprocess
-from configparser import ConfigParser
 
 
 confdir = '/tmp/bdd-tests-owncloud-client/'
@@ -78,69 +75,8 @@ def startClient(context):
         + " --confdir "
         + confdir
     )
-    squish.installEventHandler("Crash", "crashHandler")
 
     squish.snooze(1)
-
-
-def crashHandler():
-    # The core dump is generated in the folder /var/lib/apport/coredump/
-    coredumpFolderPath = '/var/lib/apport/coredump/'
-    cfg = ConfigParser()
-
-    # Select appropriate AUT binary with respect to the test run environment
-    try:
-        if environ.get('CI'):
-            cfg.read('/drone/src/test/gui/drone/server.ini')
-
-        else:
-            from pathlib import Path
-
-            HOME = str(Path.home())
-            cfg.read(HOME + '/.squish/ver1/server.ini')
-
-    except Exception as err:
-        test.log("the binary path can not be read")
-        test.log(err)
-
-    owncloudBinary = cfg.get('General', 'AUT/owncloud')
-    owncloudBinary = owncloudBinary.replace('"', '') + '/owncloud'
-
-    # GUI test stacktrace on crash
-    test.log("Started printing the GUI test stacktrace of crash")
-    test.log("############################################################")
-    test.log("Backtracking...")
-    test.log("%s" % test.stackTrace())
-    test.log("############################################################")
-    test.log("Finished printing GUI test stacktrace")
-
-    test.log("Started printing the AUT stacktrace of crash")
-    test.log("############################################################")
-    ls = subprocess.run(
-        ['ls', '-t', coredumpFolderPath], stdout=subprocess.PIPE
-    ).stdout.decode('utf-8')
-    coredumpFilename = ls.split('\n')[0]
-    test.log("located latest core dump file: %s" % coredumpFilename)
-
-    if coredumpFilename:
-        test.log("Backtracking...")
-        test.log(
-            "%s"
-            % subprocess.run(
-                [
-                    'gdb',
-                    owncloudBinary,
-                    coredumpFolderPath + coredumpFilename.strip(),
-                    '-batch',
-                    '-ex',
-                    'bt full',
-                ],
-                stdout=subprocess.PIPE,
-            ).stdout.decode('utf-8')
-        )
-
-    test.log("############################################################")
-    test.log("Finished printing AUT stacktrace")
 
 
 def getPollingInterval():

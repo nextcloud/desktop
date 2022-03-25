@@ -6,6 +6,7 @@
 #
 
 DEFAULT_PHP_VERSION = "7.4"
+STACKTRACE_FILE = "%s/stacktrace" % GUI_TEST_REPORT_DIR
 GUI_TEST_DIR = "/drone/src/test/gui"
 GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
 NOTIFICATION_TEMPLATE_DIR = "/drone/src"
@@ -251,6 +252,19 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                              "SECURE_BACKEND_HOST": "https://owncloud/",
                              "SERVER_INI": "/drone/src/test/gui/drone/server.ini",
                              "SQUISH_PARAMETERS": squish_parameters,
+                             "STACKTRACE_FILE": STACKTRACE_FILE,
+                         },
+                     },
+                     {
+                         "name": "stacktrace",
+                         "image": "owncloudci/alpine:latest",
+                         "commands": [
+                             "cat %s" % STACKTRACE_FILE,
+                         ],
+                         "when": {
+                             "status": [
+                                 "failure",
+                             ],
                          },
                      },
                  ] +
@@ -562,6 +576,7 @@ def setGuiTestReportDir():
         "image": OC_UBUNTU,
         "commands": [
             "mkdir %s/screenshots -p" % GUI_TEST_REPORT_DIR,
+            "touch %s/coredumps" % GUI_TEST_REPORT_DIR,
             "chmod 777 %s -R" % GUI_TEST_REPORT_DIR,
         ],
     }]
