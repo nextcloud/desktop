@@ -141,21 +141,22 @@ Then, in Terminal:
    that depend on it. An update fixing the build process so that it will
    work with both packages installed is forthcoming.
 
-1. Certain Homebrew packages are not automatically linked in places where
+5. Certain Homebrew packages are not automatically linked in places where
    the build scripts can find them, so you can create a shell-profile script
    that will find and load them dynamically when you run a build:
 
    .. code-block:: bash
 
       % echo 'export OPENSSL_ROOT_DIR=$(brew --prefix openssl)' >> ~/.nextcloud_build_variables
-      % echo 'export QT_PATH=$(brew --prefix qt5)/bin' >> ~/.nextcloud_build_variables
+      % echo 'export Qt5_DIR=$(brew --prefix qt5)/lib/cmake/Qt5/' >> ~/.nextcloud_build_variables
       % echo 'export Qt5LinguistTools_DIR=$(brew --prefix qt5)/lib/cmake/Qt5LinguistTools/' >> ~/.nextcloud_build_variables
+      % echo 'export Qt5Keychain_DIR=$(brew --prefix qtkeychain)/lib/cmake/' >> ~/.nextcloud_build_variables
    
    .. note:: The name ``~/.nextcloud_build_variables`` is just a suggestion for
       convenience. You can use a different file or create an entire shell
       script, but this way of doing things is the simplest to explain.
 
-2. Clone the Nextcloud repository to a convenient location, such as ``~/Repositories``:
+6. Clone the Nextcloud repository to a convenient location, such as ``~/Repositories``:
 
    .. code-block:: bash
 
@@ -178,14 +179,14 @@ Then, in Terminal:
 
    (See the above section on using GitHub for an explanation of what URL to use.)
 
-3. Create build directory:
+7. Create build directory:
 
    .. code-block:: bash
 
       % cd ~/Repositories/desktop
       % mkdir build
 
-4. Generate the build files:
+8. Generate the build files:
 
 .. note::
 
