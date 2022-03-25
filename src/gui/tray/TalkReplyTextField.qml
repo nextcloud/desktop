@@ -11,7 +11,7 @@ Item {
         target: activityModel
         function onMessageSent() {
             replyMessageTextField.clear();
-            replyMessageSent.text = activityModel.talkReplyMessageSent(model.index);
+            replyMessageSent.text = activityModel.replyMessageSent(model.index);
         }
     }
 
