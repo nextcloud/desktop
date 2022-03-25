@@ -49,6 +49,7 @@ Item {
             radius: 24
             border.width: 1
             border.color: Style.ncBlue
+            color: Style.backgroundColor
         }
 
         Button {
