@@ -793,10 +793,13 @@ void User::removeAccount() const
     AccountManager::instance()->save();
 }
 
-void User::slotSendReplyMessage(const QString &token, const QString &message, const QString &replyTo)
+void User::slotSendReplyMessage(const int activityIndex, const QString &token, const QString &message, const QString &replyTo)
 {
     QPointer<TalkReply> talkReply = new TalkReply(_account.data(), this);
     talkReply->sendReplyMessage(token, message, replyTo);
+    connect(talkReply, &TalkReply::replyMessageSent, this, [&](const QString &message) {
+        _activityModel->setReplyMessageSent(activityIndex, message);
+    });
 }
 
 /*-------------------------------------------------------------------------------------*/
@@ -1230,5 +1233,4 @@ QHash<int, QByteArray> UserAppsModel::roleNames() const
     roles[IconUrlRole] = "appIconUrl";
     return roles;
 }
-
 }

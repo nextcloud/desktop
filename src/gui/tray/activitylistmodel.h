@@ -68,8 +68,10 @@ public:
         ShareableRole,
         IsCurrentUserFileActivityRole,
         ThumbnailRole,
-        TalkConversationTokenRole,
-        TalkMessageIdRole,
+        TalkNotificationConversationTokenRole,
+        TalkNotificationMessageIdRole,
+        TalkNotificationMessageSentRole,
+        TalkNotificationDisplayReplyOptionRole,
     };
     Q_ENUM(DataRole)
 
@@ -103,6 +105,10 @@ public:
     }
 
     void setCurrentItem(const int currentItem);
+
+    void setReplyMessageSent(const int activityIndex, const QString &message);
+    QString replyMessageSent(const Activity &activity) const;
+    bool displayReplyOption(const Activity &activity) const;
 
 public slots:
     void slotRefreshActivity();
@@ -142,6 +148,8 @@ private:
     bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);
+
+    void setDisplayReplyOption(const int activityIndex);
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;

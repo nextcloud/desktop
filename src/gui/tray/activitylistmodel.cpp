@@ -77,8 +77,10 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ShareableRole] = "isShareable";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[ThumbnailRole] = "thumbnail";
-    roles[TalkConversationTokenRole] = "conversationToken";
-    roles[TalkMessageIdRole] = "messageId";
+    roles[TalkNotificationConversationTokenRole] = "conversationToken";
+    roles[TalkNotificationMessageIdRole] = "messageId";
+    roles[TalkNotificationMessageSentRole] = "messageSent";
+    roles[TalkNotificationDisplayReplyOptionRole] = "displayReplyOption";
 
     return roles;
 }
@@ -325,10 +327,14 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         const auto preview = a._previews[0];
         return(generatePreviewMap(preview));
     }
-    case TalkConversationTokenRole:
+    case TalkNotificationConversationTokenRole:
         return a._talkNotificationData.conversationToken;
-    case TalkMessageIdRole:
+    case TalkNotificationMessageIdRole:
         return a._talkNotificationData.messageId;
+    case TalkNotificationMessageSentRole:
+        return replyMessageSent(a);
+    case TalkNotificationDisplayReplyOptionRole:
+        return displayReplyOption(a);
     default:
         return QVariant();
     }
@@ -608,6 +614,12 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
 
     const auto action = activity._links[actionIndex];
 
+    // TODO this will change with https://github.com/nextcloud/desktop/issues/4159
+    if (action._verb == "WEB" && action._label == tr("View chat")) {
+        setDisplayReplyOption(activityIndex);
+        return;
+    }
+
     if (action._verb == "WEB") {
         Utility::openBrowser(QUrl(action._link));
         return;
@@ -808,5 +820,31 @@ void ActivityListModel::slotRemoveAccount()
     _showMoreActivitiesAvailableEntry = false;
 }
 
+void ActivityListModel::setReplyMessageSent(const int activityIndex, const QString &message)
+{
+    if (activityIndex < 0 || activityIndex >= _finalList.size()) {
+        qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex << "/ final list size:" << _finalList.size();
+        return;
+    }
+
+    _finalList[activityIndex]._talkNotificationData.messageSent = message;
+
+    emit dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationMessageSentRole});
 }
 
+QString ActivityListModel::replyMessageSent(const Activity &activity) const
+{
+    return activity._talkNotificationData.messageSent;
+}
+
+void ActivityListModel::setDisplayReplyOption(const int activityIndex)
+{
+    _finalList[activityIndex]._talkNotificationData.displayReplyOption = true;
+    emit dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationDisplayReplyOptionRole});
+}
+
+bool ActivityListModel::displayReplyOption(const Activity &activity) const
+{
+    return activity._talkNotificationData.displayReplyOption;
+}
+}

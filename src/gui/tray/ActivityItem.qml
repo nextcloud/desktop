@@ -73,13 +73,12 @@ MouseArea {
         ActivityItemActions {
             id: activityActions
 
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0
+            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !model.displayReplyOption
 
             Layout.preferredHeight: Style.trayWindowHeaderHeight * 0.85
             Layout.fillWidth: true
             Layout.leftMargin: 40
             Layout.bottomMargin: model.links.length > 1 ? 5 : 0
-            Layout.topMargin: isTalkReplyPossible? 48 : 0
 
             displayActions: model.displayActions
             objectType: model.objectType

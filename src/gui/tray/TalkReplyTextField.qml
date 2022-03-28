@@ -12,16 +12,15 @@ Item {
             return;
         }
 
-        UserModel.currentUser.sendReplyMessage(model.conversationToken, replyMessageTextField.text, model.messageId);
-        replyMessageSent.text = replyMessageTextField.text;
-        replyMessageTextField.clear();
+        UserModel.currentUser.sendReplyMessage(model.index, model.conversationToken, replyMessageTextField.text, model.messageId);
     }
 
     Text {
         id: replyMessageSent
+        text: model.messageSent
         font.pixelSize: Style.topLinePixelSize
         color: Style.menuBorder
-        visible: replyMessageSent.text !== ""
+        visible: model.messageSent !== ""
     }
 
     TextField {
@@ -43,6 +42,7 @@ Item {
             radius: 24
             border.width: 1
             border.color: Style.ncBlue
+            color: Style.backgroundColor
         }
 
         Button {
