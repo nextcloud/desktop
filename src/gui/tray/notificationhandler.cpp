@@ -92,14 +92,10 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     ActivityList list;
 
     foreach (auto element, notifies) {
-        Activity a;
         auto json = element.toObject();
+        auto a = Activity::fromActivityJson(json, ai->account());
         a._type = Activity::NotificationType;
-        a._accName = ai->account()->displayName();
         a._id = json.value("notification_id").toInt();
-
-        //need to know, specially for remote_share
-        a._objectType = json.value("object_type").toString();
 
         // 2 cases to consider:
         // - server == 24 & has Talk: notification type chat/call contains conversationToken/messageId in object_type
@@ -117,10 +113,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         a._status = 0;
 
-        a._subject = json.value("subject").toString();
-        a._message = json.value("message").toString();
-        a._icon = json.value("icon").toString();
-
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
             if (link.host().isEmpty()) {
@@ -132,12 +124,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             }
         }
         a._link = link;
-        a._dateTime = QDateTime::fromString(json.value("datetime").toString(), Qt::ISODate);
-
-        auto actions = json.value("actions").toArray();
-        foreach (auto action, actions) {
-            a._links.append(ActivityLink::createFomJsonObject(action.toObject()));
-        }
 
         // Add another action to dismiss notification on server
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user

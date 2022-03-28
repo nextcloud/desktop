@@ -2,6 +2,7 @@ import QtQml 2.15
 import QtQuick 2.15
 import QtQuick.Controls 2.3
 import Style 1.0
+import com.nextcloud.desktopclient 1.0
 
 MouseArea {
     id: unifiedSearchResultMouseArea
@@ -60,8 +61,8 @@ MouseArea {
             height: unifiedSearchResultMouseArea.height
             title: model.resultTitle
             subline: model.subline
-            icons: model.icons
-            iconPlaceholder: model.imagePlaceholder
+            icons: Theme.darkMode ? model.darkIcons : model.lightIcons
+            iconPlaceholder: Theme.darkMode ? model.darkImagePlaceholder : model.lightImagePlaceholder
             isRounded: model.isRounded
             textLeftMargin: unifiedSearchResultMouseArea.textLeftMargin
             textRightMargin: unifiedSearchResultMouseArea.textRightMargin

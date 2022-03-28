@@ -12,8 +12,8 @@ QtObject {
     readonly property color ncTextColor: Theme.systemPalette.windowText
     readonly property color ncSecondaryTextColor: "#808080"
     readonly property color ncHeaderTextColor: "white"
-    readonly property color lightHover:  Systray.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
-    readonly property color menuBorder:  Systray.darkMode ? Qt.lighter(backgroundColor, 3) : Qt.darker(backgroundColor, 1.5)
+    readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
+    readonly property color menuBorder: ncSecondaryTextColor
     readonly property color backgroundColor: Theme.systemPalette.base
 
     // ErrorBox colors

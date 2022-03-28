@@ -133,7 +133,8 @@ public:
     QDateTime _dateTime;
     qint64 _expireAtMsecs = -1;
     QString _accName;
-    QString _icon;
+    QString _darkIcon;
+    QString _lightIcon;
     bool _isCurrentUserFileActivity = false;
     QVector<PreviewData> _previews;
 

@@ -239,7 +239,7 @@ Window {
                                 Image {
                                     Layout.leftMargin: 12
                                     verticalAlignment: Qt.AlignCenter
-                                    source: Systray.darkMode ? "qrc:///client/theme/white/add.svg" : "qrc:///client/theme/black/add.svg"
+                                    source: Theme.darkMode ? "qrc:///client/theme/white/add.svg" : "qrc:///client/theme/black/add.svg"
                                     sourceSize.width: Style.headerButtonIconSize
                                     sourceSize.height: Style.headerButtonIconSize
                                 }
