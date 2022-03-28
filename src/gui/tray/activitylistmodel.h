@@ -43,7 +43,6 @@ class ActivityListModel : public QAbstractListModel
     Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
 
     Q_PROPERTY(AccountState *accountState READ accountState CONSTANT)
-
 public:
     enum DataRole {
         DarkIconRole = Qt::UserRole + 1,
@@ -72,6 +71,7 @@ public:
         TalkNotificationConversationTokenRole,
         TalkNotificationMessageIdRole,
         TalkNotificationMessageSentRole,
+        TalkNotificationDisplayReplyOptionRole,
     };
     Q_ENUM(DataRole)
 
@@ -107,7 +107,8 @@ public:
     void setCurrentItem(const int currentItem);
 
     void setReplyMessageSent(const int activityIndex, const QString &message);
-    Q_INVOKABLE QString replyMessageSent(const int activityIndex) const;
+    QString replyMessageSent(const Activity &activity) const;
+    bool displayReplyOption(const Activity &activity) const;
 
 public slots:
     void slotRefreshActivity();
@@ -119,8 +120,6 @@ public slots:
 signals:
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
-    void messageSent();
-    void displayTalkReplyOptions(const int activityIndex);
 
 protected:
     void setup();
@@ -149,6 +148,8 @@ private:
     bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);
+
+    void setDisplayReplyOption(const int activityIndex);
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;

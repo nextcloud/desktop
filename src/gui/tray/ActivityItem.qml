@@ -15,16 +15,6 @@ MouseArea {
     property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
     property bool isTalkReplyPossible: model.conversationToken !== ""
 
-    property bool displayTalkReplyOptions: false
-    Connections {
-        target: activityModel
-        function onDisplayTalkReplyOptions(activityIndex) {
-            if (model.index === activityIndex) {
-                displayTalkReplyOptions = true;
-            }
-        }
-    }
-
     signal fileActivityButtonClicked(string absolutePath)
 
     enabled: (model.path !== "" || model.link !== "" || model.isCurrentUserFileActivity === true)
@@ -83,7 +73,7 @@ MouseArea {
         ActivityItemActions {
             id: activityActions
 
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !displayTalkReplyOptions
+            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !model.displayReplyOption
 
             Layout.preferredHeight: Style.trayWindowHeaderHeight * 0.85
             Layout.fillWidth: true

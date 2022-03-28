@@ -80,6 +80,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationConversationTokenRole] = "conversationToken";
     roles[TalkNotificationMessageIdRole] = "messageId";
     roles[TalkNotificationMessageSentRole] = "messageSent";
+    roles[TalkNotificationDisplayReplyOptionRole] = "displayReplyOption";
 
     return roles;
 }
@@ -331,7 +332,9 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case TalkNotificationMessageIdRole:
         return a._talkNotificationData.messageId;
     case TalkNotificationMessageSentRole:
-        return a._talkNotificationData.messageSent;
+        return replyMessageSent(a);
+    case TalkNotificationDisplayReplyOptionRole:
+        return displayReplyOption(a);
     default:
         return QVariant();
     }
@@ -613,7 +616,7 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
 
     // TODO this will change with https://github.com/nextcloud/desktop/issues/4159
     if (action._verb == "WEB" && action._label == tr("View chat")) {
-        emit displayTalkReplyOptions(activityIndex);
+        setDisplayReplyOption(activityIndex);
         return;
     }
 
@@ -826,16 +829,22 @@ void ActivityListModel::setReplyMessageSent(const int activityIndex, const QStri
 
     _finalList[activityIndex]._talkNotificationData.messageSent = message;
 
-    emit messageSent();
+    emit dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationMessageSentRole});
 }
 
-QString ActivityListModel::replyMessageSent(const int activityIndex) const
+QString ActivityListModel::replyMessageSent(const Activity &activity) const
 {
-    if (activityIndex < 0 || activityIndex >= _finalList.size()) {
-        qCWarning(lcActivity) << "Couldn't trigger action on activity at index" << activityIndex << "/ final list size:" << _finalList.size();
-        return {};
-    }
+    return activity._talkNotificationData.messageSent;
+}
 
-    return _finalList[activityIndex]._talkNotificationData.messageSent;
+void ActivityListModel::setDisplayReplyOption(const int activityIndex)
+{
+    _finalList[activityIndex]._talkNotificationData.displayReplyOption = true;
+    emit dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationDisplayReplyOptionRole});
+}
+
+bool ActivityListModel::displayReplyOption(const Activity &activity) const
+{
+    return activity._talkNotificationData.displayReplyOption;
 }
 }

@@ -133,8 +133,8 @@ RowLayout {
 
         Loader {
             id: talkReplyTextFieldLoader
-            active: isChatActivity && isTalkReplyPossible && displayTalkReplyOptions
-            visible: displayTalkReplyOptions
+            active: isChatActivity && isTalkReplyPossible && model.displayReplyOption
+            visible: model.displayReplyOption
 
             anchors.top: activityTextDateTime.bottom
             anchors.topMargin: 10
