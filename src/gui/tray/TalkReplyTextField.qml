@@ -7,14 +7,6 @@ import com.nextcloud.desktopclient 1.0
 Item {
     id: root
 
-    Connections {
-        target: activityModel
-        function onMessageSent() {
-            replyMessageTextField.clear();
-            replyMessageSent.text = activityModel.replyMessageSent(model.index);
-        }
-    }
-
     function sendReplyMessage() {
         if (replyMessageTextField.text === "") {
             return;
@@ -25,9 +17,10 @@ Item {
 
     Text {
         id: replyMessageSent
+        text: model.messageSent
         font.pixelSize: Style.topLinePixelSize
         color: Style.menuBorder
-        visible: replyMessageSent.text !== ""
+        visible: model.messageSent !== ""
     }
 
     TextField {
