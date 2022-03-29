@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="166"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
         <source>Dismiss</source>
         <translation>Yok say</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Open share dialog</source>
         <translation>Paylaşma penceresini aç</translation>
     </message>
@@ -762,6 +762,11 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Yok sayma listesindeki dosyalar ve sembolik bağlantılar eşitlenmez.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
+        <source>View chat</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
@@ -5974,12 +5979,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Yeni klasör</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="710"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Mark as read</source>
         <translation>Okunmuş olarak işaretle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="714"/>
         <source>Reply</source>
         <translation>Yanıtla</translation>
     </message>
@@ -6096,7 +6101,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="39"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="38"/>
         <source>Reply to …</source>
         <translation>Şuraya yanıtla…</translation>
     </message>
