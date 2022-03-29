@@ -13,25 +13,18 @@ Item {
         }
 
         UserModel.currentUser.sendReplyMessage(model.index, model.conversationToken, replyMessageTextField.text, model.messageId);
-    }
-
-    Text {
-        id: replyMessageSent
-        text: model.messageSent
-        font.pixelSize: Style.topLinePixelSize
-        color: Style.menuBorder
-        visible: model.messageSent !== ""
+        replyMessageTextField.visible = false
     }
 
     TextField {
         id: replyMessageTextField
+        visible: model.messageSent === ""
 
         // TODO use Layout to manage width/height. The Layout.minimunWidth does not apply to the width set.
         height: 38
         width: 250
 
         onAccepted: root.sendReplyMessage()
-        visible: replyMessageSent.text === ""
 
         topPadding: 4
 

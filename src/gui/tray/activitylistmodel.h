@@ -71,7 +71,6 @@ public:
         TalkNotificationConversationTokenRole,
         TalkNotificationMessageIdRole,
         TalkNotificationMessageSentRole,
-        TalkNotificationDisplayReplyOptionRole,
     };
     Q_ENUM(DataRole)
 
@@ -108,7 +107,6 @@ public:
 
     void setReplyMessageSent(const int activityIndex, const QString &message);
     QString replyMessageSent(const Activity &activity) const;
-    bool displayReplyOption(const Activity &activity) const;
 
 public slots:
     void slotRefreshActivity();
@@ -143,13 +141,11 @@ protected:
 private:
     static QVariantList convertLinksToMenuEntries(const Activity &activity);
     static QVariantList convertLinksToActionButtons(const Activity &activity);
-    static QVariant convertLinkToActionButton(const Activity &activity, const ActivityLink &activityLink);
+    static QVariant convertLinkToActionButton(const ActivityLink &activityLink);
     void combineActivityLists();
     bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);
-
-    void setDisplayReplyOption(const int activityIndex);
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;
@@ -175,7 +171,7 @@ private:
     bool _doneFetching = false;
     bool _hideOldActivities = true;
 
-    static constexpr quint32 MaxActionButtons = 2;
+    static constexpr quint32 MaxActionButtons = 3;
 };
 }
 

@@ -113,7 +113,6 @@ public:
         QString conversationToken;
         QString messageId;
         QString messageSent;
-        bool displayReplyOption = false;
     };
 
     Type _type;

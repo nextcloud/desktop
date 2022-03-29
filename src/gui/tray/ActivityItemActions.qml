@@ -31,7 +31,12 @@ RowLayout {
         ActivityActionButton {
             id: activityActionButton
 
-            readonly property bool primary: model.index === 0 && model.modelData.verb !== "DELETE"
+            readonly property string verb: model.modelData.verb
+            readonly property bool primary: model.index === 0 && verb !== "DELETE"
+            readonly property bool isViewChatlink: verb === "WEB"
+            readonly property bool isTalkReplyButton: verb === "REPLY"
+
+            visible: !isViewChatlink
 
             Layout.minimumWidth: primary ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
             Layout.preferredHeight: primary ? parent.height : parent.height * 0.3
@@ -48,7 +53,7 @@ RowLayout {
 
             bold: primary
 
-            onClicked: root.triggerAction(model.index)
+            onClicked: !isTalkReplyButton? root.triggerAction(model.index) : showReplyOptions(model.index)
         }
     }
 
