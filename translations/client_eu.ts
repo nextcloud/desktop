@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="166"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
         <source>Dismiss</source>
         <translation>Baztertu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Open share dialog</source>
         <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>
@@ -762,6 +762,11 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Ez ikusi zerrendako fitxategiak eta esteka sinbolikoak ez dira sinkronizatuko.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
+        <source>View chat</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
@@ -5974,39 +5979,39 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Karpeta berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="710"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Mark as read</source>
         <translation>Markatu irakurri gisa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="714"/>
         <source>Reply</source>
         <translation>Erantzun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 berrizendatu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="522"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ezabatu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="524"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sortu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="526"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 aldatu duzu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sinkronizatuta</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6096,7 +6101,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="39"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="38"/>
         <source>Reply to …</source>
         <translation type="unfinished"/>
     </message>

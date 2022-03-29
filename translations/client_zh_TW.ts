@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="166"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="177"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
         <source>Dismiss</source>
         <translation>忽略</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Open share dialog</source>
         <translation>開啟分享對話方塊</translation>
     </message>
@@ -762,6 +762,11 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>忽略列表中的檔案與符號連結不會同步。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
+        <source>View chat</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
@@ -5974,12 +5979,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>新資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="710"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Mark as read</source>
         <translation>標記為已讀</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="714"/>
         <source>Reply</source>
         <translation>回覆</translation>
     </message>
@@ -6096,7 +6101,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="39"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="38"/>
         <source>Reply to …</source>
         <translation>回覆至……</translation>
     </message>
