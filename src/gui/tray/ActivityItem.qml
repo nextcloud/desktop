@@ -12,8 +12,9 @@ MouseArea {
 
     property bool isFileActivityList: false
 
-    property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
-    property bool isTalkReplyPossible: model.conversationToken !== ""
+    readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
+    readonly property bool isTalkReplyPossible: model.conversationToken !== ""
+    property bool isTalkReplyOptionVisible: model.messageSent !== ""
 
     signal fileActivityButtonClicked(string absolutePath)
 
@@ -25,6 +26,10 @@ MouseArea {
     Accessible.role: Accessible.ListItem
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
+
+    function showReplyOptions(activityIndex) {
+        isTalkReplyOptionVisible = !isTalkReplyOptionVisible
+    }
 
     Rectangle {
         id: activityHover
@@ -73,11 +78,11 @@ MouseArea {
         ActivityItemActions {
             id: activityActions
 
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !model.displayReplyOption
+            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
 
             Layout.preferredHeight: Style.trayWindowHeaderHeight * 0.85
             Layout.fillWidth: true
-            Layout.leftMargin: 40
+            Layout.leftMargin: 60
             Layout.bottomMargin: model.links.length > 1 ? 5 : 0
 
             displayActions: model.displayActions

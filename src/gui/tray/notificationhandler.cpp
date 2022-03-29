@@ -98,9 +98,9 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         a._id = json.value("notification_id").toInt();
 
         // 2 cases to consider:
-        // - server == 24 & has Talk: notification type chat/call contains conversationToken/messageId in object_type
-        // - server < 24 & has Talk: notification type chat/call contains _only_ the conversationToken in object_type
-        if (a._objectType == "chat" || a._objectType == "call") {
+        // 1. server == 24 & has Talk: object_type is chat/call/room & object_id contains conversationToken/messageId
+        // 2. server < 24 & has Talk: object_type is chat/call/room & object_id contains _only_ conversationToken
+        if (a._objectType == "chat" || a._objectType == "call" || a._objectType == "room") {
             const auto objectId = json.value("object_id").toString();
             const auto objectIdData = objectId.split("/");
             a._talkNotificationData.conversationToken = objectIdData.first();
@@ -109,6 +109,14 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             } else {
                 qCInfo(lcServerNotification) << "Replying directly to Talk conversation" << a._talkNotificationData.conversationToken << "will not be possible because the notification doesn't contain the message ID.";
             }
+
+            ActivityLink al;
+            al._label = tr("Reply");
+            al._verb = "REPLY";
+            al._primary = true;
+            a._links.insert(0, al);
+
+            list.append(a);
         } 
 
         a._status = 0;
