@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
+		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
+		538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396E27F4765000FA63D5 /* FileProviderItem.swift */; };
+		538E397127F4765000FA63D5 /* FileProviderEnumerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */; };
+		538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 538E396727F4765000FA63D5 /* FileProviderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		539158AC27BE71A900816F56 /* LineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* LineProcessor.m */; };
 		539158B327BEC98A00816F56 /* LocalSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158B227BEC98A00816F56 /* LocalSocketClient.m */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
@@ -21,6 +26,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		538E397427F4765000FA63D5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 538E396627F4765000FA63D5;
+			remoteInfo = FileProviderExt;
+		};
 		C2B573DF1B1CD9CE00303B36 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
@@ -38,6 +50,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				C2B573E21B1CD9CE00303B36 /* FinderSyncExt.appex in Embed App Extensions */,
+				538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed App Extensions */,
 			);
 			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 1;
@@ -45,6 +58,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
+		538E396E27F4765000FA63D5 /* FileProviderItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderItem.swift; sourceTree = "<group>"; };
+		538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderEnumerator.swift; sourceTree = "<group>"; };
+		538E397227F4765000FA63D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		538E397327F4765000FA63D5 /* FileProviderExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderExt.entitlements; sourceTree = "<group>"; };
 		539158A927BE606500816F56 /* LineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineProcessor.h; sourceTree = "<group>"; };
 		539158AA27BE67CC00816F56 /* SyncClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncClient.h; sourceTree = "<group>"; };
 		539158AB27BE71A900816F56 /* LineProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LineProcessor.m; sourceTree = "<group>"; };
@@ -66,6 +86,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		538E396427F4765000FA63D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2B573AE1B1CD91E00303B36 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -83,11 +111,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		538E396827F4765000FA63D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		538E396B27F4765000FA63D5 /* FileProviderExt */ = {
+			isa = PBXGroup;
+			children = (
+				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
+				538E396E27F4765000FA63D5 /* FileProviderItem.swift */,
+				538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */,
+				538E397227F4765000FA63D5 /* Info.plist */,
+				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
+			);
+			path = FileProviderExt;
+			sourceTree = "<group>";
+		};
 		C2B573941B1CD88000303B36 = {
 			isa = PBXGroup;
 			children = (
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
 				C2B573D81B1CD9CE00303B36 /* FinderSyncExt */,
+				538E396B27F4765000FA63D5 /* FileProviderExt */,
+				538E396827F4765000FA63D5 /* Frameworks */,
 				C2B573B21B1CD91E00303B36 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -97,6 +147,7 @@
 			children = (
 				C2B573B11B1CD91E00303B36 /* desktopclient.app */,
 				C2B573D71B1CD9CE00303B36 /* FinderSyncExt.appex */,
+				538E396727F4765000FA63D5 /* FileProviderExt.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -150,6 +201,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		538E396627F4765000FA63D5 /* FileProviderExt */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */;
+			buildPhases = (
+				538E396327F4765000FA63D5 /* Sources */,
+				538E396427F4765000FA63D5 /* Frameworks */,
+				538E396527F4765000FA63D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FileProviderExt;
+			packageProductDependencies = (
+			);
+			productName = FileProviderExt;
+			productReference = 538E396727F4765000FA63D5 /* FileProviderExt.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		C2B573B01B1CD91E00303B36 /* desktopclient */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C2B573CC1B1CD91E00303B36 /* Build configuration list for PBXNativeTarget "desktopclient" */;
@@ -163,6 +233,7 @@
 			);
 			dependencies = (
 				C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */,
+				538E397527F4765000FA63D5 /* PBXTargetDependency */,
 			);
 			name = desktopclient;
 			productName = desktopclient;
@@ -193,8 +264,13 @@
 		C2B573951B1CD88000303B36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1330;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
+					538E396627F4765000FA63D5 = {
+						CreatedOnToolsVersion = 13.3;
+						ProvisioningStyle = Manual;
+					};
 					C2B573B01B1CD91E00303B36 = {
 						CreatedOnToolsVersion = 6.3.1;
 						DevelopmentTeam = 9B5WD74GWJ;
@@ -222,17 +298,27 @@
 				Base,
 			);
 			mainGroup = C2B573941B1CD88000303B36;
+			packageReferences = (
+			);
 			productRefGroup = C2B573B21B1CD91E00303B36 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				C2B573B01B1CD91E00303B36 /* desktopclient */,
 				C2B573D61B1CD9CE00303B36 /* FinderSyncExt */,
+				538E396627F4765000FA63D5 /* FileProviderExt */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		538E396527F4765000FA63D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2B573AF1B1CD91E00303B36 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -273,6 +359,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		538E396327F4765000FA63D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
+				538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */,
+				538E397127F4765000FA63D5 /* FileProviderEnumerator.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2B573AD1B1CD91E00303B36 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -294,6 +390,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		538E397527F4765000FA63D5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 538E396627F4765000FA63D5 /* FileProviderExt */;
+			targetProxy = 538E397427F4765000FA63D5 /* PBXContainerItemProxy */;
+		};
 		C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C2B573D61B1CD9CE00303B36 /* FinderSyncExt */;
@@ -302,6 +403,103 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		538E397727F4765000FA63D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = FileProviderExt/FileProviderExt.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FileProviderExt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FileProviderExt;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.desktopclient.FileProviderExt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		538E397827F4765000FA63D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = FileProviderExt/FileProviderExt.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = FileProviderExt/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = FileProviderExt;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.desktopclient.FileProviderExt;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
 		C2B573991B1CD88000303B36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -370,6 +568,7 @@
 		C2B573CD1B1CD91E00303B36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -414,12 +613,16 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "desktopclient/desktopclient-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
 		C2B573CE1B1CD91E00303B36 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
@@ -457,6 +660,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SDKROOT = macosx;
+				SWIFT_OBJC_BRIDGING_HEADER = "desktopclient/desktopclient-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -567,6 +772,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		538E397927F4765000FA63D5 /* Build configuration list for PBXNativeTarget "FileProviderExt" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				538E397727F4765000FA63D5 /* Debug */,
+				538E397827F4765000FA63D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C2B573981B1CD88000303B36 /* Build configuration list for PBXProject "OwnCloudFinderSync" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
