@@ -904,12 +904,11 @@ QColor Theme::errorBoxBorderColor() const
 
 void Theme::connectToPaletteSignal()
 {
-    if(!_guiAppInstance) {
-        const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance());
-        if(ptr) {
-            _guiAppInstance.reset(ptr);
-            connect(_guiAppInstance.data(), &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
-            connect(_guiAppInstance.data(), &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
+    if (!_paletteSignalsConnected) {
+        if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
+            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::systemPaletteChanged);
+            connect(ptr, &QGuiApplication::paletteChanged, this, &Theme::darkModeChanged);
+            _paletteSignalsConnected = true;
         }
     }
 }
