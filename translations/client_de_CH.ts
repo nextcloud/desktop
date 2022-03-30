@@ -98,7 +98,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
         <source>Failed to send crash info.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Senden von Crash Informationen.</translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
         <location filename="../src/common/filesystembase.cpp" line="208"/>
         <location filename="../src/common/filesystembase.cpp" line="213"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Kann %1 nicht umbenennen, die Datei wird gerade benutzt</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Der Ordner konnte nicht entfernt werden</translation>
     </message>
 </context>
 <context>
@@ -554,7 +554,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountstate.cpp" line="73"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>URL Aktualisierung angefordert für %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="74"/>
@@ -564,7 +564,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountstate.cpp" line="77"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>URL wurde permanent geändert zu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="78"/>
