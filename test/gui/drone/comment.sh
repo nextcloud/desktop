@@ -24,9 +24,9 @@ else
     fi
 
     # if there is stacktrace file then add to the comment
-    if [[ -f $1/stacktrace ]]; then
+    if [[ -f $1/stacktrace.log ]]; then
         echo "creating comment for stacktrace"
-        echo "Stacktrace: (${CACHE_ENDPOINT}/${CACHE_BUCKET}/$2/$3/guiReportUpload/stacktrace)" >> $1/comments.file
+        echo "Stacktrace: (${CACHE_ENDPOINT}/${CACHE_BUCKET}/$2/$3/guiReportUpload/stacktrace.log)" >> $1/comments.file
     fi
 
     if ! [[ $(find $1/screenshots -maxdepth 0 -empty) ]]; then

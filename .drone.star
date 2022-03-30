@@ -6,10 +6,10 @@
 #
 
 DEFAULT_PHP_VERSION = "7.4"
-STACKTRACE_FILE = "%s/stacktrace" % GUI_TEST_REPORT_DIR
 GUI_TEST_DIR = "/drone/src/test/gui"
 GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
 NOTIFICATION_TEMPLATE_DIR = "/drone/src"
+STACKTRACE_FILE = "%s/stacktrace.log" % GUI_TEST_REPORT_DIR
 
 CYTOPIA_BLACK = "cytopia/black"
 DOCKER_GIT = "docker:git"

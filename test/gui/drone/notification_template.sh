@@ -8,9 +8,9 @@ COMMIT_SHA_SHORT=${DRONE_COMMIT:0:8}
 
 GUI_LOG="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/index.html"
 SERVER_LOG="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/serverlog.log"
-STACKTRACE="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/stacktrace"
+STACKTRACE="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/stacktrace.log"
 
-CURL="curl --write-out "%{http_code}" --silent --output /dev/null"
+CURL="curl --write-out %{http_code} --silent --output /dev/null"
 
 GUI_STATUS_CODE=$($CURL "$GUI_LOG")
 SERVER_STATUS_CODE=$($CURL "$SERVER_LOG")
@@ -32,4 +32,4 @@ if [ "${DRONE_BUILD_STATUS}" != "success" ]; then
     fi
 fi
 
-echo -e "**$BUILD_STATUS** [${DRONE_REPO}#${COMMIT_SHA_SHORT}](${DRONE_BUILD_LINK}) (${DRONE_BRANCH}) by **${DRONE_COMMIT_AUTHOR}** $TEST_LOGS" > $1/template.md
+echo -e "**$BUILD_STATUS** [${DRONE_REPO}#${COMMIT_SHA_SHORT}](${DRONE_BUILD_LINK}) (${DRONE_BRANCH}) by **${DRONE_COMMIT_AUTHOR}** $TEST_LOGS" > "$1"/template.md

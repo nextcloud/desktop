@@ -19,7 +19,7 @@ import shutil
 import urllib.request
 import os
 import builtins
-from helpers.StacktraceHelper import getCoredump, generateStacktrace
+from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 
 
 @OnScenarioStart
@@ -96,8 +96,8 @@ def hook(context):
 def hook(context):
     # search coredumps after every test scenario
     # CI pipeline might fail although all tests are passing
-    coredumps = getCoredump()
-    if len(coredumps) > 0:
+    coredumps = getCoredumps()
+    if coredumps:
         try:
             generateStacktrace(context, coredumps)
             print("Stacktrace generated.")

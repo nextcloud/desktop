@@ -1,12 +1,11 @@
 import os
-import builtins
 import subprocess
 import glob
 import re
 from datetime import datetime
 
 
-def getCoredump():
+def getCoredumps():
     # read coredump location
     with open("/proc/sys/kernel/core_pattern", "r") as f:
         coredumpPath = f.read().strip("\n")
@@ -27,14 +26,14 @@ def generateStacktrace(context, coredumps):
     message.append("")
     message = "\n".join(message)
 
-    stacktrace_file = os.environ.get("STACKTRACE_FILE", "../stacktrace")
+    stacktrace_file = os.environ.get("STACKTRACE_FILE", "../stacktrace.log")
     # save stacktrace to a file
     open(stacktrace_file, "a").write(message)
 
 
 def parseStacktrace(coredumpFile):
     message = []
-    if builtins.bool(coredumpFile):
+    if coredumpFile:
         coredumpFilename = os.path.basename(coredumpFile)
         # example coredump file: core-1648445754-1001-11-!drone!src!build-GUI-tests!bin!owncloud
         patterns = coredumpFilename.split('-')
