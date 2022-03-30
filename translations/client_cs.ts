@@ -766,7 +766,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
         <source>View chat</source>
-        <translation type="unfinished"/>
+        <translation>Zobrazit chat</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>

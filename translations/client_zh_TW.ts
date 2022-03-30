@@ -766,7 +766,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
         <source>View chat</source>
-        <translation type="unfinished"/>
+        <translation>檢視聊天</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>

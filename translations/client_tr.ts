@@ -766,7 +766,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
         <source>View chat</source>
-        <translation type="unfinished"/>
+        <translation>Sohbeti görüntüle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
