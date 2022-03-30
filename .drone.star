@@ -255,18 +255,6 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                              "STACKTRACE_FILE": STACKTRACE_FILE,
                          },
                      },
-                     {
-                         "name": "stacktrace",
-                         "image": "owncloudci/alpine:latest",
-                         "commands": [
-                             "cat %s" % STACKTRACE_FILE,
-                         ],
-                         "when": {
-                             "status": [
-                                 "failure",
-                             ],
-                         },
-                     },
                  ] +
                  # GUI test result has been disabled for now, as we squish can not produce the result in both html and json format.
                  # Disabled untill the feature to generate json result is implemented in squish, or some other method to reuse the log parser is implemented.
@@ -576,7 +564,6 @@ def setGuiTestReportDir():
         "image": OC_UBUNTU,
         "commands": [
             "mkdir %s/screenshots -p" % GUI_TEST_REPORT_DIR,
-            "touch %s/coredumps" % GUI_TEST_REPORT_DIR,
             "chmod 777 %s -R" % GUI_TEST_REPORT_DIR,
         ],
     }]

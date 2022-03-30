@@ -23,6 +23,12 @@ else
         echo "Server Logs: (${CACHE_ENDPOINT}/${CACHE_BUCKET}/$2/$3/guiReportUpload/serverlog.log)" >> $1/comments.file
     fi
 
+    # if there is stacktrace file then add to the comment
+    if [[ -f $1/stacktrace ]]; then
+        echo "creating comment for stacktrace"
+        echo "Stacktrace: (${CACHE_ENDPOINT}/${CACHE_BUCKET}/$2/$3/guiReportUpload/stacktrace)" >> $1/comments.file
+    fi
+
     if ! [[ $(find $1/screenshots -maxdepth 0 -empty) ]]; then
         echo "creating comment for screenshots"
         echo "Screenshots:" >> $1/comments.file 

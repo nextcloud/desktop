@@ -8,11 +8,13 @@ COMMIT_SHA_SHORT=${DRONE_COMMIT:0:8}
 
 GUI_LOG="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/index.html"
 SERVER_LOG="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/serverlog.log"
+STACKTRACE="${CACHE_ENDPOINT}/${CACHE_BUCKET}/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload/stacktrace"
 
 CURL="curl --write-out "%{http_code}" --silent --output /dev/null"
 
 GUI_STATUS_CODE=$($CURL "$GUI_LOG")
 SERVER_STATUS_CODE=$($CURL "$SERVER_LOG")
+STACKTRACE_STATUS_CODE=$($CURL "$STACKTRACE")
 
 BUILD_STATUS=":white_check_mark:Success"
 TEST_LOGS=""
@@ -24,6 +26,9 @@ if [ "${DRONE_BUILD_STATUS}" != "success" ]; then
     fi
     if [[ "$GUI_STATUS_CODE" == "200" ]]; then
         TEST_LOGS+="\n> [GUI test log]($GUI_LOG)"
+    fi
+    if [[ "$STACKTRACE_STATUS_CODE" == "200" ]]; then
+        TEST_LOGS+="\n> [Stacktrace]($STACKTRACE)"
     fi
 fi
 
