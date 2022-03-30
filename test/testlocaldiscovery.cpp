@@ -223,6 +223,7 @@ private slots:
         fakeFolder.localModifier().insert(fileWithSpaces4);
         fakeFolder.localModifier().insert(fileWithSpaces5);
         fakeFolder.localModifier().insert(fileWithSpaces6);
+        fakeFolder.localModifier().mkdir(QStringLiteral("  with spaces  "));
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -244,6 +245,10 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/bla"));
         QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces6));
 
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("with spaces")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("  with spaces  ")));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {QStringLiteral("foo"), QStringLiteral("bar"), QStringLiteral("bla"), QStringLiteral("A/foo"), QStringLiteral("A/bar"), QStringLiteral("A/bla")});
         QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces1.trimmed()));
@@ -275,6 +280,11 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces6));
         QVERIFY(fakeFolder.currentLocalState().find("A/bla"));
         QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces6));
+
+        QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("with spaces")));
+        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("  with spaces  ")));
+        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("with spaces")));
+        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("  with spaces  ")));
     }
 
     void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedDoNotExist_renameFile()

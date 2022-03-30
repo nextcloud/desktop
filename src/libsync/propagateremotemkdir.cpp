@@ -20,6 +20,7 @@
 #include "deletejob.h"
 #include "common/asserts.h"
 #include "encryptfolderjob.h"
+#include "filesystem.h"
 
 #include <QFile>
 #include <QLoggingCategory>
@@ -169,6 +170,18 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
 
 void PropagateRemoteMkdir::slotMkdir()
 {
+    if (!_item->_originalFile.isEmpty() && !_item->_renameTarget.isEmpty() && _item->_renameTarget != _item->_originalFile) {
+        const auto existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_originalFile));
+        const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
+        QString renameError;
+        if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
+            done(SyncFileItem::NormalError, renameError);
+            return;
+        }
+        emit propagator()->touchedFile(existingFile);
+        emit propagator()->touchedFile(targetFile);
+    }
+
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();

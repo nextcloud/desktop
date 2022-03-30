@@ -1054,6 +1054,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     if (!localEntry.renameName.isEmpty()) {
         handleInvalidSpaceRename(SyncFileItem::Down);
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Up;
+        item->_originalFile = item->_file;
+        item->_file = item->_renameTarget;
         finalize();
         return;
     }
