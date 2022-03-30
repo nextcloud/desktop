@@ -92,7 +92,7 @@ public:
     explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
     // Dialog for the whole account (Used from the wizard)
-    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, const QStringList &blacklist, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
 
     void accept() override;
 

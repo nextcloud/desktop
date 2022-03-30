@@ -42,6 +42,7 @@
 
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "libcloudproviders/libcloudproviders.h"
+#include "selectivesyncdialog.h"
 #endif
 
 using namespace std::chrono_literals;
@@ -50,34 +51,30 @@ namespace {
 
 using namespace OCC;
 
-QString initLocalFolder()
-{
-    auto localFolder = OCC::Theme::instance()->defaultClientFolder();
-    // Update the local folder - this is not guaranteed to find a good one
-    // if its a relative path, prepend with users home dir, otherwise use as absolute path
-
-    if (!QDir(localFolder).isAbsolute()) {
-        localFolder = QDir::homePath() + QDir::separator() + localFolder;
-    }
-    return OCC::FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder);
-}
-
-void setUpInitialSyncFolder(AccountStatePtr accountStatePtr)
+void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &localFolder, Wizard::SyncMode syncMode)
 {
     auto account = accountStatePtr->account();
+
     // ensure we are connected and fetch the capabilities
     auto validator = new ConnectionValidator(account, account.data());
-    QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr](ConnectionValidator::Status status, const QStringList &errors) {
+
+    QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr, localFolder, syncMode](ConnectionValidator::Status status, const QStringList &errors) {
         if (OC_ENSURE(status == ConnectionValidator::Connected)) {
             // saving once after adding makes sure the account is stored in the config in a working state
             // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
             // (for instance, when running from a debugger and stopping the process from there)
             AccountManager::instance()->saveAccount(accountStatePtr->account().data());
-            QString localFolder = initLocalFolder();
             auto folderMan = FolderMan::instance();
+
+            // saves a bit of duplicate code
+            auto addFolder = [folderMan, accountStatePtr, syncMode](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl) {
+                folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, syncMode);
+            };
+
             if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
                 auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
-                QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, folderMan] {
+
+                QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, addFolder] {
                     if (drive->parseError().error == QJsonParseError::NoError) {
                         const auto &drives = drive->drives();
                         if (!drives.isEmpty()) {
@@ -86,19 +83,21 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr)
                             for (const auto &d : drives) {
                                 const QDir driveLocalFolder = localDir.filePath(d.getName());
                                 driveLocalFolder.mkdir(".");
-                                folderMan->addFolder(accountStatePtr, driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
+                                addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
                             }
                         }
                     }
                 });
 
                 drive->start();
+
                 return;
             } else {
-                folderMan->addFolder(accountStatePtr, localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
+                addFolder(localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
             }
         }
     });
+
     validator->checkServerAndUpdate();
 }
 }
@@ -1015,25 +1014,23 @@ void ownCloudGui::runNewAccountWizard()
         // while the wizard is shown, new syncs are disabled
         FolderMan::instance()->setSyncEnabled(false);
 
-        connect(_wizardController, &Wizard::SetupWizardController::finished, ocApp(), [this](AccountPtr newAccount) {
-            // reenable sync, which is disabled while the wizard is shown
-            FolderMan::instance()->setSyncEnabled(true);
+        connect(_wizardController, &Wizard::SetupWizardController::finished, ocApp(),
+            [this](AccountPtr newAccount, const QString &localFolder, Wizard::SyncMode syncMode) {
+                // reenable sync, which is disabled while the wizard is shown
+                FolderMan::instance()->setSyncEnabled(true);
 
-            // when the dialog is closed before it has finished, there won't be a new account to set up
-            // the wizard controller signalizes this by passing a null pointer
-            if (!newAccount.isNull()) {
-                // finally, call the slot that finalizes the setup
-                auto accountStatePtr = ocApp()->addNewAccount(newAccount);
+                // when the dialog is closed before it has finished, there won't be a new account to set up
+                // the wizard controller signalizes this by passing a null pointer
+                if (!newAccount.isNull()) {
+                    // finally, call the slot that finalizes the setup
+                    auto accountStatePtr = ocApp()->addNewAccount(newAccount);
 
-                // set up initial sync connection
-                // currently, the user cannot configure this in any way from the wizard, because the "advanced sync options" have been removed intentionally
-                // we opted to implement those later, when the spaces support has been improved
-                setUpInitialSyncFolder(accountStatePtr);
-            }
+                    setUpInitialSyncFolder(accountStatePtr, localFolder, syncMode);
+                }
 
-            // make sure the wizard is cleaned up eventually
-            _wizardController->deleteLater();
-        });
+                // make sure the wizard is cleaned up eventually
+                _wizardController->deleteLater();
+            });
 
         // all we have to do is show the dialog...
         _wizardController->window()->show();

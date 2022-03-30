@@ -55,7 +55,6 @@
 
 #include "account.h"
 #include "askexperimentalvirtualfilesfeaturemessagebox.h"
-#include "ocwizard_deprecated.h"
 
 namespace OCC {
 

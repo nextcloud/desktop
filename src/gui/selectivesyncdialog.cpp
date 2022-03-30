@@ -429,13 +429,12 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
     connect(_folder, &QObject::destroyed, this, &QObject::deleteLater);
 }
 
-SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder,
-    const QStringList &blacklist, QWidget *parent, Qt::WindowFlags f)
+SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, const QString &folder, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
     , _folder(nullptr)
 {
     init(account);
-    _selectiveSync->setFolderInfo(folder, folder, blacklist);
+    _selectiveSync->setFolderInfo(folder, folder);
 }
 
 void SelectiveSyncDialog::init(const AccountPtr &account)

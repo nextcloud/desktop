@@ -7,11 +7,31 @@
 #include "pages/oauthcredentialssetupwizardpage.h"
 #include "pages/serverurlsetupwizardpage.h"
 
+#include "gui/folderman.h"
+#include "theme.h"
+
+#include <QDir>
 #include <QTimer>
 
 #include <chrono>
 
 using namespace std::chrono_literals;
+
+namespace {
+
+QString initLocalFolder()
+{
+    auto localFolder = OCC::Theme::instance()->defaultClientFolder();
+    // Update the local folder - this is not guaranteed to find a good one
+    // if its a relative path, prepend with users home dir, otherwise use as absolute path
+
+    if (!QDir(localFolder).isAbsolute()) {
+        localFolder = QDir::homePath() + QDir::separator() + localFolder;
+    }
+    return OCC::FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder);
+}
+
+}
 
 namespace OCC::Wizard {
 
@@ -28,7 +48,7 @@ SetupWizardController::SetupWizardController(QWidget *parent)
 
     // allow settings dialog to clean up the wizard controller and all the objects it created
     connect(_wizardWindow, &SetupWizardWindow::rejected, this, [this]() {
-        Q_EMIT finished(nullptr);
+        Q_EMIT finished(nullptr, {}, SyncMode::Invalid);
     });
 
     connect(_wizardWindow, &SetupWizardWindow::paginationEntryClicked, this, [this, paginationEntries](PageIndex currentPage, PageIndex clickedPageIndex) {
@@ -129,9 +149,11 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
 
         // final step
         if (currentPage == 2) {
+            const auto *pagePtr = qobject_cast<AccountConfiguredWizardPage *>(_currentPage);
+
             auto account = _accountBuilder.build();
             Q_ASSERT(account != nullptr);
-            emit finished(account);
+            Q_EMIT finished(account, pagePtr->syncTargetDir(), pagePtr->syncMode());
             return;
         }
     }
@@ -240,7 +262,27 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
     }
 
     if (desiredPage == 2) {
-        _currentPage = new AccountConfiguredWizardPage;
+        // being pessimistic by default
+        bool vfsIsAvailable = false;
+        bool enableVfsByDefault = false;
+        bool vfsModeIsExperimental = false;
+
+        switch (bestAvailableVfsMode()) {
+        case Vfs::WindowsCfApi:
+            vfsIsAvailable = true;
+            enableVfsByDefault = true;
+            vfsModeIsExperimental = false;
+            break;
+        case Vfs::WithSuffix:
+            vfsIsAvailable = true;
+            enableVfsByDefault = false;
+            vfsModeIsExperimental = true;
+            break;
+        default:
+            break;
+        }
+
+        _currentPage = new AccountConfiguredWizardPage(initLocalFolder(), vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
         _wizardWindow->displayPage(_currentPage, 2);
         return;
     }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pages/abstractsetupwizardpage.h"
+#include "syncmode.h"
 #include <QDialog>
 #include <account.h>
 #include <optional>
@@ -31,7 +32,7 @@ Q_SIGNALS:
     /**
      * Emitted when the wizard has finished. It passes the built account object.
      */
-    void finished(AccountPtr newAccount);
+    void finished(AccountPtr newAccount, const QString &localFolder, SyncMode syncMode);
 
 private:
     void nextStep(std::optional<PageIndex> currentPage, std::optional<PageIndex> desiredPage);

@@ -25,6 +25,8 @@
 #include "navigationpanehelper.h"
 #include "syncfileitem.h"
 
+#include "newwizard/syncmode.h"
+
 class TestFolderMigration;
 
 namespace OCC {
@@ -116,7 +118,7 @@ public:
     /**
      * Adds a folder for an account. Used to be part of the wizard code base. Constructs the folder definition from the parameters.
      */
-    Folder *addFolder(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl);
+    void addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, Wizard::SyncMode syncMode);
 
     /** Removes a folder */
     void removeFolder(Folder *);

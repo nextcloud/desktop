@@ -27,7 +27,6 @@
 
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
-#include "gui/ocwizard_deprecated.h"
 #include "gui/selectivesyncdialog.h"
 
 #include <QCheckBox>

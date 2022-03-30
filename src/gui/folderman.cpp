@@ -16,12 +16,14 @@
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
+#include "application.h"
 #include "common/asserts.h"
 #include "configfile.h"
 #include "filesystem.h"
 #include "folder.h"
 #include "lockwatcher.h"
 #include "ocwizard_deprecated.h"
+#include "selectivesyncdialog.h"
 #include "socketapi/socketapi.h"
 #include "syncresult.h"
 #include "theme.h"
@@ -1567,7 +1569,7 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
 }
 
-Folder *FolderMan::addFolder(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl)
+void FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, Wizard::SyncMode syncMode)
 {
     // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
     QDir().mkdir(localFolder);
@@ -1578,8 +1580,7 @@ Folder *FolderMan::addFolder(AccountStatePtr accountStatePtr, const QString &loc
     folderDefinition.setTargetPath(remotePath);
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    // TODO: reinstate this functionality
-    if (OwncloudWizard::useVirtualFileSync()) {
+    if (syncMode == Wizard::SyncMode::UseVfs) {
         folderDefinition.virtualFilesMode = bestAvailableVfsMode();
     }
 
@@ -1588,25 +1589,40 @@ Folder *FolderMan::addFolder(AccountStatePtr accountStatePtr, const QString &loc
         folderDefinition.navigationPaneClsid = QUuid::createUuid();
 #endif
 
-    auto f = addFolder(accountStatePtr, folderDefinition);
+    auto finalize = [this, accountStatePtr, syncMode, localFolder](const FolderDefinition &folderDefinition, const QStringList &blacklist = {}) {
+        auto f = addFolder(accountStatePtr, folderDefinition);
 
-    if (f) {
-        if (folderDefinition.virtualFilesMode != Vfs::Off && OwncloudWizard::useVirtualFileSync())
-            f->setRootPinState(PinState::OnlineOnly);
+        if (f) {
+            if (folderDefinition.virtualFilesMode != Vfs::Off && syncMode == Wizard::SyncMode::UseVfs)
+                f->setRootPinState(PinState::OnlineOnly);
 
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-            OwncloudWizard::selectiveSyncBlacklist());
-        if (!OwncloudWizard::isConfirmBigFolderChecked()) {
-            // The user already accepted the selective sync dialog. everything is in the white list
-            f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                QStringList() << QLatin1String("/"));
+            f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
+
+            if (!OwncloudWizard::isConfirmBigFolderChecked()) {
+                // The user already accepted the selective sync dialog. everything is in the white list
+                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                    QStringList() << QLatin1String("/"));
+            }
+            qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
+        } else {
+            qCWarning(lcFolderMan) << "Failed to create local sync folder!";
         }
-        qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
-    } else {
-        qCWarning(lcFolderMan) << "Failed to create local sync folder!";
-    }
 
-    return f;
+        return f;
+    };
+
+    if (syncMode == Wizard::SyncMode::SelectiveSync) {
+        auto dialog = new SelectiveSyncDialog(accountStatePtr->account(), remotePath, reinterpret_cast<QDialog *>(ocApp()->gui()->settingsDialog()));
+
+        connect(dialog, &SelectiveSyncDialog::finished, this, [finalize, folderDefinition, dialog]() {
+            auto folder = finalize(folderDefinition, dialog->createBlackList());
+        });
+
+        dialog->setAttribute(Qt::WA_DeleteOnClose);
+        dialog->show();
+    } else {
+        finalize(folderDefinition);
+    }
 }
 
 } // namespace OCC

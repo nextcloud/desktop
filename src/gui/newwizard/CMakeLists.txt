@@ -33,6 +33,8 @@ add_library(newwizard OBJECT
 
     jobs/resolveurljobfactory.cpp
     jobs/resolveurljobfactory.h
+
+    syncmode.cpp
 )
 target_link_libraries(newwizard PUBLIC Qt5::Widgets libsync)
 set_target_properties(newwizard PROPERTIES AUTOUIC ON AUTORCC ON)

@@ -1,6 +1,9 @@
 #pragma once
 
+#include <QSharedPointer>
+
 #include "abstractsetupwizardpage.h"
+#include "setupwizardcontroller.h"
 
 namespace Ui {
 class AccountConfiguredWizardPage;
@@ -13,8 +16,12 @@ class AccountConfiguredWizardPage : public AbstractSetupWizardPage
     Q_OBJECT
 
 public:
-    AccountConfiguredWizardPage();
+    explicit AccountConfiguredWizardPage(const QString &defaultSyncTargetDir, bool vfsIsAvailable, bool enableVfsByDefault, bool vfsModeIsExperimental);
     ~AccountConfiguredWizardPage() noexcept override;
+
+    QString syncTargetDir() const;
+
+    SyncMode syncMode() const;
 
 private:
     ::Ui::AccountConfiguredWizardPage *_ui;
