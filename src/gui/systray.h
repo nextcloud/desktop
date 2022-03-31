@@ -120,8 +120,6 @@ private:
     QPointer<QQmlApplicationEngine> _trayEngine;
 
     AccessManagerFactory _accessManagerFactory;
-
-    QScopedPointer<QGuiApplication> _guiAppInstance;
 };
 
 } // namespace OCC
