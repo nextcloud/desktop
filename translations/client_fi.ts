@@ -48,7 +48,7 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Hylkää</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
