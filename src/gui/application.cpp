@@ -111,22 +111,12 @@ public:
     bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
         const auto msg = static_cast<MSG *>(message);
         if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
-            if(!_guiAppInstance) {
-                const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance());
-                if(ptr) {
-                    _guiAppInstance.reset(ptr);
-                }
-            }
-
-            if(_guiAppInstance) {
-                emit _guiAppInstance->paletteChanged(_guiAppInstance->palette());
+            if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
+                emit ptr->paletteChanged(ptr->palette());
             }
         }
         return false;
     }
-
-private:
-    QScopedPointer<QGuiApplication> _guiAppInstance;
 };
 #endif
 
