@@ -627,7 +627,7 @@ private:
 
     static Theme *_instance;
     bool _mono = false;
-    QScopedPointer<QGuiApplication> _guiAppInstance;
+    bool _paletteSignalsConnected = false;
 
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;
