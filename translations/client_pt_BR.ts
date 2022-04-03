@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="92"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mais ações</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Dispensar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Abrir caixa de diálogo compartilhada</translation>
     </message>
 </context>
 <context>
@@ -935,12 +935,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erro de rede: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Erro de rede: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
@@ -5979,12 +5979,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Marcar como Lido</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="714"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Responder</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
