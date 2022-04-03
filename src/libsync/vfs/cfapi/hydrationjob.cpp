@@ -300,7 +300,16 @@ void OCC::HydrationJob::finalize(OCC::VfsCfApi *vfs)
         return;
     }
 
-    record._type = ItemTypeFile;
+    switch(_status) {
+    case Success:
+        record._type = ItemTypeFile;
+        break;
+    case Error:
+    case Cancelled:
+        record._type = CSyncEnums::ItemTypeVirtualFile;
+        break;
+    };
+
     // store the actual size of a file that has been decrypted as we will need its actual size when dehydrating it if requested
     record._fileSize = FileSystem::getSize(localPath() + folderPath());
 
