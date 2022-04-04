@@ -66,9 +66,6 @@ version = 2.15.05
 [dev-utils/ninja]
 version = 1.10.2
 
-[dev-utils/packagesdev]
-version = 1.2.7
-
 [dev-utils/perl]
 version = 5.28.1
 
