@@ -470,7 +470,7 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1043"/>
         <source>Confirm Account Removal</source>
-        <translation>Nutzerkonto Löschen bestätigen</translation>
+        <translation>Löschen des Benutzerkontos bestätigen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1044"/>
