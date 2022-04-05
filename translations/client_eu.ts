@@ -766,7 +766,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
         <source>View chat</source>
-        <translation type="unfinished"/>
+        <translation>Ikusi txata</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
