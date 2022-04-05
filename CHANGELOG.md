@@ -3,14 +3,84 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v2.10.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v2.10.1...master
 
 Summary
 -------
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
-* Bugfix - Do not strip trailing whitespace from a file or folder name: [#9030](https://github.com/owncloud/client/issues/9030)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+* Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
+* Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
+* Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
+
+Details
+-------
+
+* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+
+   Some parameters were missing for some operations. This fix makes the log more complete and more
+   useful as a result.
+
+   https://github.com/owncloud/client/issues/7348
+
+* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
+
+   We fixed a bug where a placholder was copied to the clipboard instead of the url.
+
+   https://github.com/owncloud/client/issues/9048
+
+* Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
+
+   Setting the upload status of files uploaded with TUS failed as we were still using the file.
+
+   https://github.com/owncloud/client/pull/9472
+
+* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+
+   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
+   invalid.
+
+   https://github.com/owncloud/client/issues/8938
+   https://github.com/owncloud/client/pull/8939
+
+* Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
+
+   In release 2.10, we introduced a preview on our future AppImage packaging for Linux
+   distributions. Now, these AppImages can self-update using a built-in libappimageupdate
+   based updater and ownCloud's update infrastructure.
+
+   https://github.com/owncloud/client/issues/8923
+   https://github.com/owncloud/client/pull/9376
+
+* Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
+
+   We completely rewrote the wizard from scratch. The new wizard provides greater flexibility
+   and makes adding new features easier in the future. It has also been redesigned to improve the
+   user experience.
+
+   https://github.com/owncloud/client/issues/9249
+   https://github.com/owncloud/client/pull/9482
+
+* Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
+
+   We no longer guess the DAV endpoint depending on the chunking-ng feature.
+
+   https://github.com/owncloud/client/pull/9538
+
+Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 2.10.1 relevant to
+ownCloud admins and users.
+
+[2.10.1]: https://github.com/owncloud/client/compare/v2.10.0...v2.10.1
+
+Summary
+-------
+
+* Bugfix - Do not strip trailing whitespace from a file or folder name: [#9030](https://github.com/owncloud/client/issues/9030)
 * Bugfix - Remove outdated translations: [#9105](https://github.com/owncloud/client/issues/9105)
 * Bugfix - Progress reporting for TUS uploads: [#9121](https://github.com/owncloud/client/issues/9121)
 * Bugfix - Fix crash if a database error occurs: [#9147](https://github.com/owncloud/client/issues/9147)
@@ -28,7 +98,6 @@ Summary
 * Bugfix - Add open local/remote folder options: [#9405](https://github.com/owncloud/client/issues/9405)
 * Bugfix - Fix Account Filter for Server Activity tab: [#9481](https://github.com/owncloud/client/pull/9481)
 * Bugfix - Ensure proper setup of network jobs on retries: [#9437](https://github.com/owncloud/client/pull/9437)
-* Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
 * Bugfix - If reuqired clear cookies in more scenarios: [#9489](https://github.com/owncloud/client/pull/9489)
 * Bugfix - Improve filter pop-up menu and button: [#9425](https://github.com/owncloud/client/issues/9425)
 * Bugfix - Possible crash when removing non exisitng folder: [#9533](https://github.com/owncloud/client/issues/9533)
@@ -36,38 +105,21 @@ Summary
 * Bugfix - Fix potential download failure for renamed file with Windows VFS: [#18](https://github.com/owncloud/client-desktop-vfs-win/pull/18)
 * Bugfix - Possible crash when downloading a virtual file on Windows: [#21](https://github.com/owncloud/client-desktop-vfs-win/pull/21)
 * Bugfix - Don't publish upload if we can't finish the transaction in the client: [#5052](https://github.com/owncloud/enterprise/issues/5052)
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
-* Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 * Enhancement - Don't log error when checking removed file for changes: [#9304](https://github.com/owncloud/client/issues/9304)
 * Enhancement - Leave password field in share dialog enabled on errors: [#9336](https://github.com/owncloud/client/issues/9336)
 * Enhancement - Provide informal German translations: [#9460](https://github.com/owncloud/client/issues/9460)
-* Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
 * Enhancement - Added branding parameter to disallow duplicated folder sync pairs: [#9523](https://github.com/owncloud/client/issues/9523)
 * Enhancement - Retry update after 10 minutes: [#9522](https://github.com/owncloud/client/issues/9522)
-* Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 
 Details
 -------
-
-* Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
-
-   Some parameters were missing for some operations. This fix makes the log more complete and more
-   useful as a result.
-
-   https://github.com/owncloud/client/issues/7348
 
 * Bugfix - Do not strip trailing whitespace from a file or folder name: [#9030](https://github.com/owncloud/client/issues/9030)
 
    https://github.com/owncloud/client/issues/9030
    https://github.com/owncloud/client/pull/9452
-
-* Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
-
-   We fixed a bug where a placholder was copied to the clipboard instead of the url.
-
-   https://github.com/owncloud/client/issues/9048
 
 * Bugfix - Remove outdated translations: [#9105](https://github.com/owncloud/client/issues/9105)
 
@@ -181,12 +233,6 @@ Details
 
    https://github.com/owncloud/client/pull/9437
 
-* Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
-
-   Setting the upload status of files uploaded with TUS failed as we were still using the file.
-
-   https://github.com/owncloud/client/pull/9472
-
 * Bugfix - If reuqired clear cookies in more scenarios: [#9489](https://github.com/owncloud/client/pull/9489)
 
    BigIp F5 requires special cookie handling on our side. We only explicitly cleared the cookies
@@ -234,23 +280,6 @@ Details
 
    https://github.com/owncloud/enterprise/issues/5052
 
-* Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
-
-   We no longer enforce png thumbnails. We no longer replace the file icon if the thumbnail is
-   invalid.
-
-   https://github.com/owncloud/client/issues/8938
-   https://github.com/owncloud/client/pull/8939
-
-* Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
-
-   In release 2.10, we introduced a preview on our future AppImage packaging for Linux
-   distributions. Now, these AppImages can self-update using a built-in libappimageupdate
-   based updater and ownCloud's update infrastructure.
-
-   https://github.com/owncloud/client/issues/8923
-   https://github.com/owncloud/client/pull/9376
-
 * Enhancement - Retry token refresh multiple times before logout: [#9245](https://github.com/owncloud/client/issues/9245)
 
    https://github.com/owncloud/client/issues/9245
@@ -286,15 +315,6 @@ Details
    https://github.com/owncloud/client/issues/9460
    https://github.com/owncloud/client/pull/9502
 
-* Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
-
-   We completely rewrote the wizard from scratch. The new wizard provides greater flexibility
-   and makes adding new features easier in the future. It has also been redesigned to improve the
-   user experience.
-
-   https://github.com/owncloud/client/issues/9249
-   https://github.com/owncloud/client/pull/9482
-
 * Enhancement - Always flush log when logging to stdout: [#9515](https://github.com/owncloud/client/pull/9515)
 
    We improved the behaviour of logging to a terminal.
@@ -315,12 +335,6 @@ Details
 
    https://github.com/owncloud/client/issues/9522
    https://github.com/owncloud/client/pull/9525
-
-* Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
-
-   We no longer guess the DAV endpoint depending on the chunking-ng feature.
-
-   https://github.com/owncloud/client/pull/9538
 
 Changelog for ownCloud Desktop Client [2.10.0] (2022-01-17)
 =======================================
