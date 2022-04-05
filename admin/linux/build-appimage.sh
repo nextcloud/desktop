@@ -34,7 +34,7 @@ mkdir build
 cd build
 cmake -G Ninja -D CMAKE_INSTALL_PREFIX=/usr ..
 cmake --build . --target all
-cmake --install . --prefix /app/usr
+DESTDIR=/app cmake --install .
 
 
 # Build client
@@ -49,9 +49,7 @@ cmake \
     -D MIRALL_VERSION_SUFFIX="$VERSION_SUFFIX" \
     ${DESKTOP_CLIENT_ROOT}
 cmake --build . --target all
-cmake --install . --prefix /app/usr
-mkdir -p /app/usr/etc/Nextcloud
-mv /etc/Nextcloud/sync-exclude.lst /app/usr/etc/Nextcloud/sync-exclude.lst
+DESTDIR=/app cmake --install .
 
 # Move stuff around
 cd /app
@@ -59,8 +57,8 @@ cd /app
 mv usr/lib/x86_64-linux-gnu/* usr/lib/
 
 mkdir usr/plugins
-mv usr/lib/${APPNAME}sync_vfs_suffix.so usr/plugins
-mv usr/lib/${APPNAME}sync_vfs_xattr.so usr/plugins
+mv usr/lib/*sync_vfs_suffix.so usr/plugins
+mv usr/lib/*sync_vfs_xattr.so usr/plugins
 
 
 rm -rf usr/lib/cmake
@@ -74,13 +72,13 @@ rm -rf usr/share/nautilus-python/
 rm -rf usr/share/nemo-python/
 
 # Move sync exclude to right location
-mv usr/etc/*/sync-exclude.lst usr/bin/
+mv /app/etc/*/sync-exclude.lst usr/bin/
 rm -rf etc
 
 # com.nextcloud.desktopclient.nextcloud.desktop
 DESKTOP_FILE=$(ls /app/usr/share/applications/*.desktop)
 sed -i -e 's|Icon=nextcloud|Icon=Nextcloud|g' ${DESKTOP_FILE} # Bug in desktop file?
-cp ./usr/share/icons/hicolor/512x512/apps/Nextcloud.png . # Workaround for linuxeployqt bug, FIXME
+cp ./usr/share/icons/hicolor/512x512/apps/*.png . # Workaround for linuxeployqt bug, FIXME
 
 
 # Because distros need to get their shit together
@@ -102,7 +100,7 @@ export LD_LIBRARY_PATH=/usr/lib/
 ./squashfs-root/AppRun ${DESKTOP_FILE} -bundle-non-qt-libs -qmldir=${DESKTOP_CLIENT_ROOT}/src/gui
 
 # Set origin
-./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/lib${APPNAME}sync.so.0
+./squashfs-root/usr/bin/patchelf --set-rpath '$ORIGIN/' /app/usr/lib/lib*sync.so.0
 
 # Build AppImage
 ./squashfs-root/AppRun ${DESKTOP_FILE} -appimage -updateinformation="gh-releases-zsync|nextcloud-releases|desktop|latest|Nextcloud-*-x86_64.AppImage.zsync"
