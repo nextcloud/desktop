@@ -110,10 +110,6 @@ public slots:
     /// Saves account data, not including the credentials
     void saveAccount(Account *a);
 
-    /// Saves account state data, not including the account
-    void saveAccountState(AccountStatePtr a) const;
-
-
 Q_SIGNALS:
     void accountAdded(AccountStatePtr account);
     void accountRemoved(AccountStatePtr account);

@@ -230,18 +230,6 @@ void AccountManager::saveAccount(Account *a)
     qCDebug(lcAccountManager) << "Saved account settings, status:" << settings->status();
 }
 
-void AccountManager::saveAccountState(AccountStatePtr a) const
-{
-    qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->beginGroup(a->account()->id());
-    a->writeToSettings(*settings);
-    settings->endGroup();
-
-    settings->sync();
-    qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
-}
-
 QStringList AccountManager::accountNames() const
 {
     QStringList accounts;
