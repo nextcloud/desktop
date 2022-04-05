@@ -33,10 +33,7 @@ RowLayout {
 
             readonly property string verb: model.modelData.verb
             readonly property bool primary: model.index === 0 && verb !== "DELETE"
-            readonly property bool isViewChatlink: verb === "WEB"
             readonly property bool isTalkReplyButton: verb === "REPLY"
-
-            visible: !isViewChatlink
 
             Layout.minimumWidth: primary ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
             Layout.preferredHeight: primary ? parent.height : parent.height * 0.3
