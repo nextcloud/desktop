@@ -34,7 +34,7 @@ Item {
             id: replyMessageTextFieldBorder
             radius: 24
             border.width: 1
-            border.color: Style.ncBlue
+            border.color: parent.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
             color: Style.backgroundColor
         }
 
@@ -48,10 +48,10 @@ Item {
             onClicked: root.sendReplyMessage()
 
             icon {
-                source: "image://svgimage-custom-color/send.svg" + "/" + Style.ncBlue
+                source: "image://svgimage-custom-color/send.svg" + "/" + Style.menuBorder
                 width: 38
                 height: 38
-                color: hovered || !sendReplyMessageButton.enabled? Style.menuBorder : Style.ncBlue
+                color: hovered || !sendReplyMessageButton.enabled? Style.menuBorder : UserModel.currentUser.accentColor
             }
 
             anchors {
