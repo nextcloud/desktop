@@ -697,8 +697,8 @@ Window {
             itemHeight: trayWindowBackground.Style.unifiedSearchItemHeight
             titleFontSize: trayWindowBackground.Style.unifiedSearchResulTitleFontSize
             sublineFontSize: trayWindowBackground.Style.unifiedSearchResulSublineFontSize
-            titleColor: trayWindowBackground.Style.unifiedSearchResulTitleColor
-            sublineColor: trayWindowBackground.Style.unifiedSearchResulSublineColor
+            titleColor: Style.ncTextColor
+            sublineColor: Style.ncSecondaryTextColor
             iconColor: "#afafaf"
         }
 
