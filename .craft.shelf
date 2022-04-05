@@ -15,7 +15,7 @@ version = master
 revision = 2b9fa1995f8113aa437710bf2e473c4abaca3497
 
 [core/cacert]
-version = 2021-10-26
+version = 2020-12-08
 
 [dev-utils/autoconf]
 version = 2.71
