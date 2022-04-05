@@ -23,9 +23,9 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
     });
 }
 
-QUrl ServerUrlSetupWizardPage::serverUrl() const
+QString ServerUrlSetupWizardPage::userProvidedUrl() const
 {
-    return QUrl::fromUserInput(_ui->urlLineEdit->text());
+    return _ui->urlLineEdit->text();
 }
 
 ServerUrlSetupWizardPage::~ServerUrlSetupWizardPage()

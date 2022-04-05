@@ -74,13 +74,17 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
         if (currentPage == 0) {
             const auto *pagePtr = qobject_cast<ServerUrlSetupWizardPage *>(_currentPage);
 
-            auto serverUrl = pagePtr->serverUrl();
+            const auto serverUrl = [pagePtr]() {
+                QString userProvidedUrl = pagePtr->userProvidedUrl();
 
-            // fix scheme if necessary
-            // the second half is needed for URLs which contain a port (e.g., host:1234), QUrl then parses host: as scheme
-            if (serverUrl.scheme().isEmpty()) {
-                serverUrl = QUrl(QStringLiteral("https://") + serverUrl.toString());
-            }
+                // fix scheme if necessary
+                // using HTTPS as a default is a really good idea nowadays, users can still enter http:// explicitly if they wish to
+                if (QUrl(userProvidedUrl).isRelative() && !userProvidedUrl.isEmpty()) {
+                    userProvidedUrl.prepend(QStringLiteral("https://"));
+                }
+
+                return QUrl::fromUserInput(userProvidedUrl);
+            }();
 
             // TODO: perform some better validation
             if (serverUrl.isValid()) {

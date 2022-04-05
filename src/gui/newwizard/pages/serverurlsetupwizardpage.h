@@ -14,7 +14,7 @@ class ServerUrlSetupWizardPage : public AbstractSetupWizardPage
 public:
     ServerUrlSetupWizardPage(const QUrl &serverUrl);
 
-    QUrl serverUrl() const;
+    QString userProvidedUrl() const;
 
 private:
     ::Ui::ServerUrlSetupWizardPage *_ui;
