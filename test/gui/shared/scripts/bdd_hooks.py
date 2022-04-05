@@ -19,6 +19,7 @@ import shutil
 import urllib.request
 import os
 import builtins
+from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 
 
 @OnScenarioStart
@@ -64,7 +65,7 @@ def hook(context):
     for key, value in context.userData.items():
         if value == '':
             context.userData[key] = DEFAULT_CONFIG[key]
-        elif key == 'maxSyncTimeout':
+        elif key == 'maxSyncTimeout' or key == 'minSyncTimeout':
             context.userData[key] = builtins.int(value)
         elif key == 'clientRootSyncPath':
             # make sure there is always one trailing slash
@@ -93,6 +94,18 @@ def hook(context):
 
 @OnScenarioEnd
 def hook(context):
+    # search coredumps after every test scenario
+    # CI pipeline might fail although all tests are passing
+    coredumps = getCoredumps()
+    if coredumps:
+        try:
+            generateStacktrace(context, coredumps)
+            print("Stacktrace generated.")
+        except Exception as err:
+            print(err)
+    else:
+        print("No coredump found!")
+
     # capture screenshot if there is error in the scenario execution, and if the test is being run in CI
     if test.resultCount("errors") > 0 and os.getenv('CI'):
         import gi

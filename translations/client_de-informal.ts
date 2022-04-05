@@ -24,7 +24,7 @@
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filter</numerusform><numerusform>%n Filter</numerusform></translation>
     </message>
 </context>
 <context>
@@ -572,47 +572,47 @@ Das Feature &quot;selective sync&quot; wird wieder verfügbar. Diese Aktion bric
         <translation>Ablehnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="212"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Signed out</source>
         <translation>Abgemeldet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="214"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Disconnected</source>
         <translation>Getrennt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="216"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Connected</source>
         <translation>Verbunden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="218"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Service unavailable</source>
         <translation>Service nicht erreichbar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="220"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Maintenance mode</source>
         <translation>Wartungsmodus</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="222"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Network error</source>
         <translation>Netzwerkfehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="224"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Configuration error</source>
         <translation>Konfigurationsfehler</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="226"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Asking Credentials</source>
         <translation>Zugangsdaten werden abgefragt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="228"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Unknown account state</source>
         <translation>Status des Kontos unbekannt</translation>
     </message>
@@ -782,8 +782,9 @@ Datei Synchronisations-Applikation.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="585"/>
-        <source>For more information, see http://www.owncloud.org</source>
-        <translation>Für weitere Informationen, siehe http://www.owncloud.org</translation>
+        <source>For more information, see %1</source>
+        <comment>link to homepage</comment>
+        <translation>Siehe %1 für mehr Informationen</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -1547,7 +1548,7 @@ Ziehen Sie in Erwägung, diesen Ordner aus dem Konto zu entfernen und erneut hin
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation type="unfinished"/>
+        <translation>Dieser Ordner kann nicht synchronisiert werden. Bitte verwenden Sie einen anderen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="441"/>
@@ -1588,17 +1589,17 @@ Ziehen Sie in Erwägung, diesen Ordner aus dem Konto zu entfernen und erneut hin
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Fehler:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Fehler:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Warnung:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -1817,7 +1818,7 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Upgrades erhalten un
         <translation>Passwort eingeben</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klicke hier&lt;/a&gt; um ein App-Passwort von dem Web-Interface zu erhalten.</translation>
     </message>

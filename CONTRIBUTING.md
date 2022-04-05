@@ -6,7 +6,7 @@ We are also available on [IRC][irc].
 
 ### Bug Reporting Guidelines
 * __Important__: When reporting an issue provide as much requested information as possible, we :heart: log files.
-* __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.org/security/) instead of filing an issue in our bug tracker
+* __SECURITY__: Report any potential security bug to security@owncloud.com following our [security policy](https://owncloud.com/security/) instead of filing an issue in our bug tracker
 * This repository is *only* for issues within the ownCloud desktop client. 
   Issues in other components should be reported in their own repositores: 
   - [ownCloud server](https://github.com/owncloud/core/issues)
@@ -37,9 +37,9 @@ Please read the [Desktop Client Manual][desktopman] and the [Developer
 Manuals][devmanual] to get useful info like how to create your first
 application or how to test the ownCloud code with phpunit.
 
-[agreement]: http://owncloud.org/about/contributor-agreement/
+[agreement]: https://owncloud.com/contribute/join-the-development/contributor-agreement/
 [devmanual]: https://doc.owncloud.com/desktop/latest/appendices/building.html
-[desktopman]: http://doc.owncloud.org/desktop
+[desktopman]: https://doc.owncloud.com/desktop
 
 ## Translations
 Please submit translations via [Transifex][transifex].

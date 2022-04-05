@@ -5,10 +5,31 @@
 # with a specific compiler.
 #
 
-OC_TESTING_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.4.0"
-GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
+DEFAULT_PHP_VERSION = "7.4"
 GUI_TEST_DIR = "/drone/src/test/gui"
+GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
 NOTIFICATION_TEMPLATE_DIR = "/drone/src"
+STACKTRACE_FILE = "%s/stacktrace.log" % GUI_TEST_REPORT_DIR
+
+CYTOPIA_BLACK = "cytopia/black"
+DOCKER_GIT = "docker:git"
+MYSQL = "mysql:8.0"
+OC_CI_ALPINE = "owncloudci/alpine:latest"
+OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
+OC_CI_CLIENT = "owncloudci/client:latest"
+OC_CI_CORE = "owncloudci/core"
+OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
+OC_CI_PHP = "owncloudci/php:%s"
+OC_CI_SQUISH = "owncloudci/squish:6.7-20220106-1008-qt515x-linux64"
+OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
+OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.4.0"
+OC_UBUNTU = "owncloud/ubuntu:20.04"
+PLUGINS_GIT_ACTION = "plugins/git-action:1"
+PLUGINS_S3 = "plugins/s3"
+PLUGINS_SLACK = "plugins/slack"
+PYTHON = "python"
+THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
+TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 
 dir = {
     "base": "/drone",
@@ -29,6 +50,7 @@ def main(ctx):
         ],
     }
     pipelines = [
+        cancelPreviousBuilds(),
         # check the format of gui test code
         gui_tests_format(build_trigger),
         # Check starlark
@@ -121,16 +143,14 @@ def check_starlark(ctx, trigger = {}, depends_on = []):
         "steps": [
             {
                 "name": "format-check-starlark",
-                "image": "owncloudci/bazel-buildifier",
-                "pull": "always",
+                "image": OC_CI_BAZEL_BUILDIFIER,
                 "commands": [
                     "buildifier --mode=check .drone.star",
                 ],
             },
             {
                 "name": "show-diff",
-                "image": "owncloudci/bazel-buildifier",
-                "pull": "always",
+                "image": OC_CI_BAZEL_BUILDIFIER,
                 "commands": [
                     "buildifier --mode=fix .drone.star",
                     "git diff",
@@ -161,7 +181,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
         "steps": [
                      {
                          "name": "submodules",
-                         "image": "docker:git",
+                         "image": DOCKER_GIT,
                          "commands": [
                              "git submodule update --init --recursive",
                          ],
@@ -171,8 +191,7 @@ def build_and_test_client(ctx, c_compiler, cxx_compiler, build_type, generator, 
                  [
                      {
                          "name": "ctest",
-                         "image": "owncloudci/client",
-                         "pull": "always",
+                         "image": OC_CI_CLIENT,
                          "environment": {
                              "LC_ALL": "C.UTF-8",
                          },
@@ -208,7 +227,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
         "steps": [
                      {
                          "name": "submodules",
-                         "image": "docker:git",
+                         "image": DOCKER_GIT,
                          "commands": [
                              "git submodule update --init --recursive",
                          ],
@@ -223,8 +242,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                  [
                      {
                          "name": "GUItests",
-                         "image": "owncloudci/squish:6.7-20220106-1008-qt515x-linux64",
-                         "pull": "always",
+                         "image": OC_CI_SQUISH,
                          "environment": {
                              "LICENSEKEY": from_secret("squish_license_server"),
                              "GUI_TEST_REPORT_DIR": GUI_TEST_REPORT_DIR,
@@ -234,6 +252,7 @@ def gui_tests(ctx, trigger = {}, depends_on = [], filterTags = [], version = "da
                              "SECURE_BACKEND_HOST": "https://owncloud/",
                              "SERVER_INI": "/drone/src/test/gui/drone/server.ini",
                              "SQUISH_PARAMETERS": squish_parameters,
+                             "STACKTRACE_FILE": STACKTRACE_FILE,
                          },
                      },
                  ] +
@@ -260,8 +279,7 @@ def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_com
     return [
         {
             "name": "cmake",
-            "image": "owncloudci/client",
-            "pull": "always",
+            "image": OC_CI_CLIENT,
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
@@ -273,8 +291,7 @@ def build_client(ctx, c_compiler, cxx_compiler, build_type, generator, build_com
         },
         {
             "name": build_command,
-            "image": "owncloudci/client",
-            "pull": "always",
+            "image": OC_CI_CLIENT,
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
@@ -293,8 +310,7 @@ def gui_tests_format(trigger):
         "steps": [
             {
                 "name": "black",
-                "image": "cytopia/black",
-                "pull": "always",
+                "image": CYTOPIA_BLACK,
                 "commands": [
                     "cd /drone/src/test/gui",
                     "black --check --diff .",
@@ -316,8 +332,7 @@ def changelog(ctx, trigger = {}, depends_on = []):
         "steps": [
             {
                 "name": "clone",
-                "image": "plugins/git-action:1",
-                "pull": "always",
+                "image": PLUGINS_GIT_ACTION,
                 "settings": {
                     "actions": [
                         "clone",
@@ -332,32 +347,28 @@ def changelog(ctx, trigger = {}, depends_on = []):
             },
             {
                 "name": "generate",
-                "image": "toolhippie/calens:latest",
-                "pull": "always",
+                "image": TOOLHIPPIE_CALENS,
                 "commands": [
                     "calens >| CHANGELOG.md",
                 ],
             },
             {
                 "name": "diff",
-                "image": "owncloudci/alpine:latest",
-                "pull": "always",
+                "image": OC_CI_ALPINE,
                 "commands": [
                     "git diff",
                 ],
             },
             {
                 "name": "output",
-                "image": "toolhippie/calens:latest",
-                "pull": "always",
+                "image": TOOLHIPPIE_CALENS,
                 "commands": [
                     "cat CHANGELOG.md",
                 ],
             },
             {
                 "name": "publish",
-                "image": "plugins/git-action:1",
-                "pull": "always",
+                "image": PLUGINS_GIT_ACTION,
                 "settings": {
                     "actions": [
                         "commit",
@@ -387,11 +398,10 @@ def changelog(ctx, trigger = {}, depends_on = []):
 
     return result
 
-def make(target, path, image = "owncloudci/transifex:latest"):
+def make(target, path, image = OC_CI_TRANSIFEX):
     return {
         "name": target,
         "image": image,
-        "pull": "always",
         "environment": {
             "TX_TOKEN": from_secret("tx_token"),
         },
@@ -419,7 +429,7 @@ def notification(name, depends_on = [], trigger = {}):
         "steps": [
             {
                 "name": "create-template",
-                "image": "owncloudci/alpine:latest",
+                "image": OC_CI_ALPINE,
                 "environment": {
                     "CACHE_ENDPOINT": {
                         "from_secret": "cache_public_s3_server",
@@ -434,8 +444,7 @@ def notification(name, depends_on = [], trigger = {}):
             },
             {
                 "name": "notification",
-                "image": "plugins/slack",
-                "pull": "always",
+                "image": PLUGINS_SLACK,
                 "settings": {
                     "webhook": from_secret("private_rocketchat"),
                     "channel": "desktop-internal",
@@ -451,8 +460,7 @@ def notification(name, depends_on = [], trigger = {}):
 def databaseService():
     service = {
         "name": "mysql",
-        "image": "mysql:8.0",
-        "pull": "always",
+        "image": MYSQL,
         "environment": {
             "MYSQL_USER": "owncloud",
             "MYSQL_PASSWORD": "owncloud",
@@ -466,8 +474,7 @@ def databaseService():
 def installCore(version):
     stepDefinition = {
         "name": "install-core",
-        "image": "owncloudci/core",
-        "pull": "always",
+        "image": OC_CI_CORE,
         "settings": {
             "version": version,
             "core_path": "/drone/src/server",
@@ -483,8 +490,7 @@ def installCore(version):
 def setupServerAndApp(logLevel):
     return [{
         "name": "setup-owncloud-server",
-        "image": "owncloudci/php:7.4",
-        "pull": "always",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "commands": [
             "cd /drone/src/server/",
             "php occ a:e testing",
@@ -499,8 +505,7 @@ def setupServerAndApp(logLevel):
 def owncloudService():
     return [{
         "name": "owncloud",
-        "image": "owncloudci/php:7.4",
-        "pull": "always",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "environment": {
             "APACHE_WEBROOT": "/drone/src/server/",
             "APACHE_CONFIG_TEMPLATE": "ssl",
@@ -525,7 +530,7 @@ def testMiddlewareService():
 
     return [{
         "name": "testmiddleware",
-        "image": OC_TESTING_MIDDLEWARE,
+        "image": OC_TEST_MIDDLEWARE,
         "environment": environment,
         "volumes": [{
             "name": "uploads",
@@ -536,8 +541,7 @@ def testMiddlewareService():
 def owncloudLog():
     return [{
         "name": "owncloud-log",
-        "image": "owncloud/ubuntu:16.04",
-        "pull": "always",
+        "image": OC_UBUNTU,
         "detach": True,
         "commands": [
             "tail -f /drone/src/server/data/owncloud.log",
@@ -547,8 +551,7 @@ def owncloudLog():
 def fixPermissions():
     return [{
         "name": "fix-permissions",
-        "image": "owncloudci/php:7.4",
-        "pull": "always",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "commands": [
             "cd /drone/src/server",
             "chown www-data * -R",
@@ -558,8 +561,7 @@ def fixPermissions():
 def setGuiTestReportDir():
     return [{
         "name": "create-gui-test-report-directory",
-        "image": "owncloud/ubuntu:16.04",
-        "pull": "always",
+        "image": OC_UBUNTU,
         "commands": [
             "mkdir %s/screenshots -p" % GUI_TEST_REPORT_DIR,
             "chmod 777 %s -R" % GUI_TEST_REPORT_DIR,
@@ -569,8 +571,7 @@ def setGuiTestReportDir():
 def showGuiTestResult():
     return [{
         "name": "show-gui-test-result",
-        "image": "python",
-        "pull": "always",
+        "image": PYTHON,
         "commands": [
             "python /drone/src/test/gui/TestLogParser.py /drone/src/test/guiTestReport/results.json",
         ],
@@ -584,8 +585,7 @@ def showGuiTestResult():
 def uploadGuiTestLogs():
     return [{
         "name": "upload-gui-test-result",
-        "image": "plugins/s3",
-        "pull": "if-not-exists",
+        "image": PLUGINS_S3,
         "settings": {
             "bucket": {
                 "from_secret": "cache_public_s3_bucket",
@@ -610,16 +610,13 @@ def uploadGuiTestLogs():
             "status": [
                 "failure",
             ],
-            "event": [
-                "pull_request",
-            ],
         },
     }]
 
 def buildGithubComment(suite):
     return [{
         "name": "build-github-comment",
-        "image": "owncloud/ubuntu:20.04",
+        "image": OC_UBUNTU,
         "commands": [
             "bash /drone/src/test/gui/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER}" % GUI_TEST_REPORT_DIR,
         ],
@@ -646,13 +643,12 @@ def githubComment(alternateSuiteName):
     prefix = "Results for <strong>%s</strong> ${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1" % alternateSuiteName
     return [{
         "name": "github-comment",
-        "image": "jmccann/drone-github-comment:1",
-        "pull": "if-not-exists",
+        "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
         "settings": {
-            "message_file": "%s/comments.file" % GUI_TEST_REPORT_DIR,
-        },
-        "environment": {
-            "GITHUB_TOKEN": {
+            "message": "%s/comments.file" % GUI_TEST_REPORT_DIR,
+            "key": "pr-${DRONE_PULL_REQUEST}",
+            "update": "true",
+            "api_key": {
                 "from_secret": "github_token",
             },
         },
@@ -661,7 +657,6 @@ def githubComment(alternateSuiteName):
         ],
         "when": {
             "status": [
-                "success",
                 "failure",
             ],
             "event": [
@@ -669,3 +664,27 @@ def githubComment(alternateSuiteName):
             ],
         },
     }]
+
+def cancelPreviousBuilds():
+    return {
+        "kind": "pipeline",
+        "type": "docker",
+        "name": "cancel-previous-builds",
+        "clone": {
+            "disable": True,
+        },
+        "steps": [{
+            "name": "cancel-previous-builds",
+            "image": OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS,
+            "settings": {
+                "DRONE_TOKEN": {
+                    "from_secret": "drone_token",
+                },
+            },
+        }],
+        "trigger": {
+            "ref": [
+                "refs/pull/**",
+            ],
+        },
+    }

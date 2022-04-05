@@ -574,47 +574,47 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <translation>Hidheni tej</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="212"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Signed out</source>
         <translation>I dalë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="214"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Disconnected</source>
         <translation>I shkëputur</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="216"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Connected</source>
         <translation>I lidhur</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="218"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Service unavailable</source>
         <translation>Shërbimi nuk po punon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="220"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Maintenance mode</source>
         <translation>Mënyra mirëmbajtje</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="222"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Network error</source>
         <translation>Gabim rrjeti</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="224"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Configuration error</source>
         <translation>Gabim formësimi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="226"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Asking Credentials</source>
         <translation>Po kërkohen Kredencialet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="228"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Unknown account state</source>
         <translation>Gjendje e panjohur llogarie</translation>
     </message>
@@ -784,8 +784,9 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="585"/>
-        <source>For more information, see http://www.owncloud.org</source>
-        <translation>Për më tepër hollësi, shihni te http://www.owncloud.org</translation>
+        <source>For more information, see %1</source>
+        <comment>link to homepage</comment>
+        <translation>Për më tepër hollësi, shihni %1</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -1820,7 +1821,7 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
         <translation>Jepni Fjalëkalimin</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Klikoni këtu&lt;/a&gt; që të kërkoni një fjalëkalim aplikacioni prej ndërfaqes web.</translation>
     </message>

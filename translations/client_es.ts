@@ -4,17 +4,17 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation type="unfinished"/>
+        <translation>Gestor de archivos</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
         <source>Show in %1</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar en %1</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar en el Navegador Web</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="29"/>
         <source>Tomahawk Crash Reporter</source>
-        <translation type="unfinished"/>
+        <translation>Tomahawk Reporte de Fallos</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="104"/>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
         <source>Uploaded %L1 of %L2 KB.</source>
-        <translation type="unfinished"/>
+        <translation>Subidos %L1 de %L2 KB.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
@@ -574,47 +574,47 @@ Esta acción abortará cualquier sincronización actualmente en ejecución.</tra
         <translation>Rechazar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="212"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Signed out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="214"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="216"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="218"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Service unavailable</source>
         <translation>Servicio no disponible</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="220"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Maintenance mode</source>
         <translation>Modo mantenimiento</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="222"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Network error</source>
         <translation>Error en la red</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="224"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Configuration error</source>
         <translation>Error en la configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="226"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Asking Credentials</source>
         <translation>Solicitando credenciales</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="228"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Unknown account state</source>
         <translation>Estado de cuenta desconocido</translation>
     </message>
@@ -784,8 +784,9 @@ Cliente de escritorio para la sincronización de archivos.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="585"/>
-        <source>For more information, see http://www.owncloud.org</source>
-        <translation>Para más información, consulte: http://www.owncloud.org</translation>
+        <source>For more information, see %1</source>
+        <comment>link to homepage</comment>
+        <translation>Para más información, mira %1</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -795,17 +796,17 @@ Cliente de escritorio para la sincronización de archivos.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="600"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Salir de la actual instancia.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="601"/>
         <source>Write log to file (use - to write to stdout).</source>
-        <translation type="unfinished"/>
+        <translation>Salvar el log en un archivo (usar - para escribir en formato estandar)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="602"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Escribir cada log de sincronización en un archivo nuevo en la carpeta.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="603"/>
@@ -1820,7 +1821,7 @@ Nota: esto solo selecciona el canal deseado y no permite una vueltas atrás. Vol
         <translation>Introduzca la contraseña</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Haga clic aquí&lt;/a&gt; para solicitar una contraseña de aplicación desde la interfaz web.</translation>
     </message>

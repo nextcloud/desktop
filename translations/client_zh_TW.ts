@@ -574,47 +574,47 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="212"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Signed out</source>
         <translation>已登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="214"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Disconnected</source>
         <translation>已經離線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="216"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="218"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Service unavailable</source>
         <translation>服務無法使用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="220"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Maintenance mode</source>
         <translation>維護模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="222"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Network error</source>
         <translation>網路異常</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="224"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Configuration error</source>
         <translation>設定錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="226"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Asking Credentials</source>
         <translation>詢問憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="228"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Unknown account state</source>
         <translation>未知的帳號狀態</translation>
     </message>
@@ -783,7 +783,8 @@ File synchronization desktop utility.</source>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="585"/>
-        <source>For more information, see http://www.owncloud.org</source>
+        <source>For more information, see %1</source>
+        <comment>link to homepage</comment>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1817,7 +1818,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <translation>輸入密碼</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;點擊這裡&lt;/a&gt;從Web介面請求軟體密碼。</translation>
     </message>

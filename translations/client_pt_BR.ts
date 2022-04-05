@@ -574,47 +574,47 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
         <translation>Rejeitar </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="212"/>
+        <location filename="../src/gui/accountstate.cpp" line="216"/>
         <source>Signed out</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="214"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="216"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="218"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Service unavailable</source>
         <translation>Serviço indisponível</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="220"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Maintenance mode</source>
         <translation>Modo de manutenção</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="222"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Network error</source>
         <translation>Erro de rede</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="224"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Configuration error</source>
         <translation>Erro de configuração</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="226"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Asking Credentials</source>
         <translation>Solicitando Credenciais</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="228"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Unknown account state</source>
         <translation>Estado da conta desconhecido</translation>
     </message>
@@ -784,8 +784,9 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="585"/>
-        <source>For more information, see http://www.owncloud.org</source>
-        <translation>Para obter mais informações, consulte http://www.owncloud.org </translation>
+        <source>For more information, see %1</source>
+        <comment>link to homepage</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -1818,7 +1819,7 @@ Observe que isso seleciona apenas de qual conjunto de atualizações são retira
         <translation>Entrar Senha</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="179"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="181"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
         <translation>&lt;a href=&quot;%1&quot;&gt;Clique aqui&lt;/a&gt; para solicitar uma senha de aplicativo na interface da web.</translation>
     </message>
