@@ -9,8 +9,6 @@ endif()
 set(client_UI_SRCS
     aboutdialog.ui
     accountsettings.ui
-    folderwizardsourcepage.ui
-    folderwizardtargetpage.ui
     generalsettings.ui
     ignorelisteditor.ui
     networksettings.ui
@@ -41,7 +39,6 @@ set(client_SRCS
     folderstatusmodel.cpp
     folderstatusdelegate.cpp
     folderwatcher.cpp
-    folderwizard.cpp
     generalsettings.cpp
     ignorelisteditor.cpp
     lockwatcher.cpp
@@ -115,11 +112,12 @@ if(TARGET qt5keychain)
 endif()
 
 add_subdirectory(newwizard)
+add_subdirectory(folderwizard)
 
 add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
 target_link_libraries(owncloudCore PUBLIC Qt5::Widgets Qt5::Network Qt5::Xml
-                                          libsync newwizard)
+                                          libsync newwizard folderwizard)
 target_compile_definitions(owncloudCore
     PUBLIC QT_USE_QSTRINGBUILDER
            QT_MESSAGELOGCONTEXT  # enable function name and line number in debug output

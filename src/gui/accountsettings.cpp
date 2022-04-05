@@ -29,12 +29,13 @@
 #include "folderman.h"
 #include "folderstatusdelegate.h"
 #include "folderstatusmodel.h"
-#include "folderwizard.h"
 #include "guiutility.h"
 #include "quotainfo.h"
 #include "settingsdialog.h"
 #include "theme.h"
 #include "tooltipupdater.h"
+
+#include "folderwizard/folderwizard.h"
 
 #include <math.h>
 

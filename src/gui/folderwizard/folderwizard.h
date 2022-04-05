@@ -15,17 +15,19 @@
 #ifndef MIRALL_FOLDERWIZARD_H
 #define MIRALL_FOLDERWIZARD_H
 
-#include <QWizard>
 #include <QNetworkReply>
 #include <QTimer>
+#include <QWizard>
 
-#include "folder.h"
 #include "accountfwd.h"
 
-#include "ui_folderwizardsourcepage.h"
-#include "ui_folderwizardtargetpage.h"
+#include "gui/folder.h"
 
 class QCheckBox;
+class QTreeWidgetItem;
+
+class Ui_FolderWizardSourcePage;
+class Ui_FolderWizardTargetPage;
 
 namespace OCC {
 
@@ -48,11 +50,11 @@ protected:
  * @brief Page to ask for the local source folder
  * @ingroup gui
  */
-class FolderWizardLocalPath : public FormatWarningsWizardPage
+class FolderWizardLocalPath : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit FolderWizardLocalPath(const AccountPtr &account);
+    explicit FolderWizardLocalPath(const AccountPtr &account, QWidget *parent = nullptr);
     ~FolderWizardLocalPath() override;
 
     bool isComplete() const override;
@@ -62,7 +64,7 @@ protected slots:
     void slotChooseLocalFolder();
 
 private:
-    Ui_FolderWizardSourcePage _ui;
+    Ui_FolderWizardSourcePage *_ui;
     QMap<QString, Folder *> _folderMap;
     AccountPtr _account;
 };
@@ -73,11 +75,11 @@ private:
  * @ingroup gui
  */
 
-class FolderWizardRemotePath : public FormatWarningsWizardPage
+class FolderWizardRemotePath : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit FolderWizardRemotePath(const AccountPtr &account);
+    explicit FolderWizardRemotePath(const AccountPtr &account, QWidget *parent = nullptr);
     ~FolderWizardRemotePath() override;
 
     bool isComplete() const override;
@@ -105,7 +107,7 @@ private:
     LsColJob *runLsColJob(const QString &path);
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
-    Ui_FolderWizardTargetPage _ui;
+    Ui_FolderWizardTargetPage *_ui;
     bool _warnWasVisible;
     AccountPtr _account;
     QTimer _lscolTimer;
@@ -119,7 +121,7 @@ class FolderWizardSelectiveSync : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit FolderWizardSelectiveSync(const AccountPtr &account);
+    explicit FolderWizardSelectiveSync(const AccountPtr &account, QWidget *parent = nullptr);
     ~FolderWizardSelectiveSync() override;
 
     bool validatePage() override;
@@ -149,7 +151,7 @@ public:
         Page_SelectiveSync
     };
 
-    explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr);
+    explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
     ~FolderWizard() override;
 
     bool eventFilter(QObject *watched, QEvent *event) override;
