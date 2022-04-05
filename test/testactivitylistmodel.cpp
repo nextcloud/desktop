@@ -139,11 +139,18 @@ public:
 
             QJsonArray actionsArray;
 
+            QJsonObject replyAction;
+            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
+            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
+            replyAction.insert(QStringLiteral("primary"), true);
+            actionsArray.push_back(replyAction);
+
             QJsonObject primaryAction;
             primaryAction.insert(QStringLiteral("label"), QStringLiteral("View chat"));
             primaryAction.insert(QStringLiteral("link"), QStringLiteral("http://cloud.example.de/call/9p4vjdzd"));
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
-            primaryAction.insert(QStringLiteral("primary"), true);
+            primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
 
             QJsonObject secondaryAction;
@@ -185,11 +192,18 @@ public:
 
             QJsonArray actionsArray;
 
+            QJsonObject replyAction;
+            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
+            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
+            replyAction.insert(QStringLiteral("primary"), true);
+            actionsArray.push_back(replyAction);
+
             QJsonObject primaryAction;
             primaryAction.insert(QStringLiteral("label"), QStringLiteral("View chat"));
             primaryAction.insert(QStringLiteral("link"), QStringLiteral("http://cloud.example.de/call/9p4vjdzd"));
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
-            primaryAction.insert(QStringLiteral("primary"), true);
+            primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
 
             QJsonObject secondaryAction;
@@ -222,11 +236,18 @@ public:
 
             QJsonArray actionsArray;
 
+            QJsonObject replyAction;
+            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
+            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
+            replyAction.insert(QStringLiteral("primary"), true);
+            actionsArray.push_back(replyAction);
+
             QJsonObject primaryAction;
             primaryAction.insert(QStringLiteral("label"), QStringLiteral("Call back"));
             primaryAction.insert(QStringLiteral("link"), QStringLiteral("http://cloud.example.de/call/9p4vjdzd"));
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
-            primaryAction.insert(QStringLiteral("primary"), true);
+            primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
 
             QJsonObject secondaryAction;
@@ -612,6 +633,10 @@ private slots:
             QVERIFY(index.data(OCC::ActivityListModel::AccountConnectedRole).canConvert<bool>());
             QVERIFY(index.data(OCC::ActivityListModel::DisplayActions).canConvert<bool>());
 
+            QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationConversationTokenRole).canConvert<QString>());
+            QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationMessageIdRole).canConvert<QString>());
+            QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationMessageSentRole).canConvert<QString>());
+
             // Unfortunately, trying to check anything relating to filepaths causes a crash
             // when the folder manager is invoked by the model to look for the relevant file
         }
@@ -658,10 +683,10 @@ private slots:
                         const auto actionButtonsLinks =
                             index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
 
-                        // both action links and buttons must contain a "WEB" verb element at the beginning
-                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("WEB"));
-                        QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("WEB"));
-                        
+                        // both action links and buttons must contain a "REPLY" verb element at the beginning
+                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+                        QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+
                         // the first action button for chat must have image set
                         QVERIFY(!actionButtonsLinks[0].value<OCC::ActivityLink>()._imageSource.isEmpty());
                         QVERIFY(!actionButtonsLinks[0].value<OCC::ActivityLink>()._imageSourceHovered.isEmpty());
@@ -687,7 +712,7 @@ private slots:
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
                             QVERIFY(
-                                actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
+                                actionButtonsLinks[1].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
                         }
                     } else {
                         QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Dismiss"));
