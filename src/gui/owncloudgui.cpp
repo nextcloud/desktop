@@ -69,6 +69,10 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr)
     auto validator = new ConnectionValidator(account, account.data());
     QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr](ConnectionValidator::Status status, const QStringList &errors) {
         if (OC_ENSURE(status == ConnectionValidator::Connected)) {
+            // saving once after adding makes sure the account is stored in the config in a working state
+            // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
+            // (for instance, when running from a debugger and stopping the process from there)
+            AccountManager::instance()->saveAccount(accountStatePtr->account().data());
             QString localFolder = initLocalFolder();
             auto folderMan = FolderMan::instance();
             if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
