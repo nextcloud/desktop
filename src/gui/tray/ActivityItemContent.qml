@@ -134,7 +134,7 @@ RowLayout {
         Label {
             id: talkReplyMessageSent
             text: root.activityData.messageSent
-            height: (text === "") ? 0 : implicitHeight
+            height: implicitHeight
             width: parent.width
             elide: Text.ElideRight
             wrapMode: Text.Wrap
