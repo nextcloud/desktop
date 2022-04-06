@@ -27,7 +27,7 @@ MouseArea {
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
 
-    function showReplyOptions(activityIndex) {
+    function showReplyOptions() {
         isTalkReplyOptionVisible = !isTalkReplyOptionVisible
     }
 
