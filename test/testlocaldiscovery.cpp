@@ -210,10 +210,10 @@ private slots:
         FakeFolder fakeFolder{FileInfo{}};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         const QString fileWithSpaces1(" foo");
-        const QString fileWithSpaces2(" bar  ");
+        const QString fileWithSpaces2(" bar ");
         const QString fileWithSpaces3("bla ");
         const QString fileWithSpaces4("A/ foo");
-        const QString fileWithSpaces5("A/ bar  ");
+        const QString fileWithSpaces5("A/ bar ");
         const QString fileWithSpaces6("A/bla ");
 
         fakeFolder.localModifier().insert(fileWithSpaces1);
@@ -223,76 +223,50 @@ private slots:
         fakeFolder.localModifier().insert(fileWithSpaces4);
         fakeFolder.localModifier().insert(fileWithSpaces5);
         fakeFolder.localModifier().insert(fileWithSpaces6);
-        fakeFolder.localModifier().mkdir(QStringLiteral("  with spaces  "));
+        fakeFolder.localModifier().mkdir(QStringLiteral(" with spaces "));
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        completeSpy.clear();
 
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces1.trimmed()));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces1));
+        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
+        QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::FileNameInvalid);
 
-        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces2.trimmed()));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces2));
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces1);
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces2);
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces3);
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces4);
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces5);
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces6);
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + QStringLiteral(" with spaces "));
 
-        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces3.trimmed()));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces3));
-
-        QVERIFY(fakeFolder.currentLocalState().find("A/foo"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces4));
-
-        QVERIFY(fakeFolder.currentLocalState().find("A/bar"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces5));
-
-        QVERIFY(fakeFolder.currentLocalState().find("A/bla"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces6));
-
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("with spaces")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("  with spaces  ")));
+        completeSpy.clear();
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {QStringLiteral("foo"), QStringLiteral("bar"), QStringLiteral("bla"), QStringLiteral("A/foo"), QStringLiteral("A/bar"), QStringLiteral("A/bla")});
         QVERIFY(fakeFolder.syncOnce());
 
-        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces1.trimmed()));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces1));
-        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces1.trimmed()));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces1));
-
-        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces2.trimmed()));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces2));
-        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces2.trimmed()));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces2));
-
-        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces3.trimmed()));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces3));
-        QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces3.trimmed()));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces3));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/foo"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces4));
-        QVERIFY(fakeFolder.currentLocalState().find("A/foo"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces4));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/bar"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces5));
-        QVERIFY(fakeFolder.currentLocalState().find("A/bar"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces5));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/bla"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces6));
-        QVERIFY(fakeFolder.currentLocalState().find("A/bla"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces6));
-
-        QVERIFY(fakeFolder.currentRemoteState().find(QStringLiteral("with spaces")));
-        QVERIFY(!fakeFolder.currentRemoteState().find(QStringLiteral("  with spaces  ")));
-        QVERIFY(fakeFolder.currentLocalState().find(QStringLiteral("with spaces")));
-        QVERIFY(!fakeFolder.currentLocalState().find(QStringLiteral("  with spaces  ")));
+        QCOMPARE(completeSpy.findItem(fileWithSpaces1)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces2)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces3)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(QStringLiteral(" with spaces "))->_status, SyncFileItem::Status::Success);
     }
 
-    void testCreateFileWithTrailingSpaces_localAndRemoteTrimmedDoNotExist_renameFile()
+    void testCreateFileWithTrailingSpaces_remoteDontGetRenamedAutomatically()
     {
-        FakeFolder fakeFolder{FileInfo{}};
+        // On Windows we can't create files/folders with leading/trailing spaces locally. So, we have to fail those items. On other OSs - we just sync them down normally.
+        FakeFolder fakeFolder{FileInfo()};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         const QString fileWithSpaces4("A/ foo");
-        const QString fileWithSpaces5("A/ bar  ");
+        const QString fileWithSpaces5("A/ bar ");
         const QString fileWithSpaces6("A/bla ");
 
         fakeFolder.remoteModifier().mkdir("A");
@@ -300,43 +274,69 @@ private slots:
         fakeFolder.remoteModifier().insert(fileWithSpaces5);
         fakeFolder.remoteModifier().insert(fileWithSpaces6);
 
-        qDebug() << fakeFolder.currentRemoteState();
+        ItemCompletedSpy completeSpy(fakeFolder);
+        completeSpy.clear();
 
         QVERIFY(fakeFolder.syncOnce());
 
-        qDebug() << fakeFolder.currentRemoteState();
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/foo"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces4));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/bar"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces5));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/bla"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces6));
-
-        QVERIFY(fakeFolder.syncOnce());
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/foo"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces4));
-        QVERIFY(fakeFolder.currentLocalState().find("A/foo"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces4));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/bar"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces5));
-        QVERIFY(fakeFolder.currentLocalState().find("A/bar"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces5));
-
-        QVERIFY(fakeFolder.currentRemoteState().find("A/bla"));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces6));
-        QVERIFY(fakeFolder.currentLocalState().find("A/bla"));
-        QVERIFY(!fakeFolder.currentLocalState().find(fileWithSpaces6));
-
-        auto expectedState = fakeFolder.currentLocalState();
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        if (Utility::isWindows()) {
+            QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
+        } else {
+            QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
+        }
     }
 
-    void testCreateFileWithTrailingSpaces_localTrimmedDoesExist_dontRenameAndUploadFile()
+    void testCreateFileWithTrailingSpaces_remoteGetRenamedManually()
+    {
+        // On Windows we can't create files/folders with leading/trailing spaces locally. So, we have to fail those items. On other OSs - we just sync them down normally.
+        FakeFolder fakeFolder{FileInfo()};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        const QString fileWithSpaces4("A/ foo");
+        const QString fileWithSpaces5("A/ bar ");
+        const QString fileWithSpaces6("A/bla ");
+
+        const QString fileWithoutSpaces4("A/foo");
+        const QString fileWithoutSpaces5("A/bar");
+        const QString fileWithoutSpaces6("A/bla");
+
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert(fileWithSpaces4);
+        fakeFolder.remoteModifier().insert(fileWithSpaces5);
+        fakeFolder.remoteModifier().insert(fileWithSpaces6);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        completeSpy.clear();
+
+        QVERIFY(fakeFolder.syncOnce());        
+
+        if (Utility::isWindows()) {
+            QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::FileNameInvalid);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::FileNameInvalid);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::FileNameInvalid);
+        } else {
+            QCOMPARE(completeSpy.findItem(fileWithSpaces4)->_status, SyncFileItem::Status::Success);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces5)->_status, SyncFileItem::Status::Success);
+            QCOMPARE(completeSpy.findItem(fileWithSpaces6)->_status, SyncFileItem::Status::Success);
+        }
+
+        fakeFolder.remoteModifier().rename(fileWithSpaces4, fileWithoutSpaces4);
+        fakeFolder.remoteModifier().rename(fileWithSpaces5, fileWithoutSpaces5);
+        fakeFolder.remoteModifier().rename(fileWithSpaces6, fileWithoutSpaces6);
+
+        completeSpy.clear();
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces4)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces5)->_status, SyncFileItem::Status::Success);
+        QCOMPARE(completeSpy.findItem(fileWithoutSpaces6)->_status, SyncFileItem::Status::Success);
+    }
+
+    void testCreateFileWithTrailingSpaces_localTrimmedAlsoCreated_dontRenameAutomaticallyAndDontUploadFile()
     {
         FakeFolder fakeFolder{FileInfo{}};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -344,9 +344,9 @@ private slots:
         const QString fileTrimmed("foo");
 
         fakeFolder.localModifier().insert(fileTrimmed);
-        QVERIFY(fakeFolder.syncOnce());
         fakeFolder.localModifier().insert(fileWithSpaces);
-        QVERIFY(!fakeFolder.syncOnce());
+
+        QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.currentRemoteState().find(fileTrimmed));
         QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces));
@@ -354,7 +354,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find(fileTrimmed));
     }
 
-    void testCreateFileWithTrailingSpaces_localTrimmedAlsoCreated_dontRenameAndUploadFile()
+    void testCreateFileWithTrailingSpaces_localTrimmedAlsoCreated_dontRenameAutomaticallyAndUploadBothFiles()
     {
         FakeFolder fakeFolder{FileInfo{}};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -363,10 +363,13 @@ private slots:
 
         fakeFolder.localModifier().insert(fileTrimmed);
         fakeFolder.localModifier().insert(fileWithSpaces);
-        QVERIFY(!fakeFolder.syncOnce());
+
+        fakeFolder.syncEngine().addAcceptedInvalidFileName(fakeFolder.localPath() + fileWithSpaces);
+
+        QVERIFY(fakeFolder.syncOnce());
 
         QVERIFY(fakeFolder.currentRemoteState().find(fileTrimmed));
-        QVERIFY(!fakeFolder.currentRemoteState().find(fileWithSpaces));
+        QVERIFY(fakeFolder.currentRemoteState().find(fileWithSpaces));
         QVERIFY(fakeFolder.currentLocalState().find(fileWithSpaces));
         QVERIFY(fakeFolder.currentLocalState().find(fileTrimmed));
     }
@@ -376,7 +379,7 @@ private slots:
         FakeFolder fakeFolder{FileInfo{}};
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         const QString fileWithSpaces1(" foo");
-        const QString fileWithSpaces2(" bar  ");
+        const QString fileWithSpaces2(" bar ");
         const QString fileWithSpaces3("bla ");
 
         fakeFolder.localModifier().insert(fileWithSpaces1);
