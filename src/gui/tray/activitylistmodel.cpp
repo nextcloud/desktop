@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -80,7 +80,6 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationConversationTokenRole] = "conversationToken";
     roles[TalkNotificationMessageIdRole] = "messageId";
     roles[TalkNotificationMessageSentRole] = "messageSent";
-    roles[TalkNotificationDisplayReplyOptionRole] = "displayReplyOption";
 
     return roles;
 }
@@ -333,8 +332,6 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._talkNotificationData.messageId;
     case TalkNotificationMessageSentRole:
         return replyMessageSent(a);
-    case TalkNotificationDisplayReplyOptionRole:
-        return displayReplyOption(a);
     default:
         return QVariant();
     }
@@ -614,12 +611,6 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
 
     const auto action = activity._links[actionIndex];
 
-    // TODO this will change with https://github.com/nextcloud/desktop/issues/4159
-    if (action._verb == "WEB" && action._label == tr("View chat")) {
-        setDisplayReplyOption(activityIndex);
-        return;
-    }
-
     if (action._verb == "WEB") {
         Utility::openBrowser(QUrl(action._link));
         return;
@@ -672,7 +663,7 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
     }
 
     if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
-        customList << ActivityListModel::convertLinkToActionButton(activity, activity._links.first());
+        customList << ActivityListModel::convertLinkToActionButton(activity._links.first());
         return customList;
     }
 
@@ -680,20 +671,18 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
         if (activityLink._verb == QStringLiteral("DELETE")
             || (activity._objectType == QStringLiteral("chat") || activity._objectType == QStringLiteral("call")
                 || activity._objectType == QStringLiteral("room"))) {
-            customList << ActivityListModel::convertLinkToActionButton(activity, activityLink);
+            customList << ActivityListModel::convertLinkToActionButton(activityLink);
         }
     }
 
     return customList;
 }
 
-QVariant ActivityListModel::convertLinkToActionButton(const OCC::Activity &activity, const OCC::ActivityLink &activityLink)
+QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &activityLink)
 {
     auto activityLinkCopy = activityLink;
 
-    const auto isReplyIconApplicable = activityLink._verb == QStringLiteral("WEB")
-        && (activity._objectType == QStringLiteral("chat") || activity._objectType == QStringLiteral("call")
-            || activity._objectType == QStringLiteral("room"));
+    const auto isReplyIconApplicable = activityLink._verb == QStringLiteral("REPLY");
 
     const QString replyButtonPath = QStringLiteral("image://svgimage-custom-color/reply.svg");
 
@@ -704,14 +693,8 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::Activity &activ
             QString(replyButtonPath + "/" + OCC::Theme::instance()->wizardHeaderTitleColor().name());
     }
 
-    const auto isReplyLabelApplicable = activityLink._verb == QStringLiteral("WEB")
-        && (activity._objectType == QStringLiteral("chat")
-        || (activity._objectType != QStringLiteral("room") && activity._objectType != QStringLiteral("call")));
-
     if (activityLink._verb == QStringLiteral("DELETE")) {
         activityLinkCopy._label = QObject::tr("Mark as read");
-    } else if (isReplyLabelApplicable) {
-        activityLinkCopy._label = QObject::tr("Reply");
     }
 
     return QVariant::fromValue(activityLinkCopy);
@@ -835,16 +818,5 @@ void ActivityListModel::setReplyMessageSent(const int activityIndex, const QStri
 QString ActivityListModel::replyMessageSent(const Activity &activity) const
 {
     return activity._talkNotificationData.messageSent;
-}
-
-void ActivityListModel::setDisplayReplyOption(const int activityIndex)
-{
-    _finalList[activityIndex]._talkNotificationData.displayReplyOption = true;
-    emit dataChanged(index(activityIndex, 0), index(activityIndex, 0), {ActivityListModel::TalkNotificationDisplayReplyOptionRole});
-}
-
-bool ActivityListModel::displayReplyOption(const Activity &activity) const
-{
-    return activity._talkNotificationData.displayReplyOption;
 }
 }

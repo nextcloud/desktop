@@ -131,10 +131,22 @@ RowLayout {
             color: Style.ncSecondaryTextColor
         }
 
+        Label {
+            id: talkReplyMessageSent
+            text: root.activityData.messageSent
+            height: implicitHeight
+            width: parent.width
+            elide: Text.ElideRight
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
+            font.pixelSize: Style.topLinePixelSize
+            color: Style.ncSecondaryTextColor
+        }
+
         Loader {
             id: talkReplyTextFieldLoader
-            active: isChatActivity && isTalkReplyPossible && model.displayReplyOption
-            visible: model.displayReplyOption
+            active: isChatActivity && isTalkReplyPossible
+            visible: isTalkReplyOptionVisible
 
             anchors.top: activityTextDateTime.bottom
             anchors.topMargin: 10
