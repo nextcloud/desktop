@@ -74,6 +74,8 @@ public:
     bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
+    void addAcceptedInvalidFileName(const QString& filePath);
+
     ExcludedFiles &excludedFiles() { return *_excludedFiles; }
     Utility::StopWatch &stopWatch() { return _stopWatch; }
     SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
@@ -295,6 +297,8 @@ private:
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     std::set<QString> _localDiscoveryPaths;
+
+    QStringList _leadingAndTrailingSpacesFilesAllowed;
 };
 }
 
