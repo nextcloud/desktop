@@ -271,6 +271,7 @@ public:
     ExcludedFiles *_excludes;
     QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
+    QStringList _leadingAndTrailingSpacesFilesAllowed;
     bool _ignoreHiddenFiles = false;
     std::function<bool(const QString &)> _shouldDiscoverLocaly;
 

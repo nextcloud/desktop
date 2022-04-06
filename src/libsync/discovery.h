@@ -150,8 +150,6 @@ private:
         }
     };
 
-    bool checkForInvalidFileName(const PathTuple &path, const std::map<QString, Entries> &entries, Entries &entry);
-
     /** Iterate over entries inside the directory (non-recursively).
      *
      * Called once _serverEntries and _localEntries are filled
@@ -162,8 +160,7 @@ private:
 
     // return true if the file is excluded.
     // path is the full relative path of the file. localName is the base name of the local entry.
-    bool handleExcluded(const QString &path, const QString &localName, bool isDirectory,
-        bool isHidden, bool isSymlink);
+    bool handleExcluded(const QString &path, const Entries &entries, bool isHidden);
 
     /** Reconcile local/remote/db information for a single item.
      *
