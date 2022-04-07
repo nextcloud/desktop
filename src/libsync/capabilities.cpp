@@ -221,6 +221,11 @@ bool Capabilities::bulkUpload() const
     return _capabilities["dav"].toMap()["bulkupload"].toByteArray() >= "1.0";
 }
 
+bool Capabilities::filesLockAvailable() const
+{
+    return _capabilities["files"].toMap()["locking"].toByteArray() >= "1.0";
+}
+
 bool Capabilities::userStatus() const
 {
     if (!_capabilities.contains("user_status")) {

@@ -257,6 +257,20 @@ private slots:
 
         QCOMPARE(bulkuploadAvailable, true);
     }
+
+    void testFilesLockAvailable_filesLockAvailable_returnTrue()
+    {
+        QVariantMap filesMap;
+        filesMap["locking"] = "1.0";
+
+        QVariantMap capabilitiesMap;
+        capabilitiesMap["files"] = filesMap;
+
+        const auto &capabilities = OCC::Capabilities(capabilitiesMap);
+        const auto filesLockAvailable = capabilities.filesLockAvailable();
+
+        QCOMPARE(filesLockAvailable, true);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestCapabilities)
