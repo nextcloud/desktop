@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="92"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="83"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="94"/>
         <source>Show more actions</source>
         <translation type="unfinished"/>
     </message>
@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="175"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="186"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -762,11 +762,6 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Non se sincronizaran os ficheiros da lista de ignorados e as ligazóns simbólicas.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
-        <source>View chat</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
@@ -3924,14 +3919,14 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/libsync/propagateupload.cpp" line="302"/>
         <location filename="../src/libsync/propagateupload.cpp" line="377"/>
         <location filename="../src/libsync/propagateupload.cpp" line="390"/>
-        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
-        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <location filename="../src/libsync/propagateupload.cpp" line="314"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="389"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="402"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4098,6 +4093,11 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 </context>
 <context>
     <name>OCC::ServerNotificationHandler</name>
+    <message>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
+        <source>Reply</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="137"/>
         <source>Dismiss</source>
@@ -5974,13 +5974,8 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Novo cartafol</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="714"/>
-        <source>Reply</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6096,12 +6091,12 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="38"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="31"/>
         <source>Reply to …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="72"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="65"/>
         <source>Send reply to chat message</source>
         <translation type="unfinished"/>
     </message>

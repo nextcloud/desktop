@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="81"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="92"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="83"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="94"/>
         <source>Show more actions</source>
         <translation>További műveletek megjelenítése</translation>
     </message>
@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="163"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="174"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="175"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="186"/>
         <source>Dismiss</source>
         <translation>Mellőzés</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="205"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217"/>
         <source>Open share dialog</source>
         <translation>Megosztási párbeszédpanel megnyitása</translation>
     </message>
@@ -762,11 +762,6 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>A mellőzési listából származó fájlok, valamint a szimbolikus linkek nincsenek szinkronizálva.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="618"/>
-        <source>View chat</source>
-        <translation>Csevegés megtekintése</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
@@ -3929,14 +3924,14 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/libsync/propagateupload.cpp" line="302"/>
         <location filename="../src/libsync/propagateupload.cpp" line="377"/>
         <location filename="../src/libsync/propagateupload.cpp" line="390"/>
-        <source>File %1 has invalid modification time. Do not upload to the server.</source>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
         <translation>A(z) %1 fájl módosítási ideje érvénytelen. Ne töltse fel a kiszolgálóra.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
-        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <location filename="../src/libsync/propagateupload.cpp" line="314"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="389"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="402"/>
+        <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>A(z) %1 fájl módosítási ideje érvénytelen. Ne töltse fel a kiszolgálóra.</translation>
     </message>
     <message>
@@ -4103,6 +4098,11 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 </context>
 <context>
     <name>OCC::ServerNotificationHandler</name>
+    <message>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
+        <source>Reply</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="137"/>
         <source>Dismiss</source>
@@ -5979,14 +5979,9 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Új mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="712"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
         <source>Mark as read</source>
         <translation>Megjelölés olvasottként</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="714"/>
-        <source>Reply</source>
-        <translation>Válasz</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
@@ -6101,12 +6096,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="38"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="31"/>
         <source>Reply to …</source>
         <translation>Válasz…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="72"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="65"/>
         <source>Send reply to chat message</source>
         <translation>Válasz küldése a csevegőüzenetre</translation>
     </message>
