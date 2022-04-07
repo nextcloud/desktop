@@ -65,6 +65,7 @@ public:
     int shareDefaultPermissions() const;
     bool chunkingNg() const;
     bool bulkUpload() const;
+    bool filesLockAvailable() const;
     bool userStatus() const;
     bool userStatusSupportsEmoji() const;
     QColor serverColor() const;
