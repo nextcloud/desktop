@@ -4100,7 +4100,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Odpovědět</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="137"/>
