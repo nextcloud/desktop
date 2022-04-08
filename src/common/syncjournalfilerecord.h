@@ -31,6 +31,16 @@ namespace OCC {
 
 class SyncFileItem;
 
+struct SyncJournalFileLockInfo {
+    bool _locked = false;
+    QString _lockOwnerDisplayName;
+    QString _lockOwnerId;
+    qint64 _lockOwnerType = 0;
+    QString _lockEditorApp;
+    qint64 _lockTime = 0;
+    qint64 _lockTimeout = 0;
+};
+
 /**
  * @brief The SyncJournalFileRecord class
  * @ingroup libsync
@@ -70,6 +80,7 @@ public:
     QByteArray _checksumHeader;
     QByteArray _e2eMangledName;
     bool _isE2eEncrypted = false;
+    SyncJournalFileLockInfo _lockstate;
 };
 
 bool OCSYNC_EXPORT

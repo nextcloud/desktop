@@ -363,6 +363,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 {
     const char *hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
     const char *hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
+    const auto serverFileIsLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked";
+    const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
     qCInfo(lcDisco).nospace() << "Processing " << path._original
                               << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
@@ -374,7 +376,8 @@ void ProcessDirectoryJob::processFile(PathTuple path,
                               << " | inode: " << dbEntry._inode << "/" << localEntry.inode << "/"
                               << " | type: " << dbEntry._type << "/" << localEntry.type << "/" << (serverEntry.isDirectory ? ItemTypeDirectory : ItemTypeFile)
                               << " | e2ee: " << dbEntry._isE2eEncrypted << "/" << serverEntry.isE2eEncrypted
-                              << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName;
+                              << " | e2eeMangledName: " << dbEntry.e2eMangledName() << "/" << serverEntry.e2eMangledName
+                              << " | file lock: " << localFileIsLocked << "//" << serverFileIsLocked;
 
     if (localEntry.isValid()
         && !serverEntry.isValid()
@@ -483,6 +486,14 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         Q_ASSERT(serverEntry.e2eMangledName.startsWith(rootPath));
         return serverEntry.e2eMangledName.mid(rootPath.length());
     }();
+    item->_locked = serverEntry.locked;
+    item->_lockOwnerDisplayName = serverEntry.lockOwnerDisplayName;
+    item->_lockOwnerId = serverEntry.lockOwnerId;
+    item->_lockOwnerType = serverEntry.lockOwnerType;
+    item->_lockEditorApp = serverEntry.lockEditorApp;
+    item->_lockTime = serverEntry.lockTime;
+    item->_lockTimeout = serverEntry.lockTimeout;
+    qCInfo(lcDisco()) << item->_locked << item->_lockOwnerDisplayName << item->_lockOwnerId << item->_lockOwnerType << item->_lockEditorApp << item->_lockTime << item->_lockTimeout;
 
     // Check for missing server data
     {

@@ -378,6 +378,15 @@ void DiscoverySingleDirectoryJob::start()
     if (_account->capabilities().clientSideEncryptionAvailable()) {
         props << "http://nextcloud.org/ns:is-encrypted";
     }
+    if (_account->capabilities().filesLockAvailable()) {
+        props << "http://nextcloud.org/ns:lock"
+              << "http://nextcloud.org/ns:lock-owner-displayname"
+              << "http://nextcloud.org/ns:lock-owner"
+              << "http://nextcloud.org/ns:lock-owner-type"
+              << "http://nextcloud.org/ns:lock-owner-editor"
+              << "http://nextcloud.org/ns:lock-time"
+              << "http://nextcloud.org/ns:lock-timeout";
+    }
 
     lsColJob->setProperties(props);
 
@@ -445,7 +454,46 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
             }
         } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
             result.isE2eEncrypted = true;
+        } else if (property == "lock") {
+            result.locked = (value == QStringLiteral("1") ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem);
         }
+        if (property == "lock-owner-displayname") {
+            result.lockOwnerDisplayName = value;
+        }
+        if (property == "lock-owner") {
+            result.lockOwnerId = value;
+        }
+        if (property == "lock-owner-type") {
+            auto ok = false;
+            const auto intConvertedValue = value.toULongLong(&ok);
+            if (ok) {
+                result.lockOwnerType = static_cast<SyncFileItem::LockOwnerType>(intConvertedValue);
+            } else {
+                result.lockOwnerType = SyncFileItem::LockOwnerType::UserLock;
+            }
+        }
+        if (property == "lock-owner-editor") {
+            result.lockEditorApp = value;
+        }
+        if (property == "lock-time") {
+            auto ok = false;
+            const auto intConvertedValue = value.toULongLong(&ok);
+            if (ok) {
+                result.lockTime = intConvertedValue;
+            } else {
+                result.lockTime = 0;
+            }
+        }
+        if (property == "lock-timeout") {
+            auto ok = false;
+            const auto intConvertedValue = value.toULongLong(&ok);
+            if (ok) {
+                result.lockTimeout = intConvertedValue;
+            } else {
+                result.lockTimeout = 0;
+            }
+        }
+
     }
 
     if (result.isDirectory && map.contains("size")) {
