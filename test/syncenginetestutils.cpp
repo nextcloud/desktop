@@ -298,11 +298,13 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     // Don't care about the request and just return a full propfind
     const QString davUri { QStringLiteral("DAV:") };
     const QString ocUri { QStringLiteral("http://owncloud.org/ns") };
+    const QString ncUri { QStringLiteral("http://nextcloud.org/ns") };
     QBuffer buffer { &payload };
     buffer.open(QIODevice::WriteOnly);
     QXmlStreamWriter xml(&buffer);
     xml.writeNamespace(davUri, QStringLiteral("d"));
     xml.writeNamespace(ocUri, QStringLiteral("oc"));
+    xml.writeNamespace(ncUri, QStringLiteral("nc"));
     xml.writeStartDocument();
     xml.writeStartElement(davUri, QStringLiteral("multistatus"));
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
