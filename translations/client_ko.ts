@@ -3557,47 +3557,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1136"/>
+        <location filename="../src/libsync/discovery.cpp" line="1140"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1139"/>
+        <location filename="../src/libsync/discovery.cpp" line="1143"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1473"/>
+        <location filename="../src/libsync/discovery.cpp" line="1477"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>&quot;동기화 할 대상 선택&quot; 블랙리스트로 인해 무시되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1506"/>
+        <location filename="../src/libsync/discovery.cpp" line="1510"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>해당 폴더에 하위 폴더를 추가 할 수 있는 권한이 없기 때문에 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1511"/>
+        <location filename="../src/libsync/discovery.cpp" line="1515"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>해당 폴더에 파일을 추가 할 권한이 없으므로 허용되지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1524"/>
+        <location filename="../src/libsync/discovery.cpp" line="1528"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>이 파일은 서버에서 읽기 전용이므로 업로드 할 수 없습니다. 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1546"/>
+        <location filename="../src/libsync/discovery.cpp" line="1550"/>
         <source>Moved to invalid target, restoring</source>
         <translation>유효하지 않은 목적지로 옮겨짐, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1560"/>
+        <location filename="../src/libsync/discovery.cpp" line="1564"/>
         <source>Not allowed to remove, restoring</source>
         <translation>삭제가 허용되지 않음, 복구</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1698"/>
+        <location filename="../src/libsync/discovery.cpp" line="1702"/>
         <source>Error while reading the database</source>
         <translation>데이터베이스를 읽는 중 오류 발생</translation>
     </message>
@@ -3607,7 +3607,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>서버가 디렉토리 &apos;%1&apos;을(를) 읽는 중 오류에 대응함: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1759"/>
+        <location filename="../src/libsync/discovery.cpp" line="1763"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation type="unfinished"/>
     </message>
@@ -3853,7 +3853,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="134"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="135"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>서버에서 잘못된 HTTP 코드를 반환했습니다. 201가 받아지는 대신 &quot;1 %2&quot;을 받았습니다.</translation>
     </message>
@@ -3863,12 +3863,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="246"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="259"/>
         <source>Error writing metadata to the database: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="249"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="262"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
@@ -3909,27 +3909,20 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="223"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="235"/>
         <source>Failed to upload encrypted file.</source>
         <translation>암호화된 파일 업로드 실패</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="254"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="266"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>경우에 따라 다른 이름을 가진 다른 파일이 존재하므로 %1 파일을 업로드 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="265"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="683"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="277"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="695"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>%1의 업로드가 폴더의 할당량을 초과합니다.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="302"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="377"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="390"/>
-        <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="314"/>
@@ -3939,22 +3932,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="374"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="314"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="389"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="402"/>
+        <source>File %1 has invalid modified time. Do not upload to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateupload.cpp" line="386"/>
         <source>File Removed (start upload) %1</source>
         <translation>파일 삭제됨 (업로드 시작) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="400"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>동기화 중 로컬 파일이 변경되었습니다. 곧 재개됩니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="411"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="423"/>
         <source>Local file changed during sync.</source>
         <translation>동기화 중 로컬 파일이 변경되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="421"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>암호화된 폴더 해제 실패</translation>
     </message>
@@ -3964,12 +3964,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="779"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="782"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
