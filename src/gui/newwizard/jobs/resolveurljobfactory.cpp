@@ -26,8 +26,6 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
     connect(reply, &QNetworkReply::finished, job, [oldUrl = url, reply, job] {
         reply->deleteLater();
 
-        const auto status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
         if (reply->error() != QNetworkReply::NoError) {
             setJobError(job, tr("Failed to resolve the url %1, error: %2").arg(oldUrl.toDisplayString(), reply->errorString()), reply->error());
             qCWarning(lcResolveUrl) << job->errorMessage();
