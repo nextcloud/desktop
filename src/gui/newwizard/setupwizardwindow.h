@@ -74,5 +74,7 @@ private:
 
     // need to keep track of the current page for event filtering
     QPointer<AbstractSetupWizardPage> _currentPage;
+    // during a transition, the event filter must be disabled
+    bool _transitioning;
 };
 }

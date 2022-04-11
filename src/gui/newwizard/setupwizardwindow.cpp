@@ -39,6 +39,7 @@ SetupWizardWindow::SetupWizardWindow(QWidget *parent)
 
 void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex index)
 {
+    _transitioning = false;
     _ui->backButton->setEnabled(true);
     _ui->nextButton->setEnabled(true);
 
@@ -110,7 +111,7 @@ void SetupWizardWindow::setPaginationEntries(const QStringList &paginationEntrie
 
 bool SetupWizardWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (obj == _currentPage.data() || obj == this) {
+    if (!_transitioning && (obj == _currentPage.data() || obj == this)) {
         if (event->type() == QEvent::KeyPress) {
             auto keyEvent = dynamic_cast<QKeyEvent *>(event);
 
