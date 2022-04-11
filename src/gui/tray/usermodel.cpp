@@ -567,19 +567,12 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
                     PreviewData preview;
                     preview._mimeType = mimeType.name();
                     preview._filename = fileName;
+                    preview._isMimeTypeIcon = true;
 
                     if(item->isDirectory()) {
                         preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/folder.svg");
-                        preview._isMimeTypeIcon = true;
-                    } else if(mimeType.isValid() && mimeType.inherits("text/plain")) {
-                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/text.svg");
-                        preview._isMimeTypeIcon = true;
-                    } else if (mimeType.isValid() && mimeType.inherits("application/pdf")) {
-                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/theming/img/core/filetypes/application-pdf.svg");
-                        preview._isMimeTypeIcon = true;
                     } else {
-                        preview._source = account()->url().toString() + QStringLiteral("/index.php/apps/files/api/v1/thumbnail/150/150/") + remotePath;
-                        preview._isMimeTypeIcon = false;
+                        preview._source = account()->url().toString() + Activity::relativeServerFileTypeIconPath(mimeType);
                     }
                     activity._previews.append(preview);
                 }
