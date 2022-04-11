@@ -61,6 +61,9 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
 
                     dialog->show();
                 }
+            } else {
+                qCInfo(lcResolveUrl) << "No need to alter URL" << newUrl;
+                setJobResult(job, newUrl);
             }
         }
     });
