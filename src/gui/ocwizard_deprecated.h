@@ -6,11 +6,6 @@
 
 namespace OCC::OwncloudWizard {
 
-[[deprecated]] static inline void askExperimentalVirtualFilesFeature(QObject *, std::function<void(bool)>)
-{
-    qWarning() << "Currently unsupported function askExperimentalVirtualFilesFeature called";
-}
-
 [[deprecated]] static inline bool useVirtualFileSync()
 {
     qWarning() << "Currently unsupported function useVirtualFileSync called";

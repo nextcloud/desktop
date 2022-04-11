@@ -21,6 +21,7 @@
 #include "common/asserts.h"
 #include "configfile.h"
 #include "creds/abstractcredentials.h"
+#include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "networkjobs.h"
 #include "theme.h"
 
@@ -559,10 +560,19 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
-        OwncloudWizard::askExperimentalVirtualFilesFeature(this, [this](bool enable) {
-            if (!enable)
-                _virtualFilesCheckBox->setChecked(false);
+        auto *messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(this);
+
+        connect(messageBox, &AskExperimentalVirtualFilesFeatureMessageBox::rejected, this, [this]() {
+            _virtualFilesCheckBox->setChecked(false);
         });
+
+        // no need to show the message box on Windows
+        // as a little shortcut, we just re-use the message box's accept handler
+        if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+            Q_EMIT messageBox->accepted();
+        } else {
+            messageBox->show();
+        }
     }
 }
 

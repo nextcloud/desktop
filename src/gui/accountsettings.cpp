@@ -54,6 +54,7 @@
 #include <qpropertyanimation.h>
 
 #include "account.h"
+#include "askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "ocwizard_deprecated.h"
 
 namespace OCC {
@@ -537,9 +538,12 @@ void AccountSettings::slotEnableVfsCurrentFolder()
     if (!selected.isValid() || !folder)
         return;
 
-    OwncloudWizard::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
-        if (!enable || !folder)
+    auto messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(this);
+
+    connect(messageBox, &AskExperimentalVirtualFilesFeatureMessageBox::accepted, this, [this, folder]() {
+        if (!folder) {
             return;
+        }
 
 #ifdef Q_OS_WIN
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
@@ -587,6 +591,14 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             switchVfsOn();
         }
     });
+
+    // no need to show the message box on Windows
+    // as a little shortcut, we just re-use the message box's accept handler
+    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+        Q_EMIT messageBox->accepted();
+    } else {
+        messageBox->show();
+    }
 }
 
 void AccountSettings::slotDisableVfsCurrentFolder()
