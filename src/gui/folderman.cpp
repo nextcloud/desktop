@@ -404,19 +404,7 @@ int FolderMan::setupFoldersMigration()
     //We need to include hidden files just in case the alias starts with '.'
     dir.setFilter(QDir::Files | QDir::Hidden);
     const auto &list = dir.entryList();
-
-    // Normally there should be only one account when migrating.
-    if (AccountStatePtr accountState = AccountManager::instance()->accounts().value(nullptr)) {
-        for (const auto &alias : list) {
-            if (Folder *f = setupFolderFromOldConfigFile(alias, accountState)) {
-                scheduleFolder(f);
-                emit folderSyncStateChange(f);
-            }
-        }
-
-        emit folderListChanged(_folderMap);
-    }
-
+    OC_ENFORCE_X(list.isEmpty(), "Migration from < 2.0 is no longer supported");
     // return the number of valid folders.
     return _folderMap.size();
 }
@@ -527,94 +515,6 @@ QString FolderMan::unescapeAlias(const QString &alias)
     a.replace(PAR_C_TAG, QLatin1String("]"));
 
     return a;
-}
-
-// filename is the name of the file only, it does not include
-// the configuration directory path
-// WARNING: Do not remove this code, it is used for predefined/automated deployments (2016)
-Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStatePtr accountState)
-{
-    Folder *folder = nullptr;
-
-    qCInfo(lcFolderMan) << "  ` -> setting up:" << file;
-    QString escapedAlias(file);
-    // check the unescaped variant (for the case when the filename comes out
-    // of the directory listing). If the file does not exist, escape the
-    // file and try again.
-
-#ifdef Q_OS_WIN
-    Utility::NtfsPermissionLookupRAII ntfs_perm;
-#endif
-    QFileInfo cfgFile(_folderConfigPath, file);
-
-    if (!cfgFile.exists()) {
-        // try the escaped variant.
-        escapedAlias = escapeAlias(file);
-        cfgFile.setFile(_folderConfigPath, escapedAlias);
-    }
-    if (!cfgFile.isReadable()) {
-        qCWarning(lcFolderMan) << "Cannot read folder definition for alias " << cfgFile.filePath();
-        return folder;
-    }
-
-    QSettings settings(_folderConfigPath + QLatin1Char('/') + escapedAlias, QSettings::IniFormat);
-    qCInfo(lcFolderMan) << "    -> file path: " << settings.fileName();
-
-    // Check if the filename is equal to the group setting. If not, use the group
-    // name as an alias.
-    QStringList groups = settings.childGroups();
-
-    if (!groups.contains(escapedAlias) && groups.count() > 0) {
-        escapedAlias = groups.first();
-    }
-
-    settings.beginGroup(escapedAlias); // read the group with the same name as the file which is the folder alias
-
-    QString path = settings.value(QLatin1String("localPath")).toString();
-    QString backend = settings.value(QLatin1String("backend")).toString();
-    QString targetPath = settings.value(QLatin1String("targetPath")).toString();
-    bool paused = settings.value(QLatin1String("paused"), false).toBool();
-    // QString connection = settings.value( QLatin1String("connection") ).toString();
-    QString alias = unescapeAlias(escapedAlias);
-
-    if (backend.isEmpty() || backend != QLatin1String("owncloud")) {
-        qCWarning(lcFolderMan) << "obsolete configuration of type" << backend;
-        return nullptr;
-    }
-
-    // cut off the leading slash, oCUrl always has a trailing.
-    if (targetPath.startsWith(QLatin1Char('/'))) {
-        targetPath.remove(0, 1);
-    }
-
-    if (!accountState) {
-        qCCritical(lcFolderMan) << "can't create folder without an account";
-        return nullptr;
-    }
-
-    FolderDefinition folderDefinition(accountState->account()->davUrl());
-    folderDefinition.alias = alias;
-    folderDefinition.setLocalPath(path);
-    folderDefinition.setTargetPath(targetPath);
-    folderDefinition.paused = paused;
-    folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
-
-    folder = addFolderInternal(folderDefinition, accountState, std::make_unique<VfsOff>());
-    if (folder) {
-        QStringList blackList = settings.value(QLatin1String("blackList")).toStringList();
-        if (!blackList.empty()) {
-            //migrate settings
-            folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
-            settings.remove(QLatin1String("blackList"));
-            // FIXME: If you remove this codepath, you need to provide another way to do
-            // this via theme.h or the normal FolderMan::setupFolders
-        }
-
-        folder->saveToSettings();
-    }
-    qCInfo(lcFolderMan) << "Migrated!" << folder;
-    settings.sync();
-    return folder;
 }
 
 void FolderMan::slotFolderSyncPaused(Folder *f, bool paused)
