@@ -21,16 +21,18 @@
 #include "logger.h"
 #include "configfile.h"
 #include "ocsnavigationappsjob.h"
+#include "pushnotifications.h"
 
 #include <QSettings>
 #include <QTimer>
-#include <qfontmetrics.h>
-
+#include <QFontMetrics>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QNetworkRequest>
 #include <QBuffer>
+
+#include <cmath>
 
 namespace OCC {
 
@@ -54,6 +56,8 @@ AccountState::AccountState(AccountPtr account)
         this, &AccountState::slotCredentialsFetched);
     connect(account.data(), &Account::credentialsAsked,
         this, &AccountState::slotCredentialsAsked);
+    connect(account.data(), &Account::pushNotificationsReady,
+            this, &AccountState::slotPushNotificationsReady);
 
     connect(this, &AccountState::isConnectedChanged, [=]{
         // Get the Apps available on the server if we're now connected.
@@ -61,6 +65,12 @@ AccountState::AccountState(AccountPtr account)
             fetchNavigationApps();
         }
     });
+
+    connect(&_checkConnectionTimer, &QTimer::timeout, this, &AccountState::slotCheckConnection);
+    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
+    _checkConnectionTimer.start();
+
+    QTimer::singleShot(0, this, &AccountState::slotCheckConnection);
 }
 
 AccountState::~AccountState() = default;
@@ -120,6 +130,10 @@ void AccountState::setState(State state)
         if (oldState == Connected || _state == Connected) {
             emit isConnectedChanged();
         }
+        if (_state == Connected) {
+            _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
+            setRetryCount(0);
+        }
     }
 
     // might not have changed but the underlying _connectionErrors might have
@@ -147,6 +161,16 @@ QString AccountState::stateString(State state)
         return tr("Asking Credentials");
     }
     return tr("Unknown account state");
+}
+
+int AccountState::retryCount() const
+{
+    return _retryCount;
+}
+
+void AccountState::increaseRetryCount()
+{
+    ++_retryCount;
 }
 
 bool AccountState::isSignedOut() const
@@ -234,8 +258,15 @@ void AccountState::trySignIn()
     }
 }
 
+void AccountState::systemOnlineConfigurationChanged()
+{
+    QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);
+}
+
 void AccountState::checkConnectivity()
 {
+    qCInfo(lcAccountState()) << "check connectivity";
+
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
@@ -293,6 +324,20 @@ void AccountState::checkConnectivity()
 
 void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors)
 {
+    const auto updateRetryCount = [this]() {
+        increaseRetryCount();
+        qCInfo(lcAccountState()) << "connection retry count" << retryCount();
+        _lastCheckConnectionTimer.invalidate();
+        _lastCheckConnectionTimer.start();
+    };
+
+    const auto resetRetryCount = [this]() {
+        qCInfo(lcAccountState) << "reset retry count";
+        setRetryCount(0);
+        _lastCheckConnectionTimer.invalidate();
+        _lastCheckConnectionTimer.start();
+    };
+
     if (isSignedOut()) {
         qCWarning(lcAccountState) << "Signed out, ignoring" << status << _account->url().toString();
         return;
@@ -329,6 +374,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::Connected:
         if (_state != Connected) {
             setState(Connected);
+            resetRetryCount();
 
             // Get the Apps available on the server.
             fetchNavigationApps();
@@ -340,6 +386,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::Undefined:
     case ConnectionValidator::NotConfigured:
         setState(Disconnected);
+        updateRetryCount();
         break;
     case ConnectionValidator::ServerVersionMismatch:
         setState(ConfigurationError);
@@ -349,6 +396,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         // or because we are having network issues. The latter one is
         // much more likely, so keep trying to connect.
         setState(NetworkError);
+        updateRetryCount();
         break;
     case ConnectionValidator::CredentialsWrong:
     case ConnectionValidator::CredentialsNotReady:
@@ -367,6 +415,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         break;
     case ConnectionValidator::Timeout:
         setState(NetworkError);
+        updateRetryCount();
         break;
     }
 }
@@ -456,6 +505,11 @@ void AccountState::fetchNavigationApps(){
     job->getNavigationApps();
 }
 
+void AccountState::setRetryCount(int count)
+{
+    _retryCount = count;
+}
+
 void AccountState::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
     if(statusCode == 200){
         qCDebug(lcAccountState) << "New navigation apps ETag Response Header received " << value;
@@ -466,6 +520,42 @@ void AccountState::slotEtagResponseHeaderReceived(const QByteArray &value, int s
 void AccountState::slotOcsError(int statusCode, const QString &message)
 {
     qCDebug(lcAccountState) << "Error " << statusCode << " while fetching new navigation apps: " << message;
+}
+
+void AccountState::slotCheckConnection()
+{
+    if (_lastCheckConnectionTimer.isValid()) {
+        const auto currentDelay = (retryCount() <= 1 ? ConnectionValidator::DefaultCallingIntervalMsec :
+                                                       (retryCount() == 2 ? ConnectionValidator::DefaultCallingIntervalMsec * 2 :
+                                                                            (retryCount() == 3 ? ConnectionValidator::DefaultCallingIntervalMsec * 4 :
+                                                                                                 ConnectionValidator::DefaultCallingIntervalMsec * 8)));
+
+        if (!_lastCheckConnectionTimer.hasExpired(currentDelay - 1)) {
+            qCInfo(lcAccountState()) << "timer has not expired: do not check now" << _lastCheckConnectionTimer.elapsed() << currentDelay;
+            return;
+        }
+    }
+
+    const auto currentState = state();
+
+    // Don't check if we're manually signed out or
+    // when the error is permanent.
+    const auto pushNotifications = account()->pushNotifications();
+    const auto pushNotificationsAvailable = (pushNotifications && pushNotifications->isReady());
+    if (currentState != AccountState::SignedOut && currentState != AccountState::ConfigurationError
+        && currentState != AccountState::AskingCredentials && !pushNotificationsAvailable) {
+        checkConnectivity();
+    } else if (currentState == AccountState::SignedOut && lastConnectionStatus() == AccountState::ConnectionStatus::SslError) {
+        qCWarning(lcAccountState()) << "Account is signed out due to SSL Handshake error. Going to perform a sign-in attempt...";
+        trySignIn();
+    }
+}
+
+void AccountState::slotPushNotificationsReady()
+{
+    if (state() != AccountState::State::Connected) {
+        setState(AccountState::State::Connected);
+    }
 }
 
 void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
