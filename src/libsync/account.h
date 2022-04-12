@@ -168,6 +168,8 @@ public:
     const Capabilities &capabilities() const;
     void setCapabilities(const Capabilities &caps);
 
+    bool hasCapabilities() const;
+
     /** Access the server version
      *
      * For servers >= 10.0.0, this can be the empty string until capabilities

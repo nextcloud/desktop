@@ -461,8 +461,13 @@ void Account::clearQNAMCache()
 
 const Capabilities &Account::capabilities() const
 {
-    Q_ASSERT(_capabilities.isValid());
+    Q_ASSERT(hasCapabilities());
     return _capabilities;
+}
+
+bool Account::hasCapabilities() const
+{
+    return _capabilities.isValid();
 }
 
 void Account::setCapabilities(const Capabilities &caps)
