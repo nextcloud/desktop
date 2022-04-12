@@ -107,16 +107,6 @@ void SyncResult::clearErrors()
     _errors.clear();
 }
 
-void SyncResult::setFolder(const QString &folder)
-{
-    _folder = folder;
-}
-
-QString SyncResult::folder() const
-{
-    return _folder;
-}
-
 void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
 {
     if (Progress::isWarningKind(item->_status)) {

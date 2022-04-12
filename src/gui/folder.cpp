@@ -97,7 +97,6 @@ Folder::Folder(const FolderDefinition &definition,
     }
     _syncResult.setStatus(status);
 
-    _syncResult.setFolder(_definition.alias);
     // check if the local path exists
     if (checkLocalPath()) {
         // those errors should not persist over sessions
@@ -468,7 +467,7 @@ void Folder::showSyncResultPopup()
         createGuiLog(_syncResult.firstItemError()->_file, LogStatusError, errorCount);
     }
 
-    qCInfo(lcFolder) << "Folder" << _syncResult.folder() << "sync result: " << _syncResult.status();
+    qCInfo(lcFolder) << "Folder" << path() << "sync result: " << _syncResult.status();
 }
 
 void Folder::createGuiLog(const QString &filename, LogStatus status, int count,

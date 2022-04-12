@@ -62,8 +62,6 @@ public:
     Status status() const;
     QString statusString() const;
     QDateTime syncTime() const;
-    void setFolder(const QString &folder);
-    QString folder() const;
 
     bool foundFilesNotSynced() const { return _foundFilesNotSynced; }
     bool folderStructureWasChanged() const { return _folderStructureWasChanged; }
@@ -93,7 +91,6 @@ private:
     Status _status = Undefined;
     SyncFileItemSet _syncItems;
     QDateTime _syncTime;
-    QString _folder;
     /**
      * when the sync tool support this...
      */
