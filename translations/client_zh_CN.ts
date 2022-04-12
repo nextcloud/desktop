@@ -991,7 +991,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation>％1 的版本冲突。</translation>
+        <translation>%1 的版本冲突。</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -1073,12 +1073,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="88"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation>是否要永久删除目录&lt;i&gt;％1&lt;/i&gt;及其所有内容？</translation>
+        <translation>是否要永久删除目录&lt;i&gt;%1&lt;/i&gt;及其所有内容？</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="89"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation>是否要永久删除文件&lt;i&gt;％1&lt;/i&gt;？</translation>
+        <translation>是否要永久删除文件&lt;i&gt;%1&lt;/i&gt;？</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictsolver.cpp" line="90"/>
@@ -1896,7 +1896,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>正在等待 ％n 个其他文件夹……</numerusform></translation>
+        <translation><numerusform>正在等待 %n 个其他文件夹……</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
@@ -2556,7 +2556,7 @@ Note that using any logging command line options will override this setting.</so
 Logs will be written to %1</source>
         <translation>当此选项被启用且没有配置其他日志记录时，日志将被写入临时文件夹并在数小时后过期。此设置在客户端重启后仍然生效。
 
-日志将被写入 ％1</translation>
+日志将被写入 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="115"/>
@@ -2844,7 +2844,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="143"/>
         <source>Downloading version %1. Please wait …</source>
-        <translation>正在下载版本 ％1。 请稍候 …</translation>
+        <translation>正在下载版本 %1。 请稍候 …</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="145"/>
@@ -2864,7 +2864,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>正在下载 ％1。请稍候…</translation>
+        <translation>正在下载 %1。请稍候…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
@@ -3207,7 +3207,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="342"/>
         <source>Trying to connect to %1 at %2 …</source>
-        <translation>尝试连接到 ％1 的 ％2 …</translation>
+        <translation>尝试连接到 %1 的 %2 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
@@ -3237,7 +3237,7 @@ It is not advisable to use it.</source>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
         <source>Creating local sync folder %1 …</source>
-        <translation>正在新建本地同步文件夹 ％1 …</translation>
+        <translation>正在新建本地同步文件夹 %1 …</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="453"/>
@@ -5660,7 +5660,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="437"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation>正在同步 ％2 的 ％1（剩余 ％3）</translation>
+        <translation>正在同步 %2 的 %1（剩余 %3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="442"/>

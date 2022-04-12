@@ -641,7 +641,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1128"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>伺服器 ％1 暫時無法使用。</translation>
+        <translation>伺服器 %1 暫時無法使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1131"/>
@@ -1825,13 +1825,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1019"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
-        <translation>，&apos;％1&apos;</translation>
+        <translation>，&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1022"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
-        <translation>&apos;％1&apos;</translation>
+        <translation>&apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
@@ -5697,7 +5697,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="464"/>
         <source>%1 (%2, %3)</source>
-        <translation>％1（％2，％3）</translation>
+        <translation>%1（%2，%3）</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="514"/>

@@ -640,7 +640,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1128"/>
         <source>Server %1 is temporarily unavailable.</source>
-        <translation>伺服器 ％1 暫時無法使用。</translation>
+        <translation>伺服器 %1 暫時無法使用。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1131"/>
@@ -875,7 +875,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation>於 %2 輸入「％1」的使用者與密碼。</translation>
+        <translation>於 %2 輸入「%1」的使用者與密碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
