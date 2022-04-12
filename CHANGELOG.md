@@ -63,6 +63,7 @@ Details
 
    https://github.com/owncloud/client/issues/9249
    https://github.com/owncloud/client/pull/9482
+   https://github.com/owncloud/client/pull/9566
 
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 
