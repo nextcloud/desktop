@@ -15,6 +15,7 @@ Summary
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
+* Enhancement - Support for OCIS Spaces: [#9154](https://github.com/owncloud/client/pull/9154)
 
 Details
 -------
@@ -70,6 +71,13 @@ Details
    We no longer guess the DAV endpoint depending on the chunking-ng feature.
 
    https://github.com/owncloud/client/pull/9538
+
+* Enhancement - Support for OCIS Spaces: [#9154](https://github.com/owncloud/client/pull/9154)
+
+   We added support to sync OCIS Spaces.
+
+   https://github.com/owncloud/client/pull/9154
+   https://github.com/owncloud/client/pull/9575/
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
