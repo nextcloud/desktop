@@ -21,6 +21,113 @@ private slots:
     {
     }
 
+    void testLockFile_lockFile_lockSuccess()
+    {
+        const auto testFileName = QStringLiteral("file.txt");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        QSignalSpy lockFileSuccessSpy(fakeFolder.account().data(), &OCC::Account::lockFileSuccess);
+        QSignalSpy lockFileErrorSpy(fakeFolder.account().data(), &OCC::Account::lockFileError);
+
+        fakeFolder.localModifier().insert(testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+
+        QVERIFY(lockFileSuccessSpy.wait());
+        QCOMPARE(lockFileErrorSpy.count(), 0);
+    }
+
+    void testLockFile_lockFile_lockError()
+    {
+        const auto testFileName = QStringLiteral("file.txt");
+        static constexpr auto LockedHttpErrorCode = 423;
+        const auto replyData = QByteArray("<?xml version=\"1.0\"?>\n"
+                                          "<d:prop xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\" xmlns:oc=\"http://owncloud.org/ns\" xmlns:nc=\"http://nextcloud.org/ns\">\n"
+                                          " <nc:lock/>\n"
+                                          " <nc:lock-owner-type>0</nc:lock-owner-type>\n"
+                                          " <nc:lock-owner>john</nc:lock-owner>\n"
+                                          " <nc:lock-owner-displayname>John Doe</nc:lock-owner-displayname>\n"
+                                          " <nc:lock-owner-editor>john</nc:lock-owner-editor>\n"
+                                          " <nc:lock-time>1650619678</nc:lock-time>\n"
+                                          " <nc:lock-timeout>300</nc:lock-timeout>\n"
+                                          " <nc:lock-token>files_lock/310997d7-0aae-4e48-97e1-eeb6be6e2202</nc:lock-token>\n"
+                                          "</d:prop>\n");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.setServerOverride([replyData] (FakeQNAM::Operation op, const QNetworkRequest &request, QIODevice *) {
+            QNetworkReply *reply = nullptr;
+            if (op == QNetworkAccessManager::CustomOperation && request.attribute(QNetworkRequest::CustomVerbAttribute).toString() == QStringLiteral("LOCK")) {
+                reply = new FakeErrorReply(op, request, nullptr, LockedHttpErrorCode, replyData);
+            }
+
+            return reply;
+        });
+
+        QSignalSpy lockFileSuccessSpy(fakeFolder.account().data(), &OCC::Account::lockFileSuccess);
+        QSignalSpy lockFileErrorSpy(fakeFolder.account().data(), &OCC::Account::lockFileError);
+
+        fakeFolder.localModifier().insert(testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+
+        QVERIFY(lockFileErrorSpy.wait());
+        QCOMPARE(lockFileSuccessSpy.count(), 0);
+    }
+
+    void testLockFile_fileLockStatus_queryLockStatus()
+    {
+        const auto testFileName = QStringLiteral("file.txt");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        QSignalSpy lockFileSuccessSpy(fakeFolder.account().data(), &OCC::Account::lockFileSuccess);
+        QSignalSpy lockFileErrorSpy(fakeFolder.account().data(), &OCC::Account::lockFileError);
+
+        fakeFolder.localModifier().insert(testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+
+        QVERIFY(lockFileSuccessSpy.wait());
+        QCOMPARE(lockFileErrorSpy.count(), 0);
+
+        auto lockStatus = fakeFolder.account()->fileLockStatus(&fakeFolder.syncJournal(), testFileName);
+        QCOMPARE(lockStatus, OCC::SyncFileItem::LockStatus::LockedItem);
+    }
+
+    void testLockFile_fileCanBeUnlocked_canUnlock()
+    {
+        const auto testFileName = QStringLiteral("file.txt");
+
+        FakeFolder fakeFolder{FileInfo{}};
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        QSignalSpy lockFileSuccessSpy(fakeFolder.account().data(), &OCC::Account::lockFileSuccess);
+        QSignalSpy lockFileErrorSpy(fakeFolder.account().data(), &OCC::Account::lockFileError);
+
+        fakeFolder.localModifier().insert(testFileName);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.account()->setLockFileState(QStringLiteral("/") + testFileName, &fakeFolder.syncJournal(), OCC::SyncFileItem::LockStatus::LockedItem);
+
+        QVERIFY(lockFileSuccessSpy.wait());
+        QCOMPARE(lockFileErrorSpy.count(), 0);
+
+        auto lockStatus = fakeFolder.account()->fileCanBeUnlocked(&fakeFolder.syncJournal(), testFileName);
+        QCOMPARE(lockStatus, true);
+    }
+
     void testLockFile_lockFile_jobSuccess()
     {
         const auto testFileName = QStringLiteral("file.txt");
