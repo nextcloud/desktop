@@ -73,6 +73,10 @@ void SocketUploadJob::prepareTag(const AccountPtr &account)
 
 void SocketUploadJob::start()
 {
+    fail("needs porting");
+    // TODO: spaces
+    // TODO: ProgressDispatcher requires a folder object
+    return;
     _localPath = _apiJob->arguments()[QLatin1String("localPath")].toString();
     auto remotePath = _apiJob->arguments()[QLatin1String("remotePath")].toString();
     if (!remotePath.startsWith(QLatin1Char('/'))) {
@@ -119,7 +123,8 @@ void SocketUploadJob::start()
     }
 
     connect(engine, &OCC::SyncEngine::transmissionProgress, this, [this](const ProgressInfo &info) {
-        Q_EMIT ProgressDispatcher::instance()->progressInfo(_localPath, info);
+        // TODO:
+        // Q_EMIT ProgressDispatcher::instance()->progressInfo(_localPath, info);
     });
     connect(engine, &OCC::SyncEngine::itemCompleted, this, [this](const OCC::SyncFileItemPtr item) {
         if (item->_errorString.isEmpty()) {
@@ -210,5 +215,6 @@ void SocketUploadJob::logMessage(const QString &localPath, const QString &messag
     }
     ocApp()->gui()->slotShowTrayMessage(tr("%1 backup").arg(Theme::instance()->appNameGUI()), message, icon);
     item->_responseTimeStamp = QDateTime::currentDateTime().toString(Qt::RFC2822Date).toUtf8();
-    Q_EMIT ProgressDispatcher::instance()->itemCompleted(QDir::toNativeSeparators(localPath), item);
+    // this requires a registed folder
+    // Q_EMIT ProgressDispatcher::instance()->itemCompleted(_folder, item);
 }

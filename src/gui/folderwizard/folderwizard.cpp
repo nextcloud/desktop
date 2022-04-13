@@ -443,7 +443,7 @@ bool FolderWizardRemotePath::isComplete() const
 
     bool ok = true;
 
-    for (auto *f : qAsConst(FolderMan::instance()->map())) {
+    for (auto *f : qAsConst(FolderMan::instance()->folders())) {
         if (f->accountState()->account() != _account) {
             continue;
         }

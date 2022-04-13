@@ -235,9 +235,9 @@ QString Folder::shortGuiRemotePathOrAppName() const
     }
 }
 
-QString Folder::alias() const
+QByteArray Folder::id() const
 {
-    return _definition.alias;
+    return _definition.id();
 }
 
 QString Folder::path() const
@@ -410,7 +410,7 @@ void Folder::slotRunEtagJob()
     // check if the etag is different when retrieved
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray>) { _timeSinceLastEtagCheckDone.start(); });
-    FolderMan::instance()->slotScheduleETagJob(alias(), _requestEtagJob);
+    FolderMan::instance()->slotScheduleETagJob(_requestEtagJob);
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
 
@@ -774,7 +774,7 @@ void Folder::saveToSettings() const
 
     // True if the folder path appears in only one account
     bool oneAccountOnly = true;
-    for (auto *other : FolderMan::instance()->map()) {
+    for (auto *other : FolderMan::instance()->folders()) {
         if (other != this && other->cleanPath() == this->cleanPath()) {
             oneAccountOnly = false;
             break;
@@ -800,24 +800,24 @@ void Folder::saveToSettings() const
     settings->beginGroup(settingsGroup);
     // Note: Each of these groups might have a "version" tag, but that's
     //       currently unused.
-    settings->beginGroup(FolderMan::escapeAlias(_definition.alias));
+    settings->beginGroup(_definition.id());
     FolderDefinition::save(*settings, _definition);
 
     settings->sync();
-    qCInfo(lcFolder) << "Saved folder" << _definition.alias << "to settings, status" << settings->status();
+    qCInfo(lcFolder) << "Saved folder" << _definition.localPath() << "to settings, status" << settings->status();
 }
 
 void Folder::removeFromSettings() const
 {
     auto settings = _accountState->settings();
     settings->beginGroup(QLatin1String("Folders"));
-    settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->remove(_definition.id());
     settings->endGroup();
     settings->beginGroup(QLatin1String("Multifolders"));
-    settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->remove(_definition.id());
     settings->endGroup();
     settings->beginGroup(QLatin1String("FoldersWithPlaceholders"));
-    settings->remove(FolderMan::escapeAlias(_definition.alias));
+    settings->remove(_definition.id());
 }
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
@@ -832,7 +832,7 @@ bool Folder::isFileExcludedRelative(const QString &relativePath) const
 
 void Folder::slotTerminateSync()
 {
-    qCInfo(lcFolder) << "folder " << alias() << " Terminating!";
+    qCInfo(lcFolder) << "folder " << path() << " Terminating!";
 
     if (_engine->isSyncRunning()) {
         _engine->abort();
@@ -858,7 +858,7 @@ void Folder::wipeForRemoval()
     slotDiscardDownloadProgress();
 
     // Unregister the socket API so it does not keep the .sync_journal file open
-    FolderMan::instance()->socketApi()->slotUnregisterPath(alias());
+    FolderMan::instance()->socketApi()->slotUnregisterPath(this);
     _journal.close(); // close the sync journal
 
     // Remove db and temporaries
@@ -1000,7 +1000,7 @@ void Folder::setDirtyNetworkLimits()
 void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
     _syncResult.appendErrorString(message);
-    emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+    emit ProgressDispatcher::instance()->syncError(this, message, category);
 }
 
 void Folder::slotSyncStarted()
@@ -1111,7 +1111,7 @@ void Folder::slotEmitFinishedDelayed()
 void Folder::slotTransmissionProgress(const ProgressInfo &pi)
 {
     emit progressInfo(pi);
-    emit ProgressDispatcher::instance()->progressInfo(alias(), pi);
+    emit ProgressDispatcher::instance()->progressInfo(this, pi);
 }
 
 // a item is completed: count the errors and forward to the ProgressDispatcher
@@ -1126,7 +1126,7 @@ void Folder::slotItemCompleted(const SyncFileItemPtr &item)
     _syncResult.processCompletedItem(item);
 
     _fileLog->logItem(*item);
-    emit ProgressDispatcher::instance()->itemCompleted(alias(), item);
+    emit ProgressDispatcher::instance()->itemCompleted(this, item);
 }
 
 void Folder::slotNewBigFolderDiscovered(const QString &newF, bool isExternal)
@@ -1184,9 +1184,9 @@ void Folder::schedulePathForLocalDiscovery(const QString &relativePath)
     _localDiscoveryTracker->addTouchedPath(relativePath.toUtf8());
 }
 
-void Folder::slotFolderConflicts(const QString &folder, const QStringList &conflictPaths)
+void Folder::slotFolderConflicts(Folder *folder, const QStringList &conflictPaths)
 {
-    if (folder != _definition.alias)
+    if (folder != this)
         return;
     auto &r = _syncResult;
 
@@ -1341,6 +1341,12 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     ownCloudGui::raiseDialog(msgBox);
 }
 
+FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl)
+    : _webDavUrl(davUrl)
+    , _id(id)
+{
+}
+
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
     settings.setValue(QLatin1String("localPath"), folder.localPath());
@@ -1364,10 +1370,9 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
         settings.remove(QLatin1String("navigationPaneClsid"));
 }
 
-FolderDefinition FolderDefinition::load(QSettings &settings, const QString &alias)
+FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &id)
 {
-    FolderDefinition folder(settings.value(davUrlC()).toUrl());
-    folder.alias = FolderMan::unescapeAlias(alias);
+    FolderDefinition folder(id, settings.value(davUrlC()).toUrl());
     folder.setLocalPath(settings.value(QLatin1String("localPath")).toString());
     folder.journalPath = settings.value(QLatin1String("journalPath")).toString();
     folder.setTargetPath(settings.value(QLatin1String("targetPath")).toString());
@@ -1413,6 +1418,16 @@ void FolderDefinition::setTargetPath(const QString &path)
 QString FolderDefinition::absoluteJournalPath() const
 {
     return QDir(localPath()).filePath(journalPath);
+}
+
+const QByteArray &FolderDefinition::id() const
+{
+    return _id;
+}
+
+void FolderDefinition::setId(const QByteArray &id)
+{
+    _id = id;
 }
 
 } // namespace OCC

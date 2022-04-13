@@ -54,7 +54,7 @@ public:
     static QMenu *showFilterMenu(QWidget *parent, SignalledQSortFilterProxyModel *model, int role, const QString &columnName);
 
 public slots:
-    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void slotItemCompleted(Folder *folder, const SyncFileItemPtr &item);
     void filterDidChange();
 
 private slots:

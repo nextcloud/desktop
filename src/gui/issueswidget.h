@@ -51,8 +51,8 @@ public:
     ~IssuesWidget() override;
 
 public slots:
-    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
-    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void slotProgressInfo(Folder *folder, const ProgressInfo &progress);
+    void slotItemCompleted(Folder *folder, const SyncFileItemPtr &item);
     void filterDidChange();
 
 signals:

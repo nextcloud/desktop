@@ -58,8 +58,8 @@ public:
 
 public slots:
     void slotUpdateFolderView(Folder *f);
-    void slotUnregisterPath(const QString &alias);
-    void slotRegisterPath(const QString &alias);
+    void slotUnregisterPath(Folder *f);
+    void slotRegisterPath(Folder *f);
     void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 signals:
@@ -162,7 +162,7 @@ private:
 
     QString buildRegisterPathMessage(const QString &path);
 
-    QSet<QString> _registeredAliases;
+    QSet<Folder *> _registeredFolders;
     QMap<SocketApiSocket *, QSharedPointer<SocketListener>> _listeners;
     SocketApiServer _localServer;
 };

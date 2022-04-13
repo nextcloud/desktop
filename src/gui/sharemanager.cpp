@@ -30,7 +30,7 @@ namespace OCC {
  */
 static void updateFolder(const AccountPtr &account, const QString &path)
 {
-    for (auto *f : FolderMan::instance()->map()) {
+    for (auto *f : FolderMan::instance()->folders()) {
         if (f->accountState()->account() != account)
             continue;
         auto folderPath = f->remotePath();

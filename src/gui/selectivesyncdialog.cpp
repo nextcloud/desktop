@@ -421,7 +421,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
     init(account);
     QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
-        _selectiveSync->setFolderInfo(_folder->remotePath(), _folder->alias(), selectiveSyncList);
+        _selectiveSync->setFolderInfo(_folder->remotePath(), _folder->id(), selectiveSyncList);
     } else {
         _okButton->setEnabled(false);
     }

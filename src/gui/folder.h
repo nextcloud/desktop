@@ -51,11 +51,11 @@ class LocalDiscoveryTracker;
 class FolderDefinition
 {
 public:
-    FolderDefinition(const QUrl &davUrl)
-        : _webDavUrl(davUrl) {};
+    static auto createNewFolderDefinition(const QUrl &davUrl)
+    {
+        return FolderDefinition(QUuid::createUuid().toByteArray(QUuid::WithoutBraces), davUrl);
+    }
 
-    /// The name of the folder in the ui and internally
-    QString alias;
     /// path to the journal, usually relative to localPath
     QString journalPath;
 
@@ -75,7 +75,7 @@ public:
     static void save(QSettings &settings, const FolderDefinition &folder);
 
     /// Reads a folder definition from the current settings group.
-    static FolderDefinition load(QSettings &settings, const QString &alias);
+    static FolderDefinition load(QSettings &settings, const QByteArray &id);
 
     /** The highest version in the settings that load() can read
      *
@@ -110,13 +110,24 @@ public:
         return _webDavUrl;
     }
 
+    const QByteArray &id() const;
+
+
 private:
+    FolderDefinition(const QByteArray &id, const QUrl &davUrl);
+
     /// path on local machine (always trailing /)
     QString _localPath;
     /// path on remote (usually no trailing /, exception "/")
     QString _targetPath;
 
     QUrl _webDavUrl;
+
+    /// For legacy reasons this can be a string, new folder objects will use a uuid
+    QByteArray _id;
+
+    /// legacy: override the id if we encounter a clash in FolderMan
+    void setId(const QByteArray &id);
 
     friend class FolderMan;
 };
@@ -146,11 +157,8 @@ public:
      */
     AccountStatePtr accountState() const { return _accountState; }
 
-    /**
-     * alias or nickname
-     */
-    QString alias() const;
-    QString shortGuiRemotePathOrAppName() const; // since 2.0 we don't want to show aliases anymore, show the path instead
+    QByteArray id() const;
+    QString shortGuiRemotePathOrAppName() const;
 
     /**
      * short local path to display on the GUI  (native separators)
@@ -434,7 +442,7 @@ private slots:
      * This is pretty awkward, but IssuesWidget just keeps better track
      * of conflicts across partial local discovery.
      */
-    void slotFolderConflicts(const QString &folder, const QStringList &conflictPaths);
+    void slotFolderConflicts(Folder *folder, const QStringList &conflictPaths);
 
     /** Warn users if they create a file or folder that is selective-sync excluded */
     void warnOnNewExcludedItem(const SyncJournalFileRecord &record, QStringView path);

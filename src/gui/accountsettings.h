@@ -60,7 +60,7 @@ public:
 
 signals:
     void folderChanged();
-    void showIssuesList(const QString &folderAlias);
+    void showIssuesList();
 
 public slots:
     void slotOpenOC();
@@ -81,7 +81,7 @@ protected slots:
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void slotToggleSignInState();
-    void refreshSelectiveSyncStatus();
+    [[deprecated]] void refreshSelectiveSyncStatus();
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
     void doExpand();
@@ -94,7 +94,7 @@ private:
     void createAccountToolbox();
 
     /// Returns the alias of the selected folder, empty string if none
-    QString selectedFolderAlias() const;
+    Folder *selectedFolder() const;
 
     Ui::AccountSettings *ui;
 

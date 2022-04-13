@@ -158,11 +158,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::itemCompleted,
         this, &IssuesWidget::slotItemCompleted);
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::syncError,
-        this, [this](const QString &folderAlias, const QString &message, ErrorCategory) {
+        this, [this](Folder *folder, const QString &message, ErrorCategory) {
             auto item = SyncFileItemPtr::create();
             item->_status = SyncFileItem::NormalError;
             item->_errorString = message;
-            _model->addProtocolItem(ProtocolItem { folderAlias, item });
+            _model->addProtocolItem(ProtocolItem { folder, item });
         });
 
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::excluded, this, [this](Folder *f, const QString &file, CSYNC_EXCLUDE_TYPE reason) {
@@ -262,18 +262,15 @@ void IssuesWidget::addResetFiltersAction(QMenu *menu, const QList<std::function<
     });
 }
 
-void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
+void IssuesWidget::slotProgressInfo(Folder *folder, const ProgressInfo &progress)
 {
     if (progress.status() == ProgressInfo::Reconcile) {
         // Wipe all non-persistent entries - as well as the persistent ones
         // in cases where a local discovery was done.
-        auto f = FolderMan::instance()->folder(folder);
-        if (!f)
-            return;
-        const auto &engine = f->syncEngine();
+        const auto &engine = folder->syncEngine();
         const auto style = engine.lastLocalDiscoveryStyle();
         _model->remove_if([&](const ProtocolItem &item) {
-            if (item.folder() != f) {
+            if (item.folder() != folder) {
                 return false;
             }
             if (item.direction() == SyncFileItem::None && item.status() != SyncFileItem::Excluded) {
@@ -288,7 +285,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
                 return true;
             }
             // Definitely wipe the entry if the file no longer exists
-            if (!QFileInfo::exists(f->path() + item.path())) {
+            if (!QFileInfo::exists(folder->path() + item.path())) {
                 return true;
             }
 
@@ -304,7 +301,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
         // Inform other components about them.
         QStringList conflicts;
         for (const auto &data : _model->rawData()) {
-            if (data.folder()->path() == folder
+            if (data.folder() == folder
                 && data.status() == SyncFileItem::Conflict) {
                 conflicts.append(data.path());
             }
@@ -315,7 +312,7 @@ void IssuesWidget::slotProgressInfo(const QString &folder, const ProgressInfo &p
     }
 }
 
-void IssuesWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
+void IssuesWidget::slotItemCompleted(Folder *folder, const SyncFileItemPtr &item)
 {
     if (!item->showInIssuesTab())
         return;

@@ -288,7 +288,7 @@ void SocketApi::slotNewConnection()
 
     auto listener = QSharedPointer<SocketListener>::create(socket);
     _listeners.insert(socket, listener);
-    for (Folder *f : FolderMan::instance()->map()) {
+    for (Folder *f : FolderMan::instance()->folders()) {
         if (f->canSync()) {
             QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
             listener->sendMessage(message);
@@ -390,30 +390,23 @@ void SocketApi::slotReadSocket()
     }
 }
 
-void SocketApi::slotRegisterPath(const QString &alias)
+void SocketApi::slotRegisterPath(Folder *folder)
 {
     // Make sure not to register twice to each connected client
-    if (_registeredAliases.contains(alias))
+    if (_registeredFolders.contains(folder))
         return;
 
-    Folder *f = FolderMan::instance()->folder(alias);
-    if (f) {
-        broadcastMessage(buildRegisterPathMessage(removeTrailingSlash(f->path())));
-    }
-
-    _registeredAliases.insert(alias);
+    broadcastMessage(buildRegisterPathMessage(removeTrailingSlash(folder->path())));
+    _registeredFolders.insert(folder);
 }
 
-void SocketApi::slotUnregisterPath(const QString &alias)
+void SocketApi::slotUnregisterPath(Folder *folder)
 {
-    if (!_registeredAliases.contains(alias))
+    if (!_registeredFolders.contains(folder))
         return;
 
-    Folder *f = FolderMan::instance()->folder(alias);
-    if (f)
-        broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(f->path()), QString()), true);
-
-    _registeredAliases.remove(alias);
+    broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(folder->path()), QString()), true);
+    _registeredFolders.remove(folder);
 }
 
 void SocketApi::slotUpdateFolderView(Folder *f)
@@ -448,7 +441,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
         case OCC::SyncResult::SyncRunning:
             Q_FALLTHROUGH();
         case OCC::SyncResult::SyncAbortRequested:
-            qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->alias() << "because status() is" << f->syncResult().status();
+            qCDebug(lcSocketApi) << "Not sending UPDATE_VIEW for" << f->path() << "because status() is" << f->syncResult().status();
         }
     }
 }

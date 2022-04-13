@@ -170,7 +170,7 @@ void ProtocolWidget::slotItemContextMenu()
     showContextMenu(this, _model, rows);
 }
 
-void ProtocolWidget::slotItemCompleted(const QString &folder, const SyncFileItemPtr &item)
+void ProtocolWidget::slotItemCompleted(Folder *folder, const SyncFileItemPtr &item)
 {
     if (!item->showInProtocolTab())
         return;

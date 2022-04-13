@@ -44,11 +44,6 @@ ProtocolItem::ProtocolItem(Folder *folder, const SyncFileItemPtr &item)
     }
 }
 
-ProtocolItem::ProtocolItem(const QString &folder, const SyncFileItemPtr &item)
-    : ProtocolItem(FolderMan::instance()->folder(folder), item)
-{
-}
-
 QString ProtocolItem::path() const
 {
     return _path;

@@ -81,9 +81,9 @@ public slots:
     void slotComputeOverallSyncStatus();
     void slotShowTrayMessage(const QString &title, const QString &msg, const QIcon &icon = {});
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg, const QIcon &icon = {});
-    void slotFolderOpenAction(const QString &alias);
+    void slotFolderOpenAction(Folder *f);
     void slotRebuildRecentMenus();
-    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
+    void slotUpdateProgress(Folder *folder, const ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();

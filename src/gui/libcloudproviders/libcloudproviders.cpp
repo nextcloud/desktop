@@ -82,7 +82,7 @@ void LibCloudProvidersPrivate::start()
 
 void LibCloudProvidersPrivate::updateExportedFolderList()
 {
-    const auto newFolders = FolderMan::instance()->map().values();
+    const auto newFolders = FolderMan::instance()->folders();
     const auto oldFolders = _folderExports.keys();
 
     // Remove folders that are no longer exported

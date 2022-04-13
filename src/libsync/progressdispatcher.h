@@ -302,16 +302,16 @@ signals:
       @param[out]  progress   A struct with all progress info.
 
      */
-    void progressInfo(const QString &folder, const ProgressInfo &progress);
+    void progressInfo(Folder *folder, const ProgressInfo &progress);
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const SyncFileItemPtr &item);
+    void itemCompleted(Folder *folder, const SyncFileItemPtr &item);
 
     /**
      * @brief A new folder-wide sync error was seen.
      */
-    void syncError(const QString &folder, const QString &message, ErrorCategory category);
+    void syncError(Folder *folder, const QString &message, ErrorCategory category);
 
     void excluded(Folder *folder, const QString &path, CSYNC_EXCLUDE_TYPE reason);
 
@@ -319,7 +319,7 @@ signals:
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts
      */
-    void folderConflicts(const QString &folder, const QStringList &conflictPaths);
+    void folderConflicts(Folder *folder, const QStringList &conflictPaths);
 
 private:
     ProgressDispatcher(QObject *parent = nullptr);
