@@ -43,7 +43,7 @@ void FileActivityListModel::startFetchJob()
     if (!accountState()->isConnected()) {
         return;
     }
-    setCurrentlyFetching(true);
+    setAndRefreshCurrentlyFetching(true);
 
     const QString url(QStringLiteral("ocs/v2.php/apps/activity/api/v2/activity/filter"));
     auto job = new JsonApiJob(accountState()->account(), url, this);

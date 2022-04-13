@@ -102,6 +102,7 @@ public slots:
     void slotBuildNotificationDisplay(const ActivityList &list);
     void slotBuildIncomingCallDialogs(const ActivityList &list);
     void slotRefreshNotifications();
+    void slotRefreshActivitiesInitial();
     void slotRefreshActivities();
     void slotRefresh();
     void slotRefreshUserStatus();
