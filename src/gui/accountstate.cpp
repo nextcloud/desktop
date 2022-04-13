@@ -280,6 +280,10 @@ void AccountState::checkConnectivity(bool blockJobs)
         account()->credentials()->fetchFromKeychain();
         return;
     }
+    // we are not properly setup yet
+    if (!account()->hasCapabilities()) {
+        return;
+    }
 
     // IF the account is connected the connection check can be skipped
     // if the last successful etag check job is not so long ago.
