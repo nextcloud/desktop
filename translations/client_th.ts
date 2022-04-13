@@ -2864,7 +2864,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเปลี่ยนชื่อไฟล์</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
