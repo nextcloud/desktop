@@ -25,8 +25,10 @@
 #include "pushnotifications.h"
 #include "version.h"
 
-#include <deletejob.h>
+#include "deletejob.h"
+#include "lockfilejobs.h"
 
+#include "common/syncjournaldb.h"
 #include "common/asserts.h"
 #include "clientsideencryption.h"
 #include "ocsuserstatusconnector.h"
@@ -109,6 +111,11 @@ QString Account::davPathBase()
 }
 
 AccountPtr Account::sharedFromThis()
+{
+    return _sharedThis.toStrongRef();
+}
+
+AccountPtr Account::sharedFromThis() const
 {
     return _sharedThis.toStrongRef();
 }
@@ -848,6 +855,60 @@ PushNotifications *Account::pushNotifications() const
 std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
 {
     return _userStatusConnector;
+}
+
+void Account::setLockFileState(const QString &serverRelativePath,
+                               SyncJournalDb * const journal,
+                               const SyncFileItem::LockStatus lockStatus)
+{
+    auto job = std::make_unique<LockFileJob>(sharedFromThis(), journal, serverRelativePath, lockStatus);
+    connect(job.get(), &LockFileJob::finishedWithoutError, this, [this]() {
+        Q_EMIT lockFileSuccess();
+    });
+    connect(job.get(), &LockFileJob::finishedWithError, this, [lockStatus, serverRelativePath, this](const int httpErrorCode, const QString &errorString, const QString &lockOwnerName) {
+        auto errorMessage = QString{};
+        const auto filePath = serverRelativePath.mid(1);
+
+        if (httpErrorCode == LockFileJob::LOCKED_HTTP_ERROR_CODE) {
+            errorMessage = tr("File %1 is already locked by %2.").arg(filePath, lockOwnerName);
+        } else if (lockStatus == SyncFileItem::LockStatus::LockedItem) {
+             errorMessage = tr("Lock operation on %1 failed with error %2").arg(filePath, errorString);
+        } else if (lockStatus == SyncFileItem::LockStatus::UnlockedItem) {
+             errorMessage = tr("Unlock operation on %1 failed with error %2").arg(filePath, errorString);
+        }
+        Q_EMIT lockFileError(errorMessage);
+    });
+    job->start();
+    static_cast<void>(job.release());
+}
+
+SyncFileItem::LockStatus Account::fileLockStatus(SyncJournalDb * const journal,
+                                                 const QString &folderRelativePath) const
+{
+    SyncJournalFileRecord record;
+    if (journal->getFileRecord(folderRelativePath, &record)) {
+        return record._lockstate._locked ? SyncFileItem::LockStatus::LockedItem : SyncFileItem::LockStatus::UnlockedItem;
+    }
+
+    return SyncFileItem::LockStatus::UnlockedItem;
+}
+
+bool Account::fileCanBeUnlocked(SyncJournalDb * const journal,
+                                const QString &folderRelativePath) const
+{
+    SyncJournalFileRecord record;
+    if (journal->getFileRecord(folderRelativePath, &record)) {
+        if (record._lockstate._lockOwnerType != static_cast<int>(SyncFileItem::LockOwnerType::UserLock)) {
+            return false;
+        }
+
+        if (record._lockstate._lockOwnerId != sharedFromThis()->davUser()) {
+            return false;
+        }
+
+        return true;
+    }
+    return false;
 }
 
 } // namespace OCC

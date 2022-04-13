@@ -27,6 +27,7 @@
 class QUrl;
 class QLocalSocket;
 class QStringList;
+class QFileInfo;
 
 namespace OCC {
 
@@ -124,6 +125,10 @@ private:
     Q_INVOKABLE void command_RESOLVE_CONFLICT(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_DELETE_ITEM(const QString &localFile, SocketListener *listener);
     Q_INVOKABLE void command_MOVE_ITEM(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_LOCK_FILE(const QString &localFile, SocketListener *listener);
+    Q_INVOKABLE void command_UNLOCK_FILE(const QString &localFile, SocketListener *listener);
+
+    void setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const;
 
     // Windows Shell / Explorer pinning fallbacks, see issue: https://github.com/nextcloud/desktop/issues/1599
 #ifdef Q_OS_WIN
@@ -144,6 +149,17 @@ private:
 
     // Sends the context menu options relating to sharing to listener
     void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, bool enabled);
+
+    void sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
+                                        Folder * const syncFolder,
+                                        const FileData &fileData,
+                                        const SocketListener * const listener) const;
+
+    void sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
+                                     Folder * const syncFolder,
+                                     const FileData &fileData,
+                                     const SocketListener * const listener,
+                                     const SyncJournalFileRecord &record) const;
 
     /** Send the list of menu item. (added in version 1.1)
      * argument is a list of files for which the menu should be shown, separated by '\x1e'
