@@ -12,14 +12,14 @@
  * for more details.
  */
 
-#include "application.h"
 #include "accountstate.h"
-#include "accountmanager.h"
 #include "account.h"
+#include "accountmanager.h"
+#include "application.h"
+#include "configfile.h"
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
 #include "logger.h"
-#include "configfile.h"
 #include "settingsdialog.h"
 #include "theme.h"
 

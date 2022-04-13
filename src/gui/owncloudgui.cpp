@@ -67,8 +67,8 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
             auto folderMan = FolderMan::instance();
 
             // saves a bit of duplicate code
-            auto addFolder = [folderMan, accountStatePtr, syncMode](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl) {
-                folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, syncMode);
+            auto addFolder = [folderMan, accountStatePtr, syncMode](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName = {}) {
+                folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, displayName, syncMode);
             };
 
             auto finalize = [accountStatePtr] {
@@ -88,7 +88,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
                             for (const auto &d : drives) {
                                 const QDir driveLocalFolder = localDir.filePath(d.getName());
                                 driveLocalFolder.mkdir(".");
-                                addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
+                                addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
                             }
                             finalize();
                         }

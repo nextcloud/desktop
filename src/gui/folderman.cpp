@@ -959,7 +959,7 @@ Folder *FolderMan::addFolderInternal(
 {
     // ensure we don't add multiple legacy folders with the same id
     if (!OC_ENSURE(!folderDefinition.id().isEmpty() && !folder(folderDefinition.id()))) {
-        folderDefinition.setId(QUuid::createUuid().toByteArray(QUuid::WithoutBraces));
+        folderDefinition._id = QUuid::createUuid().toByteArray(QUuid::WithoutBraces);
     }
 
     auto folder = new Folder(folderDefinition, accountState, std::move(vfs), this);
@@ -1411,13 +1411,13 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
 }
 
-void FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, Wizard::SyncMode syncMode)
+Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, Wizard::SyncMode syncMode)
 {
     // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
     QDir().mkdir(localFolder);
 
     qCInfo(lcFolderMan) << "Adding folder definition for" << localFolder << remotePath;
-    auto folderDefinition = FolderDefinition::createNewFolderDefinition(webDavUrl);
+    auto folderDefinition = FolderDefinition::createNewFolderDefinition(webDavUrl, displayName);
     folderDefinition.setLocalPath(localFolder);
     folderDefinition.setTargetPath(remotePath);
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
@@ -1449,7 +1449,6 @@ void FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QStri
         } else {
             qCWarning(lcFolderMan) << "Failed to create local sync folder!";
         }
-
         return f;
     };
 
@@ -1463,8 +1462,9 @@ void FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QStri
         dialog->setAttribute(Qt::WA_DeleteOnClose);
         dialog->show();
     } else {
-        finalize(folderDefinition);
+        return finalize(folderDefinition);
     }
+    return nullptr;
 }
 
 } // namespace OCC

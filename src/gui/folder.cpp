@@ -66,6 +66,10 @@ auto davUrlC()
 {
     return QLatin1String("davUrl");
 }
+auto displayNameC()
+{
+    return QLatin1String("displayString");
+}
 constexpr int WinVfsSettingsVersion = 4;
 constexpr int SettingsVersion = 2;
 }
@@ -222,22 +226,14 @@ bool Folder::checkLocalPath()
     return true;
 }
 
-QString Folder::shortGuiRemotePathOrAppName() const
-{
-    if (remotePath().length() > 0 && remotePath() != QLatin1String("/")) {
-        QString a = QFile(remotePath()).fileName();
-        if (a.startsWith('/')) {
-            a = a.remove(0, 1);
-        }
-        return a;
-    } else {
-        return Theme::instance()->appNameGUI();
-    }
-}
-
 QByteArray Folder::id() const
 {
     return _definition.id();
+}
+
+QString Folder::displayName() const
+{
+    return _definition.displayName();
 }
 
 QString Folder::path() const
@@ -1341,9 +1337,10 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
     ownCloudGui::raiseDialog(msgBox);
 }
 
-FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl)
+FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &displayName)
     : _webDavUrl(davUrl)
     , _id(id)
+    , _displayName(displayName)
 {
 }
 
@@ -1353,6 +1350,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QLatin1String("journalPath"), folder.journalPath);
     settings.setValue(QLatin1String("targetPath"), folder.targetPath());
     settings.setValue(davUrlC(), folder.webDavUrl());
+    settings.setValue(displayNameC(), folder.displayName());
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
 
@@ -1372,7 +1370,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 
 FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &id)
 {
-    FolderDefinition folder(id, settings.value(davUrlC()).toUrl());
+    FolderDefinition folder(id, settings.value(davUrlC()).toUrl(), settings.value(displayNameC()).toString());
     folder.setLocalPath(settings.value(QLatin1String("localPath")).toString());
     folder.journalPath = settings.value(QLatin1String("journalPath")).toString();
     folder.setTargetPath(settings.value(QLatin1String("targetPath")).toString());
@@ -1425,9 +1423,19 @@ const QByteArray &FolderDefinition::id() const
     return _id;
 }
 
-void FolderDefinition::setId(const QByteArray &id)
+QString FolderDefinition::displayName() const
 {
-    _id = id;
+    if (_displayName.isEmpty()) {
+        if (targetPath().length() > 0 && targetPath() != QLatin1String("/")) {
+            QString a = QFileInfo(targetPath()).fileName();
+            if (a.startsWith(QLatin1Char('/'))) {
+                a = a.remove(0, 1);
+            }
+            return a;
+        } else {
+            return Theme::instance()->appNameGUI();
+        }
+    }
+    return _displayName;
 }
-
 } // namespace OCC

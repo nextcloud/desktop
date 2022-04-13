@@ -640,6 +640,15 @@ QString FolderWizard::destination() const
     return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }
 
+
+QString FolderWizard::displayName() const
+{
+    if (_account->capabilities().spacesSupport().enabled) {
+        return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
+    };
+    return QString();
+}
+
 bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
 {
     if (event->type() == QEvent::LayoutRequest) {

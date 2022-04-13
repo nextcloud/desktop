@@ -56,8 +56,8 @@ FolderStatusModel::~FolderStatusModel()
 
 static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, const FolderStatusModel::SubFolderInfo &rhs)
 {
-    return QString::compare(lhs._folder->shortGuiRemotePathOrAppName(),
-               rhs._folder->shortGuiRemotePathOrAppName(),
+    return QString::compare(lhs._folder->displayName(),
+               rhs._folder->displayName(),
                Qt::CaseInsensitive)
         < 0;
 }
@@ -144,7 +144,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
     // independent of the index
     if (role == FolderStatusDelegate::IsUsingSpaces) {
-        return _accountState->account()->capabilities().spacesSupport().enabled;
+        return _accountState->account()->hasCapabilities() && _accountState->account()->capabilities().spacesSupport().enabled;
     }
     switch (classify(index)) {
     case AddButton: {
@@ -236,7 +236,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     case FolderStatusDelegate::SyncRunning:
         return f->syncResult().status() == SyncResult::SyncRunning;
     case FolderStatusDelegate::HeaderRole:
-        return f->shortGuiRemotePathOrAppName();
+        return f->displayName();
     case FolderStatusDelegate::FolderSyncPaused:
         return f->syncPaused();
     case FolderStatusDelegate::FolderAccountConnected:

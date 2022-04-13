@@ -430,57 +430,25 @@ void AccountSettings::slotFolderWizardAccepted()
 
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    auto definition = FolderDefinition::createNewFolderDefinition(folderWizard->davUrl());
-    definition.setLocalPath(folderWizard->field(QLatin1String("sourceFolder")).toString());
-    definition.setTargetPath(folderWizard->property("targetPath").toString());
+    const auto syncMode = folderWizard->property("useVirtualFiles").toBool() ? Wizard::SyncMode::UseVfs : Wizard::SyncMode::SyncEverything;
+    auto folder = folderMan->addFolderFromWizard(_accountState,
+        folderWizard->field(QLatin1String("sourceFolder")).toString(),
+        folderWizard->property("targetPath").toString(),
+        folderWizard->davUrl(),
+        folderWizard->displayName(),
+        syncMode);
 
-    if (folderWizard->property("useVirtualFiles").toBool()) {
-        definition.virtualFilesMode = bestAvailableVfsMode();
-    }
 
-    {
-        QDir dir(definition.localPath());
-        if (!dir.exists()) {
-            qCInfo(lcAccountSettings) << "Creating folder" << definition.localPath();
-            if (!dir.mkpath(".")) {
-                QMessageBox::warning(this, tr("Folder creation failed"),
-                    tr("<p>Could not create local folder <i>%1</i>.")
-                        .arg(QDir::toNativeSeparators(definition.localPath())));
-                return;
-            }
-        }
-        FileSystem::setFolderMinimumPermissions(definition.localPath());
-        Utility::setupFavLink(definition.localPath());
-    }
-
-    /* take the value from the definition of already existing folders. All folders have
-     * the same setting so far.
-     * The default is to not sync hidden files
-     */
-    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
-
-#ifdef Q_OS_WIN
-    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
-        definition.navigationPaneClsid = QUuid::createUuid();
-#endif
-
-    auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
-
-    folderMan->setSyncEnabled(true);
-
-    Folder *f = folderMan->addFolder(_accountState, definition);
-    if (f) {
-        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool())
-            f->setRootPinState(PinState::OnlineOnly);
-
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+    const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
+    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && syncMode == Wizard::SyncMode::SyncEverything)) {
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
-        folderMan->scheduleAllFolders();
         emit folderChanged();
     }
+    folderMan->scheduleAllFolders();
 }
 
 void AccountSettings::slotFolderWizardRejected()

@@ -159,6 +159,8 @@ public:
 
     QString destination() const;
 
+    QString displayName() const;
+
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 

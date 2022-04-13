@@ -89,7 +89,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
             QString clsidPathWow64 = QString() % "Software\\Classes\\Wow6432Node\\CLSID\\" % clsidStr;
             QString namespacePath = QString() % "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\" % clsidStr;
 
-            QString title = folder->shortGuiRemotePathOrAppName();
+            QString title = folder->displayName();
             // Write the account name in the sidebar only when using more than one account.
             if (AccountManager::instance()->accounts().size() > 1)
                 title = title % " - " % folder->accountState()->account()->displayName();

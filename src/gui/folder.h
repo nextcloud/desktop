@@ -51,9 +51,9 @@ class LocalDiscoveryTracker;
 class FolderDefinition
 {
 public:
-    static auto createNewFolderDefinition(const QUrl &davUrl)
+    static auto createNewFolderDefinition(const QUrl &davUrl, const QString &displayName = {})
     {
-        return FolderDefinition(QUuid::createUuid().toByteArray(QUuid::WithoutBraces), davUrl);
+        return FolderDefinition(QUuid::createUuid().toByteArray(QUuid::WithoutBraces), davUrl, displayName);
     }
 
     /// path to the journal, usually relative to localPath
@@ -112,22 +112,19 @@ public:
 
     const QByteArray &id() const;
 
+    QString displayName() const;
 
 private:
-    FolderDefinition(const QByteArray &id, const QUrl &davUrl);
+    FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &displayName);
 
+    QUrl _webDavUrl;
+    /// For legacy reasons this can be a string, new folder objects will use a uuid
+    QByteArray _id;
+    QString _displayName;
     /// path on local machine (always trailing /)
     QString _localPath;
     /// path on remote (usually no trailing /, exception "/")
     QString _targetPath;
-
-    QUrl _webDavUrl;
-
-    /// For legacy reasons this can be a string, new folder objects will use a uuid
-    QByteArray _id;
-
-    /// legacy: override the id if we encounter a clash in FolderMan
-    void setId(const QByteArray &id);
 
     friend class FolderMan;
 };
@@ -158,7 +155,8 @@ public:
     AccountStatePtr accountState() const { return _accountState; }
 
     QByteArray id() const;
-    QString shortGuiRemotePathOrAppName() const;
+
+    QString displayName() const;
 
     /**
      * short local path to display on the GUI  (native separators)
