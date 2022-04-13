@@ -29,7 +29,7 @@
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
     Q_UNUSED(bundle)
-    qCDebug(OCC::lcUpdater) << "may check: YES";
+    qCDebug(OCC::lcUpdater) << "Updater may check for updates: YES";
     return YES;
 }
 
@@ -38,14 +38,14 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
-    qCDebug(OCC::lcUpdater) << "";
+    qCDebug(OCC::lcUpdater) << "Found a valid update.";
 }
 
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
     Q_UNUSED(update)
-    qCDebug(OCC::lcUpdater) << "";
+    qCDebug(OCC::lcUpdater) << "No valid update found.";
 }
 
 // Sent immediately before installing the specified update.
@@ -53,7 +53,7 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
-    qCDebug(OCC::lcUpdater) << "";
+    qCDebug(OCC::lcUpdater) << "About to install update.";
 }
 
 - (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
@@ -66,7 +66,7 @@
 {
     Q_UNUSED(updater)
     Q_UNUSED(appcast)
-    qCDebug(OCC::lcUpdater) << "";
+    qCDebug(OCC::lcUpdater) << "Finished loading appcast.";
 }
 
 
@@ -135,6 +135,7 @@ bool autoUpdaterAllowed()
 
 void SparkleUpdater::checkForUpdate()
 {
+    qCDebug(OCC::lcUpdater) << "Checking for updates.";
     if (autoUpdaterAllowed()) {
         [d->updater checkForUpdates: NSApp];
     }
