@@ -339,7 +339,7 @@ Window {
                     }
 
                     background: Rectangle {
-                        color: parent.hovered || parent.visualFocus ? "white" : "transparent"
+                        color: parent.hovered || parent.visualFocus ? UserModel.currentUser.headerTextColor : "transparent"
                         opacity: 0.2
                     }
 
@@ -383,7 +383,7 @@ Window {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: currentAccountButton.hovered ? "white" : "transparent"
+                                color: currentAccountButton.hovered ? UserModel.currentUser.headerTextColor : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                             }
@@ -526,7 +526,7 @@ Window {
                                 width: Style.folderStateIndicatorSize + 2
                                 height: width
                                 anchors.centerIn: parent
-                                color: openLocalFolderButton.hovered ? "white" : "transparent"
+                                color: openLocalFolderButton.hovered ? UserModel.currentUser.headerTextColor : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                                 z: -1
