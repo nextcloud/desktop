@@ -111,6 +111,7 @@ public:
 
 public slots:
     void slotRefreshActivity();
+    void slotRefreshActivityInitial();
     void slotRemoveAccount();
     void slotTriggerDefaultAction(const int activityIndex);
     void slotTriggerAction(const int activityIndex, const int actionIndex);
@@ -125,7 +126,7 @@ protected:
     void activitiesReceived(const QJsonDocument &json, int statusCode);
     QHash<int, QByteArray> roleNames() const override;
 
-    void setCurrentlyFetching(bool value);
+    void setAndRefreshCurrentlyFetching(bool value);
     bool currentlyFetching() const;
     void setDoneFetching(bool value);
     void setHideOldActivities(bool value);
@@ -147,6 +148,11 @@ private:
     bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);
+    void appendMoreActivitiesAvailableEntry();
+
+    void insertOrRemoveDummyFetchingActivity();
+
+    void clearActivities();
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;
