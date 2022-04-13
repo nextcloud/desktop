@@ -63,7 +63,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
             // saving once after adding makes sure the account is stored in the config in a working state
             // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
             // (for instance, when running from a debugger and stopping the process from there)
-            AccountManager::instance()->saveAccount(accountStatePtr->account().data());
+            AccountManager::instance()->save(true);
             auto folderMan = FolderMan::instance();
 
             // saves a bit of duplicate code
