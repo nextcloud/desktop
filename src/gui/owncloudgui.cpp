@@ -71,10 +71,15 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
                 folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, syncMode);
             };
 
+            auto finalize = [accountStatePtr] {
+                accountStatePtr->checkConnectivity();
+                FolderMan::instance()->scheduleAllFolders();
+            };
+
             if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
                 auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
 
-                QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, addFolder] {
+                QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, addFolder, finalize] {
                     if (drive->parseError().error == QJsonParseError::NoError) {
                         const auto &drives = drive->drives();
                         if (!drives.isEmpty()) {
@@ -85,6 +90,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
                                 driveLocalFolder.mkdir(".");
                                 addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()));
                             }
+                            finalize();
                         }
                     }
                 });
@@ -94,6 +100,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
                 return;
             } else {
                 addFolder(localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
+                finalize();
             }
         }
     });
