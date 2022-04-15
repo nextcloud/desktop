@@ -4091,7 +4091,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Rispondi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="137"/>
