@@ -212,7 +212,7 @@ RowLayout {
         visible: root.activityData.isShareable
 
         imageSource: "image://svgimage-custom-color/share.svg" + "/" + UserModel.currentUser.headerColor
-        imageSourceHover: "image://svgimage-custom-color/share.svg" + "/" + Style.ncTextColor
+        imageSourceHover: "image://svgimage-custom-color/share.svg" + "/" + UserModel.currentUser.headerTextColor
 
         toolTipText: qsTr("Open share dialog")
 
