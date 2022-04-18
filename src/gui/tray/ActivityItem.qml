@@ -21,7 +21,8 @@ MouseArea {
     enabled: (model.path !== "" || model.link !== "" || model.isCurrentUserFileActivity === true)
     hoverEnabled: true
 
-    height: childrenRect.height
+    // We center the children vertically in the middle of this MouseArea to create the padding.
+    height: childrenRect.height + (Style.standardSpacing * 2)
 
     Accessible.role: Accessible.ListItem
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
@@ -55,8 +56,9 @@ MouseArea {
     ColumnLayout {
         anchors.left: root.left
         anchors.right: root.right
-        anchors.rightMargin: 10
-        anchors.leftMargin: 10
+        anchors.rightMargin: Style.standardSpacing
+        anchors.leftMargin: Style.standardSpacing
+        anchors.verticalCenter: parent.verticalCenter
 
         spacing: 0
 
@@ -64,12 +66,11 @@ MouseArea {
             id: activityContent
 
             Layout.fillWidth: true
+            Layout.minimumHeight: Style.minActivityHeight
 
             showDismissButton: model.links.length > 0 && model.linksForActionButtons.length === 0
 
             activityData: model
-
-            Layout.minimumHeight: Style.trayWindowHeaderHeight
 
             onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.absolutePath)
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.index)
@@ -80,10 +81,10 @@ MouseArea {
 
             visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
 
-            Layout.preferredHeight: Style.trayWindowHeaderHeight * 0.85
             Layout.fillWidth: true
             Layout.leftMargin: 60
             Layout.bottomMargin: model.links.length > 1 ? 5 : 0
+            Layout.preferredHeight: Style.minActivityHeight
 
             displayActions: model.displayActions
             objectType: model.objectType
