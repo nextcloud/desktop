@@ -23,9 +23,12 @@ RowLayout {
     spacing: Style.trayHorizontalMargin
 
     Item {
+        id: thumbnailItem
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         Layout.preferredWidth: Style.trayListItemIconSize
-        Layout.preferredHeight: Style.trayListItemIconSize
+        Layout.preferredHeight: model.thumbnail.isMimeTypeIcon ? Style.trayListItemIconSize * 0.9 : Style.trayListItemIconSize
+        readonly property int imageWidth: width * (1 - Style.thumbnailImageSizeReduction)
+        readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
 
         Loader {
             id: thumbnailImageLoader
@@ -34,14 +37,17 @@ RowLayout {
 
             sourceComponent: Item {
                 anchors.fill: parent
+                readonly property int paintedWidth: model.thumbnail.isMimeTypeIcon ? thumbnailImage.paintedWidth * 0.8 : thumbnailImage.paintedWidth
+                readonly property int paintedHeight: model.thumbnail.isMimeTypeIcon ? thumbnailImage.paintedHeight * 0.55 : thumbnailImage.paintedHeight
 
                 Image {
                     id: thumbnailImage
-                    width: model.thumbnail.isMimeTypeIcon ? parent.width * 0.85 : parent.width * 0.8
-                    height: model.thumbnail.isMimeTypeIcon ? parent.height * 0.85 : parent.height * 0.8
+                    width: thumbnailItem.imageWidth
+                    height: thumbnailItem.imageHeight
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     cache: true
+                    fillMode: Image.PreserveAspectFit
                     source: model.thumbnail.source
                     visible: false
                     sourceSize.height: 64
@@ -69,14 +75,25 @@ RowLayout {
 
         Image {
             id: activityIcon
-            width: model.thumbnail !== undefined ? parent.width * 0.5 : parent.width * 0.85
-            height: model.thumbnail !== undefined ? parent.height * 0.5 : parent.height * 0.85
-            anchors.verticalCenter: if(model.thumbnail === undefined) parent.verticalCenter
-            anchors.left: if(model.thumbnail === undefined) parent.left
-            anchors.right: if(model.thumbnail !== undefined) parent.right
-            anchors.bottom: if(model.thumbnail !== undefined) parent.bottom
-            cache: true
+            width: model.thumbnail !== undefined ? parent.width * 0.4 : thumbnailItem.imageWidth
+            height: model.thumbnail !== undefined ? width : width * 0.9
 
+            readonly property int negativeLeftMargin: -((width / 2) +
+                                                        ((width - paintedWidth) / 2) +
+                                                        ((thumbnailImageLoader.width - thumbnailItem.imageWidth) / 2) +
+                                                        (thumbnailImageLoader.width - thumbnailImageLoader.item.paintedWidth) / 2)
+            readonly property int negativeTopMargin: -((height / 2) +
+                                                       ((height - paintedHeight) / 2) +
+                                                       ((thumbnailImageLoader.height - thumbnailItem.imageHeight) / 4) +
+                                                       ((thumbnailImageLoader.height - thumbnailImageLoader.item.paintedHeight) / 4))
+            anchors.verticalCenter: if(model.thumbnail === undefined) parent.verticalCenter
+            anchors.left: model.thumbnail === undefined ? parent.left : thumbnailImageLoader.right
+            anchors.leftMargin: if(model.thumbnail !== undefined) negativeLeftMargin
+            anchors.top: if(model.thumbnail !== undefined) thumbnailImageLoader.bottom
+            anchors.topMargin: if(model.thumbnail !== undefined) negativeTopMargin
+
+            cache: true
+            fillMode: Image.PreserveAspectFit
             source: Theme.darkMode ? model.darkIcon : model.lightIcon
             sourceSize.height: 64
             sourceSize.width: 64
@@ -165,8 +182,8 @@ RowLayout {
     Button {
         id: dismissActionButton
 
-        Layout.preferredWidth: parent.height * 0.40
-        Layout.preferredHeight: parent.height * 0.40
+        Layout.preferredWidth: Style.trayListItemIconSize * 0.6
+        Layout.preferredHeight: Style.trayListItemIconSize * 0.6
 
         Layout.alignment: Qt.AlignCenter
 
@@ -210,8 +227,8 @@ RowLayout {
     CustomButton {
         id: shareButton
 
-        Layout.preferredWidth: parent.height * 0.70
-        Layout.preferredHeight: parent.height * 0.70
+        Layout.preferredWidth: Style.trayListItemIconSize
+        Layout.preferredHeight: Style.trayListItemIconSize
 
         visible: root.activityData.isShareable
 

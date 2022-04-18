@@ -34,6 +34,15 @@ QtObject {
     property int trayWindowHeaderHeight: variableSize(60)
     property int trayHorizontalMargin: 10
     property int trayListItemIconSize: accountAvatarSize
+    property real thumbnailImageSizeReduction: 0.2  // We reserve some space within the thumbnail "item", here about 20%.
+                                                    // This is because we need to also add the added/modified icon and we
+                                                    // want them to fit within the general icon size. We also need to know
+                                                    // this amount to properly center the sync status icon to the thumbnail
+                                                    // images, which will work so long as the thumbnails are left aligned
+
+    property int standardSpacing: 10
+
+    property int minActivityHeight: variableSize(40)
 
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
