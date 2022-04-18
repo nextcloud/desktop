@@ -2486,7 +2486,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/legalnotice.ui" line="14"/>
         <location filename="../src/gui/legalnotice.ui" line="25"/>
         <source>Legal notice</source>
-        <translation>Правно известие</translation>
+        <translation>Правна информация</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.ui" line="57"/>
