@@ -99,7 +99,9 @@ public:
         SyncFileItemType
     };
 
-    static Activity fromActivityJson(const QJsonObject json, const AccountPtr account);
+    static Activity fromActivityJson(const QJsonObject &json, const AccountPtr account);
+
+    static QString relativeServerFileTypeIconPath(const QMimeType &mimeType);
 
     struct RichSubjectParameter {
         QString type;    // Required
