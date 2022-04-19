@@ -4,17 +4,17 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation type="unfinished"/>
+        <translation>מנהל הקבצים</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
         <source>Show in %1</source>
-        <translation type="unfinished"/>
+        <translation>הצגה עם %1</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>הצגה בדפדפן</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -98,7 +98,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
         <source>Failed to send crash info.</source>
-        <translation type="unfinished"/>
+        <translation>שליחת פרטי הקריסה נכשלה.</translation>
     </message>
 </context>
 <context>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>לא ניתן להסיר את התיקייה</translation>
     </message>
 </context>
 <context>
@@ -314,7 +314,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="42"/>
         <source>Connected with &lt;server&gt; as &lt;user&gt;</source>
-        <translation>חיבור של ה- &lt;server&gt; כ- &lt;user&gt;</translation>
+        <translation>נכנסת עם &lt;server&gt; בתור &lt;user&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="182"/>
@@ -447,7 +447,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>No connection to %1 at %2.</source>
-        <translation>אין חיבור ל- %1 ב- %2.</translation>
+        <translation>אין חיבור אל %1 ב־%2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="912"/>
@@ -488,7 +488,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
         <location filename="../src/gui/accountsettings.cpp" line="914"/>
         <source>Log out</source>
-        <translation>התנתקות</translation>
+        <translation>יציאה</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="348"/>
@@ -503,7 +503,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="361"/>
         <source>Enable virtual file support%1...</source>
-        <translation>הפעלת תמיכה בקובץ וירטואלי %1...</translation>
+        <translation>הפעלת תמיכה בקובץ וירטואלי %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="361"/>
@@ -513,7 +513,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="510"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;האם באמת להפסיק את סנכרון התיקייה &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;הערה:&lt;/b&gt; פעולה זו &lt;b&gt;לא&lt;/b&gt; תמחק אף קובץ.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;להפסיק את סנכרון התיקייה &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;הערה:&lt;/b&gt; פעולה זו &lt;b&gt;לא&lt;/b&gt; תמחק אף קובץ.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="798"/>
@@ -543,7 +543,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="878"/>
         <source>Server configuration error: %1 at %2.</source>
-        <translation>שגיאת תצורת שרת: %1 ב- %2.</translation>
+        <translation>שגיאת תצורת שרת: %1 ב־%2.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="889"/>
