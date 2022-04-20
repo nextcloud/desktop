@@ -922,59 +922,61 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted;
 
     const qint64 phash = getPHash(record._path);
-    if (checkConnect()) {
-        int plen = record._path.length();
-
-        QByteArray etag(record._etag);
-        if (etag.isEmpty())
-            etag = "";
-        QByteArray fileId(record._fileId);
-        if (fileId.isEmpty())
-            fileId = "";
-        QByteArray remotePerm = record._remotePerm.toDbValue();
-        QByteArray checksumType, checksum;
-        parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
-        int contentChecksumTypeId = mapChecksumType(checksumType);
-
-        const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
-                                                                                                            "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted) "
-                                                                                                            "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18);"),
-            _db);
-        if (!query) {
-            return query->error();
-        }
-
-        query->bindValue(1, phash);
-        query->bindValue(2, plen);
-        query->bindValue(3, record._path);
-        query->bindValue(4, record._inode);
-        query->bindValue(5, 0); // uid Not used
-        query->bindValue(6, 0); // gid Not used
-        query->bindValue(7, 0); // mode Not used
-        query->bindValue(8, record._modtime);
-        query->bindValue(9, record._type);
-        query->bindValue(10, etag);
-        query->bindValue(11, fileId);
-        query->bindValue(12, remotePerm);
-        query->bindValue(13, record._fileSize);
-        query->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
-        query->bindValue(15, checksum);
-        query->bindValue(16, contentChecksumTypeId);
-        query->bindValue(17, record._e2eMangledName);
-        query->bindValue(18, record._isE2eEncrypted);
-
-        if (!query->exec()) {
-            return query->error();
-        }
-
-        // Can't be true anymore.
-        _metadataTableIsEmpty = false;
-
-        return {};
-    } else {
+    if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
         return tr("Failed to connect database."); // checkConnect failed.
     }
+
+    int plen = record._path.length();
+
+    QByteArray etag(record._etag);
+    if (etag.isEmpty()) {
+        etag = "";
+    }
+    QByteArray fileId(record._fileId);
+    if (fileId.isEmpty()) {
+        fileId = "";
+    }
+    QByteArray remotePerm = record._remotePerm.toDbValue();
+    QByteArray checksumType, checksum;
+    parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
+    int contentChecksumTypeId = mapChecksumType(checksumType);
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
+                                                                                                        "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18);"),
+        _db);
+    if (!query) {
+        return query->error();
+    }
+
+    query->bindValue(1, phash);
+    query->bindValue(2, plen);
+    query->bindValue(3, record._path);
+    query->bindValue(4, record._inode);
+    query->bindValue(5, 0); // uid Not used
+    query->bindValue(6, 0); // gid Not used
+    query->bindValue(7, 0); // mode Not used
+    query->bindValue(8, record._modtime);
+    query->bindValue(9, record._type);
+    query->bindValue(10, etag);
+    query->bindValue(11, fileId);
+    query->bindValue(12, remotePerm);
+    query->bindValue(13, record._fileSize);
+    query->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
+    query->bindValue(15, checksum);
+    query->bindValue(16, contentChecksumTypeId);
+    query->bindValue(17, record._e2eMangledName);
+    query->bindValue(18, record._isE2eEncrypted);
+
+    if (!query->exec()) {
+        return query->error();
+    }
+
+    // Can't be true anymore.
+    _metadataTableIsEmpty = false;
+
+    return {};
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
