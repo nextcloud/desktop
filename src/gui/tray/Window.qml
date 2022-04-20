@@ -5,6 +5,7 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
+import Qt.labs.platform 1.1 as NativeDialogs
 import "../"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
@@ -62,6 +63,19 @@ Window {
         }
     }
 
+    Component {
+        id: errorMessageDialog
+
+        NativeDialogs.MessageDialog {
+            id: dialog
+
+            title: Systray.windowTitle
+
+            onAccepted: destroy()
+            onRejected: destroy()
+        }
+    }
+
     Connections {
         target: Systray
         function onShowWindow() {
@@ -83,6 +97,12 @@ Window {
 
         function onShowFileActivityDialog(objectName, objectId) {
             openFileActivityDialog(objectName, objectId)
+        }
+
+        function onShowErrorMessageDialog(error) {
+            var newErrorDialog = errorMessageDialog.createObject(trayWindow)
+            newErrorDialog.text = error
+            newErrorDialog.open()
         }
     }
 
