@@ -126,7 +126,7 @@ void LibCloudProvidersPrivate::exportFolder(Folder *folder)
         g_error_free(error);
     }
 
-    auto exporter = cloud_providers_account_exporter_new(_exporter, folder->alias().toUtf8().constData());
+    auto exporter = cloud_providers_account_exporter_new(_exporter, folder->id().constData());
     cloud_providers_account_exporter_set_path(exporter, folder->path().toUtf8().constData());
     cloud_providers_account_exporter_set_icon(exporter, icon);
     cloud_providers_account_exporter_set_status(exporter, CLOUD_PROVIDERS_ACCOUNT_STATUS_IDLE);
@@ -171,7 +171,7 @@ void LibCloudProvidersPrivate::updateFolderExport()
         Folder *folder = folderExport._folder;
 
         // Update the name, may change if accounts are added/removed
-        QString displayName = folder->shortGuiRemotePathOrAppName();
+        QString displayName = folder->displayName();
         if (AccountManager::instance()->accounts().size() > 1) {
             displayName = QStringLiteral("%1 (%2)").arg(
                     displayName, folder->accountState()->account()->displayName());
