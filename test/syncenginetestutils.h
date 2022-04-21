@@ -402,6 +402,16 @@ public:
     qint64 readData(char *, qint64) override { return 0; }
 };
 
+class FakeFileLockReply : public FakePropfindReply
+{
+    Q_OBJECT
+public:
+    FakeFileLockReply(FileInfo &remoteRootFileInfo,
+                      QNetworkAccessManager::Operation op,
+                      const QNetworkRequest &request,
+                      QObject *parent);
+};
+
 // A delayed reply
 template <class OriginalReply>
 class DelayedReply : public OriginalReply
