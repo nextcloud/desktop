@@ -2,6 +2,7 @@
 
 #include <QLabel>
 
+#include "gui/owncloudgui.h"
 #include "ui_setupwizardwindow.h"
 
 namespace OCC::Wizard {
@@ -65,6 +66,9 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex ind
 
     // by default, set focus on the next button
     _ui->nextButton->setFocus();
+
+    // bring to front if necessary
+    ownCloudGui::raiseDialog(this);
 
     // this can optionally be overwritten by the page
     Q_EMIT _currentPage->pageDisplayed();
