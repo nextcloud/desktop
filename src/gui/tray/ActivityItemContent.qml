@@ -95,13 +95,14 @@ RowLayout {
         Label {
             id: activityTextTitle
             text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
+            height: (text === "") ? 0 : implicitHeight
             width: parent.width
             elide: Text.ElideRight
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
             color: Style.ncTextColor
-            //color: root.activityData.activityTextTitleColor
+            visible: text !== ""
         }
 
         Label {
@@ -117,6 +118,7 @@ RowLayout {
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
             color: Style.ncTextColor
+            visible: text !== ""
         }
 
         Label {
@@ -129,18 +131,20 @@ RowLayout {
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
             color: Style.ncSecondaryTextColor
+            visible: text !== ""
         }
 
         Label {
             id: talkReplyMessageSent
             text: root.activityData.messageSent
-            height: implicitHeight
+            height: (text === "") ? 0 : implicitHeight
             width: parent.width
             elide: Text.ElideRight
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
             color: Style.ncSecondaryTextColor
+            visible: text !== ""
         }
 
         Loader {

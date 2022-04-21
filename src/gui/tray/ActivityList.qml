@@ -31,7 +31,7 @@ ScrollView {
 
         clip: true
 
-        spacing: 10
+        spacing: 0
 
         delegate: ActivityItem {
             isFileActivityList: controlRoot.isFileActivityList
