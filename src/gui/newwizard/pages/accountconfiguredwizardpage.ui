@@ -146,12 +146,12 @@
              </widget>
             </item>
             <item>
-             <widget class="QRadioButton" name="selectiveSyncRadioButton">
+             <widget class="QRadioButton" name="configureSyncManuallyRadioButton">
               <property name="toolTip">
-               <string>You can configure which directories to download from the server in a dialog once the wizard has finished.</string>
+               <string>After completing this wizard, you can set up folder synchronization manually.</string>
               </property>
               <property name="text">
-               <string>Choose what to download</string>
+               <string>Configure synchronization manually</string>
               </property>
              </widget>
             </item>
@@ -166,7 +166,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QGroupBox" name="groupBox">
+          <widget class="QGroupBox" name="localDirectoryGroupBox">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
              <horstretch>0</horstretch>

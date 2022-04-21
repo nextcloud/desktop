@@ -22,7 +22,9 @@
 #include "configfile.h"
 #include "creds/abstractcredentials.h"
 #include "folderman.h"
+#include "folderwizard/folderwizard.h"
 #include "graphapi/drives.h"
+#include "gui/accountsettings.h"
 #include "guiutility.h"
 #include "logbrowser.h"
 #include "logger.h"
@@ -51,61 +53,46 @@ namespace {
 
 using namespace OCC;
 
-void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &localFolder, Wizard::SyncMode syncMode)
+void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &localFolder, bool useVfs)
 {
-    auto account = accountStatePtr->account();
+    auto folderMan = FolderMan::instance();
 
-    // ensure we are connected and fetch the capabilities
-    auto validator = new ConnectionValidator(account, account.data());
+    // saves a bit of duplicate code
+    auto addFolder = [folderMan, accountStatePtr, useVfs](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName = {}) {
+        folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, displayName, useVfs);
+    };
 
-    QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr, localFolder, syncMode](ConnectionValidator::Status status, const QStringList &errors) {
-        if (OC_ENSURE(status == ConnectionValidator::Connected)) {
-            // saving once after adding makes sure the account is stored in the config in a working state
-            // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
-            // (for instance, when running from a debugger and stopping the process from there)
-            AccountManager::instance()->save(true);
-            auto folderMan = FolderMan::instance();
+    auto finalize = [accountStatePtr] {
+        accountStatePtr->checkConnectivity();
+        FolderMan::instance()->scheduleAllFolders();
+    };
 
-            // saves a bit of duplicate code
-            auto addFolder = [folderMan, accountStatePtr, syncMode](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName = {}) {
-                folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, displayName, syncMode);
-            };
+    if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
+        auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
 
-            auto finalize = [accountStatePtr] {
-                accountStatePtr->checkConnectivity();
-                FolderMan::instance()->scheduleAllFolders();
-            };
-
-            if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
-                auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
-
-                QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, addFolder, finalize] {
-                    if (drive->parseError().error == QJsonParseError::NoError) {
-                        const auto &drives = drive->drives();
-                        if (!drives.isEmpty()) {
-                            const QDir localDir(localFolder);
-                            localDir.mkdir(".");
-                            for (const auto &d : drives) {
-                                const QDir driveLocalFolder = localDir.filePath(d.getName());
-                                driveLocalFolder.mkdir(".");
-                                addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
-                            }
-                            finalize();
-                        }
+        QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, addFolder, finalize] {
+            if (drive->parseError().error == QJsonParseError::NoError) {
+                const auto &drives = drive->drives();
+                if (!drives.isEmpty()) {
+                    const QDir localDir(localFolder);
+                    localDir.mkdir(".");
+                    for (const auto &d : drives) {
+                        const QDir driveLocalFolder = localDir.filePath(d.getName());
+                        driveLocalFolder.mkdir(".");
+                        addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
                     }
-                });
-
-                drive->start();
-
-                return;
-            } else {
-                addFolder(localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
-                finalize();
+                    finalize();
+                }
             }
-        }
-    });
+        });
 
-    validator->checkServerAndUpdate();
+        drive->start();
+
+        return;
+    } else {
+        addFolder(localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
+        finalize();
+    }
 }
 }
 
@@ -1015,8 +1002,9 @@ void ownCloudGui::runNewAccountWizard()
 
         connect(_wizardController, &Wizard::SetupWizardController::finished, ocApp(),
             [this](AccountPtr newAccount, const QString &localFolder, Wizard::SyncMode syncMode) {
-                // reenable sync, which is disabled while the wizard is shown
-                FolderMan::instance()->setSyncEnabled(true);
+                // note: while the wizard is shown, we disable the folder synchronization
+                // previously we could perform this just here, but now we have to postpone this depending on whether selective sync was chosen
+                // see also #9497
 
                 // when the dialog is closed before it has finished, there won't be a new account to set up
                 // the wizard controller signalizes this by passing a null pointer
@@ -1024,7 +1012,83 @@ void ownCloudGui::runNewAccountWizard()
                     // finally, call the slot that finalizes the setup
                     auto accountStatePtr = ocApp()->addNewAccount(newAccount);
 
-                    setUpInitialSyncFolder(accountStatePtr, localFolder, syncMode);
+                    auto account = accountStatePtr->account();
+
+                    // ensure we are connected and fetch the capabilities
+                    auto validator = new ConnectionValidator(account, account.data());
+
+                    QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr, localFolder, syncMode](ConnectionValidator::Status status, const QStringList &errors) {
+                        if (OC_ENSURE(status == ConnectionValidator::Connected)) {
+                            // saving once after adding makes sure the account is stored in the config in a working state
+                            // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
+                            // (for instance, when running from a debugger and stopping the process from there)
+                            AccountManager::instance()->save(true);
+
+                            switch (syncMode) {
+                            case Wizard::SyncMode::SyncEverything:
+                            case Wizard::SyncMode::UseVfs: {
+                                bool useVfs = syncMode == Wizard::SyncMode::UseVfs;
+                                setUpInitialSyncFolder(accountStatePtr, localFolder, useVfs);
+                                FolderMan::instance()->setSyncEnabled(true);
+
+                                break;
+                            }
+                            case Wizard::SyncMode::ConfigureUsingFolderWizard: {
+                                // localFolder is ignored in this scenario
+                                // we want the caller to make sure it's not set to a value, though
+                                Q_ASSERT(localFolder.isEmpty());
+
+                                auto *folderWizard = new FolderWizard(accountStatePtr->account(), ocApp()->gui()->settingsDialog());
+                                folderWizard->setAttribute(Qt::WA_DeleteOnClose);
+
+                                // adapted from AccountSettings::slotFolderWizardAccepted()
+                                connect(folderWizard, &QDialog::accepted, [accountStatePtr, folderWizard]() {
+                                    FolderMan *folderMan = FolderMan::instance();
+
+                                    qCInfo(lcApplication) << "Folder wizard completed";
+
+                                    bool useVfs = folderWizard->property("useVirtualFiles").toBool();
+
+                                    auto folder = folderMan->addFolderFromWizard(accountStatePtr,
+                                        folderWizard->field(QLatin1String("sourceFolder")).toString(),
+                                        folderWizard->property("targetPath").toString(),
+                                        folderWizard->davUrl(),
+                                        folderWizard->displayName(),
+                                        useVfs);
+
+                                    const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
+
+                                    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && useVfs)) {
+                                        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+
+                                        // The user already accepted the selective sync dialog. everything is in the white list
+                                        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                                            QStringList() << QLatin1String("/"));
+                                    }
+
+                                    folderMan->setSyncEnabled(true);
+                                    folderMan->scheduleAllFolders();
+                                });
+
+                                connect(folderWizard, &QDialog::rejected, []() {
+                                    qCInfo(lcApplication) << "Folder wizard cancelled";
+                                    FolderMan::instance()->setSyncEnabled(true);
+                                });
+
+                                folderWizard->open();
+
+                                break;
+                            }
+                            default:
+                                Q_UNREACHABLE();
+                            }
+                        }
+                    });
+
+
+                    validator->checkServerAndUpdate();
+                } else {
+                    FolderMan::instance()->setSyncEnabled(true);
                 }
 
                 // make sure the wizard is cleaned up eventually

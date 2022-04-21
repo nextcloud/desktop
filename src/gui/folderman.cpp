@@ -1411,7 +1411,7 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
 }
 
-Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, Wizard::SyncMode syncMode)
+Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
 {
     // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
     QDir().mkdir(localFolder);
@@ -1422,7 +1422,7 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
     folderDefinition.setTargetPath(remotePath);
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
-    if (syncMode == Wizard::SyncMode::UseVfs) {
+    if (useVfs) {
         folderDefinition.virtualFilesMode = bestAvailableVfsMode();
     }
 
@@ -1431,40 +1431,22 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
         folderDefinition.navigationPaneClsid = QUuid::createUuid();
 #endif
 
-    auto finalize = [this, accountStatePtr, syncMode, localFolder](const FolderDefinition &folderDefinition, const QStringList &blacklist = {}) {
-        auto f = addFolder(accountStatePtr, folderDefinition);
+    auto newFolder = addFolder(accountStatePtr, folderDefinition);
 
-        if (f) {
-            if (folderDefinition.virtualFilesMode != Vfs::Off && syncMode == Wizard::SyncMode::UseVfs)
-                f->setRootPinState(PinState::OnlineOnly);
+    if (newFolder) {
+        if (folderDefinition.virtualFilesMode != Vfs::Off && useVfs)
+            newFolder->setRootPinState(PinState::OnlineOnly);
 
-            f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blacklist);
-
-            if (!OwncloudWizard::isConfirmBigFolderChecked()) {
-                // The user already accepted the selective sync dialog. everything is in the white list
-                f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                    QStringList() << QLatin1String("/"));
-            }
-            qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
-        } else {
-            qCWarning(lcFolderMan) << "Failed to create local sync folder!";
+        if (!OwncloudWizard::isConfirmBigFolderChecked()) {
+            // The user already accepted the selective sync dialog. everything is in the white list
+            newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+                QStringList() << QLatin1String("/"));
         }
-        return f;
-    };
-
-    if (syncMode == Wizard::SyncMode::SelectiveSync) {
-        auto dialog = new SelectiveSyncDialog(accountStatePtr->account(), remotePath, reinterpret_cast<QDialog *>(ocApp()->gui()->settingsDialog()));
-
-        connect(dialog, &SelectiveSyncDialog::finished, this, [finalize, folderDefinition, dialog]() {
-            auto folder = finalize(folderDefinition, dialog->createBlackList());
-        });
-
-        dialog->setAttribute(Qt::WA_DeleteOnClose);
-        dialog->show();
+        qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
     } else {
-        return finalize(folderDefinition);
+        qCWarning(lcFolderMan) << "Failed to create local sync folder!";
     }
-    return nullptr;
+    return newFolder;
 }
 
 } // namespace OCC

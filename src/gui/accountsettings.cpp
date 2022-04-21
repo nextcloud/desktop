@@ -430,17 +430,18 @@ void AccountSettings::slotFolderWizardAccepted()
 
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    const auto syncMode = folderWizard->property("useVirtualFiles").toBool() ? Wizard::SyncMode::UseVfs : Wizard::SyncMode::SyncEverything;
+    bool useVfs = folderWizard->property("useVirtualFiles").toBool();
+
     auto folder = folderMan->addFolderFromWizard(_accountState,
         folderWizard->field(QLatin1String("sourceFolder")).toString(),
         folderWizard->property("targetPath").toString(),
         folderWizard->davUrl(),
         folderWizard->displayName(),
-        syncMode);
+        useVfs);
 
 
     const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
-    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && syncMode == Wizard::SyncMode::SyncEverything)) {
+    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !useVfs)) {
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list

@@ -153,7 +153,15 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
 
             auto account = _accountBuilder.build();
             Q_ASSERT(account != nullptr);
-            Q_EMIT finished(account, pagePtr->syncTargetDir(), pagePtr->syncMode());
+
+            QString targetDir = [pagePtr]() -> QString {
+                if (pagePtr->syncMode() == Wizard::SyncMode::ConfigureUsingFolderWizard) {
+                    return {};
+                }
+                return pagePtr->syncTargetDir();
+            }();
+
+            Q_EMIT finished(account, targetDir, pagePtr->syncMode());
             return;
         }
     }

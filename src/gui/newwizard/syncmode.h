@@ -8,7 +8,7 @@ Q_NAMESPACE
 enum class SyncMode {
     Invalid = 0,
     SyncEverything,
-    SelectiveSync,
+    ConfigureUsingFolderWizard,
     UseVfs,
 };
 Q_ENUM_NS(SyncMode)

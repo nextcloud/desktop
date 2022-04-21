@@ -128,6 +128,11 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
         });
     }
 
+    // for selective sync, we run the folder wizard right after this wizard, thus don't have to specify a local directory
+    connect(_ui->configureSyncManuallyRadioButton, &QRadioButton::toggled, this, [this](bool checked) {
+        _ui->localDirectoryGroupBox->setEnabled(!checked);
+    });
+
     // toggle once to have the according handlers set up the initial UI state
     _ui->advancedConfigGroupBox->setChecked(true);
     _ui->advancedConfigGroupBox->setChecked(false);
@@ -148,8 +153,8 @@ SyncMode AccountConfiguredWizardPage::syncMode() const
     if (_ui->syncEverythingRadioButton->isChecked()) {
         return SyncMode::SyncEverything;
     }
-    if (_ui->selectiveSyncRadioButton->isChecked()) {
-        return SyncMode::SelectiveSync;
+    if (_ui->configureSyncManuallyRadioButton->isChecked()) {
+        return SyncMode::ConfigureUsingFolderWizard;
     }
     if (_ui->useVfsRadioButton->isChecked()) {
         return SyncMode::UseVfs;
