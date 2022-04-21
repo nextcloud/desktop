@@ -29,6 +29,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickWindow>
+#include <QVariantMap>
 #include <QScreen>
 #include <QMenu>
 #include <QGuiApplication>
@@ -156,6 +157,44 @@ void Systray::create()
             _syncIsPaused = false;
             break;
         }
+    }
+}
+
+void Systray::createCallDialog(const Activity &callNotification)
+{
+    qCDebug(lcSystray) << "Starting a new call dialog for notification with id: " << callNotification._id << "with text: " << callNotification._subject;
+
+    if (_trayEngine && !_callsAlreadyNotified.contains(callNotification._id)) {
+        const QVariantMap talkNotificationData{
+            {"conversationToken", callNotification._talkNotificationData.conversationToken},
+            {"messageId", callNotification._talkNotificationData.messageId},
+            {"messageSent", callNotification._talkNotificationData.messageSent},
+            {"userAvatar", callNotification._talkNotificationData.userAvatar},
+        };
+
+        QVariantList links;
+        for(const auto &link : callNotification._links) {
+            links.append(QVariantMap{
+                {"imageSource", link._imageSource},
+                {"imageSourceHovered", link._imageSourceHovered},
+                {"label", link._label},
+                {"link", link._link},
+                {"primary", link._primary},
+                {"verb", link._verb},
+            });
+        }
+
+        const QVariantMap initialProperties{
+            {"talkNotificationData", talkNotificationData},
+            {"links", links},
+            {"subject", callNotification._subject},
+            {"link", callNotification._link},
+        };
+
+        const auto callDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/CallNotificationDialog.qml"));
+        callDialog->createWithInitialProperties(initialProperties);
+
+        _callsAlreadyNotified.insert(callNotification._id);
     }
 }
 
@@ -308,6 +347,30 @@ void Systray::forceWindowInit(QQuickWindow *window) const
 #endif
 }
 
+void Systray::positionNotificationWindow(QQuickWindow *window) const
+{
+    if (!useNormalWindow()) {
+        window->setScreen(currentScreen());
+        if(geometry().isValid()) {
+            // On OSes where the QSystemTrayIcon geometry method isn't borked, we can actually figure out where the system tray is located
+            // We can therefore use our normal routines
+            const auto position = computeNotificationPosition(window->width(), window->height());
+            window->setPosition(position);
+        } else if (QProcessEnvironment::systemEnvironment().contains(QStringLiteral("XDG_CURRENT_DESKTOP")) &&
+                   (QProcessEnvironment::systemEnvironment().value(QStringLiteral("XDG_CURRENT_DESKTOP")).contains(QStringLiteral("GNOME")))) {
+            // We can safely hardcode the top-right position for the notification when running GNOME
+            const auto position = computeNotificationPosition(window->width(), window->height(), 0, NotificationPosition::TopRight);
+            window->setPosition(position);
+        } else {
+            // For other DEs we play it safe and place the notification in the centre of the screen
+            const QPoint windowAdjustment(window->geometry().width() / 2, window->geometry().height() / 2);
+            const auto position = currentScreen()->geometry().center();// - windowAdjustment;
+            window->setPosition(position);
+        }
+        // TODO: Get actual notification positions for the DEs
+    }
+}
+
 QScreen *Systray::currentScreen() const
 {
     const auto screen = QGuiApplication::screenAt(QCursor::pos());
@@ -446,8 +509,85 @@ QPoint Systray::computeWindowReferencePoint() const
     Q_UNREACHABLE();
 }
 
+QPoint Systray::computeNotificationReferencePoint(int spacing, NotificationPosition position) const
+{
+    auto trayIconCenter = calcTrayIconCenter();
+    auto taskbarScreenEdge = taskbarOrientation();
+    auto taskbarRect = taskbarGeometry();
+    const auto screenRect = currentScreenRect();
+    
+    if(position == NotificationPosition::TopLeft) {
+        taskbarScreenEdge = TaskBarPosition::Top;
+        trayIconCenter = QPoint(0, 0);
+        taskbarRect = QRect(0, 0, screenRect.width(), 32);
+    } else if(position == NotificationPosition::TopRight) {
+        taskbarScreenEdge = TaskBarPosition::Top;
+        trayIconCenter = QPoint(screenRect.width(), 0);
+        taskbarRect = QRect(0, 0, screenRect.width(), 32);
+    } else if(position == NotificationPosition::BottomLeft) {
+        taskbarScreenEdge = TaskBarPosition::Bottom;
+        trayIconCenter = QPoint(0, screenRect.height());
+        taskbarRect = QRect(0, 0, screenRect.width(), 32);
+    } else if(position == NotificationPosition::BottomRight) {
+        taskbarScreenEdge = TaskBarPosition::Bottom;
+        trayIconCenter = QPoint(screenRect.width(), screenRect.height());
+        taskbarRect = QRect(0, 0, screenRect.width(), 32);
+    }
+
+    qCDebug(lcSystray) << "screenRect:" << screenRect;
+    qCDebug(lcSystray) << "taskbarRect:" << taskbarRect;
+    qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
+    qCDebug(lcSystray) << "trayIconCenter:" << trayIconCenter;
+
+    switch(taskbarScreenEdge) {
+    case TaskBarPosition::Bottom:
+        return {
+            trayIconCenter.x() < screenRect.center().x() ? screenRect.left() + spacing :  screenRect.right() - spacing,
+            screenRect.bottom() - taskbarRect.height() - spacing
+        };
+    case TaskBarPosition::Left:
+        return {
+            screenRect.left() + taskbarRect.width() + spacing,
+            trayIconCenter.y() < screenRect.center().y() ? screenRect.top() + spacing : screenRect.bottom() - spacing
+        };
+    case TaskBarPosition::Top:
+        return {
+            trayIconCenter.x() < screenRect.center().x() ? screenRect.left() + spacing :  screenRect.right() - spacing,
+            screenRect.top() + taskbarRect.height() + spacing
+        };
+    case TaskBarPosition::Right:
+        return {
+            screenRect.right() - taskbarRect.width() - spacing,
+            trayIconCenter.y() < screenRect.center().y() ? screenRect.top() + spacing : screenRect.bottom() - spacing
+        };
+    }
+    Q_UNREACHABLE();
+}
+
+QRect Systray::computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const
+{
+    const auto screenRect = currentScreenRect();
+    const auto rect = QRect(topLeft, bottomRight);
+    auto offset = QPoint();
+
+    if (rect.left() < screenRect.left()) {
+        offset.setX(screenRect.left() - rect.left() + spacing);
+    } else if (rect.right() > screenRect.right()) {
+        offset.setX(screenRect.right() - rect.right() - spacing);
+    }
+
+    if (rect.top() < screenRect.top()) {
+        offset.setY(screenRect.top() - rect.top() + spacing);
+    } else if (rect.bottom() > screenRect.bottom()) {
+        offset.setY(screenRect.bottom() - rect.bottom() - spacing);
+    }
+
+    return rect.translated(offset);
+}
+
 QPoint Systray::computeWindowPosition(int width, int height) const
 {
+    constexpr auto spacing = 4;
     const auto referencePoint = computeWindowReferencePoint();
 
     const auto taskbarScreenEdge = taskbarOrientation();
@@ -467,24 +607,7 @@ QPoint Systray::computeWindowPosition(int width, int height) const
         Q_UNREACHABLE();
     }();
     const auto bottomRight = topLeft + QPoint(width, height);
-    const auto windowRect = [=]() {
-        const auto rect = QRect(topLeft, bottomRight);
-        auto offset = QPoint();
-
-        if (rect.left() < screenRect.left()) {
-            offset.setX(screenRect.left() - rect.left() + 4);
-        } else if (rect.right() > screenRect.right()) {
-            offset.setX(screenRect.right() - rect.right() - 4);
-        }
-
-        if (rect.top() < screenRect.top()) {
-            offset.setY(screenRect.top() - rect.top() + 4);
-        } else if (rect.bottom() > screenRect.bottom()) {
-            offset.setY(screenRect.bottom() - rect.bottom() - 4);
-        }
-
-        return rect.translated(offset);
-    }();
+    const auto windowRect = computeWindowRect(spacing, topLeft, bottomRight);
 
     qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
     qCDebug(lcSystray) << "screenRect:" << screenRect;
@@ -494,17 +617,64 @@ QPoint Systray::computeWindowPosition(int width, int height) const
     return windowRect.topLeft();
 }
 
+QPoint Systray::computeNotificationPosition(int width, int height, int spacing, NotificationPosition position) const
+{
+    const auto referencePoint = computeNotificationReferencePoint(spacing, position);
+
+    auto trayIconCenter = calcTrayIconCenter();
+    auto taskbarScreenEdge = taskbarOrientation();
+    const auto screenRect = currentScreenRect();
+        
+    if(position == NotificationPosition::TopLeft) {
+        taskbarScreenEdge = TaskBarPosition::Top;
+        trayIconCenter = QPoint(0, 0);
+    } else if(position == NotificationPosition::TopRight) {
+        taskbarScreenEdge = TaskBarPosition::Top;
+        trayIconCenter = QPoint(screenRect.width(), 0);
+    } else if(position == NotificationPosition::BottomLeft) {
+        taskbarScreenEdge = TaskBarPosition::Bottom;
+        trayIconCenter = QPoint(0, screenRect.height());
+    } else if(position == NotificationPosition::BottomRight) {
+        taskbarScreenEdge = TaskBarPosition::Bottom;
+        trayIconCenter = QPoint(screenRect.width(), screenRect.height());
+    }
+        
+    const auto topLeft = [=]() {
+        switch(taskbarScreenEdge) {
+        case TaskBarPosition::Bottom:
+            return trayIconCenter.x() < screenRect.center().x() ? referencePoint - QPoint(0, height) : referencePoint - QPoint(width, height);
+        case TaskBarPosition::Left:
+            return trayIconCenter.y() < screenRect.center().y() ? referencePoint : referencePoint - QPoint(0, height);
+        case TaskBarPosition::Top:
+            return trayIconCenter.x() < screenRect.center().x() ? referencePoint : referencePoint - QPoint(width, 0);
+        case TaskBarPosition::Right:
+            return trayIconCenter.y() < screenRect.center().y() ? referencePoint - QPoint(width, 0) : QPoint(width, height);
+        }
+        Q_UNREACHABLE();
+    }();
+    const auto bottomRight = topLeft + QPoint(width, height);
+    const auto windowRect = computeWindowRect(spacing, topLeft, bottomRight);
+
+    qCDebug(lcSystray) << "taskbarScreenEdge:" << taskbarScreenEdge;
+    qCDebug(lcSystray) << "screenRect:" << screenRect;
+    qCDebug(lcSystray) << "windowRect (reference)" << QRect(topLeft, bottomRight);
+    qCDebug(lcSystray) << "windowRect (adjusted)" << windowRect;
+    qCDebug(lcSystray) << "referencePoint" << referencePoint;
+
+    return windowRect.topLeft();
+}
+
 QPoint Systray::calcTrayIconCenter() const
 {
-    // QSystemTrayIcon::geometry() is broken for ages on most Linux DEs (invalid geometry returned)
-    // thus we can use this only for Windows and macOS
-#if defined(Q_OS_WIN) || defined(Q_OS_MACOS)
-    auto trayIconCenter = geometry().center();
-    return trayIconCenter;
-#else
+    if(geometry().isValid()) {
+        // QSystemTrayIcon::geometry() is broken for ages on most Linux DEs (invalid geometry returned)
+        // thus we can use this only for Windows and macOS
+        auto trayIconCenter = geometry().center();
+        return trayIconCenter;
+    }
+
     // On Linux, fall back to mouse position (assuming tray icon is activated by mouse click)
     return QCursor::pos(currentScreen());
-#endif
 }
 
 AccessManagerFactory::AccessManagerFactory()

@@ -80,6 +80,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationConversationTokenRole] = "conversationToken";
     roles[TalkNotificationMessageIdRole] = "messageId";
     roles[TalkNotificationMessageSentRole] = "messageSent";
+    roles[TalkNotificationUserAvatarRole] = "userAvatar";
 
     return roles;
 }
@@ -332,6 +333,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return a._talkNotificationData.messageId;
     case TalkNotificationMessageSentRole:
         return replyMessageSent(a);
+    case TalkNotificationUserAvatarRole:
+        return a._talkNotificationData.userAvatar;
     default:
         return QVariant();
     }

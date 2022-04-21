@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>554</width>
-    <height>558</height>
+    <width>556</width>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -87,6 +87,13 @@
        <widget class="QCheckBox" name="serverNotificationsCheckBox">
         <property name="text">
          <string>Show Server &amp;Notifications</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QCheckBox" name="callNotificationsCheckBox">
+        <property name="text">
+         <string>Show Call Notifications</string>
         </property>
        </widget>
       </item>

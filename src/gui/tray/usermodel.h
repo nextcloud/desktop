@@ -100,6 +100,7 @@ public slots:
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
     void slotBuildNotificationDisplay(const ActivityList &list);
+    void slotBuildIncomingCallDialogs(const ActivityList &list);
     void slotRefreshNotifications();
     void slotRefreshActivities();
     void slotRefresh();

@@ -30,7 +30,7 @@ QtObject {
     property int trayWindowWidth: variableSize(400)
     property int trayWindowHeight: variableSize(510)
     property int trayWindowRadius: 10
-    property int trayWindowBorderWidth: 1
+    property int trayWindowBorderWidth: variableSize(1)
     property int trayWindowHeaderHeight: variableSize(60)
     property int trayHorizontalMargin: 10
     property int trayListItemIconSize: accountAvatarSize
@@ -67,6 +67,9 @@ QtObject {
 
     property int activityItemActionPrimaryButtonMinWidth: 100
     property int activityItemActionSecondaryButtonMinWidth: 80
+
+    property int callNotificationPrimaryButtonMinWidth: 100
+    property int callNotificationPrimaryButtonMinHeight: 40
 
     property int roundButtonBackgroundVerticalMargins: 10
     property int roundedButtonBackgroundVerticalMargins: 5

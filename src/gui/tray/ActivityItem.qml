@@ -15,6 +15,7 @@ MouseArea {
     readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
     readonly property bool isTalkReplyPossible: model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
+    readonly property bool isCallActivity: model.objectType === "call"
 
     signal fileActivityButtonClicked(string absolutePath)
 

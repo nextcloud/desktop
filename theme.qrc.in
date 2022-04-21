@@ -232,5 +232,6 @@
         <file>theme/black/edit.svg</file>
         <file>theme/delete.svg</file>
         <file>theme/send.svg</file>
+        <file>theme/call-notification.wav</file>
     </qresource>
 </RCC>
