@@ -90,12 +90,29 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
     auto *ai = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
 
     ActivityList list;
+    ActivityList callList;
+
 
     foreach (auto element, notifies) {
         auto json = element.toObject();
         auto a = Activity::fromActivityJson(json, ai->account());
+
         a._type = Activity::NotificationType;
         a._id = json.value("notification_id").toInt();
+
+        if(json.contains("subjectRichParameters")) {
+            const auto richParams = json.value("subjectRichParameters").toObject();
+            for(const auto &key : richParams.keys()) {
+                const auto parameterJsonObject = richParams.value(key).toObject();
+                a._subjectRichParameters.insert(key, Activity::RichSubjectParameter{
+                                                    parameterJsonObject.value(QStringLiteral("type")).toString(),
+                                                    parameterJsonObject.value(QStringLiteral("id")).toString(),
+                                                    parameterJsonObject.value(QStringLiteral("name")).toString(),
+                                                    QString(),
+                                                    QUrl()
+                                                });
+            }
+        }
 
         // 2 cases to consider:
         // 1. server == 24 & has Talk: object_type is chat/call/room & object_id contains conversationToken/messageId
@@ -116,7 +133,16 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             al._primary = true;
             a._links.insert(0, al);
 
+            if(a._subjectRichParameters.contains("user")) {
+                a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].id + QStringLiteral("/128");
+            }
+
             list.append(a);
+
+            // We want to serve incoming call dialogs to the user for calls that
+            if(a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
+                callList.append(a);
+            }
         } 
 
         a._status = 0;
@@ -145,6 +171,7 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         list.append(a);
     }
     emit newNotificationList(list);
+    emit newIncomingCallsList(callList);
 
     deleteLater();
 }

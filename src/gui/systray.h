@@ -64,6 +64,9 @@ public:
 
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);
+    
+    enum class NotificationPosition { Default, TopLeft, TopRight, BottomLeft, BottomRight };
+    Q_ENUM(NotificationPosition);
 
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
@@ -72,6 +75,7 @@ public:
     bool isOpen();
     QString windowTitle() const;
     bool useNormalWindow() const;
+    void createCallDialog(const Activity &callNotification);
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();
@@ -79,6 +83,7 @@ public:
     Q_INVOKABLE void setClosed();
     Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
     Q_INVOKABLE void forceWindowInit(QQuickWindow *window) const;
+    Q_INVOKABLE void positionNotificationWindow(QQuickWindow *window) const;
 
 signals:
     void currentUserChanged();
@@ -110,16 +115,21 @@ private:
     QScreen *currentScreen() const;
     QRect currentScreenRect() const;
     QPoint computeWindowReferencePoint() const;
+    QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
     QPoint calcTrayIconCenter() const;
     TaskBarPosition taskbarOrientation() const;
     QRect taskbarGeometry() const;
+    QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
     QPoint computeWindowPosition(int width, int height) const;
+    QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
 
     bool _isOpen = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
 
     AccessManagerFactory _accessManagerFactory;
+
+    QSet<qlonglong> _callsAlreadyNotified;
 };
 
 } // namespace OCC

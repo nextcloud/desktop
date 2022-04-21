@@ -17,6 +17,7 @@ public:
 
 signals:
     void newNotificationList(ActivityList);
+    void newIncomingCallsList(ActivityList);
 
 public slots:
     void slotFetchNotifications();

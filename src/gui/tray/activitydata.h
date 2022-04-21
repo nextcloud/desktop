@@ -33,7 +33,7 @@ namespace OCC {
 class ActivityLink
 {
     Q_GADGET
-    
+
     Q_PROPERTY(QString imageSource MEMBER _imageSource)
     Q_PROPERTY(QString imageSourceHovered MEMBER _imageSourceHovered)
     Q_PROPERTY(QString label MEMBER _label)
@@ -115,6 +115,7 @@ public:
         QString conversationToken;
         QString messageId;
         QString messageSent;
+        QString userAvatar;
     };
 
     Type _type;

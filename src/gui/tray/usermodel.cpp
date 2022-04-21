@@ -12,6 +12,7 @@
 #include "logger.h"
 #include "guiutility.h"
 #include "syncfileitem.h"
+#include "systray.h"
 #include "tray/activitylistmodel.h"
 #include "tray/notificationcache.h"
 #include "tray/unifiedsearchresultslistmodel.h"
@@ -120,6 +121,18 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
         showDesktopNotification(activity._subject, message);
         _activityModel->addNotificationToActivityList(activity);
+    }
+}
+
+void User::slotBuildIncomingCallDialogs(const ActivityList &list)
+{
+    const auto systray = Systray::instance();
+    const ConfigFile cfg;
+
+    if(systray && cfg.showCallNotifications()) {
+        for(const auto &activity : list) {
+            systray->createCallDialog(activity);
+        }
     }
 }
 
@@ -264,6 +277,8 @@ void User::slotRefreshNotifications()
         auto *snh = new ServerNotificationHandler(_account.data());
         connect(snh, &ServerNotificationHandler::newNotificationList,
             this, &User::slotBuildNotificationDisplay);
+        connect(snh, &ServerNotificationHandler::newIncomingCallsList,
+            this, &User::slotBuildIncomingCallDialogs);
 
         snh->slotFetchNotifications();
     } else {
@@ -906,7 +921,7 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
 
         endInsertRows();
         ConfigFile cfg;
-        _users.last()->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
+        u->setNotificationRefreshInterval(cfg.notificationRefreshInterval());
         emit newUserSelected();
     }
 }
