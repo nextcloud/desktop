@@ -65,14 +65,14 @@ bool LockFileJob::finished()
         const auto httpErrorCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (httpErrorCode == LOCKED_HTTP_ERROR_CODE) {
             const auto record = handleReply();
-            if (static_cast<SyncFileItem::LockOwnerType>(record._lockOwnerType) == SyncFileItem::LockOwnerType::UserLock) {
-                Q_EMIT finishedWithError(httpErrorCode, {}, record._lockOwnerDisplayName);
+            if (static_cast<SyncFileItem::LockOwnerType>(record._lockstate._lockOwnerType) == SyncFileItem::LockOwnerType::UserLock) {
+                Q_EMIT finishedWithError(httpErrorCode, {}, record._lockstate._lockOwnerDisplayName);
             } else {
-                Q_EMIT finishedWithError(httpErrorCode, {}, record._lockEditorApp);
+                Q_EMIT finishedWithError(httpErrorCode, {}, record._lockstate._lockEditorApp);
             }
         } else if (httpErrorCode == PRECONDITION_FAILED_ERROR_CODE) {
             const auto record = handleReply();
-            if (_requestedLockState == SyncFileItem::LockStatus::UnlockedItem && !record._locked) {
+            if (_requestedLockState == SyncFileItem::LockStatus::UnlockedItem && !record._lockstate._locked) {
                 Q_EMIT finishedWithoutError();
             } else {
                 Q_EMIT finishedWithError(httpErrorCode, reply()->errorString(), {});
@@ -90,13 +90,13 @@ bool LockFileJob::finished()
 
 void LockFileJob::setFileRecordLocked(SyncJournalFileRecord &record) const
 {
-    record._locked = (_lockStatus == SyncFileItem::LockStatus::LockedItem);
-    record._lockOwnerType = static_cast<int>(_lockOwnerType);
-    record._lockOwnerDisplayName = _userDisplayName;
-    record._lockOwnerId = _userId;
-    record._lockEditorApp = _editorName;
-    record._lockTime = _lockTime;
-    record._lockTimeout = _lockTimeout;
+    record._lockstate._locked = (_lockStatus == SyncFileItem::LockStatus::LockedItem);
+    record._lockstate._lockOwnerType = static_cast<int>(_lockOwnerType);
+    record._lockstate._lockOwnerDisplayName = _userDisplayName;
+    record._lockstate._lockOwnerId = _userId;
+    record._lockstate._lockEditorApp = _editorName;
+    record._lockstate._lockTime = _lockTime;
+    record._lockstate._lockTimeout = _lockTimeout;
 }
 
 void LockFileJob::resetState()

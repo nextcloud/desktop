@@ -597,8 +597,6 @@ private slots:
 
     void testDiscoverLockChanges()
     {
-//        Logger::instance()->setLogDebug(true);
-
         FakeFolder fakeFolder{FileInfo{}};
         fakeFolder.syncEngine().account()->setCapabilities({{"activity", QVariantMap{{"apiv2", QVariantList{"filters", "filters-api", "previews", "rich-strings"}}}},
                                                             {"bruteforce", QVariantMap{{"delay", 0}}},
@@ -626,7 +624,7 @@ private slots:
                                                                       "<nc:lock-owner>user1</nc:lock-owner>"
                                                                       "<nc:lock-owner-displayname>user1</nc:lock-owner-displayname>"
                                                                       "<nc:lock-owner-editor>user1</nc:lock-owner-editor>"
-                                                                      "<nc:lock-time>1648046707</nc:lock-time><oc:size>20020</oc:size>";
+                                                                      "<nc:lock-time>1648046707</nc:lock-time>";
 
         fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
         fakeFolder.remoteModifier().insert(fooFileSubFolder);
