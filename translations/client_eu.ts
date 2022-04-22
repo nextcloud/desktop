@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="175"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="186"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="179"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="190"/>
         <source>Dismiss</source>
         <translation>Baztertu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="217"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="221"/>
         <source>Open share dialog</source>
         <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>
@@ -955,7 +955,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Berrezartzeak huts egin du: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
@@ -3110,7 +3110,7 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
         <source>Impossible to get modification time for file in conflict %1)</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da % 1 gatazkan dagoen fitxategia aldatzeko denbora lortu</translation>
     </message>
 </context>
 <context>
@@ -3414,7 +3414,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez, sartu pasahitz bat zure partekatzerako:</translation>
     </message>
 </context>
 <context>
@@ -3545,7 +3545,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/discovery.cpp" line="846"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -3709,7 +3709,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/libsync/propagatedownload.cpp" line="1081"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1094"/>
         <source>File %1 has invalid modified time reported by server. Do not save it.</source>
-        <translation type="unfinished"/>
+        <translation>% 1 fitxategiak zerbitzariak jakinarazitako aldaketa-ordu baliogabea du. Ez gorde.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1219"/>
@@ -4101,7 +4101,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Erantzun</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="137"/>
@@ -6098,12 +6098,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="31"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Erantzun honi ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="65"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Bidali erantzuna txat-mezuari</translation>
     </message>
 </context>
 <context>
