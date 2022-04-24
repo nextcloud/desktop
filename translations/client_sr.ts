@@ -1523,14 +1523,19 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Сви фајлови из синхронизационе фасцикле &apos;%1&apos; су избрисани на серверу.
+Ово брисање ће бити синхронизовано са локалном синхронизационом фасциклом и тиме ће ови фајлови постати недоступни, осим ако немате право њиховог враћања.
+Ако одлучите да повратите фајлове, они ће бити опет синхронизовани назад са сервером, уколико имате права то да урадите.
+Ако одлучите да обришете фајлове, они ће Вам постати недоступни, осим ако нисте власник.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Сви фајлови из локалне фасцикле &apos;%1&apos; која се синхронизује су избрисани. Ово брисање ће бити синхронизовано са сервером, и тиме ће ови фајлови постати недоступни, осим ако се не поврате.
+Да ли сте сигурни да желите да синхронизујете ове радње са сервером?
+Ако је ово била грешка и желите да задржите фајлове, они ће се поновно синхронизовати са сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -1550,17 +1555,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1273"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Уклонити све фајлове?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Уклони све фајлове</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1278"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Остави фајлове</translation>
     </message>
 </context>
 <context>
@@ -4209,7 +4214,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Постави лозинку</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
@@ -5896,7 +5901,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Текст ознака</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>

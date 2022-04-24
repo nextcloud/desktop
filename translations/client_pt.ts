@@ -1519,7 +1519,9 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Todos os ficheiros na pasta local de sincronização &apos;%1&apos; foram apagados. Estas deleções irão ser sincronizadas com o servidor, fazendo com que os ficheiros fiquem indisponíveis, a não ser que sejam restaurados.
+Tem a certeza que deseja sincronizar essas ações com o servidor?
+Se foi acidental e decidir manter os seus ficheiros, eles serão sincronizados novamente apartir do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -1539,17 +1541,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1273"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Remover todos os ficheiros?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Remover todos os ficheiros</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1278"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Manter ficheiros</translation>
     </message>
 </context>
 <context>
@@ -4193,7 +4195,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Defina a senha</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
@@ -5880,7 +5882,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>

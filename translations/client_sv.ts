@@ -1525,14 +1525,19 @@ Om du fortsätter synkroniseringen kommer alla dina filer återställas med en �
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i den synkade mappen &apos;%1&apos; raderades på servern.
+Dessa raderingar kommer att synkroniseras till din lokalt synkade mapp och göra filerna otillgängliga, om du inte har möjlighet att återställa.
+Om du återställer dessa filer kommer dom att synkroniseras till servern på nytt, om du har rättighet att göra det.
+Om du raderar filerna kommer dom att vara otillgängliga för dig, om du inte är ägaren.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Alla filer i din lokalt synkade mapp &apos;%1&apos; raderades. Dessa raderingar kommer att synkroniseras med servern och göra filerna otillgängliga, om de inte återställs.
+Är du säker på att du vill synka ändringarna till servern?
+Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroniseras på nytt från servern.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>

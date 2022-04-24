@@ -1523,7 +1523,9 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Semua berkas di dalam sinkronisasi folder &apos;%1&apos; telah dihapus dari server. Perubahan ini akan disinkronisasi ke folder sinkronisasi lokal Anda, termasuk membuat berkas-berkas Anda tidak lagi tersedia kecuali Anda memulihkannya kembali.
+Anda yakin ingin mesinkronisasi aksi tersebut dengan server?
+Jika ini adalah sebuah ketidaksengajaan dan Anda memutuskan untuk berkas Anda tetap tersedia, berkas-berkas Anda akan disinkronisasi ulang dengan server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>

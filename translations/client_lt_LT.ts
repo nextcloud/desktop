@@ -1526,7 +1526,11 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Visi, Jūsų vietiniame sinchronizavimo aplanke &quot;% 1&quot; esantys, failai buvo ištrinti. Jie bus sinchronizuoti su Jūsų serveriu, todėl failai nebus pasiekiami, nebent būtų atstatyti.
+Ar tikrai norite sinchronizuoti šiuos veiksmus su serveriu?
+Jei tai buvo netyčinis veiksmas ir jūs nusprendėte išsaugoti savo failus, jie bus iš naujo sinchronizuoti iš serverio.
+
+Open in Google Translate</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -5894,7 +5898,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
