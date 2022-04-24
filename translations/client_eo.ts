@@ -1521,14 +1521,19 @@ Se vi plu sinkronigas, la sinkronigo anstataŭigos ĉiujn viajn dosierojn per an
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Ĉiuj dosieroj en la sinkroniga dosierujo „%1“ estis forigitaj en la servilo.
+Tiujn forigojn sinkronigos via loka sinkroniga dosierujo: do, la dosieroj ne plu estos haveblaj, krom se vi rajtas restaŭri ilin.
+Se vi decidas gardi la dosierojn, ili estos resinkronigitaj al la servilo, se vi rajtas fari tion.
+Se vi decidas forigi la dosierojn, ili ne plus estos haveblaj al vi, krom se vi estas la posedanto.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1260"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ĉiuj dosieroj en via loka sinkroniga dosierujo „%1“ estis forigitaj. Tiuj forigoj sinkroniĝos kun via servilo: do, la dosieroj ne plu estos haveblaj, krom se restaŭritaj.
+Ĉu vi certas, ke vi volas sinkronigi tiujn forigojn al la servilo?
+Se tio estis neintenca kaj se vi decidas gardi viajn dosierojn, ili estos resinkronigitaj el la servilo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -5891,7 +5896,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>

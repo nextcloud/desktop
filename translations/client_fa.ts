@@ -1519,7 +1519,9 @@ If you decide to delete the files, they will be unavailable to you, unless you a
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>تمامی پرونده های پوشه همگام ساز &apos;1%&apos; در سرور حذف شد. این حذف ها با پوشه همگام ساز محلی شما هماهنگ خواهند شد، ساخت چنین پرونده هایی در دسترس نیستند مگر اینکه حق بازگرداندن داشته باشید.
+آیا شما اطمینان دارید که می خواهید آن اعمال را با سرور همگام نمایید؟
+اگر این یک اتفاق بوده و شما تصمیم دارید پرونده هایتان را نگه دارید، آن ها از سرور مجددا همگام سازی خواهند شد.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1264"/>
@@ -1539,17 +1541,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1273"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>حذف تمام فایل ها؟</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1277"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>حذف تمام فایل ها</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1278"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>نگه داشتن فایل ها</translation>
     </message>
 </context>
 <context>
@@ -4190,7 +4192,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="223"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>تعیین رمزعبور</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
@@ -5876,7 +5878,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="32"/>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="353"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>برچسب متنی</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
