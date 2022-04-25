@@ -32,7 +32,6 @@
 #include "common/syncjournaldb.h"
 #include "common/version.h"
 #include "filesystembase.h"
-#include "version.h"
 
 #include "common/c_jhash.h"
 

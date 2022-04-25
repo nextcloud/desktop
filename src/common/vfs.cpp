@@ -17,8 +17,8 @@
  */
 
 #include "vfs.h"
+#include "common/version.h"
 #include "plugin.h"
-#include "version.h"
 #include "syncjournaldb.h"
 
 #include "common/filesystembase.h"

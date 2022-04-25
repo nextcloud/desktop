@@ -21,7 +21,7 @@
 #include "common/asserts.h"
 #include "common/filesystembase.h"
 #include "common/utility.h"
-#include "version.h"
+#include "common/version.h"
 
 // Note:  This file must compile without QtGui
 #include <QCollator>
