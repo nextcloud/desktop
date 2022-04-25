@@ -230,8 +230,16 @@ public:
     void setIgnoreHiddenFiles(bool ignore);
 
     // Used by the Socket API
-    SyncJournalDb *journalDb() { return &_journal; }
-    SyncEngine &syncEngine() { return *_engine; }
+    SyncJournalDb *journalDb()
+    {
+        Q_ASSERT(isReady());
+        return &_journal;
+    }
+    SyncEngine &syncEngine()
+    {
+        Q_ASSERT(isReady());
+        return *_engine;
+    }
     Vfs &vfs()
     {
         OC_ENFORCE(_vfs);

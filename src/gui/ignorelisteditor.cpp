@@ -120,10 +120,12 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
     // Otherwise we would not download the files/directories that are no longer
     // ignored (because the remote etag did not change)   (issue #3172)
     for (auto *folder : folderMan->map()) {
-        folder->journalDb()->forceRemoteDiscoveryNextSync();
-        folder->reloadExcludes();
-        folder->slotNextSyncFullLocalDiscovery();
-        folderMan->scheduleFolder(folder);
+        if (folder->isReady()) {
+            folder->journalDb()->forceRemoteDiscoveryNextSync();
+            folder->reloadExcludes();
+            folder->slotNextSyncFullLocalDiscovery();
+            folderMan->scheduleFolder(folder);
+        }
     }
 }
 
