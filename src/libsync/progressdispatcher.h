@@ -23,6 +23,7 @@
 #include <QElapsedTimer>
 #include <QTimer>
 
+#include "common/utility.h"
 #include "syncfileitem.h"
 
 namespace OCC {
@@ -208,6 +209,12 @@ public:
      */
     Estimates fileProgress(const SyncFileItem &item) const;
 
+    void setEstimatedBandwidth(const SyncFileItem &item);
+
+    quint64 estimatedUpBw() const;
+    quint64 estimatedDownBw() const;
+    QString estimatedBwString() const;
+
 private slots:
     /**
      * Called every second once started, this function updates the
@@ -232,6 +239,9 @@ private:
     // The fastest observed rate of files per second in this sync.
     double _maxFilesPerSecond;
     double _maxBytesPerSecond;
+
+    quint64 _estimatedUpBw{0};
+    quint64 _estimatedDownBw{0};
 };
 
 namespace Progress {

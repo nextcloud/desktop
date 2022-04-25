@@ -859,9 +859,9 @@ void SyncEngine::finalize(bool success)
 void SyncEngine::slotProgress(const SyncFileItem &item, qint64 current)
 {
     _progressInfo->setProgressItem(item, current);
+    _progressInfo->setEstimatedBandwidth(item);
     emit transmissionProgress(*_progressInfo);
 }
-
 
 void SyncEngine::restoreOldFiles(SyncFileItemVector &syncItems)
 {

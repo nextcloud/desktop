@@ -998,8 +998,6 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     SyncFileItem curItem = progress._lastCompletedItem;
     qint64 curItemProgress = -1; // -1 means finished
     qint64 biggerItemSize = 0;
-    quint64 estimatedUpBw = 0;
-    quint64 estimatedDownBw = 0;
     QString allFilenames;
     foreach (const ProgressInfo::ProgressItem &citm, progress._currentItems) {
         if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
@@ -1007,11 +1005,6 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
             curItemProgress = citm._progress.completed();
             curItem = citm._item;
             biggerItemSize = citm._item._size;
-        }
-        if (citm._item._direction != SyncFileItem::Up) {
-            estimatedDownBw += progress.fileProgress(citm._item).estimatedBandwidth;
-        } else {
-            estimatedUpBw += progress.fileProgress(citm._item).estimatedBandwidth;
         }
         auto fileName = QFileInfo(citm._item._file).fileName();
         if (allFilenames.length() > 0) {
@@ -1034,7 +1027,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         QString s1 = Utility::octetsToString(curItemProgress);
         QString s2 = Utility::octetsToString(curItem._size);
         //quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
-        if (estimatedUpBw || estimatedDownBw) {
+        if (progress.estimatedUpBw() || progress.estimatedDownBw()) {
             /*
             //: Example text: "uploading foobar.png (1MB of 2MB) time left 2 minutes at a rate of 24Kb/s"
             fileProgressString = tr("%1 %2 (%3 of %4) %5 left at a rate of %6/s")
@@ -1043,28 +1036,8 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
                     Utility::octetsToString(estimatedBw) );
             */
             //: Example text: "Syncing 'foo.txt', 'bar.txt'"
-            fileProgressString = tr("Syncing %1").arg(allFilenames);
-            if (estimatedDownBw > 0) {
-                fileProgressString.append(tr(", "));
-// ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
-#ifdef Q_OS_WIN
-                //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
-                fileProgressString.append(tr("download %1/s").arg(Utility::octetsToString(estimatedDownBw)));
-#else
-                fileProgressString.append(tr("\u2193 %1/s")
-                                              .arg(Utility::octetsToString(estimatedDownBw)));
-#endif
-            }
-            if (estimatedUpBw > 0) {
-                fileProgressString.append(tr(", "));
-#ifdef Q_OS_WIN
-                //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
-                fileProgressString.append(tr("upload %1/s").arg(Utility::octetsToString(estimatedUpBw)));
-#else
-                fileProgressString.append(tr("\u2191 %1/s")
-                                              .arg(Utility::octetsToString(estimatedUpBw)));
-#endif
-            }
+            fileProgressString = tr("Syncing %1 %2").arg(allFilenames,
+                                                         progress.estimatedBwString());
         } else {
             //: Example text: "uploading foobar.png (2MB of 2MB)"
             fileProgressString = tr("%1 %2 (%3 of %4)").arg(kindString, itemFileName, s1, s2);
@@ -1088,12 +1061,12 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
         if (progress.trustEta()) {
             //: Example text: "5 minutes left, 12 MB of 345 MB, file 6 of 7"
-            overallSyncString = tr("%5 left, %1 of %2, file %3 of %4")
+            overallSyncString = tr("%5 left, %1 of %2, file %3 of %4 %6")
                                     .arg(s1, s2)
                                     .arg(currentFile)
                                     .arg(totalFileCount)
-                                    .arg(Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta));
-
+                                    .arg(Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta))
+                                    .arg(progress.estimatedBwString());
         } else {
             //: Example text: "12 MB of 345 MB, file 6 of 7"
             overallSyncString = tr("%1 of %2, file %3 of %4")
