@@ -1,0 +1,6 @@
+Enhancement: Set Windows VFS placeholders readonly if needed
+
+We now properly set the read only flag on Windows virtual files.
+
+https://github.com/owncloud/client/issues/9598
+https://github.com/owncloud/client-desktop-vfs-win/issues/24

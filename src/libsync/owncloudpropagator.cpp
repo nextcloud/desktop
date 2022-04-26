@@ -1201,13 +1201,9 @@ void OCC::PropagateUpdateMetaDataJob::start()
 
     const QString filePath = propagator()->fullLocalPath(_item->destination());
     if (_item->_direction == SyncFileItem::Down) {
-        // If the 'W' remote permission changed, update the local filesystem
         SyncJournalFileRecord prev;
         if (propagator()->_journal->getFileRecord(_item->_file, &prev)
-            && prev.isValid()
-            && prev._remotePerm.hasPermission(RemotePermissions::CanWrite) != _item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
-            const bool isReadOnly = !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite);
-            FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+            && prev.isValid()) {
             if (_item->_checksumHeader.isEmpty()) {
                 _item->_checksumHeader = prev._checksumHeader;
             }

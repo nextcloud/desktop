@@ -94,6 +94,8 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const
     } else {
         OC_ASSERT(FileSystem::setModTime(filePath, item._modtime));
     }
+    const bool isReadOnly = !item._remotePerm.isNull() && !item._remotePerm.hasPermission(RemotePermissions::CanWrite);
+    FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
     return Vfs::ConvertToPlaceholderResult::Ok;
 }
 
