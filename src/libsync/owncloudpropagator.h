@@ -367,7 +367,7 @@ public:
     bool _finishedEmited; // used to ensure that finished is only emitted once
 
 public:
-    OwncloudPropagator(AccountPtr account, const QUrl &baseUrl, const QString &localDir,
+    OwncloudPropagator(AccountPtr account, const SyncOptions &options, const QUrl &baseUrl, const QString &localDir,
         const QString &remoteFolder, SyncJournalDb *progressDb)
         : _journal(progressDb)
         , _finishedEmited(false)
@@ -375,10 +375,12 @@ public:
         , _anotherSyncNeeded(false)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
+        , _syncOptions(options)
         , _webDavUrl(baseUrl)
         , _localDir((localDir.endsWith(QLatin1Char('/'))) ? localDir : localDir + QLatin1Char('/'))
         , _remoteFolder((remoteFolder.endsWith(QLatin1Char('/'))) ? remoteFolder : remoteFolder + QLatin1Char('/'))
     {
+        _chunkSize = _syncOptions._initialChunkSize;
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
 
@@ -387,7 +389,6 @@ public:
     void start(SyncFileItemSet &&_syncedItems);
 
     const SyncOptions &syncOptions() const;
-    void setSyncOptions(const SyncOptions &syncOptions);
 
     int _downloadLimit = 0;
     int _uploadLimit = 0;

@@ -519,12 +519,6 @@ const SyncOptions &OwncloudPropagator::syncOptions() const
     return _syncOptions;
 }
 
-void OwncloudPropagator::setSyncOptions(const SyncOptions &syncOptions)
-{
-    _syncOptions = syncOptions;
-    _chunkSize = syncOptions._initialChunkSize;
-}
-
 Result<QString, bool> OwncloudPropagator::localFileNameClash(const QString &relFile)
 {
     OC_ASSERT(!relFile.isEmpty());

@@ -582,6 +582,7 @@ public:
     bool isDehydratedPlaceholder(const QString &filePath);
 
 private:
+    void startVfs();
     static void toDisk(QDir &dir, const FileInfo &templateFi);
 
     void fromDisk(QDir &dir, FileInfo &templateFi);

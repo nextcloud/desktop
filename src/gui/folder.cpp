@@ -105,8 +105,7 @@ Folder::Folder(const FolderDefinition &definition,
     if (checkLocalPath()) {
         // those errors should not persist over sessions
         _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
-
-        _engine.reset(new SyncEngine(_accountState->account(), webDavUrl(), path(), remotePath(), &_journal));
+        _engine.reset(new SyncEngine(_accountState->account(), loadSyncOptions(), webDavUrl(), path(), remotePath(), &_journal));
         // pass the setting if hidden files are to be ignored, will be read in csync_update
         _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
@@ -224,6 +223,28 @@ bool Folder::checkLocalPath()
         return false;
     }
     return true;
+}
+
+SyncOptions Folder::loadSyncOptions()
+{
+    SyncOptions opt(_vfs);
+    ConfigFile cfgFile;
+
+    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
+    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
+    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
+    opt._moveFilesToTrash = cfgFile.moveToTrash();
+    opt._vfs = _vfs;
+    opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
+
+    opt._initialChunkSize = cfgFile.chunkSize();
+    opt._minChunkSize = cfgFile.minChunkSize();
+    opt._maxChunkSize = cfgFile.maxChunkSize();
+    opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
+
+    opt.fillFromEnvironmentVariables();
+    opt.verifyChunkSizes();
+    return opt;
 }
 
 QByteArray Folder::id() const
@@ -913,7 +934,6 @@ void Folder::startSync()
     }
 
     setDirtyNetworkLimits();
-    setSyncOptions();
 
     static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
         auto interval = ConfigFile().fullLocalDiscoveryInterval();
@@ -946,29 +966,6 @@ void Folder::startSync()
     QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
 
     emit syncStarted();
-}
-
-void Folder::setSyncOptions()
-{
-    SyncOptions opt;
-    ConfigFile cfgFile;
-
-    auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
-    opt._newBigFolderSizeLimit = newFolderLimit.first ? newFolderLimit.second * 1000LL * 1000LL : -1; // convert from MB to B
-    opt._confirmExternalStorage = cfgFile.confirmExternalStorage();
-    opt._moveFilesToTrash = cfgFile.moveToTrash();
-    opt._vfs = _vfs;
-    opt._parallelNetworkJobs = _accountState->account()->isHttp2Supported() ? 20 : 6;
-
-    opt._initialChunkSize = cfgFile.chunkSize();
-    opt._minChunkSize = cfgFile.minChunkSize();
-    opt._maxChunkSize = cfgFile.maxChunkSize();
-    opt._targetChunkUploadDuration = cfgFile.targetChunkUploadDuration();
-
-    opt.fillFromEnvironmentVariables();
-    opt.verifyChunkSizes();
-
-    _engine->setSyncOptions(opt);
 }
 
 void Folder::setDirtyNetworkLimits()

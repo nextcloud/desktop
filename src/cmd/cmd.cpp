@@ -143,11 +143,11 @@ void sync(const SyncCTX &ctx)
         selectiveSyncFixup(db, selectiveSyncList);
     }
 
-    SyncOptions opt;
+    SyncOptions opt(QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::Off).release()));
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
     auto engine = new SyncEngine(
-        ctx.account, ctx.account->davUrl(), ctx.options.source_dir, ctx.folder, db);
+        ctx.account, opt, ctx.account->davUrl(), ctx.options.source_dir, ctx.folder, db);
     engine->setParent(db);
 
     QObject::connect(engine, &SyncEngine::finished, engine, [engine, ctx, restartCount = std::make_shared<int>(0)](bool result) {
@@ -199,7 +199,6 @@ void sync(const SyncCTX &ctx)
     });
     QObject::connect(engine, &SyncEngine::syncError, engine,
         [](const QString &error) { qWarning() << "Sync error:" << error; });
-    engine->setSyncOptions(opt);
     engine->setIgnoreHiddenFiles(ctx.options.ignoreHiddenFiles);
     engine->setNetworkLimits(ctx.options.uplimit, ctx.options.downlimit);
 

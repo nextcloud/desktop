@@ -465,7 +465,7 @@ private:
 
     bool checkLocalPath();
 
-    void setSyncOptions();
+    SyncOptions loadSyncOptions();
 
     enum LogStatus {
         LogStatusRemove,

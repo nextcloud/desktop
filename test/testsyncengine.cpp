@@ -463,7 +463,7 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
         // Disable parallel uploads
-        SyncOptions syncOptions;
+        SyncOptions syncOptions = fakeFolder.syncEngine().syncOptions();
         syncOptions._parallelNetworkJobs = 0;
         fakeFolder.syncEngine().setSyncOptions(syncOptions);
 
@@ -696,7 +696,7 @@ private slots:
     void testUploadV1Multiabort()
     {
         FakeFolder fakeFolder{ FileInfo{} };
-        SyncOptions options;
+        SyncOptions options = fakeFolder.syncEngine().syncOptions();
         options._initialChunkSize = 10;
         options._maxChunkSize = 10;
         options._minChunkSize = 10;

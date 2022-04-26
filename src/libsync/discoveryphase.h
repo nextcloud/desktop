@@ -238,18 +238,19 @@ class DiscoveryPhase : public QObject
 
 public:
     // input
-    DiscoveryPhase(const AccountPtr &account, const QUrl &baseUrl, QObject *parent = nullptr)
+    DiscoveryPhase(const AccountPtr &account, const SyncOptions &options, const QUrl &baseUrl, QObject *parent = nullptr)
         : QObject(parent)
         , _account(account)
+        , _syncOptions(options)
         , _baseUrl(baseUrl)
     {
     }
     AccountPtr _account;
+    const SyncOptions _syncOptions;
     const QUrl _baseUrl;
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
     SyncJournalDb *_statedb;
-    SyncOptions _syncOptions;
     ExcludedFiles *_excludes;
     QRegExp _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities

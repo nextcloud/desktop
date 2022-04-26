@@ -22,7 +22,7 @@ private slots:
     void testSelectiveSyncBigFolders()
     {
         FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
-        SyncOptions options;
+        SyncOptions options = fakeFolder.syncEngine().syncOptions();
         options._newBigFolderSizeLimit = 20000; // 20 K
         fakeFolder.syncEngine().setSyncOptions(options);
 

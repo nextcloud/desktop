@@ -950,7 +950,10 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
 
     _journalDb.reset(new OCC::SyncJournalDb(localPath() + QStringLiteral(".sync_test.db")));
     // TODO: davUrl
-    _syncEngine.reset(new OCC::SyncEngine(_account, _account->davUrl(), localPath(), QString(), _journalDb.get()));
+
+    const OCC::SyncOptions opt(QSharedPointer<OCC::Vfs>(OCC::createVfsFromPlugin(_vfsMode).release()));
+
+    _syncEngine.reset(new OCC::SyncEngine(_account, opt, _account->davUrl(), localPath(), QString(), _journalDb.get()));
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
@@ -960,9 +963,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
             callback(false);
         });
     });
-
-    // Ensure we have a valid VfsOff instance "running"
-    switchToVfs(_syncEngine->syncOptions()._vfs);
+    startVfs();
 
     // A new folder will update the local file state database on first sync.
     // To have a state matching what users will encounter, we have to a sync
@@ -972,6 +973,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
 
 void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
 {
+    Q_ASSERT(vfs);
     auto opts = _syncEngine->syncOptions();
 
     opts._vfs->stop();
@@ -979,30 +981,7 @@ void FakeFolder::switchToVfs(QSharedPointer<OCC::Vfs> vfs)
 
     opts._vfs = vfs;
     _syncEngine->setSyncOptions(opts);
-
-    OCC::VfsSetupParams vfsParams;
-    vfsParams.filesystemPath = localPath();
-    vfsParams.remotePath = QLatin1Char('/');
-    vfsParams.account = _account;
-    vfsParams.journal = _journalDb.get();
-    vfsParams.providerName = QStringLiteral("OC-TEST");
-    vfsParams.providerDisplayName = QStringLiteral("OC-TEST");
-    vfsParams.providerVersion = QVersionNumber(0, 1);
-    QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
-        vfs->stop();
-        vfs->unregisterFolder();
-    });
-
-    QObject::connect(vfs.get(), &OCC::Vfs::error, vfs.get(), [](const QString &error) {
-        QFAIL(qUtf8Printable(error));
-    });
-    QSignalSpy spy(vfs.get(), &OCC::Vfs::started);
-    vfs->start(vfsParams);
-
-    // don't use QVERIFY outside of the test slot
-    if (spy.isEmpty() && !spy.wait()) {
-        QFAIL("VFS Setup failed");
-    }
+    startVfs();
 }
 
 FileInfo FakeFolder::currentLocalState()
@@ -1054,6 +1033,34 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 bool FakeFolder::isDehydratedPlaceholder(const QString &filePath)
 {
     return _syncEngine->syncOptions()._vfs->isDehydratedPlaceholder(filePath);
+}
+
+void FakeFolder::startVfs()
+{
+    auto vfs = _syncEngine->syncOptions()._vfs;
+    OCC::VfsSetupParams vfsParams;
+    vfsParams.filesystemPath = localPath();
+    vfsParams.remotePath = QLatin1Char('/');
+    vfsParams.account = _account;
+    vfsParams.journal = _journalDb.get();
+    vfsParams.providerName = QStringLiteral("OC-TEST");
+    vfsParams.providerDisplayName = QStringLiteral("OC-TEST");
+    vfsParams.providerVersion = QVersionNumber(0, 1);
+    QObject::connect(_syncEngine.get(), &QObject::destroyed, vfs.data(), [vfs]() {
+        vfs->stop();
+        vfs->unregisterFolder();
+    });
+
+    QObject::connect(vfs.get(), &OCC::Vfs::error, vfs.get(), [](const QString &error) {
+        QFAIL(qUtf8Printable(error));
+    });
+    QSignalSpy spy(vfs.get(), &OCC::Vfs::started);
+    vfs->start(vfsParams);
+
+    // don't use QVERIFY outside of the test slot
+    if (spy.isEmpty() && !spy.wait()) {
+        QFAIL("VFS Setup failed");
+    }
 }
 
 void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)

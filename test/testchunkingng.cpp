@@ -46,7 +46,7 @@ void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
 // Reduce max chunk size a bit so we get more chunks
 void setChunkSize(SyncEngine &engine, qint64 size)
 {
-    SyncOptions options;
+    SyncOptions options = engine.syncOptions();
     options._maxChunkSize = size;
     options._initialChunkSize = size;
     options._minChunkSize = size;

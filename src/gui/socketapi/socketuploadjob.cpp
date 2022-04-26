@@ -74,8 +74,10 @@ void SocketUploadJob::prepareTag(const AccountPtr &account)
 void SocketUploadJob::start()
 {
     fail("needs porting");
+#if 0
     // TODO: spaces
     // TODO: ProgressDispatcher requires a folder object
+    // TODO: SyncEngine requires an SyncOptions object
     return;
     _localPath = _apiJob->arguments()[QLatin1String("localPath")].toString();
     auto remotePath = _apiJob->arguments()[QLatin1String("remotePath")].toString();
@@ -193,6 +195,7 @@ void SocketUploadJob::start()
         }
     });
     mkdir->start();
+#endif
 }
 
 void SocketUploadJob::fail(const QString &error)
