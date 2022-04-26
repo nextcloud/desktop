@@ -17,11 +17,10 @@
  */
 
 #include "vfs.h"
+#include "common/filesystembase.h"
 #include "common/version.h"
 #include "plugin.h"
 #include "syncjournaldb.h"
-
-#include "common/filesystembase.h"
 
 #include <QDir>
 #include <QPluginLoader>
@@ -138,20 +137,18 @@ Vfs::AvailabilityResult Vfs::availabilityInDb(const QString &folderPath)
     return AvailabilityError::NoSuchItem;
 }
 
-VfsOff::VfsOff(QObject *parent)
-    : Vfs(parent)
-{
-}
-
-VfsOff::~VfsOff() = default;
-
 static QString modeToPluginName(Vfs::Mode mode)
 {
-    if (mode == Vfs::WithSuffix)
+    switch (mode) {
+    case Vfs::Off:
+        return QStringLiteral("off");
+    case Vfs::WithSuffix:
         return QStringLiteral("suffix");
-    if (mode == Vfs::WindowsCfApi)
+    case Vfs::WindowsCfApi:
         return QStringLiteral("win");
-    return QString();
+    default:
+        Q_UNREACHABLE();
+    }
 }
 
 Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
@@ -159,8 +156,6 @@ Q_LOGGING_CATEGORY(lcPlugin, "plugins", QtInfoMsg)
 bool OCC::isVfsPluginAvailable(Vfs::Mode mode)
 {
     // TODO: cache plugins available?
-    if (mode == Vfs::Off)
-        return true;
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return false;
@@ -203,15 +198,14 @@ Vfs::Mode OCC::bestAvailableVfsMode()
         return Vfs::WindowsCfApi;
     } else if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         return Vfs::WithSuffix;
+    } else if (isVfsPluginAvailable(Vfs::Off)) {
+        return Vfs::Off;
     }
-    return Vfs::Off;
+    Q_UNREACHABLE();
 }
 
 std::unique_ptr<Vfs> OCC::createVfsFromPlugin(Vfs::Mode mode)
 {
-    if (mode == Vfs::Off)
-        return std::make_unique<VfsOff>();
-
     auto name = modeToPluginName(mode);
     if (name.isEmpty())
         return nullptr;

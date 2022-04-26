@@ -894,7 +894,9 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/B/b1" DVSUFFIX));
 
-        fakeFolder.switchToVfs(QSharedPointer<Vfs>(new VfsOff));
+        auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::Off).release());
+        QVERIFY(vfs);
+        fakeFolder.switchToVfs(vfs);
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a3" DVSUFFIX)); // regular upload
         QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());

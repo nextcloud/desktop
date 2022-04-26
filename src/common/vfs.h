@@ -281,43 +281,6 @@ protected:
     friend class OwncloudPropagator;
 };
 
-/// Implementation of Vfs for Vfs::Off mode - does nothing
-class OCSYNC_EXPORT VfsOff : public Vfs
-{
-    Q_OBJECT
-
-public:
-    VfsOff(QObject* parent = nullptr);
-    ~VfsOff() override;
-
-    Mode mode() const override { return Vfs::Off; }
-
-    QString fileSuffix() const override { return QString(); }
-
-    void stop() override {}
-    void unregisterFolder() override {}
-
-    bool socketApiPinStateActionsShown() const override { return false; }
-    bool isHydrating() const override { return false; }
-
-    Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
-
-    bool needsMetadataUpdate(const SyncFileItem &) override { return false; }
-    bool isDehydratedPlaceholder(const QString &) override { return false; }
-    bool statTypeVirtualFile(csync_file_stat_t *, void *) override { return false; }
-
-    bool setPinState(const QString &, PinState) override { return true; }
-    Optional<PinState> pinState(const QString &) override { return PinState::AlwaysLocal; }
-    AvailabilityResult availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
-
-public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
-
-protected:
-    Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &, const QString &, const QString &) override { return { ConvertToPlaceholderResult::Ok }; }
-    void startImpl(const VfsSetupParams &) override { Q_EMIT started(); }
-};
-
 /// Check whether the plugin for the mode is available.
 OCSYNC_EXPORT bool isVfsPluginAvailable(Vfs::Mode mode);
 

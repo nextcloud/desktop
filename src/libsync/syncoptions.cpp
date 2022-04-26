@@ -20,7 +20,6 @@
 using namespace OCC;
 
 SyncOptions::SyncOptions()
-    : _vfs(new VfsOff)
 {
 }
 

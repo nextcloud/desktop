@@ -26,7 +26,7 @@
 #include <common/utility.h>
 #include <csync.h>
 
-#include <owncloudlib.h>
+#include "owncloudlib.h"
 
 namespace OCC {
 
