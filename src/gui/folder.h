@@ -229,15 +229,14 @@ public:
     bool ignoreHiddenFiles();
     void setIgnoreHiddenFiles(bool ignore);
 
-    // Used by the Socket API
+    // TODO: don't expose
     SyncJournalDb *journalDb()
     {
-        Q_ASSERT(isReady());
         return &_journal;
     }
+    // TODO: don't expose
     SyncEngine &syncEngine()
     {
-        Q_ASSERT(isReady());
         return *_engine;
     }
     Vfs &vfs()
