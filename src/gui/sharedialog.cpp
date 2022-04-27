@@ -59,6 +59,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     const QString &localPath,
     SharePermissions maxSharingPermissions,
     const QByteArray &numericFileId,
+    SyncJournalFileLockInfo filelockState,
     ShareDialogStartPage startPage,
     QWidget *parent)
     : QDialog(parent)
@@ -67,6 +68,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     , _sharePath(sharePath)
     , _localPath(localPath)
     , _maxSharingPermissions(maxSharingPermissions)
+    , _filelockState(std::move(filelockState))
     , _privateLinkUrl(accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded))
     , _startPage(startPage)
 {
@@ -94,6 +96,14 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     QFont f(_ui->label_name->font());
     f.setPointSize(qRound(f.pointSize() * 1.4));
     _ui->label_name->setFont(f);
+
+    if (_filelockState._locked) {
+        static constexpr auto SECONDS_PER_MINUTE = 60;
+        const auto lockExpirationTime = _filelockState._lockTime + _filelockState._lockTimeout;
+        const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+        const auto remainingTimeInMinute = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
+        _ui->label_lockinfo->setText(tr("Locked by %1 - Expire in %2 minutes", "remaining time before lock expire", remainingTimeInMinute).arg(_filelockState._lockOwnerDisplayName).arg(remainingTimeInMinute));
+    }
 
     QString ocDir(_sharePath);
     ocDir.truncate(ocDir.length() - fileName.length());
