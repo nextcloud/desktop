@@ -1081,41 +1081,41 @@ Mjet njëkohësimi kartelash për desktop.</translation>
         <translation>Veprimtari Njëkohësimesh</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="901"/>
+        <location filename="../src/gui/folder.cpp" line="908"/>
         <source>Could not read system exclude file</source>
         <translation>S’u lexua dot kartelë përjashtimi sistemi</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1154"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>U shtua një dosje më e madhe se %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1147"/>
+        <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>U shtua një dosje nga një depozitë e jashtme.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1148"/>
+        <location filename="../src/gui/folder.cpp" line="1158"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Ju lutemi, shkoni te rregullimet që ta përzgjidhni, nëse doni ta shkarkoni.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1207"/>
+        <location filename="../src/gui/folder.cpp" line="1217"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. Të dhënat brenda saj nuk do të njëkohësohen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Dosja %1 qe krijuar, por qe përjashtuar më herët nga njëkohësimi. S’do të njëkohësohet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1221"/>
+        <location filename="../src/gui/folder.cpp" line="1231"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1128,7 +1128,7 @@ Kjo do të thotë që klienti i njëkohësimeve mund të mos ngarkojë menjëher
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1298"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1139,7 +1139,7 @@ Nëse vendosni t’i mbani këto kartela, ato do të rinjëkohësohen me shërby
 Nëse vendosni t’i fshini këto kartela, s’do të mund t’i keni, veç në mos qofshi i zoti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1303"/>
+        <location filename="../src/gui/folder.cpp" line="1313"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1148,17 +1148,17 @@ Jeni i sigurt se doni të njëkohësohen këto veprime me shërbyesin?
 Nëse ky qe aksident dhe vendosni t’i mbani kartelat tuaja, ato do të rinjëkohësohen me shërbyesin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1307"/>
+        <location filename="../src/gui/folder.cpp" line="1317"/>
         <source>Remove All Files?</source>
         <translation>Të hiqen Krejt Kartelat?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1311"/>
+        <location filename="../src/gui/folder.cpp" line="1321"/>
         <source>Remove all files</source>
         <translation>Hiqi krejt kartelat</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <location filename="../src/gui/folder.cpp" line="1322"/>
         <source>Keep files</source>
         <translation>Mbaji kartelat</translation>
     </message>
@@ -1348,62 +1348,62 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <translation>Ka përplasje të pazgjidhura. Klikoni për hollës.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Po kërkohet për ndryshime te shërbyesi i largët &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="899"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="902"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Po kërkohet për ndryshime te shërbyesi vendor &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="909"/>
         <source>Reconciling changes</source>
         <translation>Po pajtohen ndryshimet mes tyre</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="947"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Po njëkohësohet %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="974"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>shkarko %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ngarko %1/s</translation>
@@ -1414,46 +1414,46 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <translation>Dosje vendore: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 nga %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>edhe %5, %1 nga %2, kartela %3 nga %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 nga %2, kartela %3 nga %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
         <source>file %1 of %2</source>
         <translation>kartela %1 nga %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1077"/>
         <source>Waiting...</source>
         <translation>Po pritet…</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Po pritet për %n dosje tjetër…</numerusform><numerusform>Po pritet për %n dosje të tjera…</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Preparing to sync...</source>
         <translation>Po përgatitet për njëkohësim…</translation>
     </message>
@@ -1878,12 +1878,12 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <translation>S’shkruhen dot ndryshimet te &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="135"/>
         <source>Add Ignore Pattern</source>
         <translation>Shtoni Mostër Shpërfilljeje</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="136"/>
         <source>Add a new ignore pattern:</source>
         <translation>Shtoni një mostër të re shpërfilljeje:</translation>
     </message>

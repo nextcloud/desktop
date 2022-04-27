@@ -1080,41 +1080,41 @@ File synchronization desktop utility.</source>
         <translation>Actividade de sincronización</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="901"/>
+        <location filename="../src/gui/folder.cpp" line="908"/>
         <source>Could not read system exclude file</source>
         <translation>Non foi posíbel ler o ficheiro de exclusión do sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1154"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Foi engadido un cartafol maior de %1 MB: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1147"/>
+        <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Foi engadido un cartafol de almacenamento externo.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1148"/>
+        <location filename="../src/gui/folder.cpp" line="1158"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vaia a axustes a seleccionalo se quere descargar isto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1207"/>
+        <location filename="../src/gui/folder.cpp" line="1217"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Creouse o cartafol %1 mais foi excluído da sincronización con anterioridade. Os datos no seu interior non se sincronizarán.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Creouse o ficheiro %1 mais foi excluído da sincronización con anterioridade. Non se sincronizará.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1221"/>
+        <location filename="../src/gui/folder.cpp" line="1231"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1127,7 +1127,7 @@ Isto significa que o cliente de sincronización podería non enviar os cambios i
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1298"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1138,7 +1138,7 @@ Se decide manter os ficheiros, resincronizaranse co servidor se ten dereitos par
 Se decide eliminar os ficheiros, non poderá dispor deles a non ser que sexa o propietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1303"/>
+        <location filename="../src/gui/folder.cpp" line="1313"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1148,17 +1148,17 @@ Confirma que quere sincronizar estas accións co servidor?
 Se fose un accidente e decide manter os seus ficheiros, volverán ser sincronizados dende o servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1307"/>
+        <location filename="../src/gui/folder.cpp" line="1317"/>
         <source>Remove All Files?</source>
         <translation>Retirar todos os ficheiros?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1311"/>
+        <location filename="../src/gui/folder.cpp" line="1321"/>
         <source>Remove all files</source>
         <translation>Retirar todos os ficheiros</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <location filename="../src/gui/folder.cpp" line="1322"/>
         <source>Keep files</source>
         <translation>Manter os ficheiros</translation>
     </message>
@@ -1346,62 +1346,62 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Hai conflitos sen resolver. Prema para obter máis detalles.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Comprobando os cambios no cartafol remoto «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="899"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="902"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Comprobando os cambios no cartafol local «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="909"/>
         <source>Reconciling changes</source>
         <translation>Reconciliando os cambios</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="947"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>«%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="974"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>descargar %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>enviar %1/s</translation>
@@ -1412,46 +1412,46 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 de %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>Restan %5, %1 de %2, ficheiro %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 de %2, ficheiro %3 de %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
         <source>file %1 of %2</source>
         <translation>ficheiro %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1077"/>
         <source>Waiting...</source>
         <translation>Agardando...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Agardando por outro cartafol...</numerusform><numerusform>Agardando por outros %n cartafoles...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Preparing to sync...</source>
         <translation>Preparando para sincronizar...</translation>
     </message>
@@ -1876,12 +1876,12 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
         <translation>Non é posíbel escribir os cambios en «%1».</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="135"/>
         <source>Add Ignore Pattern</source>
         <translation>Engadir o patrón a ignorar</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="136"/>
         <source>Add a new ignore pattern:</source>
         <translation>Engadir un novo patrón a ignorar:</translation>
     </message>
