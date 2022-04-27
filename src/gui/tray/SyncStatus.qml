@@ -19,14 +19,17 @@ RowLayout {
 
     Image {
         id: syncIcon
-        Layout.preferredWidth: Style.trayListItemIconSize * 0.85
-        Layout.preferredHeight: Style.trayListItemIconSize * 0.85
+        property int size: Style.trayListItemIconSize * 0.6
+        property int whiteSpace: (Style.trayListItemIconSize - size)
 
-        Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
+        Layout.preferredWidth: size
+        Layout.preferredHeight: size
+
+        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
         Layout.topMargin: 16
-        Layout.rightMargin: Style.trayListItemIconSize * 0.15
+        Layout.rightMargin: whiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
         Layout.bottomMargin: 16
-        Layout.leftMargin: Style.trayHorizontalMargin
+        Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
 
         source: syncStatus.syncIcon
         sourceSize.width: 64
