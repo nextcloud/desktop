@@ -68,6 +68,7 @@ static const char monoIconsC[] = "monoIcons";
 static const char promptDeleteC[] = "promptDeleteAllFiles";
 static const char crashReporterC[] = "crashReporter";
 static const char optionalServerNotificationsC[] = "optionalServerNotifications";
+static const char showCallNotificationsC[] = "showCallNotifications";
 static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
 static const char skipUpdateCheckC[] = "skipUpdateCheck";
 static const char autoUpdateCheckC[] = "autoUpdateCheck";
@@ -187,6 +188,19 @@ bool ConfigFile::optionalServerNotifications() const
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(optionalServerNotificationsC), true).toBool();
+}
+
+bool ConfigFile::showCallNotifications() const
+{
+    const QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(showCallNotificationsC), true).toBool() && optionalServerNotifications();
+}
+
+void ConfigFile::setShowCallNotifications(bool show)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(showCallNotificationsC), show);
+    settings.sync();
 }
 
 bool ConfigFile::showInExplorerNavigationPane() const
@@ -557,7 +571,7 @@ chrono::milliseconds ConfigFile::notificationRefreshInterval(const QString &conn
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.beginGroup(con);
 
-    auto defaultInterval = chrono::minutes(5);
+    const auto defaultInterval = chrono::minutes(1);
     auto interval = millisecondsValue(settings, notificationRefreshIntervalC, defaultInterval);
     if (interval < chrono::minutes(1)) {
         qCWarning(lcConfigFile) << "Notification refresh interval smaller than one minute, setting to one minute";

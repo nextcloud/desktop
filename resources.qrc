@@ -29,5 +29,6 @@
         <file>src/gui/tray/ActivityItemActions.qml</file>
         <file>src/gui/tray/ActivityItemContent.qml</file>
         <file>src/gui/tray/TalkReplyTextField.qml</file>
+        <file>src/gui/tray/CallNotificationDialog.qml</file>
     </qresource>
 </RCC>

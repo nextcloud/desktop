@@ -8,19 +8,22 @@ Button {
 
     property string imageSource: ""
     property string imageSourceHover: ""
+    property Image iconItem: icon
 
     property string toolTipText: ""
 
-    property color textColor
-    property color textColorHovered
+    property color textColor: Style.ncTextColor
+    property color textColorHovered: textColor
 
     property color bgColor: "transparent"
 
     property bool bold: false
 
+    property real bgOpacity: 0.3
+
     background: Rectangle {
         color: root.bgColor
-        opacity: parent.hovered ? 1.0 : 0.3
+        opacity: parent.hovered ? 1.0 : bgOpacity
         radius: width / 2
     }
 
@@ -49,6 +52,7 @@ Button {
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
 
             source: root.hovered ? root.imageSourceHover : root.imageSource
+            fillMode: Image.PreserveAspectFit
         }
 
         Label {

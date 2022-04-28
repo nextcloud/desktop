@@ -152,6 +152,9 @@ public:
     bool optionalServerNotifications() const;
     void setOptionalServerNotifications(bool show);
 
+    bool showCallNotifications() const;
+    void setShowCallNotifications(bool show);
+
     bool showInExplorerNavigationPane() const;
     void setShowInExplorerNavigationPane(bool show);
 

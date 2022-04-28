@@ -146,6 +146,10 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         this, &GeneralSettings::slotToggleOptionalServerNotifications);
     _ui->serverNotificationsCheckBox->setToolTip(tr("Server notifications that require attention."));
 
+    connect(_ui->callNotificationsCheckBox, &QAbstractButton::toggled,
+        this, &GeneralSettings::slotToggleCallNotifications);
+    _ui->callNotificationsCheckBox->setToolTip(tr("Show call notification dialogs."));
+
     connect(_ui->showInExplorerNavigationPaneCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotShowInExplorerNavigationPane);
 
     // Rename 'Explorer' appropriately on non-Windows
@@ -247,6 +251,8 @@ void GeneralSettings::loadMiscSettings()
     ConfigFile cfgFile;
     _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
+    _ui->callNotificationsCheckBox->setEnabled(_ui->serverNotificationsCheckBox->isEnabled());
+    _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
     _ui->showInExplorerNavigationPaneCheckBox->setChecked(cfgFile.showInExplorerNavigationPane());
     _ui->crashreporterCheckBox->setChecked(cfgFile.crashReporter());
     auto newFolderLimit = cfgFile.newBigFolderSizeLimit();
@@ -428,6 +434,13 @@ void GeneralSettings::slotToggleOptionalServerNotifications(bool enable)
 {
     ConfigFile cfgFile;
     cfgFile.setOptionalServerNotifications(enable);
+    _ui->callNotificationsCheckBox->setEnabled(enable);
+}
+
+void GeneralSettings::slotToggleCallNotifications(bool enable)
+{
+    ConfigFile cfgFile;
+    cfgFile.setShowCallNotifications(enable);
 }
 
 void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
