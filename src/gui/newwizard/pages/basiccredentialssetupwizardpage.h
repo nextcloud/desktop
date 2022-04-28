@@ -19,6 +19,8 @@ public:
     QString username() const;
     QString password() const;
 
+    bool validateInput() override;
+
 private:
     ::Ui::BasicCredentialsSetupWizardPage *_ui;
 };

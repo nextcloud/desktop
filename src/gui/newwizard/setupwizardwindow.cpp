@@ -2,8 +2,32 @@
 
 #include <QLabel>
 
+#include "gui/application.h"
 #include "gui/owncloudgui.h"
+#include "gui/settingsdialog.h"
+#include "theme.h"
 #include "ui_setupwizardwindow.h"
+
+using namespace std::chrono_literals;
+
+namespace {
+
+using namespace OCC;
+
+QString replaceCssColors(QString stylesheet)
+{
+    QString rv = stylesheet;
+
+    rv = stylesheet.replace(QStringLiteral("@WIZARD_BACKGROUND_COLOR@"), Theme::instance()->wizardHeaderBackgroundColor().name());
+    rv = stylesheet.replace(QStringLiteral("@WIZARD_FONT_COLOR@"), Theme::instance()->wizardHeaderTitleColor().name());
+
+    // make sure all variables have been replaced
+    Q_ASSERT(!QRegularExpression(QStringLiteral(R"(@.*@)")).match(rv).hasMatch());
+
+    return rv;
+}
+
+}
 
 namespace OCC::Wizard {
 
@@ -32,10 +56,29 @@ SetupWizardWindow::SetupWizardWindow(QWidget *parent)
         emit paginationEntryClicked(_ui->pagination->activePageIndex(), clickedPageIndex);
     });
 
+    resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
+
+    loadStylesheet();
+
     _ui->transitionProgressIndicator->setFixedSize(32, 32);
+    _ui->transitionProgressIndicator->setColor(Theme::instance()->wizardHeaderTitleColor());
 
     // handle user pressing enter/return key
     installEventFilter(this);
+}
+
+void SetupWizardWindow::loadStylesheet()
+{
+    QString path = QStringLiteral(":/client/resources/wizard/style.qss");
+
+    QFile file(path);
+    Q_ASSERT(file.exists());
+    if (!OC_ENSURE(file.open(QIODevice::ReadOnly))) {
+        qCritical() << "failed to load stylesheet";
+    }
+
+    QString stylesheet = replaceCssColors(QString::fromUtf8(file.readAll()));
+    _ui->contentWidget->setStyleSheet(stylesheet);
 }
 
 void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex index)
@@ -59,6 +102,9 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex ind
     _currentPage = page;
     slotReplaceContent(_currentPage);
 
+    // initial check whether to enable the next button right away
+    slotUpdateNextButton();
+
     _ui->pagination->setActivePageIndex(index);
     _ui->pagination->setEnabled(true);
 
@@ -76,6 +122,8 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex ind
 
 void SetupWizardWindow::slotStartTransition()
 {
+    _transitioning = true;
+
     _ui->transitionProgressIndicator->startAnimation();
     _ui->contentWidget->setCurrentWidget(_ui->transitionProgressIndicator);
 
@@ -95,6 +143,9 @@ void SetupWizardWindow::slotReplaceContent(QWidget *newWidget)
     _ui->contentWidget->setCurrentWidget(newWidget);
 
     _currentContentWidget = newWidget;
+
+    // inheriting the style sheet from content widget doesn't work in all cases
+    _currentContentWidget->setStyleSheet(_ui->contentWidget->styleSheet());
 }
 
 void SetupWizardWindow::slotHideErrorMessageWidget()
@@ -105,6 +156,7 @@ void SetupWizardWindow::slotHideErrorMessageWidget()
 void SetupWizardWindow::showErrorMessage(const QString &errorMessage)
 {
     _ui->errorMessageLabel->setText(errorMessage);
+    _ui->errorMessageLabel->setWordWrap(true);
     _ui->errorMessageWidget->show();
 }
 
@@ -113,21 +165,38 @@ void SetupWizardWindow::setPaginationEntries(const QStringList &paginationEntrie
     _ui->pagination->setEntries(paginationEntries);
 }
 
+void SetupWizardWindow::slotUpdateNextButton()
+{
+    _ui->nextButton->setEnabled(_currentPage->validateInput());
+}
+
 bool SetupWizardWindow::eventFilter(QObject *obj, QEvent *event)
 {
-    if (!_transitioning && (obj == _currentPage.data() || obj == this)) {
-        if (event->type() == QEvent::KeyPress) {
-            auto keyEvent = dynamic_cast<QKeyEvent *>(event);
+    if (!_transitioning) {
+        // whenever the user types another character somewhere inside the page, we can re-evaluate whether to enable the next button
+        switch (event->type()) {
+        case QEvent::KeyPress:
+        case QEvent::KeyRelease:
+            slotUpdateNextButton();
+            break;
+        default:
+            break;
+        }
 
-            switch (keyEvent->key()) {
-            case Qt::Key_Enter:
-                Q_FALLTHROUGH();
-            case Qt::Key_Return:
-                slotMoveToNextPage();
-                return true;
-            default:
-                // no action required, give other handlers a chance
-                break;
+        if (obj == _currentPage.data() || obj == this) {
+            if (event->type() == QEvent::KeyPress) {
+                auto keyEvent = dynamic_cast<QKeyEvent *>(event);
+
+                switch (keyEvent->key()) {
+                case Qt::Key_Enter:
+                    Q_FALLTHROUGH();
+                case Qt::Key_Return:
+                    slotMoveToNextPage();
+                    return true;
+                default:
+                    // no action required, give other handlers a chance
+                    break;
+                }
             }
         }
     }

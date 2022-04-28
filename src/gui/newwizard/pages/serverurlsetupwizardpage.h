@@ -16,6 +16,8 @@ public:
 
     QString userProvidedUrl() const;
 
+    bool validateInput() override;
+
 private:
     ::Ui::ServerUrlSetupWizardPage *_ui;
 

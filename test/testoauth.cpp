@@ -138,6 +138,7 @@ public:
         oauth.reset(new AccountBasedOAuth(account, this));
         QObject::connect(oauth.data(), &OAuth::result, this, &OAuthTestCase::oauthResult);
         oauth->startAuthentication();
+        oauth->openBrowser();
 
         QTRY_VERIFY(done());
     }

@@ -2,6 +2,7 @@
 
 #include "theme.h"
 #include "ui_serverurlsetupwizardpage.h"
+#include <QIcon>
 
 namespace OCC::Wizard {
 
@@ -21,6 +22,9 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
     connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
         _ui->urlLineEdit->setFocus();
     });
+
+    _ui->logoLabel->setText(QString());
+    _ui->logoLabel->setPixmap(Theme::instance()->wizardHeaderLogo().pixmap(200, 200));
 }
 
 QString ServerUrlSetupWizardPage::userProvidedUrl() const
@@ -31,5 +35,10 @@ QString ServerUrlSetupWizardPage::userProvidedUrl() const
 ServerUrlSetupWizardPage::~ServerUrlSetupWizardPage()
 {
     delete _ui;
+}
+
+bool ServerUrlSetupWizardPage::validateInput()
+{
+    return !_ui->urlLineEdit->text().isEmpty();
 }
 }

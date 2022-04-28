@@ -15,6 +15,7 @@
         <file alias="resources/light/ban.svg">resources/font-awesome/dark/ban-solid.svg</file>
         <file alias="resources/light/check.svg">resources/font-awesome/dark/check-solid.svg</file>
         <file alias="resources/light/step-forward.svg">resources/font-awesome/dark/step-forward-solid.svg</file>
+        <file alias="resources/light/clipboard.svg">resources/font-awesome/dark/clipboard-solid.svg</file>
 
         <file alias="resources/dark/folder-sync.svg">resources/font-awesome/dark/folder-solid.svg</file>
         <file alias="resources/dark/settings.svg">resources/font-awesome/dark/cog-solid.svg</file>
@@ -31,5 +32,8 @@
         <file alias="resources/dark/ban.svg">resources/font-awesome/dark/ban-solid.svg</file>
         <file alias="resources/dark/check.svg">resources/font-awesome/dark/check-solid.svg</file>
         <file alias="resources/dark/step-forward.svg">resources/font-awesome/dark/step-forward-solid.svg</file>
+        <file alias="resources/dark/clipboard.svg">resources/font-awesome/dark/clipboard-solid.svg</file>
+
+        <file alias="resources/wizard/style.qss">resources/wizard/style.qss</file>
     </qresource>
 </RCC>

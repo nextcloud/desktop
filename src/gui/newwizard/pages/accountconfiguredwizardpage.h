@@ -23,6 +23,8 @@ public:
 
     SyncMode syncMode() const;
 
+    bool validateInput() override;
+
 private:
     ::Ui::AccountConfiguredWizardPage *_ui;
 };

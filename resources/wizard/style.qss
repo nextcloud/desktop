@@ -1,0 +1,82 @@
+/*
+    it turned out to be easier to apply styles as "locally" as possible, i.e., just apply where necessary
+
+    we use a dedicated widget as a container for the pages within the wizard window
+    styles will be inherited by all child widgets, so we'd have to guess the original values for all elements which we
+    do not want to style
+
+    the navigation/pagination part is located outside the content widget, so it won't be affected by this stylesheet
+    especially since we prefix all rules with #contentWidget
+
+    note that @...@ are variables replaced by our own code when loading the stylesheet
+    they represent theme-specific colors
+ */
+
+/*
+    unfortunately, if we want to change the background color altogether, we have to set it it on the top level element
+    and reset it to the original value where needed (some group boxes)
+ */
+#contentWidget
+{
+    background-color: @WIZARD_BACKGROUND_COLOR@;
+}
+
+/* selectively set the font color for most labels and one group box title */
+#contentWidget #welcomeTextLabel,
+#contentWidget #serverUrlLabel,
+#contentWidget #youreAllSetLabel,
+#contentWidget #enterYourCredentialsLabel,
+#contentWidget #urlLabel,
+#contentWidget #pleaseLogIntoLabel,
+#contentWidget #welcomeTextLabel,
+#contentWidget #advancedConfigGroupBox::title
+{
+    color: @WIZARD_FONT_COLOR@;
+}
+
+/*
+    the group box also has got a content widget, which we can easily hide from C++ when it is not checked
+    a side effect of this is that it makes setting the original background color a lot easier, since we do not have to
+    set the margins/paddings of the parent group box
+ */
+#contentWidget #advancedConfigGroupBoxContentWidget
+{
+    /*
+        fortunately, we can just reuse the colors from the original theme using the QPalette macro
+        this is significantly better than having to set a specific color in some way
+     */
+    background-color: palette(window);
+}
+
+#contentWidget #advancedConfigGroupBox
+{
+    /*
+        the border would be hidden by the content widget anyway, and the content widget background color typically
+        provides sufficient contrast
+     */
+    border: 0;
+}
+
+#contentWidget #advancedConfigGroupBox:checked {
+    /*
+        this value is combined with some suitable top margin on the layout in Qt Designer
+        (must be non-0, otherwise the stylesheet value does not have any effect)
+     */
+    margin-top: 16px;
+}
+
+/* server URL page */
+#contentWidget QLabel#welcomeTextLabel { font-size: 30px; }
+#contentWidget QLabel#serverUrlLabel { font-size: 16px; }
+
+/* credentials pages (common) */
+#contentWidget QLabel#urlLabel { font-size: 16px; }
+
+/* basic auth credentials page */
+#contentWidget QLabel#enterYourCredentialsLabel { font-size: 16px; }
+
+/* OAuth2 credentials page */
+#contentWidget QLabel#pleaseLogIntoLabel { font-size: 16px; }
+
+/* account configured page */
+#contentWidget QLabel#youreAllSetLabel { font-size: 30px; }

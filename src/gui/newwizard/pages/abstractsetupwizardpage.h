@@ -11,6 +11,13 @@ class AbstractSetupWizardPage : public QWidget
 public:
     ~AbstractSetupWizardPage() override;
 
+    /**
+     * Check whether the user input appears valid, so that the user can be allowed to proceed through the wizard.
+     * A minimal check for instance is to check whether all required line edits have got data.
+     * In case a page does not have user input to be validated, this function may always return true.
+     */
+    virtual bool validateInput() = 0;
+
 Q_SIGNALS:
     /**
      * Emitted after a page has been displayed within the wizard.

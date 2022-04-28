@@ -30,9 +30,9 @@ public:
     ~SetupWizardWindow() noexcept override;
 
     /**
-         * Set entries in the pagination at the bottom of the wizard UI.
-         * The entries are identified by their position in the list (read: index).
-         */
+     * Set entries in the pagination at the bottom of the wizard UI.
+     * The entries are identified by their position in the list (read: index).
+     */
     void setPaginationEntries(const QStringList &paginationEntries);
 
     /**
@@ -64,8 +64,11 @@ private Q_SLOTS:
     void slotReplaceContent(QWidget *newWidget);
     void slotHideErrorMessageWidget();
     void slotMoveToNextPage();
+    void slotUpdateNextButton();
 
 private:
+    void loadStylesheet();
+
     ::Ui::SetupWizardWindow *_ui;
 
     // the wizard window keeps at most one widget inside the content widget's layout

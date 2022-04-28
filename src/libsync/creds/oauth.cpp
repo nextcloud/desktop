@@ -223,8 +223,6 @@ void OAuth::startAuthentication()
     });
     fetchWellKnown();
 
-    openBrowser();
-
     QObject::connect(&_server, &QTcpServer::newConnection, this, [this] {
         while (QPointer<QTcpSocket> socket = _server.nextPendingConnection()) {
             QObject::connect(socket.data(), &QTcpSocket::disconnected, socket.data(), &QTcpSocket::deleteLater);

@@ -7,9 +7,11 @@
 #include "pages/oauthcredentialssetupwizardpage.h"
 #include "pages/serverurlsetupwizardpage.h"
 
+#include "gui/application.h"
 #include "gui/folderman.h"
 #include "theme.h"
 
+#include <QClipboard>
 #include <QDir>
 #include <QTimer>
 
@@ -181,90 +183,123 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
     }
 
     if (desiredPage == 1) {
-        // first, we must resolve the actual server URL
-        auto resolveJob = Jobs::ResolveUrlJobFactory(_networkAccessManager).startJob(_accountBuilder.serverUrl());
+        auto *messageBox = new QMessageBox(
+            QMessageBox::Warning,
+            tr("Insecure connection"),
+            tr("The URL you are trying to connect to is insecure. Are you sure you want to connect to this server?"),
+            QMessageBox::NoButton,
+            _wizardWindow);
 
-        connect(resolveJob, &CoreJob::finished, this, [this, resolveJob, showFirstPage]() {
-            resolveJob->deleteLater();
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
 
-            if (!resolveJob->success()) {
-                // resolving failed, we need to show an error message
-                showFirstPage(resolveJob->errorMessage());
-                return;
-            }
+        messageBox->addButton(QMessageBox::Cancel);
+        messageBox->addButton(tr("Confirm"), QMessageBox::YesRole);
 
-            const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
+        connect(messageBox, &QMessageBox::rejected, this, [showFirstPage]() {
+            showFirstPage(tr("Insecure URL rejected by user"));
+        });
 
-            // next, we need to find out which kind of authentication page we have to present to the user
-            auto authTypeJob = DetermineAuthTypeJobFactory(_networkAccessManager).startJob(resolvedUrl);
+        connect(messageBox, &QMessageBox::accepted, this, [this, showFirstPage]() {
+            // first, we must resolve the actual server URL
+            auto resolveJob = Jobs::ResolveUrlJobFactory(_networkAccessManager).startJob(_accountBuilder.serverUrl());
 
-            connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
-                authTypeJob->deleteLater();
+            connect(resolveJob, &CoreJob::finished, this, [this, resolveJob, showFirstPage]() {
+                resolveJob->deleteLater();
 
-                _accountBuilder.setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
-
-                switch (_accountBuilder.authType()) {
-                case DetermineAuthTypeJob::AuthType::Basic: {
-                    _currentPage = new BasicCredentialsSetupWizardPage(_accountBuilder.serverUrl());
-                    _wizardWindow->displayPage(_currentPage, 1);
+                if (!resolveJob->success()) {
+                    // resolving failed, we need to show an error message
+                    showFirstPage(resolveJob->errorMessage());
                     return;
                 }
 
-                case DetermineAuthTypeJob::AuthType::OAuth: {
-                    auto newPage = new OAuthCredentialsSetupWizardPage(_accountBuilder.serverUrl());
+                const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
 
-                    // username might not be set yet, shouldn't matter, though
-                    auto oAuth = new OAuth(_accountBuilder.serverUrl(), QStringLiteral(), _networkAccessManager, {}, this);
+                // next, we need to find out which kind of authentication page we have to present to the user
+                auto authTypeJob = DetermineAuthTypeJobFactory(_networkAccessManager).startJob(resolvedUrl);
 
-                    connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) {
-                        // the button may not be clicked any more, since the server has been shut down right before this signal was emitted by the OAuth instance
-                        newPage->disableReopenBrowserButton();
+                connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
+                    authTypeJob->deleteLater();
 
-                        _wizardWindow->slotStartTransition();
+                    _accountBuilder.setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
 
-                        // bring window up top again, as the browser may have been raised in front of it
-                        _wizardWindow->raise();
+                    switch (_accountBuilder.authType()) {
+                    case DetermineAuthTypeJob::AuthType::Basic: {
+                        _currentPage = new BasicCredentialsSetupWizardPage(_accountBuilder.serverUrl());
+                        _wizardWindow->displayPage(_currentPage, 1);
+                        return;
+                    }
 
-                        switch (result) {
-                        case OAuth::Result::LoggedIn: {
-                            _accountBuilder.setAuthenticationStrategy(new OAuth2AuthenticationStrategy(user, token, refreshToken));
-                            nextStep(1, std::nullopt);
-                            break;
-                        }
-                        case OAuth::Result::Error: {
-                            _wizardWindow->showErrorMessage(tr("Error while trying to log into OAuth2-enabled server."));
-                            nextStep(1, 0);
-                            break;
-                        }
-                        case OAuth::Result::NotSupported: {
-                            // should never happen
-                            _wizardWindow->showErrorMessage(tr("Server reports that OAuth2 is not supported."));
-                            nextStep(1, 0);
-                            break;
-                        }
-                        }
-                    });
+                    case DetermineAuthTypeJob::AuthType::OAuth: {
+                        auto newPage = new OAuthCredentialsSetupWizardPage(_accountBuilder.serverUrl());
 
-                    connect(newPage, &OAuthCredentialsSetupWizardPage::reopenBrowserButtonPushed, this, [oAuth]() {
-                        oAuth->openBrowser();
-                    });
+                        // username might not be set yet, shouldn't matter, though
+                        auto oAuth = new OAuth(_accountBuilder.serverUrl(), QString(), _networkAccessManager, {}, this);
 
-                    _currentPage = newPage;
-                    _wizardWindow->displayPage(_currentPage, 1);
+                        connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) {
+                            // the button may not be clicked any more, since the server has been shut down right before this signal was emitted by the OAuth instance
+                            newPage->disableButtons();
 
-                    // moving to next page is only possible once we see a request to our embedded web server
-                    _wizardWindow->disableNextButton();
+                            _wizardWindow->slotStartTransition();
 
-                    oAuth->startAuthentication();
+                            // bring window up top again, as the browser may have been raised in front of it
+                            _wizardWindow->raise();
 
-                    return;
-                };
+                            switch (result) {
+                            case OAuth::Result::LoggedIn: {
+                                _accountBuilder.setAuthenticationStrategy(new OAuth2AuthenticationStrategy(user, token, refreshToken));
+                                nextStep(1, std::nullopt);
+                                break;
+                            }
+                            case OAuth::Result::Error: {
+                                _wizardWindow->showErrorMessage(tr("Error while trying to log into OAuth2-enabled server."));
+                                nextStep(1, 0);
+                                break;
+                            }
+                            case OAuth::Result::NotSupported: {
+                                // should never happen
+                                _wizardWindow->showErrorMessage(tr("Server reports that OAuth2 is not supported."));
+                                nextStep(1, 0);
+                                break;
+                            }
+                            }
+                        });
 
-                default:
-                    Q_UNREACHABLE();
-                }
+                        connect(newPage, &OAuthCredentialsSetupWizardPage::openBrowserButtonPushed, this, [oAuth]() {
+                            oAuth->openBrowser();
+                        });
+
+                        connect(newPage, &OAuthCredentialsSetupWizardPage::copyUrlToClipboardButtonPushed, this, [oAuth]() {
+                            // TODO: use authorisationLinkAsync
+                            auto link = oAuth->authorisationLink().toString();
+                            qDebug() << "copying authorization link to clipboard:" << link;
+                            ocApp()->clipboard()->setText(link);
+                        });
+
+                        _currentPage = newPage;
+                        _wizardWindow->displayPage(_currentPage, 1);
+
+                        // moving to next page is only possible once we see a request to our embedded web server
+                        _wizardWindow->disableNextButton();
+
+                        oAuth->startAuthentication();
+
+                        return;
+                    };
+
+                    default:
+                        Q_UNREACHABLE();
+                    }
+                });
             });
         });
+
+        // instead of defining a lambda that we could call from here as well as the message box, we can put the
+        // handler into the accepted() signal handler, and emit that signal here
+        if (_accountBuilder.serverUrl().scheme() == QStringLiteral("https")) {
+            Q_EMIT messageBox->accepted();
+        } else {
+            messageBox->show();
+        }
 
         return;
     }

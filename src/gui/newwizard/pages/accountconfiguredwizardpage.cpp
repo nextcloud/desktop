@@ -30,7 +30,6 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
 
     // just adjusting the visibility should be sufficient for these branding options
     if (Theme::instance()->wizardSkipAdvancedPage()) {
-        _ui->advancedConfigSeparatorLine->setVisible(false);
         _ui->advancedConfigGroupBox->setVisible(false);
     }
 
@@ -43,12 +42,19 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
         enableVfsByDefault = false;
     }
 
+    auto setRecommendedOption = [](QRadioButton *radioButton) {
+        radioButton->setText(tr("%1 (recommended)").arg(radioButton->text()));
+        radioButton->setChecked(true);
+    };
+
     if (enableVfsByDefault) {
-        _ui->useVfsRadioButton->setChecked(true);
+        setRecommendedOption(_ui->useVfsRadioButton);
 
         // move up top
         _ui->syncModeGroupBoxLayout->removeWidget(_ui->useVfsRadioButton);
         _ui->syncModeGroupBoxLayout->insertWidget(0, _ui->useVfsRadioButton);
+    } else {
+        setRecommendedOption(_ui->syncEverythingRadioButton);
     }
 
     if (!vfsIsAvailable) {
@@ -89,9 +95,6 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     connect(_ui->advancedConfigGroupBox, &QGroupBox::toggled, this, [this](bool enabled) {
         // layouts cannot be hidden, therefore we use a plain widget within the group box to "house" the contained widgets
         _ui->advancedConfigGroupBoxContentWidget->setVisible(enabled);
-
-        // could not find a better way to hide the frame on demand, which is needed to hide the widget completely
-        _ui->advancedConfigGroupBox->setStyleSheet(enabled ? QString() : QStringLiteral("QGroupBox#advancedConfigGroupBox{border: 0}"));
     });
 
     if (vfsModeIsExperimental) {
@@ -161,5 +164,11 @@ SyncMode AccountConfiguredWizardPage::syncMode() const
     }
 
     Q_UNREACHABLE();
+}
+
+bool AccountConfiguredWizardPage::validateInput()
+{
+    // nothing to validate here
+    return true;
 }
 }
