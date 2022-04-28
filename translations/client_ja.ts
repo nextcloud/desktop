@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="179"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="190"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="207"/>
         <source>Dismiss</source>
         <translation>閉じる</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="221"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="238"/>
         <source>Open share dialog</source>
         <translation>共有ダイアログを開く</translation>
     </message>
