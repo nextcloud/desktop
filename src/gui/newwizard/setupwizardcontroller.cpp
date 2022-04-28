@@ -115,7 +115,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                 _accountBuilder.setServerUrl(serverUrl, DetermineAuthTypeJob::AuthType::Unknown);
                 desiredPage = currentPage.value() + 1;
             } else {
-                _wizardWindow->showErrorMessage(QStringLiteral("Invalid server URL"));
+                _wizardWindow->showErrorMessage(tr("Invalid server URL"));
                 desiredPage = currentPage.value();
             }
         }
@@ -128,24 +128,12 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                 const auto password = pagePtr->password();
 
                 _accountBuilder.setAuthenticationStrategy(new HttpBasicAuthenticationStrategy(username, password));
-
-                // TODO: actually check whether creds are correct
-                if (_accountBuilder.hasValidCredentials()) {
-                    desiredPage = currentPage.value() + 1;
-                } else {
-                    _wizardWindow->showErrorMessage(QStringLiteral("Invalid credentials"));
-                    desiredPage = currentPage.value();
-                }
             }
-
-            if (_accountBuilder.authType() == DetermineAuthTypeJob::AuthType::OAuth) {
-                // authentication data is filled in asynchronously, hence all we have to do here is determine the next page
-                if (_accountBuilder.hasValidCredentials()) {
-                    desiredPage = currentPage.value() + 1;
-                } else {
-                    _wizardWindow->showErrorMessage(QStringLiteral("Invalid credentials"));
-                    desiredPage = currentPage.value();
-                }
+            if (_accountBuilder.hasValidCredentials()) {
+                desiredPage = currentPage.value() + 1;
+            } else {
+                _wizardWindow->showErrorMessage(tr("Invalid credentials"));
+                desiredPage = currentPage.value();
             }
         }
 
@@ -271,7 +259,6 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                         connect(newPage, &OAuthCredentialsSetupWizardPage::copyUrlToClipboardButtonPushed, this, [oAuth]() {
                             // TODO: use authorisationLinkAsync
                             auto link = oAuth->authorisationLink().toString();
-                            qDebug() << "copying authorization link to clipboard:" << link;
                             ocApp()->clipboard()->setText(link);
                         });
 
