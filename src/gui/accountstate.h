@@ -16,11 +16,13 @@
 #ifndef ACCOUNTINFO_H
 #define ACCOUNTINFO_H
 
+#include "connectionvalidator.h"
+#include "creds/abstractcredentials.h"
+
 #include <QByteArray>
 #include <QElapsedTimer>
 #include <QPointer>
-#include "connectionvalidator.h"
-#include "creds/abstractcredentials.h"
+#include <QTimer>
 
 #include <memory>
 
@@ -175,6 +177,8 @@ public:
     
     void trySignIn();
 
+    void systemOnlineConfigurationChanged();
+
 public slots:
     /// Triggers a ping to the server to update state and
     /// connection status and errors.
@@ -183,6 +187,10 @@ public slots:
 private:
     void setState(State state);
     void fetchNavigationApps();
+
+    int retryCount() const;
+    void increaseRetryCount();
+    void resetRetryCount();
 
 signals:
     void stateChanged(State state);
@@ -204,6 +212,11 @@ protected Q_SLOTS:
     void slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
     void slotOcsError(int statusCode, const QString &message);
+
+private Q_SLOTS:
+
+    void slotCheckConnection();
+    void slotPushNotificationsReady();
 
 private:
     AccountPtr _account;
@@ -241,6 +254,12 @@ private:
     AccountAppList _apps;
 
     bool _isDesktopNotificationsAllowed;
+
+    int _retryCount = 0;
+
+    QTimer _checkConnectionTimer;
+    QElapsedTimer _lastCheckConnectionTimer;
+
 };
 
 class AccountApp : public QObject
