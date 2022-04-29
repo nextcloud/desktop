@@ -1,0 +1,5 @@
+Change: Remove support for Windows 7 sidebar links
+
+We removed the support for Windows < 10 sidebar links.
+
+https://github.com/owncloud/client/pull/9618
