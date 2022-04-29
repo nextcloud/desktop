@@ -40,7 +40,7 @@ EOF
         echo "creating comment for screenshots"
         echo -e "\nScreenshots:" >> "$1/comments.file"
         for i in "$1"/screenshots/*; do
-            echo "- [$(basename "$i")](${CACHE_ENDPOINT}/${CACHE_BUCKET}/$2/$3/guiReportUpload/screenshots/$i)" >> "$1/comments.file"
+            echo "- [$(basename "$i")](${CACHE_ENDPOINT}/${CACHE_BUCKET}/$2/$3/guiReportUpload/screenshots/$(basename "$i"))" >> "$1/comments.file"
         done
     fi
 
