@@ -131,7 +131,6 @@ void AccountState::setState(State state)
             emit isConnectedChanged();
         }
         if (_state == Connected) {
-            _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
             setRetryCount(0);
         }
     }
