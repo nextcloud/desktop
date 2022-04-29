@@ -21,9 +21,6 @@ QString replaceCssColors(QString stylesheet)
     rv = stylesheet.replace(QStringLiteral("@WIZARD_BACKGROUND_COLOR@"), Theme::instance()->wizardHeaderBackgroundColor().name());
     rv = stylesheet.replace(QStringLiteral("@WIZARD_FONT_COLOR@"), Theme::instance()->wizardHeaderTitleColor().name());
 
-    // make sure all variables have been replaced
-    Q_ASSERT(!QRegularExpression(QStringLiteral(R"(@.*@)")).match(rv).hasMatch());
-
     return rv;
 }
 
