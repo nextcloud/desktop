@@ -106,9 +106,6 @@ public:
     State state() const;
     static QString stateString(State state);
 
-    int retryCount() const;
-    void increaseRetryCount();
-
     bool isSignedOut() const;
 
     AccountAppList appList() const;
@@ -191,7 +188,9 @@ private:
     void setState(State state);
     void fetchNavigationApps();
 
-    void setRetryCount(int count);
+    int retryCount() const;
+    void increaseRetryCount();
+    void resetRetryCount();
 
 signals:
     void stateChanged(State state);

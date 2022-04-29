@@ -131,7 +131,7 @@ void AccountState::setState(State state)
             emit isConnectedChanged();
         }
         if (_state == Connected) {
-            setRetryCount(0);
+            resetRetryCount();
         }
     }
 
@@ -330,9 +330,9 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         _lastCheckConnectionTimer.start();
     };
 
-    const auto resetRetryCount = [this]() {
+    const auto resetRetryConnection = [this]() {
         qCInfo(lcAccountState) << "reset retry count";
-        setRetryCount(0);
+        resetRetryCount();
         _lastCheckConnectionTimer.invalidate();
         _lastCheckConnectionTimer.start();
     };
@@ -373,7 +373,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
     case ConnectionValidator::Connected:
         if (_state != Connected) {
             setState(Connected);
-            resetRetryCount();
+            resetRetryConnection();
 
             // Get the Apps available on the server.
             fetchNavigationApps();
@@ -504,9 +504,9 @@ void AccountState::fetchNavigationApps(){
     job->getNavigationApps();
 }
 
-void AccountState::setRetryCount(int count)
+void AccountState::resetRetryCount()
 {
-    _retryCount = count;
+    _retryCount = 0;
 }
 
 void AccountState::slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode){
