@@ -29,6 +29,7 @@ RowLayout {
         Layout.preferredHeight: model.thumbnail.isMimeTypeIcon ? Style.trayListItemIconSize * 0.9 : Style.trayListItemIconSize
         readonly property int imageWidth: width * (1 - Style.thumbnailImageSizeReduction)
         readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
+        readonly property int thumbnailRadius: model.thumbnail.isUserAvatar ? width / 2 : 3
 
         Loader {
             id: thumbnailImageLoader
@@ -57,7 +58,7 @@ RowLayout {
                 Rectangle {
                     id: mask
                     color: "white"
-                    radius: 3
+                    radius: thumbnailItem.thumbnailRadius
                     anchors.fill: thumbnailImage
                     visible: false
                     width: thumbnailImage.paintedWidth
@@ -81,11 +82,13 @@ RowLayout {
             readonly property int negativeLeftMargin: -((width / 2) +
                                                         ((width - paintedWidth) / 2) +
                                                         ((thumbnailImageLoader.width - thumbnailItem.imageWidth) / 2) +
-                                                        (thumbnailImageLoader.width - thumbnailImageLoader.item.paintedWidth) / 2)
+                                                        ((thumbnailImageLoader.width - thumbnailImageLoader.item.paintedWidth) / 2) +
+                                                        (thumbnailItem.thumbnailRadius / 4))
             readonly property int negativeTopMargin: -((height / 2) +
                                                        ((height - paintedHeight) / 2) +
                                                        ((thumbnailImageLoader.height - thumbnailItem.imageHeight) / 4) +
-                                                       ((thumbnailImageLoader.height - thumbnailImageLoader.item.paintedHeight) / 4))
+                                                       ((thumbnailImageLoader.height - thumbnailImageLoader.item.paintedHeight) / 4) +
+                                                       (thumbnailItem.thumbnailRadius / 4))
             anchors.verticalCenter: if(model.thumbnail === undefined) parent.verticalCenter
             anchors.left: model.thumbnail === undefined ? parent.left : thumbnailImageLoader.right
             anchors.leftMargin: if(model.thumbnail !== undefined) negativeLeftMargin

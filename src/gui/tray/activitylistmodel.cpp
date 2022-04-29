@@ -197,14 +197,22 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                {QStringLiteral("view"), preview._view},
                {QStringLiteral("isMimeTypeIcon"), preview._isMimeTypeIcon},
                {QStringLiteral("filename"), preview._filename},
+               {QStringLiteral("isUserAvatar"), false},
         });
+    };
+
+    const auto generateAvatarThumbnailMap = [](const QString &avatarThumbnailUrl) {
+        return QVariantMap {
+            {QStringLiteral("source"), avatarThumbnailUrl},
+            {QStringLiteral("isMimeTypeIcon"), false},
+            {QStringLiteral("isUserAvatar"), true},
+        };
     };
 
     const auto generateIconPath = [&]() {
         auto colorIconPath = role == DarkIconRole ? QStringLiteral("qrc:///client/theme/white/") : QStringLiteral("qrc:///client/theme/black/");
-        if (a._type == Activity::NotificationType) {
-            colorIconPath.append("bell.svg");
-            return colorIconPath;
+        if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
+            return QStringLiteral("qrc:///client/theme/colored/talk-bordered.svg");
         } else if (a._type == Activity::SyncResultType) {
             colorIconPath.append("state-error.svg");
             return colorIconPath;
@@ -325,6 +333,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
     case ThumbnailRole: {
+        if (a._type == Activity::NotificationType && !a._talkNotificationData.userAvatar.isEmpty()) {
+            return generateAvatarThumbnailMap(a._talkNotificationData.userAvatar);
+        }
+
         if(a._previews.empty()) {
             return {};
         }
