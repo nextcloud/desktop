@@ -257,9 +257,16 @@ public:
     bool ignoreHiddenFiles();
     void setIgnoreHiddenFiles(bool ignore);
 
-    // Used by the Socket API
-    SyncJournalDb *journalDb() { return &_journal; }
-    SyncEngine &syncEngine() { return *_engine; }
+    // TODO: don't expose
+    SyncJournalDb *journalDb()
+    {
+        return &_journal;
+    }
+    // TODO: don't expose
+    SyncEngine &syncEngine()
+    {
+        return *_engine;
+    }
     Vfs &vfs()
     {
         OC_ENFORCE(_vfs);

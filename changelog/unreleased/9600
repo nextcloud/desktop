@@ -1,0 +1,5 @@
+Bugfix: Crash when interacting with a folder in an error state
+
+We fixed a crash wher using the context menu on a folder that encountered an error and was not using virutal files.
+
+https://github.com/owncloud/client/issues/9600

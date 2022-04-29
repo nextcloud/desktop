@@ -1080,41 +1080,41 @@ File synchronization desktop utility.</source>
         <translation>Активност на Синхронизацията</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="901"/>
+        <location filename="../src/gui/folder.cpp" line="908"/>
         <source>Could not read system exclude file</source>
         <translation>Неуспешно прочитане на системния файл за пренебрегване на файлове. </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1144"/>
+        <location filename="../src/gui/folder.cpp" line="1154"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Нова папка по-голяма от %1 МБ е добавена: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1147"/>
+        <location filename="../src/gui/folder.cpp" line="1157"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Добавена е папка от външно дисково устройство.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1148"/>
+        <location filename="../src/gui/folder.cpp" line="1158"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Моля, отидете в настройки за да изберете дали искате да го изтеглите.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1207"/>
+        <location filename="../src/gui/folder.cpp" line="1217"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Папката %1 беше създадена, но преди това беше изключена от синхронизацията. Данните в нея няма да бъдат синхронизирани.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1220"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Файлът %1 беше създаден, но преди това беше изключен от синхронизация. Той няма да бъде синхронизиран.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1221"/>
+        <location filename="../src/gui/folder.cpp" line="1231"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1127,7 +1127,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1298"/>
+        <location filename="../src/gui/folder.cpp" line="1308"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1138,7 +1138,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 Но ако решите да изтриете файловете, то те няма да са достъпни за вас, освен ако не сте собственик.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1303"/>
+        <location filename="../src/gui/folder.cpp" line="1313"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1147,17 +1147,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Ако това е инцидент и решите да запазите вашите файлове те ще бъдат синхронизирани отново от сървъра.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1307"/>
+        <location filename="../src/gui/folder.cpp" line="1317"/>
         <source>Remove All Files?</source>
         <translation>Премахни Всички Файлове?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1311"/>
+        <location filename="../src/gui/folder.cpp" line="1321"/>
         <source>Remove all files</source>
         <translation>Премахни всички файлове</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <location filename="../src/gui/folder.cpp" line="1322"/>
         <source>Keep files</source>
         <translation>Запази файловете</translation>
     </message>
@@ -1345,62 +1345,62 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Има нерешени конфликти. Кликнете за повече подробности.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="895"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Проверка за промени в отдалечената „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="899"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="902"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Проверка за промени в локалната „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="909"/>
         <source>Reconciling changes</source>
         <translation>Запис на промените</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="941"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="944"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="947"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="968"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="971"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Синхронизиране на %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="974"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>теглене с %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="979"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>качване с %1/s</translation>
@@ -1411,46 +1411,46 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Локална папка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 от %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="996"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1013"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>още %5, %1 от %2, файл %3 от %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1024"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 от %2, файл %3 от %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1028"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
         <source>file %1 of %2</source>
         <translation>файл %1 от %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1077"/>
         <source>Waiting...</source>
         <translation>Изчакване...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1076"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Изчакване на %n други папка(и)...</numerusform><numerusform>Изчакване на %n други папка(и)...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1082"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
         <source>Preparing to sync...</source>
         <translation>Подготовка за синхронизация...</translation>
     </message>
@@ -1875,12 +1875,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Неуспешно записване на промените в &apos;%1&apos;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="133"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="135"/>
         <source>Add Ignore Pattern</source>
         <translation>Добави Шаблон за Игнориране</translation>
     </message>
     <message>
-        <location filename="../src/gui/ignorelisteditor.cpp" line="134"/>
+        <location filename="../src/gui/ignorelisteditor.cpp" line="136"/>
         <source>Add a new ignore pattern:</source>
         <translation>Добави нов шаблон за игнориране:</translation>
     </message>

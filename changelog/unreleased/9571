@@ -1,0 +1,5 @@
+Bugfix: Use UTF-8 for .owncloudsync.log
+
+We fixed a bug where unicode file names were not correctly displayed in .owncloudsync.log.
+
+https://github.com/owncloud/client/pull/9571

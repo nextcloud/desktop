@@ -629,6 +629,7 @@ int Folder::slotWipeErrorBlacklist()
 
 void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 {
+    Q_ASSERT(isReady());
     if (!FileSystem::isChildPathOf(path, this->path())) {
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
         return;
@@ -839,22 +840,25 @@ void Folder::removeFromSettings() const
 
 bool Folder::isFileExcludedAbsolute(const QString &fullPath) const
 {
+    if (!_engine) {
+        return true;
+    }
     return _engine->excludedFiles().isExcluded(fullPath, path(), _definition.ignoreHiddenFiles);
 }
 
 bool Folder::isFileExcludedRelative(const QString &relativePath) const
 {
-    return _engine->excludedFiles().isExcluded(path() + relativePath, path(), _definition.ignoreHiddenFiles);
+    return isFileExcludedAbsolute(path() + relativePath);
 }
 
 void Folder::slotTerminateSync()
 {
-    qCInfo(lcFolder) << "folder " << path() << " Terminating!";
-
-    if (_engine->isSyncRunning()) {
-        _engine->abort();
-
-        setSyncState(SyncResult::SyncAbortRequested);
+    if (isReady()) {
+        qCInfo(lcFolder) << "folder " << path() << " Terminating!";
+        if (_engine->isSyncRunning()) {
+            _engine->abort();
+            setSyncState(SyncResult::SyncAbortRequested);
+        }
     }
 }
 
@@ -905,6 +909,9 @@ void Folder::wipeForRemoval()
 
 bool Folder::reloadExcludes()
 {
+    if (!_engine) {
+        return true;
+    }
     return _engine->excludedFiles().reloadExcludeFiles();
 }
 
@@ -970,6 +977,7 @@ void Folder::startSync()
 
 void Folder::setDirtyNetworkLimits()
 {
+    Q_ASSERT(isReady());
     ConfigFile cfg;
     int downloadLimit = -75; // 75%
     int useDownLimit = cfg.useDownloadLimit();
@@ -1005,6 +1013,7 @@ void Folder::slotSyncStarted()
 
 void Folder::slotSyncFinished(bool success)
 {
+    Q_ASSERT(isReady());
     qCInfo(lcFolder) << "Client version" << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
 
     bool syncError = !_syncResult.errorStrings().isEmpty();

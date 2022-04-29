@@ -79,3 +79,13 @@ class Activity:
                 "type": "QModelIndex",
             }
         )
+
+    def checkAtLeastABlacklistedFile(self):
+        squish.waitForObjectExists(
+            {
+                "column": 6,
+                "container": names.oCC_IssuesWidget_tableView_QTableView,
+                "text": "Blacklisted",
+                "type": "QModelIndex",
+            }
+        )

@@ -43,7 +43,7 @@ private:
     QScopedPointer<QFile> _file;
     QElapsedTimer _totalDuration;
     QElapsedTimer _lapDuration;
-    QScopedPointer<QDebug> _out;
+    QScopedPointer<QTextStream> _out;
 };
 }
 

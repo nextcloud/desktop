@@ -16,6 +16,7 @@
 # See the section 'Performing Actions During Test Execution Via Hooks' in the Squish
 # manual for a complete reference of the available API.
 import shutil
+from tempfile import gettempdir
 import urllib.request
 import os
 import builtins
@@ -34,18 +35,19 @@ def hook(context):
         'middlewareUrl': 'MIDDLEWARE_URL',
         'clientConfigFile': 'CLIENT_LOG_FILE',
         'clientRootSyncPath': 'CLIENT_ROOT_SYNC_PATH',
+        'tempFolderPath': 'TEMP_FOLDER_PATH',
     }
 
     DEFAULT_CONFIG = {
         'localBackendUrl': 'https://localhost:9200/',
         'secureLocalBackendUrl': 'https://localhost:9200/',
-        'maxSyncTimeout': 10,
+        'maxSyncTimeout': 60,
         'minSyncTimeout': 5,
         'middlewareUrl': 'http://localhost:3000/',
         'clientConfigFile': '-',
         'clientRootSyncPath': '/tmp/client-bdd/',
+        'tempFolderPath': gettempdir(),
     }
-
     # read configs from environment variables
     context.userData = {}
     for key, value in CONFIG_ENV_MAP.items():
@@ -67,7 +69,7 @@ def hook(context):
             context.userData[key] = DEFAULT_CONFIG[key]
         elif key == 'maxSyncTimeout' or key == 'minSyncTimeout':
             context.userData[key] = builtins.int(value)
-        elif key == 'clientRootSyncPath':
+        elif key == 'clientRootSyncPath' or 'tempFolderPath':
             # make sure there is always one trailing slash
             context.userData[key] = value.rstrip('/') + '/'
 
@@ -78,6 +80,9 @@ def hook(context):
 
     if not os.path.exists(context.userData['clientRootSyncPath']):
         os.makedirs(context.userData['clientRootSyncPath'])
+
+    if not os.path.exists(context.userData['tempFolderPath']):
+        os.makedirs(context.userData['tempFolderPath'])
 
     req = urllib.request.Request(
         os.path.join(context.userData['middlewareUrl'], 'init'),

@@ -564,6 +564,9 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
 
 void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
+    if (!data(parent, FolderStatusDelegate::IsReady).toBool()) {
+        return;
+    }
     auto info = infoForIndex(parent);
 
     if (!info || info->_fetched || info->_fetchingJob)

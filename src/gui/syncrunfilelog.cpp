@@ -51,15 +51,19 @@ void SyncRunFileLog::start(const QString &folderPath)
         QFile::rename(filename, newFilename);
     }
     _file.reset(new QFile(filename));
-
     _file->open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text);
-    _out.reset(new QDebug(_file.data()));
-    _out->noquote();
+
+
+    // we use a text stream to ensure the encoding is ok
+    // when outputting info, we use QDebug to ensure we can use the debug operators
+    _out.reset(new QTextStream(_file.data()));
+    _out->setCodec("UTF-8");
 
 
     if (!exists) {
         // We are creating a new file, add the note.
-        *_out << "# timestamp | duration | file | instruction | dir | modtime | etag | "
+        *_out << "Log for:" << folderPath << endl
+              << "# timestamp | duration | file | instruction | dir | modtime | etag | "
                  "size | fileId | status | errorString | http result code | "
                  "other size | other modtime | X-Request-ID"
               << endl;
@@ -81,38 +85,50 @@ void SyncRunFileLog::logItem(const SyncFileItem &item)
         return;
     }
     const QChar L = QLatin1Char('|');
-    *_out << dateTimeStr(QDateTime::fromString(QString::fromUtf8(item._responseTimeStamp), Qt::RFC2822Date)) << L
-          << ((item._instruction != CSYNC_INSTRUCTION_RENAME) ? item.destination() : item._file + QStringLiteral(" -> ") + item._renameTarget) << L
-          << item._instruction << L
-          << item._direction << L
-          << L
-          << item._modtime << L
-          << item._etag << L
-          << item._size << L
-          << item._fileId << L
-          << item._status << L
-          << item._errorString << L
-          << item._httpErrorCode << L
-          << item._previousSize << L
-          << item._previousModtime << L
-          << item._requestId << L
-          << endl;
+    QString tmp;
+    {
+        QDebug(&tmp).noquote() << dateTimeStr(QDateTime::fromString(QString::fromUtf8(item._responseTimeStamp), Qt::RFC2822Date)) << L
+                               << ((item._instruction != CSYNC_INSTRUCTION_RENAME) ? item.destination() : item._file + QStringLiteral(" -> ") + item._renameTarget) << L
+                               << item._instruction << L
+                               << item._direction << L
+                               << L
+                               << item._modtime << L
+                               << item._etag << L
+                               << item._size << L
+                               << item._fileId << L
+                               << item._status << L
+                               << item._errorString << L
+                               << item._httpErrorCode << L
+                               << item._previousSize << L
+                               << item._previousModtime << L
+                               << item._requestId << L
+                               << endl;
+    }
+    *_out << tmp;
 }
 
 void SyncRunFileLog::logLap(const QString &name)
 {
-    *_out << "#=#=#=#=#" << name << dateTimeStr()
-          << "(last step:" << _lapDuration.restart() << "msec"
-          << ", total:" << _totalDuration.elapsed() << "msec)"
-          << endl;
+    QString tmp;
+    {
+        QDebug(&tmp).noquote() << "#=#=#=#=#" << name << dateTimeStr()
+                               << "(last step:" << _lapDuration.restart() << "msec"
+                               << ", total:" << _totalDuration.elapsed() << "msec)"
+                               << endl;
+    }
+    *_out << tmp;
 }
 
 void SyncRunFileLog::finish()
 {
-    *_out << "#=#=#=# Syncrun finished" << dateTimeStr()
-          << "(last step:" << _lapDuration.elapsed() << "msec"
-          << ", total:" << _totalDuration.elapsed() << "msec)"
-          << endl;
+    QString tmp;
+    {
+        QDebug(&tmp).noquote() << "#=#=#=# Syncrun finished" << dateTimeStr()
+                               << "(last step:" << _lapDuration.elapsed() << "msec"
+                               << ", total:" << _totalDuration.elapsed() << "msec)"
+                               << endl;
+    }
+    *_out << tmp;
     _file->close();
 }
 }
