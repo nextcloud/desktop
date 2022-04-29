@@ -34,6 +34,7 @@
 #include "activitydata.h"
 #include "activitylistmodel.h"
 #include "systray.h"
+#include "tray/usermodel.h"
 
 #include "theme.h"
 
@@ -95,9 +96,13 @@ void ActivityListModel::setCurrentItem(const int currentItem)
     _currentItem = currentItem;
 }
 
-void ActivityListModel::setCurrentlyFetching(bool value)
+void ActivityListModel::setAndRefreshCurrentlyFetching(bool value)
 {
+    if (_currentlyFetching == value) {
+        return;
+    }
     _currentlyFetching = value;
+    insertOrRemoveDummyFetchingActivity();
 }
 
 bool ActivityListModel::currentlyFetching() const
@@ -353,9 +358,9 @@ int ActivityListModel::rowCount(const QModelIndex &parent) const
 bool ActivityListModel::canFetchMore(const QModelIndex &) const
 {
     // We need to be connected to be able to fetch more
-    if (_accountState && _accountState->isConnected()) {
+    if (_accountState && _accountState->isConnected() && Systray::instance()->isOpen()) {
         // If the fetching is reported to be done or we are currently fetching we can't fetch more
-        if (!_doneFetching && !_currentlyFetching) {
+        if (!_doneFetching && !currentlyFetching()) {
             return true;
         }
     }
@@ -365,7 +370,7 @@ bool ActivityListModel::canFetchMore(const QModelIndex &) const
 
 void ActivityListModel::startFetchJob()
 {
-    if (!_accountState->isConnected()) {
+    if (!_accountState->isConnected() || currentlyFetching()) {
         return;
     }
     auto *job = new JsonApiJob(_accountState->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
@@ -378,7 +383,7 @@ void ActivityListModel::startFetchJob()
     params.addQueryItem(QLatin1String("limit"), QString::number(50));
     job->addQueryParams(params);
 
-    _currentlyFetching = true;
+    setAndRefreshCurrentlyFetching(true);
     qCInfo(lcActivity) << "Start fetching activities for " << _accountState->account()->displayName();
     job->start();
 }
@@ -403,7 +408,7 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
     ActivityList list;
 
     QDateTime oldestDate = QDateTime::currentDateTime();
-    oldestDate = oldestDate.addDays(_maxActivitiesDays * -1);
+    oldestDate = oldestDate.addDays(static_cast<qint64>(_maxActivitiesDays) * -1);
 
     for (const auto &activ : activities) {
         const auto json = activ.toObject();
@@ -423,6 +428,86 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
     }
 
     _activityLists.append(list);
+
+    if (list.size() > 0) {
+        std::sort(list.begin(), list.end());
+        beginInsertRows({}, _finalList.size(), _finalList.size() + list.size() - 1);
+        _finalList.append(list);
+        endInsertRows();
+
+        appendMoreActivitiesAvailableEntry();
+    }
+}
+
+void ActivityListModel::appendMoreActivitiesAvailableEntry()
+{
+    const QString moreActivitiesEntryObjectType = QLatin1String("activity_fetch_more_activities");
+    if (_showMoreActivitiesAvailableEntry && !_finalList.isEmpty()
+        && _finalList.last()._objectType != moreActivitiesEntryObjectType) {
+        Activity a;
+        a._type = Activity::ActivityType;
+        a._accName = _accountState->account()->displayName();
+        a._id = -1;
+        a._objectType = moreActivitiesEntryObjectType;
+        a._subject = tr("For more activities please open the Activity app.");
+        a._dateTime = QDateTime::currentDateTime();
+
+        if (const auto *app = _accountState->findApp(QLatin1String("activity"))) {
+            a._link = app->url();
+        }
+
+        beginInsertRows({}, _finalList.size(), _finalList.size());
+        _finalList.append(a);
+        endInsertRows();
+    }
+}
+
+void ActivityListModel::insertOrRemoveDummyFetchingActivity()
+{
+    const QString dummyFetchingActivityObjectType = QLatin1String("dummy_fetching_activity");
+    if (_currentlyFetching && _finalList.isEmpty()) {
+        Activity a;
+        a._type = Activity::ActivityType;
+        a._accName = _accountState->account()->displayName();
+        a._id = -2;
+        a._objectType = dummyFetchingActivityObjectType;
+        a._subject = tr("Fetching activities...");
+        a._dateTime = QDateTime::currentDateTime();
+        a._darkIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
+        a._lightIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
+
+        beginInsertRows({}, 0, 0);
+        _finalList.prepend(a);
+        endInsertRows();
+    } else if (!_finalList.isEmpty() && _finalList.first()._objectType == dummyFetchingActivityObjectType) {
+        beginRemoveRows({}, 0, 0);
+        _finalList.removeAt(0);
+        endRemoveRows();
+    }
+}
+
+void ActivityListModel::clearActivities()
+{
+    _activityLists.clear();
+    if (!_finalList.isEmpty()) {
+        const auto firstActivityIt = std::find_if(std::begin(_finalList), std::end(_finalList),
+            [&](const Activity &activity) { return activity._type == Activity::ActivityType; });
+
+        if (firstActivityIt != std::end(_finalList)) {
+            const auto lastActivityItReverse = std::find_if(std::rbegin(_finalList), std::rend(_finalList),
+                    [&](const Activity &activity) { return activity._type == Activity::ActivityType; });
+
+            const auto lastActivityIt = (lastActivityItReverse + 1).base();
+
+            if (lastActivityIt != std::end(_finalList)) {
+                const int beginRemoveIndex = std::distance(std::begin(_finalList), firstActivityIt);
+                const int endRemoveIndex = std::distance(std::begin(_finalList), lastActivityIt);
+                beginRemoveRows({}, beginRemoveIndex, endRemoveIndex);
+                _finalList.erase(firstActivityIt, std::end(_finalList));
+                endRemoveRows();
+            }
+        }
+    }
 }
 
 void ActivityListModel::activitiesReceived(const QJsonDocument &json, int statusCode)
@@ -437,11 +522,9 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
         _doneFetching = true;
     }
 
-    _currentlyFetching = false;
+    setAndRefreshCurrentlyFetching(false);
 
     ingestActivities(activities);
-
-    combineActivityLists();
 
     emit activityJobStatusCode(statusCode);
 }
@@ -513,8 +596,15 @@ void ActivityListModel::removeActivityFromActivityList(Activity activity)
     int index = -1;
     if (activity._type == Activity::ActivityType) {
         index = _activityLists.indexOf(activity);
-        if (index != -1)
+        if (index != -1) {
             _activityLists.removeAt(index);
+            const auto indexInFinalList = _finalList.indexOf(activity);
+            if (indexInFinalList != -1) {
+                beginRemoveRows({}, indexInFinalList, indexInFinalList);
+                _finalList.removeAt(indexInFinalList);
+                endRemoveRows();
+            }
+        }
     } else if (activity._type == Activity::NotificationType) {
         index = _notificationLists.indexOf(activity);
         if (index != -1)
@@ -744,27 +834,21 @@ void ActivityListModel::combineActivityLists()
     if (_activityLists.count() > 0) {
         std::sort(_activityLists.begin(), _activityLists.end());
         resultList.append(_activityLists);
-
-        if(_showMoreActivitiesAvailableEntry) {
-            Activity a;
-            a._type = Activity::ActivityType;
-            a._accName = _accountState->account()->displayName();
-            a._id = -1;
-            a._subject = tr("For more activities please open the Activity app.");
-            a._dateTime = QDateTime::currentDateTime();
-
-            AccountApp *app = _accountState->findApp(QLatin1String("activity"));
-            if(app) {
-                a._link = app->url();
-            }
-
-            resultList.append(a);
-        }
     }
 
-    beginResetModel();
-    _finalList = resultList;
-    endResetModel();
+    if (_finalList.isEmpty() && !resultList.isEmpty()) {
+        beginInsertRows({}, 0, resultList.size() - 1);
+        _finalList = resultList;
+        endInsertRows();
+    } else if (!_finalList.isEmpty()) {
+        beginResetModel();
+        _finalList = resultList;
+        endResetModel();
+    }
+
+    if (_activityLists.size() > 0) {
+        appendMoreActivitiesAvailableEntry();
+    }
 }
 
 bool ActivityListModel::canFetchActivities() const
@@ -774,14 +858,14 @@ bool ActivityListModel::canFetchActivities() const
 
 void ActivityListModel::fetchMore(const QModelIndex &)
 {
-    if (canFetchActivities() && !_currentlyFetching) {
+    if (canFetchActivities()) {
         startFetchJob();
     }
 }
 
 void ActivityListModel::slotRefreshActivity()
 {
-    _activityLists.clear();
+    clearActivities();
     _doneFetching = false;
     _currentItem = 0;
     _totalActivitiesFetched = 0;
@@ -795,11 +879,18 @@ void ActivityListModel::slotRefreshActivity()
     }
 }
 
+void ActivityListModel::slotRefreshActivityInitial()
+{
+    if (_activityLists.isEmpty() && !currentlyFetching()) {
+        slotRefreshActivity();
+    }
+}
+
 void ActivityListModel::slotRemoveAccount()
 {
     _finalList.clear();
     _activityLists.clear();
-    _currentlyFetching = false;
+    setAndRefreshCurrentlyFetching(false);
     _doneFetching = false;
     _currentItem = 0;
     _totalActivitiesFetched = 0;

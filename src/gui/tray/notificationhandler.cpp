@@ -137,8 +137,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
                 a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].id + QStringLiteral("/128");
             }
 
-            list.append(a);
-
             // We want to serve incoming call dialogs to the user for calls that
             if(a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
                 callList.append(a);
