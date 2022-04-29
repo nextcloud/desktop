@@ -65,6 +65,29 @@
     </message>
 </context>
 <context>
+    <name>CallNotificationDialog</name>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
+        <source>Talk notification caller avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
+        <source>Answer Talk call notification</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
+        <source>Decline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
+        <source>Decline Talk call notification</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CloudProviderWrapper</name>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="105"/>
@@ -2123,6 +2146,11 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Zobraziť &amp;hlásenia zo servera</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <source>Show Call Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
         <translation>Aktualizácie</translation>
@@ -2202,6 +2230,11 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
         <translation>Zobrazovať hlásenie, ktoré vyžadujú pozornosť.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="151"/>
+        <source>Show call notification dialogs.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="163"/>
@@ -4098,7 +4131,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="131"/>
         <source>Reply</source>
         <translation type="unfinished"/>
     </message>
@@ -5192,7 +5225,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Nastavenia</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="112"/>
+        <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
@@ -5978,32 +6011,32 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Nový priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="700"/>
         <source>Mark as read</source>
         <translation>Označiť ako prečítané</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="535"/>
         <source>You renamed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="522"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="537"/>
         <source>You deleted %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="524"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
         <source>You created %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="526"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="541"/>
         <source>You changed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="564"/>
         <source>Synced %1</source>
         <translation type="unfinished"/>
     </message>

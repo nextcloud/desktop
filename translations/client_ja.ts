@@ -65,6 +65,29 @@
     </message>
 </context>
 <context>
+    <name>CallNotificationDialog</name>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
+        <source>Talk notification caller avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
+        <source>Answer Talk call notification</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
+        <source>Decline</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
+        <source>Decline Talk call notification</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CloudProviderWrapper</name>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="105"/>
@@ -2122,6 +2145,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>サーバーと通知を表示(&amp;N)</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="96"/>
+        <source>Show Call Notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
         <source>Updates</source>
         <translation>アップデート</translation>
@@ -2201,6 +2229,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
         <translation>注意が必要なサーバー通知。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/generalsettings.cpp" line="151"/>
+        <source>Show call notification dialogs.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="163"/>
@@ -4095,7 +4128,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ServerNotificationHandler</name>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="114"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="131"/>
         <source>Reply</source>
         <translation>返信</translation>
     </message>
@@ -5189,7 +5222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>設定</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="112"/>
+        <location filename="../src/gui/systray.cpp" line="113"/>
         <source>Help</source>
         <translation>ヘルプ</translation>
     </message>
@@ -5975,32 +6008,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>新しいフォルダー</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="697"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="700"/>
         <source>Mark as read</source>
         <translation>既読にする</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="520"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="535"/>
         <source>You renamed %1</source>
         <translation>%1 の名前を変更しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="522"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="537"/>
         <source>You deleted %1</source>
         <translation>%1 を削除しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="524"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
         <source>You created %1</source>
         <translation>%1 を作成しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="526"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="541"/>
         <source>You changed %1</source>
         <translation>%1 を変更しました</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="564"/>
         <source>Synced %1</source>
         <translation>%1 を同期しました</translation>
     </message>
