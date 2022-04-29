@@ -14,6 +14,7 @@ Summary
 * Bugfix - Use UTF-8 for .owncloudsync.log: [#9571](https://github.com/owncloud/client/pull/9571)
 * Bugfix - Crash when interacting with a folder in an error state: [#9600](https://github.com/owncloud/client/issues/9600)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
@@ -61,6 +62,12 @@ Details
 
    https://github.com/owncloud/client/issues/8938
    https://github.com/owncloud/client/pull/8939
+
+* Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
+
+   We removed the support for Windows < 10 sidebar links.
+
+   https://github.com/owncloud/client/pull/9618
 
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 
