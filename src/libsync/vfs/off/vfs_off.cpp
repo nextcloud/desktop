@@ -92,8 +92,10 @@ void VfsOff::startImpl(const VfsSetupParams &)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsOff::updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &replacesFile)
 {
-    const bool isReadOnly = !item._remotePerm.isNull() && !item._remotePerm.hasPermission(RemotePermissions::CanWrite);
-    FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+    if (!item.isDirectory()) {
+        const bool isReadOnly = !item._remotePerm.isNull() && !item._remotePerm.hasPermission(RemotePermissions::CanWrite);
+        FileSystem::setFileReadOnlyWeak(filePath, isReadOnly);
+    }
     return { ConvertToPlaceholderResult::Ok };
 }
 
