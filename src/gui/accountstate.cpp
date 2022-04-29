@@ -525,10 +525,11 @@ void AccountState::slotOcsError(int statusCode, const QString &message)
 void AccountState::slotCheckConnection()
 {
     if (_lastCheckConnectionTimer.isValid()) {
-        const auto currentDelay = (retryCount() <= 1 ? ConnectionValidator::DefaultCallingIntervalMsec :
-                                                       (retryCount() == 2 ? ConnectionValidator::DefaultCallingIntervalMsec * 2 :
-                                                                            (retryCount() == 3 ? ConnectionValidator::DefaultCallingIntervalMsec * 4 :
-                                                                                                 ConnectionValidator::DefaultCallingIntervalMsec * 8)));
+        static constexpr auto DefaultCallingIntervalMaxMsec = static_cast<int>(ConnectionValidator::DefaultCallingIntervalMsec) * 8;
+
+        const auto minDelay = std::max(retryCount() * ConnectionValidator::DefaultCallingIntervalMsec,
+                                       static_cast<int>(ConnectionValidator::DefaultCallingIntervalMsec));
+        const auto currentDelay = std::min(minDelay, DefaultCallingIntervalMaxMsec);
 
         if (!_lastCheckConnectionTimer.hasExpired(currentDelay - 1)) {
             qCInfo(lcAccountState()) << "timer has not expired: do not check now" << _lastCheckConnectionTimer.elapsed() << currentDelay;
