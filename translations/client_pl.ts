@@ -69,22 +69,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Awatar rozmówcy w powiadomieniu Talka</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Powiadomienie o odpowiedzi w połączeniu Talka</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Odrzucenie</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Powiadomienie o odrzuceniu połączenia Talka</translation>
     </message>
 </context>
 <context>
@@ -782,14 +782,19 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Aby uzyskać więcej informacji o działaniach, otwórz aplikację Aktywność.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="474"/>
+        <source>Fetching activities...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
@@ -2148,7 +2153,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż powiadomienia połączeń</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -2234,7 +2239,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="151"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Pokaż dialogi w powiadomieniu połączenia.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="163"/>
@@ -6012,32 +6017,32 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nowy katalog</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="700"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="790"/>
         <source>Mark as read</source>
         <translation>Oznacz jako przeczytane</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="535"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="543"/>
         <source>You renamed %1</source>
         <translation>Zmieniłeś nazwę %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="537"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="545"/>
         <source>You deleted %1</source>
         <translation>Usunąłeś %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="547"/>
         <source>You created %1</source>
         <translation>Utworzyłeś %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="541"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>You changed %1</source>
         <translation>Zmieniłeś %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="572"/>
         <source>Synced %1</source>
         <translation>Zsynchronizowano %1</translation>
     </message>

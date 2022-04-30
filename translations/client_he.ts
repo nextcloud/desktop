@@ -778,14 +778,19 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
         <source>For more activities please open the Activity app.</source>
         <translation>לפעילויות נוספות נא לפתוח את יישומון הפעילויות.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="474"/>
+        <source>Fetching activities...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
@@ -5971,32 +5976,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="700"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="790"/>
         <source>Mark as read</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="535"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="543"/>
         <source>You renamed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="537"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="545"/>
         <source>You deleted %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="547"/>
         <source>You created %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="541"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>You changed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="572"/>
         <source>Synced %1</source>
         <translation type="unfinished"/>
     </message>

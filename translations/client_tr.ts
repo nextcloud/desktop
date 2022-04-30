@@ -69,22 +69,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Talk bildirimi arayan avatarı</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Talk çağrı bildirimini yanıtla</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Reddet</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Talk çağrı bildirimini reddet</translation>
     </message>
 </context>
 <context>
@@ -782,14 +782,19 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
-        <source>Files from the ignore list as well as symbolic links are not synced.</source>
-        <translation>Yok sayma listesindeki dosyalar ve sembolik bağlantılar eşitlenmez.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="611"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Diğer işlemler için lütfen İşlemler uygulamasını açın.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="474"/>
+        <source>Fetching activities...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
+        <source>Files from the ignore list as well as symbolic links are not synced.</source>
+        <translation>Yok sayma listesindeki dosyalar ve sembolik bağlantılar eşitlenmez.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitylistmodel.cpp" line="241"/>
@@ -2143,12 +2148,12 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
         <source>Show Server &amp;Notifications</source>
-        <translation>Su&amp;nucu bildirimlerini görüntüle</translation>
+        <translation>Su&amp;nucu bildirimleri görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Çağrı bildirimleri görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="99"/>
@@ -2214,7 +2219,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/generalsettings.ui" line="294"/>
         <source>S&amp;how crash reporter</source>
-        <translation>Ç&amp;ökme bilgilerini görüntüle</translation>
+        <translation>Ç&amp;ökme bilgileri görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="305"/>
@@ -2234,7 +2239,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="151"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Çağrı bildirimi pencerelerini görüntüler.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="163"/>
@@ -5781,7 +5786,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="782"/>
         <source>View more activity …</source>
-        <translation>Diğer işlemleri görüntüle …</translation>
+        <translation>Daha fazla işlem görüntüle…</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="788"/>
@@ -6012,32 +6017,32 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Yeni klasör</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="700"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="790"/>
         <source>Mark as read</source>
         <translation>Okunmuş olarak işaretle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="535"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="543"/>
         <source>You renamed %1</source>
         <translation>%1 ögesini yeniden adlandırdınız</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="537"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="545"/>
         <source>You deleted %1</source>
         <translation>%1 ögesini sildiniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="539"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="547"/>
         <source>You created %1</source>
         <translation>%1 ögesini eklediniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="541"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>You changed %1</source>
         <translation>%1 ögesini değiştirdiniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="572"/>
         <source>Synced %1</source>
         <translation>%1 ögesi eşitlendi</translation>
     </message>
@@ -6503,7 +6508,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
-        <translation>Diğer işlemleri görüntüle</translation>
+        <translation>Daha fazla işlem görüntüle</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="681"/>
