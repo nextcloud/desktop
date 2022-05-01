@@ -790,7 +790,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="474"/>
         <source>Fetching activities...</source>
-        <translation type="unfinished"/>
+        <translation>正在擷取活動紀錄 ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
