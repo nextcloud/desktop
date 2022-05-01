@@ -789,7 +789,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="474"/>
         <source>Fetching activities...</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitäten abrufen…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
