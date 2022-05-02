@@ -218,6 +218,7 @@
         <file>theme/colored/add-bordered.svg</file>
         <file>theme/colored/delete.svg</file>
         <file>theme/colored/delete-bordered.svg</file>
+        <file>theme/colored/talk-bordered.svg</file>
         <file>theme/colored/@APPLICATION_ICON_NAME@-icon.svg</file>
         <file>theme/add.svg</file>
         <file>theme/share.svg</file>
