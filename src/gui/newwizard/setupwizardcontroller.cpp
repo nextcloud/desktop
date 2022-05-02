@@ -19,6 +19,9 @@ using namespace std::chrono_literals;
 
 namespace {
 
+const QString defaultUrlSchemeC = QStringLiteral("https://");
+const QStringList supportedUrlSchemesC({ defaultUrlSchemeC, QStringLiteral("http://") });
+
 QString initLocalFolder()
 {
     auto localFolder = OCC::Theme::instance()->defaultClientFolder();
@@ -99,8 +102,11 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
 
                 // fix scheme if necessary
                 // using HTTPS as a default is a really good idea nowadays, users can still enter http:// explicitly if they wish to
-                if (QUrl(userProvidedUrl).isRelative() && !userProvidedUrl.isEmpty()) {
-                    userProvidedUrl.prepend(QStringLiteral("https://"));
+                if (!std::any_of(supportedUrlSchemesC.begin(), supportedUrlSchemesC.end(), [userProvidedUrl](const QString &scheme) {
+                        return userProvidedUrl.startsWith(scheme);
+                    })) {
+                    qDebug() << "no URL scheme provided, prepending default URL scheme" << defaultUrlSchemeC;
+                    userProvidedUrl.prepend(defaultUrlSchemeC);
                 }
 
                 return QUrl::fromUserInput(userProvidedUrl);
