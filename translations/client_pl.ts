@@ -789,7 +789,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="474"/>
         <source>Fetching activities...</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie aktywności…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="414"/>
