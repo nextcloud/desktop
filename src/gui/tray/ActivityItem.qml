@@ -23,13 +23,13 @@ MouseArea {
     hoverEnabled: true
 
     // We center the children vertically in the middle of this MouseArea to create the padding.
-    height: childrenRect.height + (Style.standardSpacing * 2)
+    height: contentLayout.implicitHeight + (Style.standardSpacing * 2)
 
     Accessible.role: Accessible.ListItem
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
 
-    function showReplyOptions() {
+    function toggleReplyOptions() {
         isTalkReplyOptionVisible = !isTalkReplyOptionVisible
     }
 
@@ -55,13 +55,14 @@ MouseArea {
     }
 
     ColumnLayout {
+        id: contentLayout
         anchors.left: root.left
         anchors.right: root.right
         anchors.rightMargin: Style.standardSpacing
         anchors.leftMargin: Style.standardSpacing
         anchors.verticalCenter: parent.verticalCenter
 
-        spacing: 0
+        spacing: 10
 
         ActivityItemContent {
             id: activityContent
@@ -77,15 +78,30 @@ MouseArea {
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.index)
         }
 
+        Loader {
+            id: talkReplyTextFieldLoader
+            active: root.isChatActivity && root.isTalkReplyPossible && root.activityData.messageSent === ""
+            visible: root.isTalkReplyOptionVisible
+
+            Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
+            Layout.preferredHeight: root.isTalkReplyOptionVisible ? implicitHeight : 0
+
+            sourceComponent: TalkReplyTextField {
+                onSendReply: {
+                    UserModel.currentUser.sendReplyMessage(model.index, model.conversationToken, reply, model.messageId);
+                    talkReplyTextFieldLoader.visible = false;
+                }
+            }
+        }
+
         ActivityItemActions {
             id: activityActions
 
             visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
 
             Layout.fillWidth: true
-            Layout.leftMargin: 60
-            Layout.bottomMargin: model.links.length > 1 ? 5 : 0
-            Layout.preferredHeight: Style.minActivityHeight
+            Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
+            Layout.minimumHeight: Style.minActivityHeight
 
             displayActions: model.displayActions
             objectType: model.objectType
@@ -98,6 +114,7 @@ MouseArea {
             flickable: root.flickable
 
             onTriggerAction: activityModel.slotTriggerAction(model.index, actionIndex)
+            onShowReplyField: root.toggleReplyOptions()
         }
     }
 }

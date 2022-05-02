@@ -33,5 +33,6 @@ private slots:
     QImage _image;
     QStringList _imagePaths;
     QSize _requestedImageSize;
+    QColor _svgRecolor;
     int _index = 0;
 };

@@ -22,6 +22,7 @@ RowLayout {
     property Flickable flickable
 
     signal triggerAction(int actionIndex)
+    signal showReplyField()
 
     Repeater {
         id: actionsRepeater
@@ -42,15 +43,15 @@ RowLayout {
             text: model.modelData.label
             toolTipText: model.modelData.label
 
-            imageSource: model.modelData.imageSource
-            imageSourceHover: model.modelData.imageSourceHovered
+            imageSource: model.modelData.imageSource ? model.modelData.imageSource + UserModel.currentUser.headerColor : ""
+            imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
 
             textColor: imageSource !== "" ? UserModel.currentUser.headerColor : Style.ncTextColor
-            textColorHovered: imageSource !== "" ? Style.lightHover : Style.ncTextColor
+            textColorHovered: imageSource !== "" ? UserModel.currentUser.headerTextColor : Style.ncTextColor
 
             bold: primary
 
-            onClicked: !isTalkReplyButton? root.triggerAction(model.index) : showReplyOptions(model.index)
+            onClicked: !isTalkReplyButton ? root.triggerAction(model.index) : root.showReplyField()
         }
     }
 
