@@ -26,7 +26,16 @@ AsyncImageResponse::AsyncImageResponse(const QString &id, const QSize &requested
         return;
     }
 
-    _imagePaths = id.split(QLatin1Char(';'), Qt::SkipEmptyParts);
+    auto actualId = id;
+    const auto idSplit = id.split(QStringLiteral("/"), Qt::SkipEmptyParts);
+    const auto color = QColor(idSplit.last());
+
+    if(color.isValid()) {
+        _svgRecolor = color;
+        actualId.remove("/" % idSplit.last());
+    }
+
+    _imagePaths = actualId.split(QLatin1Char(';'), Qt::SkipEmptyParts);
     _requestedImageSize = requestedSize;
 
     if (_imagePaths.isEmpty()) {
@@ -96,7 +105,18 @@ void AsyncImageResponse::slotProcessNetworkReply()
                 scaledSvg.fill("transparent");
                 QPainter painterForSvg(&scaledSvg);
                 svgRenderer.render(&painterForSvg);
-                setImageAndEmitFinished(scaledSvg);
+
+                if(!_svgRecolor.isValid()) {
+                    setImageAndEmitFinished(scaledSvg);
+                    return;
+                }
+
+                QImage image(_requestedImageSize, QImage::Format_ARGB32);
+                image.fill(_svgRecolor);
+                QPainter imagePainter(&image);
+                imagePainter.setCompositionMode(QPainter::CompositionMode_DestinationIn);
+                imagePainter.drawImage(0, 0, scaledSvg);
+                setImageAndEmitFinished(image);
                 return;
             } else {
                 processNextImage();
