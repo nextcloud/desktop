@@ -248,11 +248,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         } else {
             // We have an activity
-            if (a._darkIcon.isEmpty()) {
+            if (a._icon.isEmpty()) {
                 colorIconPath.append("activity.svg");
                 return colorIconPath;
             }
-            return role == DarkIconRole ? a._darkIcon : a._lightIcon;
+
+            const QString basePath = QStringLiteral("image://tray-image-provider/") % a._icon % QStringLiteral("/");
+            return role == DarkIconRole ? QString(basePath + QStringLiteral("white")) : QString(basePath + QStringLiteral("black"));
         }
     };
 
@@ -485,8 +487,7 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
         a._objectType = dummyFetchingActivityObjectType;
         a._subject = tr("Fetching activities…");
         a._dateTime = QDateTime::currentDateTime();
-        a._darkIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
-        a._lightIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
+        a._icon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
 
         beginInsertRows({}, 0, 0);
         _finalList.prepend(a);
@@ -796,10 +797,8 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
     const QString replyButtonPath = QStringLiteral("image://svgimage-custom-color/reply.svg");
 
     if (isReplyIconApplicable) {
-        activityLinkCopy._imageSource =
-            QString(replyButtonPath + "/" + OCC::Theme::instance()->wizardHeaderBackgroundColor().name());
-        activityLinkCopy._imageSourceHovered =
-            QString(replyButtonPath + "/" + OCC::Theme::instance()->wizardHeaderTitleColor().name());
+        activityLinkCopy._imageSource = QString(replyButtonPath + "/");
+        activityLinkCopy._imageSourceHovered = QString(replyButtonPath + "/");
     }
 
     if (activityLink._verb == QStringLiteral("DELETE")) {
