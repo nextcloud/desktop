@@ -298,11 +298,13 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
     // Don't care about the request and just return a full propfind
     const QString davUri { QStringLiteral("DAV:") };
     const QString ocUri { QStringLiteral("http://owncloud.org/ns") };
+    const QString ncUri { QStringLiteral("http://nextcloud.org/ns") };
     QBuffer buffer { &payload };
     buffer.open(QIODevice::WriteOnly);
     QXmlStreamWriter xml(&buffer);
     xml.writeNamespace(davUri, QStringLiteral("d"));
     xml.writeNamespace(ocUri, QStringLiteral("oc"));
+    xml.writeNamespace(ncUri, QStringLiteral("nc"));
     xml.writeStartDocument();
     xml.writeStartElement(davUri, QStringLiteral("multistatus"));
     auto writeFileResponse = [&](const FileInfo &fileInfo) {
@@ -998,6 +1000,8 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
             if (contentType.startsWith(QStringLiteral("multipart/related; boundary="))) {
                 reply = new FakePutMultiFileReply { info, op, newRequest, contentType, outgoingData->readAll(), this };
             }
+        } else if (verb == QLatin1String("LOCK") || verb == QLatin1String("UNLOCK")) {
+            reply = new FakeFileLockReply{info, op, newRequest, this};
         } else {
             qDebug() << verb << outgoingData;
             Q_UNREACHABLE();
@@ -1248,4 +1252,51 @@ FakeJsonErrorReply::FakeJsonErrorReply(QNetworkAccessManager::Operation op,
                                        const QJsonDocument &reply)
     : FakeErrorReply{ op, request, parent, httpErrorCode, reply.toJson() }
 {
+}
+
+FakeFileLockReply::FakeFileLockReply(FileInfo &remoteRootFileInfo,
+                                     QNetworkAccessManager::Operation op,
+                                     const QNetworkRequest &request,
+                                     QObject *parent)
+    : FakePropfindReply(remoteRootFileInfo, op, request, parent)
+{
+    const auto verb = request.attribute(QNetworkRequest::CustomVerbAttribute);
+
+    setRequest(request);
+    setUrl(request.url());
+    setOperation(op);
+    open(QIODevice::ReadOnly);
+
+    QString fileName = getFilePathFromUrl(request.url());
+    Q_ASSERT(!fileName.isNull()); // for root, it should be empty
+    FileInfo *fileInfo = remoteRootFileInfo.find(fileName);
+    if (!fileInfo) {
+        QMetaObject::invokeMethod(this, "respond404", Qt::QueuedConnection);
+        return;
+    }
+
+    const QString prefix = request.url().path().left(request.url().path().size() - fileName.size());
+
+    // Don't care about the request and just return a full propfind
+    const QString davUri { QStringLiteral("DAV:") };
+    const QString ocUri { QStringLiteral("http://owncloud.org/ns") };
+    const QString ncUri { QStringLiteral("http://nextcloud.org/ns") };
+    payload.clear();
+    QBuffer buffer { &payload };
+    buffer.open(QIODevice::WriteOnly);
+    QXmlStreamWriter xml(&buffer);
+    xml.writeNamespace(davUri, QStringLiteral("d"));
+    xml.writeNamespace(ocUri, QStringLiteral("oc"));
+    xml.writeNamespace(ncUri, QStringLiteral("nc"));
+    xml.writeStartDocument();
+    xml.writeStartElement(davUri, QStringLiteral("prop"));
+    xml.writeTextElement(ncUri, QStringLiteral("lock"), verb == QStringLiteral("LOCK") ? "1" : "0");
+    xml.writeTextElement(ncUri, QStringLiteral("lock-owner-type"), QString::number(0));
+    xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), QStringLiteral("admin"));
+    xml.writeTextElement(ncUri, QStringLiteral("lock-owner-displayname"), QStringLiteral("John Doe"));
+    xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), {});
+    xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(1234560));
+    xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(1800));
+    xml.writeEndElement(); // prop
+    xml.writeEndDocument();
 }

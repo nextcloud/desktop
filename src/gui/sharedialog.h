@@ -18,6 +18,7 @@
 #include "accountstate.h"
 #include "sharepermissions.h"
 #include "owncloudgui.h"
+#include "common/syncjournalfilerecord.h"
 
 #include <QSharedPointer>
 #include <QPointer>
@@ -51,6 +52,7 @@ public:
         const QString &localPath,
         SharePermissions maxSharingPermissions,
         const QByteArray &numericFileId,
+        SyncJournalFileLockInfo filelockState,
         ShareDialogStartPage startPage,
         QWidget *parent = nullptr);
     ~ShareDialog() override;
@@ -91,6 +93,7 @@ private:
     QString _localPath;
     SharePermissions _maxSharingPermissions;
     QByteArray _numericFileId;
+    SyncJournalFileLockInfo _filelockState;
     QString _privateLinkUrl;
     ShareDialogStartPage _startPage;
     ShareManager *_manager = nullptr;

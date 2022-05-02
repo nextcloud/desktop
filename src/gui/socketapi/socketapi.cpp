@@ -958,6 +958,32 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     solver.setRemoteVersionFilename(target);
 }
 
+void SocketApi::command_LOCK_FILE(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener)
+
+    setFileLock(localFile, SyncFileItem::LockStatus::LockedItem);
+}
+
+void SocketApi::command_UNLOCK_FILE(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener)
+
+    setFileLock(localFile, SyncFileItem::LockStatus::UnlockedItem);
+}
+
+void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockStatus lockState) const
+{
+    const auto fileData = FileData::get(localFile);
+
+    const auto shareFolder = fileData.folder;
+    if (!shareFolder || !shareFolder->accountState()->isConnected()) {
+        return;
+    }
+
+    shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath, shareFolder->journalDb(), lockState);
+}
+
 void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const
 {
     QJsonArray out;
@@ -1047,6 +1073,39 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email …"));
 }
 
+void SocketApi::sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
+                                               Folder* const syncFolder,
+                                               const FileData &fileData,
+                                               const OCC::SocketListener* const listener) const
+{
+    if (!fileInfo.isDir() && syncFolder->accountState()->account()->capabilities().filesLockAvailable()) {
+        if (syncFolder->accountState()->account()->fileLockStatus(syncFolder->journalDb(), fileData.folderRelativePath) == SyncFileItem::LockStatus::UnlockedItem) {
+            listener->sendMessage(QLatin1String("MENU_ITEM:LOCK_FILE::") + tr("Lock file"));
+        } else {
+            if (syncFolder->accountState()->account()->fileCanBeUnlocked(syncFolder->journalDb(), fileData.folderRelativePath)) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:UNLOCK_FILE::") + tr("Unlock file"));
+            }
+        }
+    }
+}
+
+void SocketApi::sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
+                                            Folder * const syncFolder,
+                                            const FileData &fileData,
+                                            const SocketListener * const listener,
+                                            const SyncJournalFileRecord &record) const
+{
+    static constexpr auto SECONDS_PER_MINUTE = 60;
+    if (!fileInfo.isDir() && syncFolder->accountState()->account()->capabilities().filesLockAvailable() &&
+            syncFolder->accountState()->account()->fileLockStatus(syncFolder->journalDb(), fileData.folderRelativePath) == SyncFileItem::LockStatus::LockedItem) {
+        listener->sendMessage(QLatin1String("MENU_ITEM:LOCKED_FILE_OWNER:d:") + tr("Locked by %1").arg(record._lockstate._lockOwnerDisplayName));
+        const auto lockExpirationTime = record._lockstate._lockTime + record._lockstate._lockTimeout;
+        const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+        const auto remainingTimeInMinute = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
+        listener->sendMessage(QLatin1String("MENU_ITEM:LOCKED_FILE_DATE:d:") + tr("Expire in %1 minutes", "remaining time before lock expire", remainingTimeInMinute).arg(remainingTimeInMinute));
+    }
+}
+
 SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
 {
     FileData data;
@@ -1133,6 +1192,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
         auto flagString = isOnTheServer && !isE2eEncryptedPath ? QLatin1String("::") : QLatin1String(":d:");
 
         const QFileInfo fileInfo(fileData.localPath);
+        sendLockFileInfoMenuEntries(fileInfo, syncFolder, fileData, listener, record);
         if (!fileInfo.isDir()) {
             listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
         }
@@ -1145,6 +1205,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
         }
 
+        sendLockFileCommandMenuEntries(fileInfo, syncFolder, fileData, listener);
         sendSharingContextMenuOptions(fileData, listener, !isE2eEncryptedPath);
 
         // Conflict files get conflict resolution actions

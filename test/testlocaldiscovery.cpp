@@ -594,6 +594,53 @@ private slots:
         auto expectedState = fakeFolder.currentLocalState();
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
+
+    void testDiscoverLockChanges()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.syncEngine().account()->setCapabilities({{"activity", QVariantMap{{"apiv2", QVariantList{"filters", "filters-api", "previews", "rich-strings"}}}},
+                                                            {"bruteforce", QVariantMap{{"delay", 0}}},
+                                                            {"core", QVariantMap{{"pollinterval", 60}, {"webdav-root", "remote.php/webdav"}}},
+                                                            {"dav", QVariantMap{{"chunking", "1.0"}}},
+                                                            {"files", QVariantMap{{"bigfilechunking", true}, {"blacklisted_files", QVariantList{".htaccess"}},
+                                                                                  {"comments", true},
+                                                                                  {"directEditing", QVariantMap{{"etag", "c748e8fc588b54fc5af38c4481a19d20"}, {"url", "https://nextcloud.local/ocs/v2.php/apps/files/api/v1/directEditing"}}},
+                                                                                  {"locking", "1.0"}}}});
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        const QString fooFileRootFolder("foo");
+        const QString barFileRootFolder("bar");
+        const QString fooFileSubFolder("subfolder/foo");
+        const QString barFileSubFolder("subfolder/bar");
+        const QString fooFileAaaSubFolder("aaa/subfolder/foo");
+        const QString barFileAaaSubFolder("aaa/subfolder/bar");
+
+        fakeFolder.remoteModifier().insert(fooFileRootFolder);
+
+        fakeFolder.remoteModifier().insert(barFileRootFolder);
+        fakeFolder.remoteModifier().find("bar")->extraDavProperties = "<nc:lock>1</nc:lock>"
+                                                                      "<nc:lock-owner-type>0</nc:lock-owner-type>"
+                                                                      "<nc:lock-owner>user1</nc:lock-owner>"
+                                                                      "<nc:lock-owner-displayname>user1</nc:lock-owner-displayname>"
+                                                                      "<nc:lock-owner-editor>user1</nc:lock-owner-editor>"
+                                                                      "<nc:lock-time>1648046707</nc:lock-time>";
+
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
+        fakeFolder.remoteModifier().insert(fooFileSubFolder);
+        fakeFolder.remoteModifier().insert(barFileSubFolder);
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("aaa/subfolder"));
+        fakeFolder.remoteModifier().insert(fooFileAaaSubFolder);
+        fakeFolder.remoteModifier().insert(barFileAaaSubFolder);
+
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().find("bar")->extraDavProperties = "<nc:lock>0</nc:lock>";
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestLocalDiscovery)

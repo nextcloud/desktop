@@ -1211,6 +1211,12 @@ void PropagateDownloadFile::downloadFinished()
         return;
     }
 
+    qCInfo(lcPropagateDownload()) << propagator()->account()->davUser() << propagator()->account()->davDisplayName() << propagator()->account()->displayName();
+    if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
+        qCInfo(lcPropagateDownload()) << "file is locked: making it read only";
+        FileSystem::setFileReadOnly(fn, true);
+    }
+
     FileSystem::setFileHidden(fn, false);
 
     // Maybe we downloaded a newer version of the file than we thought we would...

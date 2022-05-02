@@ -45,6 +45,13 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
     rec._isE2eEncrypted = _isEncrypted;
+    rec._lockstate._locked = _locked == LockStatus::LockedItem;
+    rec._lockstate._lockOwnerDisplayName = _lockOwnerDisplayName;
+    rec._lockstate._lockOwnerId = _lockOwnerId;
+    rec._lockstate._lockOwnerType = static_cast<qint64>(_lockOwnerType);
+    rec._lockstate._lockEditorApp = _lockEditorApp;
+    rec._lockstate._lockTime = _lockTime;
+    rec._lockstate._lockTimeout = _lockTimeout;
 
     // Update the inode if possible
     rec._inode = _inode;
@@ -75,6 +82,13 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_checksumHeader = rec._checksumHeader;
     item->_encryptedFileName = rec.e2eMangledName();
     item->_isEncrypted = rec._isE2eEncrypted;
+    item->_locked = rec._lockstate._locked ? LockStatus::LockedItem : LockStatus::UnlockedItem;
+    item->_lockOwnerDisplayName = rec._lockstate._lockOwnerDisplayName;
+    item->_lockOwnerId = rec._lockstate._lockOwnerId;
+    item->_lockOwnerType = static_cast<LockOwnerType>(rec._lockstate._lockOwnerType);
+    item->_lockEditorApp = rec._lockstate._lockEditorApp;
+    item->_lockTime = rec._lockstate._lockTime;
+    item->_lockTimeout = rec._lockstate._lockTimeout;
     return item;
 }
 

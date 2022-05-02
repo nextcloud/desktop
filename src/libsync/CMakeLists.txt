@@ -110,6 +110,8 @@ set(libsync_SRCS
     userstatusconnector.cpp
     ocsprofileconnector.h
     ocsprofileconnector.cpp
+    lockfilejobs.h
+    lockfilejobs.cpp
     creds/dummycredentials.h
     creds/dummycredentials.cpp
     creds/abstractcredentials.h

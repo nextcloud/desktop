@@ -48,7 +48,8 @@ Q_LOGGING_CATEGORY(lcDb, "nextcloud.sync.database", QtInfoMsg)
 
 #define GET_FILE_RECORD_QUERY \
         "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted " \
+        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum, e2eMangledName, isE2eEncrypted, " \
+        "  lock, lockOwnerDisplayName, lockOwnerId, lockType, lockOwnerEditor, lockTime, lockTimeout " \
         " FROM metadata" \
         "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
@@ -66,6 +67,13 @@ static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &que
     rec._checksumHeader = query.baValue(9);
     rec._e2eMangledName = query.baValue(10);
     rec._isE2eEncrypted = query.intValue(11) > 0;
+    rec._lockstate._locked = query.intValue(12) > 0;
+    rec._lockstate._lockOwnerDisplayName = query.stringValue(13);
+    rec._lockstate._lockOwnerId = query.stringValue(14);
+    rec._lockstate._lockOwnerType = query.int64Value(15);
+    rec._lockstate._lockEditorApp = query.stringValue(16);
+    rec._lockstate._lockTime = query.int64Value(17);
+    rec._lockstate._lockTimeout = query.int64Value(18);
 }
 
 static QByteArray defaultJournalMode(const QString &dbPath)
@@ -658,39 +666,31 @@ bool SyncJournalDb::updateMetadataTableStructure()
         return false;
     }
 
-    if (columns.indexOf("fileid") == -1) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN fileid VARCHAR(128);");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: Add column fileid"), query);
-            re = false;
-        }
+    const auto addColumn = [this, &columns, &re] (const QString &columnName, const QString &dataType, const bool withIndex = false) {
+        const auto latin1ColumnName = columnName.toLatin1();
+        if (columns.indexOf(latin1ColumnName) == -1) {
+            SqlQuery query(_db);
+            const auto request = QStringLiteral("ALTER TABLE metadata ADD COLUMN %1 %2;").arg(columnName).arg(dataType);
+            query.prepare(request.toLatin1());
+            if (!query.exec()) {
+                sqlFail(QStringLiteral("updateMetadataTableStructure: add %1 column").arg(columnName), query);
+                re = false;
+            }
 
-        query.prepare("CREATE INDEX metadata_file_id ON metadata(fileid);");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: create index fileid"), query);
-            re = false;
+            if (withIndex) {
+                query.prepare(QStringLiteral("CREATE INDEX metadata_%1 ON metadata(%1);").arg(columnName).toLatin1());
+                if (!query.exec()) {
+                    sqlFail(QStringLiteral("updateMetadataTableStructure: create index %1").arg(columnName), query);
+                    re = false;
+                }
+            }
+            commitInternal(QStringLiteral("update database structure: add %1 column").arg(columnName));
         }
-        commitInternal(QStringLiteral("update database structure: add fileid col"));
-    }
-    if (columns.indexOf("remotePerm") == -1) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN remotePerm VARCHAR(128);");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add column remotePerm"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure (remotePerm)"));
-    }
-    if (columns.indexOf("filesize") == -1) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN filesize BIGINT;");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateDatabaseStructure: add column filesize"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure: add filesize col"));
-    }
+    };
+
+    addColumn(QStringLiteral("fileid"), QStringLiteral("VARCHAR(128)"), true);
+    addColumn(QStringLiteral("remotePerm"), QStringLiteral("VARCHAR(128)"));
+    addColumn(QStringLiteral("filesize"), QStringLiteral("BIGINT"));
 
     if (true) {
         SqlQuery query(_db);
@@ -722,54 +722,11 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal(QStringLiteral("update database structure: add parent index"));
     }
 
-    if (columns.indexOf("ignoredChildrenRemote") == -1) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN ignoredChildrenRemote INT;");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add ignoredChildrenRemote column"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure: add ignoredChildrenRemote col"));
-    }
-
-    if (columns.indexOf("contentChecksum") == -1) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN contentChecksum TEXT;");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add contentChecksum column"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure: add contentChecksum col"));
-    }
-    if (columns.indexOf("contentChecksumTypeId") == -1) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN contentChecksumTypeId INTEGER;");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add contentChecksumTypeId column"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure: add contentChecksumTypeId col"));
-    }
-
-    if (!columns.contains("e2eMangledName")) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN e2eMangledName TEXT;");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add e2eMangledName column"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure: add e2eMangledName col"));
-    }
-
-    if (!columns.contains("isE2eEncrypted")) {
-        SqlQuery query(_db);
-        query.prepare("ALTER TABLE metadata ADD COLUMN isE2eEncrypted INTEGER;");
-        if (!query.exec()) {
-            sqlFail(QStringLiteral("updateMetadataTableStructure: add isE2eEncrypted column"), query);
-            re = false;
-        }
-        commitInternal(QStringLiteral("update database structure: add isE2eEncrypted col"));
-    }
+    addColumn(QStringLiteral("ignoredChildrenRemote"), QStringLiteral("INT"));
+    addColumn(QStringLiteral("contentChecksum"), QStringLiteral("TEXT"));
+    addColumn(QStringLiteral("contentChecksumTypeId"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("e2eMangledName"), QStringLiteral("TEXT"));
+    addColumn(QStringLiteral("isE2eEncrypted"), QStringLiteral("INTEGER"));
 
     auto uploadInfoColumns = tableColumns("uploadinfo");
     if (uploadInfoColumns.isEmpty())
@@ -805,6 +762,14 @@ bool SyncJournalDb::updateMetadataTableStructure()
         }
         commitInternal(QStringLiteral("update database structure: add e2eMangledName index"));
     }
+
+    addColumn(QStringLiteral("lock"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("lockType"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("lockOwnerDisplayName"), QStringLiteral("TEXT"));
+    addColumn(QStringLiteral("lockOwnerId"), QStringLiteral("TEXT"));
+    addColumn(QStringLiteral("lockOwnerEditor"), QStringLiteral("TEXT"));
+    addColumn(QStringLiteral("lockTime"), QStringLiteral("INTEGER"));
+    addColumn(QStringLiteral("lockTimeout"), QStringLiteral("INTEGER"));
 
     return re;
 }
@@ -919,62 +884,76 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
                  << "modtime:" << record._modtime << "type:" << record._type
                  << "etag:" << record._etag << "fileId:" << record._fileId << "remotePerm:" << record._remotePerm.toString()
                  << "fileSize:" << record._fileSize << "checksum:" << record._checksumHeader
-                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted;
+                 << "e2eMangledName:" << record.e2eMangledName() << "isE2eEncrypted:" << record._isE2eEncrypted
+                 << "lock:" << (record._lockstate._locked ? "true" : "false") << "lock owner type:" << record._lockstate._lockOwnerType
+                 << "lock owner:" << record._lockstate._lockOwnerDisplayName << "lock owner id:" << record._lockstate._lockOwnerId
+                 << "lock editor:" << record._lockstate._lockEditorApp;
 
     const qint64 phash = getPHash(record._path);
-    if (checkConnect()) {
-        int plen = record._path.length();
-
-        QByteArray etag(record._etag);
-        if (etag.isEmpty())
-            etag = "";
-        QByteArray fileId(record._fileId);
-        if (fileId.isEmpty())
-            fileId = "";
-        QByteArray remotePerm = record._remotePerm.toDbValue();
-        QByteArray checksumType, checksum;
-        parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
-        int contentChecksumTypeId = mapChecksumType(checksumType);
-
-        const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
-                                                                                                            "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted) "
-                                                                                                            "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18);"),
-            _db);
-        if (!query) {
-            return query->error();
-        }
-
-        query->bindValue(1, phash);
-        query->bindValue(2, plen);
-        query->bindValue(3, record._path);
-        query->bindValue(4, record._inode);
-        query->bindValue(5, 0); // uid Not used
-        query->bindValue(6, 0); // gid Not used
-        query->bindValue(7, 0); // mode Not used
-        query->bindValue(8, record._modtime);
-        query->bindValue(9, record._type);
-        query->bindValue(10, etag);
-        query->bindValue(11, fileId);
-        query->bindValue(12, remotePerm);
-        query->bindValue(13, record._fileSize);
-        query->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
-        query->bindValue(15, checksum);
-        query->bindValue(16, contentChecksumTypeId);
-        query->bindValue(17, record._e2eMangledName);
-        query->bindValue(18, record._isE2eEncrypted);
-
-        if (!query->exec()) {
-            return query->error();
-        }
-
-        // Can't be true anymore.
-        _metadataTableIsEmpty = false;
-
-        return {};
-    } else {
+    if (!checkConnect()) {
         qCWarning(lcDb) << "Failed to connect database.";
         return tr("Failed to connect database."); // checkConnect failed.
     }
+
+    int plen = record._path.length();
+
+    QByteArray etag(record._etag);
+    if (etag.isEmpty()) {
+        etag = "";
+    }
+    QByteArray fileId(record._fileId);
+    if (fileId.isEmpty()) {
+        fileId = "";
+    }
+    QByteArray remotePerm = record._remotePerm.toDbValue();
+    QByteArray checksumType, checksum;
+    parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
+    int contentChecksumTypeId = mapChecksumType(checksumType);
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
+                                                                                                        "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, "
+                                                                                                        "contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, "
+                                                                                                        "lockOwnerEditor, lockTime, lockTimeout) "
+                                                                                                        "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19, ?20, ?21, ?22, ?23, ?24, ?25);"),
+        _db);
+    if (!query) {
+        return query->error();
+    }
+
+    query->bindValue(1, phash);
+    query->bindValue(2, plen);
+    query->bindValue(3, record._path);
+    query->bindValue(4, record._inode);
+    query->bindValue(5, 0); // uid Not used
+    query->bindValue(6, 0); // gid Not used
+    query->bindValue(7, 0); // mode Not used
+    query->bindValue(8, record._modtime);
+    query->bindValue(9, record._type);
+    query->bindValue(10, etag);
+    query->bindValue(11, fileId);
+    query->bindValue(12, remotePerm);
+    query->bindValue(13, record._fileSize);
+    query->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
+    query->bindValue(15, checksum);
+    query->bindValue(16, contentChecksumTypeId);
+    query->bindValue(17, record._e2eMangledName);
+    query->bindValue(18, record._isE2eEncrypted);
+    query->bindValue(19, record._lockstate._locked ? 1 : 0);
+    query->bindValue(20, record._lockstate._lockOwnerType);
+    query->bindValue(21, record._lockstate._lockOwnerDisplayName);
+    query->bindValue(22, record._lockstate._lockOwnerId);
+    query->bindValue(23, record._lockstate._lockEditorApp);
+    query->bindValue(24, record._lockstate._lockTime);
+    query->bindValue(25, record._lockstate._lockTimeout);
+
+    if (!query->exec()) {
+        return query->error();
+    }
+
+    // Can't be true anymore.
+    _metadataTableIsEmpty = false;
+
+    return {};
 }
 
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
