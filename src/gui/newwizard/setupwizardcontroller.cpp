@@ -209,6 +209,12 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                 connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
                     authTypeJob->deleteLater();
 
+                    if (authTypeJob->result().isNull()) {
+                        _wizardWindow->showErrorMessage(authTypeJob->errorMessage());
+                        nextStep(0, 0);
+                        return;
+                    }
+
                     _accountBuilder.setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
 
                     switch (_accountBuilder.authType()) {
