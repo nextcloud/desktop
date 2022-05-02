@@ -114,6 +114,12 @@ public:
     QString displayName() const;
 
     /**
+     * Store custom CA certificate for the newly built account.
+     * @param customTrustedCaCertificate certificate to store
+     */
+    void addCustomTrustedCaCertificate(const QSslCertificate &customTrustedCaCertificate);
+
+    /**
      * Attempt to build an account from the previously entered information.
      * @return built account or null if information is still missing
      */
@@ -125,5 +131,7 @@ private:
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 
     std::unique_ptr<AbstractAuthenticationStrategy> _authenticationStrategy;
+
+    QSet<QSslCertificate> _customTrustedCaCertificates;
 };
 }

@@ -68,6 +68,13 @@ Q_SIGNALS:
      */
     void finished();
 
+    /**
+     * Emitted whenever the user accepts a CA certificate which is not trusted yet using the TlsErrorDialog.
+     * Handlers should store the certificate in the access manager passed to the corresponding job.
+     * @param caCertificate accepted CA certificate
+     */
+    void caCertificateAccepted(const QSslCertificate &caCertificate);
+
 private:
     // job result/error should be set only once, because that emits the "finished" signal
     void assertNotFinished();

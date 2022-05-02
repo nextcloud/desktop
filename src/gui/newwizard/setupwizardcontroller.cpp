@@ -84,6 +84,13 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
         // if it works, go to next page
         // otherwise, show current page again
         if (currentPage == 0) {
+            // we don't want to store any unnecessary certificates for this account when the user returns to the first page
+            // therefore we clear the certificates storage before resolving the URL
+            _accountBuilder = {};
+
+            _accessManager->deleteLater();
+            _accessManager = new AccessManager(this);
+
             const auto *pagePtr = qobject_cast<ServerUrlSetupWizardPage *>(_currentPage);
 
             const auto serverUrl = [pagePtr]() {
@@ -272,6 +279,16 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                     }
                 });
             });
+
+            connect(
+                resolveJob, &CoreJob::caCertificateAccepted, this, [this](const QSslCertificate &caCertificate) {
+                    // future requests made through this access manager should accept the certificate
+                    _accessManager->addCustomTrustedCaCertificate(caCertificate);
+
+                    // the account maintains a list, too, which is also saved in the config file
+                    _accountBuilder.addCustomTrustedCaCertificate(caCertificate);
+                },
+                Qt::DirectConnection);
         });
 
         // instead of defining a lambda that we could call from here as well as the message box, we can put the

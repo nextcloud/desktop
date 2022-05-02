@@ -99,6 +99,8 @@ AccountPtr SetupWizardAccountBuilder::build()
     newAccountPtr->setDavUser(_authenticationStrategy->davUser());
     newAccountPtr->setCredentials(_authenticationStrategy->makeCreds());
 
+    newAccountPtr->addApprovedCerts({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
+
     return newAccountPtr;
 }
 
@@ -121,5 +123,10 @@ QString SetupWizardAccountBuilder::displayName() const
 void SetupWizardAccountBuilder::setAuthenticationStrategy(AbstractAuthenticationStrategy *strategy)
 {
     _authenticationStrategy.reset(strategy);
+}
+
+void SetupWizardAccountBuilder::addCustomTrustedCaCertificate(const QSslCertificate &customTrustedCaCertificate)
+{
+    _customTrustedCaCertificates.insert(customTrustedCaCertificate);
 }
 }
