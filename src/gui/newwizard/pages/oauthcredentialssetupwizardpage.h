@@ -1,4 +1,5 @@
 #pragma once
+
 #include "abstractsetupwizardpage.h"
 
 namespace Ui {

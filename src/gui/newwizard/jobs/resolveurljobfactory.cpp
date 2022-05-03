@@ -1,6 +1,8 @@
 #include "resolveurljobfactory.h"
+
 #include "common/utility.h"
 #include "gui/updateurldialog.h"
+
 #include <QNetworkReply>
 
 namespace {

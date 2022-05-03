@@ -1,4 +1,5 @@
 #include "setupwizardcontroller.h"
+
 #include "creds/oauth.h"
 #include "determineauthtypejobfactory.h"
 #include "jobs/resolveurljobfactory.h"
@@ -6,7 +7,6 @@
 #include "pages/basiccredentialssetupwizardpage.h"
 #include "pages/oauthcredentialssetupwizardpage.h"
 #include "pages/serverurlsetupwizardpage.h"
-
 #include "gui/application.h"
 #include "gui/folderman.h"
 #include "theme.h"
@@ -14,8 +14,6 @@
 #include <QClipboard>
 #include <QDir>
 #include <QTimer>
-
-#include <chrono>
 
 using namespace std::chrono_literals;
 

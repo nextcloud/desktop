@@ -1,12 +1,12 @@
 #include "setupwizardwindow.h"
-
-#include <QLabel>
+#include "ui_setupwizardwindow.h"
 
 #include "gui/application.h"
 #include "gui/owncloudgui.h"
 #include "gui/settingsdialog.h"
 #include "theme.h"
-#include "ui_setupwizardwindow.h"
+
+#include <QLabel>
 
 using namespace std::chrono_literals;
 

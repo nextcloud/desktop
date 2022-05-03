@@ -1,7 +1,7 @@
 #include "oauthcredentialssetupwizardpage.h"
+#include "ui_oauthcredentialssetupwizardpage.h"
 
 #include "theme.h"
-#include "ui_oauthcredentialssetupwizardpage.h"
 
 namespace OCC::Wizard {
 

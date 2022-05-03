@@ -1,11 +1,12 @@
 #include "accountconfiguredwizardpage.h"
+#include "ui_accountconfiguredwizardpage.h"
 
 #include "theme.h"
-#include "ui_accountconfiguredwizardpage.h"
 
 #include <QDir>
 #include <QFileDialog>
 #include <QMessageBox>
+
 
 namespace OCC::Wizard {
 

@@ -1,5 +1,10 @@
 #pragma once
 
+#include "3rdparty/QProgressIndicator/QProgressIndicator.h"
+#include "pages/abstractsetupwizardpage.h"
+#include "pagination.h"
+#include "setupwizardaccountbuilder.h"
+
 #include <QDialog>
 #include <QEvent>
 #include <QKeyEvent>
@@ -7,11 +12,6 @@
 #include <QPair>
 #include <QStackedLayout>
 #include <QStackedWidget>
-
-#include "3rdparty/QProgressIndicator/QProgressIndicator.h"
-#include "pages/abstractsetupwizardpage.h"
-#include "pagination.h"
-#include "setupwizardaccountbuilder.h"
 
 namespace Ui {
 class SetupWizardWindow;

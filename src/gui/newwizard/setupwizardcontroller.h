@@ -1,12 +1,13 @@
 #pragma once
 
+#include "account.h"
 #include "pages/abstractsetupwizardpage.h"
+#include "setupwizardaccountbuilder.h"
+#include "setupwizardwindow.h"
 #include "syncmode.h"
+
 #include <QDialog>
-#include <account.h>
 #include <optional>
-#include <setupwizardaccountbuilder.h>
-#include <setupwizardwindow.h>
 
 namespace OCC::Wizard {
 /**

@@ -1,5 +1,5 @@
-
 #include "setupwizardaccountbuilder.h"
+
 #include "gui/accountmanager.h"
 
 namespace OCC::Wizard {

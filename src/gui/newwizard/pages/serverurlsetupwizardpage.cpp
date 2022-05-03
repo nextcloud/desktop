@@ -1,8 +1,10 @@
 #include "serverurlsetupwizardpage.h"
+#include "ui_serverurlsetupwizardpage.h"
 
 #include "theme.h"
-#include "ui_serverurlsetupwizardpage.h"
+
 #include <QIcon>
+
 
 namespace OCC::Wizard {
 

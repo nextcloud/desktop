@@ -1,8 +1,7 @@
+#include "pagination.h"
 
 #include <QDebug>
 #include <QRadioButton>
-
-#include "pagination.h"
 
 namespace OCC::Wizard {
 
