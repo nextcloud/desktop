@@ -76,9 +76,10 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
                 if (!drives.isEmpty()) {
                     const QDir localDir(localFolder);
                     localDir.mkdir(".");
+                    FileSystem::setFolderMinimumPermissions(localFolder);
+                    Utility::setupFavLink(localFolder);
                     for (const auto &d : drives) {
                         const QDir driveLocalFolder = localDir.filePath(d.getName());
-                        driveLocalFolder.mkdir(".");
                         addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
                     }
                     finalize();

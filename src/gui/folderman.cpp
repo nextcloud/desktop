@@ -1415,6 +1415,8 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
 {
     // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
     QDir().mkdir(localFolder);
+    FileSystem::setFolderMinimumPermissions(localFolder);
+    Utility::setupFavLink(localFolder);
 
     qCInfo(lcFolderMan) << "Adding folder definition for" << localFolder << remotePath;
     auto folderDefinition = FolderDefinition::createNewFolderDefinition(webDavUrl, displayName);
