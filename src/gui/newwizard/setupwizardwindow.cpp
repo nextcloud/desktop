@@ -7,6 +7,7 @@
 #include "theme.h"
 
 #include <QLabel>
+#include <QStyleFactory>
 
 using namespace std::chrono_literals;
 
@@ -54,6 +55,17 @@ SetupWizardWindow::SetupWizardWindow(QWidget *parent)
     });
 
     resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
+
+    // different styles (e.g., 'Windows', 'Fusion') may require different approaches in the stylesheet
+    // therefore we want to force a standard style on all platforms
+    // this further makes sure the wizard (well, its contents) looks exactly the same on all platforms
+    // Fusion should be available everywhere
+    auto fusionStyle = QStyleFactory::create(QStringLiteral("Fusion"));
+    if (OC_ENSURE(fusionStyle != nullptr)) {
+        _ui->contentWidget->setStyle(fusionStyle);
+    } else {
+        qDebug() << "Could not set up default style, wizard contents will be shown using default style";
+    }
 
     loadStylesheet();
 
