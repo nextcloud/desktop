@@ -20,9 +20,6 @@ class Activity:
     }
 
     def clickTab(self, tabName):
-        # It might take some time for all files to sync except the expected number of unsynced files
-        squish.snooze(10)
-
         tabFound = False
 
         # Selecting tab by name fails for "Not Synced" when there are no unsynced files
@@ -57,35 +54,39 @@ class Activity:
             }
         )
 
-    def checkBlackListedFileExist(self, filename):
+    def checkBlackListedResourceExist(self, context, filename):
         squish.waitForObject(names.settings_OCC_SettingsDialog)
 
-        # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
-        fileRow = squish.waitForObject(
-            {
-                "column": 1,
-                "container": names.oCC_IssuesWidget_tableView_QTableView,
-                "text": filename,
-                "type": "QModelIndex",
-            }
-        )["row"]
-
-        squish.waitForObjectExists(
-            {
-                "column": 6,
-                "row": fileRow,
-                "container": names.oCC_IssuesWidget_tableView_QTableView,
-                "text": "Blacklisted",
-                "type": "QModelIndex",
-            }
+        result = squish.waitFor(
+            lambda: self.isResourceBlackListed(context, filename),
+            context.userData['maxSyncTimeout'] * 1000,
         )
 
-    def checkAtLeastABlacklistedFile(self):
-        squish.waitForObjectExists(
-            {
-                "column": 6,
-                "container": names.oCC_IssuesWidget_tableView_QTableView,
-                "text": "Blacklisted",
-                "type": "QModelIndex",
-            }
-        )
+        return result
+
+    def isResourceBlackListed(self, context, filename):
+        try:
+            # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
+            fileRow = squish.waitForObject(
+                {
+                    "column": 1,
+                    "container": names.oCC_IssuesWidget_tableView_QTableView,
+                    "text": filename,
+                    "type": "QModelIndex",
+                },
+                context.userData['lowestSyncTimeout'] * 1000,
+            )["row"]
+            squish.waitForObjectExists(
+                {
+                    "column": 6,
+                    "row": fileRow,
+                    "container": names.oCC_IssuesWidget_tableView_QTableView,
+                    "text": "Blacklisted",
+                    "type": "QModelIndex",
+                },
+                context.userData['lowestSyncTimeout'] * 1000,
+            )
+
+            return True
+        except:
+            return False
