@@ -632,10 +632,12 @@ QUrl FolderWizard::davUrl() const
 
 QString FolderWizard::destination() const
 {
-    QString defaultPath = QDir::homePath() + QLatin1Char('/') + Theme::instance()->appName();
+    if (!_account->hasDefaultSyncRoot()) {
+        _account->setDefaultSyncRoot(FolderMan::suggestSyncFolder(_account->url(), _account->davDisplayName()));
+    }
+    QString defaultPath = _account->defaultSyncRoot();
     if (_account->capabilities().spacesSupport().enabled) {
-        // TODO: account whide home
-        defaultPath = QDir::homePath() + QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
+        defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
     };
     return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }

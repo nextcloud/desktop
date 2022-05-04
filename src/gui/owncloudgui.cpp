@@ -53,7 +53,7 @@ namespace {
 
 using namespace OCC;
 
-void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &localFolder, bool useVfs)
+void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
 {
     auto folderMan = FolderMan::instance();
 
@@ -70,17 +70,15 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
     if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
         auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
 
-        QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, localFolder, drive, addFolder, finalize] {
+        QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
             if (drive->parseError().error == QJsonParseError::NoError) {
                 const auto &drives = drive->drives();
                 if (!drives.isEmpty()) {
-                    const QDir localDir(localFolder);
-                    localDir.mkdir(".");
-                    FileSystem::setFolderMinimumPermissions(localFolder);
-                    Utility::setupFavLink(localFolder);
+                    const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
+                    FileSystem::setFolderMinimumPermissions(localDir.path());
+                    Utility::setupFavLink(localDir.path());
                     for (const auto &d : drives) {
-                        const QDir driveLocalFolder = localDir.filePath(d.getName());
-                        addFolder(driveLocalFolder.absolutePath(), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
+                        addFolder(localDir.filePath(d.getName()), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
                     }
                     finalize();
                 }
@@ -91,7 +89,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, const QString &loca
 
         return;
     } else {
-        addFolder(localFolder, Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
+        addFolder(accountStatePtr->account()->defaultSyncRoot(), Theme::instance()->defaultServerFolder(), accountStatePtr->account()->davUrl());
         finalize();
     }
 }
@@ -1002,7 +1000,7 @@ void ownCloudGui::runNewAccountWizard()
         FolderMan::instance()->setSyncEnabled(false);
 
         connect(_wizardController, &Wizard::SetupWizardController::finished, ocApp(),
-            [this](AccountPtr newAccount, const QString &localFolder, Wizard::SyncMode syncMode) {
+            [this](AccountPtr newAccount, Wizard::SyncMode syncMode) {
                 // note: while the wizard is shown, we disable the folder synchronization
                 // previously we could perform this just here, but now we have to postpone this depending on whether selective sync was chosen
                 // see also #9497
@@ -1013,12 +1011,10 @@ void ownCloudGui::runNewAccountWizard()
                     // finally, call the slot that finalizes the setup
                     auto accountStatePtr = ocApp()->addNewAccount(newAccount);
 
-                    auto account = accountStatePtr->account();
-
                     // ensure we are connected and fetch the capabilities
-                    auto validator = new ConnectionValidator(account, account.data());
+                    auto validator = new ConnectionValidator(accountStatePtr->account(), accountStatePtr->account().data());
 
-                    QObject::connect(validator, &ConnectionValidator::connectionResult, account.data(), [accountStatePtr, localFolder, syncMode](ConnectionValidator::Status status, const QStringList &errors) {
+                    QObject::connect(validator, &ConnectionValidator::connectionResult, accountStatePtr.data(), [accountStatePtr, syncMode](ConnectionValidator::Status status, const QStringList &errors) {
                         if (OC_ENSURE(status == ConnectionValidator::Connected)) {
                             // saving once after adding makes sure the account is stored in the config in a working state
                             // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
@@ -1029,15 +1025,13 @@ void ownCloudGui::runNewAccountWizard()
                             case Wizard::SyncMode::SyncEverything:
                             case Wizard::SyncMode::UseVfs: {
                                 bool useVfs = syncMode == Wizard::SyncMode::UseVfs;
-                                setUpInitialSyncFolder(accountStatePtr, localFolder, useVfs);
+                                setUpInitialSyncFolder(accountStatePtr, useVfs);
                                 FolderMan::instance()->setSyncEnabled(true);
 
                                 break;
                             }
                             case Wizard::SyncMode::ConfigureUsingFolderWizard: {
-                                // localFolder is ignored in this scenario
-                                // we want the caller to make sure it's not set to a value, though
-                                Q_ASSERT(localFolder.isEmpty());
+                                Q_ASSERT(!accountStatePtr->account()->hasDefaultSyncRoot());
 
                                 auto *folderWizard = new FolderWizard(accountStatePtr->account(), ocApp()->gui()->settingsDialog());
                                 folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());

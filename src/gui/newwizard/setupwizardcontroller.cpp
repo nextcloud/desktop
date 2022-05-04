@@ -22,18 +22,6 @@ namespace {
 const QString defaultUrlSchemeC = QStringLiteral("https://");
 const QStringList supportedUrlSchemesC({ defaultUrlSchemeC, QStringLiteral("http://") });
 
-QString initLocalFolder()
-{
-    auto localFolder = OCC::Theme::instance()->defaultClientFolder();
-    // Update the local folder - this is not guaranteed to find a good one
-    // if its a relative path, prepend with users home dir, otherwise use as absolute path
-
-    if (!QDir(localFolder).isAbsolute()) {
-        localFolder = QDir::homePath() + QDir::separator() + localFolder;
-    }
-    return OCC::FolderMan::instance()->findGoodPathForNewSyncFolder(localFolder);
-}
-
 }
 
 namespace OCC::Wizard {
@@ -51,7 +39,7 @@ SetupWizardController::SetupWizardController(QWidget *parent)
 
     // allow settings dialog to clean up the wizard controller and all the objects it created
     connect(_wizardWindow, &SetupWizardWindow::rejected, this, [this]() {
-        Q_EMIT finished(nullptr, {}, SyncMode::Invalid);
+        Q_EMIT finished(nullptr, SyncMode::Invalid);
     });
 
     connect(_wizardWindow, &SetupWizardWindow::paginationEntryClicked, this, [this, paginationEntries](PageIndex currentPage, PageIndex clickedPageIndex) {
@@ -148,14 +136,15 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
             auto account = _accountBuilder.build();
             Q_ASSERT(account != nullptr);
 
-            QString targetDir = [pagePtr]() -> QString {
+            QString targetDir = [pagePtr, account]() -> QString {
                 if (pagePtr->syncMode() == Wizard::SyncMode::ConfigureUsingFolderWizard) {
                     return {};
                 }
-                return pagePtr->syncTargetDir();
+                return QDir::fromNativeSeparators(pagePtr->syncTargetDir());
             }();
+            account->setDefaultSyncRoot(targetDir);
 
-            Q_EMIT finished(account, targetDir, pagePtr->syncMode());
+            Q_EMIT finished(account, pagePtr->syncMode());
             return;
         }
     }
@@ -316,7 +305,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
             break;
         }
 
-        _currentPage = new AccountConfiguredWizardPage(initLocalFolder(), vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
+        _currentPage = new AccountConfiguredWizardPage(FolderMan::suggestSyncFolder(_accountBuilder.serverUrl(), _accountBuilder.displayName()), vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
         _wizardWindow->displayPage(_currentPage, 2);
         return;
     }

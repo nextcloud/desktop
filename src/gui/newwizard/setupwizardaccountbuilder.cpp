@@ -111,6 +111,13 @@ bool SetupWizardAccountBuilder::hasValidCredentials() const
     return _authenticationStrategy->isValid();
 }
 
+QString SetupWizardAccountBuilder::displayName() const
+{
+    Q_ASSERT(hasValidCredentials());
+    // TODO: get the correct display name instead of the dav user
+    return _authenticationStrategy->davUser();
+}
+
 void SetupWizardAccountBuilder::setAuthenticationStrategy(AbstractAuthenticationStrategy *strategy)
 {
     _authenticationStrategy.reset(strategy);

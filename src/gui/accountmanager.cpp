@@ -26,9 +26,14 @@
 #include <QNetworkAccessManager>
 
 namespace {
-static const char urlC[] = "url";
-static const char userC[] = "user";
-static const char httpUserC[] = "http_user";
+const char urlC[] = "url";
+const char userC[] = "user";
+const char httpUserC[] = "http_user";
+const auto defaultSyncRootC()
+{
+    return QStringLiteral("default_sync_root");
+}
+
 const QString davUserC()
 {
     return QStringLiteral("dav_user");
@@ -250,6 +255,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(userUUIDC(), acc->uuid());
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     settings.setValue(capabilitesC(), acc->capabilities().raw());
+    if (acc->hasDefaultSyncRoot()) {
+        settings.setValue(defaultSyncRootC(), acc->defaultSyncRoot());
+    }
     if (acc->_credentials) {
         if (saveCredentials) {
             // Only persist the credentials if the parameter is set, on migration from 1.8.x
@@ -320,6 +328,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_displayName = settings.value(davUserDisplyNameC()).toString();
     acc->_uuid = settings.value(userUUIDC(), acc->_uuid).toUuid();
     acc->setCapabilities(settings.value(capabilitesC()).value<QVariantMap>());
+    acc->setDefaultSyncRoot(settings.value(defaultSyncRootC()).toString());
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));

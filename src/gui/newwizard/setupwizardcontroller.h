@@ -47,7 +47,7 @@ Q_SIGNALS:
     /**
      * Emitted when the wizard has finished. It passes the built account object.
      */
-    void finished(AccountPtr newAccount, const QString &localFolder, SyncMode syncMode);
+    void finished(AccountPtr newAccount, SyncMode syncMode);
 
 private:
     void nextStep(std::optional<PageIndex> currentPage, std::optional<PageIndex> desiredPage);

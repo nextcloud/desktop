@@ -1414,7 +1414,7 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
 {
     // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
-    QDir().mkdir(localFolder);
+    OC_ASSERT(QDir().mkpath(localFolder));
     FileSystem::setFolderMinimumPermissions(localFolder);
     Utility::setupFavLink(localFolder);
 
@@ -1449,6 +1449,12 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
         qCWarning(lcFolderMan) << "Failed to create local sync folder!";
     }
     return newFolder;
+}
+
+QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)
+{
+    return FolderMan::instance()->findGoodPathForNewSyncFolder(
+        QDir::homePath() + QDir::separator() + tr("%1 - %2@%3").arg(OCC::Theme::instance()->defaultClientFolder(), displayName, server.host()));
 }
 
 } // namespace OCC

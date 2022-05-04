@@ -84,6 +84,8 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
+    static QString suggestSyncFolder(const QUrl &server, const QString &displayName);
+
     ~FolderMan() override;
     static FolderMan *instance();
 

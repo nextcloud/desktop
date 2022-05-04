@@ -515,4 +515,25 @@ void Account::setServerVersion(const QString &version)
     emit serverVersionChanged(this, oldServerVersion, version);
 }
 
+QString Account::defaultSyncRoot() const
+{
+    Q_ASSERT(!_defaultSyncRoot.isEmpty());
+    return _defaultSyncRoot;
+}
+bool Account::hasDefaultSyncRoot() const
+{
+    return !_defaultSyncRoot.isEmpty();
+}
+
+void Account::setDefaultSyncRoot(const QString &syncRoot)
+{
+    Q_ASSERT(_defaultSyncRoot.isEmpty());
+    if (!syncRoot.isEmpty()) {
+        _defaultSyncRoot = syncRoot;
+        if (!QFileInfo::exists(syncRoot)) {
+            OC_ASSERT(QDir().mkpath(syncRoot));
+        }
+    }
+}
+
 } // namespace OCC

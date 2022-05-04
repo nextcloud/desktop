@@ -94,6 +94,24 @@ public:
     QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
+    /***
+     * With OC 10 this is the equivalent to the sync root.
+     * With ocis and spaces this will be the default folder containing all spaces.
+     * This function will assert if the sync root is empty.
+     */
+    QString defaultSyncRoot() const;
+
+    /***
+     * Whether we have defaultSyncRoot defined.
+     */
+    bool hasDefaultSyncRoot() const;
+
+    /***
+     * Set defaultSyncRoot and creates the path on the filesystem.
+     * Setting an empty string will have no effect.
+     */
+    void setDefaultSyncRoot(const QString &syncRoot);
+
     QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
@@ -261,6 +279,7 @@ private:
     QUuid _uuid;
     QString _davUser;
     QString _displayName;
+    QString _defaultSyncRoot;
 #ifndef TOKEN_AUTH_ONLY
     QPixmap _avatarImg;
 #endif

@@ -111,6 +111,8 @@ public:
      */
     bool hasValidCredentials() const;
 
+    QString displayName() const;
+
     /**
      * Attempt to build an account from the previously entered information.
      * @return built account or null if information is still missing
