@@ -11,7 +11,8 @@ override_dh_auto_configure:
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DUNIT_TESTING=ON \
 		-DEXTERNAL_VERSION=$(DEB_VERSION) \
-		-DPLUGIN_INSTALL_DIR=/usr/lib/$(DEB_HOST_GNU_TYPE)/qt5/plugins
+		-DPLUGIN_INSTALL_DIR=/usr/lib/$(DEB_HOST_GNU_TYPE)/qt5/plugins \
+		-DBUILD_UPDATER=OFF
 
 override_dh_auto_test-arch:
 ifeq (,$(findstring nocheck, $(DEB_BUILD_OPTIONS)))
