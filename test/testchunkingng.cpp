@@ -577,6 +577,7 @@ private slots:
     }
 
     void testPercentEncoding() {
+        QTextCodec::codecForLocale()->setCodecForLocale(QTextCodec::codecForName("UTF-8"));
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
         fakeFolder.syncEngine().account()->setCapabilities({ { "dav", QVariantMap{ {"chunking", "1.0"} } } });
         const int size = 5 * 1000 * 1000;
