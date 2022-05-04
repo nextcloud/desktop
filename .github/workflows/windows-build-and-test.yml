@@ -1,0 +1,85 @@
+name: Build and Test
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build
+    runs-on: windows-2019
+    env:
+      CRAFT_TARGET: windows-msvc2019_64-cl
+      COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
+      CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
+      CRAFT_MASTER_CONFIG: ${{ github.workspace }}\craftmaster.ini
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+      - name: Install Craft Master with Nextcloud Client Deps
+        shell: pwsh
+        run: |
+          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }} 2>&1"
+          
+          function craft() {
+              python "${{ env.CRAFT_MASTER_LOCATION }}\CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c $args
+              if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+          }
+          
+          craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
+          craft craft
+          craft --install-deps nextcloud-client
+          
+      - name: Cache Install OpenCppCoverage
+        id: cache-install-opencppcoverage
+        uses: actions/cache@v3
+        with:
+          path: C:\Program Files\OpenCppCoverage
+          key: ${{ runner.os }}-cache-install-opencppcoverage
+          
+      - name: Install OpenCppCoverage
+        if: steps.cache-install-opencppcoverage.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          choco install opencppcoverage
+
+      - name: Setup PATH
+        shell: pwsh
+        run: |
+          echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+   
+      - name: Compile
+        shell: pwsh
+        run: |
+          function craft() {
+              python "${{ env.CRAFT_MASTER_LOCATION }}\CraftMaster.py" --config "${{ env.CRAFT_MASTER_CONFIG }}" --target ${{ env.CRAFT_TARGET }} -c $args
+              if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+          }
+          
+          craft --src-dir ${{ github.workspace }} nextcloud-client
+          
+      - name: Run tests
+        shell: pwsh
+        run: |
+          function runTestsAndCreateCoverage() {
+              $buildFolder = "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\build\nextcloud-client\work\build"
+
+              cd $buildFolder
+
+              $binFolder = "$buildFolder\bin"
+
+              & OpenCppCoverage.exe --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300 -j (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+          }
+          
+          runTestsAndCreateCoverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ${{ github.workspace }}\cobertura_coverage
+          fail_ci_if_error: true

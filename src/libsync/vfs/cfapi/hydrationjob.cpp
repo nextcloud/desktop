@@ -233,17 +233,23 @@ void OCC::HydrationJob::cancel()
         _job->cancel();
     }
 
-    _signalSocket->write("cancelled");
-    _signalSocket->close();
-    _transferDataSocket->close();
+    if (_signalSocket) {
+        _signalSocket->write("cancelled");
+        _signalSocket->close();
+    }
 
+    if (_transferDataSocket) {
+        _transferDataSocket->close();
+    }
     emitFinished(Cancelled);
 }
 
 void OCC::HydrationJob::emitFinished(Status status)
 {
     _status = status;
-    _signalSocket->close();
+    if (_signalSocket) {
+        _signalSocket->close();
+    }
 
     if (status == Success) {
         connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=] {
