@@ -483,7 +483,7 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
         a._accName = _accountState->account()->displayName();
         a._id = -2;
         a._objectType = dummyFetchingActivityObjectType;
-        a._subject = tr("Fetching activities...");
+        a._subject = tr("Fetching activities…");
         a._dateTime = QDateTime::currentDateTime();
         a._darkIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
         a._lightIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
