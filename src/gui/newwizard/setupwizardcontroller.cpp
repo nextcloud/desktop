@@ -1,14 +1,15 @@
 #include "setupwizardcontroller.h"
 
+#include "accessmanager.h"
 #include "creds/oauth.h"
 #include "determineauthtypejobfactory.h"
+#include "gui/application.h"
+#include "gui/folderman.h"
 #include "jobs/resolveurljobfactory.h"
 #include "pages/accountconfiguredwizardpage.h"
 #include "pages/basiccredentialssetupwizardpage.h"
 #include "pages/oauthcredentialssetupwizardpage.h"
 #include "pages/serverurlsetupwizardpage.h"
-#include "gui/application.h"
-#include "gui/folderman.h"
 #include "theme.h"
 
 #include <QClipboard>
@@ -29,7 +30,7 @@ namespace OCC::Wizard {
 SetupWizardController::SetupWizardController(QWidget *parent)
     : QObject(parent)
     , _wizardWindow(new SetupWizardWindow(parent))
-    , _networkAccessManager(new QNetworkAccessManager(this))
+    , _accessManager(new AccessManager(this))
 {
     // initialize pagination
     const QStringList paginationEntries = { tr("Server URL"), tr("Credentials"), tr("Sync Options") };
@@ -182,7 +183,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
 
         connect(messageBox, &QMessageBox::accepted, this, [this, showFirstPage]() {
             // first, we must resolve the actual server URL
-            auto resolveJob = Jobs::ResolveUrlJobFactory(_networkAccessManager).startJob(_accountBuilder.serverUrl());
+            auto resolveJob = Jobs::ResolveUrlJobFactory(_accessManager).startJob(_accountBuilder.serverUrl());
 
             connect(resolveJob, &CoreJob::finished, this, [this, resolveJob, showFirstPage]() {
                 resolveJob->deleteLater();
@@ -196,7 +197,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                 const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
 
                 // next, we need to find out which kind of authentication page we have to present to the user
-                auto authTypeJob = DetermineAuthTypeJobFactory(_networkAccessManager).startJob(resolvedUrl);
+                auto authTypeJob = DetermineAuthTypeJobFactory(_accessManager).startJob(resolvedUrl);
 
                 connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
                     authTypeJob->deleteLater();
@@ -214,7 +215,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                         auto newPage = new OAuthCredentialsSetupWizardPage(_accountBuilder.serverUrl());
 
                         // username might not be set yet, shouldn't matter, though
-                        auto oAuth = new OAuth(_accountBuilder.serverUrl(), QString(), _networkAccessManager, {}, this);
+                        auto oAuth = new OAuth(_accountBuilder.serverUrl(), QString(), _accessManager, {}, this);
 
                         connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) {
                             // the button may not be clicked any more, since the server has been shut down right before this signal was emitted by the OAuth instance
@@ -316,6 +317,6 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
 SetupWizardController::~SetupWizardController() noexcept
 {
     delete _wizardWindow;
-    delete _networkAccessManager;
+    delete _accessManager;
 }
 }

@@ -60,6 +60,6 @@ private:
 
     SetupWizardAccountBuilder _accountBuilder;
 
-    QNetworkAccessManager *_networkAccessManager;
+    AccessManager *_accessManager;
 };
 }
