@@ -106,7 +106,7 @@ public:
     bool gotAuthOk = false;
     virtual bool done() const { return replyToBrowserOk && gotAuthOk; }
 
-    FakeQNAM *fakeQnam = nullptr;
+    FakeAM *fakeAm = nullptr;
     QNetworkAccessManager realQNAM;
     QPointer<QNetworkReply> browserReply = nullptr;
     QString code = generateEtag();
@@ -115,13 +115,13 @@ public:
     QScopedPointer<OAuth> oauth;
 
     virtual void test() {
-        fakeQnam = new FakeQNAM({});
+        fakeAm = new FakeAM({});
         account = OCC::Account::create();
         account->setUrl(sOAuthTestServer);
         // the account seizes ownership over the qnam in account->setCredentials(...) by keeping a shared pointer on it
-        // therefore, we should never call fakeQnam->setThis(...)
-        account->setCredentials(new FakeCredentials{fakeQnam});
-        fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
+        // therefore, we should never call fakeAm->setThis(...)
+        account->setCredentials(new FakeCredentials { fakeAm });
+        fakeAm->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
             if (req.url().path().endsWith(".well-known/openid-configuration")) {
                 return this->wellKnownReply(op, req);
             } else if (req.url().path().endsWith("status.php")) {
@@ -181,7 +181,7 @@ public:
         OC_ASSERT(req.url().path() == sOAuthTestServer.path() + "/index.php/apps/oauth2/api/v1/token");
         auto payload = std::make_unique<QBuffer>();
         payload->setData(tokenReplyPayload());
-        return new FakePostReply(op, req, std::move(payload), fakeQnam);
+        return new FakePostReply(op, req, std::move(payload), fakeAm);
     }
 
     virtual QNetworkReply *statusPhpReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
@@ -193,12 +193,12 @@ public:
         OC_ASSERT(req.url().path() == sOAuthTestServer.path() + "/status.php");
         auto payload = std::make_unique<QBuffer>();
         payload->setData(statusPhpPayload());
-        return new FakePostReply(op, req, std::move(payload), fakeQnam);
+        return new FakePostReply(op, req, std::move(payload), fakeAm);
     }
 
     virtual QNetworkReply *wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
     {
-        return new FakeErrorReply(op, req, fakeQnam, 404);
+        return new FakeErrorReply(op, req, fakeAm, 404);
     }
 
     virtual QByteArray tokenReplyPayload() const {
@@ -297,7 +297,7 @@ private slots:
 
                 auto payload = std::make_unique<QBuffer>();
                 payload->setData(tokenReplyPayload());
-                return new SlowFakePostReply(op, req, std::move(payload), fakeQnam);
+                return new SlowFakePostReply(op, req, std::move(payload), fakeAm);
             }
 
             void browserReplyFinished() override
@@ -375,7 +375,7 @@ private slots:
                             "oauthtest://openidserver" + sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize") },
                     { "token_endpoint" , "oauthtest://openidserver/token_endpoint" }
                 });
-                return new FakePayloadReply(op, req, jsondata.toJson(), fakeQnam);
+                return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
             }
 
             void openBrowserHook(const QUrl & url) override {
@@ -414,7 +414,7 @@ private slots:
             QNetworkReply *statusPhpReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req) override
             {
                 OC_ASSERT(op == QNetworkAccessManager::GetOperation);
-                return new FakeHangingReply(op, req, fakeQnam);
+                return new FakeHangingReply(op, req, fakeAm);
             }
 
             void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) override

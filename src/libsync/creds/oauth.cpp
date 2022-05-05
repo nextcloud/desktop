@@ -568,7 +568,7 @@ void OAuth::dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrati
 
 
 AccountBasedOAuth::AccountBasedOAuth(AccountPtr account, QObject *parent)
-    : OAuth(account->url(), account->davUser(), account->networkAccessManager(), {}, parent)
+    : OAuth(account->url(), account->davUser(), account->accessManager(), {}, parent)
     , _account(account)
 {
 }

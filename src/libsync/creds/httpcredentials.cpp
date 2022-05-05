@@ -143,14 +143,14 @@ void HttpCredentials::setAccount(Account *account)
     }
 }
 
-QNetworkAccessManager *HttpCredentials::createQNAM() const
+AccessManager *HttpCredentials::createAM() const
 {
-    AccessManager *qnam = new HttpCredentialsAccessManager(this);
+    AccessManager *am = new HttpCredentialsAccessManager(this);
 
-    connect(qnam, &QNetworkAccessManager::authenticationRequired,
+    connect(am, &QNetworkAccessManager::authenticationRequired,
         this, &HttpCredentials::slotAuthentication);
 
-    return qnam;
+    return am;
 }
 
 bool HttpCredentials::ready() const
@@ -345,7 +345,7 @@ void HttpCredentials::invalidateToken()
     // indirectly) from QNetworkAccessManagerPrivate::authenticationRequired, which itself
     // is a called from a BlockingQueuedConnection from the Qt HTTP thread. And clearing the
     // cache needs to synchronize again with the HTTP thread.
-    QTimer::singleShot(0, _account, &Account::clearQNAMCache);
+    QTimer::singleShot(0, _account, &Account::clearAMCache);
 }
 
 void HttpCredentials::forgetSensitiveData()

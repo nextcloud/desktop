@@ -1153,9 +1153,9 @@ void FolderMan::setDirtyProxy()
     for (auto *f : qAsConst(_folders)) {
         if (f) {
             if (f->accountState() && f->accountState()->account()
-                && f->accountState()->account()->networkAccessManager()) {
+                && f->accountState()->account()->accessManager()) {
                 // Need to do this so we do not use the old determined system proxy
-                f->accountState()->account()->networkAccessManager()->setProxy(
+                f->accountState()->account()->accessManager()->setProxy(
                     QNetworkProxy(QNetworkProxy::DefaultProxy));
             }
         }

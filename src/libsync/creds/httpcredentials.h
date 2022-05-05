@@ -59,7 +59,7 @@ public:
     explicit HttpCredentials(DetermineAuthTypeJob::AuthType authType, const QString &user, const QString &password);
 
     QString authType() const override;
-    QNetworkAccessManager *createQNAM() const override;
+    AccessManager *createAM() const override;
     bool ready() const override;
     void fetchFromKeychain() override;
     bool stillValid(QNetworkReply *reply) override;

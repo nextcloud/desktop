@@ -164,7 +164,7 @@ void Account::setCredentials(AbstractCredentials *cred)
     // Note: This way the QNAM can outlive the Account and Credentials.
     // This is necessary to avoid issues with the QNAM being deleted while
     // processing slotHandleSslErrors().
-    _am.reset(_credentials->createQNAM(), &QObject::deleteLater);
+    _am.reset(_credentials->createAM(), &QObject::deleteLater);
 
     if (jar) {
         _am->setCookieJar(jar);
@@ -218,7 +218,7 @@ QString Account::cookieJarPath()
     return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QStringLiteral("/cookies") + id() + QStringLiteral(".db");
 }
 
-void Account::resetNetworkAccessManager()
+void Account::resetAccessManager()
 {
     if (!_credentials || !_am) {
         return;
@@ -227,9 +227,9 @@ void Account::resetNetworkAccessManager()
     qCDebug(lcAccount) << "Resetting QNAM";
     QNetworkCookieJar *jar = _am->cookieJar();
 
-    // Use a QSharedPointer to allow locking the life of the QNAM on the stack.
-    // Make it call deleteLater to make sure that we can return to any QNAM stack frames safely.
-    _am = QSharedPointer<QNetworkAccessManager>(_credentials->createQNAM(), &QObject::deleteLater);
+    // Use a QSharedPointer to allow locking the life of the AM on the stack.
+    // Make it call deleteLater to make sure that we can return to any AM stack frames safely.
+    _am = QSharedPointer<AccessManager>(_credentials->createAM(), &QObject::deleteLater);
 
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am.data(), &QNetworkAccessManager::sslErrors, this,
@@ -238,12 +238,12 @@ void Account::resetNetworkAccessManager()
         this, &Account::proxyAuthenticationRequired);
 }
 
-QNetworkAccessManager *Account::networkAccessManager()
+AccessManager *Account::accessManager()
 {
     return _am.data();
 }
 
-QSharedPointer<QNetworkAccessManager> Account::sharedNetworkAccessManager()
+QSharedPointer<AccessManager> Account::sharedAccessManager()
 {
     return _am;
 }
@@ -454,7 +454,7 @@ JobQueue *Account::jobQueue()
     return &_jobQueue;
 }
 
-void Account::clearQNAMCache()
+void Account::clearAMCache()
 {
     _am->clearAccessCache();
 }

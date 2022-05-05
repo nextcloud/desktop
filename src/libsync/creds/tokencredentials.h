@@ -40,7 +40,7 @@ public:
     TokenCredentials(const QString &user, const QString &password, const QString &token);
 
     QString authType() const override;
-    QNetworkAccessManager *createQNAM() const override;
+    AccessManager *createAM() const override;
     bool ready() const override;
     void askFromUser() override;
     void fetchFromKeychain() override;

@@ -17,16 +17,17 @@
 #define SERVERCONNECTION_H
 
 #include <QByteArray>
-#include <QUrl>
-#include <QUuid>
+#include <QNetworkAccessManager>
 #include <QNetworkCookie>
 #include <QNetworkRequest>
-#include <QSslSocket>
-#include <QSslCertificate>
-#include <QSslConfiguration>
-#include <QSslCipher>
-#include <QSslError>
 #include <QSharedPointer>
+#include <QSslCertificate>
+#include <QSslCipher>
+#include <QSslConfiguration>
+#include <QSslError>
+#include <QSslSocket>
+#include <QUrl>
+#include <QUuid>
 
 #ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
@@ -40,7 +41,7 @@
 class QSettings;
 class QNetworkReply;
 class QUrl;
-class QNetworkAccessManager;
+class AccessManager;
 
 namespace OCC {
 
@@ -226,9 +227,9 @@ public:
     void lendCookieJarTo(QNetworkAccessManager *guest);
     QString cookieJarPath();
 
-    void resetNetworkAccessManager();
-    QNetworkAccessManager *networkAccessManager();
-    QSharedPointer<QNetworkAccessManager> sharedNetworkAccessManager();
+    void resetAccessManager();
+    AccessManager *accessManager();
+    QSharedPointer<AccessManager> sharedAccessManager();
 
     JobQueue *jobQueue();
 
@@ -238,7 +239,7 @@ public:
 
 public slots:
     /// Used when forgetting credentials
-    void clearQNAMCache();
+    void clearAMCache();
     void slotHandleSslErrors(QPointer<QNetworkReply>, const QList<QSslError> &);
 
 signals:
@@ -292,7 +293,7 @@ private:
     QString _serverVersion;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QuotaInfo *_quotaInfo;
-    QSharedPointer<QNetworkAccessManager> _am;
+    QSharedPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
 

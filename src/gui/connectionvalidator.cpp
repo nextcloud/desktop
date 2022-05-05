@@ -72,7 +72,7 @@ void ConnectionValidator::checkServerAndUpdate()
             this, SLOT(systemProxyLookupDone(QNetworkProxy)));
     } else {
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
-        _account->networkAccessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
+        _account->accessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
         // use a queued invocation so we're as asynchronous as with the other code path
         QMetaObject::invokeMethod(this, "slotCheckServerAndAuth", Qt::QueuedConnection);
     }
@@ -90,7 +90,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
     } else {
         qCInfo(lcConnectionValidator) << "No system proxy set by OS";
     }
-    _account->networkAccessManager()->setProxy(proxy);
+    _account->accessManager()->setProxy(proxy);
 
     slotCheckServerAndAuth();
 }

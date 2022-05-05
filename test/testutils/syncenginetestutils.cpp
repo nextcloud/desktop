@@ -871,13 +871,13 @@ void FakeHangingReply::abort()
     emit finished();
 }
 
-FakeQNAM::FakeQNAM(FileInfo initialRoot)
+FakeAM::FakeAM(FileInfo initialRoot)
     : _remoteRootFileInfo { std::move(initialRoot) }
 {
     setCookieJar(new OCC::CookieJar);
 }
 
-QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
+QNetworkReply *FakeAM::createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData)
 {
     QNetworkReply *reply = nullptr;
     auto newRequest = request;
@@ -940,10 +940,10 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
     qDebug() << "FakeFolder operating on" << rootDir;
     toDisk(rootDir, fileTemplate);
 
-    _fakeQnam = new FakeQNAM(fileTemplate);
+    _fakeAm = new FakeAM(fileTemplate);
     _account = OCC::Account::create();
     _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
-    _account->setCredentials(new FakeCredentials { _fakeQnam });
+    _account->setCredentials(new FakeCredentials { _fakeAm });
     _account->setDavDisplayName(QStringLiteral("fakename"));
     _account->setServerVersion(QStringLiteral("10.0.0"));
     _account->setCapabilities(OCC::TestUtils::testCapabilities());
