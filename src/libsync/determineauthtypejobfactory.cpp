@@ -45,6 +45,17 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
     connect(reply, &QNetworkReply::finished, job, [reply, job] {
         reply->deleteLater();
 
+        switch (reply->error()) {
+        case QNetworkReply::AuthenticationRequiredError:
+            break;
+        case QNetworkReply::NoError:
+            setJobError(job, tr("Server did not ask for authorization"));
+            return;
+        default:
+            setJobError(job, tr("Failed to determine auth type: %1").arg(reply->errorString()), reply->error());
+            return;
+        }
+
         const auto authChallenge = reply->rawHeader(QByteArrayLiteral("WWW-Authenticate")).toLower();
 
         // we fall back to basic in any case
