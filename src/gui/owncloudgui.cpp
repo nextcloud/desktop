@@ -68,9 +68,9 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
     };
 
     if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
-        auto *drive = new OCC::GraphApi::Drives(accountStatePtr->account());
+        auto *drive = new GraphApi::Drives(accountStatePtr->account());
 
-        QObject::connect(drive, &OCC::GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
+        QObject::connect(drive, &GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
             if (drive->parseError().error == QJsonParseError::NoError) {
                 const auto &drives = drive->drives();
                 if (!drives.isEmpty()) {
@@ -78,7 +78,9 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                     FileSystem::setFolderMinimumPermissions(localDir.path());
                     Utility::setupFavLink(localDir.path());
                     for (const auto &d : drives) {
-                        addFolder(localDir.filePath(d.getName()), {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), d.getName());
+                        const QString name = GraphApi::Drives::getDriveDisplayName(d);
+                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(name));
+                        addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
                     }
                     finalize();
                 }

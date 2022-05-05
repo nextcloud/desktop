@@ -27,6 +27,13 @@ namespace GraphApi {
         Drives(const AccountPtr &account, QObject *parent = nullptr);
         ~Drives();
 
+        /***
+         * Returns the display name of the drive.
+         * This is identical to drive.getName() for most drives.
+         * Exceptions: Personal spaces
+         */
+        static QString getDriveDisplayName(const OpenAPI::OAIDrive &drive);
+
         const QList<OpenAPI::OAIDrive> &drives() const;
 
     private:

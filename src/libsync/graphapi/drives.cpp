@@ -44,3 +44,11 @@ const QList<OpenAPI::OAIDrive> &Drives::drives() const
     }
     return _drives;
 }
+
+QString Drives::getDriveDisplayName(const OpenAPI::OAIDrive &drive)
+{
+    if (drive.getDriveType() == QLatin1String("personal")) {
+        return tr("Personal");
+    }
+    return drive.getName();
+}

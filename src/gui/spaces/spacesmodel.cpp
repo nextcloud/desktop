@@ -81,7 +81,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     case Qt::DisplayRole:
         switch (column) {
         case Columns::Name:
-            return item.getName();
+            return GraphApi::Drives::getDriveDisplayName(item);
         case Columns::Description:
             return item.getDescription();
         case Columns::WebUrl:
