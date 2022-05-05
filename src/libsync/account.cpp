@@ -295,12 +295,13 @@ QSslConfiguration Account::getOrCreateSslConfig()
 void Account::setApprovedCerts(const QList<QSslCertificate> certs)
 {
     _approvedCerts = certs;
-    QSslSocket::addDefaultCaCertificates(certs);
+    _am->setCustomTrustedCaCertificates({ certs.begin(), certs.end() });
 }
 
 void Account::addApprovedCerts(const QList<QSslCertificate> certs)
 {
     _approvedCerts += certs;
+    _am->addCustomTrustedCaCertificates(certs);
 }
 
 void Account::resetRejectedCertificates()
@@ -400,7 +401,6 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
         QList<QSslCertificate> approvedCerts;
         if (_sslErrorHandler->handleErrors(filteredErrors, sslConfiguration, &approvedCerts, sharedFromThis())) {
             if (!approvedCerts.isEmpty()) {
-                QSslSocket::addDefaultCaCertificates(approvedCerts);
                 addApprovedCerts(approvedCerts);
                 emit wantsAccountSaved(this);
 
@@ -419,6 +419,7 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
         return {};
     };
 
+    // FIXME: outdated comment
     // Call `handleErrors` NOW, BEFORE checking if the scoped `reply` pointer. The lambda might take
     // a long time to complete: if a dialog is shown, the user could be "slow" to click it away, and
     // the reply might have been deleted at that point. So if we'd do this call inside the if below,

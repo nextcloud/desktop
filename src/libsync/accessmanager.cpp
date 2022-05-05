@@ -78,9 +78,33 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
         newRequest.setAttribute(QNetworkRequest::Http2AllowedAttribute, http2EnabledEnv);
     }
 
+    auto sslConfiguration = newRequest.sslConfiguration();
+    sslConfiguration.addCaCertificates({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
+    newRequest.setSslConfiguration(sslConfiguration);
+
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);
     return reply;
+}
+
+QSet<QSslCertificate> AccessManager::customTrustedCaCertificates()
+{
+    return _customTrustedCaCertificates;
+}
+
+void AccessManager::setCustomTrustedCaCertificates(const QSet<QSslCertificate> &certificates)
+{
+    _customTrustedCaCertificates = certificates;
+}
+
+void AccessManager::addCustomTrustedCaCertificates(const QList<QSslCertificate> &certificates)
+{
+    _customTrustedCaCertificates.unite({ certificates.begin(), certificates.end() });
+}
+
+void AccessManager::addCustomTrustedCaCertificate(const QSslCertificate &certificate)
+{
+    _customTrustedCaCertificates.insert(certificate);
 }
 
 } // namespace OCC

@@ -36,8 +36,16 @@ public:
 
     AccessManager(QObject *parent = nullptr);
 
+    QSet<QSslCertificate> customTrustedCaCertificates();
+    void setCustomTrustedCaCertificates(const QSet<QSslCertificate> &certificates);
+    void addCustomTrustedCaCertificates(const QList<QSslCertificate> &certificates);
+    void addCustomTrustedCaCertificate(const QSslCertificate &certificate);
+
 protected:
     QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData = nullptr) override;
+
+private:
+    QSet<QSslCertificate> _customTrustedCaCertificates;
 };
 
 } // namespace OCC
