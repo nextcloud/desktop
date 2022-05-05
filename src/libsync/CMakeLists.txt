@@ -148,5 +148,3 @@ set_target_properties(libsync PROPERTIES
 )
 install(TARGETS libsync ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
-
-add_subdirectory(vfs)

@@ -16,9 +16,9 @@
 
 #include <QFile>
 
-#include "syncfileitem.h"
-#include "filesystem.h"
 #include "common/syncjournaldb.h"
+#include "filesystem.h"
+#include "syncfileitem.h"
 
 namespace OCC {
 

@@ -16,8 +16,8 @@
 #include <QObject>
 #include <QScopedPointer>
 
-#include "common/vfs.h"
 #include "common/plugin.h"
+#include "common/vfs.h"
 
 namespace OCC {
 
@@ -48,13 +48,17 @@ public:
     bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) override;
 
     bool setPinState(const QString &folderPath, PinState state) override
-    { return setPinStateInDb(folderPath, state); }
+    {
+        return setPinStateInDb(folderPath, state);
+    }
     Optional<PinState> pinState(const QString &folderPath) override
-    { return pinStateInDb(folderPath); }
+    {
+        return pinStateInDb(folderPath);
+    }
     AvailabilityResult availability(const QString &folderPath) override;
 
 public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
+    void fileStatusChanged(const QString &, SyncFileStatus) override { }
 
 protected:
     Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &replacesFile) override;

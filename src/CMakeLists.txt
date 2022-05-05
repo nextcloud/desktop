@@ -50,3 +50,5 @@ if (NOT BUILD_LIBRARIES_ONLY)
         add_subdirectory(crashreporter)
     endif()
 endif(NOT BUILD_LIBRARIES_ONLY)
+
+add_subdirectory(plugins)
