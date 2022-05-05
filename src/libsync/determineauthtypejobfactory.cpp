@@ -49,7 +49,7 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
         case QNetworkReply::AuthenticationRequiredError:
             break;
         case QNetworkReply::NoError:
-            setJobError(job, tr("Server did not ask for authorization"));
+            setJobError(job, tr("Server did not ask for authorization"), reply->error());
             return;
         default:
             setJobError(job, tr("Failed to determine auth type: %1").arg(reply->errorString()), reply->error());
