@@ -686,7 +686,7 @@ QNetworkAccessManager* AccessManagerFactory::create(QObject *parent)
 {
     const auto am = new AccessManager(parent);
     const auto diskCache = new QNetworkDiskCache(am);
-    diskCache->setCacheDirectory("cacheDir");
+    diskCache->setCacheDirectory(QStandardPaths::writableLocation(QStandardPaths::CacheLocation));
     am->setCache(diskCache);
     return am;
 }
