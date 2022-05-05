@@ -55,6 +55,7 @@ Depends: libnextcloudsync0 (= ${binary:Version}),
          qml-module-qtgraphicaleffects,
          qml-module-qtqml,
          qml-module-qtmultimedia,
+         qml-module-qt-labs-platform,
          ${misc:Depends},
          ${shlibs:Depends}
 Replaces: nextcloud-client (<< ${binary:Version})
