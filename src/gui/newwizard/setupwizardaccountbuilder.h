@@ -120,6 +120,11 @@ public:
     void addCustomTrustedCaCertificate(const QSslCertificate &customTrustedCaCertificate);
 
     /**
+     * Remove all stored custom trusted CA certificates.
+     */
+    void clearCustomTrustedCaCertificates();
+
+    /**
      * Attempt to build an account from the previously entered information.
      * @return built account or null if information is still missing
      */

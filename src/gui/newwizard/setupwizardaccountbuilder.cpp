@@ -129,4 +129,9 @@ void SetupWizardAccountBuilder::addCustomTrustedCaCertificate(const QSslCertific
 {
     _customTrustedCaCertificates.insert(customTrustedCaCertificate);
 }
+
+void SetupWizardAccountBuilder::clearCustomTrustedCaCertificates()
+{
+    _customTrustedCaCertificates.clear();
+}
 }
