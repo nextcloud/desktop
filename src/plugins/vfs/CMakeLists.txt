@@ -1,6 +1,9 @@
 # Globbing for plugins has a problem with in-source builds
 # that create directories for the build.
 
+
+include(OCAddVfsPlugin)
+
 foreach(vfsPlugin ${VIRTUAL_FILE_SYSTEM_PLUGINS})
     set(vfsPluginPath ${vfsPlugin})
     set(vfsPluginPathOut ${vfsPlugin})
