@@ -36,6 +36,8 @@
         <false/>
         <key>SUPublicDSAKeyFile</key>
         <string>dsa_pub.pem</string>
+        <key>SUPublicEDKey</key>
+        <string>c3RcfDWDayvsYSZW8FhZN1UOJhvPVN30zleb4zOqbtU=</string>
 
 <key>UTExportedTypeDeclarations</key>
 <array>
