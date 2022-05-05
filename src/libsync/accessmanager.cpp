@@ -78,9 +78,13 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
         newRequest.setAttribute(QNetworkRequest::Http2AllowedAttribute, http2EnabledEnv);
     }
 
-    auto sslConfiguration = newRequest.sslConfiguration();
-    sslConfiguration.addCaCertificates({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
-    newRequest.setSslConfiguration(sslConfiguration);
+    // for some reason, passing an empty list causes the default chain to be removed
+    // this behavior does not match the documentation
+    if (!_customTrustedCaCertificates.isEmpty()) {
+        auto sslConfiguration = newRequest.sslConfiguration();
+        sslConfiguration.addCaCertificates({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
+        newRequest.setSslConfiguration(sslConfiguration);
+    }
 
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);
