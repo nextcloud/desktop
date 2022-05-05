@@ -3279,7 +3279,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/sharedialog.ui" line="43"/>
         <source>share label</source>
-        <translation>etiketë ndarjeje</translation>
+        <translation>etiketë pjese</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="20"/>
@@ -3362,7 +3362,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
         <source>Enter name of new share...</source>
-        <translation>Jepni emër të ndarjes së re…</translation>
+        <translation>Jepni emër të pjesës së re…</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
