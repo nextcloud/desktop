@@ -1040,6 +1040,7 @@ void ownCloudGui::runNewAccountWizard()
                                 Q_ASSERT(localFolder.isEmpty());
 
                                 auto *folderWizard = new FolderWizard(accountStatePtr->account(), ocApp()->gui()->settingsDialog());
+                                folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
                                 folderWizard->setAttribute(Qt::WA_DeleteOnClose);
 
                                 // adapted from AccountSettings::slotFolderWizardAccepted()
@@ -1077,6 +1078,7 @@ void ownCloudGui::runNewAccountWizard()
                                 });
 
                                 folderWizard->open();
+                                ocApp()->gui()->raiseDialog(folderWizard);
 
                                 break;
                             }
