@@ -802,6 +802,11 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
+        <source>Fetching activities…</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities...</source>
         <translation type="unfinished"/>
     </message>
