@@ -104,35 +104,11 @@ Systray::Systray()
     checkNotificationAuth();
     registerNotificationCategories(QString(tr("Download")));
 #else
-    auto contextMenu = new QMenu();
-    if (AccountManager::instance()->accounts().isEmpty()) {
-        contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
-    } else {
-        contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
-    }
-
-    auto pauseAction = contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
-    auto resumeAction = contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
-    contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
-    contextMenu->addAction(tr("Help"), this, &Systray::openHelp);
-    contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
-    setContextMenu(contextMenu);
-
-    connect(contextMenu, &QMenu::aboutToShow, [=] {
-        const auto folders = FolderMan::instance()->map();
-
-        const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
-        const auto pauseText = folders.size() > 1 ? tr("Pause sync for all") : tr("Pause sync");
-        pauseAction->setText(pauseText);
-        pauseAction->setVisible(!allPaused);
-        pauseAction->setEnabled(!allPaused);
-
-        const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
-        const auto resumeText = folders.size() > 1 ? tr("Resume sync for all") : tr("Resume sync");
-        resumeAction->setText(resumeText);
-        resumeAction->setVisible(anyPaused);
-        resumeAction->setEnabled(anyPaused);
-    });
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, &Systray::setupContextMenu);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+        this, &Systray::setupContextMenu);
+    setupContextMenu();
 #endif
 
     connect(UserModel::instance(), &UserModel::newUserSelected,
@@ -162,6 +138,47 @@ void Systray::create()
             break;
         }
     }
+}
+
+void Systray::setupContextMenu()
+{
+    const auto oldContextMenu = _contextMenu.data();
+    // If we delete the old QMenu before setting the new one the client will crash on GNOME.
+    // Let's delete it once this method is over
+    if(oldContextMenu) {
+        oldContextMenu->deleteLater();
+    }
+
+    _contextMenu = new QMenu();
+
+    if (AccountManager::instance()->accounts().isEmpty()) {
+        _contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
+    } else {
+        _contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
+    }
+
+    auto pauseAction = _contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);
+    auto resumeAction = _contextMenu->addAction(tr("Resume sync"), this, &Systray::slotUnpauseAllFolders);
+    _contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
+    _contextMenu->addAction(tr("Help"), this, &Systray::openHelp);
+    _contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
+    setContextMenu(_contextMenu);
+
+    connect(_contextMenu, &QMenu::aboutToShow, [=] {
+        const auto folders = FolderMan::instance()->map();
+
+        const auto allPaused = std::all_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto pauseText = folders.size() > 1 ? tr("Pause sync for all") : tr("Pause sync");
+        pauseAction->setText(pauseText);
+        pauseAction->setVisible(!allPaused);
+        pauseAction->setEnabled(!allPaused);
+
+        const auto anyPaused = std::any_of(std::cbegin(folders), std::cend(folders), [](Folder *f) { return f->syncPaused(); });
+        const auto resumeText = folders.size() > 1 ? tr("Resume sync for all") : tr("Resume sync");
+        resumeAction->setText(resumeText);
+        resumeAction->setVisible(anyPaused);
+        resumeAction->setEnabled(anyPaused);
+    });
 }
 
 void Systray::createCallDialog(const Activity &callNotification)
