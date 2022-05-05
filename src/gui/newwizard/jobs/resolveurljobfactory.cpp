@@ -77,6 +77,8 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
 
                     dialog->show();
                 }
+            } else {
+                setJobResult(job, newUrl);
             }
         };
     };
