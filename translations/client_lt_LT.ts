@@ -2206,6 +2206,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Papildoma</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Sukurti derinimo archyvą…</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Patvirtinti, jei sinchronizuojami aplankai yra didesni nei</translation>
@@ -2237,9 +2242,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Taisyti &amp;nepaisomus failus</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Sukurti derinimo archyvą…</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Sukurti derinimo archyvą</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2277,11 +2282,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Atsisakyti</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Sukurti derinimo archyvą</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

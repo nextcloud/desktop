@@ -2215,6 +2215,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Avanzado</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Crear o arquivo de depuración…</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Preguntar se se queren sincronizar cartafoles de máis de</translation>
@@ -2246,9 +2251,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Editar ficheiros &amp;ignorados</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Crear o arquivo de depuración…</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Crear arquivo de depuración</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2288,11 +2293,6 @@ Teña en conta que isto só selecciona de que grupo se toman as actualizacións 
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Crear arquivo de depuración</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
