@@ -807,7 +807,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitäten abrufen…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
@@ -2220,6 +2220,11 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <translation>Erweitert</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Debug-Archiv erstellen …</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Bestätigung erfragen, bevor Ordner synchronisiert werden. Grenze:</translation>
@@ -2251,9 +2256,9 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
         <translation>I&amp;gnorierte Dateien bearbeiten</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Debug-Archiv erstellen …</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Debug-Archiv erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2293,11 +2298,6 @@ Beachten Sie bitte, dass hierdurch nur ausgewählt wird, aus welchem Pool Upgrad
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Debug-Archiv erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

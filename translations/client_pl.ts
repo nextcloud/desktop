@@ -2220,6 +2220,11 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
         <translation>Zaawansowane</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Utwórz archiwum debugowania…</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Zapytaj o potwierdzenie przed synchronizacją katalogów większych niż</translation>
@@ -2251,9 +2256,9 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
         <translation>Edytuj pliki ign&amp;orowane</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Utwórz archiwum debugowania…</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Utwórz archiwum debugowania</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2293,11 +2298,6 @@ Zwróć uwagę, że wybiera to tylko, z której puli aktualizacje są pobierane 
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Anuluj</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Utwórz archiwum debugowania</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

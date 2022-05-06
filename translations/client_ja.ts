@@ -2219,6 +2219,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>詳細設定</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>デバッグアーカイブを作成...</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>指定された容量以上のフォルダーは同期前に確認</translation>
@@ -2250,9 +2255,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>除外ファイルリストを編集(&amp;I)</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>デバッグアーカイブを作成...</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>デバッグアーカイブを作成</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2292,11 +2297,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>デバッグアーカイブを作成</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

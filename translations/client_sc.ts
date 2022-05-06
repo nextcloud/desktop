@@ -2221,6 +2221,11 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
         <translation>Avantzadu</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Crea archìviu de debug …</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Pedi cunfirma in antis de sincronizare cartellas prus mannas de</translation>
@@ -2252,9 +2257,9 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
         <translation>Mustra &amp;Ignora archìvios</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Crea archìviu de debug …</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Crea archìviu de debug</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2294,11 +2299,6 @@ Annota chi custu seletzionat isceti dae cale grùstiu prelevare is agiornamentos
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Crea archìviu de debug</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

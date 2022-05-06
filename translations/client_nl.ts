@@ -2218,6 +2218,11 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
         <translation>Geavanceerd</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Debugarchief maken ...</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Vraag bevestiging voordat mappen worden gedownload groter dan</translation>
@@ -2249,9 +2254,9 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
         <translation>Bewerken &amp;genegeerde bestanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Debugarchief maken ...</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Debugarchief maken</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2291,11 +2296,6 @@ Merk op dat dit alleen selecteert van welke pool upgrades worden overgenomen en 
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Debugarchief maken</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

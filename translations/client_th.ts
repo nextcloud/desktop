@@ -2198,6 +2198,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>ขั้นสูง</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>ถามก่อนที่จะประสานข้อมูลกับโฟลเดอร์ที่มีขนาดใหญ่กว่า</translation>
@@ -2229,8 +2234,8 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>แก้ไข&amp;ไฟล์ที่ถูกเพิกเฉย</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2269,11 +2274,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

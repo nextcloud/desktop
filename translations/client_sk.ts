@@ -79,12 +79,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Odmietnuť</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Odmietnuť všetky upozornenia z hovorov Talk</translation>
     </message>
 </context>
 <context>
@@ -331,7 +331,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="873"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>Súbor %1 je už uzamknutý od %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="875"/>
@@ -807,12 +807,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Získavam aktivity...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities...</source>
-        <translation type="unfinished"/>
+        <translation>Získavam aktivity...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
@@ -2220,6 +2220,11 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Rozšírené</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Vytvoriť archív s informáciami pre ladenie...</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Požiadať o potvrdenie pred synchronizáciou priečinkov väčších než</translation>
@@ -2251,9 +2256,9 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Editovať &amp;ignorované súbory</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Vytvoriť archív s informáciami pre ladenie...</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Vytvoriť debug archív</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2293,11 +2298,6 @@ Upozorňujeme, že sa tým vyberie iba to, odkiaľ sa aktualizácie budú sťaho
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Vytvoriť debug archív</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
@@ -4162,7 +4162,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="131"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Odpovedať</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="163"/>
@@ -4629,23 +4629,23 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Zamknúť súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Odomknúť súbor</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Zamknuté od %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Platnosť skončí o %1 minútu</numerusform><numerusform>Platnosť skončí o %1 minúty</numerusform><numerusform>Platnosť skončí o %1 minút</numerusform><numerusform>Platnosť skončí o %1 minút</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -6079,27 +6079,27 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="543"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Premenovali ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="545"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Zmazali ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="547"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Vytvorili ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Zmenili ste %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="572"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Zosynchronizované %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6191,12 +6191,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="31"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Odpovedať na ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="65"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Odoslať odpoveď do správy v rozhovoroch</translation>
     </message>
 </context>
 <context>
