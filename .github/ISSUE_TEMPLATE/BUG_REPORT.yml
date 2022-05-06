@@ -105,6 +105,14 @@ body:
       placeholder: 23.0.1
     validations:
       required: true
+  - type: input
+    id: client-version
+    attributes:
+      label: Nextcloud Desktop Client version
+      description: Nextcloud Desktop Client version.
+      placeholder: 3.5.0
+    validations:
+      required: true
   - type: dropdown
     id: fresh
     attributes:
