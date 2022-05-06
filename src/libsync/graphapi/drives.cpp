@@ -25,6 +25,12 @@
 using namespace OCC;
 using namespace GraphApi;
 
+namespace {
+
+const auto personalC = QLatin1String("personal");
+const auto shareC = QLatin1String("virtual");
+
+}
 
 Drives::Drives(const AccountPtr &account, QObject *parent)
     : JsonJob(account, account->url(), QStringLiteral("/graph/v1.0/me/drives"), "GET", {}, {}, parent)
@@ -47,8 +53,11 @@ const QList<OpenAPI::OAIDrive> &Drives::drives() const
 
 QString Drives::getDriveDisplayName(const OpenAPI::OAIDrive &drive)
 {
-    if (drive.getDriveType() == QLatin1String("personal")) {
+    if (drive.getDriveType() == personalC) {
         return tr("Personal");
+    } else if (drive.getDriveType() == shareC) {
+        // don't call it ShareJail
+        return tr("Shares");
     }
     return drive.getName();
 }
