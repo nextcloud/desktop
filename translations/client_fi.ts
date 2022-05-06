@@ -2198,6 +2198,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Lisäasetukset</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Koosta vianetsintätiedot...</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Kysy vahvistus ennen kuin synkronoidaan kansiot suurempia kuin</translation>
@@ -2229,9 +2234,9 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Muokkaa &amp;ohitettavia tiedostoja</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Koosta vianetsintätiedot...</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Koosta vianetsintätiedot</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2269,11 +2274,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Koosta vianetsintätiedot</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

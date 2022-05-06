@@ -2221,6 +2221,11 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Aurreratua</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Sortu arazketa fitxategia...</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Eskatu baimena handiagoak diren karpetak sinkronizatu baino lehen</translation>
@@ -2252,9 +2257,9 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Editatu &amp;baztertutako fitxategiak</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Sortu arazketa fitxategia...</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Sortu arazketa fitxategia</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2294,11 +2299,6 @@ Kontuan izan honek bertsio berriak nondik hartu bakarrik hautatzen duela, ezin d
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Ezeztatu</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Sortu arazketa fitxategia</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

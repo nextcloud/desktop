@@ -2221,6 +2221,11 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Avanzate</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Crea archivio di debug…</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Chiedi conferma prima di scaricare cartelle più grandi di</translation>
@@ -2252,9 +2257,9 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Mod&amp;ifica file ignorati</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Crea archivio di debug…</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Crea archivio di debug</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2292,11 +2297,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Crea archivio di debug</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

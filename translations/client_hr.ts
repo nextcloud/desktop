@@ -2220,6 +2220,11 @@ Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovn
         <translation>Napredno</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Stvori arhivu otklanjanja pogrešaka…</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Zatraži potvrdu prije sinkronizacije mapa većih od</translation>
@@ -2251,9 +2256,9 @@ Ako ste slučajno odabrali ovu radnju i želite zadržati svoje datoteke, ponovn
         <translation>Uredi zanemarene datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Stvori arhivu otklanjanja pogrešaka…</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Stvori arhivu otklanjanja pogrešaka</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2293,11 +2298,6 @@ Imajte na umu da se ovime odabire samo kategorija iz koje dolaze nadogradnje i d
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Odustani</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Stvori arhivu otklanjanja pogrešaka</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

@@ -807,7 +807,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Tevékenységek lekérése…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
@@ -2220,6 +2220,11 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <translation>Speciális</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Hibakeresési archívum létrehozása…</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Megerősítés kérése az ennél nagyobb mappák szinkronizálása előtt:</translation>
@@ -2251,9 +2256,9 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <translation>&amp;Kihagyott fájlok szerkesztése</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
-        <translation>Hibakeresési archívum létrehozása…</translation>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
+        <translation>Hibakeresési archívum létrehozása</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="147"/>
@@ -2293,11 +2298,6 @@ Ne feledje, hogy ez csak azt választja ki, hogy a frissítések milyen készlet
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Hibakeresési archívum létrehozása</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>

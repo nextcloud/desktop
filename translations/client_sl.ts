@@ -2220,6 +2220,11 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>Napredne možnosti</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation>Ustvari arhiv razhroščevanja</translation>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Zahtevaj potrditev pred usklajevanjem map, večjih od</translation>
@@ -2251,8 +2256,8 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>Uredi &amp;neusklajevane datoteke</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
         <translation>Ustvari arhiv razhroščevanja</translation>
     </message>
     <message>
@@ -2293,11 +2298,6 @@ Zavedati se je treba, da izbor določa le različice programske opreme za nadgra
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
         <translation>Prekliči</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
-        <translation>Ustvari arhiv razhroščevanja</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
