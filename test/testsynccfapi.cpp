@@ -681,6 +681,11 @@ private slots:
     void testSyncDehydration()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        // empty files would not work, so, we're gonna remove and re-insert them with 1MB data
+        fakeFolder.remoteModifier().remove("A/a1");
+        fakeFolder.remoteModifier().remove("A/a2");
+        fakeFolder.remoteModifier().insert("A/a1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("A/a2", 1024 * 1024);
         setupVfs(fakeFolder);
 
         QVERIFY(fakeFolder.syncOnce());
@@ -695,6 +700,8 @@ private slots:
         //
         // Mark for dehydration and check
         //
+
+        QVERIFY(fakeFolder.currentLocalState().find("A/a1"));
 
         markForDehydration(fakeFolder, "A/a1");
 
@@ -862,10 +869,10 @@ private slots:
         setPinState(fakeFolder.localPath() + "unspec", PinState::Unspecified, cfapi::Recurse);
 
         // Test 1: root is Unspecified
-        fakeFolder.remoteModifier().insert("file1");
-        fakeFolder.remoteModifier().insert("online/file1");
-        fakeFolder.remoteModifier().insert("local/file1");
-        fakeFolder.remoteModifier().insert("unspec/file1");
+        fakeFolder.remoteModifier().insert("file1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("online/file1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("local/file1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("unspec/file1", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
 
         CFVERIFY_VIRTUAL(fakeFolder, "file1");
@@ -880,10 +887,10 @@ private slots:
         setPinState(fakeFolder.localPath() + "online", PinState::OnlineOnly, cfapi::Recurse);
         setPinState(fakeFolder.localPath() + "unspec", PinState::Unspecified, cfapi::Recurse);
 
-        fakeFolder.remoteModifier().insert("file2");
-        fakeFolder.remoteModifier().insert("online/file2");
-        fakeFolder.remoteModifier().insert("local/file2");
-        fakeFolder.remoteModifier().insert("unspec/file2");
+        fakeFolder.remoteModifier().insert("file2", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("online/file2", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("local/file2", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("unspec/file2", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
 
         CFVERIFY_NONVIRTUAL(fakeFolder, "file2");
@@ -906,10 +913,10 @@ private slots:
         setPinState(fakeFolder.localPath() + "online", PinState::OnlineOnly, cfapi::Recurse);
         setPinState(fakeFolder.localPath() + "unspec", PinState::Unspecified, cfapi::Recurse);
 
-        fakeFolder.remoteModifier().insert("file3");
-        fakeFolder.remoteModifier().insert("online/file3");
-        fakeFolder.remoteModifier().insert("local/file3");
-        fakeFolder.remoteModifier().insert("unspec/file3");
+        fakeFolder.remoteModifier().insert("file3", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("online/file3", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("local/file3", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("unspec/file3", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
 
         CFVERIFY_VIRTUAL(fakeFolder, "file3");
@@ -944,12 +951,12 @@ private slots:
         setPinState(fakeFolder.localPath() + "online", PinState::OnlineOnly, cfapi::Recurse);
         setPinState(fakeFolder.localPath() + "unspec", PinState::Unspecified, cfapi::Recurse);
 
-        fakeFolder.remoteModifier().insert("file1");
-        fakeFolder.remoteModifier().insert("online/file1");
-        fakeFolder.remoteModifier().insert("online/file2");
-        fakeFolder.remoteModifier().insert("local/file1");
-        fakeFolder.remoteModifier().insert("local/file2");
-        fakeFolder.remoteModifier().insert("unspec/file1");
+        fakeFolder.remoteModifier().insert("file1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("online/file1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("online/file2", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("local/file1", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("local/file2", 1024 * 1024);
+        fakeFolder.remoteModifier().insert("unspec/file1", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
 
         // root is unspecified
@@ -1004,11 +1011,11 @@ private slots:
         setPinState(fakeFolder.localPath() + "online", PinState::OnlineOnly, cfapi::NoRecurse);
         setPinState(fakeFolder.localPath() + "unspec", PinState::Unspecified, cfapi::NoRecurse);
 
-        fakeFolder.localModifier().insert("file1");
-        fakeFolder.localModifier().insert("online/file1");
-        fakeFolder.localModifier().insert("online/file2");
-        fakeFolder.localModifier().insert("local/file1");
-        fakeFolder.localModifier().insert("unspec/file1");
+        fakeFolder.localModifier().insert("file1", 1024 * 1024);
+        fakeFolder.localModifier().insert("online/file1", 1024 * 1024);
+        fakeFolder.localModifier().insert("online/file2", 1024 * 1024);
+        fakeFolder.localModifier().insert("local/file1", 1024 * 1024);
+        fakeFolder.localModifier().insert("unspec/file1", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -1048,7 +1055,7 @@ private slots:
         fakeFolder.remoteModifier().remove("onlinerenamed2/file1rename");
         QVERIFY(fakeFolder.syncOnce());
         QVERIFY(!vfs->pinState("onlinerenamed2/file1rename"));
-        fakeFolder.remoteModifier().insert("onlinerenamed2/file1rename");
+        fakeFolder.remoteModifier().insert("onlinerenamed2/file1rename", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(*vfs->pinState("onlinerenamed2/file1rename"), PinState::OnlineOnly);
 
@@ -1099,6 +1106,8 @@ private slots:
         FakeFolder fakeFolder{ FileInfo() };
         auto vfs = setupVfs(fakeFolder);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        
+        auto locPath = fakeFolder.localPath();
 
         fakeFolder.remoteModifier().mkdir("local");
         fakeFolder.remoteModifier().mkdir("online");
@@ -1108,10 +1117,11 @@ private slots:
         setPinState(fakeFolder.localPath() + "local", PinState::AlwaysLocal, cfapi::NoRecurse);
         setPinState(fakeFolder.localPath() + "online", PinState::OnlineOnly, cfapi::NoRecurse);
 
-        fakeFolder.localModifier().insert("local/file1");
-        fakeFolder.localModifier().insert("online/file1");
+        fakeFolder.localModifier().insert("local/file1", 1024 * 1024);
+        fakeFolder.localModifier().insert("online/file1", 1024 * 1024);
         QVERIFY(fakeFolder.syncOnce());
 
+        setPinState(fakeFolder.localPath() + "local/file1", PinState::Unspecified, cfapi::Recurse);
         markForDehydration(fakeFolder, "local/file1");
         triggerDownload(fakeFolder, "online/file1");
 
