@@ -2201,6 +2201,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Avansert</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Be om bekreftelse før synkronisering av mapper større enn</translation>
@@ -2232,8 +2237,8 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Rediger &amp;ignorerte filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2271,11 +2276,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
         <translation type="unfinished"/>
     </message>
     <message>

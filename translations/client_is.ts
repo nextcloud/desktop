@@ -2200,6 +2200,11 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
         <translation>Ítarlegt</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <source>Create Debug Archive …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
         <translation>Biðja um staðfestingu áður en samstilltar eru möppur stærri en</translation>
@@ -2231,8 +2236,8 @@ Vertu viss um að ekkert annað forrit sé ekki að nota hana.</translation>
         <translation>Bre&amp;yta hunsuðum skrám</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <source>Create Debug Archive …</source>
+        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <source>Create Debug Archive</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2270,11 +2275,6 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
-        <source>Create Debug Archive</source>
         <translation type="unfinished"/>
     </message>
     <message>
