@@ -134,7 +134,7 @@ void SetupWizardWindow::slotStartTransition()
     _transitioning = true;
 
     _ui->transitionProgressIndicator->startAnimation();
-    _ui->contentWidget->setCurrentWidget(_ui->transitionProgressIndicator);
+    _ui->contentWidget->setCurrentWidget(_ui->transitionPage);
 
     // until a new page is displayed by the controller, we want to prevent the user from initiating another page change
     _ui->backButton->setEnabled(false);
