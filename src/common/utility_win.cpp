@@ -55,29 +55,8 @@ const QString systemThemesC()
 
 namespace OCC {
 
-void Utility::setupFavLink(const QString &folder)
+void Utility::setupFavLink(const QString &)
 {
-    // First create a Desktop.ini so that the folder and favorite link show our application's icon.
-    QFile desktopIni(folder + QStringLiteral("/Desktop.ini"));
-    if (desktopIni.exists()) {
-        qCWarning(lcUtility) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
-    } else {
-        qCInfo(lcUtility) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
-        if (OC_ENSURE(desktopIni.open(QFile::WriteOnly))) {
-            desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
-            desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
-            desktopIni.write(",0\r\n");
-            desktopIni.close();
-        }
-
-        const QString longFolderPath = FileSystem::longWinPath(folder);
-        const QString longDesktopIniPath = FileSystem::longWinPath(desktopIni.fileName());
-        // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
-        // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
-        const DWORD folderAttrs = GetFileAttributesW(reinterpret_cast<const wchar_t *>(longFolderPath.utf16()));
-        SetFileAttributesW(reinterpret_cast<const wchar_t *>(longFolderPath.utf16()), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
-        SetFileAttributesW(reinterpret_cast<const wchar_t *>(longDesktopIniPath.utf16()), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
-    }
 }
 
 bool Utility::hasSystemLaunchOnStartup(const QString &appName)

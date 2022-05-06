@@ -42,9 +42,10 @@ struct OCSYNC_EXPORT VfsSetupParams
 {
     VfsSetupParams() = default;
 
-    explicit VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl)
+    explicit VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl, bool groupInSidebar)
         : account(account)
         , _baseUrl(baseUrl)
+        , _groupInSidebar(groupInSidebar)
     {
     }
     /** The full path to the folder on the local filesystem
@@ -83,8 +84,15 @@ struct OCSYNC_EXPORT VfsSetupParams
         return _baseUrl;
     }
 
+    bool groupInSidebar() const
+    {
+        return _groupInSidebar;
+    }
+
+
 private:
     QUrl _baseUrl;
+    bool _groupInSidebar = false;
 };
 
 /** Interface describing how to deal with virtual/placeholder files.

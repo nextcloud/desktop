@@ -1413,10 +1413,7 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 
 Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
 {
-    // first things first: we need to create the directory to make the sync engine happy (it will refuse to sync otherwise)
-    OC_ASSERT(QDir().mkpath(localFolder));
-    FileSystem::setFolderMinimumPermissions(localFolder);
-    Utility::setupFavLink(localFolder);
+    FolderMan::prepareFolder(localFolder);
 
     qCInfo(lcFolderMan) << "Adding folder definition for" << localFolder << remotePath;
     auto folderDefinition = FolderDefinition::createNewFolderDefinition(webDavUrl, displayName);
@@ -1428,14 +1425,19 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
         folderDefinition.virtualFilesMode = bestAvailableVfsMode();
     }
 
-#ifdef Q_OS_WIN
-    if (_navigationPaneHelper.showInExplorerNavigationPane())
-        folderDefinition.navigationPaneClsid = QUuid::createUuid();
-#endif
-
     auto newFolder = addFolder(accountStatePtr, folderDefinition);
 
     if (newFolder) {
+        // With spaces we only handle the main folder
+        if (!newFolder->groupInSidebar()) {
+            Utility::setupFavLink(localFolder);
+#ifdef Q_OS_WIN
+            // TODO: move to setupFavLink
+            // TODO: don't call setupFavLinkt if showInExplorerNavigationPane is false?
+            if (_navigationPaneHelper.showInExplorerNavigationPane())
+                folderDefinition.navigationPaneClsid = QUuid::createUuid();
+#endif
+        }
         if (folderDefinition.virtualFilesMode != Vfs::Off && useVfs)
             newFolder->setRootPinState(PinState::OnlineOnly);
 
@@ -1455,6 +1457,42 @@ QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayN
 {
     return FolderMan::instance()->findGoodPathForNewSyncFolder(
         QDir::homePath() + QDir::separator() + tr("%1 - %2@%3").arg(OCC::Theme::instance()->defaultClientFolder(), displayName, server.host()));
+}
+
+bool FolderMan::prepareFolder(const QString &folder)
+{
+    if (!QFileInfo::exists(folder)) {
+        if (!OC_ENSURE(QDir().mkpath(folder))) {
+            return false;
+        }
+        FileSystem::setFolderMinimumPermissions(folder);
+
+#ifdef Q_OS_WIN
+        // First create a Desktop.ini so that the folder and favorite link show our application's icon.
+        // TODO: as we only write the file once the path to owncloud.exe can be outdated
+        QFile desktopIni(folder + QStringLiteral("/Desktop.ini"));
+        if (desktopIni.exists()) {
+            qCWarning(lcFolderMan) << desktopIni.fileName() << "already exists, not overwriting it to set the folder icon.";
+        } else {
+            qCInfo(lcFolderMan) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+            if (OC_ENSURE(desktopIni.open(QFile::WriteOnly))) {
+                desktopIni.write("[.ShellClassInfo]\r\nIconResource=");
+                desktopIni.write(QDir::toNativeSeparators(qApp->applicationFilePath()).toUtf8());
+                desktopIni.write(",0\r\n");
+                desktopIni.close();
+            }
+
+            const QString longFolderPath = FileSystem::longWinPath(folder);
+            const QString longDesktopIniPath = FileSystem::longWinPath(desktopIni.fileName());
+            // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+            // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
+            const DWORD folderAttrs = GetFileAttributesW(reinterpret_cast<const wchar_t *>(longFolderPath.utf16()));
+            SetFileAttributesW(reinterpret_cast<const wchar_t *>(longFolderPath.utf16()), folderAttrs | FILE_ATTRIBUTE_SYSTEM);
+            SetFileAttributesW(reinterpret_cast<const wchar_t *>(longDesktopIniPath.utf16()), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM);
+        }
+#endif
+    }
+    return true;
 }
 
 } // namespace OCC
