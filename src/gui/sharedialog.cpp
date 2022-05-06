@@ -102,7 +102,7 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         const auto lockExpirationTime = _filelockState._lockTime + _filelockState._lockTimeout;
         const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
         const auto remainingTimeInMinute = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
-        _ui->label_lockinfo->setText(tr("Locked by %1 - Expire in %2 minutes", "remaining time before lock expire", remainingTimeInMinute).arg(_filelockState._lockOwnerDisplayName).arg(remainingTimeInMinute));
+        _ui->label_lockinfo->setText(tr("Locked by %1 - Expires in %2 minutes", "remaining time before lock expires", remainingTimeInMinute).arg(_filelockState._lockOwnerDisplayName).arg(remainingTimeInMinute));
     } else {
         _ui->label_lockinfo->setVisible(false);
     }
