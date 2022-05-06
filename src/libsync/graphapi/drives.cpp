@@ -27,6 +27,7 @@ using namespace GraphApi;
 
 namespace {
 
+const auto mountpointC = QLatin1String("mountpoint");
 const auto personalC = QLatin1String("personal");
 const auto shareC = QLatin1String("virtual");
 
@@ -47,6 +48,11 @@ const QList<OpenAPI::OAIDrive> &Drives::drives() const
         OpenAPI::OAICollection_of_drives drives;
         drives.fromJsonObject(data());
         _drives = drives.getValue();
+        // At the moment we don't support mountpoints but use the Share Jail
+        _drives.erase(std::remove_if(_drives.begin(), _drives.end(), [](const OpenAPI::OAIDrive &it) {
+            return it.getDriveType() == mountpointC;
+        }),
+            _drives.end());
     }
     return _drives;
 }
