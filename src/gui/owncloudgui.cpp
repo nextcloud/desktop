@@ -74,12 +74,14 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
             if (drive->parseError().error == QJsonParseError::NoError) {
                 const auto &drives = drive->drives();
                 if (!drives.isEmpty()) {
-                    const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
-                    FileSystem::setFolderMinimumPermissions(localDir.path());
-                    Utility::setupFavLink(localDir.path());
+                    const QString localDir(accountStatePtr->account()->defaultSyncRoot());
+                    FolderMan::prepareFolder(localDir);
+                    Utility::setupFavLink(localDir);
                     for (const auto &d : drives) {
                         const QString name = GraphApi::Drives::getDriveDisplayName(d);
-                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(name));
+                        const QString mountPoint = localDir + QDir::separator() + GraphApi::Drives::getDriveMountPoint(d);
+                        FolderMan::prepareFolder(mountPoint);
+                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(mountPoint + QDir::separator() + name);
                         addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
                     }
                     finalize();

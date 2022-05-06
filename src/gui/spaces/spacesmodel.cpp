@@ -45,6 +45,8 @@ QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int r
                 return tr("Web Dav URL");
             case Columns::Image:
                 return tr("Image");
+            case Columns::LocalMountPoint:
+                return tr("Local Mount Point");
             case Columns::ColumnCount:
                 Q_UNREACHABLE();
                 break;
@@ -95,6 +97,8 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             });
             return img == special.cend() ? QString() : img->getWebDavUrl();
         }
+        case Columns::LocalMountPoint:
+            return GraphApi::Drives::getDriveMountPoint(item);
         case Columns::ColumnCount:
             Q_UNREACHABLE();
             break;
@@ -118,7 +122,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             auto job = new OCC::SimpleNetworkJob(_acc, davUrl, path, "GET", {}, {}, nullptr);
             connect(job, &OCC::SimpleNetworkJob::finishedSignal, this, [job, id = item.getId(), index, this] {
                 QPixmap img;
-                qDebug() << img.loadFromData(job->reply()->readAll());
+                img.loadFromData(job->reply()->readAll());
                 img = img.scaled(ImageSizeC, Qt::KeepAspectRatio);
                 _images[id] = img;
                 Q_EMIT const_cast<SpacesModel *>(this)->dataChanged(index, index, { Qt::DecorationRole });
