@@ -810,11 +810,6 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Aktivitäten abrufen…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation>Aktivitäten abrufen…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Dateien aus der Ignorierliste sowie symbolische Links werden nicht synchronisiert.</translation>
@@ -4225,11 +4220,6 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Nextcloud-Pfad:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>

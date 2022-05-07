@@ -809,11 +809,6 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Bestanden op de negeerlijst en symbolische links worden niet gesynchroniseerd.</translation>
@@ -4228,11 +4223,6 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Nextcloud Pad:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation>Tekstlabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>

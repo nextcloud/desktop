@@ -810,11 +810,6 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Los archivos de la lista de ignorados así como los enlace simbólicos no estarán sincronizados.</translation>
@@ -4227,11 +4222,6 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Ruta de Nextcloud:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation>Etiqueta de texto</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>

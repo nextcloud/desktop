@@ -810,11 +810,6 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Tevékenységek lekérése…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation>Tevékenységek lekérése…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>A mellőzési listából származó fájlok, valamint a szimbolikus linkek nincsenek szinkronizálva.</translation>
@@ -4226,11 +4221,6 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Nextcloud útvonal:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation>TextLabel</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>
