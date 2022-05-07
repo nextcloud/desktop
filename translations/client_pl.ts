@@ -810,11 +810,6 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation>Pobieranie aktywności…</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Pliki z listy ignorowanych oraz dowiązania symboliczne nie są synchronizowane.</translation>
@@ -4226,11 +4221,6 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Ścieżka Nextcloud:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation>Etykieta</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>

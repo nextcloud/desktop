@@ -810,11 +810,6 @@ Ova će radnja prekinuti bilo koju trenutačnu sinkronizaciju.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Ne sinkroniziraju se datoteke s popisa za zanemarivanje kao ni simboličke poveznice.</translation>
@@ -4226,11 +4221,6 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Nextcloudov put:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>

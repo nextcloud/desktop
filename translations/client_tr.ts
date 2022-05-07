@@ -810,11 +810,6 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
-        <source>Fetching activities...</source>
-        <translation>İşlemler alınıyor...</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Yok sayma listesindeki dosyalar ve sembolik bağlantılar eşitlenmez.</translation>
@@ -4226,11 +4221,6 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/sharedialog.ui" line="125"/>
         <source>Nextcloud Path:</source>
         <translation>Nextcloud Yolu:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="150"/>
-        <source>TextLabel</source>
-        <translation>MetinEtiketi</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="95"/>
