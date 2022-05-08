@@ -4235,7 +4235,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="124"/>
         <source>Folder: %2</source>
-        <translation>資料夾： %2</translation>
+        <translation>資料夾：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="127"/>
