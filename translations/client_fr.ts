@@ -805,7 +805,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Rapatriement des activités ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
