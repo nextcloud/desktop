@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Add reaction on start
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           token: ${{ secrets.COMMAND_BOT_PAT }}
           repository: ${{ github.event.repository.full_name }}
@@ -26,10 +26,13 @@ jobs:
           reaction-type: "+1"
 
       - name: Checkout the latest code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           token: ${{ secrets.COMMAND_BOT_PAT }}
+
+      - name: Fix permissions
+        run: git config --global --add safe.directory /github/workspace
 
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.5
@@ -37,7 +40,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.COMMAND_BOT_PAT }}
 
       - name: Add reaction on failure
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         if: failure()
         with:
           token: ${{ secrets.COMMAND_BOT_PAT }}
