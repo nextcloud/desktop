@@ -25,7 +25,6 @@ public slots:
 private slots:
     void slotNotificationsReceived(const QJsonDocument &json, int statusCode);
     void slotEtagResponseHeaderReceived(const QByteArray &value, int statusCode);
-    void slotAllowDesktopNotificationsChanged(bool isAllowed);
 
 private:
     QPointer<JsonApiJob> _notificationJob;

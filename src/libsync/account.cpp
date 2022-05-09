@@ -635,9 +635,12 @@ void Account::setupUserStatusConnector()
     connect(_userStatusConnector.get(), &UserStatusConnector::userStatusFetched, this, [this](const UserStatus &) {
         emit userStatusChanged();
     });
+    connect(_userStatusConnector.get(), &UserStatusConnector::serverUserStatusChanged, this, &Account::serverUserStatusChanged);
     connect(_userStatusConnector.get(), &UserStatusConnector::messageCleared, this, [this] {
         emit userStatusChanged();
     });
+
+    _userStatusConnector->fetchUserStatus();
 }
 
 QString Account::serverVersion() const

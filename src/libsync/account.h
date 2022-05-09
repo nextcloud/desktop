@@ -322,6 +322,8 @@ signals:
 
     void userStatusChanged();
 
+    void serverUserStatusChanged();
+
     void capabilitiesChanged();
 
     void lockFileSuccess();
