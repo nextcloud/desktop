@@ -55,14 +55,14 @@ def main(ctx):
 
     if ctx.build.event == "cron":
         # cron job pipelines
-        c_tests = ctest_pipeline(
+        unit_tests = unit_test_pipeline(
             ctx,
             "gcc",
             "g++",
             "Release",
             "Unix Makefiles",
             trigger = cron_trigger,
-        ) + ctest_pipeline(
+        ) + unit_test_pipeline(
             ctx,
             "clang",
             "clang++",
@@ -75,13 +75,13 @@ def main(ctx):
             name = "build",
             trigger = cron_trigger,
         )
-        pipelines = c_tests + gui_tests + pipelinesDependsOn(notify, c_tests)
+        pipelines = unit_tests + gui_tests + pipelinesDependsOn(notify, unit_tests + gui_tests)
     else:
         pipelines = cancelPreviousBuilds() + \
                     gui_tests_format(build_trigger) + \
                     check_starlark(build_trigger) + \
                     changelog(ctx, trigger = build_trigger) + \
-                    ctest_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
+                    unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
                     gui_test_pipeline(ctx, trigger = build_trigger, version = "latest")
 
     return pipelines
@@ -121,7 +121,7 @@ def check_starlark(trigger = {}):
         "trigger": trigger,
     }]
 
-def ctest_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, trigger = {}):
+def unit_test_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, trigger = {}):
     build_command = "ninja" if generator == "Ninja" else "make"
     pipeline_name = c_compiler + "-" + build_type.lower() + "-" + build_command
     build_dir = "build-" + pipeline_name
@@ -136,7 +136,7 @@ def ctest_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, trigger
         "steps": skipIfUnchanged(ctx, "unit-tests") +
                  gitSubModules() +
                  build_client(c_compiler, cxx_compiler, build_type, generator, build_command, build_dir) +
-                 c_tests(build_dir, [build_command]),
+                 unit_tests(build_dir, [build_command]),
         "trigger": trigger,
     }]
 
@@ -168,7 +168,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
         "steps": skipIfUnchanged(ctx, "gui-tests") +
                  gitSubModules() +
                  installCore(version) +
-                 setupServerAndApp(2) +
+                 setupServerAndApp() +
                  fixPermissions() +
                  owncloudLog() +
                  setGuiTestReportDir() +
@@ -227,7 +227,7 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
         },
     ]
 
-def c_tests(build_dir, depends_on = []):
+def unit_tests(build_dir, depends_on = []):
     return [{
         "name": "ctest",
         "image": OC_CI_CLIENT,
@@ -243,7 +243,7 @@ def c_tests(build_dir, depends_on = []):
         "depends_on": depends_on,
     }]
 
-def gui_tests(squish_parameters, depends_on = []):
+def gui_tests(squish_parameters = "", depends_on = []):
     return [{
         "name": "GUItests",
         "image": OC_CI_SQUISH,
@@ -413,7 +413,7 @@ def databaseService():
         "command": ["--default-authentication-plugin=mysql_native_password"],
     }]
 
-def installCore(version):
+def installCore(version = "latest"):
     return [{
         "name": "install-core",
         "image": OC_CI_CORE,
@@ -428,7 +428,7 @@ def installCore(version):
         },
     }]
 
-def setupServerAndApp(logLevel):
+def setupServerAndApp(logLevel = 2):
     return [{
         "name": "setup-owncloud-server",
         "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
@@ -441,7 +441,7 @@ def setupServerAndApp(logLevel):
             "php occ config:system:set skeletondirectory --value=/var/www/owncloud/server/apps/testing/data/tinySkeleton",
             "php occ config:system:set sharing.federation.allowHttpFallback --value=true --type=bool",
         ],
-        "depends_on": stepDependsOn(installCore("")),
+        "depends_on": stepDependsOn(installCore()),
     }]
 
 def owncloudService():
@@ -488,7 +488,7 @@ def owncloudLog():
         "commands": [
             "tail -f /drone/src/server/data/owncloud.log",
         ],
-        "depends_on": stepDependsOn(installCore("")),
+        "depends_on": stepDependsOn(installCore()),
     }]
 
 def fixPermissions():
@@ -499,7 +499,7 @@ def fixPermissions():
             "cd /drone/src/server",
             "chown www-data * -R",
         ],
-        "depends_on": stepDependsOn(setupServerAndApp("")),
+        "depends_on": stepDependsOn(setupServerAndApp()),
     }]
 
 def gitSubModules():
@@ -559,7 +559,7 @@ def uploadGuiTestLogs():
                 "from_secret": "cache_public_s3_secret_key",
             },
         },
-        "depends_on": stepDependsOn(gui_tests("")),
+        "depends_on": stepDependsOn(gui_tests()),
         "when": {
             "status": [
                 "failure",
@@ -567,7 +567,7 @@ def uploadGuiTestLogs():
         },
     }]
 
-def buildGithubComment(suite):
+def buildGithubComment(suite = ""):
     return [{
         "name": "build-github-comment",
         "image": OC_UBUNTU,
@@ -610,7 +610,7 @@ def githubComment(alternateSuiteName):
         "commands": [
             "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (GUI_TEST_REPORT_DIR, prefix, GUI_TEST_REPORT_DIR, GUI_TEST_REPORT_DIR),
         ],
-        "depends_on": stepDependsOn(buildGithubComment("")),
+        "depends_on": stepDependsOn(buildGithubComment()),
         "when": {
             "status": [
                 "failure",
@@ -685,22 +685,15 @@ def skipIfUnchanged(ctx, type):
         },
     }]
 
-def stepDependsOn(steps):
-    depends_on_steps = []
-
+def stepDependsOn(steps = []):
     if type(steps) == dict:
         steps = [steps]
-
-    for step in steps:
-        depends_on_steps.append(step["name"])
-
-    return depends_on_steps
+    return getPipelineNames(steps)
 
 def getPipelineNames(pipelines = []):
     names = []
     for pipeline in pipelines:
         names.append(pipeline["name"])
-    print(names)
     return names
 
 def pipelineDependsOn(pipeline, dependant_pipelines):
