@@ -63,7 +63,7 @@ def hook(context):
             if value == '':
                 context.userData[key] = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
     except Exception as err:
-        print(err)
+        test.log(str(err))
 
     # Set the default values if empty
     for key, value in context.userData.items():
@@ -101,18 +101,6 @@ def hook(context):
 
 @OnScenarioEnd
 def hook(context):
-    # search coredumps after every test scenario
-    # CI pipeline might fail although all tests are passing
-    coredumps = getCoredumps()
-    if coredumps:
-        try:
-            generateStacktrace(context, coredumps)
-            print("Stacktrace generated.")
-        except Exception as err:
-            print(err)
-    else:
-        print("No coredump found!")
-
     # capture screenshot if there is error in the scenario execution, and if the test is being run in CI
     if test.resultCount("errors") > 0 and os.getenv('CI'):
         import gi
@@ -147,7 +135,19 @@ def hook(context):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
         except Exception as e:
-            print('Failed to delete %s. Reason: %s' % (file_path, e))
+            test.log('Failed to delete' + file_path + ". Reason: " + e + '.')
+
+    # search coredumps after every test scenario
+    # CI pipeline might fail although all tests are passing
+    coredumps = getCoredumps()
+    if coredumps:
+        try:
+            generateStacktrace(context, coredumps)
+            test.log("Stacktrace generated!")
+        except Exception as err:
+            test.log("Exception occured:" + err)
+    else:
+        test.log("No coredump found!")
 
     # cleanup test server
     req = urllib.request.Request(
