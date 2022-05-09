@@ -331,17 +331,17 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="873"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 jest już zablokowany przez %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="875"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Operacja blokady %1 nie powiodła się z powodu błędu %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="877"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Operacja odblokowania na %1 nie powiodła się z powodu błędu %2</translation>
     </message>
 </context>
 <context>
@@ -807,7 +807,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="486"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie aktywności…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="558"/>
@@ -3206,7 +3206,7 @@ o dodatkowe uprawnienia podczas procesu aktualizacji.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="80"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Udostępnianie ekranu, spotkania i konferencje online</translation>
+        <translation>Udostępnianie ekranu, spotkania online i konferencje internetowe</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="95"/>
@@ -4231,7 +4231,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Zablokowane przez %1 - Wygaśnie za %2 minutę</numerusform><numerusform>Zablokowane przez %1 - Wygaśnie za %2 minuty</numerusform><numerusform>Zablokowane przez %1 - Wygaśnie za %2 minut</numerusform><numerusform>Zablokowane przez %1 - Wygaśnie za %2 minut</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="124"/>
@@ -4620,23 +4620,23 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Zablokuj plik</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Odblokuj plik</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Zablokowany przez %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Wygaśnie za %1 minutę</numerusform><numerusform>Wygaśnie za %1 minuty</numerusform><numerusform>Wygaśnie za %1 minut</numerusform><numerusform>Wygaśnie za %1 minut</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -5608,7 +5608,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation>Udostępnianie ekranu, spotkania i konferencje online</translation>
+        <translation>Udostępnianie ekranu, spotkania online i konferencje internetowe</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="114"/>
