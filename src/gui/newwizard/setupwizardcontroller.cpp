@@ -175,7 +175,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
         auto *messageBox = new QMessageBox(
             QMessageBox::Warning,
             tr("Insecure connection"),
-            tr("The URL you are trying to connect to is insecure. Are you sure you want to connect to this server?"),
+            tr("The connection to %1 is insecure.\nAre you sure you want to proceed?").arg(_accountBuilder.serverUrl().toString()),
             QMessageBox::NoButton,
             _wizardWindow);
 
@@ -185,7 +185,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
         messageBox->addButton(tr("Confirm"), QMessageBox::YesRole);
 
         connect(messageBox, &QMessageBox::rejected, this, [showFirstPage]() {
-            showFirstPage(tr("Insecure URL rejected by user"));
+            showFirstPage(tr("Insecure server rejected by user"));
         });
 
         connect(messageBox, &QMessageBox::accepted, this, [this, showFirstPage]() {
