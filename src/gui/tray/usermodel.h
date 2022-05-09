@@ -12,7 +12,6 @@
 #include "accountfwd.h"
 #include "accountmanager.h"
 #include "folderman.h"
-#include "notificationcache.h"
 #include "userstatusselectormodel.h"
 #include "userstatusconnector.h"
 #include <chrono>
@@ -76,7 +75,6 @@ public:
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
 
 signals:
-    void guiLog(const QString &, const QString &);
     void nameChanged();
     void hasLocalFolderChanged();
     void serverHasTalkChanged();
@@ -124,7 +122,7 @@ private:
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
 
-    void showDesktopNotification(const QString &title, const QString &message);
+    void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
 
 private:
     AccountStatePtr _account;
@@ -138,7 +136,7 @@ private:
     QHash<AccountState *, QElapsedTimer> _timeSinceLastCheck;
 
     QElapsedTimer _guiLogTimer;
-    NotificationCache _notificationCache;
+    QSet<long> _notifiedNotifications;
     QMimeDatabase _mimeDb;
 
     // number of currently running notification requests. If non zero,
