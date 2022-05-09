@@ -21,6 +21,7 @@
 #include "logger.h"
 #include "configfile.h"
 #include "ocsnavigationappsjob.h"
+#include "ocsuserstatusconnector.h"
 #include "pushnotifications.h"
 
 #include <QSettings>
@@ -58,6 +59,8 @@ AccountState::AccountState(AccountPtr account)
         this, &AccountState::slotCredentialsAsked);
     connect(account.data(), &Account::pushNotificationsReady,
             this, &AccountState::slotPushNotificationsReady);
+    connect(account.data(), &Account::serverUserStatusChanged, this,
+        &AccountState::slotServerUserStatusChanged);
 
     connect(this, &AccountState::isConnectedChanged, [=]{
         // Get the Apps available on the server if we're now connected.
@@ -556,6 +559,11 @@ void AccountState::slotPushNotificationsReady()
     if (state() != AccountState::State::Connected) {
         setState(AccountState::State::Connected);
     }
+}
+
+void AccountState::slotServerUserStatusChanged()
+{
+    setDesktopNotificationsAllowed(_account->userStatusConnector()->userStatus().state() != UserStatus::OnlineStatus::DoNotDisturb);
 }
 
 void AccountState::slotNavigationAppsFetched(const QJsonDocument &reply, int statusCode)
