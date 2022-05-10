@@ -20,7 +20,6 @@ set(client_UI_SRCS
     sharelinkwidget.ui
     shareusergroupwidget.ui
     shareuserline.ui
-    sslerrordialog.ui
     tlserrordialog.ui
     proxyauthdialog.ui
     notificationwidget.ui
@@ -62,7 +61,6 @@ set(client_SRCS
     shareusergroupwidget.cpp
     sharee.cpp
     sslbutton.cpp
-    sslerrordialog.cpp
     tlserrordialog.cpp
     syncrunfilelog.cpp
     systray.cpp

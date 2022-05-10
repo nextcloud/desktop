@@ -37,7 +37,6 @@
 #include "config.h"
 #include "csync_exclude.h"
 #include "networkjobs/jsonjob.h"
-#include "simplesslerrorhandler.h"
 #include "syncengine.h"
 
 #include "theme.h"
@@ -541,8 +540,6 @@ int main(int argc, char **argv)
         f.close();
     }
 
-    SimpleSslErrorHandler *sslErrorHandler = new SimpleSslErrorHandler;
-
 #ifdef TOKEN_AUTH_ONLY
     TokenCredentials *cred = new TokenCredentials(ctx.user, password, "");
     account->setCredentials(cred);
@@ -555,7 +552,6 @@ int main(int argc, char **argv)
 #endif
 
     ctx.account->setUrl(ctx.credentialFreeUrl);
-    ctx.account->setSslErrorHandler(sslErrorHandler);
 
     // Perform a call to get the capabilities.
     auto capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);

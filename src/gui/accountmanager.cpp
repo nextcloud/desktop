@@ -15,7 +15,6 @@
 #include "accountmanager.h"
 #include "configfile.h"
 #include "creds/credentialmanager.h"
-#include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include "common/asserts.h"
 #include <theme.h>
@@ -388,7 +387,6 @@ void AccountManager::deleteAccount(AccountStatePtr account)
 AccountPtr AccountManager::createAccount()
 {
     AccountPtr acc = Account::create();
-    acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
     return acc;

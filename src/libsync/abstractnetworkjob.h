@@ -40,8 +40,6 @@ OWNCLOUDSYNC_EXPORT QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJo
 
 namespace OCC {
 
-class AbstractSslErrorHandler;
-
 using HeaderMap = QMap<QByteArray, QByteArray>;
 
 /**

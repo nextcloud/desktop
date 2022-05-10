@@ -38,7 +38,6 @@
 #include "settingsdialog.h"
 #include "sharedialog.h"
 #include "socketapi/socketapi.h"
-#include "sslerrordialog.h"
 #include "theme.h"
 #include "translations.h"
 #include "updater/ocupdater.h"
@@ -53,9 +52,14 @@
 #include <libcrashreporter-handler/Handler.h>
 #endif
 
-#include <QTranslator>
+#include <QCommandLineParser>
+#include <QDir>
+#include <QLibraryInfo>
 #include <QMenu>
 #include <QMessageBox>
+#include <QScopeGuard>
+#include <QTranslator>
+
 #pragma push_macro("QT_DISABLE_DEPRECATED_BEFORE")
 #undef QT_DISABLE_DEPRECATED_BEFORE
 #define QT_DISABLE_DEPRECATED_BEFORE 0

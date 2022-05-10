@@ -55,17 +55,6 @@ class SimpleNetworkJob;
 
 
 /**
- * @brief Reimplement this to handle SSL errors from libsync
- * @ingroup libsync
- */
-class AbstractSslErrorHandler
-{
-public:
-    virtual ~AbstractSslErrorHandler() {}
-    virtual bool handleErrors(const QList<QSslError> &, const QSslConfiguration &conf, QList<QSslCertificate> *, AccountPtr) = 0;
-};
-
-/**
  * @brief The Account class represents an account on an ownCloud Server
  * @ingroup libsync
  *
@@ -172,9 +161,6 @@ public:
     // the next unknown certificate is encountered.
     void resetRejectedCertificates();
 
-    // pluggable handler
-    void setSslErrorHandler(AbstractSslErrorHandler *handler);
-
     // To be called by credentials only, for storing username and the like
     QVariant credentialSetting(const QString &key) const;
     void setCredentialSetting(const QString &key, const QVariant &value);
@@ -236,7 +222,6 @@ public:
 public slots:
     /// Used when forgetting credentials
     void clearAMCache();
-    void slotHandleSslErrors(QPointer<QNetworkReply>, const QList<QSslError> &);
 
 signals:
     /// Triggered by handleInvalidCredentials()
@@ -283,7 +268,6 @@ private:
     QSet<QSslCertificate> _approvedCerts;
     Capabilities _capabilities;
     QString _serverVersion;
-    QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;
     QuotaInfo *_quotaInfo;
     QSharedPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
