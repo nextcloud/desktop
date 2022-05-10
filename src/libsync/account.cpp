@@ -230,6 +230,7 @@ void Account::resetAccessManager()
     // Use a QSharedPointer to allow locking the life of the AM on the stack.
     // Make it call deleteLater to make sure that we can return to any AM stack frames safely.
     _am = QSharedPointer<AccessManager>(_credentials->createAM(), &QObject::deleteLater);
+    _am->setCustomTrustedCaCertificates(approvedCerts());
 
     _am->setCookieJar(jar); // takes ownership of the old cookie jar
     connect(_am.data(), &QNetworkAccessManager::sslErrors, this,
