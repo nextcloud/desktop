@@ -39,9 +39,13 @@ public:
     QNetworkAccessManager* create(QObject *parent) override;
 };
 
-#ifdef Q_OS_OSX
+#ifdef Q_OS_MACOS
+void setUserNotificationCenterDelegate();
+void checkNotificationAuth();
+void registerNotificationCategories(const QString &localizedDownloadString);
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
+void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double statusBarThickness();
 #endif
@@ -71,6 +75,7 @@ public:
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
+    void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
     void setToolTip(const QString &tip);
     bool isOpen();
     QString windowTitle() const;
