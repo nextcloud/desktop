@@ -2215,7 +2215,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>Napredne možnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Ustvari arhiv razhroščevanja</translation>
     </message>
@@ -2251,6 +2251,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>Uredi &amp;neusklajevane datoteke</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Ustvari arhiv razhroščevanja</translation>

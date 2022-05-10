@@ -2217,7 +2217,7 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>Avanzado</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Crear Archivo de Depuración …</translation>
     </message>
@@ -2253,6 +2253,7 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>Editar archivos &amp;ignorados</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Crear archivo de depuración</translation>
