@@ -1191,17 +1191,17 @@ private slots:
 
         // Simulate another process requesting the open
         QEventLoop loop;
-        bool openResult = false;
-        bool readResult = false;
+        const QString filePath = fakeFolder.localPath() + "online/sub/file1";
         std::thread t([&] {
-            QFile file(fakeFolder.localPath() + "online/sub/file1");
-            openResult = file.open(QFile::ReadOnly);
-            readResult = !file.readAll().isEmpty();
-            file.close();
+            QFile file(filePath);
+            if (file.open(QFile::ReadOnly)) {
+                file.readAll();
+                file.close();
+            }
             QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
         });
+        t.detach();
         loop.exec();
-        t.join();
 
         if (errorKind == NoError) {
             CFVERIFY_NONVIRTUAL(fakeFolder, "online/sub/file1");
