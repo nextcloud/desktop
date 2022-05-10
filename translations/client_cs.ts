@@ -2214,7 +2214,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Vytvořit archiv s informacemi pro ladění…</translation>
     </message>
@@ -2250,6 +2250,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Upravit &amp;ignorované soubory</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Vytvořit archiv s informacemi pro ladění</translation>

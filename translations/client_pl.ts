@@ -2215,7 +2215,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
         <translation>Zaawansowane</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Utwórz archiwum debugowania…</translation>
     </message>
@@ -2251,6 +2251,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
         <translation>Edytuj pliki ign&amp;orowane</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Utwórz archiwum debugowania</translation>

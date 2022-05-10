@@ -2206,7 +2206,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>创建调试存档 ...</translation>
     </message>
@@ -2242,6 +2242,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>编辑忽略的文件(&amp;I)</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>创建调试存档</translation>

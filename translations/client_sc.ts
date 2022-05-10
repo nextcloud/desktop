@@ -2216,7 +2216,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
         <translation>Avantzadu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Crea archìviu de debug …</translation>
     </message>
@@ -2252,6 +2252,7 @@ Si custu fiat un&apos;errore e detzides de mantènnere is archìvios tuos, custo
         <translation>Mustra &amp;Ignora archìvios</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Crea archìviu de debug</translation>

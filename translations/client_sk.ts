@@ -2215,7 +2215,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Rozšírené</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Vytvoriť archív s informáciami pre ladenie...</translation>
     </message>
@@ -2251,6 +2251,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Editovať &amp;ignorované súbory</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Vytvoriť debug archív</translation>

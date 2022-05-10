@@ -2184,7 +2184,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Avançat</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation>Crear un archiu de debugatge…</translation>
     </message>
@@ -2220,6 +2220,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Modificar los fichièrs &amp;ignorats</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation>Crear un archiu de debugatge</translation>
