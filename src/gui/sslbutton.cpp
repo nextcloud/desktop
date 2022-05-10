@@ -60,7 +60,7 @@ static bool isSelfSigned(const QSslCertificate &certificate)
 }
 
 QMenu *SslButton::buildCertMenu(QMenu *parent, const QSslCertificate &cert,
-    const QList<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates)
+    const QSet<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates)
 {
     QString cn = QStringList(cert.subjectInfo(QSslCertificate::CommonName)).join(QChar(';'));
     QString ou = QStringList(cert.subjectInfo(QSslCertificate::OrganizationalUnitName)).join(QChar(';'));
@@ -206,7 +206,7 @@ void SslButton::slotUpdateMenu()
             _menu->addAction(tr("No support for SSL session tickets/identifiers"))->setEnabled(false);
         }
 
-        QList<QSslCertificate> chain = account->_peerCertificateChain;
+        QList<QSslCertificate> chain = { account->_peerCertificateChain.cbegin(), account->_peerCertificateChain.cend() };
 
         if (chain.isEmpty()) {
             qCWarning(lcSsl) << "Empty certificate chain";

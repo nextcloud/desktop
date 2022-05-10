@@ -109,7 +109,7 @@ bool SslErrorDialog::checkFailingCertsKnown(const QList<QSslError> &errors)
 
     QStringList errorStrings;
 
-    QList<QSslCertificate> trustedCerts = _account->approvedCerts();
+    const auto trustedCerts = _account->approvedCerts();
 
     for (int i = 0; i < errors.count(); ++i) {
         QSslError error = errors.at(i);

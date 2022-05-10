@@ -448,7 +448,8 @@ bool CheckServerJob::installed(const QJsonObject &info)
 static void mergeSslConfigurationForSslButton(const QSslConfiguration &config, AccountPtr account)
 {
     if (config.peerCertificateChain().length() > 0) {
-        account->_peerCertificateChain = config.peerCertificateChain();
+        const auto certs = config.peerCertificateChain();
+        account->_peerCertificateChain = { certs.cbegin(), certs.cend() };
     }
     if (!config.sessionCipher().isNull()) {
         account->_sessionCipher = config.sessionCipher();

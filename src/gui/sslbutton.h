@@ -43,7 +43,7 @@ public slots:
 
 private:
     QMenu *buildCertMenu(QMenu *parent, const QSslCertificate &cert,
-        const QList<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates);
+        const QSet<QSslCertificate> &userApproved, int pos, const QList<QSslCertificate> &systemCaCertificates);
     AccountStatePtr _accountState;
     QMenu *_menu;
 };

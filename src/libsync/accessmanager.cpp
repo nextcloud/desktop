@@ -99,16 +99,16 @@ QSet<QSslCertificate> AccessManager::customTrustedCaCertificates()
 void AccessManager::setCustomTrustedCaCertificates(const QSet<QSslCertificate> &certificates)
 {
     _customTrustedCaCertificates = certificates;
+    // we have to terminate the existing (cached) connection to make the access manager re-evaluate the certificate sent by the server
+    clearConnectionCache();
 }
 
 void AccessManager::addCustomTrustedCaCertificates(const QList<QSslCertificate> &certificates)
 {
     _customTrustedCaCertificates.unite({ certificates.begin(), certificates.end() });
-}
 
-void AccessManager::addCustomTrustedCaCertificate(const QSslCertificate &certificate)
-{
-    _customTrustedCaCertificates.insert(certificate);
+    // we have to terminate the existing (cached) connection to make the access manager re-evaluate the certificate sent by the server
+    clearConnectionCache();
 }
 
 } // namespace OCC

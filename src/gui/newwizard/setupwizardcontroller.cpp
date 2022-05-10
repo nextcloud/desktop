@@ -289,10 +289,8 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
             connect(
                 resolveJob, &CoreJob::caCertificateAccepted, this, [this](const QSslCertificate &caCertificate) {
                     // future requests made through this access manager should accept the certificate
-                    _accessManager->addCustomTrustedCaCertificate(caCertificate);
+                    _accessManager->addCustomTrustedCaCertificates({ caCertificate });
 
-                    // we have to terminate the existing (cached) connection to make the access manager re-evaluate the certificate sent by the server
-                    _accessManager->clearConnectionCache();
 
                     // the account maintains a list, too, which is also saved in the config file
                     _accountBuilder.addCustomTrustedCaCertificate(caCertificate);

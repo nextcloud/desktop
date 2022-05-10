@@ -163,13 +163,13 @@ public:
     // Because of bugs in Qt, we use this to store info needed for the SSL Button
     QSslCipher _sessionCipher;
     QByteArray _sessionTicket;
-    QList<QSslCertificate> _peerCertificateChain;
+    QSet<QSslCertificate> _peerCertificateChain;
 
 
     /** The certificates of the account */
-    QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
-    void setApprovedCerts(const QList<QSslCertificate> certs);
-    void addApprovedCerts(const QList<QSslCertificate> certs);
+    QSet<QSslCertificate> approvedCerts() const { return _approvedCerts; }
+    void setApprovedCerts(const QList<QSslCertificate> &certs);
+    void addApprovedCerts(const QList<QSslCertificate> &certs);
 
     // Usually when a user explicitly rejects a certificate we don't
     // ask again. After this call, a dialog will again be shown when
@@ -287,7 +287,7 @@ private:
     QMap<QString, QVariant> _settingsMap;
     QUrl _url;
 
-    QList<QSslCertificate> _approvedCerts;
+    QSet<QSslCertificate> _approvedCerts;
     QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
     QString _serverVersion;
@@ -298,7 +298,7 @@ private:
     bool _http2Supported = false;
 
     /// Certificates that were explicitly rejected by the user
-    QList<QSslCertificate> _rejectedCertificates;
+    QSet<QSslCertificate> _rejectedCertificates;
 
     static QString _configFileName;
 

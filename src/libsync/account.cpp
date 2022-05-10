@@ -292,16 +292,16 @@ QSslConfiguration Account::getOrCreateSslConfig()
     return sslConfig;
 }
 
-void Account::setApprovedCerts(const QList<QSslCertificate> certs)
+void Account::setApprovedCerts(const QList<QSslCertificate> &certs)
 {
-    _approvedCerts = certs;
-    _am->setCustomTrustedCaCertificates({ certs.begin(), certs.end() });
+    _approvedCerts = { certs.begin(), certs.end() };
+    _am->setCustomTrustedCaCertificates(_approvedCerts);
 }
 
-void Account::addApprovedCerts(const QList<QSslCertificate> certs)
+void Account::addApprovedCerts(const QList<QSslCertificate> &certs)
 {
-    _approvedCerts += certs;
-    _am->addCustomTrustedCaCertificates(certs);
+    _approvedCerts.unite({ certs.begin(), certs.end() });
+    _am->setCustomTrustedCaCertificates(_approvedCerts);
 }
 
 void Account::resetRejectedCertificates()
@@ -412,7 +412,7 @@ void Account::slotHandleSslErrors(QPointer<QNetworkReply> reply, const QList<QSs
             // Mark all involved certificates as rejected, so we don't ask the user again.
             for (const auto &error : qAsConst(filteredErrors)) {
                 if (!_rejectedCertificates.contains(error.certificate())) {
-                    _rejectedCertificates.append(error.certificate());
+                    _rejectedCertificates.insert(error.certificate());
                 }
             }
         }
