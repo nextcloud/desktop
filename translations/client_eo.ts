@@ -2202,7 +2202,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Detalaj agordoj</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.ui" line="319"/>
+        <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
         <translation type="unfinished"/>
     </message>
@@ -2238,6 +2238,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Redakti &amp;ignoritajn dosierojn</translation>
     </message>
     <message>
+        <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="473"/>
         <source>Create Debug Archive</source>
         <translation type="unfinished"/>
