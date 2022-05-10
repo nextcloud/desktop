@@ -193,7 +193,7 @@ void OCUpdater::setDownloadState(DownloadState state)
     // or once for system based updates.
     if (_state == OCUpdater::DownloadComplete || (oldState != OCUpdater::UpdateOnlyAvailableThroughSystem
                                                      && _state == OCUpdater::UpdateOnlyAvailableThroughSystem)) {
-        emit newUpdateAvailable(tr("Update Check"), statusString());
+        emit newUpdateAvailable(tr("Update Check"), statusString(), _updateInfo.web());
     }
 }
 

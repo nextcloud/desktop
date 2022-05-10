@@ -372,7 +372,7 @@ Application::Application(int &argc, char **argv)
     // Update checks
     auto *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
-        _gui.data(), &ownCloudGui::slotShowTrayMessage);
+        _gui.data(), &ownCloudGui::slotShowTrayUpdateMessage);
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
 #endif
