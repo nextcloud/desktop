@@ -99,7 +99,11 @@ Systray::Systray()
 
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
 
-#ifndef Q_OS_MAC
+#ifdef Q_OS_MACOS
+    setUserNotificationCenterDelegate();
+    checkNotificationAuth();
+    registerNotificationCategories(QString(tr("Download")));
+#else
     auto contextMenu = new QMenu();
     if (AccountManager::instance()->accounts().isEmpty()) {
         contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
@@ -294,6 +298,16 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
     {
         QSystemTrayIcon::showMessage(title, message, icon);
     }
+}
+
+void Systray::showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl)
+{
+#ifdef Q_OS_MACOS
+    sendOsXUpdateNotification(title, message, webUrl);
+#else // TODO: Implement custom notifications (i.e. actionable) for other OSes
+    Q_UNUSED(webUrl);
+    showMessage(title, message);
+#endif
 }
 
 void Systray::setToolTip(const QString &tip)
