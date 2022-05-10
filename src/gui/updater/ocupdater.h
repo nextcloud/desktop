@@ -71,7 +71,7 @@ public:
     UpdaterScheduler(QObject *parent);
 
 signals:
-    void updaterAnnouncement(const QString &title, const QString &msg);
+    void updaterAnnouncement(const QString &title, const QString &msg, const QUrl &webUrl);
     void requestRestart();
 
 private slots:
@@ -116,7 +116,7 @@ public:
 
 signals:
     void downloadStateChanged();
-    void newUpdateAvailable(const QString &header, const QString &message);
+    void newUpdateAvailable(const QString &header, const QString &message, const QUrl &webUrl);
     void requestRestart();
 
 public slots:
