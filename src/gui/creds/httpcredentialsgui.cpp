@@ -30,8 +30,6 @@
 #include <QTimer>
 
 
-using namespace QKeychain;
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcHttpCredentialsGui, "sync.credentials.http.gui", QtInfoMsg)

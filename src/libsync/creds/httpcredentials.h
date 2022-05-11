@@ -27,12 +27,6 @@
 class QNetworkReply;
 class QAuthenticator;
 
-namespace QKeychain {
-class Job;
-class WritePasswordJob;
-class ReadPasswordJob;
-}
-
 namespace OCC {
 
 /*
