@@ -88,7 +88,7 @@ void ProxyAuthHandler::handleProxyAuthenticationRequired(
         // Since we go into an event loop, it's possible for the account's qnam
         // to be destroyed before we get back. We can use this to check for its
         // liveness.
-        sending_qnam = account->sharedAccessManager().data();
+        sending_qnam = account->accessManager();
     }
     if (!sending_qnam) {
         qCWarning(lcProxy) << "Could not get the sending QNAM for" << sender();

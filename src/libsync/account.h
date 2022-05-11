@@ -205,7 +205,6 @@ public:
     void clearCookieJar();
 
     AccessManager *accessManager();
-    [[deprecated]] QSharedPointer<AccessManager> sharedAccessManager();
 
     JobQueue *jobQueue();
 
@@ -263,7 +262,7 @@ private:
     Capabilities _capabilities;
     QString _serverVersion;
     QuotaInfo *_quotaInfo;
-    QSharedPointer<AccessManager> _am;
+    QPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
 

@@ -152,8 +152,7 @@ void Account::setCredentials(AbstractCredentials *cred)
     if (_am) {
         jar = _am->cookieJar();
         jar->setParent(nullptr);
-
-        _am.reset();
+        _am->deleteLater();
     }
 
     // The order for these two is important! Reading the credential's
@@ -161,10 +160,7 @@ void Account::setCredentials(AbstractCredentials *cred)
     _credentials.reset(cred);
     cred->setAccount(this);
 
-    // Note: This way the QNAM can outlive the Account and Credentials.
-    // This is necessary to avoid issues with the QNAM being deleted while
-    // processing slotHandleSslErrors().
-    _am.reset(_credentials->createAM(), &QObject::deleteLater);
+    _am = _credentials->createAM();
 
     if (jar) {
         _am->setCookieJar(jar);
@@ -201,11 +197,6 @@ void Account::clearCookieJar()
 AccessManager *Account::accessManager()
 {
     return _am.data();
-}
-
-QSharedPointer<AccessManager> Account::sharedAccessManager()
-{
-    return _am;
 }
 
 QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, QNetworkRequest req, QIODevice *data)
