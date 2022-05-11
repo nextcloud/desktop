@@ -5544,12 +5544,12 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="210"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="213"/>
         <source>Invalid certificate detected</source>
         <translation>Tzertificadu imbàlidu rilevadu</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="211"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="214"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation> Su retzidore &quot;%1&quot; at frunidu unu tzertificadu imbàlidu. Cheres sighire?</translation>
     </message>
