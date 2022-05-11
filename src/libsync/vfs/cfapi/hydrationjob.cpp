@@ -242,8 +242,15 @@ void OCC::HydrationJob::cancel()
 
 void OCC::HydrationJob::emitFinished(Status status)
 {
+    qCInfo(lcHydration) 
+         << "void OCC::HydrationJob::emitFinished(Status status) _status:" << _status
+         << "_transferDataSocket:" << _transferDataSocket
+         << "_signalSocket:" << _signalSocket;
+
     _status = status;
     _signalSocket->close();
+
+    qCInfo(lcHydration) << "void OCC::HydrationJob::emitFinished(Status status) after _signalSocket->close()";
 
     if (status == Success) {
         connect(_transferDataSocket, &QLocalSocket::disconnected, this, [=] {
@@ -254,6 +261,7 @@ void OCC::HydrationJob::emitFinished(Status status)
         return;
     }
     _transferDataSocket->close();
+    qCInfo(lcHydration) << "void OCC::HydrationJob::emitFinished(Status status) after _transferDataSocket";
 
     emit finished(this);
 }
