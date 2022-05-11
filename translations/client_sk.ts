@@ -5544,12 +5544,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::WebEnginePage</name>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="210"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="213"/>
         <source>Invalid certificate detected</source>
         <translation>Bol zistený neplatný certifikát</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/webview.cpp" line="211"/>
+        <location filename="../src/gui/wizard/webview.cpp" line="214"/>
         <source>The host &quot;%1&quot; provided an invalid certificate. Continue?</source>
         <translation>Hostiteľ &quot;%1&quot; poskytol neplatný certifikát. Chcete pokračovať?</translation>
     </message>
