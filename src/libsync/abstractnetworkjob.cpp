@@ -368,8 +368,9 @@ void AbstractNetworkJob::abort()
         // calling abort will trigger the execution of finished()
         // with _reply->error() == QNetworkReply::OperationCanceledError
         // the api user can then decide whether to discard this job or retry it.
-        _reply->abort();
+        // The order is important, mark as _aborted before we abort the reply which will trigger slotFinished
         _aborted = true;
+        _reply->abort();
     } else {
         deleteLater();
     }

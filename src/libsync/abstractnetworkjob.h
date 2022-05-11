@@ -81,6 +81,7 @@ public:
 
     auto timeoutSec() const { return _timeout; }
     bool timedOut() const { return _timedout; }
+    bool aborted() const { return _aborted; }
 
     /** Returns an error message, if any. */
     QString errorString() const;
