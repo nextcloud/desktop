@@ -46,11 +46,11 @@ if __name__ == "__main__":
 
     x86_64_app_file = sys.argv[1]
     if not os.path.exists(x86_64_app_file):
-        print("Can't create universal: Path {} already exists".format(x86_64_app_file))
+        print("Can't create universal: Path {} does not exist".format(x86_64_app_file))
         sys.exit(1)
     arm64_app_file = sys.argv[2]
     if not os.path.exists(arm64_app_file):
-        print("Can't create universal: Path {} already exists".format(arm64_app_file))
+        print("Can't create universal: Path {} does not exist".format(arm64_app_file))
         sys.exit(1)
     output_dir = sys.argv[3]
 
@@ -68,15 +68,17 @@ if __name__ == "__main__":
     # Now walk through the copied arm64 version and replace the binaries
     for root, dirs, files in os.walk(universal_app_file):
         for f in files:
-            absoulte_file_path = os.path.join(root, f)
+            absolute_file_path = os.path.join(root, f)
             root_relative = path_relative_to_package(universal_app_file, root)
             x86_64_absolute_path = os.path.join(x86_64_app_file, root_relative, f)
             arm64_absolute_path = os.path.join(arm64_app_file, root_relative, f)
-            if os.path.islink(absoulte_file_path) or not is_executable(absoulte_file_path):
+            if os.path.islink(absolute_file_path) or not is_executable(absolute_file_path):
                 continue
             try:
-                execute(["lipo", "-create", "-output", absoulte_file_path, arm64_absolute_path, x86_64_absolute_path])
+                print(f"Going to merge {arm64_absolute_path} with {x86_64_absolute_path} into {absolute_file_path}")
+                execute(["lipo", "-create", "-output", absolute_file_path, arm64_absolute_path, x86_64_absolute_path])
+                print(execute(["lipo", "-info", absolute_file_path]))
             except:
-                print("Could not merge {} with {} into {}!".format(arm64_absolute_path, x86_64_absolute_path, absoulte_file_path))
+                print(f"Could not merge {arm64_absolute_path} with {x86_64_absolute_path} into {absolute_file_path}!")
 
     print("Finished :)")
