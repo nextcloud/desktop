@@ -243,9 +243,6 @@ public slots:
     void slotHandleSslErrors(QPointer<QNetworkReply>, const QList<QSslError> &);
 
 signals:
-    /// Emitted whenever there's network activity
-    void propagatorNetworkActivity();
-
     /// Triggered by handleInvalidCredentials()
     void invalidCredentials();
 

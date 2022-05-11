@@ -107,9 +107,6 @@ void GETFileJob::start()
     if (_bandwidthManager) {
         _bandwidthManager->registerDownloadJob(this);
     }
-
-    connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
-
     AbstractNetworkJob::start();
 }
 

@@ -86,8 +86,6 @@ void PUTFileJob::start()
     req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
 
     sendRequest("PUT", req, _device);
-
-    connect(this, &AbstractNetworkJob::networkActivity, account().data(), &Account::propagatorNetworkActivity);
     _requestTimer.start();
     AbstractNetworkJob::start();
 }

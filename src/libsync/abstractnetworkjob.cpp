@@ -173,12 +173,6 @@ void AbstractNetworkJob::adoptRequest(QPointer<QNetworkReply> reply)
     _request = _reply->request();
 
     connect(_reply, &QNetworkReply::finished, this, &AbstractNetworkJob::slotFinished);
-    connect(_reply, &QNetworkReply::encrypted, this, &AbstractNetworkJob::networkActivity);
-    connect(_reply->manager(), &QNetworkAccessManager::proxyAuthenticationRequired, this, &AbstractNetworkJob::networkActivity);
-    connect(_reply, &QNetworkReply::sslErrors, this, &AbstractNetworkJob::networkActivity);
-    connect(_reply, &QNetworkReply::metaDataChanged, this, &AbstractNetworkJob::networkActivity);
-    connect(_reply, &QNetworkReply::downloadProgress, this, &AbstractNetworkJob::networkActivity);
-    connect(_reply, &QNetworkReply::uploadProgress, this, &AbstractNetworkJob::networkActivity);
 
     newReplyHook(_reply);
 }

@@ -130,7 +130,6 @@ signals:
      * \a reply is never null
      */
     void networkError(QNetworkReply *reply);
-    void networkActivity();
 
 protected:
     /** Initiate a network request, returning a QNetworkReply.
