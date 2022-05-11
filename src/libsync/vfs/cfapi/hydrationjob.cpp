@@ -248,7 +248,9 @@ void OCC::HydrationJob::emitFinished(Status status)
          << "_signalSocket:" << _signalSocket;
 
     _status = status;
-    _signalSocket->close();
+    if (_signalSocket) {
+        _signalSocket->close();
+    }
 
     qCInfo(lcHydration) << "void OCC::HydrationJob::emitFinished(Status status) after _signalSocket->close()";
 
