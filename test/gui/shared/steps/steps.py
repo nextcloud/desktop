@@ -429,6 +429,11 @@ def step(context, type, resource):
     waitForFileOrFolderToSync(context, resource, type)
 
 
+@Given(r'user has waited for (file|folder) to be synced', regexp=True)
+def step(context, type, resource):
+    waitForFileOrFolderToSync(context, resource, type)
+
+
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
 def step(context, type, resource):
     waitForFileOrFolderToHaveSyncError(context, resource, type)
@@ -705,13 +710,11 @@ def step(context, filename):
 @Then('the file "|any|" should be blacklisted')
 def step(context, filename):
     activity = Activity()
-    activity.checkBlackListedFileExist(filename)
-
-
-@When('the user waits until at least a file is blacklisted')
-def step(context):
-    activity = Activity()
-    activity.checkAtLeastABlacklistedFile()
+    test.compare(
+        True,
+        activity.checkBlackListedResourceExist(context, filename),
+        "File is blacklisted",
+    )
 
 
 @When('the user selects "|any|" tab in the activity')
