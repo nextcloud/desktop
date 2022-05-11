@@ -468,6 +468,7 @@ void CheckServerJob::newReplyHook(QNetworkReply *reply)
 {
     connect(reply, &QNetworkReply::metaDataChanged, this, &CheckServerJob::metaDataChangedSlot);
     connect(reply, &QNetworkReply::encrypted, this, &CheckServerJob::encryptedSlot);
+    connect(reply, &QNetworkReply::sslErrors, this, &CheckServerJob::sslErrors);
     connect(reply, &QNetworkReply::redirected, this, [reply, this] {
         const auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (code == 302 || code == 307) {

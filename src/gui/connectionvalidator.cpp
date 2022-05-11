@@ -22,10 +22,11 @@
 #include "account.h"
 #include "clientproxy.h"
 #include "connectionvalidator.h"
+#include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 #include "networkjobs/jsonjob.h"
 #include "theme.h"
-#include <creds/abstractcredentials.h>
+#include "tlserrordialog.h"
 
 using namespace std::chrono_literals;
 
@@ -98,6 +99,8 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 // The actual check
 void ConnectionValidator::slotCheckServerAndAuth()
 {
+    // ensure we receive ssl errors
+    _account->resetAccessManager();
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setClearCookies(_clearCookies);
     checkJob->setTimeout(timeoutToUse);
@@ -108,6 +111,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
         _errors.append(tr("timeout"));
         reportResult(Timeout);
     });
+    connect(checkJob, &CheckServerJob::sslErrors, this, &ConnectionValidator::sslErrors);
     checkJob->start();
 }
 
@@ -235,6 +239,7 @@ void ConnectionValidator::checkServerCapabilities()
 {
     // The main flow now needs the capabilities
     auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/capabilities"), {}, {}, this);
+    job->setAuthenticationJob(true);
     job->setTimeout(timeoutToUse);
 
     QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
@@ -257,6 +262,7 @@ void ConnectionValidator::fetchUser()
 {
     auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/cloud/user"), {}, {}, this);
     job->setTimeout(timeoutToUse);
+    job->setAuthenticationJob(true);
     QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
         const QString user = job->data().value("ocs").toObject().value("data").toObject().value("id").toString();
         if (!user.isEmpty()) {
@@ -275,6 +281,7 @@ void ConnectionValidator::fetchUser()
 #ifndef TOKEN_AUTH_ONLY
         if (capabilities.isValid() && capabilities.avatarsAvailable()) {
             auto *job = new AvatarJob(_account, _account->davUser(), 128, this);
+            job->setAuthenticationJob(true);
             job->setTimeout(20s);
             QObject::connect(job, &AvatarJob::avatarPixmap, this, &ConnectionValidator::slotAvatarImage);
             job->start();

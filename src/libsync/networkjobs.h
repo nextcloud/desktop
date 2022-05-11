@@ -236,6 +236,8 @@ signals:
      */
     void timeout(const QUrl &url);
 
+    void sslErrors(const QList<QSslError> &errors);
+
 private:
     bool finished() override;
 private slots:

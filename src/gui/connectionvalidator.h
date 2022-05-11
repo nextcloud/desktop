@@ -112,6 +112,8 @@ public slots:
 signals:
     void connectionResult(ConnectionValidator::Status status, const QStringList &errors);
 
+    void sslErrors(const QList<QSslError> &errors);
+
 protected slots:
     /// Checks authentication only.
     void checkAuthentication();

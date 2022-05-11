@@ -34,6 +34,7 @@ namespace OCC {
 
 class AccountState;
 class Account;
+class TlsErrorDialog;
 
 /**
  * @brief Extra info about an ownCloud server account.
@@ -169,6 +170,7 @@ private:
     QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QPointer<UpdateUrlDialog> _updateUrlDialog;
+    QPointer<TlsErrorDialog> _tlsDialog;
 
     /**
      * Starts counting when the server starts being back up after 503 or

@@ -268,15 +268,11 @@ void Account::setApprovedCerts(const QList<QSslCertificate> &certs)
     _am->setCustomTrustedCaCertificates(_approvedCerts);
 }
 
-void Account::addApprovedCerts(const QList<QSslCertificate> &certs)
+void Account::addApprovedCerts(const QSet<QSslCertificate> &certs)
 {
-    _approvedCerts.unite({ certs.begin(), certs.end() });
+    _approvedCerts.unite(certs);
     _am->setCustomTrustedCaCertificates(_approvedCerts);
-}
-
-void Account::resetRejectedCertificates()
-{
-    _rejectedCertificates.clear();
+    Q_EMIT wantsAccountSaved(this);
 }
 
 void Account::setUrl(const QUrl &url)

@@ -154,12 +154,7 @@ public:
     /** The certificates of the account */
     QSet<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> &certs);
-    void addApprovedCerts(const QList<QSslCertificate> &certs);
-
-    // Usually when a user explicitly rejects a certificate we don't
-    // ask again. After this call, a dialog will again be shown when
-    // the next unknown certificate is encountered.
-    void resetRejectedCertificates();
+    void addApprovedCerts(const QSet<QSslCertificate> &certs);
 
     // To be called by credentials only, for storing username and the like
     QVariant credentialSetting(const QString &key) const;
@@ -211,7 +206,7 @@ public:
 
     void resetAccessManager();
     AccessManager *accessManager();
-    QSharedPointer<AccessManager> sharedAccessManager();
+    [[deprecated]] QSharedPointer<AccessManager> sharedAccessManager();
 
     JobQueue *jobQueue();
 
@@ -272,11 +267,6 @@ private:
     QSharedPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
-
-    /// Certificates that were explicitly rejected by the user
-    QSet<QSslCertificate> _rejectedCertificates;
-
-    static QString _configFileName;
 
     JobQueue _jobQueue;
     JobQueueGuard _queueGuard;

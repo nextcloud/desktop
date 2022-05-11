@@ -180,9 +180,6 @@ void AbstractNetworkJob::adoptRequest(QPointer<QNetworkReply> reply)
 void AbstractNetworkJob::slotFinished()
 {
     _finished = true;
-    if (_reply->error() == QNetworkReply::SslHandshakeFailedError) {
-        qCWarning(lcNetworkJob) << "SslHandshakeFailedError:" << errorString() << ": can be caused by a webserver wanting SSL client certificates";
-    }
     if (_reply->error() != QNetworkReply::NoError) {
         if (_account->jobQueue()->retry(this)) {
             qCDebug(lcNetworkJob) << "Queuing: " << _reply->url() << " for retry";

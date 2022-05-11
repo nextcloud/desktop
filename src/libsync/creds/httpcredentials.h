@@ -28,6 +28,7 @@ class QNetworkReply;
 class QAuthenticator;
 
 namespace OCC {
+class OAuth;
 
 /*
    The authentication system is this way because of Shibboleth.
@@ -90,7 +91,7 @@ protected:
 
     QString _fetchErrorString;
     bool _ready = false;
-    bool _isRenewingOAuthToken = false;
+    QPointer<OAuth> _oAuthJob;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;

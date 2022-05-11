@@ -1,0 +1,7 @@
+Change: Rewrote TLS error handling
+
+We rewrote the way we handle TLS errors.
+
+https://github.com/owncloud/client/issues/9655
+https://github.com/owncloud/client/pull/9643
+https://github.com/owncloud/client/pull/9667

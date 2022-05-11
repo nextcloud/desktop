@@ -19,6 +19,8 @@
 #include "configfile.h"
 #include "creds/abstractcredentials.h"
 #include "creds/httpcredentials.h"
+#include "gui/settingsdialog.h"
+#include "gui/tlserrordialog.h"
 #include "logger.h"
 #include "settingsdialog.h"
 #include "theme.h"
@@ -262,6 +264,10 @@ void AccountState::checkConnectivity(bool blockJobs)
     if (isSignedOut() || _waitingForNewCredentials) {
         return;
     }
+    if (_tlsDialog) {
+        qCDebug(lcAccountState) << "Skip checkConnectivity, waiting for tls dialog";
+        return;
+    }
 
     if (_connectionValidator && blockJobs && !_queueGuard.queue()->isBlocked()) {
         // abort already running non blocking validator
@@ -278,22 +284,18 @@ void AccountState::checkConnectivity(bool blockJobs)
     if (!account()->credentials()->wasFetched()) {
         _waitingForNewCredentials = true;
         account()->credentials()->fetchFromKeychain();
-        return;
     }
-    // we are not properly setup yet
-    if (!account()->hasCapabilities()) {
-        return;
-    }
-
-    // IF the account is connected the connection check can be skipped
-    // if the last successful etag check job is not so long ago.
-    const auto pta = account()->capabilities().remotePollInterval();
-    const auto polltime = duration_cast<seconds>(ConfigFile().remotePollInterval(pta));
-    const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
-    if (!blockJobs && isConnected() && _timeOfLastETagCheck.isValid()
-        && elapsed <= polltime.count()) {
-        qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
-        return;
+    if (account()->hasCapabilities()) {
+        // IF the account is connected the connection check can be skipped
+        // if the last successful etag check job is not so long ago.
+        const auto pta = account()->capabilities().remotePollInterval();
+        const auto polltime = duration_cast<seconds>(ConfigFile().remotePollInterval(pta));
+        const auto elapsed = _timeOfLastETagCheck.secsTo(QDateTime::currentDateTimeUtc());
+        if (!blockJobs && isConnected() && _timeOfLastETagCheck.isValid()
+            && elapsed <= polltime.count()) {
+            qCDebug(lcAccountState) << account()->displayName() << "The last ETag check succeeded within the last " << polltime.count() << "s (" << elapsed << "s). No connection check needed!";
+            return;
+        }
     }
 
     if (blockJobs) {
@@ -302,6 +304,30 @@ void AccountState::checkConnectivity(bool blockJobs)
     _connectionValidator = new ConnectionValidator(account());
     connect(_connectionValidator, &ConnectionValidator::connectionResult,
         this, &AccountState::slotConnectionValidatorResult);
+
+    connect(_connectionValidator, &ConnectionValidator::sslErrors, this, [blockJobs, this](const QList<QSslError> &errors) {
+        if (!_tlsDialog) {
+            _tlsDialog = new TlsErrorDialog(errors, _account->url().host(), ocApp()->gui()->settingsDialog());
+            _tlsDialog->setAttribute(Qt::WA_DeleteOnClose);
+            QSet<QSslCertificate> certs;
+            certs.reserve(errors.size());
+            for (const auto &error : errors) {
+                certs << error.certificate();
+            }
+            connect(_tlsDialog, &TlsErrorDialog::accepted, _tlsDialog, [certs, blockJobs, this]() {
+                _account->addApprovedCerts(certs);
+                _tlsDialog.clear();
+                _waitingForNewCredentials = false;
+                checkConnectivity(blockJobs);
+            });
+            connect(_tlsDialog, &TlsErrorDialog::rejected, this, [certs, this]() {
+                setState(SignedOut);
+            });
+
+            _tlsDialog->show();
+        }
+        ocApp()->gui()->raiseDialog(_tlsDialog);
+    });
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
@@ -313,16 +339,12 @@ void AccountState::checkConnectivity(bool blockJobs)
         }
     } else {
         // Check the server and then the auth.
-
-        // Let's try this for all OS and see if it fixes the Qt issues we have on Linux  #4720 #3888 #4051
-        // There seems to be a bug in Qt on Windows where QNAM sometimes stops
-        // working correctly after the computer woke up from sleep. See #2895 #2899
-        // and #2973.
-        // As an attempted workaround, reset the QNAM regularly if the account is
-        // disconnected.
-        account()->clearCookieJar();
-        account()->resetAccessManager();
-        _connectionValidator->checkServerAndUpdate();
+        if (_waitingForNewCredentials) {
+            _connectionValidator->checkServer();
+        } else {
+            account()->clearCookieJar();
+            _connectionValidator->checkServerAndUpdate();
+        }
     }
 }
 
@@ -380,7 +402,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         slotInvalidCredentials();
         break;
     case ConnectionValidator::SslError:
-        setState(SignedOut);
+        // handled with the tlsDialog
         break;
     case ConnectionValidator::ServiceUnavailable:
         _timeSinceMaintenanceOver.invalidate();

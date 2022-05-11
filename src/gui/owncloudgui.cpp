@@ -960,7 +960,6 @@ void ownCloudGui::slotUpdateProgress(Folder *folder, const ProgressInfo &progres
 void ownCloudGui::slotLogin()
 {
     if (auto account = qvariant_cast<AccountStatePtr>(sender()->property(propertyAccountC))) {
-        account->account()->resetRejectedCertificates();
         account->signIn();
     } else {
         for (const auto &a : AccountManager::instance()->accounts()) {

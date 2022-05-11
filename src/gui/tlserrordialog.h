@@ -28,7 +28,7 @@ class TlsErrorDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit TlsErrorDialog(const QList<QSslError> &sslErrors, const QString &host, QWidget *parent = nullptr);
+    explicit TlsErrorDialog(const QList<QSslError> &sslErrors, const QString &host, QWidget *parent);
     ~TlsErrorDialog() override;
 
 private:

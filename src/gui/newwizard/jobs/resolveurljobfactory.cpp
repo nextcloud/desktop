@@ -16,6 +16,9 @@
 
 #include "accessmanager.h"
 #include "common/utility.h"
+#include "gui/application.h"
+#include "gui/owncloudgui.h"
+#include "gui/settingsdialog.h"
 #include "gui/tlserrordialog.h"
 #include "gui/updateurldialog.h"
 
@@ -100,7 +103,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
     connect(reply, &QNetworkReply::finished, job, makeFinishedHandler(reply));
 
     connect(reply, &QNetworkReply::sslErrors, reply, [reply, req, job, makeFinishedHandler, nam = nam()](const QList<QSslError> &errors) mutable {
-        auto *tlsErrorDialog = new TlsErrorDialog(errors, reply->url().host());
+        auto *tlsErrorDialog = new TlsErrorDialog(errors, reply->url().host(), ocApp()->gui()->settingsDialog());
 
         reply->setProperty(abortedBySslErrorHandlerC, true);
         reply->abort();
@@ -118,6 +121,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
         });
 
         tlsErrorDialog->show();
+        ocApp()->gui()->raiseDialog(tlsErrorDialog);
     });
 
     makeRequest();
