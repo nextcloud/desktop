@@ -778,9 +778,9 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
     }
 
     for (const auto &activityLink : activity._links) {
-        if (activityLink._verb == QStringLiteral("DELETE")
-            || (activity._objectType == QStringLiteral("chat") || activity._objectType == QStringLiteral("call")
-                || activity._objectType == QStringLiteral("room"))) {
+        if (activityLink._primary
+            || activityLink._verb == QStringLiteral("DELETE")
+            || activityLink._verb == QStringLiteral("WEB")) {
             customList << ActivityListModel::convertLinkToActionButton(activityLink);
         }
     }
