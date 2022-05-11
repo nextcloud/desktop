@@ -156,10 +156,6 @@ public:
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *data = nullptr);
 
-    /** The ssl configuration during the first connection */
-    QSslConfiguration getOrCreateSslConfig();
-    QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
-    void setSslConfiguration(const QSslConfiguration &config);
     // Because of bugs in Qt, we use this to store info needed for the SSL Button
     QSslCipher _sessionCipher;
     QByteArray _sessionTicket;
@@ -285,7 +281,6 @@ private:
     QUrl _url;
 
     QSet<QSslCertificate> _approvedCerts;
-    QSslConfiguration _sslConfiguration;
     Capabilities _capabilities;
     QString _serverVersion;
     QScopedPointer<AbstractSslErrorHandler> _sslErrorHandler;

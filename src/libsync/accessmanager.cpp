@@ -80,11 +80,15 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
     // for some reason, passing an empty list causes the default chain to be removed
     // this behavior does not match the documentation
+    auto sslConfiguration = newRequest.sslConfiguration();
+
+    sslConfiguration.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
+    sslConfiguration.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
+    sslConfiguration.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
     if (!_customTrustedCaCertificates.isEmpty()) {
-        auto sslConfiguration = newRequest.sslConfiguration();
         sslConfiguration.addCaCertificates({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
-        newRequest.setSslConfiguration(sslConfiguration);
     }
+    newRequest.setSslConfiguration(sslConfiguration);
 
     const auto reply = QNetworkAccessManager::createRequest(op, newRequest, outgoingData);
     HttpLogger::logRequest(reply, op, outgoingData);

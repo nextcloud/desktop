@@ -315,19 +315,13 @@ void AccountState::checkConnectivity(bool blockJobs)
         // Check the server and then the auth.
 
         // Let's try this for all OS and see if it fixes the Qt issues we have on Linux  #4720 #3888 #4051
-        //#ifdef Q_OS_WIN
         // There seems to be a bug in Qt on Windows where QNAM sometimes stops
         // working correctly after the computer woke up from sleep. See #2895 #2899
         // and #2973.
         // As an attempted workaround, reset the QNAM regularly if the account is
         // disconnected.
-        account()->resetAccessManager();
-
-        // If we don't reset the ssl config a second CheckServerJob can produce a
-        // ssl config that does not have a sensible certificate chain.
-        account()->setSslConfiguration(QSslConfiguration());
-        //#endif
         account()->clearCookieJar();
+        account()->resetAccessManager();
         _connectionValidator->checkServerAndUpdate();
     }
 }

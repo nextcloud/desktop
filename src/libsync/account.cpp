@@ -253,7 +253,6 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
 {
     Q_ASSERT(verb.isUpper());
     req.setUrl(url);
-    req.setSslConfiguration(this->getOrCreateSslConfig());
     if (verb == "HEAD" && !data) {
         return _am->head(req);
     } else if (verb == "GET" && !data) {
@@ -266,31 +265,6 @@ QNetworkReply *Account::sendRawRequest(const QByteArray &verb, const QUrl &url, 
         return _am->deleteResource(req);
     }
     return _am->sendCustomRequest(req, verb, data);
-}
-
-void Account::setSslConfiguration(const QSslConfiguration &config)
-{
-    _sslConfiguration = config;
-}
-
-QSslConfiguration Account::getOrCreateSslConfig()
-{
-    if (!_sslConfiguration.isNull()) {
-        // Will be set by CheckServerJob::finished()
-        // We need to use a central shared config to get SSL session tickets
-        return _sslConfiguration;
-    }
-
-    // if setting the client certificate fails, you will probably get an error similar to this:
-    //  "An internal error number 1060 happened. SSL handshake failed, client certificate was requested: SSL error: sslv3 alert handshake failure"
-    QSslConfiguration sslConfig = QSslConfiguration::defaultConfiguration();
-
-    // Try hard to re-use session for different requests
-    sslConfig.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
-    sslConfig.setSslOption(QSsl::SslOptionDisableSessionSharing, false);
-    sslConfig.setSslOption(QSsl::SslOptionDisableSessionPersistence, false);
-
-    return sslConfig;
 }
 
 void Account::setApprovedCerts(const QList<QSslCertificate> &certs)

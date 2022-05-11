@@ -488,7 +488,6 @@ void CheckServerJob::setMaxRedirectsAllowed(int maxRedirectsAllowed)
 
 void CheckServerJob::metaDataChangedSlot()
 {
-    account()->setSslConfiguration(reply()->sslConfiguration());
     mergeSslConfigurationForSslButton(reply()->sslConfiguration(), account());
 }
 
