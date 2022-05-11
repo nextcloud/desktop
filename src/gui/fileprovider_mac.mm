@@ -20,12 +20,15 @@
 #include "fileprovider.h"
 
 namespace OCC {
+
+Q_LOGGING_CATEGORY(lcMacFileProvider, "nextcloud.gui.macfileprovider")
+
 namespace Mac {
 
 class FileProviderInitializer::Private {
   public:
     Private() {
-        domainIdentifier = @APPLICATION_REV_DOMAIN;
+        domainIdentifier = @SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN;
         name = @APPLICATION_NAME;
         fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainIdentifier displayName:name];
         setupFileProvider();
