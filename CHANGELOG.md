@@ -14,6 +14,7 @@ Summary
 * Bugfix - Use UTF-8 for .owncloudsync.log: [#9571](https://github.com/owncloud/client/pull/9571)
 * Bugfix - Crash when interacting with a folder in an error state: [#9600](https://github.com/owncloud/client/issues/9600)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
+* Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
@@ -62,6 +63,12 @@ Details
 
    https://github.com/owncloud/client/issues/8938
    https://github.com/owncloud/client/pull/8939
+
+* Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
+
+   We no longer persist cookies over multiple client sessions.
+
+   https://github.com/owncloud/client/issues/9495
 
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 
