@@ -78,6 +78,11 @@ class ConnectionValidator : public QObject
     Q_OBJECT
 public:
     explicit ConnectionValidator(AccountPtr account, QObject *parent = nullptr);
+    enum class ValidationMode {
+        ValidateServer,
+        ValidateAuth,
+        ValidateAuthAndUpdate
+    };
 
     enum Status {
         Undefined,
@@ -105,8 +110,8 @@ public:
 
 public slots:
     /// Checks the server and the authentication.
-    void checkServer();
-    void checkServerAndUpdate();
+    void checkServer(ConnectionValidator::ValidationMode mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate);
+
     void systemProxyLookupDone(const QNetworkProxy &proxy);
 
 signals:
@@ -142,9 +147,11 @@ private:
 
     QStringList _errors;
     AccountPtr _account;
-    bool _updateConfig = true;
     bool _clearCookies = false;
+
+    ConnectionValidator::ValidationMode _mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
 };
 }
+
 
 #endif // CONNECTIONVALIDATOR_H

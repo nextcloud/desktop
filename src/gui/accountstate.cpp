@@ -188,8 +188,6 @@ void AccountState::setState(State state)
             // ensure the connection validator is done
             _queueGuard.unblock();
         });
-    } else {
-        _queueGuard.clear();
     }
     // don't anounce a state change from connected to connected
     // https://github.com/owncloud/client/commit/2c6c21d7532f0cbba4b768fde47810f6673ed931
@@ -328,24 +326,26 @@ void AccountState::checkConnectivity(bool blockJobs)
         }
         ocApp()->gui()->raiseDialog(_tlsDialog);
     });
+    ConnectionValidator::ValidationMode mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
     if (isConnected()) {
         // Use a small authed propfind as a minimal ping when we're
         // already connected.
         if (blockJobs) {
             _connectionValidator->setClearCookies(true);
-            _connectionValidator->checkServer();
+            mode = ConnectionValidator::ValidationMode::ValidateAuth;
         } else {
-            _connectionValidator->checkServerAndUpdate();
+            mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
         }
     } else {
         // Check the server and then the auth.
         if (_waitingForNewCredentials) {
-            _connectionValidator->checkServer();
+            mode = ConnectionValidator::ValidationMode::ValidateServer;
         } else {
-            account()->clearCookieJar();
-            _connectionValidator->checkServerAndUpdate();
+            _connectionValidator->setClearCookies(true);
+            mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
         }
     }
+    _connectionValidator->checkServer(mode);
 }
 
 void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors)

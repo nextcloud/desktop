@@ -201,10 +201,7 @@ public:
     void setHttp2Supported(bool value) { _http2Supported = value; }
 
     void clearCookieJar();
-    void lendCookieJarTo(QNetworkAccessManager *guest);
-    QString cookieJarPath();
 
-    void resetAccessManager();
     AccessManager *accessManager();
     [[deprecated]] QSharedPointer<AccessManager> sharedAccessManager();
 

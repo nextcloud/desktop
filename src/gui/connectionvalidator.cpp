@@ -51,14 +51,9 @@ void ConnectionValidator::setClearCookies(bool clearCookies)
     _clearCookies = clearCookies;
 }
 
-void ConnectionValidator::checkServer()
+void ConnectionValidator::checkServer(ConnectionValidator::ValidationMode mode)
 {
-    _updateConfig = false;
-    checkServerAndUpdate();
-}
-
-void ConnectionValidator::checkServerAndUpdate()
-{
+    _mode = mode;
     if (!_account) {
         _errors << tr("No ownCloud account configured");
         reportResult(NotConfigured);
@@ -75,7 +70,7 @@ void ConnectionValidator::checkServerAndUpdate()
         // We want to reset the QNAM proxy so that the global proxy settings are used (via ClientProxy settings)
         _account->accessManager()->setProxy(QNetworkProxy(QNetworkProxy::DefaultProxy));
         // use a queued invocation so we're as asynchronous as with the other code path
-        QMetaObject::invokeMethod(this, "slotCheckServerAndAuth", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, &ConnectionValidator::slotCheckServerAndAuth, Qt::QueuedConnection);
     }
 }
 
@@ -100,7 +95,8 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     // ensure we receive ssl errors
-    _account->resetAccessManager();
+    qDebug() << "reset";
+    //_account->accessManager()->clearConnectionCache();
     CheckServerJob *checkJob = new CheckServerJob(_account, this);
     checkJob->setClearCookies(_clearCookies);
     checkJob->setTimeout(timeoutToUse);
@@ -148,7 +144,11 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     }
 
     // now check the authentication
-    QTimer::singleShot(0, this, &ConnectionValidator::checkAuthentication);
+    if (_mode != ConnectionValidator::ValidationMode::ValidateServer) {
+        checkAuthentication();
+    } else {
+        reportResult(Connected);
+    }
 }
 
 // status.php could not be loaded (network or server issue!).
@@ -227,12 +227,11 @@ void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 void ConnectionValidator::slotAuthSuccess()
 {
     _errors.clear();
-    if (!_updateConfig) {
-        reportResult(Connected);
+    if (_mode != ConnectionValidator::ValidationMode::ValidateAuth) {
+        checkServerCapabilities();
         return;
     }
-
-    checkServerCapabilities();
+    reportResult(Connected);
 }
 
 void ConnectionValidator::checkServerCapabilities()
