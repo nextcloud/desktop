@@ -37,9 +37,9 @@ void AbstractCoreJobFactory::setJobResult(CoreJob *job, const QVariant &result)
     job->setResult(result);
 }
 
-void AbstractCoreJobFactory::setJobError(CoreJob *job, const QString &errorMessage, const QNetworkReply::NetworkError networkError)
+void AbstractCoreJobFactory::setJobError(CoreJob *job, const QString &errorMessage, QNetworkReply *reply)
 {
-    job->setError(errorMessage, networkError);
+    job->setError(errorMessage, reply);
 }
 
 const QVariant &CoreJob::result() const
@@ -52,9 +52,9 @@ const QString &CoreJob::errorMessage() const
     return _errorMessage;
 }
 
-QNetworkReply::NetworkError CoreJob::networkError() const
+QNetworkReply *CoreJob::reply() const
 {
-    return _networkError;
+    return _reply;
 }
 
 bool CoreJob::success() const
@@ -72,12 +72,12 @@ void CoreJob::setResult(const QVariant &result)
     Q_EMIT finished();
 }
 
-void CoreJob::setError(const QString &errorMessage, QNetworkReply::NetworkError networkError)
+void CoreJob::setError(const QString &errorMessage, QNetworkReply *reply)
 {
     assertNotFinished();
 
     _errorMessage = errorMessage;
-    _networkError = networkError;
+    _reply = reply;
 
     Q_EMIT finished();
 }

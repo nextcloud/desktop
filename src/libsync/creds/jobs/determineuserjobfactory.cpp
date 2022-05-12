@@ -55,7 +55,7 @@ CoreJob *DetermineUserJobFactory::startJob(const QUrl &url)
         qCDebug(lcDetermineUserJob) << "data:" << data;
 
         if (reply->error() != QNetworkReply::NoError || statusCode != 200) {
-            setJobError(job, tr("Failed to retrieve user info"), reply->error());
+            setJobError(job, tr("Failed to retrieve user info"), reply);
         } else {
             qCWarning(lcDetermineUserJob) << data;
 
@@ -66,7 +66,7 @@ CoreJob *DetermineUserJobFactory::startJob(const QUrl &url)
                 const QString user = json.object().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
                 setJobResult(job, user);
             } else {
-                setJobError(job, error.errorString(), reply->error());
+                setJobError(job, error.errorString(), reply);
             }
         }
     });

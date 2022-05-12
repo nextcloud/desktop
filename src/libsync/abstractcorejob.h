@@ -42,7 +42,8 @@ public:
     [[nodiscard]] const QVariant &result() const;
 
     [[nodiscard]] const QString &errorMessage() const;
-    [[nodiscard]] QNetworkReply::NetworkError networkError() const;
+
+    [[nodiscard]] QNetworkReply *reply() const;
 
     [[nodiscard]] bool success() const;
 
@@ -58,9 +59,9 @@ protected:
      * Set job error details. This emits the finished() signal, and marks the job as failed.
      * The job result or error can be set only once.
      * @param errorMessage network error or other suitable error message
-     * @param networkError network error instance or NoError if the error is not caused by a network issue
+     * @param reply reply received from server
      */
-    void setError(const QString &errorMessage, QNetworkReply::NetworkError networkError);
+    void setError(const QString &errorMessage, QNetworkReply *reply = nullptr);
 
 Q_SIGNALS:
     /**
@@ -84,7 +85,7 @@ private:
     QVariant _result;
 
     QString _errorMessage;
-    QNetworkReply::NetworkError _networkError = QNetworkReply::NoError;
+    QNetworkReply *_reply = nullptr;
 };
 
 
@@ -128,7 +129,7 @@ protected:
      * @param errorMessage network error or other suitable error message
      * @param networkError network error instance or NoError if the error is not caused by a network issue
      */
-    static void setJobError(CoreJob *job, const QString &errorMessage, const QNetworkReply::NetworkError networkError);
+    static void setJobError(CoreJob *job, const QString &errorMessage, QNetworkReply *reply);
 
     /**
      * Factory to create QNetworkRequests with properly set timeout.

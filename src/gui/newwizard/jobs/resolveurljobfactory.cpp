@@ -53,7 +53,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
                     return;
                 }
 
-                setJobError(job, tr("Failed to resolve the url %1, error: %2").arg(oldUrl.toDisplayString(), reply->errorString()), reply->error());
+                setJobError(job, tr("Failed to resolve the url %1, error: %2").arg(oldUrl.toDisplayString(), reply->errorString()), reply);
                 qCWarning(lcResolveUrl) << job->errorMessage();
                 return;
             }
@@ -86,7 +86,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
                     });
 
                     connect(dialog, &UpdateUrlDialog::rejected, job, [=]() {
-                        setJobError(job, tr("User rejected redirect from %1 to %2").arg(oldUrl.toDisplayString(), newUrl.toDisplayString()), QNetworkReply::InsecureRedirectError);
+                        setJobError(job, tr("User rejected redirect from %1 to %2").arg(oldUrl.toDisplayString(), newUrl.toDisplayString()), nullptr);
                     });
 
                     dialog->show();
@@ -114,7 +114,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
         });
 
         connect(tlsErrorDialog, &TlsErrorDialog::rejected, job, [job]() {
-            setJobError(job, tr("User rejected invalid SSL certificate"), QNetworkReply::SslHandshakeFailedError);
+            setJobError(job, tr("User rejected invalid SSL certificate"), nullptr);
         });
 
         tlsErrorDialog->show();
