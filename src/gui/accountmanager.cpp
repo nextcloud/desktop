@@ -250,7 +250,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(davUserDisplyNameC(), acc->_displayName);
     settings.setValue(userUUIDC(), acc->uuid());
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
-    settings.setValue(capabilitesC(), acc->capabilities().raw());
+    if (acc->hasCapabilities()) {
+        settings.setValue(capabilitesC(), acc->capabilities().raw());
+    }
     if (acc->hasDefaultSyncRoot()) {
         settings.setValue(defaultSyncRootC(), acc->defaultSyncRoot());
     }
