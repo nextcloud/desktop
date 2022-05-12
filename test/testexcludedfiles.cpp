@@ -746,11 +746,11 @@ private slots:
         QCOMPARE(excludedFiles->_excludeFiles[folder2].first(), folder2ExcludeList);
     }
     
-    void testReloadExcludeFiles_fileDoesNotExist_returnFalse() {
+    void testReloadExcludeFiles_fileDoesNotExist_returnTrue() {
         excludedFiles.reset(new ExcludedFiles());
         const QString nonExistingFile("directory/.sync-exclude.lst");
         excludedFiles->addExcludeFilePath(nonExistingFile);
-        QCOMPARE(excludedFiles->reloadExcludeFiles(), false);
+        QCOMPARE(excludedFiles->reloadExcludeFiles(), true);
         QCOMPARE(excludedFiles->_allExcludes.size(), 0);
     }
     
