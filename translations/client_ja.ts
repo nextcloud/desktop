@@ -5248,6 +5248,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
+        <source>Download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Add account</source>
         <translation>アカウントを追加</translation>
     </message>
@@ -5742,14 +5747,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ログイン…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
-        <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>リモート &quot;%1&quot; での変更を確認中 </translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>ログアウト</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>リモート &quot;%1&quot; での変更を確認中 </translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
