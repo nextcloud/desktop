@@ -1013,7 +1013,10 @@ void Folder::slotSyncStarted()
 
 void Folder::slotSyncFinished(bool success)
 {
-    Q_ASSERT(isReady());
+    if (!isReady()) {
+        // probably removing the folder
+        return;
+    }
     qCInfo(lcFolder) << "Client version" << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner);
 
     bool syncError = !_syncResult.errorStrings().isEmpty();
