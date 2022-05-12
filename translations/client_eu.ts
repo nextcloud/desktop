@@ -5252,6 +5252,11 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
+        <source>Download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Add account</source>
         <translation>Gehitu kontua</translation>
     </message>
@@ -5746,14 +5751,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Hasi saioa …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
-        <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Urruneko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Saioa bukatu</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Urruneko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>

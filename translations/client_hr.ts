@@ -5252,6 +5252,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
+        <source>Download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Add account</source>
         <translation>Dodaj račun</translation>
     </message>
@@ -5746,14 +5751,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Prijava…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
-        <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Provjera za promjene u udaljenom „%1”</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Odjava</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Provjera za promjene u udaljenom „%1”</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>

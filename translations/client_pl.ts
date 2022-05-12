@@ -5252,6 +5252,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
+        <source>Download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Add account</source>
         <translation>Dodaj konto</translation>
     </message>
@@ -5746,14 +5751,14 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Zaloguj…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
-        <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Sprawdzanie zmian w zdalnym &quot;%1&quot;</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Wyloguj</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Sprawdzanie zmian w zdalnym &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>

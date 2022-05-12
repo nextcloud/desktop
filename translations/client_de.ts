@@ -5251,6 +5251,11 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <name>OCC::Systray</name>
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
+        <source>Download</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Add account</source>
         <translation>Konto hinzufügen</translation>
     </message>
@@ -5745,14 +5750,14 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Anmelden …</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
-        <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation>Nach Änderungen in entfernten &quot;%1&quot; suchen</translation>
-    </message>
-    <message>
         <location filename="../src/gui/owncloudgui.cpp" line="419"/>
         <source>Log out</source>
         <translation>Abmelden</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <source>Checking for changes in remote &quot;%1&quot;</source>
+        <translation>Nach Änderungen in entfernten &quot;%1&quot; suchen</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="421"/>
