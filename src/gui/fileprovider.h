@@ -15,19 +15,32 @@
 #ifndef FILEPROVIDER_H
 #define FILEPROVIDER_H
 
+#include <QObject>
+#include <QScopedPointer>
+
+#include "accountstate.h"
+
 namespace OCC {
 namespace Mac {
 
-    class FileProviderInitializer
-    {
-    public:
-        FileProviderInitializer();
-        ~FileProviderInitializer();
+class FileProvider : public QObject
+{
+public:
+    static FileProvider *instance();
+    ~FileProvider() override;
 
-    private:
-        class Private;
-        Private *d;
-    };
+    void setupFileProviderDomains();
+
+public slots:
+    void addFileProviderDomainForAccount(AccountState *account);
+    void removeFileProviderDomainForAccount(AccountState *account);
+
+private:
+    explicit FileProvider(QObject *parent = nullptr);
+    static FileProvider *_instance;
+    class Private;
+    QScopedPointer<Private> d;
+};
 
 } // namespace Mac
 } // namespace OCC

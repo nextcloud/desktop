@@ -78,7 +78,7 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
-    Mac::FileProviderInitializer fileProviderInit;
+    const auto fileProvider = OCC::Mac::FileProvider::instance();
 #endif
 
     auto surfaceFormat = QSurfaceFormat::defaultFormat();

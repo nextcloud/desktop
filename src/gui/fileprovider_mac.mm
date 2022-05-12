@@ -25,46 +25,118 @@ Q_LOGGING_CATEGORY(lcMacFileProvider, "nextcloud.gui.macfileprovider")
 
 namespace Mac {
 
-class FileProviderInitializer::Private {
+FileProvider *FileProvider::_instance = nullptr;
+
+class FileProvider::Private {
   public:
-    Private() {
-        domainIdentifier = @SOCKETAPI_TEAM_IDENTIFIER_PREFIX APPLICATION_REV_DOMAIN;
-        name = @APPLICATION_NAME;
-        fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:domainIdentifier displayName:name];
-        setupFileProvider();
+    Private()
+    {
     }
 
     ~Private() = default;
 
-    void setupFileProvider() {
+    void addFileProviderDomain(const QString &domainName, const QString &accountId)
+    {
+        qCDebug(lcMacFileProvider) << "Adding new file provider domain for account with id: " << accountId;
+
+        if(_registeredDomains.contains(accountId) && _registeredDomains.value(accountId) != nil) {
+            qCDebug(lcMacFileProvider) << "File provider domain for account with id already exists: " << accountId;
+            return;
+        }
+
+        NSFileProviderDomain *fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:accountId.toNSString() displayName:domainName.toNSString()];
         [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError *error) {
             if(error) {
-                NSLog(@"Add file provider domain: %i %@", [error code], [error localizedDescription]);
+                qCDebug(lcMacFileProvider) << "Error adding file provider domain: " << [error code] << [error localizedDescription];
             }
         }];
+
+        _registeredDomains.insert(accountId, fileProviderDomain);
     }
 
-    void removeFileProvider() {
+    void removeFileProviderDomain(const QString &accountId)
+    {
+        qCDebug(lcMacFileProvider) << "Removing file provider domain for account with id: " << accountId;
+
+        if(!_registeredDomains.contains(accountId)) {
+            qCDebug(lcMacFileProvider) << "File provider domain not found for id: " << accountId;
+            return;
+        }
+
+        NSFileProviderDomain* fileProviderDomain = _registeredDomains[accountId];
+
         [NSFileProviderManager removeDomain:fileProviderDomain completionHandler:^(NSError *error) {
             if(error) {
-                NSLog(@"Remove file provider domain: %i %@", [error code], [error localizedDescription]);
+                qCDebug(lcMacFileProvider) << "Error removing file provider domain: " << [error code] << [error localizedDescription];
+            }
+        }];
+
+        NSFileProviderDomain* domain = _registeredDomains.take(accountId);
+        [domain release];
+    }
+
+    void removeAllFileProviderDomains()
+    {
+        qCDebug(lcMacFileProvider) << "Removing all file provider domains.";
+
+        [NSFileProviderManager removeAllDomainsWithCompletionHandler:^(NSError *error) {
+            if(error) {
+                qCDebug(lcMacFileProvider) << "Error removing all file provider domains: " << [error code] << [error localizedDescription];
             }
         }];
     }
 
-    NSFileProviderDomainIdentifier domainIdentifier;
-    NSString *name;
-    NSFileProviderDomain *fileProviderDomain;
+private:
+    QHash<QString, NSFileProviderDomain*> _registeredDomains;
 };
 
-FileProviderInitializer::FileProviderInitializer() {
-    d = new FileProviderInitializer::Private();
-    d->setupFileProvider();
+FileProvider::FileProvider(QObject *parent)
+    : QObject(parent)
+{
+    d.reset(new FileProvider::Private());
+    d->checkExistingProviders();
+
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+             this, &FileProvider::addFileProviderDomainForAccount);
+    connect(AccountManager::instance(), &AccountManager::accountRemoved,
+             this, &FileProvider::removeFileProviderDomainForAccount);
+
+    setupFileProviderDomains(); // Initially fetch accounts in manager
 }
 
-FileProviderInitializer::~FileProviderInitializer() {
-    d->removeFileProvider();
-    delete d;
+FileProvider::~FileProvider()
+{
+    d->removeAllFileProviderDomains();
+}
+
+FileProvider *FileProvider::instance()
+{
+    if (!_instance) {
+        _instance = new FileProvider();
+    }
+    return _instance;
+}
+
+void FileProvider::setupFileProviderDomains()
+{
+    for(const auto &accountState : AccountManager::instance()->accounts()) {
+        addFileProviderDomainForAccount(accountState.data());
+    }
+}
+
+void FileProvider::addFileProviderDomainForAccount(AccountState *account)
+{
+    const auto accountDisplayName = account->account()->displayName();
+    const auto accountId = account->account()->id();
+
+    d->addFileProviderDomain(accountDisplayName, accountId);
+}
+
+void FileProvider::removeFileProviderDomainForAccount(AccountState* account)
+{
+    const auto accountId = account->account()->id();
+
+    d->removeFileProviderDomain(accountId);
 }
 
 } // namespace Mac
