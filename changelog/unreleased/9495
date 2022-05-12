@@ -1,0 +1,5 @@
+Change: We no longer persist cookies
+
+We no longer persist cookies over multiple client sessions.
+
+https://github.com/owncloud/client/issues/9495

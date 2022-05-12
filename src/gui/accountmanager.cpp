@@ -107,10 +107,6 @@ bool AccountManager::restore()
             if (auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
-                    auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
-                    OC_ASSERT(jar);
-                    if (jar)
-                        jar->restore(acc->cookieJarPath());
                     addAccountState(accState);
                 }
             }
@@ -288,18 +284,6 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         settings.setValue(QLatin1String(caCertsKeyC), certs);
     }
     settings.endGroup();
-
-    // Save cookies.
-    if (acc->_am) {
-        CookieJar *jar = qobject_cast<CookieJar *>(acc->_am->cookieJar());
-        if (jar) {
-            qCInfo(lcAccountManager) << "Saving cookies." << acc->cookieJarPath();
-            if (!jar->save(acc->cookieJarPath()))
-            {
-                qCWarning(lcAccountManager) << "Failed to save cookies to" << acc->cookieJarPath();
-            }
-        }
-    }
 }
 
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)

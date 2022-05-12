@@ -199,7 +199,6 @@ void Account::clearCookieJar()
     OC_ASSERT(jar);
     qCInfo(lcAccount) << "Clearing cookies";
     jar->setAllCookies(QList<QNetworkCookie>());
-    emit wantsAccountSaved(this);
 }
 
 /*! This shares our official cookie jar (containing all the tasty
