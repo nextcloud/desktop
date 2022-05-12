@@ -705,10 +705,10 @@ private slots:
                                 // in case total actions is longer than ActivityListModel::maxActionButtons, then a sum of action buttons and action menu entries must be equal to a total of action links
                                 QVERIFY(actionButtonsLinks.size() + actionsLinksContextMenu.size() == actionsLinks.size());
                             } else {
-                                // in case a total of actions is less or equal to than ActivityListModel::maxActionButtons, then the length of action buttons must be greater than 1 and should contain "Mark as read" button at the end
+                                // in case a total of actions is less or equal to than ActivityListModel::maxActionButtons, then the length of action buttons must be greater than 1 and should contain "Dismiss" button at the end
                                 QVERIFY(actionButtonsLinks.size() > 1);
                                 QVERIFY(actionButtonsLinks[1].value<OCC::ActivityLink>()._label
-                                    == QObject::tr("Mark as read"));
+                                    == QObject::tr("Dismiss"));
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
                             QVERIFY(

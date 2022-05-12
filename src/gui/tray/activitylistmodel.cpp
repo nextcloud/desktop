@@ -798,10 +798,6 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
             QString(replyButtonPath + "/" + OCC::Theme::instance()->wizardHeaderTitleColor().name());
     }
 
-    if (activityLink._verb == QStringLiteral("DELETE")) {
-        activityLinkCopy._label = QObject::tr("Mark as read");
-    }
-
     return QVariant::fromValue(activityLinkCopy);
 }
 
