@@ -199,41 +199,6 @@ void Account::clearCookieJar()
     jar->setAllCookies(QList<QNetworkCookie>());
 }
 
-/*! This shares our official cookie jar (containing all the tasty
-    authentication cookies) with another QNAM while making sure
-    of not losing its ownership. */
-void Account::lendCookieJarTo(QNetworkAccessManager *guest)
-{
-    auto jar = _am->cookieJar();
-    auto oldParent = jar->parent();
-    guest->setCookieJar(jar); // takes ownership of our precious cookie jar
-    jar->setParent(oldParent); // takes it back
-}
-
-QString Account::cookieJarPath()
-{
-    return QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation) + QStringLiteral("/cookies") + id() + QStringLiteral(".db");
-}
-
-void Account::resetAccessManager()
-{
-    if (!_credentials || !_am) {
-        return;
-    }
-
-    qCDebug(lcAccount) << "Resetting QNAM";
-    QNetworkCookieJar *jar = _am->cookieJar();
-
-    // Use a QSharedPointer to allow locking the life of the AM on the stack.
-    // Make it call deleteLater to make sure that we can return to any AM stack frames safely.
-    _am = QSharedPointer<AccessManager>(_credentials->createAM(), &QObject::deleteLater);
-    _am->setCustomTrustedCaCertificates(approvedCerts());
-
-    _am->setCookieJar(jar); // takes ownership of the old cookie jar
-    connect(_am.data(), &QNetworkAccessManager::proxyAuthenticationRequired,
-        this, &Account::proxyAuthenticationRequired);
-}
-
 AccessManager *Account::accessManager()
 {
     return _am.data();

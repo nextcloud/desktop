@@ -376,7 +376,6 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     // Forget account credentials, cookies
     account->account()->credentials()->forgetSensitiveData();
     account->account()->credentialManager()->clear();
-    QFile::remove(account->account()->cookieJarPath());
 
     auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
