@@ -941,12 +941,8 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
     toDisk(rootDir, fileTemplate);
 
     _fakeAm = new FakeAM(fileTemplate);
-    _account = OCC::Account::create();
-    _account->setUrl(QUrl(QStringLiteral("http://admin:admin@localhost/owncloud")));
+    _account = OCC::TestUtils::createDummyAccount();
     _account->setCredentials(new FakeCredentials { _fakeAm });
-    _account->setDavDisplayName(QStringLiteral("fakename"));
-    _account->setServerInfo(QStringLiteral("10.0.0"), QStringLiteral("FakeServer"));
-    _account->setCapabilities(OCC::TestUtils::testCapabilities());
 
     _journalDb.reset(new OCC::SyncJournalDb(localPath() + QStringLiteral(".sync_test.db")));
     // TODO: davUrl

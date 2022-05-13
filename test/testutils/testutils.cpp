@@ -31,8 +31,9 @@ namespace TestUtils {
         HttpCredentialsTest *cred = new HttpCredentialsTest("testuser", "secret");
         acc->setCredentials(cred);
         acc->setUrl(QUrl(QStringLiteral("http://localhost/owncloud")));
-        acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString());
+        acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString(QUuid::WithoutBraces));
         acc->setServerInfo(QStringLiteral("10.0.0"), QStringLiteral("FakeServer"));
+        acc->setCapabilities(OCC::TestUtils::testCapabilities());
         OCC::AccountManager::instance()->addAccount(acc);
         return acc;
     }
