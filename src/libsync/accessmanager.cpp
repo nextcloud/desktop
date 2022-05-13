@@ -114,4 +114,11 @@ void AccessManager::addCustomTrustedCaCertificates(const QList<QSslCertificate> 
     clearConnectionCache();
 }
 
+CookieJar *AccessManager::ownCloudCookieJar() const
+{
+    auto jar = qobject_cast<CookieJar *>(cookieJar());
+    Q_ASSERT(jar);
+    return jar;
+}
+
 } // namespace OCC

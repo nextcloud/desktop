@@ -102,8 +102,8 @@ void ConnectionValidator::slotCheckServerAndAuth()
 
     // do we start with the old cookies or new
     if (!_clearCookies) {
-        const auto accountCookies = qobject_cast<CookieJar *>(_account->accessManager()->cookieJar())->allCookies();
-        qobject_cast<CookieJar *>(nam->cookieJar())->setAllCookies(accountCookies);
+        const auto accountCookies = _account->accessManager()->ownCloudCookieJar()->allCookies();
+        nam->ownCloudCookieJar()->setAllCookies(accountCookies);
     }
 
     auto checkServerJob = CheckServerJobFactory(nam).startJob(_account->url());
@@ -113,12 +113,12 @@ void ConnectionValidator::slotCheckServerAndAuth()
     });
 
     connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, nam, this]() {
+        nam->deleteLater();
         if (checkServerJob->success()) {
             const auto result = checkServerJob->result().value<CheckServerJobResult>();
 
             // adopt the new cookies
-            const auto newCookies = qobject_cast<CookieJar *>(nam->cookieJar())->allCookies();
-            qobject_cast<CookieJar *>(_account->accessManager()->cookieJar())->setAllCookies(newCookies);
+            _account->accessManager()->setCookieJar(nam->cookieJar());
 
             slotStatusFound(result.serverUrl(), result.statusObject());
         } else {

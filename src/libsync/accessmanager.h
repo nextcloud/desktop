@@ -22,6 +22,7 @@ class QByteArray;
 class QUrl;
 
 namespace OCC {
+class CookieJar;
 
 /**
  * @brief The AccessManager class
@@ -46,6 +47,8 @@ public:
      * Warning calling those will break running network jobs
      */
     void addCustomTrustedCaCertificates(const QList<QSslCertificate> &certificates);
+
+    CookieJar *ownCloudCookieJar() const;
 
 protected:
     QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData = nullptr) override;

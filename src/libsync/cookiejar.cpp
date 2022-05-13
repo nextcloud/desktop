@@ -36,37 +36,4 @@ CookieJar::~CookieJar()
 {
 }
 
-bool CookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
-{
-    if (QNetworkCookieJar::setCookiesFromUrl(cookieList, url)) {
-        Q_EMIT newCookiesForUrl(cookieList, url);
-        return true;
-    }
-
-    return false;
-}
-
-QList<QNetworkCookie> CookieJar::cookiesForUrl(const QUrl &url) const
-{
-    QList<QNetworkCookie> cookies = QNetworkCookieJar::cookiesForUrl(url);
-    qCDebug(lcCookieJar) << url << "requests:" << cookies;
-    return cookies;
-}
-
-void CookieJar::clearSessionCookies()
-{
-    setAllCookies(removeExpired(allCookies()));
-}
-
-QList<QNetworkCookie> CookieJar::removeExpired(const QList<QNetworkCookie> &cookies)
-{
-    QList<QNetworkCookie> updatedList;
-    for (const auto &cookie : cookies) {
-        if (cookie.expirationDate() > QDateTime::currentDateTimeUtc() && !cookie.isSessionCookie()) {
-            updatedList << cookie;
-        }
-    }
-    return updatedList;
-}
-
 } // namespace OCC

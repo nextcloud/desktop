@@ -193,10 +193,9 @@ QUrl Account::davUrl() const
  */
 void Account::clearCookieJar()
 {
-    auto jar = qobject_cast<CookieJar *>(_am->cookieJar());
-    OC_ASSERT(jar);
     qCInfo(lcAccount) << "Clearing cookies";
-    jar->setAllCookies(QList<QNetworkCookie>());
+    _am->cookieJar()->deleteLater();
+    _am->setCookieJar(new CookieJar);
 }
 
 AccessManager *Account::accessManager()
