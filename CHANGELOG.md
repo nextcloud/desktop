@@ -16,6 +16,7 @@ Summary
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
+* Change - Rewrote TLS error handling: [#9655](https://github.com/owncloud/client/issues/9655)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
@@ -76,6 +77,14 @@ Details
    We removed the support for Windows < 10 sidebar links.
 
    https://github.com/owncloud/client/pull/9618
+
+* Change - Rewrote TLS error handling: [#9655](https://github.com/owncloud/client/issues/9655)
+
+   We rewrote the way we handle TLS errors.
+
+   https://github.com/owncloud/client/issues/9655
+   https://github.com/owncloud/client/pull/9643
+   https://github.com/owncloud/client/pull/9667
 
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 
