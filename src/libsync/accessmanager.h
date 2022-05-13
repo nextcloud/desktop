@@ -50,6 +50,11 @@ public:
 
     CookieJar *ownCloudCookieJar() const;
 
+    /***
+     * Remove all errors for already accepted certificates
+     */
+    QList<QSslError> filterSslErrors(const QList<QSslError> &errors) const;
+
 protected:
     QNetworkReply *createRequest(QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData = nullptr) override;
 

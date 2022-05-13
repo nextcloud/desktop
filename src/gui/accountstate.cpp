@@ -305,26 +305,32 @@ void AccountState::checkConnectivity(bool blockJobs)
 
     connect(_connectionValidator, &ConnectionValidator::sslErrors, this, [blockJobs, this](const QList<QSslError> &errors) {
         if (!_tlsDialog) {
-            _tlsDialog = new TlsErrorDialog(errors, _account->url().host(), ocApp()->gui()->settingsDialog());
-            _tlsDialog->setAttribute(Qt::WA_DeleteOnClose);
-            QSet<QSslCertificate> certs;
-            certs.reserve(errors.size());
-            for (const auto &error : errors) {
-                certs << error.certificate();
-            }
-            connect(_tlsDialog, &TlsErrorDialog::accepted, _tlsDialog, [certs, blockJobs, this]() {
-                _account->addApprovedCerts(certs);
-                _tlsDialog.clear();
-                _waitingForNewCredentials = false;
-                checkConnectivity(blockJobs);
-            });
-            connect(_tlsDialog, &TlsErrorDialog::rejected, this, [certs, this]() {
-                setState(SignedOut);
-            });
+            // ignore errors for already accepted certificates
+            auto filteredErrors = _account->accessManager()->filterSslErrors(errors);
+            if (!filteredErrors.isEmpty()) {
+                _tlsDialog = new TlsErrorDialog(filteredErrors, _account->url().host(), ocApp()->gui()->settingsDialog());
+                _tlsDialog->setAttribute(Qt::WA_DeleteOnClose);
+                QSet<QSslCertificate> certs;
+                certs.reserve(filteredErrors.size());
+                for (const auto &error : filteredErrors) {
+                    certs << error.certificate();
+                }
+                connect(_tlsDialog, &TlsErrorDialog::accepted, _tlsDialog, [certs, blockJobs, this]() {
+                    _account->addApprovedCerts(certs);
+                    _tlsDialog.clear();
+                    _waitingForNewCredentials = false;
+                    checkConnectivity(blockJobs);
+                });
+                connect(_tlsDialog, &TlsErrorDialog::rejected, this, [certs, this]() {
+                    setState(SignedOut);
+                });
 
-            _tlsDialog->show();
+                _tlsDialog->show();
+            }
         }
-        ocApp()->gui()->raiseDialog(_tlsDialog);
+        if (_tlsDialog) {
+            ocApp()->gui()->raiseDialog(_tlsDialog);
+        }
     });
     ConnectionValidator::ValidationMode mode = ConnectionValidator::ValidationMode::ValidateAuthAndUpdate;
     if (isConnected()) {

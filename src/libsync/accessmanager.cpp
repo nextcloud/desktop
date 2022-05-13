@@ -12,21 +12,23 @@
  * for more details.
  */
 
-#include <QLoggingCategory>
-#include <QNetworkRequest>
-#include <QNetworkReply>
-#include <QNetworkProxy>
 #include <QAuthenticator>
-#include <QSslConfiguration>
+#include <QLoggingCategory>
+#include <QNetworkConfiguration>
 #include <QNetworkCookie>
 #include <QNetworkCookieJar>
-#include <QNetworkConfiguration>
+#include <QNetworkProxy>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QSslConfiguration>
 #include <QUuid>
 
-#include "cookiejar.h"
 #include "accessmanager.h"
 #include "common/utility.h"
+#include "cookiejar.h"
 #include "httplogger.h"
+
+#include <algorithm>
 
 namespace OCC {
 
@@ -40,6 +42,16 @@ AccessManager::AccessManager(QObject *parent)
     setConfiguration(QNetworkConfiguration());
 #endif
     setCookieJar(new CookieJar);
+
+    connect(this, &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
+        auto filtered = errors;
+        filtered.erase(std::remove_if(
+                           filtered.begin(), filtered.end(), [this](const QSslError &e) {
+                               return !_customTrustedCaCertificates.contains(e.certificate());
+                           }),
+            filtered.end());
+        reply->ignoreSslErrors(filtered);
+    });
 }
 
 QByteArray AccessManager::generateRequestId()
@@ -119,6 +131,17 @@ CookieJar *AccessManager::ownCloudCookieJar() const
     auto jar = qobject_cast<CookieJar *>(cookieJar());
     Q_ASSERT(jar);
     return jar;
+}
+
+QList<QSslError> AccessManager::filterSslErrors(const QList<QSslError> &errors) const
+{
+    auto filtered = errors;
+    filtered.erase(std::remove_if(
+                       filtered.begin(), filtered.end(), [this](const QSslError &e) {
+                           return _customTrustedCaCertificates.contains(e.certificate());
+                       }),
+        filtered.end());
+    return filtered;
 }
 
 } // namespace OCC
