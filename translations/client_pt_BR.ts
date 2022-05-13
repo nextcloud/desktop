@@ -5254,54 +5254,54 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="105"/>
+        <location filename="../src/gui/systray.cpp" line="109"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="107"/>
+        <location filename="../src/gui/systray.cpp" line="111"/>
         <source>Open main dialog</source>
         <translation>Abrir a caixa de diálogo principal</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="110"/>
-        <location filename="../src/gui/systray.cpp" line="121"/>
+        <location filename="../src/gui/systray.cpp" line="114"/>
+        <location filename="../src/gui/systray.cpp" line="125"/>
         <source>Pause sync</source>
         <translation>Pausar sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="111"/>
-        <location filename="../src/gui/systray.cpp" line="127"/>
+        <location filename="../src/gui/systray.cpp" line="115"/>
+        <location filename="../src/gui/systray.cpp" line="131"/>
         <source>Resume sync</source>
         <translation>Continuar a sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="112"/>
+        <location filename="../src/gui/systray.cpp" line="116"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="113"/>
+        <location filename="../src/gui/systray.cpp" line="117"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="114"/>
+        <location filename="../src/gui/systray.cpp" line="118"/>
         <source>Exit %1</source>
         <translation>Sair do %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="121"/>
+        <location filename="../src/gui/systray.cpp" line="125"/>
         <source>Pause sync for all</source>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="127"/>
+        <location filename="../src/gui/systray.cpp" line="131"/>
         <source>Resume sync for all</source>
         <translation>Continuar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="301"/>
+        <location filename="../src/gui/systray.cpp" line="315"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5754,37 +5754,37 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="418"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="427"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Verificando mudanças no controle remoto   &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="421"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="430"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Verificando mudanças no local  &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="437"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="446"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sincronizando %1 de %2 (faltam %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="442"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="451"/>
         <source>Syncing %1 of %2</source>
         <translation>Sincronizando %1 de %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="451"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="460"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sincronizando %1 (%2 faltando)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="454"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="463"/>
         <source>Syncing %1</source>
         <translation>Sincronizando %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="464"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="473"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6067,11 +6067,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Nova pasta </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="802"/>
-        <source>Mark as read</source>
-        <translation>Marcar como Lido</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="543"/>
         <source>You renamed %1</source>
         <translation>Você renomeou %1</translation>
@@ -6171,6 +6166,11 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Online</source>
         <translation>Online</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="802"/>
+        <source>Mark as read</source>
+        <translation>Marcar como Lido</translation>
     </message>
 </context>
 <context>
