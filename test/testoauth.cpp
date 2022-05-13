@@ -227,9 +227,8 @@ public:
     }
 
     virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token , const QString &refreshToken) {
-        Q_ASSERT(result == OAuth::LoggedIn);
-        QCOMPARE(state, TokenAsked);
         QCOMPARE(result, OAuth::LoggedIn);
+        QCOMPARE(state, TokenAsked);
         QCOMPARE(user, QString("admin"));
         QCOMPARE(token, QString("123"));
         QCOMPARE(refreshToken, QString("456"));
