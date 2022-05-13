@@ -15,7 +15,10 @@
 import FileProvider
 
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
+    let domain: NSFileProviderDomain
+    
     required init(domain: NSFileProviderDomain) {
+        self.domain = domain
         // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
         super.init()
     }

@@ -23,6 +23,9 @@
 namespace OCC {
 namespace Mac {
 
+// NOTE: For the file provider extension to work, the app bundle will
+// need to be correctly codesigned!
+
 class FileProvider : public QObject
 {
 public:
@@ -31,9 +34,10 @@ public:
 
     void setupFileProviderDomains();
 
-public slots:
-    void addFileProviderDomainForAccount(AccountState *account);
-    void removeFileProviderDomainForAccount(AccountState *account);
+private slots:
+    void addFileProviderDomainForAccount(AccountState *accountState);
+    void removeFileProviderDomainForAccount(AccountState *accountState);
+    void setFileProviderForAccountIsConnected(AccountState *accountState);
 
 private:
     explicit FileProvider(QObject *parent = nullptr);

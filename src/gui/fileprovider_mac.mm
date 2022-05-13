@@ -35,8 +35,11 @@ class FileProvider::Private {
 
     ~Private() = default;
 
-    void addFileProviderDomain(const QString &domainName, const QString &accountId)
+    void addFileProviderDomain(const AccountState *accountState)
     {
+        const QString accountDisplayName = accountState->account()->displayName();
+        const QString accountId = accountState->account()->id();
+
         qCDebug(lcMacFileProvider) << "Adding new file provider domain for account with id: " << accountId;
 
         if(_registeredDomains.contains(accountId) && _registeredDomains.value(accountId) != nil) {
@@ -44,7 +47,7 @@ class FileProvider::Private {
             return;
         }
 
-        NSFileProviderDomain *fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:accountId.toNSString() displayName:domainName.toNSString()];
+        NSFileProviderDomain *fileProviderDomain = [[NSFileProviderDomain alloc] initWithIdentifier:accountId.toNSString() displayName:accountDisplayName.toNSString()];
         [NSFileProviderManager addDomain:fileProviderDomain completionHandler:^(NSError *error) {
             if(error) {
                 qCDebug(lcMacFileProvider) << "Error adding file provider domain: " << [error code] << [error localizedDescription];
@@ -54,8 +57,9 @@ class FileProvider::Private {
         _registeredDomains.insert(accountId, fileProviderDomain);
     }
 
-    void removeFileProviderDomain(const QString &accountId)
+    void removeFileProviderDomain(const AccountState *accountState)
     {
+        const QString accountId = accountState->account()->id();
         qCDebug(lcMacFileProvider) << "Removing file provider domain for account with id: " << accountId;
 
         if(!_registeredDomains.contains(accountId)) {
@@ -86,6 +90,41 @@ class FileProvider::Private {
         }];
     }
 
+    void setFileProviderDomainConnected(const AccountState *accountState)
+    {
+        const QString accountDisplayName = accountState->account()->displayName();
+        const QString accountId = accountState->account()->id();
+        const bool accountIsConnected = accountState->isConnected();
+
+        qCDebug(lcMacFileProvider) << "Account state for account changed: " << accountDisplayName << accountIsConnected;
+
+        if(!_registeredDomains.contains(accountId)) {
+            qCDebug(lcMacFileProvider) << "File provider domain not found for id: " << accountId;
+            return;
+        }
+
+        NSFileProviderDomain* accountDomain = _registeredDomains.value(accountId);
+        NSFileProviderManager* providerManager = [NSFileProviderManager managerForDomain:accountDomain];
+
+        if(accountIsConnected) {
+            [providerManager reconnectWithCompletionHandler:^(NSError *error) {
+                if(error) {
+                    qCDebug(lcMacFileProvider) << "Error reconnecting file provider domain: " << accountDisplayName << [error code] << [error localizedDescription];
+                }
+            }];
+        } else {
+            NSString* reason = @"Nextcloud account disconnected.";
+            const auto isTemporary = accountState->state() != AccountState::SignedOut && accountState->state() != AccountState::ConfigurationError;
+            NSFileProviderManagerDisconnectionOptions disconnectOption = isTemporary ? 0 : NSFileProviderManagerDisconnectionOptionsTemporary;
+
+            [providerManager disconnectWithReason:reason options:disconnectOption completionHandler:^(NSError *error) {
+                if(error) {
+                    qCDebug(lcMacFileProvider) << "Error disconnecting file provider domain: " << accountDisplayName << [error code] << [error localizedDescription];
+                }
+            }];
+        }
+    }
+
 private:
     QHash<QString, NSFileProviderDomain*> _registeredDomains;
 };
@@ -94,12 +133,11 @@ FileProvider::FileProvider(QObject *parent)
     : QObject(parent)
 {
     d.reset(new FileProvider::Private());
-    d->checkExistingProviders();
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-             this, &FileProvider::addFileProviderDomainForAccount);
+            this, &FileProvider::addFileProviderDomainForAccount);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
-             this, &FileProvider::removeFileProviderDomainForAccount);
+            this, &FileProvider::removeFileProviderDomainForAccount);
 
     setupFileProviderDomains(); // Initially fetch accounts in manager
 }
@@ -119,24 +157,27 @@ FileProvider *FileProvider::instance()
 
 void FileProvider::setupFileProviderDomains()
 {
-    for(const auto &accountState : AccountManager::instance()->accounts()) {
+    for(auto &accountState : AccountManager::instance()->accounts()) {
         addFileProviderDomainForAccount(accountState.data());
     }
 }
 
-void FileProvider::addFileProviderDomainForAccount(AccountState *account)
+void FileProvider::addFileProviderDomainForAccount(AccountState *accountState)
 {
-    const auto accountDisplayName = account->account()->displayName();
-    const auto accountId = account->account()->id();
+    d->addFileProviderDomain(accountState);
 
-    d->addFileProviderDomain(accountDisplayName, accountId);
+    connect(accountState, &AccountState::isConnectedChanged,
+            this, [this, accountState]{ setFileProviderForAccountIsConnected(accountState); });
 }
 
-void FileProvider::removeFileProviderDomainForAccount(AccountState* account)
+void FileProvider::removeFileProviderDomainForAccount(AccountState* accountState)
 {
-    const auto accountId = account->account()->id();
+    d->removeFileProviderDomain(accountState);
+}
 
-    d->removeFileProviderDomain(accountId);
+void FileProvider::setFileProviderForAccountIsConnected(AccountState *accountState)
+{
+    d->setFileProviderDomainConnected(accountState);
 }
 
 } // namespace Mac
