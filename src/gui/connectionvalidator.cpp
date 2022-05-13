@@ -24,6 +24,7 @@
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
+#include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/jsonjob.h"
 #include "theme.h"
 #include "tlserrordialog.h"
@@ -96,19 +97,43 @@ void ConnectionValidator::slotCheckServerAndAuth()
 {
     // ensure we receive ssl errors
     qDebug() << "reset";
-    //_account->accessManager()->clearConnectionCache();
-    CheckServerJob *checkJob = new CheckServerJob(_account, this);
-    checkJob->setClearCookies(_clearCookies);
-    checkJob->setTimeout(timeoutToUse);
-    connect(checkJob, &CheckServerJob::instanceFound, this, &ConnectionValidator::slotStatusFound);
-    connect(checkJob, &CheckServerJob::instanceNotFound, this, &ConnectionValidator::slotNoStatusFound);
-    connect(checkJob, &CheckServerJob::timeout, this, [checkJob, this] {
-        qCWarning(lcConnectionValidator) << checkJob;
-        _errors.append(tr("timeout"));
-        reportResult(Timeout);
+
+    auto checkServerJob = CheckServerJobFactory(_account->accessManager()).startJob(_account->url());
+
+    // FIXME: sslErrors() signal not available
+    connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, this]() {
+        if (checkServerJob->success()) {
+            auto result = checkServerJob->result().value<CheckServerJobResult>();
+            slotStatusFound(result.serverUrl(), result.statusObject());
+        } else {
+            qCWarning(lcConnectionValidator) << checkServerJob->reply()->error() << checkServerJob << checkServerJob->reply()->peek(1024);
+
+            switch (checkServerJob->reply()->error()) {
+            case QNetworkReply::TimeoutError:
+                qCWarning(lcConnectionValidator) << checkServerJob;
+                _errors.append(tr("timeout"));
+                reportResult(Timeout);
+                return;
+            case QNetworkReply::SslHandshakeFailedError:
+                reportResult(SslError);
+                return;
+            case QNetworkReply::TooManyRedirectsError:
+                reportResult(MaintenanceMode);
+                return;
+            default:
+                break;
+            }
+
+            if (!_account->credentials()->stillValid(checkServerJob->reply())) {
+                // Note: Why would this happen on a status.php request?
+                _errors.append(tr("Authentication error: Either username or password are wrong."));
+            } else {
+                //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
+                _errors.append(checkServerJob->errorMessage());
+            }
+            reportResult(StatusNotFound);
+        }
     });
-    connect(checkJob, &CheckServerJob::sslErrors, this, &ConnectionValidator::sslErrors);
-    checkJob->start();
 }
 
 void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &info)
@@ -116,12 +141,12 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     // Newer servers don't disclose any version in status.php anymore
     // https://github.com/owncloud/core/pull/27473/files
     // so this string can be empty.
-    QString serverVersion = CheckServerJob::version(info);
+    QString serverVersion = info.value(QLatin1String("version")).toString() + QLatin1Char('-') + info.value(QLatin1String("productname")).toString();
 
     // status.php was found.
     qCInfo(lcConnectionValidator) << "** Application: ownCloud found: "
                                   << url << " with version "
-                                  << CheckServerJob::versionString(info)
+                                  << info.value(QLatin1String("versionstring")).toString()
                                   << "(" << serverVersion << ")";
 
     // Update server url in case of redirection
@@ -149,27 +174,6 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     } else {
         reportResult(Connected);
     }
-}
-
-// status.php could not be loaded (network or server issue!).
-void ConnectionValidator::slotNoStatusFound(QNetworkReply *reply)
-{
-    auto job = qobject_cast<CheckServerJob *>(sender());
-    qCWarning(lcConnectionValidator) << reply->error() << job << reply->peek(1024);
-    if (reply->error() == QNetworkReply::SslHandshakeFailedError) {
-        reportResult(SslError);
-        return;
-    } else if (reply->error() == QNetworkReply::TooManyRedirectsError) {
-        reportResult(MaintenanceMode);
-        return;
-    } else if (!_account->credentials()->stillValid(reply)) {
-        // Note: Why would this happen on a status.php request?
-        _errors.append(tr("Authentication error: Either username or password are wrong."));
-    } else {
-        //_errors.append(tr("Unable to connect to %1").arg(_account->url().toString()));
-        _errors.append(job->errorString());
-    }
-    reportResult(StatusNotFound);
 }
 
 void ConnectionValidator::checkAuthentication()

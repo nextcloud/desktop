@@ -52,6 +52,7 @@ set(libsync_SRCS
     creds/credentialscommon.cpp
     creds/oauth.cpp
 
+    networkjobs/checkserverjobfactory.cpp
     networkjobs/jsonjob.cpp
 
     abstractcorejob.cpp

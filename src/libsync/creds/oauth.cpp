@@ -20,6 +20,7 @@
 #include "creds/httpcredentials.h"
 #include "creds/jobs/determineuserjobfactory.h"
 #include "networkjobs.h"
+#include "networkjobs/checkserverjobfactory.h"
 #include "theme.h"
 
 #include <QApplication>
@@ -597,23 +598,19 @@ void AccountBasedOAuth::startAuthentication()
 
 void AccountBasedOAuth::fetchWellKnown()
 {
-    auto *checkServerJob = new CheckServerJob(_account->sharedFromThis(), this);
-    checkServerJob->setClearCookies(true);
-    checkServerJob->setTimeout(defaultTimeout());
+    auto *checkServerJob = CheckServerJobFactory(_networkAccessManager, this).startJob(_serverUrl);
 
-    connect(checkServerJob, &CheckServerJob::instanceNotFound, this, [this](QNetworkReply *reply) {
-        if (_isRefreshingToken) {
-            Q_EMIT refreshError(reply->error(), reply->errorString());
+    connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, this]() {
+        if (checkServerJob->success()) {
+            OAuth::fetchWellKnown();
         } else {
-            Q_EMIT result(Error);
+            if (_isRefreshingToken) {
+                Q_EMIT refreshError(checkServerJob->reply()->error(), checkServerJob->errorMessage());
+            } else {
+                Q_EMIT result(Error);
+            }
         }
     });
-
-    connect(checkServerJob, &CheckServerJob::instanceFound, this, [this](const QUrl &url, const QJsonObject &info) {
-        OAuth::fetchWellKnown();
-    });
-
-    checkServerJob->start();
 }
 
 void AccountBasedOAuth::dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData)

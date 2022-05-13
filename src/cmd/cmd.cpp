@@ -36,6 +36,7 @@
 #include "common/syncjournaldb.h"
 #include "config.h"
 #include "csync_exclude.h"
+#include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/jsonjob.h"
 #include "syncengine.h"
 
@@ -553,44 +554,51 @@ int main(int argc, char **argv)
 
     ctx.account->setUrl(ctx.credentialFreeUrl);
 
-    auto *checkServer = new CheckServerJob(ctx.account, nullptr);
-    QObject::connect(checkServer, &CheckServerJob::instanceFound, [ctx] {
-        // Perform a call to get the capabilities.
-        auto *capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);
-        QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
-            auto caps = capabilitiesJob->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
-            qDebug() << "Server capabilities" << caps;
-            ctx.account->setCapabilities(caps.toVariantMap());
-            ctx.account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
+    auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url());
 
-            if (capabilitiesJob->reply()->error() != QNetworkReply::NoError) {
-                qFatal("Error connecting to server");
-            }
+    QObject::connect(checkServerJob, &CoreJob::finished, [ctx, checkServerJob] {
+        if (checkServerJob->success()) {
+            // Perform a call to get the capabilities.
+            auto *capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);
+            QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
+                auto caps = capabilitiesJob->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+                qDebug() << "Server capabilities" << caps;
+                ctx.account->setCapabilities(caps.toVariantMap());
+                ctx.account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
 
-            auto userJob = new JsonApiJob(ctx.account, QLatin1String("ocs/v1.php/cloud/user"), {}, {}, nullptr);
-            QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx] {
-                const QJsonObject data = userJob->data().value("ocs").toObject().value("data").toObject();
-                ctx.account->setDavUser(data.value("id").toString());
-                ctx.account->setDavDisplayName(data.value("display-name").toString());
+                if (capabilitiesJob->reply()->error() != QNetworkReply::NoError) {
+                    qFatal("Error connecting to server");
+                }
 
-                // much lower age than the default since this utility is usually made to be run right after a change in the tests
-                SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
-                sync(ctx);
+                auto userJob = new JsonApiJob(ctx.account, QLatin1String("ocs/v1.php/cloud/user"), {}, {}, nullptr);
+                QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx] {
+                    const QJsonObject data = userJob->data().value("ocs").toObject().value("data").toObject();
+                    ctx.account->setDavUser(data.value("id").toString());
+                    ctx.account->setDavDisplayName(data.value("display-name").toString());
+
+                    // much lower age than the default since this utility is usually made to be run right after a change in the tests
+                    SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);
+                    sync(ctx);
+                });
+                userJob->start();
             });
-            userJob->start();
-        });
-        capabilitiesJob->start();
-    });
-    QObject::connect(checkServer, &CheckServerJob::instanceNotFound, [ctx] {
-        qFatal("Failed to resolve %s.", qPrintable(ctx.account->url().toString()));
-    });
-    QObject::connect(checkServer, &CheckServerJob::timedOut, [ctx] {
-        qFatal("Looking up %s timed out.", qPrintable(ctx.account->url().toString()));
-    });
-    QObject::connect(checkServer, &CheckServerJob::sslErrors, [ctx] {
-        qFatal(APPLICATION_EXECUTABLE "cmd currently does not support untrusted ssl certificates.");
+            capabilitiesJob->start();
+        } else {
+            switch (checkServerJob->reply()->error()) {
+            case QNetworkReply::OperationCanceledError:
+                qFatal("Looking up %s timed out.", qPrintable(ctx.account->url().toString()));
+                break;
+            default:
+                qFatal("Failed to resolve %s.", qPrintable(ctx.account->url().toString()));
+            }
+        }
     });
 
-    checkServer->start();
+    // FIXME: not supported any more
+    // the job should never run into this, though
+    //    QObject::connect(checkServer, &CheckServerJob::sslErrors, [ctx] {
+    //        qFatal(APPLICATION_EXECUTABLE "cmd currently does not support untrusted ssl certificates.");
+    //    });
+
     return app.exec();
 }

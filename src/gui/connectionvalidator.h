@@ -125,7 +125,6 @@ protected slots:
     void slotCheckServerAndAuth();
 
     void slotStatusFound(const QUrl &url, const QJsonObject &info);
-    void slotNoStatusFound(QNetworkReply *reply);
 
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
