@@ -88,7 +88,7 @@ CoreJob *CheckServerJobFactory::startJob(const QUrl &url)
             qCWarning(lcCheckServerJob) << "No SSL session identifier / session ticket is used, this might impact sync performance negatively.";
         }
 
-        if (serverUrl != targetUrl) {
+        if (!Utility::urlEqual(serverUrl, targetUrl)) {
             if (job->_redirectDistinct) {
                 serverUrl = targetUrl;
             } else {

@@ -204,6 +204,9 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
         const QUrl &url, const QString &concatPath,
         const QUrlQuery &queryItems = {});
 
+    /** Compares two urls and ignores whether thei end wit / */
+    OCSYNC_EXPORT bool urlEqual(QUrl a, QUrl b);
+
     /**  Returns a new settings pre-set in a specific group.  The Settings will be created
          with the given parent. If no parent is specified, the caller must destroy the settings */
     OCSYNC_EXPORT std::unique_ptr<QSettings> settingsWithGroup(const QString &group, QObject *parent = nullptr);

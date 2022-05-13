@@ -495,6 +495,20 @@ QUrl Utility::concatUrlPath(const QUrl &url, const QString &concatPath,
     return tmpUrl;
 }
 
+bool Utility::urlEqual(QUrl url1, QUrl url2)
+{
+    // ensure https://demo.owncloud.org/ matches https://demo.owncloud.org
+    // the empty path was the legacy formating before 2.9
+    if (url1.path().isEmpty()) {
+        url1.setPath(QStringLiteral("/"));
+    }
+    if (url2.path().isEmpty()) {
+        url2.setPath(QStringLiteral("/"));
+    }
+
+    return url1.matches(url2, QUrl::StripTrailingSlash | QUrl::NormalizePathSegments);
+}
+
 QString Utility::makeConflictFileName(
     const QString &fn, const QDateTime &dt, const QString &user)
 {

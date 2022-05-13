@@ -28,20 +28,7 @@ UpdateUrlDialog::UpdateUrlDialog(const QString &title, const QString &content, c
     // this special dialog deletes itself after use
     setAttribute(Qt::WA_DeleteOnClose);
 
-    auto matchUrl = [](QUrl url1, QUrl url2) {
-        // ensure https://demo.owncloud.org/ matches https://demo.owncloud.org
-        // the empty path was the legacy formating before 2.9
-        if (url1.path().isEmpty()) {
-            url1.setPath(QStringLiteral("/"));
-        }
-        if (url2.path().isEmpty()) {
-            url2.setPath(QStringLiteral("/"));
-        }
-
-        return url1.matches(url2, QUrl::StripTrailingSlash | QUrl::NormalizePathSegments);
-    };
-
-    if (matchUrl(_oldUrl, _newUrl)) {
+    if (Utility::urlEqual(_oldUrl, _newUrl)) {
         // need to show the dialog before accepting the change
         // hence using a timer to run the code on the main loop
         QTimer::singleShot(0, [this]() {
