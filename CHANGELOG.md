@@ -20,6 +20,7 @@ Summary
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 * Enhancement - Support for OCIS Spaces: [#9154](https://github.com/owncloud/client/pull/9154)
+* Enhancement - Set Windows VFS placeholders readonly if needed: [#9598](https://github.com/owncloud/client/issues/9598)
 
 Details
 -------
@@ -107,6 +108,13 @@ Details
 
    https://github.com/owncloud/client/pull/9154
    https://github.com/owncloud/client/pull/9575/
+
+* Enhancement - Set Windows VFS placeholders readonly if needed: [#9598](https://github.com/owncloud/client/issues/9598)
+
+   We now properly set the read only flag on Windows virtual files.
+
+   https://github.com/owncloud/client/issues/9598
+   https://github.com/owncloud/client-desktop-vfs-win/issues/24
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
