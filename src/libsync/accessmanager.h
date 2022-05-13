@@ -37,7 +37,14 @@ public:
     AccessManager(QObject *parent = nullptr);
 
     QSet<QSslCertificate> customTrustedCaCertificates();
+
+    /***
+     * Warning calling those will break running network jobs
+     */
     void setCustomTrustedCaCertificates(const QSet<QSslCertificate> &certificates);
+    /***
+     * Warning calling those will break running network jobs
+     */
     void addCustomTrustedCaCertificates(const QList<QSslCertificate> &certificates);
 
 protected:

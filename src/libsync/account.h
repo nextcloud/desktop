@@ -153,7 +153,15 @@ public:
 
     /** The certificates of the account */
     QSet<QSslCertificate> approvedCerts() const { return _approvedCerts; }
+
+    /***
+     * Warning calling those will break running network jobs on the current access manager
+     */
     void setApprovedCerts(const QList<QSslCertificate> &certs);
+
+    /***
+     * Warning calling those will break running network jobs on the current access manager
+     */
     void addApprovedCerts(const QSet<QSslCertificate> &certs);
 
     // To be called by credentials only, for storing username and the like

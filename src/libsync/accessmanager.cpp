@@ -64,7 +64,6 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
 
     // Generate a new request id
     const QByteArray requestId = generateRequestId();
-    qInfo(lcAccessManager) << op << verb << newRequest.url().toString() << "has X-Request-ID" << requestId;
     newRequest.setRawHeader(QByteArrayLiteral("X-Request-ID"), requestId);
     const auto originalIdKey = QByteArrayLiteral("Original-Request-ID");
     if (!newRequest.hasRawHeader(originalIdKey)) {

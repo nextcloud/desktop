@@ -22,6 +22,7 @@
 #include "account.h"
 #include "clientproxy.h"
 #include "connectionvalidator.h"
+#include "cookiejar.h"
 #include "creds/abstractcredentials.h"
 #include "networkjobs.h"
 #include "networkjobs/checkserverjobfactory.h"
@@ -95,21 +96,34 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 // The actual check
 void ConnectionValidator::slotCheckServerAndAuth()
 {
-    // ensure we receive ssl errors
-    qDebug() << "reset";
+    // in order to receive all ssl erorrs we need a fresh QNam
+    auto nam = new AccessManager(this);
+    nam->setCustomTrustedCaCertificates(_account->approvedCerts());
 
-    auto checkServerJob = CheckServerJobFactory(_account->accessManager()).startJob(_account->url());
+    // do we start with the old cookies or new
+    if (!_clearCookies) {
+        const auto accountCookies = qobject_cast<CookieJar *>(_account->accessManager()->cookieJar())->allCookies();
+        qobject_cast<CookieJar *>(nam->cookieJar())->setAllCookies(accountCookies);
+    }
 
-    // FIXME: sslErrors() signal not available
-    connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, this]() {
+    auto checkServerJob = CheckServerJobFactory(nam).startJob(_account->url());
+
+    connect(nam, &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
+        Q_EMIT sslErrors(errors);
+    });
+
+    connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, nam, this]() {
         if (checkServerJob->success()) {
-            auto result = checkServerJob->result().value<CheckServerJobResult>();
+            const auto result = checkServerJob->result().value<CheckServerJobResult>();
+
+            // adopt the new cookies
+            const auto newCookies = qobject_cast<CookieJar *>(nam->cookieJar())->allCookies();
+            qobject_cast<CookieJar *>(_account->accessManager()->cookieJar())->setAllCookies(newCookies);
+
             slotStatusFound(result.serverUrl(), result.statusObject());
         } else {
-            qCWarning(lcConnectionValidator) << checkServerJob->reply()->error() << checkServerJob << checkServerJob->reply()->peek(1024);
-
             switch (checkServerJob->reply()->error()) {
-            case QNetworkReply::TimeoutError:
+            case QNetworkReply::OperationCanceledError:
                 qCWarning(lcConnectionValidator) << checkServerJob;
                 _errors.append(tr("timeout"));
                 reportResult(Timeout);

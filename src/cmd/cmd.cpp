@@ -275,7 +275,6 @@ class HttpCredentialsText : public HttpCredentials
 public:
     HttpCredentialsText(const QString &user, const QString &password)
         : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
-        , _sslTrusted(false)
     {
     }
 
@@ -286,19 +285,6 @@ public:
         persist();
         emit asked();
     }
-
-    void setSSLTrusted(bool isTrusted)
-    {
-        _sslTrusted = isTrusted;
-    }
-
-    bool sslIsTrusted() override
-    {
-        return _sslTrusted;
-    }
-
-private:
-    bool _sslTrusted;
 };
 #endif /* TOKEN_AUTH_ONLY */
 
@@ -548,7 +534,17 @@ int main(int argc, char **argv)
     HttpCredentialsText *cred = new HttpCredentialsText(ctx.user, password);
     ctx.account->setCredentials(cred);
     if (ctx.options.trustSSL) {
-        cred->setSSLTrusted(true);
+        QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
+            reply->ignoreSslErrors(errors);
+        });
+    } else {
+        QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
+            qCritical() << "SSL error encountered";
+            for (auto e : errors) {
+                qCritical() << e.errorString();
+            }
+            qFatal("If you trust the certificate and want to ignore the errors, use the --trust option.");
+        });
     }
 #endif
 
@@ -593,12 +589,6 @@ int main(int argc, char **argv)
             }
         }
     });
-
-    // FIXME: not supported any more
-    // the job should never run into this, though
-    //    QObject::connect(checkServer, &CheckServerJob::sslErrors, [ctx] {
-    //        qFatal(APPLICATION_EXECUTABLE "cmd currently does not support untrusted ssl certificates.");
-    //    });
 
     return app.exec();
 }

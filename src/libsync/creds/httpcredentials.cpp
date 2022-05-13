@@ -261,7 +261,7 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
     // don't touch _ready or the account state will start a new authentication
     // _ready = false;
 
-    // parent with nam to enusre we reset when the nam is reset
+    // parent with nam to ensure we reset when the nam is reset
     _oAuthJob = new AccountBasedOAuth(_account->sharedFromThis(), _account->accessManager());
     connect(_oAuthJob, &OAuth::refreshError, this, [tokenRefreshRetriesCount, this](QNetworkReply::NetworkError error, const QString &) {
         _oAuthJob->deleteLater();
