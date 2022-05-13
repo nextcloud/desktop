@@ -145,12 +145,6 @@ public:
         QNetworkRequest req = QNetworkRequest(),
         QIODevice *data = nullptr);
 
-    // Because of bugs in Qt, we use this to store info needed for the SSL Button
-    QSslCipher _sessionCipher;
-    QByteArray _sessionTicket;
-    QSet<QSslCertificate> _peerCertificateChain;
-
-
     /** The certificates of the account */
     QSet<QSslCertificate> approvedCerts() const { return _approvedCerts; }
 

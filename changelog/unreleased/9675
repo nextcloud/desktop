@@ -1,0 +1,3 @@
+Change: We removed the TLS certificate button from the account page
+
+https://github.com/owncloud/client/pull/9675

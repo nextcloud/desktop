@@ -18,19 +18,6 @@
     <widget class="QWidget" name="accountStatus" native="true">
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
-       <widget class="SslButton" name="sslButton">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QLabel" name="connectLabel">
         <property name="sizePolicy">
          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
@@ -293,13 +280,6 @@
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>SslButton</class>
-   <extends>QToolButton</extends>
-   <header>sslbutton.h</header>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
 </ui>

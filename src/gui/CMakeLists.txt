@@ -60,7 +60,6 @@ set(client_SRCS
     sharemanager.cpp
     shareusergroupwidget.cpp
     sharee.cpp
-    sslbutton.cpp
     tlserrordialog.cpp
     syncrunfilelog.cpp
     systray.cpp
