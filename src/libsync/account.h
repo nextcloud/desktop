@@ -168,23 +168,18 @@ public:
 
     bool hasCapabilities() const;
 
+
     /** Access the server version
      *
      * For servers >= 10.0.0, this can be the empty string until capabilities
      * have been received.
      */
-    QString serverVersion() const;
+    QString serverVersionString() const;
+    QVersionNumber serverVersion() const;
 
-    /** Server version for easy comparison.
-     *
-     * Example: serverVersionInt() >= makeServerVersion(11, 2, 3)
-     *
-     * Will be 0 if the version is not available yet.
-     */
-    int serverVersionInt() const;
+    QString serverProductName() const;
 
-    static int makeServerVersion(int majorVersion, int minorVersion, int patchVersion);
-    void setServerVersion(const QString &version);
+    void setServerInfo(const QString &version, const QString &product);
 
     /** Whether the server is too old.
      *
@@ -261,6 +256,7 @@ private:
     QSet<QSslCertificate> _approvedCerts;
     Capabilities _capabilities;
     QString _serverVersion;
+    QString _serverProduct;
     QuotaInfo *_quotaInfo;
     QPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;

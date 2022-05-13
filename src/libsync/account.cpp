@@ -293,37 +293,45 @@ void Account::setCapabilities(const Capabilities &caps)
     _capabilities = caps;
 }
 
-QString Account::serverVersion() const
+QString Account::serverProductName() const
+{
+    return _serverProduct;
+}
+
+QString Account::serverVersionString() const
 {
     return _serverVersion;
 }
 
-int Account::serverVersionInt() const
-{
-    // FIXME: Use Qt 5.5 QVersionNumber
-    auto components = serverVersion().split(QLatin1Char('.'));
-    return makeServerVersion(components.value(0).toInt(),
-        components.value(1).toInt(),
-        components.value(2).toInt());
-}
-
-int Account::makeServerVersion(int majorVersion, int minorVersion, int patchVersion)
-{
-    return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
-}
-
 bool Account::serverVersionUnsupported() const
 {
-    if (serverVersionInt() == 0) {
+    if (serverVersion().isNull()) {
         // not detected yet, assume it is fine.
         return false;
     }
+    // TODO: this is a work around for a ocis announcing version 2.0.0
+    // next version will announce ocisvison and keep version to 10
+    if (serverProductName() == QLatin1String("Infinite Scale")) {
+        return false;
+    }
     // Older version which is not "end of life" according to https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule
-    return serverVersionInt() < makeServerVersion(10, 0, 0) || serverVersion().endsWith(QLatin1String("Nextcloud"));
+    if (serverVersion() < QVersionNumber(10)) {
+        return true;
+    }
+    if (serverProductName().endsWith(QLatin1String("Nextcloud"))) {
+        return true;
+    }
+    return false;
 }
 
-void Account::setServerVersion(const QString &version)
+QVersionNumber Account::serverVersion() const
 {
+    return QVersionNumber::fromString(_serverVersion);
+}
+
+void Account::setServerInfo(const QString &version, const QString &productName)
+{
+    _serverProduct = productName;
     if (version == _serverVersion) {
         return;
     }

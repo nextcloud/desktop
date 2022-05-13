@@ -160,23 +160,10 @@ void HttpCredentialsGui::showDialog()
 
 QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
 {
-    int version = account->serverVersionInt();
-    QString path;
-
-    // Version may not be available before login on new servers!
-    if (!version || version >= Account::makeServerVersion(10, 0, 0)) {
-        path = QLatin1String("/index.php/settings/personal?sectionid=security#apppasswords");
-    } else if (version >= Account::makeServerVersion(9, 1, 0)) {
-        path = QLatin1String("/index.php/settings/personal?section=apppasswords");
-    } else {
-        // Older server than 9.1 does not have the feature to request App Password
-        return QString();
-    }
-
     auto baseUrl = account->url().toString();
     if (baseUrl.endsWith('/'))
         baseUrl.chop(1);
     return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(baseUrl + path);
+        .arg(Utility::concatUrlPath(baseUrl, QStringLiteral("/index.php/settings/personal?sectionid=security#apppasswords")).toString());
 }
 } // namespace OCC

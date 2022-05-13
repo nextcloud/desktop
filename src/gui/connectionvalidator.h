@@ -142,7 +142,7 @@ private:
      *
      * Returns false and reports ServerVersionMismatch for very old servers.
      */
-    bool setAndCheckServerVersion(const QString &version);
+    bool setAndCheckServerInfo(const QString &version, const QString &serverProduct);
 
     QStringList _errors;
     AccountPtr _account;

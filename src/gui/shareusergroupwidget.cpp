@@ -294,20 +294,8 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
      * https://github.com/owncloud/client/issues/4996
      */
     const SharePermissions defaultPermissions = static_cast<SharePermissions>(_account->capabilities().defaultPermissions());
-    if (sharee->type() == Sharee::Federated
-        && _account->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
-        SharePermissions permissions = SharePermissionRead | SharePermissionUpdate;
-        if (!_isFile) {
-            permissions |= SharePermissionCreate | SharePermissionDelete;
-        }
-        permissions &= defaultPermissions;
-        _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), permissions);
-    } else {
-        _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-            sharee->shareWith(), _maxSharingPermissions & defaultPermissions);
-    }
-
+    _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
+        sharee->shareWith(), _maxSharingPermissions & defaultPermissions);
     _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->setText(QString());
 }
@@ -404,17 +392,6 @@ ShareUserLine::ShareUserLine(QSharedPointer<Share> share,
     connect(_permissionDelete, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
     connect(_ui->permissionShare, &QAbstractButton::clicked, this, &ShareUserLine::slotPermissionsChanged);
     connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
-
-    /*
-     * We don't show permssion share for federated shares with server <9.1
-     * https://github.com/owncloud/core/issues/22122#issuecomment-185637344
-     * https://github.com/owncloud/client/issues/4996
-     */
-    if (share->getShareType() == Share::TypeRemote
-        && share->account()->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
-        _ui->permissionShare->setVisible(false);
-        _ui->permissionToolButton->setVisible(false);
-    }
 
     connect(share.data(), &Share::permissionsSet, this, &ShareUserLine::slotPermissionsSet);
     connect(share.data(), &Share::shareDeleted, this, &ShareUserLine::slotShareDeleted);

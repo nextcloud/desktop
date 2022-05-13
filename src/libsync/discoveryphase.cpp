@@ -350,22 +350,22 @@ void DiscoverySingleDirectoryJob::start()
     // Start the actual HTTP job
     LsColJob *lsColJob = new LsColJob(_account, _baseUrl, _subPath, this);
 
-    QList<QByteArray> props;
-    props << "resourcetype"
-          << "getlastmodified"
-          << "getcontentlength"
-          << "getetag"
-          << "http://owncloud.org/ns:id"
-          << "http://owncloud.org/ns:downloadURL"
-          << "http://owncloud.org/ns:dDC"
-          << "http://owncloud.org/ns:permissions"
-          << "http://owncloud.org/ns:checksums";
-    if (_isRootPath)
+    QList<QByteArray> props {
+        "resourcetype",
+        "getlastmodified",
+        "getcontentlength",
+        "getetag",
+        "http://owncloud.org/ns:id",
+        "http://owncloud.org/ns:downloadURL",
+        "http://owncloud.org/ns:dDC",
+        "http://owncloud.org/ns:permissions",
+        "http://owncloud.org/ns:checksums",
+        "http://owncloud.org/ns:share-types"
+    };
+    if (_isRootPath) {
         props << "http://owncloud.org/ns:data-fingerprint";
-    if (_account->serverVersionInt() >= Account::makeServerVersion(10, 0, 0)) {
-        // Server older than 10.0 have performances issue if we ask for the share-types on every PROPFIND
-        props << "http://owncloud.org/ns:share-types";
     }
+
 
     lsColJob->setProperties(props);
 

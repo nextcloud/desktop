@@ -32,7 +32,7 @@ namespace TestUtils {
         acc->setCredentials(cred);
         acc->setUrl(QUrl(QStringLiteral("http://localhost/owncloud")));
         acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString());
-        acc->setServerVersion(QStringLiteral("10.0.0"));
+        acc->setServerInfo(QStringLiteral("10.0.0"), QStringLiteral("FakeServer"));
         OCC::AccountManager::instance()->addAccount(acc);
         return acc;
     }

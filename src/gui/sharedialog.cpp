@@ -190,12 +190,7 @@ void ShareDialog::showSharingUi()
         return;
     }
 
-    // We only do user/group sharing from 8.2.0
-    bool userGroupSharing =
-        theme->userGroupSharing()
-        && _accountState->account()->serverVersionInt() >= Account::makeServerVersion(8, 2, 0);
-
-    if (userGroupSharing) {
+    if (theme->userGroupSharing()) {
         _userGroupWidget = new ShareUserGroupWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _privateLinkUrl, this);
         _ui->shareWidgets->addTab(_userGroupWidget, tr("Users and Groups"));
         _userGroupWidget->getShares();

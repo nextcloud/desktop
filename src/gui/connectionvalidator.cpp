@@ -155,13 +155,15 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     // Newer servers don't disclose any version in status.php anymore
     // https://github.com/owncloud/core/pull/27473/files
     // so this string can be empty.
-    QString serverVersion = info.value(QLatin1String("version")).toString() + QLatin1Char('-') + info.value(QLatin1String("productname")).toString();
+    const QString serverVersion = info.value(QLatin1String("version")).toString();
+    const QString serverProduct = info.value(QLatin1String("productname")).toString();
 
     // status.php was found.
     qCInfo(lcConnectionValidator) << "** Application: ownCloud found: "
                                   << url << " with version "
                                   << info.value(QLatin1String("versionstring")).toString()
-                                  << "(" << serverVersion << ")";
+                                  << "(" << serverVersion << "-" << serverProduct
+                                  << ")";
 
     // Update server url in case of redirection
     if (_account->url() != url) {
@@ -171,7 +173,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
         return;
     }
 
-    if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
+    if (!serverVersion.isEmpty() && !setAndCheckServerInfo(serverVersion, serverProduct)) {
         return;
     }
 
@@ -265,8 +267,9 @@ void ConnectionValidator::checkServerCapabilities()
         _account->setCapabilities(caps.toVariantMap());
 
         // New servers also report the version in the capabilities
-        QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
-        if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
+        const QString serverVersion = caps["core"].toObject()["status"].toObject()["version"].toString();
+        const QString product = caps["core"].toObject()["status"].toObject()["productname"].toString();
+        if (!setAndCheckServerInfo(serverVersion, product)) {
             return;
         }
 
@@ -312,13 +315,12 @@ void ConnectionValidator::fetchUser()
     job->start();
 }
 
-bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
+bool ConnectionValidator::setAndCheckServerInfo(const QString &version, const QString &serverProduct)
 {
-    _account->setServerVersion(version);
+    _account->setServerInfo(version, serverProduct);
 
-    // We cannot deal with servers < 7.0.0
-    if (_account->serverVersionInt()
-        && _account->serverVersionInt() < Account::makeServerVersion(7, 0, 0)) {
+    // We cannot deal with servers < 10.0.0
+    if (_account->serverVersionUnsupported()) {
         _errors.append(tr("The configured server for this client is too old"));
         _errors.append(tr("Please update to the latest server and restart the client."));
         reportResult(ServerVersionMismatch);

@@ -560,7 +560,8 @@ int main(int argc, char **argv)
                 auto caps = capabilitiesJob->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
                 qDebug() << "Server capabilities" << caps;
                 ctx.account->setCapabilities(caps.toVariantMap());
-                ctx.account->setServerVersion(caps["core"].toObject()["status"].toObject()["version"].toString());
+                ctx.account->setServerInfo(caps["core"].toObject()["status"].toObject()["version"].toString(),
+                    caps["core"].toObject()["status"].toObject()["productname"].toString());
 
                 if (capabilitiesJob->reply()->error() != QNetworkReply::NoError) {
                     qFatal("Error connecting to server");

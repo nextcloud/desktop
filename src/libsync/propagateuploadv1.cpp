@@ -169,17 +169,14 @@ void PropagateUploadFileV1::startNextChunk()
         // Server may also disable parallel chunked upload for any higher version
         parallelChunkUpload = false;
     } else {
-        QByteArray env = qgetenv("OWNCLOUD_PARALLEL_CHUNK");
-        if (!env.isEmpty()) {
-            parallelChunkUpload = env != "false" && env != "0";
-        } else {
-            int versionNum = propagator()->account()->serverVersionInt();
-            if (versionNum < Account::makeServerVersion(8, 0, 3)) {
-                // Disable parallel chunk upload severs older than 8.0.3 to avoid too many
-                // internal sever errors (#2743, #2938)
-                parallelChunkUpload = false;
+        static bool envEnabled = [] {
+            const auto env = qEnvironmentVariable("OWNCLOUD_PARALLEL_CHUNK");
+            if (!env.isEmpty()) {
+                return env != QLatin1String("false") && env != QLatin1String("0");
             }
-        }
+            return true;
+        }();
+        parallelChunkUpload = envEnabled;
     }
 
 

@@ -364,14 +364,9 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
     // From ownCloud server 8.2 the url field is always set for public shares
     if (data.contains("url")) {
         url = QUrl(data.value("url").toString());
-    } else if (_account->serverVersionInt() >= Account::makeServerVersion(8, 0, 0)) {
+    } else {
         // From ownCloud server version 8 on, a different share link scheme is used.
         url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("index.php/s/") + data.value("token").toString())).toString();
-    } else {
-        QUrlQuery queryArgs;
-        queryArgs.addQueryItem(QLatin1String("service"), QLatin1String("files"));
-        queryArgs.addQueryItem(QLatin1String("t"), data.value("token").toString());
-        url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("public.php"), queryArgs).toString());
     }
 
     QDate expireDate;

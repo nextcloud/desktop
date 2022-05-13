@@ -467,7 +467,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:NOTCONNECTED:") + QDir::toNativeSeparators(localFile);
         // if the folder isn't connected, don't open the share dialog
         listener->sendMessage(message);
-    } else if (!theme->linkSharing() && (!theme->userGroupSharing() || shareFolder->accountState()->account()->serverVersionInt() < Account::makeServerVersion(8, 2, 0))) {
+    } else if (!theme->linkSharing() && !theme->userGroupSharing()) {
         const QString message = QLatin1String("SHARE:NOP:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
     } else {

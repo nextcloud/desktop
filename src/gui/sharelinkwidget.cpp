@@ -206,8 +206,7 @@ void ShareLinkWidget::getShares()
 
 void ShareLinkWidget::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
 {
-    const QString versionString = _account->serverVersion();
-    qCInfo(lcSharing) << versionString << "Fetched" << shares.count() << "shares";
+    qCInfo(lcSharing) << "Fetched" << shares.count() << "shares";
 
     // Select the share that was previously selected,
     // except if an explicit override was asked for

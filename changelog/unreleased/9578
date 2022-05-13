@@ -1,0 +1,3 @@
+Change: We removed support for ownCloud servers < 10.0
+
+https://github.com/owncloud/client/issues/9578
