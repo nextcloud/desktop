@@ -5252,7 +5252,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Stáhnout</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="109"/>
