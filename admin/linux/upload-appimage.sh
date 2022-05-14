@@ -41,7 +41,8 @@ else
 fi
 
 export UPDATE=$(readlink -f ./Nextcloud*.AppImage.zsync)
-export BASENAME=$(basename ${APPIMAGE})
+export BASENAME_APPIMAGE=$(basename ${APPIMAGE})
+export BASENAME_UPDATE=$(basename ${UPDATE})
 
 if ! test -e $APPIMAGE ; then
     exit 1
@@ -85,9 +86,10 @@ get_release_assets()
 
 upload_release_asset()
 {
-    uploadUrl=$1
-    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $APPIMAGE)
-    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $UPDATE)
+    uploadUrlAppImage=$1
+    uploadUrlUpdate=$2
+    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrlAppImage --header "Content-Type: application/octet-stream" --upload-file $APPIMAGE)
+    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrlUpdate --header "Content-Type: application/octet-stream" --upload-file $UPDATE)
 }
 
 delete_release_asset()
@@ -117,7 +119,8 @@ if [[ "$uploadUrl" == "null" ]]; then
 fi
 
 # Prepare upload url
-uploadUrl=$(echo "${uploadUrl/'{?name,label}'/?name=$BASENAME}")
+uploadUrlAppImage=$(echo "${uploadUrl/'{?name,label}'/?name=$BASENAME_APPIMAGE}")
+uploadUrlUpdate=$(echo "${uploadUrl/'{?name,label}'/?name=$BASENAME_UPDATE}")
 
 # Try to delete existing AppImage assets for this PR
 assets=$(get_release_assets $releaseId)
@@ -137,7 +140,7 @@ done
 # Upload release asset
 echo "Uploading new asset: $BASENAME"
 
-json=$(upload_release_asset "$uploadUrl")
+json=$(upload_release_asset "$uploadUrlAppImage" "$uploadUrlUpdate")
 browserDownloadUrl=$(echo $json | jq -r '.browser_download_url')
 
 if [[ "$browserDownloadUrl" == "null" ]]; then
