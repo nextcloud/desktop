@@ -56,6 +56,7 @@ public:
 
 private slots:
     void slotUpdateDirectories(QStringList);
+    void slotUpdateRootFolderFilesSize(const QStringList &subfolders);
     void slotItemExpanded(QTreeWidgetItem *);
     void slotItemChanged(QTreeWidgetItem *, int);
     void slotLscolFinishedWithError(QNetworkReply *);
@@ -81,6 +82,8 @@ private:
     ExcludedFiles _excludedFiles;
 
     QStringList _encryptedPaths;
+
+    qint64 _rootFilesSize = 0;
 };
 
 /**
