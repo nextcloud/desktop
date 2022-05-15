@@ -140,6 +140,11 @@ for data in $(echo $assets | jq -r '.[] | @uri'); do
         echo "Deleting old asset: $name"
         $(delete_release_asset $assetId)
     fi
+
+    if [[ "$name" == *.zsync ]]; then
+        echo "Deleting old asset: $name"
+        $(delete_release_asset $assetId)
+    fi
 done
 
 # Upload release asset
