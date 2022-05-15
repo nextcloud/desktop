@@ -48,7 +48,13 @@ if ! test -e $APPIMAGE ; then
     exit 1
 fi
 
-echo "Found AppImage: $BASENAME"
+echo "Found AppImage: $BASENAME_APPIMAGE"
+
+if ! test -e $UPDATE ; then
+    exit 1
+fi
+
+echo "Found zsync: $BASENAME_UPDATE"
 
 if [ $TAG_NAME != "master" ]; then
     # Delete all old comments in desktop PR, starting with "AppImage file:"
@@ -138,7 +144,7 @@ for data in $(echo $assets | jq -r '.[] | @uri'); do
 done
 
 # Upload release asset
-echo "Uploading new asset: $BASENAME"
+echo "Uploading new asset: $BASENAME_APPIMAGE, $BASENAME_UPDATE"
 
 json=$(upload_release_asset "$uploadUrlAppImage" "$uploadUrlUpdate")
 browserDownloadUrl=$(echo $json | jq -r '.browser_download_url')
@@ -150,7 +156,7 @@ fi
 
 if [ $TAG_NAME != "master" ]; then
     # Create comment in desktop PR
-    curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X POST $DESKTOP_API_BASE_URL/issues/$PR/comments -d "{ \"body\" : \"AppImage file: [$BASENAME]($browserDownloadUrl) <br/><br/>To test this change/fix you can simply download above AppImage file and test it. <br/><br/>Please make sure to quit your existing Nextcloud app and backup your data. \" }"
+    curl 2>/dev/null -u $GIT_USERNAME:$GIT_TOKEN -X POST $DESKTOP_API_BASE_URL/issues/$PR/comments -d "{ \"body\" : \"AppImage file: [$BASENAME_APPIMAGE]($browserDownloadUrl) <br/><br/>[$BASENAME_UPDATE]($browserDownloadUrl)<br/><br/>To test this change/fix you can simply download above AppImage file and test it. <br/><br/>Please make sure to quit your existing Nextcloud app and backup your data. \" }"
 fi
 
 echo
