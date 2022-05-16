@@ -113,6 +113,7 @@ private:
     void activateShareeLineEdit();
 
     Ui::ShareUserGroupWidget *_ui;
+    QScopedPointer<QAction> _searchGloballyAction;
     QScrollArea *_parentScrollArea;
     QVBoxLayout *_shareUserGroup;
     AccountPtr _account;
