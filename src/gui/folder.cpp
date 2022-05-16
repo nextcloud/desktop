@@ -1225,6 +1225,11 @@ void Folder::scheduleThisFolderSoon()
     }
 }
 
+void Folder::acceptInvalidFileName(const QString &filePath)
+{
+    _engine->addAcceptedInvalidFileName(filePath);
+}
+
 void Folder::setSaveBackwardsCompatible(bool save)
 {
     _saveBackwardsCompatible = save;
