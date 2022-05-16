@@ -118,15 +118,15 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     _completer->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
     _ui->shareeLineEdit->setCompleter(_completer);
 
-    auto searchGloballyAction = new QAction(_ui->shareeLineEdit);
-    searchGloballyAction->setIcon(QIcon(":/client/theme/magnifying-glass.svg"));
-    searchGloballyAction->setToolTip(tr("Search globally"));
+    _searchGloballyAction.reset(new QAction(_ui->shareeLineEdit));
+    _searchGloballyAction->setIcon(Theme::createColorAwareIcon(":/client/theme/magnifying-glass.svg"));
+    _searchGloballyAction->setToolTip(tr("Search globally"));
 
-    connect(searchGloballyAction, &QAction::triggered, this, [this]() {
+    connect(_searchGloballyAction.data(), &QAction::triggered, this, [this]() {
         searchForSharees(ShareeModel::GlobalSearch);
     });
 
-    _ui->shareeLineEdit->addAction(searchGloballyAction, QLineEdit::LeadingPosition);
+    _ui->shareeLineEdit->addAction(_searchGloballyAction.data(), QLineEdit::LeadingPosition);
 
     _manager = new ShareManager(_account, this);
     connect(_manager, &ShareManager::sharesFetched, this, &ShareUserGroupWidget::slotSharesFetched);
@@ -433,6 +433,8 @@ void ShareUserGroupWidget::slotStyleChanged()
 
 void ShareUserGroupWidget::customizeStyle()
 {
+    _searchGloballyAction->setIcon(Theme::createColorAwareIcon(":/client/theme/magnifying-glass.svg"));
+
     _ui->confirmShare->setIcon(Theme::createColorAwareIcon(":/client/theme/confirm.svg"));
 
     _pi_sharee.setColor(QGuiApplication::palette().color(QPalette::Text));

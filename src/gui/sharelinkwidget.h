@@ -140,8 +140,8 @@ private:
     QAction *_allowUploadLinkAction;
     QAction *_passwordProtectLinkAction;
     QAction *_expirationDateLinkAction;
-    QAction *_unshareLinkAction;
-    QAction *_addAnotherLinkAction;
+    QScopedPointer<QAction> _unshareLinkAction;
+    QScopedPointer<QAction> _addAnotherLinkAction;
     QAction *_noteLinkAction;
     QHBoxLayout *_shareLinkLayout{};
     QLabel *_shareLinkLabel{};
