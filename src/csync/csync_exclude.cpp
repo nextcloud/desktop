@@ -318,14 +318,26 @@ bool ExcludedFiles::reloadExcludeFiles()
     bool success = true;
     const auto keys = _excludeFiles.keys();
     for (const auto& basePath : keys) {
-        for (const auto &excludeFile : _excludeFiles.value(basePath)) {
+        const auto itValue = _excludeFiles.find(basePath);
+        if (itValue == std::end(_excludeFiles)) {
+            continue;
+        }
+        auto &excludeFiles = *itValue;
+        for (auto excludeFileIt = std::begin(excludeFiles); excludeFileIt != std::end(excludeFiles); ) {
+            const auto &excludeFile = *excludeFileIt;
             QFile file(excludeFile);
-            if (file.exists() && file.open(QIODevice::ReadOnly)) {
+            if (!file.exists()) {
+                excludeFileIt = excludeFiles.erase(excludeFileIt);
+                continue;
+            }
+
+            if (file.open(QIODevice::ReadOnly)) {
                 loadExcludeFilePatterns(basePath, file);
             } else {
                 success = false;
                 qWarning() << "System exclude list file could not be opened:" << excludeFile;
             }
+            ++excludeFileIt;
         }
     }
 
