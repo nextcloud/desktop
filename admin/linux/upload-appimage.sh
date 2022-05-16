@@ -94,7 +94,7 @@ upload_release_asset()
 {
     uploadUrl=$1
     asset=$2
-    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl--header "Content-Type: application/octet-stream" --upload-file $asset)
+    echo $(curl --max-time 900 -u $GIT_USERNAME:$GIT_TOKEN -X POST $uploadUrl --header "Content-Type: application/octet-stream" --upload-file $asset)
 }
 
 delete_release_asset()
