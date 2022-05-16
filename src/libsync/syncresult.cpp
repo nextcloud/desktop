@@ -141,7 +141,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         if (!_firstItemError) {
             _firstItemError = item;
         }
-    } else if (item->_status == SyncFileItem::Conflict) {
+    } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameInvalid) {
         if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
             _numNewConflictItems++;
             if (!_firstNewConflictItem) {

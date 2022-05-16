@@ -256,6 +256,8 @@ public:
       */
     void scheduleThisFolderSoon();
 
+    void acceptInvalidFileName(const QString &filePath);
+
     /**
       * Migration: When this flag is true, this folder will save to
       * the backwards-compatible 'Folders' section in the config file.

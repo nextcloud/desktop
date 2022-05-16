@@ -37,54 +37,6 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
 
-
-bool ProcessDirectoryJob::checkForInvalidFileName(const PathTuple &path,
-    const std::map<QString, Entries> &entries, Entries &entry)
-{
-    const auto originalFileName = entry.localEntry.isValid() ? entry.localEntry.name : entry.serverEntry.name;
-    const auto newFileName = originalFileName.trimmed();
-
-    if (originalFileName == newFileName) {
-        return true;
-    }
-
-    const auto entriesIter = entries.find(newFileName);
-    if (entriesIter != entries.end()) {
-        QString errorMessage;
-        const auto newFileNameEntry = entriesIter->second;
-        if (entry.serverEntry.isValid() && newFileNameEntry.serverEntry.isValid()) {
-            errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.");
-        }
-        if (entry.localEntry.isValid() && newFileNameEntry.localEntry.isValid()) {
-            errorMessage = tr("File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.");
-        }
-
-        if (!errorMessage.isEmpty()) {
-            auto item = SyncFileItemPtr::create();
-            if ((entry.localEntry.isValid() && entry.localEntry.isDirectory) || (entry.serverEntry.isValid() && entry.serverEntry.isDirectory)) {
-                item->_type = CSyncEnums::ItemTypeDirectory;
-            } else {
-                item->_type = CSyncEnums::ItemTypeFile;
-            }
-            item->_file = path._target;
-            item->_originalFile = path._target;
-            item->_instruction = CSYNC_INSTRUCTION_ERROR;
-            item->_status = SyncFileItem::NormalError;
-            item->_errorString = errorMessage;
-            processFileFinalize(item, path, false, ParentNotChanged, ParentNotChanged);
-            return false;
-        }
-    }
-
-    if (entry.localEntry.isValid()) {
-        entry.localEntry.renameName = newFileName;
-    } else {
-        entry.serverEntry.renameName = newFileName;
-    }
-
-    return true;
-}
-
 void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
@@ -222,22 +174,11 @@ void ProcessDirectoryJob::process()
         // local stat function.
         // Recall file shall not be ignored (#4420)
         bool isHidden = e.localEntry.isHidden || (!f.first.isEmpty() && f.first[0] == '.' && f.first != QLatin1String(".sys.admin#recall#"));
-#ifdef Q_OS_WIN
-        // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing the app eventually.
-        const bool isServerEntryWindowsShortcut = !e.localEntry.isValid() && e.serverEntry.isValid() && !e.serverEntry.isDirectory && FileSystem::isLnkFile(e.serverEntry.name);
-#else
-        const bool isServerEntryWindowsShortcut = false;
-#endif
-        if (handleExcluded(path._target, e.localEntry.name,
-                e.localEntry.isDirectory || e.serverEntry.isDirectory, isHidden,
-                e.localEntry.isSymLink || isServerEntryWindowsShortcut))
+        if (handleExcluded(path._target, e, isHidden))
             continue;
 
         if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
             processBlacklisted(path, e.localEntry, e.dbEntry);
-            continue;
-        }
-        if (!checkForInvalidFileName(path, entries, e)) {
             continue;
         }
         processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
@@ -245,9 +186,33 @@ void ProcessDirectoryJob::process()
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 
-bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &localName, bool isDirectory, bool isHidden, bool isSymlink)
+bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &entries, bool isHidden)
 {
+    const auto isDirectory = entries.localEntry.isDirectory || entries.serverEntry.isDirectory;
+
     auto excluded = _discoveryData->_excludes->traversalPatternMatch(path, isDirectory ? ItemTypeDirectory : ItemTypeFile);
+
+    const auto fileName = path.mid(path.lastIndexOf('/') + 1);
+
+    if (excluded == CSYNC_NOT_EXCLUDED) {
+        const auto endsWithSpace = fileName.endsWith(QLatin1Char(' '));
+        const auto startsWithSpace = fileName.startsWith(QLatin1Char(' '));
+        if (startsWithSpace && endsWithSpace) {
+            excluded = CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE;
+        } else if (endsWithSpace) {
+            excluded = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
+        } else if (startsWithSpace) {
+            excluded = CSYNC_FILE_EXCLUDE_LEADING_SPACE;
+        }
+    }
+
+    // we don't need to trigger a warning if trailing/leading space file is already on the server or has already been synced down
+    // only if the OS supports trailing/leading spaces
+    const auto wasSyncedAlreadyAndOsSupportsSpaces = !Utility::isWindows() && (entries.serverEntry.isValid() || entries.dbEntry.isValid());
+    if ((excluded == CSYNC_FILE_EXCLUDE_LEADING_SPACE || excluded == CSYNC_FILE_EXCLUDE_TRAILING_SPACE || excluded == CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE)
+            && (wasSyncedAlreadyAndOsSupportsSpaces || _discoveryData->_leadingAndTrailingSpacesFilesAllowed.contains(_discoveryData->_localDir + path))) {
+        excluded = CSYNC_NOT_EXCLUDED;
+    }
 
     // FIXME: move to ExcludedFiles 's regexp ?
     bool isInvalidPattern = false;
@@ -260,6 +225,8 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
     if (excluded == CSYNC_NOT_EXCLUDED && _discoveryData->_ignoreHiddenFiles && isHidden) {
         excluded = CSYNC_FILE_EXCLUDE_HIDDEN;
     }
+
+    const auto &localName = entries.localEntry.name;
     if (excluded == CSYNC_NOT_EXCLUDED && !localName.isEmpty()
             && _discoveryData->_serverBlacklistedFiles.contains(localName)) {
         excluded = CSYNC_FILE_EXCLUDE_SERVER_BLACKLISTED;
@@ -279,6 +246,17 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             excluded = CSYNC_FILE_EXCLUDE_CANNOT_ENCODE;
         }
     }
+
+#ifdef Q_OS_WIN
+    // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to
+    // QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing
+    // the app eventually.
+    const bool isServerEntryWindowsShortcut = !entries.localEntry.isValid() && entries.serverEntry.isValid()
+        && !entries.serverEntry.isDirectory && FileSystem::isLnkFile(entries.serverEntry.name);
+#else
+    const bool isServerEntryWindowsShortcut = false;
+#endif
+    const auto isSymlink = entries.localEntry.isSymLink || isServerEntryWindowsShortcut;
 
     if (excluded == CSYNC_NOT_EXCLUDED && !isSymlink) {
         return false;
@@ -327,6 +305,14 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
             break;
         case CSYNC_FILE_EXCLUDE_TRAILING_SPACE:
             item->_errorString = tr("Filename contains trailing spaces.");
+            item->_status = SyncFileItem::FileNameInvalid;
+            break;
+        case CSYNC_FILE_EXCLUDE_LEADING_SPACE:
+            item->_errorString = tr("Filename contains leading spaces.");
+            item->_status = SyncFileItem::FileNameInvalid;
+            break;
+        case CSYNC_FILE_EXCLUDE_LEADING_AND_TRAILING_SPACE:
+            item->_errorString = tr("Filename contains leading and trailing spaces.");
             item->_status = SyncFileItem::FileNameInvalid;
             break;
         case CSYNC_FILE_EXCLUDE_LONG_FILENAME:

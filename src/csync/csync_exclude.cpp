@@ -165,9 +165,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // as '.' is a separator that is not stored internally, so let's
     // not allow to sync those to avoid file loss/ambiguities (#416)
     if (blen > 1) {
-        if (bname.at(blen - 1) == QLatin1Char(' ')) {
-            return CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
-        } else if (bname.at(blen - 1) == QLatin1Char('.')) {
+        if (bname.at(blen - 1) == QLatin1Char('.')) {
             return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         }
     }

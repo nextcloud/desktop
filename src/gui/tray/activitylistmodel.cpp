@@ -687,6 +687,10 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
             folder->scheduleThisFolderSoon();
         });
+        connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::acceptedInvalidName, folder, [folder](const QString& filePath) {
+            folder->acceptInvalidFileName(filePath);
+            folder->scheduleThisFolderSoon();
+        });
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
