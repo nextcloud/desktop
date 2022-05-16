@@ -117,6 +117,8 @@ void SelectiveSyncWidget::refreshFolders()
     job->setProperties(props);
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &SelectiveSyncWidget::slotUpdateDirectories);
+    connect(job, &LsColJob::directoryListingSubfolders,
+        this, &SelectiveSyncWidget::slotUpdateRootFolderFilesSize);
     connect(job, &LsColJob::finishedWithError,
         this, &SelectiveSyncWidget::slotLscolFinishedWithError);
     connect(job, &LsColJob::directoryListingIterated,
@@ -288,6 +290,24 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     root->setExpanded(true);
 }
 
+void SelectiveSyncWidget::slotUpdateRootFolderFilesSize(const QStringList &subfolders)
+{
+    const auto job = qobject_cast<LsColJob *>(sender());
+    
+    if (!job) {
+        qWarning() << "slotUpdateRootFolderFilesSize must have a valid sender";
+        return;
+    }
+
+    _rootFilesSize = 0;
+
+    for (auto it = std::cbegin(job->_folderInfos); it != std::cend(job->_folderInfos); ++it) {
+        if (!subfolders.contains(it.key())) {
+            _rootFilesSize += it.value().size;
+        }
+    }
+}
+
 void SelectiveSyncWidget::slotLscolFinishedWithError(QNetworkReply *r)
 {
     if (r->error() == QNetworkReply::ContentNotFoundError) {
@@ -454,7 +474,7 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
         // We did not load from the server so we have no idea how much we will sync from this branch
         return -1;
     }
-    return result;
+    return result + _rootFilesSize;
 }
 
 
