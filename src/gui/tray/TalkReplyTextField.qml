@@ -7,28 +7,31 @@ import com.nextcloud.desktopclient 1.0
 Item {
     id: root
 
+    signal sendReply(string reply)
+
     function sendReplyMessage() {
         if (replyMessageTextField.text === "") {
             return;
         }
 
-        UserModel.currentUser.sendReplyMessage(model.index, model.conversationToken, replyMessageTextField.text, model.messageId);
-        replyMessageTextField.visible = false
+        root.sendReply(replyMessageTextField.text);
     }
+
+    height: 38
+    width: 250
 
     TextField {
         id: replyMessageTextField
+
+        anchors.fill: parent
+        topPadding: 4
+        rightPadding: sendReplyMessageButton.width
         visible: model.messageSent === ""
 
-        // TODO use Layout to manage width/height. The Layout.minimunWidth does not apply to the width set.
-        height: 38
-        width: 250
+        color: Style.ncSecondaryTextColor
+        placeholderText: qsTr("Reply to …")
 
         onAccepted: root.sendReplyMessage()
-
-        topPadding: 4
-
-        placeholderText: qsTr("Reply to …")
 
         background: Rectangle {
             id: replyMessageTextFieldBorder
