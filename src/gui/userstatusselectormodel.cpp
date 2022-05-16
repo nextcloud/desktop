@@ -182,6 +182,7 @@ void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
     }
 
     _userStatus.setState(status);
+    _userStatusConnector->setUserStatus(_userStatus);
     emit onlineStatusChanged();
 }
 
