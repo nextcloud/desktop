@@ -137,10 +137,17 @@
 - (void)closeConnection
 {
     NSLog(@"Closing connection.");
-    dispatch_source_cancel(self.readSource);
-    dispatch_source_cancel(self.writeSource);
-    self.readSource = nil;
-    self.writeSource = nil;
+    
+    if(self.readSource) {
+        dispatch_source_cancel(self.readSource);
+        self.readSource = nil;
+    }
+    
+    if(self.writeSource) {
+        dispatch_source_cancel(self.writeSource);
+        self.writeSource = nil;
+    }
+
     [self.inBuffer setLength:0];
     [self.outBuffer setLength: 0];
     
