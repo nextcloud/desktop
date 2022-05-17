@@ -118,6 +118,8 @@ private:
     static Systray *_instance;
     Systray();
 
+    void setupContextMenu();
+
     QScreen *currentScreen() const;
     QRect currentScreenRect() const;
     QPoint computeWindowReferencePoint() const;
@@ -132,6 +134,7 @@ private:
     bool _isOpen = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
+    QPointer<QMenu> _contextMenu;
 
     AccessManagerFactory _accessManagerFactory;
 
