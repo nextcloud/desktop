@@ -1,0 +1,5 @@
+Bugfix: Deadlock when the user requested a context menu in a folder selection dialog
+
+We fixed a deadlock when a user requested a context menu in a folder slection dialog on Windows.
+
+https://github.com/owncloud/client/issues/9681

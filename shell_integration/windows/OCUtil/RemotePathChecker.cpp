@@ -62,14 +62,24 @@ void RemotePathChecker::workerThreadLoop()
                 lock.unlock();
                 if (!asked.count(filePath)) {
                     asked.insert(filePath);
-                    socket.SendMsg(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n');
+                    if (!socket.SendMsg(L"RETRIEVE_FILE_STATUS:" + filePath + L'\n')) {
+                        _stop = true;
+                        break;
+                    }
                 }
                 lock.lock();
             }
         }
 
         std::wstring response;
-        while (!_stop && socket.ReadLine(&response)) {
+        while (!_stop) {
+            if (!socket.ReadLine(&response)) {
+                socket.Close();
+                break;
+            }
+            if (response.empty()) {
+                break;
+            }
             if (StringUtil::begins_with(response, wstring(L"REGISTER_PATH:"))) {
                 wstring responsePath = response.substr(14); // length of REGISTER_PATH:
 
@@ -153,7 +163,9 @@ void RemotePathChecker::workerThreadLoop()
             }
         }
 
-        if (_stop) return;
+        if (_stop) {
+            return;
+        }
 
         HANDLE handles[2] = { _newQueries, socket.Event() };
         WaitForMultipleObjects(2, handles, false, 0);

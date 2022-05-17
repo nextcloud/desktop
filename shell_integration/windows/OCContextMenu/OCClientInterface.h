@@ -56,7 +56,7 @@ public:
         std::vector<MenuItem> menuItems;
     };
     static ContextMenuInfo FetchInfo(const std::wstring &files);
-    static void SendRequest(const std::wstring &verb, const std::wstring &path);
+    [[nodiscard]] static bool SendRequest(const std::wstring &verb, const std::wstring &path);
 };
 
 #endif //ABSTRACTSOCKETHANDLER_H
