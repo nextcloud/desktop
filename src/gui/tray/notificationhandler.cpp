@@ -149,12 +149,17 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         // Add another action to dismiss notification on server
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
-        ActivityLink al;
-        al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
-        al._verb = "DELETE";
-        al._primary = false;
-        a._links.append(al);
+        constexpr auto deleteVerb = "DELETE";
+        if (std::find_if(std::cbegin(a._links), std::cend(a._links), [](const ActivityLink& link) {
+                return link._verb == deleteVerb;
+            }) == std::cend(a._links)) {
+            ActivityLink al;
+            al._label = tr("Dismiss");
+            al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
+            al._verb = deleteVerb;
+            al._primary = false;
+            a._links.append(al);
+        }
 
         list.append(a);
     }
