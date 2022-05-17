@@ -43,6 +43,11 @@ Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
 
 namespace OCC {
 
+enum MacNotificationAuthorizationOptions {
+    Default = 0,
+    Provisional
+};
+
 double statusBarThickness()
 {
     return [NSStatusBar systemStatusBar].thickness;
@@ -78,10 +83,16 @@ void registerNotificationCategories(const QString &localisedDownloadString) {
     [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithObjects:generalCategory, updateCategory, nil]];
 }
 
-void checkNotificationAuth()
+void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOption = MacNotificationAuthorizationOptions::Provisional)
 {
     UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-    [center requestAuthorizationWithOptions:(UNAuthorizationOptionAlert + UNAuthorizationOptionSound + UNAuthorizationOptionProvisional)
+    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
+
+    if(additionalAuthOption == MacNotificationAuthorizationOptions::Provisional) {
+        authOptions += UNAuthorizationOptionProvisional;
+    }
+
+    [center requestAuthorizationWithOptions:(authOptions)
         completionHandler:^(BOOL granted, NSError * _Nullable error) {
             // Enable or disable features based on authorization.
             if(granted) {
