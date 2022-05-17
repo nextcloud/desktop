@@ -93,7 +93,7 @@ InvalidFilenameDialog::InvalidFilenameDialog(AccountPtr account, Folder *folder,
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 
     _ui->errorLabel->setText(
-        tr("Checking rename permissions..."));
+        tr("Checking rename permissions …"));
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->filenameLineEdit->setEnabled(false);
 
