@@ -97,7 +97,9 @@ Systray::Systray()
 
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
 
-#ifndef Q_OS_MAC
+#ifdef Q_OS_MACOS
+    checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
+#else
     auto contextMenu = new QMenu();
     if (AccountManager::instance()->accounts().isEmpty()) {
         contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);

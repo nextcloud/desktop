@@ -1,6 +1,13 @@
+#include "QtCore/qurl.h"
+#include "config.h"
 #include <QString>
 #include <QWindow>
+#include <QLoggingCategory>
+
 #import <Cocoa/Cocoa.h>
+#import <UserNotifications/UserNotifications.h>
+
+Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
 
 @interface NotificationCenterDelegate : NSObject
 @end
@@ -17,9 +24,43 @@
 
 namespace OCC {
 
+enum MacNotificationAuthorizationOptions {
+    Default = 0,
+    Provisional
+};
+
 bool canOsXSendUserNotification()
 {
     return NSClassFromString(@"NSUserNotificationCenter") != nil;
+}
+
+double statusBarThickness()
+{
+    return [NSStatusBar systemStatusBar].thickness;
+}
+
+void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOption = MacNotificationAuthorizationOptions::Provisional)
+{
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
+
+    if(additionalAuthOption == MacNotificationAuthorizationOptions::Provisional) {
+        authOptions += UNAuthorizationOptionProvisional;
+    }
+
+    [center requestAuthorizationWithOptions:(authOptions)
+        completionHandler:^(BOOL granted, NSError * _Nullable error) {
+            // Enable or disable features based on authorization.
+            if(granted) {
+                qCDebug(lcMacSystray) << "Authorization for notifications has been granted, can display notifications.";
+            } else {
+                qCDebug(lcMacSystray) << "Authorization for notifications not granted.";
+                if(error) {
+                    QString errorDescription([error.localizedDescription UTF8String]);
+                    qCDebug(lcMacSystray) << "Error from notification center: " << errorDescription;
+                }
+            }
+    }];
 }
 
 void sendOsXUserNotification(const QString &title, const QString &message)

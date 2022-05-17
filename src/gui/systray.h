@@ -38,7 +38,16 @@ public:
     QNetworkAccessManager* create(QObject *parent) override;
 };
 
-#ifdef Q_OS_OSX
+
+#ifdef Q_OS_MACOS
+enum MacNotificationAuthorizationOptions {
+    Default = 0,
+    Provisional
+};
+
+void setUserNotificationCenterDelegate();
+void checkNotificationAuth(MacNotificationAuthorizationOptions authOptions = MacNotificationAuthorizationOptions::Provisional);
+void registerNotificationCategories(const QString &localizedDownloadString);
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
