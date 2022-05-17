@@ -55,7 +55,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     } else {
 #ifdef WITH_WEBENGINE
         _webView = new WebView();
-        _containerLayout->addWidget(_webView);
+        _containerLayout->addWidget(_webView, 1);
 
         connect(_webView, &WebView::urlCatched, this, &WebFlowCredentialsDialog::urlCatched);
 #endif // WITH_WEBENGINE
