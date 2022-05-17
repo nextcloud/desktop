@@ -15,6 +15,7 @@ Summary
 * Bugfix - Crash when interacting with a folder in an error state: [#9600](https://github.com/owncloud/client/issues/9600)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
+* Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 * Change - Rewrote TLS error handling: [#9655](https://github.com/owncloud/client/issues/9655)
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
@@ -72,6 +73,10 @@ Details
    We no longer persist cookies over multiple client sessions.
 
    https://github.com/owncloud/client/issues/9495
+
+* Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
+
+   https://github.com/owncloud/client/issues/9578
 
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 
