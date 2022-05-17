@@ -40,8 +40,13 @@ public:
 };
 
 #ifdef Q_OS_MACOS
+enum MacNotificationAuthorizationOptions {
+    Default = 0,
+    Provisional
+};
+
 void setUserNotificationCenterDelegate();
-void checkNotificationAuth();
+void checkNotificationAuth(MacNotificationAuthorizationOptions authOptions = MacNotificationAuthorizationOptions::Provisional);
 void registerNotificationCategories(const QString &localizedDownloadString);
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
