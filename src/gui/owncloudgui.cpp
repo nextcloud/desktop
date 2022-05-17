@@ -52,6 +52,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcOwnCloudGui, "com.nextcloud.owncloudgui")
+
 const char propertyAccountC[] = "oc_account";
 
 ownCloudGui::ownCloudGui(Application *parent)
@@ -373,10 +375,12 @@ void ownCloudGui::hideAndShowTray()
 
 void ownCloudGui::slotShowTrayMessage(const QString &title, const QString &msg)
 {
-    if (_tray)
+    qCDebug(lcOwnCloudGui) << "Going to show notification with title: '" << title << "' and message: '" << msg << "'";
+    if (_tray) {
         _tray->showMessage(title, msg);
-    else
+    } else {
         qCWarning(lcApplication) << "Tray not ready: " << msg;
+    }
 }
 
 void ownCloudGui::slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl)
