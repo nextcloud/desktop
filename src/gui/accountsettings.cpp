@@ -408,15 +408,17 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 
 void AccountSettings::slotAddFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
-    folderMan->setSyncEnabled(false); // do not start more syncs.
+    FolderMan::instance()->setSyncEnabled(false); // do not start more syncs.
 
     FolderWizard *folderWizard = new FolderWizard(_accountState->account(), ocApp()->gui()->settingsDialog());
     folderWizard->setAttribute(Qt::WA_DeleteOnClose);
     folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
 
     connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
-    connect(folderWizard, &QDialog::rejected, this, &AccountSettings::slotFolderWizardRejected);
+    connect(folderWizard, &QDialog::rejected, this, [] {
+        qCInfo(lcAccountSettings) << "Folder wizard cancelled";
+        FolderMan::instance()->setSyncEnabled(true);
+    });
     folderWizard->open();
     ocApp()->gui()->raiseDialog(folderWizard);
 }
@@ -425,13 +427,11 @@ void AccountSettings::slotAddFolder()
 void AccountSettings::slotFolderWizardAccepted()
 {
     FolderWizard *folderWizard = qobject_cast<FolderWizard *>(sender());
-    FolderMan *folderMan = FolderMan::instance();
-
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
     bool useVfs = folderWizard->property("useVirtualFiles").toBool();
 
-    auto folder = folderMan->addFolderFromWizard(_accountState,
+    auto folder = FolderMan::instance()->addFolderFromWizard(_accountState,
         folderWizard->field(QLatin1String("sourceFolder")).toString(),
         folderWizard->property("targetPath").toString(),
         folderWizard->davUrl(),
@@ -448,14 +448,8 @@ void AccountSettings::slotFolderWizardAccepted()
             QStringList() << QLatin1String("/"));
         emit folderChanged();
     }
-    folderMan->scheduleAllFolders();
-}
-
-void AccountSettings::slotFolderWizardRejected()
-{
-    qCInfo(lcAccountSettings) << "Folder wizard cancelled";
-    FolderMan *folderMan = FolderMan::instance();
-    folderMan->setSyncEnabled(true);
+    FolderMan::instance()->setSyncEnabled(true);
+    FolderMan::instance()->scheduleAllFolders();
 }
 
 void AccountSettings::slotRemoveCurrentFolder()
