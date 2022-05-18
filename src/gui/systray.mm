@@ -18,7 +18,11 @@ Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
     willPresentNotification:(UNNotification *)notification
     withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
 {
-    completionHandler(UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBanner);
+    if (@available(macOS 11.0, *)) {
+        completionHandler(UNNotificationPresentationOptionSound + UNNotificationPresentationOptionBanner);
+    } else {
+        completionHandler(UNNotificationPresentationOptionSound + UNNotificationPresentationOptionAlert);
+    }
 }
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center
