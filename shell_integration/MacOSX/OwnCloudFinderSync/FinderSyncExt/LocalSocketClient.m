@@ -207,9 +207,9 @@
     NSLog(@"About to write %li bytes from outbuffer to socket.", [self.outBuffer length]);
     
     long bytesWritten = write(self.sock, [self.outBuffer bytes], [self.outBuffer length]);
-    char lineWritten[4096];
+    char lineWritten[[self.outBuffer length]];
     memcpy(lineWritten, [self.outBuffer bytes], [self.outBuffer length]);
-    NSLog(@"Wrote %li bytes to socket. Line was: '%@'", bytesWritten, [NSString stringWithUTF8String:lineWritten]);
+    NSLog(@"Wrote %li bytes to socket. Line written was: '%@'", bytesWritten, [NSString stringWithUTF8String:lineWritten]);
     
     if(bytesWritten == 0) {
         // 0 means we reached "end of file" and thus the socket was closed. So let's restart it
