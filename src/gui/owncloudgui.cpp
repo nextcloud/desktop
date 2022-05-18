@@ -64,6 +64,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
 
     auto finalize = [accountStatePtr] {
         accountStatePtr->checkConnectivity();
+        FolderMan::instance()->setSyncEnabled(true);
         FolderMan::instance()->scheduleAllFolders();
     };
 
@@ -1029,7 +1030,6 @@ void ownCloudGui::runNewAccountWizard()
                             case Wizard::SyncMode::UseVfs: {
                                 bool useVfs = syncMode == Wizard::SyncMode::UseVfs;
                                 setUpInitialSyncFolder(accountStatePtr, useVfs);
-                                FolderMan::instance()->setSyncEnabled(true);
 
                                 break;
                             }
