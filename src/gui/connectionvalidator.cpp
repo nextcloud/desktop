@@ -184,6 +184,11 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
         return;
     }
 
+    AbstractCredentials *creds = _account->credentials();
+    if (!creds->ready()) {
+        reportResult(CredentialsNotReady);
+        return;
+    }
     // now check the authentication
     if (_mode != ConnectionValidator::ValidationMode::ValidateServer) {
         checkAuthentication();
@@ -194,13 +199,6 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
 
 void ConnectionValidator::checkAuthentication()
 {
-    AbstractCredentials *creds = _account->credentials();
-
-    if (!creds->ready()) {
-        reportResult(CredentialsNotReady);
-        return;
-    }
-
     // simply GET the webdav root, will fail if credentials are wrong.
     // continue in slotAuthCheck here :-)
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
