@@ -168,11 +168,23 @@ class PublicLinkDialog:
                 squish.Qt.NoModifier,
                 squish.Qt.LeftButton,
             )
-            squish.nativeType("<Delete>")
-            squish.nativeType("<Delete>")
-            squish.nativeType(expDate.month)
-            squish.nativeType(expDate.day)
+            # Move the cursor to year (last) field and enter the year
+            squish.nativeType("<Ctrl+Right>")
+            squish.nativeType("<Ctrl+Right>")
             squish.nativeType(expYear)
+
+            # Move the cursor to day (middle) field and enter the day
+            squish.nativeType("<Ctrl+Left>")
+            squish.nativeType(expDate.day)
+
+            # Move the cursor to month (first) field and enter the month
+            # Backspace works most of the time, so we clear the data using backspace
+            squish.nativeType("<Ctrl+Left>")
+            squish.nativeType("<Ctrl+Left>")
+            squish.nativeType("<Right>")
+            squish.nativeType("<Backspace>")
+            squish.nativeType("<Backspace>")
+            squish.nativeType(expDate.month)
             squish.nativeType("<Return>")
 
             actualDate = str(
@@ -180,10 +192,20 @@ class PublicLinkDialog:
             )
             expectedDate = f"{expDate.month}/{expDate.day}/{expYear}"
             if not actualDate == expectedDate:
+                test.log(
+                    f"Expected date: {expectedDate} is not same as that of Actual date: {actualDate}, trying workaround"
+                )
                 # retry with workaround
                 self.setExpirationDateWithWorkaround(
                     expYear, expDate.month, expDate.day
                 )
+                actualDate = str(
+                    squish.waitForObjectExists(self.EXPIRATION_DATE_FIELD).displayText
+                )
+                if not actualDate == expectedDate:
+                    test.fail(
+                        f"workaround failed, actual date: {actualDate} is still not same as expected date: {expectedDate}"
+                    )
             squish.waitFor(
                 lambda: (test.vp("publicLinkExpirationProgressIndicatorInvisible"))
             )
@@ -193,8 +215,7 @@ class PublicLinkDialog:
             )
             PublicLinkDialog.setDefaultExpiryDate(defaultDate)
 
-    # This workaround is needed because the above function 'setExpirationDate'
-    # will not work while creating new public link
+    # This workaround is needed because the above function 'setExpirationDate' can not set the month field sometime.
     # See for more details: https://github.com/owncloud/client/issues/9218
     def setExpirationDateWithWorkaround(self, year, month, day):
         squish.mouseClick(
@@ -205,20 +226,15 @@ class PublicLinkDialog:
             squish.Qt.LeftButton,
         )
 
-        # date can be edited from backward only
-        # date format is 'mm/dd/yy', so we have to edit 'year' first
-        # then 'day' and then 'month'.
-        # Move the cursor to year field
-        squish.nativeType("<Ctrl+Right>")
-        squish.nativeType("<Ctrl+Right>")
-        squish.nativeType(year)
-        # Move the cursor to day field
-        squish.nativeType("<Ctrl+Left>")
-        squish.nativeType(day)
-        # Move the cursor to month field
-        squish.nativeType("<Ctrl+Left>")
-        squish.nativeType("<Ctrl+Left>")
+        # date can only be set to future date. But sometimes it can not modify the month field in first attempt.
+        # date format is 'm/d/yy', so we have to edit 'month' first
+        # then 'day' and then 'year'.
+        # Delete data from month field
+        squish.nativeType("<Delete>")
+        squish.nativeType("<Delete>")
         squish.nativeType(month)
+        squish.nativeType(day)
+        squish.nativeType(year)
         squish.nativeType("<Return>")
 
     def getRadioObjectForPermssion(self, permissions):

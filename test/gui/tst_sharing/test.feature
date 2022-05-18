@@ -483,7 +483,7 @@ Feature: Sharing
         Then the expiration date of the last public link of file "textfile.txt" should be "%default%"
         And as user "Alice" the file "textfile.txt" should have a public link on the server
 
-    @skip @issue-9321
+    @issue-9321
     Scenario: simple sharing of file and folder by public link with expiration date
         Given user "Alice" has set up a client with default settings
         And user "Alice" has created folder "FOLDER" on the server
@@ -492,17 +492,17 @@ Feature: Sharing
             | path       | textfile.txt |
             | expireDate | 2031-10-14   |
         Then as user "Alice" the file "textfile.txt" should have a public link on the server
-        And the fields of the last public link share response of user "Alice" should include on the server
+        And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-10-14 |
         When the user closes the sharing dialog
         And the user creates a new public link with following settings using the client-UI:
             | path       | FOLDER     |
             | expireDate | 2031-12-30 |
         Then as user "Alice" the file "FOLDER" should have a public link on the server
-        And the fields of the last public link share response of user "Alice" should include on the server
+        And the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2031-12-30 |
 
-    @skip @issue-9321
+    @issue-9321
     Scenario: simple sharing of a file by public link with password and expiration date
         Given user "Alice" has set up a client with default settings
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
@@ -541,7 +541,7 @@ Feature: Sharing
         When the user opens the public links dialog of "simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
             | expireDate | 2038-07-21 |
-        Then the fields of the last public link share response of user "Alice" on the server should include
+        Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
 
 
