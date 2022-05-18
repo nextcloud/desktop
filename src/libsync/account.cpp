@@ -305,7 +305,7 @@ QString Account::serverVersionString() const
 
 bool Account::serverVersionUnsupported() const
 {
-    if (serverVersion().isNull()) {
+    if (serverVersion().isNull() || serverProductName().isEmpty()) {
         // not detected yet, assume it is fine.
         return false;
     }
