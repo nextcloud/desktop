@@ -62,7 +62,7 @@ MouseArea {
         anchors.leftMargin: Style.standardSpacing
         anchors.verticalCenter: parent.verticalCenter
 
-        spacing: 10
+        spacing: Style.activityContentSpace
 
         ActivityItemContent {
             id: activityContent

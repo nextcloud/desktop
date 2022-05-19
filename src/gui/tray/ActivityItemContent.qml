@@ -106,11 +106,11 @@ RowLayout {
     Column {
         id: activityTextColumn
 
-        Layout.topMargin: 4
+        Layout.topMargin: Style.activityContentSpace
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-        spacing: 4
+        spacing: Style.activityContentSpace
 
         Label {
             id: activityTextTitle
