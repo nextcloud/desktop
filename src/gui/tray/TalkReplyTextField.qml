@@ -49,6 +49,9 @@ Item {
             flat: true
             enabled: replyMessageTextField.text !== ""
             onClicked: root.sendReplyMessage()
+            background: Rectangle {
+                color: "transparent"
+            }
 
             icon {
                 source: "image://svgimage-custom-color/send.svg" + "/" + Style.menuBorder
