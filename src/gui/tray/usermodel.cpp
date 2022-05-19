@@ -121,7 +121,8 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
-        const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
+        const auto message = activity._objectType == QStringLiteral("chat")
+            ? activity._message : AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
         showDesktopNotification(activity._subject, message, activity._id); // We assigned the notif. id to the activity id
         _activityModel->addNotificationToActivityList(activity);
     }
