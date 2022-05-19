@@ -80,7 +80,7 @@ MouseArea {
 
         Loader {
             id: talkReplyTextFieldLoader
-            active: root.isChatActivity && root.isTalkReplyPossible && root.activityData.messageSent === ""
+            active: root.isChatActivity && root.isTalkReplyPossible && model.messageSent === ""
             visible: root.isTalkReplyOptionVisible
 
             Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
