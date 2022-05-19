@@ -87,8 +87,9 @@ MouseArea {
             active: root.isChatActivity && root.isTalkReplyPossible && model.messageSent === ""
             visible: root.isTalkReplyOptionVisible
 
+            Layout.preferredWidth: Style.talkReplyTextFieldPreferredWidth
+            Layout.preferredHeight: Style.talkReplyTextFieldPreferredHeight
             Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
-            Layout.preferredHeight: root.isTalkReplyOptionVisible ? implicitHeight : 0
 
             sourceComponent: TalkReplyTextField {
                 onSendReply: {
