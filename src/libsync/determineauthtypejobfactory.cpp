@@ -17,6 +17,7 @@
 
 #include "common/utility.h"
 #include "creds/httpcredentials.h"
+#include "theme.h"
 
 #include <QLoggingCategory>
 
@@ -35,7 +36,8 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
 {
     auto job = new CoreJob;
 
-    auto req = makeRequest(Utility::concatUrlPath(url, QStringLiteral("remote.php/dav/files/")));
+    // we explicitly use a legacy dav path here
+    auto req = makeRequest(Utility::concatUrlPath(url, Theme::instance()->webDavPath()));
 
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
