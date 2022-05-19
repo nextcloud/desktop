@@ -28,9 +28,10 @@ jobs:
               fetch-depth: 1
               container:
             - target: linux-64-gcc
-              os: ubuntu-18.04
+              os: ubuntu-latest
               container: kdeorg/centos7-craft
               fetch-depth: 1
+
     env:
       CRAFT_TARGET: ${{ matrix.target }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -71,6 +72,7 @@ jobs:
             sudo apt-get update -y
             sudo apt-get install -y mesa-common-dev libglu1-mesa-dev libmtdev1 libgl1-mesa-dev libmtdev1 libinput-dev libxkbcommon0 libxcb-icccm4 libxcb-image0 libxcb-render-util0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-xinerama0 libsm6
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/linuxdeploy
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --set enableLibcloudproviders=true owncloud/owncloud-client
         }
 
     - name: Install dependencies
