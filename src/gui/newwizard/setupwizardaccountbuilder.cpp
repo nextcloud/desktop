@@ -42,6 +42,16 @@ QString HttpBasicAuthenticationStrategy::davUser()
     return _username;
 }
 
+QString HttpBasicAuthenticationStrategy::username() const
+{
+    return _username;
+}
+
+QString HttpBasicAuthenticationStrategy::password() const
+{
+    return _password;
+}
+
 OAuth2AuthenticationStrategy::OAuth2AuthenticationStrategy(const QString &davUser, const QString &token, const QString &refreshToken)
     : _davUser(davUser)
     , _token(token)
@@ -133,5 +143,10 @@ void SetupWizardAccountBuilder::addCustomTrustedCaCertificate(const QSslCertific
 void SetupWizardAccountBuilder::clearCustomTrustedCaCertificates()
 {
     _customTrustedCaCertificates.clear();
+}
+
+AbstractAuthenticationStrategy *SetupWizardAccountBuilder::authenticationStrategy() const
+{
+    return _authenticationStrategy.get();
 }
 }

@@ -5,6 +5,7 @@
 #include "determineauthtypejobfactory.h"
 #include "gui/application.h"
 #include "gui/folderman.h"
+#include "jobs/checkbasicauthjobfactory.h"
 #include "jobs/resolveurljobfactory.h"
 #include "pages/accountconfiguredwizardpage.h"
 #include "pages/basiccredentialssetupwizardpage.h"
@@ -310,28 +311,66 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
     }
 
     if (desiredPage == 2) {
-        // being pessimistic by default
-        bool vfsIsAvailable = false;
-        bool enableVfsByDefault = false;
-        bool vfsModeIsExperimental = false;
+        auto moveToFinalPage = [this]() {
+            // being pessimistic by default
+            bool vfsIsAvailable = false;
+            bool enableVfsByDefault = false;
+            bool vfsModeIsExperimental = false;
 
-        switch (bestAvailableVfsMode()) {
-        case Vfs::WindowsCfApi:
-            vfsIsAvailable = true;
-            enableVfsByDefault = true;
-            vfsModeIsExperimental = false;
-            break;
-        case Vfs::WithSuffix:
-            vfsIsAvailable = true;
-            enableVfsByDefault = false;
-            vfsModeIsExperimental = true;
-            break;
-        default:
-            break;
+            switch (bestAvailableVfsMode()) {
+            case Vfs::WindowsCfApi:
+                vfsIsAvailable = true;
+                enableVfsByDefault = true;
+                vfsModeIsExperimental = false;
+                break;
+            case Vfs::WithSuffix:
+                vfsIsAvailable = true;
+                enableVfsByDefault = false;
+                vfsModeIsExperimental = true;
+                break;
+            default:
+                break;
+            }
+
+            _currentPage = new AccountConfiguredWizardPage(FolderMan::suggestSyncFolder(_accountBuilder.serverUrl(), _accountBuilder.displayName()), vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
+            _wizardWindow->displayPage(_currentPage, 2);
+        };
+
+        if (_accountBuilder.authType() == DetermineAuthTypeJob::AuthType::Basic) {
+            auto strategy = dynamic_cast<HttpBasicAuthenticationStrategy *>(_accountBuilder.authenticationStrategy());
+            Q_ASSERT(strategy != nullptr);
+
+            auto checkBasicAuthJob = Jobs::CheckBasicAuthJobFactory(_accessManager, strategy->username(), strategy->password(), this).startJob(_accountBuilder.serverUrl());
+
+            auto showCredentialsPageAgain = [this, checkBasicAuthJob](const QString &error) {
+                checkBasicAuthJob->deleteLater();
+
+                if (!error.isEmpty()) {
+                    _wizardWindow->showErrorMessage(error);
+                }
+
+                _currentPage = new BasicCredentialsSetupWizardPage(_accountBuilder.serverUrl());
+                _wizardWindow->displayPage(_currentPage, 1);
+            };
+
+            connect(checkBasicAuthJob, &CoreJob::finished, this, [moveToFinalPage, checkBasicAuthJob, showCredentialsPageAgain]() {
+                if (checkBasicAuthJob->success()) {
+                    if (checkBasicAuthJob->result().toBool()) {
+                        moveToFinalPage();
+                    } else {
+                        showCredentialsPageAgain(tr("Login failed: username and/or password incorrect"));
+                    }
+                } else {
+                    showCredentialsPageAgain(tr("Login failed: %1").arg(checkBasicAuthJob->errorMessage()));
+                }
+            });
+
+            return;
+        } else {
+            // for all other possible auth types (at the moment, just OAuth2), we do not need to check the credentials, we can reasonably assume they're correct
+            moveToFinalPage();
         }
 
-        _currentPage = new AccountConfiguredWizardPage(FolderMan::suggestSyncFolder(_accountBuilder.serverUrl(), _accountBuilder.displayName()), vfsIsAvailable, enableVfsByDefault, vfsModeIsExperimental);
-        _wizardWindow->displayPage(_currentPage, 2);
         return;
     }
 

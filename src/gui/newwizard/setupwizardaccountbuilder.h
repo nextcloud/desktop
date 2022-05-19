@@ -61,6 +61,10 @@ public:
 
     QString davUser() override;
 
+    // access is needed to be able to check these credentials against the server
+    QString username() const;
+    QString password() const;
+
 private:
     QString _username;
     QString _password;
@@ -103,6 +107,7 @@ public:
     DetermineAuthTypeJob::AuthType authType();
 
     void setAuthenticationStrategy(AbstractAuthenticationStrategy *strategy);
+    AbstractAuthenticationStrategy *authenticationStrategy() const;
 
     /**
      * Check whether credentials passed to the builder so far can be used to create a new account object.

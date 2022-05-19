@@ -34,6 +34,9 @@ add_library(newwizard STATIC
     jobs/resolveurljobfactory.cpp
     jobs/resolveurljobfactory.h
 
+    jobs/checkbasicauthjobfactory.cpp
+    jobs/checkbasicauthjobfactory.h
+
     syncmode.cpp
 )
 target_link_libraries(newwizard PUBLIC Qt5::Widgets libsync)
