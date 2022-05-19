@@ -807,7 +807,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Pobieranie aktywności…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
@@ -2534,7 +2534,7 @@ Elementy, dla których usunięcie jest dozwolone, zostaną usunięte, o ile umo�
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Sprawdzanie uprawnienia do zmiany nazwy…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
