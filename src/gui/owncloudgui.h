@@ -17,7 +17,6 @@
 
 #include "connectionvalidator.h"
 #include "progressdispatcher.h"
-#include "setupwizardcontroller.h"
 #include "systray.h"
 
 #include <QObject>
@@ -29,6 +28,9 @@
 
 namespace OCC {
 
+namespace Wizard {
+    class SetupWizardController;
+}
 class Folder;
 
 class AboutDialog;

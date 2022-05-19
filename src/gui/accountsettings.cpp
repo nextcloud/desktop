@@ -429,7 +429,7 @@ void AccountSettings::slotFolderWizardAccepted()
     FolderWizard *folderWizard = qobject_cast<FolderWizard *>(sender());
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    bool useVfs = folderWizard->property("useVirtualFiles").toBool();
+    const bool useVfs = folderWizard->useVirtualFiles();
 
     auto folder = FolderMan::instance()->addFolderFromWizard(_accountState,
         folderWizard->field(QLatin1String("sourceFolder")).toString(),

@@ -128,6 +128,7 @@ public:
 
     void initializePage() override;
     void cleanupPage() override;
+    bool useVirtualFiles() const;
 
 private slots:
     void virtualFilesCheckboxClicked();
@@ -155,11 +156,25 @@ public:
     explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
     ~FolderWizard() override;
 
+    /***
+     * The webdav url for the sync connection.
+     */
     QUrl davUrl() const;
 
+    /***
+     * The local folder used for the sync.
+     */
     QString destination() const;
 
+    /***
+     * The Space name to display in the list of folders or an empty string.
+     */
     QString displayName() const;
+
+    /***
+     * Wether to use virtual files.
+     */
+    bool useVirtualFiles() const;
 
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;

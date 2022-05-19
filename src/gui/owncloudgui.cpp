@@ -1040,13 +1040,14 @@ void ownCloudGui::runNewAccountWizard()
                                 folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
                                 folderWizard->setAttribute(Qt::WA_DeleteOnClose);
 
+                                // TODO: duplication of AccountSettings
                                 // adapted from AccountSettings::slotFolderWizardAccepted()
                                 connect(folderWizard, &QDialog::accepted, [accountStatePtr, folderWizard]() {
                                     FolderMan *folderMan = FolderMan::instance();
 
                                     qCInfo(lcApplication) << "Folder wizard completed";
 
-                                    bool useVfs = folderWizard->property("useVirtualFiles").toBool();
+                                    const bool useVfs = folderWizard->useVirtualFiles();
 
                                     auto folder = folderMan->addFolderFromWizard(accountStatePtr,
                                         folderWizard->field(QLatin1String("sourceFolder")).toString(),
