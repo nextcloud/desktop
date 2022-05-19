@@ -14,23 +14,28 @@ defaults:
 jobs:
 # ------------------------------------------------------------------------------------------------------------------------------------------
   build:
-    name: Build ownCloud
-    runs-on: ${{ matrix.os }}
     strategy:
         matrix:
             include:
-            - target: windows-msvc2019_64-cl
+            - name: Windows 64-bit cl
+              target: windows-msvc2019_64-cl
               os: windows-latest
               fetch-depth: 0
               container:
-            - target: macos-64-clang
+            - name: macOS 64-bit clang
+              target: macos-64-clang
               os: macos-latest
               fetch-depth: 1
               container:
-            - target: linux-64-gcc
+            - name: CentOS 7 64-bit gcc
+              target: linux-64-gcc
               os: ubuntu-latest
               container: kdeorg/centos7-craft
               fetch-depth: 1
+
+    name: ${{ matrix.name }}
+
+    runs-on: ${{ matrix.os }}
 
     env:
       CRAFT_TARGET: ${{ matrix.target }}
