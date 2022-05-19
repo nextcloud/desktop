@@ -89,9 +89,6 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
             // therefore we clear the certificates storage before resolving the URL
             _accountBuilder = {};
 
-            _accessManager->deleteLater();
-            _accessManager = new AccessManager(this);
-
             const auto *pagePtr = qobject_cast<ServerUrlSetupWizardPage *>(_currentPage);
 
             const auto serverUrl = [pagePtr]() {
@@ -190,6 +187,11 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
         });
 
         connect(messageBox, &QMessageBox::accepted, this, [this, showFirstPage]() {
+            // when moving back to this page (or retrying a failed credentials check), we need to make sure existing cookies
+            // and certificates are deleted from the access manager
+            _accessManager->deleteLater();
+            _accessManager = new AccessManager(this);
+
             // first, we must resolve the actual server URL
             auto resolveJob = Jobs::ResolveUrlJobFactory(_accessManager).startJob(_accountBuilder.serverUrl());
 
