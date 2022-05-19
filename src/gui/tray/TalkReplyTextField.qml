@@ -17,7 +17,7 @@ Item {
         root.sendReply(replyMessageTextField.text);
     }
 
-    height: 38
+    height: 30
     width: 250
 
     TextField {
