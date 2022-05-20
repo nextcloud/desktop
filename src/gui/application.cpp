@@ -904,16 +904,16 @@ void Application::showHelp()
     QTextStream stream(&helpText);
     stream << _theme->appName()
            << QLatin1String(" version ")
-           << _theme->version() << endl;
+           << _theme->version() << Qt::endl;
 
-    stream << QLatin1String("File synchronisation desktop utility.") << endl
-           << endl
+    stream << QLatin1String("File synchronisation desktop utility.") << Qt::endl
+           << Qt::endl
            << QLatin1String(optionsC);
 
     if (_theme->appName() == QLatin1String("ownCloud"))
-        stream << endl
-               << "For more information, see http://www.owncloud.org" << endl
-               << endl;
+        stream << Qt::endl
+               << "For more information, see http://www.owncloud.org" << Qt::endl
+               << Qt::endl;
 
     displayHelpText(helpText);
 }
