@@ -68,7 +68,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     }
 
     connect(_ui->chooseLocalDirectoryButton, &QToolButton::clicked, this, [=]() {
-        auto dialog = new QFileDialog(this, tr("Choose"), defaultSyncTargetDir);
+        auto dialog = new QFileDialog(this, tr("Select the local folder"), defaultSyncTargetDir);
         dialog->setFileMode(QFileDialog::Directory);
         dialog->setOption(QFileDialog::ShowDirsOnly);
         dialog->setModal(true);

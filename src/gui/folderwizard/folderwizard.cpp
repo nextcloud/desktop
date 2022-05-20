@@ -146,7 +146,7 @@ void FolderWizardLocalPath::slotChooseLocalFolder()
         sf += QLatin1Char('/') + dirs.at(0); // Take the first dir in home dir.
 
     QString dir = QFileDialog::getExistingDirectory(this,
-        tr("Select the source folder"),
+        tr("Select the local folder"),
         sf);
     if (!dir.isEmpty()) {
         // set the last directory component name as alias
