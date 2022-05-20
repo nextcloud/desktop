@@ -1,4 +1,4 @@
-add_library(newwizard OBJECT
+add_library(newwizard STATIC
     pages/abstractsetupwizardpage.h
     pages/abstractsetupwizardpage.cpp
 
