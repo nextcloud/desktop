@@ -97,9 +97,6 @@ option(BUILD_SHELL_INTEGRATION_NAUTILUS "BUILD_SHELL_INTEGRATION_NAUTILUS" ON)
 # this option builds the client
 option(BUILD_CLIENT "BUILD_CLIENT" ON)
 
-# this option builds the client documentation
-option(BUILD_DOCS "BUILD_DOCS" OFF)
-
 # this option creates only libocsync and libowncloudsync (NOTE: BUILD_CLIENT needs to be on)
 option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 
@@ -166,11 +163,6 @@ if(BUILD_CLIENT)
         endif(IS_DIRECTORY ${CMAKE_SOURCE_DIR}/admin)
     endif(NOT BUILD_LIBRARIES_ONLY)
 endif()
-
-if(BUILD_DOCS)
-    add_subdirectory(docs)
-endif()
-
 
 if(BUILD_SHELL_INTEGRATION)
     add_subdirectory(shell_integration)
