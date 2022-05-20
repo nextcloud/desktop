@@ -13,8 +13,9 @@
  */
 
 #include "CommunicationSocket.h"
-#include "UtilConstants.h"
+#include "Log.h"
 #include "StringUtil.h"
+#include "UtilConstants.h"
 
 #include <iostream>
 #include <vector>
@@ -89,13 +90,19 @@ bool CommunicationSocket::SendMsg(const wstring &message) const
 
     DWORD numBytesWritten = 0;
 
-    bool result = WriteFile(_pipe, utf8_msg.c_str(), static_cast<DWORD>(utf8_msg.size()), &numBytesWritten, &_overlapped);
-
-    if (!result && GetLastError() == ERROR_IO_PENDING) {
-        WaitForSingleObject(_overlapped.hEvent, timeoutC);
-        result = GetOverlappedResult(_pipe, &_overlapped, &numBytesWritten, FALSE);
+    if (!WriteFile(_pipe, utf8_msg.c_str(), static_cast<DWORD>(utf8_msg.size()), &numBytesWritten, &_overlapped)) {
+        if (GetLastError() == ERROR_IO_PENDING) {
+            if (WaitForSingleObject(_overlapped.hEvent, timeoutC) != WAIT_OBJECT_0) {
+                OCShell::logWinError(L"SendMsg timed out");
+                return false;
+            }
+            if (!GetOverlappedResult(_pipe, &_overlapped, &numBytesWritten, FALSE)) {
+                OCShell::logWinError(L"GetOverlappedResult failed");
+                return false;
+            }
+        }
     }
-    return result;
+    return true;
 }
 
 bool CommunicationSocket::ReadLine(wstring *response) const
@@ -129,8 +136,11 @@ bool CommunicationSocket::ReadLine(wstring *response) const
 
         if (!ReadFile(_pipe, resp_utf8.data(), DWORD(resp_utf8.size()), &numBytesRead, &_overlapped)) {
             if (GetLastError() == ERROR_IO_PENDING) {
-                WaitForSingleObject(_overlapped.hEvent, timeoutC);
+                if (WaitForSingleObject(_overlapped.hEvent, timeoutC) != WAIT_OBJECT_0) {
+                    OCShell::logWinError(L"ReadLine timed out");
+                }
                 if (!GetOverlappedResult(_pipe, &_overlapped, &numBytesRead, FALSE)) {
+                    OCShell::logWinError(L"GetOverlappedResult failed");
                     return false;
                 }
             } else {

@@ -3,7 +3,7 @@ add_library(OCUtil STATIC
     RemotePathChecker.cpp
     StringUtil.cpp
     OCUtil.rc
-)
+ )
 
 target_include_directories(OCUtil
     PUBLIC

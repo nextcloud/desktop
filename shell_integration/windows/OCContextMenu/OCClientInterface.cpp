@@ -15,6 +15,7 @@
 #include "OCClientInterface.h"
 
 #include "CommunicationSocket.h"
+#include "Log.h"
 #include "StringUtil.h"
 
 #include <shlobj.h>
@@ -35,7 +36,6 @@ using std::min;
 #include <gdiplus.h>
 using namespace std;
 
-#include <comdef.h>
 #include <wincrypt.h>
 #include <shlwapi.h>
 #include <wrl/client.h>
@@ -47,21 +47,6 @@ using Microsoft::WRL::ComPtr;
 #define PIPE_TIMEOUT  5*1000 //ms
 
 namespace {
-
-template <typename T = wstring>
-void log(const wstring &msg, const T &error = {})
-{
-    wstringstream tmp;
-    tmp << L"ownCloud: " << msg;
-    if (!error.empty()) {
-        tmp << L" " << error.data();
-    }
-    OutputDebugStringW(tmp.str().data());
-}
-void logWinError(const wstring &msg, const DWORD &error = GetLastError())
-{
-    log(msg, wstring(_com_error(error).ErrorMessage()));
-}
 
 bool sendV2(const CommunicationSocket &socket, const wstring &command, const nlohmann::json &j)
 {
@@ -91,19 +76,19 @@ std::shared_ptr<HBITMAP> saveImage(const string &data)
     std::vector<BYTE> buf(size, 0);
     DWORD skipped;
     if (!CryptStringToBinaryA(data.data(), 0, CRYPT_STRING_BASE64, buf.data(), &size, &skipped, nullptr)) {
-        logWinError(L"Failed to decode icon");
+        OCShell::logWinError(L"Failed to decode icon");
         return {};
     }
     ComPtr<IStream> stream = SHCreateMemStream(buf.data(), size);
     if (!stream) {
-        log(L"Failed to create stream");
+        OCShell::log(L"Failed to create stream");
         return {};
     };
     HBITMAP result;
     Gdiplus::Bitmap bitmap(stream.Get(), true);
     const auto status = bitmap.GetHBITMAP(0, &result);
     if (status != Gdiplus::Ok) {
-        log(L"Failed to get HBITMAP", to_wstring(status));
+        OCShell::log(L"Failed to get HBITMAP", to_wstring(status));
         return {};
     }
     return std::shared_ptr<HBITMAP> { new HBITMAP(result), [gdiplusToken](auto o) {
@@ -143,7 +128,7 @@ OCClientInterface::ContextMenuInfo OCClientInterface::FetchInfo(const std::wstri
                 const auto &arguments = msg.second["arguments"];
                 if (msg.first == L"V2/GET_CLIENT_ICON_RESULT") {
                     if (arguments.contains("error")) {
-                        log(L"V2/GET_CLIENT_ICON failed", arguments["error"].get<string>());
+                        OCShell::log(L"V2/GET_CLIENT_ICON failed", arguments["error"].get<string>());
                     } else {
                         info.icon = saveImage(arguments["png"].get<string>());
                     }
