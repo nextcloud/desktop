@@ -144,7 +144,7 @@
         <set>Qt::AlignCenter</set>
        </property>
        <property name="placeholderText">
-        <string notr="true">https://myowncloud.tld</string>
+        <string notr="true">https://demo.owncloud.com</string>
        </property>
       </widget>
      </item>
