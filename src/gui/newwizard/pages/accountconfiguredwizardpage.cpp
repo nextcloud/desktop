@@ -71,6 +71,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
         auto dialog = new QFileDialog(this, tr("Choose"), defaultSyncTargetDir);
         dialog->setFileMode(QFileDialog::Directory);
         dialog->setOption(QFileDialog::ShowDirsOnly);
+        dialog->setModal(true);
 
         connect(dialog, &QFileDialog::fileSelected, this, [this](const QString &directory) {
             // the directory chooser should guarantee that the directory exists
