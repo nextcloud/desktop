@@ -187,17 +187,17 @@ public:
     virtual bool isHydrating() const = 0;
 
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
-    OC_REQUIRED_RESULT virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
+    [[nodiscard]] virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
     /** Discovery hook: even unchanged files may need UPDATE_METADATA.
      *
      * For instance cfapi vfs wants local hydrated non-placeholder files to
      * become hydrated placeholder files.
      */
-    OC_REQUIRED_RESULT virtual bool needsMetadataUpdate(const SyncFileItem &item) = 0;
+    [[nodiscard]] virtual bool needsMetadataUpdate(const SyncFileItem &item) = 0;
 
     /// Determine whether the file at the given absolute path is a dehydrated placeholder.
-    OC_REQUIRED_RESULT virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
+    [[nodiscard]] virtual bool isDehydratedPlaceholder(const QString &filePath) = 0;
 
     /** Similar to isDehydratedPlaceholder() but used from sync discovery.
      *
@@ -206,7 +206,7 @@ public:
      *
      * Returning true means that type was fully determined.
      */
-    OC_REQUIRED_RESULT virtual bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
+    [[nodiscard]] virtual bool statTypeVirtualFile(csync_file_stat_t *stat, void *stat_data) = 0;
 
     /** Sets the pin state for the item at a path.
      *
@@ -217,7 +217,7 @@ public:
      *
      * relFilePath is relative to the sync folder. Can be "" for root folder.
      */
-    OC_REQUIRED_RESULT virtual bool setPinState(const QString &relFilePath, PinState state) = 0;
+    [[nodiscard]] virtual bool setPinState(const QString &relFilePath, PinState state) = 0;
 
     /** Returns the pin state of an item at a path.
      *
@@ -228,7 +228,7 @@ public:
      *
      * Returns none on retrieval error.
      */
-    OC_REQUIRED_RESULT virtual Optional<PinState> pinState(const QString &relFilePath) = 0;
+    [[nodiscard]] virtual Optional<PinState> pinState(const QString &relFilePath) = 0;
 
     /** Returns availability status of an item at a path.
      *
@@ -237,7 +237,7 @@ public:
      *
      * folderPath is relative to the sync folder. Can be "" for root folder.
      */
-    OC_REQUIRED_RESULT virtual AvailabilityResult availability(const QString &folderPath) = 0;
+    [[nodiscard]] virtual AvailabilityResult availability(const QString &folderPath) = 0;
 
 public slots:
     /** Update in-sync state based on SyncFileStatusTracker signal.
@@ -265,7 +265,7 @@ protected:
      * If the remote metadata changes, the local placeholder's metadata should possibly
      * change as well.
      */
-    OC_REQUIRED_RESULT virtual Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &replacesFile) = 0;
+    [[nodiscard]] virtual Result<ConvertToPlaceholderResult, QString> updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &replacesFile) = 0;
 
     /** Setup the plugin for the folder.
      *

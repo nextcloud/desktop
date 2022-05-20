@@ -3,13 +3,6 @@
 
 #include <qglobal.h>
 
-#if 0 && defined(Q_CC_MSVC)
-// requires c++2017
-#define OC_REQUIRED_RESULT [[nodiscard]]
-#else
-#define OC_REQUIRED_RESULT Q_REQUIRED_RESULT
-#endif
-
 #if defined(QT_FORCE_ASSERTS) || !defined(QT_NO_DEBUG)
 #define OC_ASSERT_MSG qFatal
 #else
@@ -44,7 +37,7 @@
     } else {                                                                                                                \
     }
 
-OC_REQUIRED_RESULT inline bool __OC_ENSURE(bool condition, const char *cond, const char *file, int line, const char *info)
+[[nodiscard]] inline bool __OC_ENSURE(bool condition, const char *cond, const char *file, int line, const char *info)
 {
     if (Q_UNLIKELY(!condition)) {
         OC_ASSERT_MSG("ENSURE: \"%s\" in file %s, line %d %s", cond, file, line, info);
