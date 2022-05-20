@@ -1,17 +1,21 @@
 project(gui)
-find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
+find_package(Qt${QT_MAJOR_VERSION} REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 QuickWidgets Xml Network)
 find_package(KF5Archive REQUIRED)
 find_package(KF5GuiAddons)
 
 if(QUICK_COMPILER)
-        find_package(Qt5QuickCompiler)
+    if (${QT_MAJOR_VERSION} STREQUAL "6")
+    else()
+        set(REQUIRED_QT_VERSION "5.15.0")
+        find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED QuickCompiler)
         set_package_properties(Qt5QuickCompiler PROPERTIES
                 DESCRIPTION "Compile QML at build time"
                 TYPE REQUIRED
         )
+    endif()
 endif()
 
-if (NOT TARGET Qt5::GuiPrivate)
+if (NOT TARGET Qt::GuiPrivate)
     message(FATAL_ERROR "Could not find GuiPrivate component of Qt5. It might be shipped as a separate package, please check that.")
 endif()
 
@@ -55,7 +59,7 @@ set(client_UI_SRCS
     wizard/welcomepage.ui
 )
 
-if(QUICK_COMPILER)
+if(Qt5QuickCompiler_FOUND)
     qtquick_compiler_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
 else()
     qt_add_resources(client_UI_SRCS ../../resources.qrc ${CMAKE_SOURCE_DIR}/theme.qrc)
@@ -261,7 +265,7 @@ set(client_SRCS
     wizard/linklabel.cpp
     )
 
-if (Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
+if (Qt${QT_MAJOR_VERSION}WebEngine_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidgets_FOUND)
   list(APPEND client_SRCS
     wizard/webviewpage.h
     wizard/webviewpage.cpp
@@ -377,9 +381,9 @@ else()
    set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_win.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endif()
 
-find_package(Qt5LinguistTools)
-if(Qt5LinguistTools_FOUND)
-    qt5_add_translation(client_I18N ${TRANSLATIONS})
+find_package(Qt6 COMPONENTS LinguistTools)
+if(Qt${QT_MAJOR_VERSION}LinguistTools_FOUND)
+    qt_add_translation(client_I18N ${TRANSLATIONS})
 endif()
 
 IF( WIN32 )
@@ -402,7 +406,7 @@ set( final_src
     ${3rdparty_MOC}
 )
 
-if(Qt5Keychain_FOUND)
+if(Qt${QT_MAJOR_VERSION}Keychain_FOUND)
     list(APPEND libsync_LINK_TARGETS qt5keychain)
 endif()
 
@@ -556,15 +560,15 @@ add_library(nextcloudCore STATIC ${final_src})
 target_link_libraries(nextcloudCore
   PUBLIC
   Nextcloud::sync
-  Qt5::Widgets
-  Qt5::GuiPrivate
-  Qt5::Svg
-  Qt5::Network
-  Qt5::Xml
-  Qt5::Qml
-  Qt5::Quick
-  Qt5::QuickControls2
-  Qt5::QuickWidgets
+  Qt::Widgets
+  Qt::GuiPrivate
+  Qt::Svg
+  Qt::Network
+  Qt::Xml
+  Qt::Qml
+  Qt::Quick
+  Qt::QuickControls2
+  Qt::QuickWidgets
   KF5::Archive
   )
 
@@ -589,7 +593,7 @@ foreach(FILE IN LISTS client_UI_SRCS)
 endforeach()
 
 if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
-  target_link_libraries(nextcloudCore PUBLIC Qt5::WebEngineWidgets)
+  target_link_libraries(nextcloudCore PUBLIC Qt::WebEngineWidgets)
 endif()
 
 set_target_properties(nextcloudCore
@@ -647,7 +651,7 @@ else()
 
     set (QM_DIR ${OWNCLOUD_OSX_BUNDLE}/Contents/Resources/Translations)
     install(FILES ${client_I18N} DESTINATION ${QM_DIR})
-    get_target_property(_qmake Qt5::qmake LOCATION)
+    get_target_property(_qmake Qt::qmake LOCATION)
     execute_process(COMMAND ${_qmake} -query QT_INSTALL_TRANSLATIONS
         OUTPUT_VARIABLE QT_TRANSLATIONS_DIR
         OUTPUT_STRIP_TRAILING_WHITESPACE
@@ -662,7 +666,7 @@ endif()
 
 IF(BUILD_UPDATER)
     add_library(updater STATIC ${updater_SRCS})
-    target_link_libraries(updater Nextcloud::sync ${updater_DEPS} Qt5::Widgets Qt5::Svg Qt5::Network Qt5::Xml)
+    target_link_libraries(updater Nextcloud::sync ${updater_DEPS} Qt::Widgets Qt::Svg Qt::Network Qt::Xml)
     target_include_directories(updater PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
     set_target_properties(updater PROPERTIES AUTOMOC ON)
     target_link_libraries(nextcloudCore PUBLIC updater)
@@ -705,20 +709,25 @@ endif()
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )
-    find_package(Qt5 COMPONENTS DBus)
-    target_link_libraries(nextcloudCore PUBLIC Qt5::DBus)
+    if (Qt6_FOUND)
+        find_package(Qt6 COMPONENTS DBus)
+    else()
+        set(REQUIRED_QT_VERSION "5.15.0")
+        find_package(Qt5 ${REQUIRED_QT_VERSION} COMPONENTS DBus)
+    endif()
+    target_link_libraries(nextcloudCore PUBLIC Qt::DBus)
     target_compile_definitions(nextcloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
 endif()
 
 if (APPLE)
-    find_package(Qt5 COMPONENTS MacExtras)
+    find_package(Qt${QT_MAJOR_VERSION} COMPONENTS MacExtras)
 
     if (BUILD_FILE_PROVIDER_MODULE)
-        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
+        target_link_libraries(nextcloudCore PUBLIC Qt::MacExtras "-framework UserNotifications -framework FileProvider")
     elseif(CMAKE_OSX_DEPLOYMENT_TARGET VERSION_GREATER_EQUAL 10.14)
-        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications")
+        target_link_libraries(nextcloudCore PUBLIC Qt::MacExtras "-framework UserNotifications")
     else()
-        target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras)
+        target_link_libraries(nextcloudCore PUBLIC Qt::MacExtras)
     endif()
 endif()
 
@@ -746,7 +755,7 @@ install(TARGETS nextcloud
 #
 # OSX: Run macdeployqt for src/gui and for src/cmd using the -executable option
 if(BUILD_OWNCLOUD_OSX_BUNDLE AND NOT BUILD_LIBRARIES_ONLY)
-    get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
+    get_target_property (QT_QMAKE_EXECUTABLE Qt::qmake IMPORTED_LOCATION)
     get_filename_component(QT_BIN_DIR "${QT_QMAKE_EXECUTABLE}" DIRECTORY)
     find_program(MACDEPLOYQT_EXECUTABLE macdeployqt HINTS "${QT_BIN_DIR}")
 

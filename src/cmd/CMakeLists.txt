@@ -10,8 +10,8 @@ add_library(cmdCore STATIC
 target_link_libraries(cmdCore
   PUBLIC
   Nextcloud::sync
-  Qt5::Core
-  Qt5::Network
+  Qt::Core
+  Qt::Network
   )
 
 # Need tokenizer for netrc parser

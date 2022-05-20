@@ -139,7 +139,7 @@ if(APPLE AND BUILD_OWNCLOUD_OSX_BUNDLE)
     add_definitions(-DBUILD_OWNCLOUD_OSX_BUNDLE)
 endif()
 
-
+find_package(Qt${QT_MAJOR_VERSION} COMPONENTS Core)
 option(QUICK_COMPILER "Use QtQuick compiler to improve performance" OFF)
 
 # this option removes Http authentication, keychain, shibboleth etc and is intended for
