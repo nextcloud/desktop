@@ -127,12 +127,7 @@ void LibCloudProvidersPrivate::exportFolder(Folder *folder)
     }
 
     // DBus object paths must not contain characters other than [A-Z][a-z][0-9]_, see g_variant_is_object_path
-    const QByteArray dBusCompatibleFolderId = [folder]() {
-        // replace works inplace
-        auto rv = folder->id();
-        rv.replace("-", "");
-        return rv;
-    }();
+    const QByteArray dBusCompatibleFolderId = folder->id().replace('-', nullptr);
 
     auto exporter = cloud_providers_account_exporter_new(_exporter, dBusCompatibleFolderId.constData());
     cloud_providers_account_exporter_set_path(exporter, folder->path().toUtf8().constData());
