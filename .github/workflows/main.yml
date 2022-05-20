@@ -119,8 +119,5 @@ jobs:
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.os }} - ${{ matrix.target }}
+        name: ${{ matrix.name }}
         path: ${{ github.workspace }}/binaries/*
-
-
-
