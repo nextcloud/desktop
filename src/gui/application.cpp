@@ -254,7 +254,45 @@ Application::Application(int &argc, char **argv)
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
-    if (ConfigFile().exists()) {
+    if (!ConfigFile().exists()) {
+        // Migrate from version <= 2.4
+        setApplicationName(_theme->appNameGUI());
+        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
+        // behavior of adding "data" to the path
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + "/data/" + organizationName() + "/" + applicationName();
+        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        setApplicationName(_theme->appName());
+        if (QFileInfo(oldDir).isDir()) {
+            auto confDir = ConfigFile().configPath();
+
+            // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/')) {
+                confDir.chop(1);
+            }
+
+            qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
+
+            if (!QFile::rename(oldDir, confDir)) {
+                qCWarning(lcApplication) << "Failed to move the old config directory to its new location (" << oldDir << "to" << confDir << ")";
+
+                // Try to move the files one by one
+                if (QFileInfo(confDir).isDir() || QDir().mkdir(confDir)) {
+                    const QStringList filesList = QDir(oldDir).entryList(QDir::Files);
+                    qCInfo(lcApplication) << "Will move the individual files" << filesList;
+                    for (const auto &name : filesList) {
+                        if (!QFile::rename(oldDir + "/" + name,  confDir + "/" + name)) {
+                            qCWarning(lcApplication) << "Fallback move of " << name << "also failed";
+                        }
+                    }
+                }
+            } else {
+#ifndef Q_OS_WIN
+                // Create a symbolic link so a downgrade of the client would still find the config.
+                QFile::link(confDir, oldDir);
+#endif
+            }
+        }
+    } else {
         setupConfigFile();
     }
 
