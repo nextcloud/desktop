@@ -74,8 +74,6 @@ jobs:
         if ($IsWindows) {
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/nsis
         } elseif($IsLinux) {
-            sudo apt-get update -y
-            sudo apt-get install -y mesa-common-dev libglu1-mesa-dev libmtdev1 libgl1-mesa-dev libmtdev1 libinput-dev libxkbcommon0 libxcb-icccm4 libxcb-image0 libxcb-render-util0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-xinerama0 libsm6
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/linuxdeploy
             & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --set enableLibcloudproviders=true owncloud/owncloud-client
         }
