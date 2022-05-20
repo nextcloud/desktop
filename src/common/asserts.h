@@ -44,7 +44,7 @@
     } else {                                                                                                                \
     }
 
-inline OC_REQUIRED_RESULT bool __OC_ENSURE(bool condition, const char *cond, const char *file, int line, const char *info)
+OC_REQUIRED_RESULT inline bool __OC_ENSURE(bool condition, const char *cond, const char *file, int line, const char *info)
 {
     if (Q_UNLIKELY(!condition)) {
         OC_ASSERT_MSG("ENSURE: \"%s\" in file %s, line %d %s", cond, file, line, info);
