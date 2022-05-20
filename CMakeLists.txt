@@ -108,7 +108,8 @@ include(GetGitRevisionDescription)
 get_git_head_revision(GIT_REFSPEC GIT_SHA1)
 
 add_definitions(
-    -DQT_DISABLE_DEPRECATED_BEFORE=0x000000
+    -DQT_DISABLE_DEPRECATED_BEFORE=0x051200
+    -DQT_DEPRECATED_WARNINGS
     -DQT_USE_QSTRINGBUILDER
     -DQT_MESSAGELOGCONTEXT #enable function name and line number in debug output
 )

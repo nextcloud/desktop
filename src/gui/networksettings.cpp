@@ -62,7 +62,7 @@ NetworkSettings::NetworkSettings(QWidget *parent)
 
         connect(_ui->typeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
             &NetworkSettings::saveProxySettings);
-        connect(_ui->proxyButtonGroup, static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked), this,
+        connect(_ui->proxyButtonGroup, &QButtonGroup::buttonClicked, this,
             &NetworkSettings::saveProxySettings);
         connect(_ui->hostLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
         connect(_ui->userLineEdit, &QLineEdit::editingFinished, this, &NetworkSettings::saveProxySettings);
