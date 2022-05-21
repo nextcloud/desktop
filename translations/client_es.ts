@@ -24,7 +24,7 @@
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filtro</numerusform><numerusform>%n Filtro(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="104"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="213"/>
@@ -1411,7 +1411,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="272"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Carpeta local: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
@@ -1550,7 +1550,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation type="unfinished"/>
+        <translation>Esta carpeta no se puede sincronizar. Por favor elije otra.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="441"/>
@@ -1591,17 +1591,17 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Error:&lt;/b&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Advertencia:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -1800,7 +1800,7 @@ Nota: esto solo selecciona el canal deseado y no permite una vueltas atrás. Vol
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>(use default)</source>
-        <translation type="unfinished"/>
+        <translation>(usar por defecto)</translation>
     </message>
 </context>
 <context>
@@ -2026,7 +2026,7 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="349"/>
         <source>Status Filter:</source>
-        <translation type="unfinished"/>
+        <translation>Filtro de estado:</translation>
     </message>
 </context>
 <context>
@@ -2752,7 +2752,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="707"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>El servidor web roto devolvió la longitud del contenido vacío para un archivo no vacío en el resumen</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
@@ -2964,7 +2964,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="255"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>El archivo local cambió durante la sincronización. Se reanudará.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="580"/>
@@ -3004,7 +3004,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="541"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor solicitó una función heredada eliminada (encuesta)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="546"/>
@@ -3050,7 +3050,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="223"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>El servidor solicitó una función heredada eliminada (encuesta)</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="243"/>
@@ -4277,7 +4277,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Actualizado (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
@@ -4683,7 +4683,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/gui/guiutility.cpp" line="92"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>Apagando %1</translation>
     </message>
 </context>
 <context>
@@ -4704,7 +4704,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/theme.cpp" line="437"/>
         <source>%1 %2 %3%8%9Libraries Qt %4, %5%8Using virtual files plugin: %6%8%7</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %3%8%9Librerias Qt %4, %5%8 Uso del complemento de archivos virtuales: %6%8%7</translation>
     </message>
 </context>
 <context>
@@ -4758,7 +4758,7 @@ Este es un nuevo modo experimental. Si decide utilizarlo, reporte cualquier prob
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 movido a %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
