@@ -32,6 +32,7 @@
 #include <QJsonArray>
 #include <QNetworkRequest>
 #include <QBuffer>
+#include <QRandomGenerator>
 
 #include <cmath>
 
@@ -44,7 +45,8 @@ AccountState::AccountState(AccountPtr account)
     , _account(account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
-    , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
+    , _maintenanceToConnectedDelay(60000 + (QRandomGenerator::global()->generate() % (4 * 60000))) // 1-5min delay
+    , _waitingForNewCredentials(false)
     , _remoteWipe(new RemoteWipe(_account))
     , _isDesktopNotificationsAllowed(true)
 {
