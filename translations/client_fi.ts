@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Näytä aktiviteetti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Hylkää</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
@@ -2530,17 +2530,17 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä alussa ja lopussa.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä alussa.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä lopussa.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
@@ -2565,7 +2565,7 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Paikallista tiedostoa ei voitu nimetä uudelleen. %1</translation>
     </message>
 </context>
 <context>
@@ -3486,12 +3486,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Jaon salasana vaaditaan</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>Syötä salasana jaollesi:</translation>
     </message>
 </context>
 <context>
@@ -3512,7 +3512,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="283"/>
         <source>File is listed on the ignore list.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto on ohitettavien tiedostojen listalla.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="287"/>
@@ -3537,22 +3537,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="301"/>
         <source>The file name is a reserved name on this file system.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi on varattu tämän tiedostojärjestelmän käyttöön.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="307"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä lopussa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="311"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä alussa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä alussa ja lopussa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="319"/>
@@ -3572,22 +3572,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="329"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>Konflikti: Palvelimen versio ladattu, paikallinen kopio on nimetty uudelleen mutta ei ladattu palvelimelle.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="333"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimeä ei voida enkoodata tiedostojärjestelmälläsi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="336"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi on palvelimella mustalla listalla.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="405"/>
         <source>File has extension reserved for virtual files.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedoston pääte on varattu virtuaalitiedostoille.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="488"/>
@@ -3602,7 +3602,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="490"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>käyttöoikeus</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="494"/>
@@ -3612,12 +3612,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="56"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists on the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä lopussa eikä sitä voida nimetä uudelleen, koska samanniminen tiedosto on jo palvelimella..</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="59"/>
         <source>File contains trailing spaces and could not be renamed, because a file with the same name already exists locally.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedostonimi sisältää välilyöntejä lopussa eikä sitä voida nimetä uudelleen, koska samanniminen paikallinen tiedosto on jo olemassa.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="456"/>
@@ -3632,7 +3632,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="843"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Ei voida synkronoida virheellisen muokkausajan vuoksi</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -4029,7 +4029,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="412"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Paikallinen tiedosto muuttui synkronoinnin aikana. Jatketaan.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="423"/>
@@ -4039,7 +4039,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Suojatun kansion lukituksen avaus epäonnistui.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
@@ -4188,7 +4188,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="121"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Vastaa</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
@@ -4309,12 +4309,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="133"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Viesti:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
         <source>Note</source>
-        <translation type="unfinished"/>
+        <translation>Viesti</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="171"/>
@@ -4520,7 +4520,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Viesti:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
@@ -4540,7 +4540,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Viesti vastaanottajalle</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
@@ -4650,17 +4650,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Lukitse tiedosto</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Avaa tiedoston lukitus</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Lukinnut %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
@@ -5222,7 +5222,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="124"/>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="313"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Offline</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="138"/>
@@ -5282,7 +5282,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Lataa</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="155"/>
@@ -5324,12 +5324,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="171"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Tauota synkronointi kaikille</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="177"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Jatka kaikkien synkronointia</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="332"/>
