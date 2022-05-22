@@ -26,7 +26,7 @@ WebViewPage::WebViewPage(QWidget *parent)
     _webView = new WebView(this);
 
     auto *layout = new QVBoxLayout(this);
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
     layout->addWidget(_webView, 1);
     setLayout(layout);
 
