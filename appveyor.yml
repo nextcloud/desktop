@@ -11,14 +11,34 @@ clone_depth: 1
 init:
 - ps: |
     function craft() {
-        cmd /C "echo %PATH%"
-        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
-    function crafttests() {
+    function runTests() {
         cmd /C "echo %PATH%"
-        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
-        if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+        $buildFolder = "C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build"
+        cd "$buildFolder/bin"
+        
+        echo "sources at: $env:APPVEYOR_BUILD_FOLDER"
+        
+        $testFiles = Get-ChildItem . -Recurse | where {$_.name -clike "*Test.exe"} | select -expand name
+        
+        $totalTests = $testFiles.count
+        
+        $counter = 0
+        
+        $previousCov = "";
+        
+        foreach ($testFile in $testFiles) {
+            $counter += 1
+            if($counter -ne $totalTests) {
+                & OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
+                $previousCov += "--input_coverage=$testFile.cov "
+            } else {
+                $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:$buildFolder/test_coverage_cobertura/test_coverage_final.xml --export_type html:$buildFolder/test_coverage_html" + " $previousCov" + $testFile
+                Invoke-Expression $runLastTestAndMergeReport
+            }
+        }
     }
 
 install:
@@ -29,6 +49,8 @@ install:
     craft craft
     craft --install-deps nextcloud-client
     craft nsis
+    choco install opencppcoverage
+- set PATH=C:\Program Files\OpenCppCoverage;C:\CraftMaster\windows-msvc2019_64-cl\bin;%PATH%
 
 build_script:
 - ps: |
@@ -36,7 +58,7 @@ build_script:
 
 test_script:
 - ps: |
-    crafttests --test --src-dir $env:APPVEYOR_BUILD_FOLDER nextcloud-client
+    runTests
 
 environment:
     matrix:
