@@ -16,6 +16,9 @@ init:
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
     function crafttests() {
+        echo "Inside crafttests()"
+        echo $env:APPVEYOR_BUILD_FOLDER
+        Get-ChildItem -Path $env:APPVEYOR_BUILD_FOLDER -Recurse -Force
         cmd /C "echo %PATH%"
         & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --build-config Debug
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
@@ -29,7 +32,9 @@ install:
     craft craft
     craft --install-deps nextcloud-client
     craft nsis
+    echo "Running install step"
     choco install opencppcoverage
+    echo $env:APPVEYOR_BUILD_FOLDER
 
 build_script:
 - ps: |
