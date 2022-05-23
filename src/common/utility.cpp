@@ -575,7 +575,7 @@ QString Utility::makeConflictFileName(
 
 bool Utility::isConflictFile(const QString &name)
 {
-    auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+    auto bname = name.mid(name.lastIndexOf(QLatin1Char('/')) + 1);
 
     if (bname.contains(QStringLiteral("_conflict-"))) {
         return true;

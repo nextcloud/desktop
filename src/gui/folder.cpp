@@ -557,14 +557,14 @@ int Folder::slotWipeErrorBlacklist()
     return _journal.wipeErrorBlacklist();
 }
 
-void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
+void Folder::slotWatchedPathChanged(const QStringView &path, const ChangeReason reason)
 {
     if (!path.startsWith(this->path())) {
         qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
         return;
     }
 
-    auto relativePath = path.midRef(this->path().size());
+    auto relativePath = path.mid(this->path().size());
 
     if (_vfs) {
         if (pathIsIgnored(path)) {
@@ -601,7 +601,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 // own process. Therefore nothing needs to be done here!
 #else
     // Use the path to figure out whether it was our own change
-    if (_engine->wasFileTouched(path)) {
+    if (_engine->wasFileTouched(path.toString())) {
         qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
         return;
     }
@@ -617,7 +617,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
         // an attribute change (pin state) that caused the notification
         bool spurious = false;
         if (record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, record._modtime) && _vfs) {
+            && !FileSystem::fileChanged(path.toString(), record._fileSize, record._modtime) && _vfs) {
             spurious = true;
 
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
@@ -641,7 +641,7 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
     }
     warnOnNewExcludedItem(record, relativePath);
 
-    emit watchedFileChangedExternally(path);
+    emit watchedFileChangedExternally(path.toString());
 
     // Also schedule this folder for a sync, but only after some delay:
     // The sync will not upload files that were changed too recently.
@@ -1461,7 +1461,7 @@ void Folder::slotFolderConflicts(const QString &folder, const QStringList &confl
         r.setNumOldConflictItems(conflictPaths.size() - r.numNewConflictItems());
 }
 
-void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path)
+void Folder::warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringView &path)
 {
     // Never warn for items in the database
     if (record.isValid())

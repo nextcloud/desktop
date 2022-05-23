@@ -384,7 +384,7 @@ void SocketApi::slotReadSocket()
         const QString line = QString::fromUtf8(socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
         qCDebug(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         const int argPos = line.indexOf(QLatin1Char(':'));
-        const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();
+        const QByteArray command = line.mid(0, argPos).toUtf8().toUpper();
         const int indexOfMethod = [&] {
             QByteArray functionWithArguments = QByteArrayLiteral("command_");
             if (command.startsWith("ASYNC_")) {
@@ -403,7 +403,7 @@ void SocketApi::slotReadSocket()
             return out;
         }();
 
-        const auto argument = argPos != -1 ? line.midRef(argPos + 1) : QStringRef();
+        const auto argument = argPos != -1 ? line.mid(argPos + 1) : QStringView();
         if (command.startsWith("ASYNC_")) {
             auto arguments = argument.split('|');
             if (arguments.size() != 2) {

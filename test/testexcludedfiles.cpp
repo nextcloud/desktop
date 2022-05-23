@@ -594,8 +594,8 @@ private slots:
     {
         auto csync_is_windows_reserved_word = [](const char *fn) {
             QString s = QString::fromLatin1(fn);
-            extern bool csync_is_windows_reserved_word(const QStringRef &filename);
-            return csync_is_windows_reserved_word(&s);
+            extern bool csync_is_windows_reserved_word(const QStringView &filename);
+            return csync_is_windows_reserved_word(s);
         };
 
         QVERIFY(csync_is_windows_reserved_word("CON"));

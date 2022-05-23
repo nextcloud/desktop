@@ -90,7 +90,7 @@ static const char *win_reserved_words_n[] = { "CLOCK$", "$Recycle.Bin" };
  * @param file_name filename
  * @return true if file is reserved, false otherwise
  */
-OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
+OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringView &filename)
 {
     size_t len_filename = filename.size();
 
@@ -132,10 +132,10 @@ OCSYNC_EXPORT bool csync_is_windows_reserved_word(const QStringRef &filename)
 static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool excludeConflictFiles)
 {
     /* split up the path */
-    QStringRef bname(&path);
+    QStringView bname(path);
     int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
-        bname = path.midRef(lastSlash + 1);
+        bname = path.mid(lastSlash + 1);
     }
 
     qsizetype blen = bname.size();
@@ -450,10 +450,10 @@ CSYNC_EXCLUDE_TYPE ExcludedFiles::traversalPatternMatch(const QString &path, Ite
 
     // Check the bname part of the path to see whether the full
     // regex should be run.
-    QStringRef bnameStr(&path);
+    QStringView bnameStr(path);
     int lastSlash = path.lastIndexOf(QLatin1Char('/'));
     if (lastSlash >= 0) {
-        bnameStr = path.midRef(lastSlash + 1);
+        bnameStr = path.mid(lastSlash + 1);
     }
 
     QString basePath(_localPath + path);
