@@ -32,7 +32,7 @@ install:
     choco install opencppcoverage
     refreshenv
     OpenCppCoverage.exe
-    C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe
+    & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe"
 
 build_script:
 - ps: |
