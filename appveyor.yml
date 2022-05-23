@@ -17,8 +17,8 @@ init:
     }
     function crafttests() {
         echo "Inside crafttests()"
+        Get-Childitem -Path Env:* | Sort-Object Name
         craft --search nextcloud-client
-        echo craft --search nextcloud-client
         echo $env:APPVEYOR_BUILD_FOLDER
         Get-ChildItem -Path $env:APPVEYOR_BUILD_FOLDER -Recurse -Force
         cmd /C "echo %PATH%"
