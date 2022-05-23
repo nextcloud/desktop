@@ -104,6 +104,9 @@ private:
     QuotaInfo _quotaInfo;
     QAction *_toggleSignInOutAction;
     QAction *_addAccountAction;
+
+    // needed to make sure we show only one dialog at a time
+    QPointer<QDialog> _askForOAuthLoginDialog = nullptr;
 };
 
 } // namespace OCC

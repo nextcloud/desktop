@@ -24,6 +24,7 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     notificationwidget.ui
     logbrowser.ui
+    askforoauthlogindialog.ui
 )
 
 set(client_SRCS
@@ -79,6 +80,7 @@ set(client_SRCS
     translations.cpp
     creds/httpcredentialsgui.cpp
     updateurldialog.cpp
+    askforoauthlogindialog.cpp
 
     models/activitylistmodel.cpp
     models/expandingheaderview.cpp

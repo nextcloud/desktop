@@ -40,13 +40,6 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="openBrowserButton">
-        <property name="text">
-         <string>Re-open Browser</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <widget class="QToolButton" name="_accountToolbox">
         <property name="text">
          <string>...</string>
@@ -280,6 +273,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../client.qrc"/>
+ </resources>
  <connections/>
 </ui>

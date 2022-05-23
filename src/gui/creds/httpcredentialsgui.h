@@ -45,6 +45,9 @@ public:
     }
 
     void openBrowser();
+
+    QUrl authorisationLink() const;
+
     /**
      * This will query the server and either uses OAuth via _asyncAuth->start()
      * or call showDialog to ask the password

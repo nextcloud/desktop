@@ -39,22 +39,24 @@
 
 #include <math.h>
 
+#include <QAction>
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QDir>
+#include <QIcon>
+#include <QKeySequence>
 #include <QListWidgetItem>
 #include <QMessageBox>
-#include <QAction>
-#include <QVBoxLayout>
-#include <QTreeView>
-#include <QKeySequence>
-#include <QIcon>
-#include <QVariant>
 #include <QToolTip>
-#include <qstringlistmodel.h>
+#include <QTreeView>
+#include <QVBoxLayout>
+#include <QVariant>
 #include <qpropertyanimation.h>
+#include <qstringlistmodel.h>
 
 #include "account.h"
 #include "askexperimentalvirtualfilesfeaturemessagebox.h"
+#include "askforoauthlogindialog.h"
 
 namespace OCC {
 
@@ -186,11 +188,6 @@ AccountSettings::AccountSettings(AccountStatePtr accountState, QWidget *parent)
 
     connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
         this, &AccountSettings::slotUpdateQuota);
-
-    ui->openBrowserButton->setVisible(false);
-    connect(ui->openBrowserButton, &QToolButton::clicked, this, [this]{
-        qobject_cast<HttpCredentialsGui *>(_accountState->account()->credentials())->openBrowser();
-    });
 }
 
 
@@ -797,7 +794,9 @@ void AccountSettings::slotAccountStateChanged()
                 errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
-            ui->openBrowserButton->setVisible(false);
+            if (_askForOAuthLoginDialog != nullptr) {
+                _askForOAuthLoginDialog->accept();
+            }
             break;
         }
         case AccountState::ServiceUnavailable:
@@ -812,10 +811,31 @@ void AccountSettings::slotAccountStateChanged()
         case AccountState::AskingCredentials: {
             auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials());
             if (cred && cred->isUsingOAuth()) {
-                connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
-                    this, &AccountSettings::slotAccountStateChanged, Qt::UniqueConnection);
-                showConnectionLabel(tr("Obtaining authorization from the browser."));
-                ui->openBrowserButton->setVisible(true);
+                if (_askForOAuthLoginDialog != nullptr) {
+                    qCDebug(lcAccountSettings) << "ask for OAuth login dialog is shown already";
+                    return;
+                }
+
+                qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
+
+                _askForOAuthLoginDialog = new AskForOAuthLoginDialog(_accountState->account(), this);
+
+                // make sure to clean up the memory and to null the QPointer once finished
+                _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
+
+                connect(
+                    cred, &HttpCredentialsGui::authorisationLinkChanged,
+                    this, &AccountSettings::slotAccountStateChanged,
+                    Qt::UniqueConnection);
+
+                connect(_askForOAuthLoginDialog, &AskForOAuthLoginDialog::rejected, this, [this]() {
+                    // if a user dismisses the dialog, we have no choice but signing them out
+                    _accountState->signOutByUi();
+                });
+
+                showConnectionLabel(tr("Reauthorization required."));
+
+                _askForOAuthLoginDialog->show();
             } else {
                 showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
             }
