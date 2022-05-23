@@ -30,9 +30,6 @@ install:
     craft --install-deps nextcloud-client
     craft nsis
     choco install opencppcoverage
-    refreshenv
-    OpenCppCoverage.exe
-    & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe"
 
 build_script:
 - ps: |
