@@ -17,7 +17,7 @@ init:
     }
     function crafttests() {
         cmd /C "echo %PATH%"
-        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+        & OpenCppCoverage.exe --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --build-config Debug
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
 
@@ -29,6 +29,7 @@ install:
     craft craft
     craft --install-deps nextcloud-client
     craft nsis
+    choco install opencppcoverage
 
 build_script:
 - ps: |
