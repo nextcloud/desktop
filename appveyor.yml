@@ -17,14 +17,11 @@ init:
     }
     function crafttests() {
         echo "Inside crafttests()"
-        Get-Childitem -Path Env:* | Sort-Object Name
         craft --search nextcloud-client
-        echo $env:APPVEYOR_BUILD_FOLDER
-        Get-ChildItem -Path $env:APPVEYOR_BUILD_FOLDER -Recurse -Force
-        . "C:\CraftMaster\craft-clone\craftenv.ps1"
-        cb nextcloud-client
         cmd /C "echo %PATH%"
-        & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --test-dir "$env:APPVEYOR_BUILD_FOLDER"
+        cd C:/CraftMaster/windows-msvc2019_64-cl/build
+        & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe"
+        cd ~
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
 
