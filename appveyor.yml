@@ -20,6 +20,7 @@ init:
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
         .\IconUtilsTest.exe
+        .\ThemeTest.exe
         cd ~
         echo $LASTEXITCODE
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
