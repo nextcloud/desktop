@@ -19,6 +19,7 @@ init:
         echo "Inside crafttests()"
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
+        $LASTEXITCODE = 0
         .\IconUtilsTest.exe
         .\ThemeTest.exe
         cd ~
