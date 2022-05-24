@@ -17,11 +17,10 @@ init:
     }
     function runTests() {
         echo "Inside crafttests()"
-        cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
         $LASTEXITCODE = 0
-        .\IconUtilsTest.exe
-        .\ThemeTest.exe
+        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
+        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage1.cov ThemeTest.exe
         cd ~
         echo $LASTEXITCODE
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
@@ -34,7 +33,7 @@ install:
     craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
     craft craft
     craft --install-deps nextcloud-client
-    craft nsis
+    # craft nsis
     choco install opencppcoverage
 
 build_script:
