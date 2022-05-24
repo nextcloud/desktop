@@ -799,7 +799,7 @@ void AccountSettings::slotAccountStateChanged()
         case AccountState::Connected: {
             QStringList errors;
             if (account->serverVersionUnsupported()) {
-                errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->serverVersionString());
+                errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);
             ui->openBrowserButton->setVisible(false);

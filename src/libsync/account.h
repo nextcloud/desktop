@@ -168,19 +168,6 @@ public:
 
     bool hasCapabilities() const;
 
-
-    /** Access the server version
-     *
-     * For servers >= 10.0.0, this can be the empty string until capabilities
-     * have been received.
-     */
-    QString serverVersionString() const;
-    QVersionNumber serverVersion() const;
-
-    QString serverProductName() const;
-
-    void setServerInfo(const QString &version, const QString &product);
-
     /** Whether the server is too old.
      *
      * Not supporting server versions is a gradual process. There's a hard
@@ -224,7 +211,7 @@ signals:
     // e.g. when the approved SSL certificates changed
     void wantsAccountSaved(Account *acc);
 
-    void serverVersionChanged(Account *account, const QString &newVersion, const QString &oldVersion);
+    void serverVersionChanged();
 
     void accountChangedAvatar();
     void accountChangedDisplayName();
@@ -255,8 +242,6 @@ private:
 
     QSet<QSslCertificate> _approvedCerts;
     Capabilities _capabilities;
-    QString _serverVersion;
-    QString _serverProduct;
     QuotaInfo *_quotaInfo;
     QPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;

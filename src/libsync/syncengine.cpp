@@ -458,7 +458,7 @@ void SyncEngine::startSync()
     emit transmissionProgress(*_progressInfo);
 
     qCInfo(lcEngine) << "#### Discovery start ####################################################";
-    qCInfo(lcEngine) << "Server" << account()->serverVersion()
+    qCInfo(lcEngine) << "Server" << account()->capabilities().status().versionString()
                      << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
     _progressInfo->_status = ProgressInfo::Discovery;
     emit transmissionProgress(*_progressInfo);

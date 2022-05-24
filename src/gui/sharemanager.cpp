@@ -332,7 +332,7 @@ void ShareManager::fetchShares(const QString &path)
             emit serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             const auto &tmpShares = job->data().value(QLatin1String("ocs")).toObject().value(QLatin1String("data")).toArray();
-            qCDebug(lcSharing) << _account->serverVersion() << "Fetched" << tmpShares.count() << "shares";
+            qCDebug(lcSharing) << "Fetched" << tmpShares.count() << "shares";
 
             QList<QSharedPointer<Share>> shares;
 

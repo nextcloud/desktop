@@ -396,21 +396,8 @@ Application::~Application()
     AccountManager::instance()->shutdown();
 }
 
-void Application::slotAccountStateRemoved(AccountStatePtr accountState) const
+void Application::slotAccountStateRemoved() const
 {
-    if (_gui) {
-        disconnect(accountState.data(), &AccountState::stateChanged,
-            _gui.data(), &ownCloudGui::slotAccountStateChanged);
-        disconnect(accountState->account().data(), &Account::serverVersionChanged,
-            _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
-    }
-    if (_folderManager) {
-        disconnect(accountState.data(), &AccountState::stateChanged,
-            _folderManager.data(), &FolderMan::slotAccountStateChanged);
-        disconnect(accountState->account().data(), &Account::serverVersionChanged,
-            _folderManager.data(), &FolderMan::slotServerVersionChanged);
-    }
-
     // if there is no more account, show the wizard.
     if (_gui && AccountManager::instance()->accounts().isEmpty()) {
         // allow to add a new account if there is non any more. Always think
@@ -425,13 +412,17 @@ void Application::slotAccountStateAdded(AccountStatePtr accountState) const
     connect(accountState.data(), &AccountState::stateChanged,
         _gui.data(), &ownCloudGui::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
-        _gui.data(), &ownCloudGui::slotTrayMessageIfServerUnsupported);
+        _gui.data(), [account = accountState->account().data(), this] {
+            _gui->slotTrayMessageIfServerUnsupported(account);
+        });
 
     // Hook up the folder manager slots to the account state's signals:
     connect(accountState.data(), &AccountState::stateChanged,
         _folderManager.data(), &FolderMan::slotAccountStateChanged);
     connect(accountState->account().data(), &Account::serverVersionChanged,
-        _folderManager.data(), &FolderMan::slotServerVersionChanged);
+        _folderManager.data(), [account = accountState->account().data()] {
+            FolderMan::instance()->slotServerVersionChanged(account);
+        });
 
     _gui->slotTrayMessageIfServerUnsupported(accountState->account().data());
 }

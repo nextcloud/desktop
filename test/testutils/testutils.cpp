@@ -32,7 +32,6 @@ namespace TestUtils {
         acc->setCredentials(cred);
         acc->setUrl(QUrl(QStringLiteral("http://localhost/owncloud")));
         acc->setDavDisplayName(QStringLiteral("fakename") + acc->uuid().toString(QUuid::WithoutBraces));
-        acc->setServerInfo(QStringLiteral("10.0.0"), QStringLiteral("FakeServer"));
         acc->setCapabilities(OCC::TestUtils::testCapabilities());
         OCC::AccountManager::instance()->addAccount(acc);
         return acc;
@@ -87,6 +86,7 @@ namespace TestUtils {
     const QVariantMap testCapabilities()
     {
         return {
+            { "core", QVariantMap { { "status", QVariantMap { { "installed", "1" }, { "maintenance", "0" }, { "needsDbUpgrade", "0" }, { "version", "10.11.0.0" }, { "versionstring", "10.11.0" }, { "edition", "Community" }, { "productname", "Infinite Scale" }, { "product", "Infinite Scale" }, { "productversion", "2.0.0-beta1+7c2e3201b" } } } } },
             { "files", QVariantList {} },
             { "dav", QVariantMap { { "chunking", "1.0" } } },
             { "checksums", QVariantMap { { "preferredUploadType", "SHA1" }, { "supportedTypes", QVariantList { "SHA1", "MD5" } } } }

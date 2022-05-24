@@ -28,6 +28,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
     , _fileSharingPublicCapabilities(_fileSharingCapabilities.value(QStringLiteral("public"), {}).toMap())
     , _tusSupport(_capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("tus_support")).toMap())
     , _spaces(_capabilities.value(QStringLiteral("spaces")).toMap())
+    , _status(_capabilities.value(QStringLiteral("core")).toMap().value(QStringLiteral("status")).toMap())
 {
 }
 
@@ -180,11 +181,15 @@ bool Capabilities::bigfilechunkingEnabled() const
     return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("bigfilechunking"), true).toBool();
 }
 
+const Status &Capabilities::status() const
+{
+    return _status;
+}
+
 const TusSupport &Capabilities::tusSupport() const
 {
     return _tusSupport;
 }
-
 
 const SpaceSupport &Capabilities::spacesSupport() const
 {
@@ -246,6 +251,26 @@ bool Capabilities::avatarsAvailable() const
 QStringList Capabilities::blacklistedFiles() const
 {
     return _capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("blacklisted_files")).toStringList();
+}
+
+Status::Status(const QVariantMap &status)
+{
+    legacyVersion = QVersionNumber::fromString(status.value(QStringLiteral("version")).toString());
+    legacyVersionString = status.value(QStringLiteral("versionstring")).toString();
+    edition = status.value(QStringLiteral("edition")).toString();
+    productname = status.value(QStringLiteral("productname")).toString();
+    product = status.value(QStringLiteral("product")).toString();
+    productversion = status.value(QStringLiteral("productversion")).toString();
+}
+
+QVersionNumber Status::version() const
+{
+    return productversion.isEmpty() ? legacyVersion : QVersionNumber::fromString(productversion);
+}
+
+QString Status::versionString() const
+{
+    return productversion.isEmpty() ? legacyVersionString : productversion;
 }
 
 TusSupport::TusSupport(const QVariantMap &tus_support)

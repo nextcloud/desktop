@@ -560,8 +560,10 @@ int main(int argc, char **argv)
                 auto caps = capabilitiesJob->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
                 qDebug() << "Server capabilities" << caps;
                 ctx.account->setCapabilities(caps.toVariantMap());
-                ctx.account->setServerInfo(caps["core"].toObject()["status"].toObject()["version"].toString(),
-                    caps["core"].toObject()["status"].toObject()["productname"].toString());
+
+                if (ctx.account->serverVersionUnsupported()) {
+                    qFatal("Error unsupported server");
+                }
 
                 if (capabilitiesJob->reply()->error() != QNetworkReply::NoError) {
                     qFatal("Error connecting to server");
