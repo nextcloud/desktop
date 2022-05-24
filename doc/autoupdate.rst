@@ -32,9 +32,19 @@ itself. Should the silent update fail, the client offers a manual download.
 macOS
 ^^^^^
 
-There is no automatic updater on macOS. If a new update is available,
-the Nextcloud client initializes a pop-up dialog to alert you of the
-update and requesting that you update to the latest version manually.
+The macOS client has an autoupdater which uses the Sparkle framework.
+This autoupdater is bundled into the client App Bundle and checks for updates
+on launch, notifying you if an update is available. This will present a pop-up
+that can let you automatically download and install the latest client update
+with one click.
+
+In versions of the client where the Sparkle-based autoupdater is not bundled,
+a clickable notification will appear informing of an update being available.
+Upon clicking on said notification, the download page for the latest version
+of the client will be opened in the system's web browser.
+
+Like on other systems, you can view the update status under
+``Settings -> General -> Updates`` in the Nextcloud client.
 
 Linux
 ^^^^^
