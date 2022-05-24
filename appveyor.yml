@@ -17,9 +17,11 @@ init:
     function runTests() {
         echo "Inside crafttests()"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
+        & OpenCppCoverage
         $LASTEXITCODE = 0
-        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --quiet --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
-        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --quiet --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage1.cov ThemeTest.exe
+        echo "Inside crafttests1()"
+        & OpenCppCoverage --quiet --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
+        & OpenCppCoverage --quiet --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage1.cov ThemeTest.exe
         cd ~
         echo $LASTEXITCODE
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
@@ -33,7 +35,8 @@ install:
     craft craft
     craft --install-deps nextcloud-client
     # craft nsis
-    choco install opencppcoverage
+    - choco install opencppcoverage
+    - set path=C:\Program Files\OpenCppCoverage;%path%
 
 build_script:
 - ps: |
