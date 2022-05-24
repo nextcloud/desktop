@@ -17,7 +17,7 @@ init:
     }
     function crafttests() {
         echo "Inside crafttests()"
-        craft --search nextcloud-client
+        Get-ChildItem -Path "C:/CraftMaster/windows-msvc2019_64-cl/build" -Recurse -Force
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build
         & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe
