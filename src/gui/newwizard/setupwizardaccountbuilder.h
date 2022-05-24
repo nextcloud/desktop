@@ -117,6 +117,7 @@ public:
     bool hasValidCredentials() const;
 
     QString displayName() const;
+    void setDisplayName(const QString &displayName);
 
     /**
      * Store custom CA certificate for the newly built account.
@@ -137,6 +138,8 @@ public:
 
 private:
     QUrl _serverUrl;
+
+    QString _displayName;
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 

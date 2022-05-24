@@ -45,13 +45,13 @@ set(libsync_SRCS
     syncresult.cpp
     syncoptions.cpp
     theme.cpp
-    creds/jobs/determineuserjobfactory.cpp
     creds/credentialmanager.cpp
     creds/dummycredentials.cpp
     creds/abstractcredentials.cpp
     creds/credentialscommon.cpp
     creds/oauth.cpp
 
+    networkjobs/fetchuserinfojobfactory.cpp
     networkjobs/checkserverjobfactory.cpp
     networkjobs/jsonjob.cpp
 

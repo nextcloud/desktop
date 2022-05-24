@@ -97,6 +97,7 @@ public:
         StatusPhpState,
         BrowserOpened,
         TokenAsked,
+        UserInfoFetched,
         CustomState } state = StartState;
     Q_ENUM(State);
 
@@ -126,6 +127,8 @@ public:
                 return this->wellKnownReply(op, req);
             } else if (req.url().path().endsWith("status.php")) {
                 return this->statusPhpReply(op, req);
+            } else if (req.url().path().endsWith("ocs/v2.php/cloud/user") && req.url().query() == "format=json") {
+                return this->userInfoReply(op, req);
             }
             OC_ASSERT(device);
             OC_ASSERT(device && device->bytesAvailable() > 0); // OAuth2 always sends around POST data.
@@ -165,7 +168,7 @@ public:
 
     virtual void browserReplyFinished() {
         QCOMPARE(sender(), browserReply.data());
-        QCOMPARE(state, TokenAsked);
+        QCOMPARE(state, UserInfoFetched);
         browserReply->deleteLater();
         QCOMPARE(QNetworkReply::NoError, browserReply->error());
         QCOMPARE(browserReply->rawHeader("Location"), QByteArray("owncloud://success"));
@@ -193,6 +196,19 @@ public:
         OC_ASSERT(req.url().path() == sOAuthTestServer.path() + "/status.php");
         auto payload = std::make_unique<QBuffer>();
         payload->setData(statusPhpPayload());
+        return new FakePostReply(op, req, std::move(payload), fakeAm);
+    }
+
+    virtual QNetworkReply *userInfoReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
+    {
+        OC_ASSERT(state == TokenAsked);
+        state = UserInfoFetched;
+        OC_ASSERT(op == QNetworkAccessManager::GetOperation);
+        OC_ASSERT(req.url().toString().startsWith(sOAuthTestServer.toString()));
+        OC_ASSERT(req.url().path() == sOAuthTestServer.path() + "/ocs/v2.php/cloud/user");
+        OC_ASSERT(req.url().query() == "format=json");
+        auto payload = std::make_unique<QBuffer>();
+        payload->setData(userInfoPayload());
         return new FakePostReply(op, req, std::move(payload), fakeAm);
     }
 
@@ -226,9 +242,24 @@ public:
         return jsondata.toJson();
     }
 
-    virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token , const QString &refreshToken) {
+    virtual QByteArray userInfoPayload() const
+    {
+        // the dummy server provides the user admin
+        // we don't provide "meta" at the moment, since it is not used
+        QJsonDocument jsonData(QJsonObject {
+            { "ocs", QJsonObject { { "data", QJsonObject {
+                                                 { "display-name", "Admin" },
+                                                 { "id", "admin" },
+                                                 { "email", "admin@admin.admin" },
+
+                                             } } } } });
+        return jsonData.toJson();
+    }
+
+    virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &displayName, const QString &refreshToken)
+    {
         QCOMPARE(result, OAuth::LoggedIn);
-        QCOMPARE(state, TokenAsked);
+        QCOMPARE(state, UserInfoFetched);
         QCOMPARE(user, QString("admin"));
         QCOMPARE(token, QString("123"));
         QCOMPARE(refreshToken, QString("456"));
@@ -350,10 +381,11 @@ private slots:
                 return OAuthTestCase::tokenReply(op, req);
             }
 
-            void oauthResult(OAuth::Result result, const QString &user, const QString &token ,
-                             const QString &refreshToken) override {
+            void oauthResult(OAuth::Result result, const QString &user, const QString &token,
+                const QString &displayName, const QString &refreshToken) override
+            {
                 if (state != CustomState)
-                    return OAuthTestCase::oauthResult(result, user, token, refreshToken);
+                    return OAuthTestCase::oauthResult(result, user, token, displayName, refreshToken);
                 QCOMPARE(result, OAuth::Error);
             }
         } test;
@@ -416,7 +448,7 @@ private slots:
                 return new FakeHangingReply(op, req, fakeAm);
             }
 
-            void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) override
+            void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &displayName, const QString &refreshToken) override
             {
                 Q_UNUSED(user);
                 Q_UNUSED(token);

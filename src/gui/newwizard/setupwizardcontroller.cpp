@@ -7,6 +7,7 @@
 #include "gui/folderman.h"
 #include "jobs/checkbasicauthjobfactory.h"
 #include "jobs/resolveurljobfactory.h"
+#include "networkjobs/fetchuserinfojobfactory.h"
 #include "pages/accountconfiguredwizardpage.h"
 #include "pages/basiccredentialssetupwizardpage.h"
 #include "pages/oauthcredentialssetupwizardpage.h"
@@ -233,7 +234,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                         // username might not be set yet, shouldn't matter, though
                         auto oAuth = new OAuth(_accountBuilder.serverUrl(), QString(), _accessManager, {}, this);
 
-                        connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken) {
+                        connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &userName, const QString &token, const QString &displayName, const QString &refreshToken) {
                             // the button may not be clicked any more, since the server has been shut down right before this signal was emitted by the OAuth instance
                             newPage->disableButtons();
 
@@ -244,7 +245,8 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
 
                             switch (result) {
                             case OAuth::Result::LoggedIn: {
-                                _accountBuilder.setAuthenticationStrategy(new OAuth2AuthenticationStrategy(user, token, refreshToken));
+                                _accountBuilder.setAuthenticationStrategy(new OAuth2AuthenticationStrategy(userName, token, refreshToken));
+                                _accountBuilder.setDisplayName(displayName);
                                 nextStep(1, std::nullopt);
                                 break;
                             }
@@ -355,13 +357,30 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                 _wizardWindow->displayPage(_currentPage, 1);
             };
 
-            connect(checkBasicAuthJob, &CoreJob::finished, this, [moveToFinalPage, checkBasicAuthJob, showCredentialsPageAgain]() {
+            connect(checkBasicAuthJob, &CoreJob::finished, this, [moveToFinalPage, checkBasicAuthJob, showCredentialsPageAgain, this, strategy]() {
                 if (checkBasicAuthJob->success()) {
                     if (checkBasicAuthJob->result().toBool()) {
-                        moveToFinalPage();
+                        auto fetchUserInfoJob = FetchUserInfoJobFactory::fromBasicAuthCredentials(_accessManager, strategy->username(), strategy->password(), this).startJob(_accountBuilder.serverUrl());
+
+                        connect(fetchUserInfoJob, &CoreJob::finished, this, [this, strategy, moveToFinalPage, showCredentialsPageAgain, fetchUserInfoJob] {
+                            if (fetchUserInfoJob->success()) {
+                                auto result = fetchUserInfoJob->result().value<FetchUserInfoResult>();
+
+                                Q_ASSERT(result.userName() == strategy->username());
+
+                                _accountBuilder.setDisplayName(result.displayName());
+
+                                moveToFinalPage();
+                            } else {
+                                showCredentialsPageAgain(tr("Failed to fetch user display name"));
+                            }
+                        });
+
                     } else {
                         showCredentialsPageAgain(tr("Login failed: username and/or password incorrect"));
                     }
+
+
                 } else {
                     showCredentialsPageAgain(tr("Login failed: %1").arg(checkBasicAuthJob->errorMessage()));
                 }

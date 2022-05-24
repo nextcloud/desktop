@@ -50,7 +50,7 @@ Q_SIGNALS:
     void finished(AccountPtr newAccount, SyncMode syncMode);
 
 private:
-    void nextStep(std::optional<PageIndex> currentPage, std::optional<PageIndex> desiredPage);
+    void nextStep(std::optional<PageIndex> currentPage, std::optional<PageIndex> userName);
 
     SetupWizardWindow *_wizardWindow;
 

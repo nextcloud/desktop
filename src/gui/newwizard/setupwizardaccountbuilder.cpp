@@ -109,6 +109,8 @@ AccountPtr SetupWizardAccountBuilder::build()
     newAccountPtr->setDavUser(_authenticationStrategy->davUser());
     newAccountPtr->setCredentials(_authenticationStrategy->makeCreds());
 
+    newAccountPtr->setDavDisplayName(_displayName);
+
     newAccountPtr->addApprovedCerts({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
 
     return newAccountPtr;
@@ -125,9 +127,12 @@ bool SetupWizardAccountBuilder::hasValidCredentials() const
 
 QString SetupWizardAccountBuilder::displayName() const
 {
-    Q_ASSERT(hasValidCredentials());
-    // TODO: get the correct display name instead of the dav user
-    return _authenticationStrategy->davUser();
+    return _displayName;
+}
+
+void SetupWizardAccountBuilder::setDisplayName(const QString &displayName)
+{
+    _displayName = displayName;
 }
 
 void SetupWizardAccountBuilder::setAuthenticationStrategy(AbstractAuthenticationStrategy *strategy)
