@@ -236,7 +236,7 @@ if(BUILD_CLIENT)
 endif()
 
 if(BUILD_SHELL_INTEGRATION)
-    ##add_subdirectory(shell_integration)
+    add_subdirectory(shell_integration)
 endif()
 
 if(BUILD_TESTING)
