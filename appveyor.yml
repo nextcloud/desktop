@@ -28,6 +28,8 @@ init:
     }
 
 install:
+- choco install opencppcoverage
+- set PATH=C:\Program Files\OpenCppCoverage;%PATH%
 - ps: |
     #use cmd to silence powershell behaviour for stderr
     & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
@@ -35,8 +37,6 @@ install:
     craft craft
     craft --install-deps nextcloud-client
     # craft nsis
-    - choco install opencppcoverage
-    - $env:Path += ";C:\Program Files\OpenCppCoverage"
 
 build_script:
 - ps: |
