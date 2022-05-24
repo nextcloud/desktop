@@ -11,7 +11,6 @@ clone_depth: 1
 init:
 - ps: |
     function craft() {
-        cmd /C "echo %PATH%"
         & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
@@ -19,8 +18,8 @@ init:
         echo "Inside crafttests()"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
         $LASTEXITCODE = 0
-        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
-        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage1.cov ThemeTest.exe
+        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --quiet --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
+        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --quiet --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage1.cov ThemeTest.exe
         cd ~
         echo $LASTEXITCODE
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
