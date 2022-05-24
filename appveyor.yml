@@ -20,8 +20,8 @@ init:
         Get-ChildItem -Path "C:/CraftMaster/windows-msvc2019_64-cl/build" -Recurse -Force
         cmd /C "echo %PATH%"
         Get-ChildItem -Path C:/CraftMaster/windows-msvc2019_64-cl/build -Filter CTestTestfile.cmake -Recurse
-        cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/test
-        & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --output-on-failure -j 2 -timeout 300
+        cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
+        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
         cd ~
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
