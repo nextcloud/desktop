@@ -24,7 +24,7 @@ class OWNCLOUDSYNC_EXPORT CheckServerJobResult
 {
 
 public:
-    CheckServerJobResult() = default;
+    CheckServerJobResult();
     CheckServerJobResult(const QJsonObject &statusObject, const QUrl &serverUrl);
 
     QJsonObject statusObject() const;
