@@ -20,7 +20,7 @@ init:
         craft --search nextcloud-client
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build
-        & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe"
+        & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe
         cd ~
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
