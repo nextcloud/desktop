@@ -15,14 +15,13 @@ init:
         & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
-    function crafttests() {
+    function runTests() {
         echo "Inside crafttests()"
-        Get-ChildItem -Path "C:/CraftMaster/windows-msvc2019_64-cl/build" -Recurse -Force
         cmd /C "echo %PATH%"
-        Get-ChildItem -Path C:/CraftMaster/windows-msvc2019_64-cl/build -Filter CTestTestfile.cmake -Recurse
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
-        & "C:/Program Files/OpenCppCoverage/OpenCppCoverage.exe" --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin --excluded_modules "C:\Program Files\CMake\bin\ctest.exe" --export_type binary:test_coverage.cov IconUtilsTest.exe
+        .\IconUtilsTest.exe
         cd ~
+        echo $LASTEXITCODE
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
 
@@ -34,9 +33,7 @@ install:
     craft craft
     craft --install-deps nextcloud-client
     craft nsis
-    echo "Running install step"
     choco install opencppcoverage
-    echo $env:APPVEYOR_BUILD_FOLDER
 
 build_script:
 - ps: |
@@ -44,7 +41,7 @@ build_script:
 
 test_script:
 - ps: |
-    crafttests --test --src-dir $env:APPVEYOR_BUILD_FOLDER nextcloud-client
+    runTests
 
 environment:
     matrix:
