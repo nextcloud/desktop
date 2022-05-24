@@ -12,7 +12,7 @@ init:
 - ps: |
     function craft() {
         cmd /C "echo %PATH%"
-        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
     function crafttests() {
@@ -21,8 +21,8 @@ init:
         craft --search nextcloud-client
         echo $env:APPVEYOR_BUILD_FOLDER
         Get-ChildItem -Path $env:APPVEYOR_BUILD_FOLDER -Recurse -Force
+        . "C:\CraftMaster\craft-clone\craftenv.ps1"
         cb nextcloud-client
-        Get-Childitem -Path . -Recurse -Force
         cmd /C "echo %PATH%"
         & "C:\Program Files\OpenCppCoverage\OpenCppCoverage.exe" --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --test-dir "$env:APPVEYOR_BUILD_FOLDER"
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
