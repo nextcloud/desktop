@@ -657,6 +657,7 @@ void FolderMan::setSyncEnabled(bool enabled)
         // We have things in our queue that were waiting for the connection to come back on.
         startScheduledSyncSoon();
     }
+    qCInfo(lcFolderMan) << Q_FUNC_INFO << enabled;
     _syncEnabled = enabled;
     // force a redraw in case the network connect status changed
     Q_EMIT folderSyncStateChange(nullptr);
@@ -743,6 +744,7 @@ void FolderMan::slotStartScheduledFolderSync()
         registerFolderWithSocketApi(folder);
 
         _currentSyncFolder = folder;
+        qCInfo(lcFolderMan) << "Start scheduled sync of" << folder->path();
         folder->startSync();
     }
 }
