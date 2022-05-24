@@ -5400,7 +5400,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="474"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="475"/>
         <source>Retry all uploads</source>
         <translation>Prøv alle uploads igen</translation>
     </message>
@@ -5433,22 +5433,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1016"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
         <source>Confirm Account Removal</source>
         <translation>Bekræft sletning af konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ønsker du virkelig at fjerne forbindelse til kontoen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt;Dette sletter &lt;b&gt;ikke&lt;/b&gt;nogen filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1023"/>
         <source>Remove connection</source>
         <translation>Fjern forbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1023"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1024"/>
         <source>Cancel</source>
         <translation>Annullér</translation>
     </message>
@@ -6110,27 +6110,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ny mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="550"/>
         <source>You renamed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="551"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="552"/>
         <source>You deleted %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="553"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="554"/>
         <source>You created %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="555"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="556"/>
         <source>You changed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="578"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>Synced %1</source>
         <translation type="unfinished"/>
     </message>

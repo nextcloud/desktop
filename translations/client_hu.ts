@@ -5424,7 +5424,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="474"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="475"/>
         <source>Retry all uploads</source>
         <translation>Összes feltöltés újrapróbálása</translation>
     </message>
@@ -5457,22 +5457,22 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1016"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
         <source>Confirm Account Removal</source>
         <translation>Fiók törlésének megerősítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Biztos, hogy eltávolítja a kapcsolatot a(z) &lt;i&gt;%1&lt;/i&gt; fiókkal?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Megjegyzés:&lt;/b&gt; Ez &lt;b&gt;nem&lt;/b&gt; töröl fájlokat.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1023"/>
         <source>Remove connection</source>
         <translation>Kapcsolat eltávolítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1023"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1024"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
@@ -6134,27 +6134,27 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Új mappa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="550"/>
         <source>You renamed %1</source>
         <translation>Átnevezte: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="551"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="552"/>
         <source>You deleted %1</source>
         <translation>Törölte: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="553"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="554"/>
         <source>You created %1</source>
         <translation>Létrehozta: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="555"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="556"/>
         <source>You changed %1</source>
         <translation>Megváltoztatta: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="578"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>Synced %1</source>
         <translation>Szinkronizálta: %1</translation>
     </message>

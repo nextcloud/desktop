@@ -1370,7 +1370,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 e %n outro arquivo foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="430"/>
@@ -1381,7 +1381,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation><numerusform>%1 e %n outro arquivo foram baixados.</numerusform><numerusform>%1 e %n outros arquivos foram baixados.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo foram baixados.</numerusform><numerusform>%1 e %n outros arquivos foram baixados.</numerusform><numerusform>%1 e %n outros arquivos foram baixados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -1392,7 +1392,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 e %n outro(s) arquivo(s) foram adicionados. </numerusform><numerusform>%1 e %n outro arquivo foi adicionado. </numerusform></translation>
+        <translation><numerusform>%1 e %n outro(s) arquivo(s) foram adicionados. </numerusform><numerusform>%1 e %n outro arquivo foi adicionado. </numerusform><numerusform>%1 e %n outro arquivo foi adicionado. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="437"/>
@@ -1403,7 +1403,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 e %n outro arquivo foram atualizados.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo foram atualizados.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -1414,7 +1414,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 foi renomeado para %2 e %n outro arquivo foi renomeado.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform></translation>
+        <translation><numerusform>%1 foi renomeado para %2 e %n outro arquivo foi renomeado.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
@@ -1425,7 +1425,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 foi movido para %2 e %n outro arquivo foi movido.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform></translation>
+        <translation><numerusform>%1 foi movido para %2 e %n outro arquivo foi movido.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -1435,7 +1435,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 tem e %n outro arquivo têm conflitos na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos têm conflitos na sincronização.</numerusform></translation>
+        <translation><numerusform>%1 tem e %n outro arquivo têm conflitos na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos têm conflitos na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos têm conflitos na sincronização.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
@@ -1445,7 +1445,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 e %n outro arquivo não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivos não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivos não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivos não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
@@ -1455,7 +1455,7 @@ Isso pode ser um problema com suas bibliotecas OpenSSL.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 and %n other file(s) are currently locked.</source>
-        <translation><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform></translation>
+        <translation><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform><numerusform>%1 e %n outro(s) arquivo(s) estão atualmente bloqueado(s).</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="479"/>
@@ -1953,7 +1953,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation><numerusform>Esperando por %n outras pasta(s)…</numerusform><numerusform>Esperando por %n outras pasta(s)…</numerusform></translation>
+        <translation><numerusform>Esperando por %n outras pasta(s)…</numerusform><numerusform>Esperando por %n outras pasta(s)…</numerusform><numerusform>Esperando por %n outras pasta(s)…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
@@ -4295,7 +4295,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Bloqueados por %1 - Expira em %2 minuto</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
+        <translation><numerusform>Bloqueados por %1 - Expira em %2 minuto</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="126"/>
@@ -4700,7 +4700,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Expira em %1 minutos</numerusform><numerusform>Expira em %1 minuto</numerusform></translation>
+        <translation><numerusform>Expira em %1 minutos</numerusform><numerusform>Expira em %1 minuto</numerusform><numerusform>Expira em %1 minuto</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -5422,7 +5422,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="474"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="475"/>
         <source>Retry all uploads</source>
         <translation>Retentar todos os envios</translation>
     </message>
@@ -5455,22 +5455,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1016"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
         <source>Confirm Account Removal</source>
         <translation>Confirme a Exclusão da Conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1017"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1018"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Quer realmente excluir a conexão para a conta &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Obs.:&lt;/b&gt; Isso &lt;b&gt;não&lt;/b&gt; excluirá nenhum arquivo.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1022"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1023"/>
         <source>Remove connection</source>
         <translation>Excluir conexão</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1023"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1024"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
@@ -6132,39 +6132,39 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Nova pasta </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="549"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="550"/>
         <source>You renamed %1</source>
         <translation>Você renomeou %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="551"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="552"/>
         <source>You deleted %1</source>
         <translation>Você excluiu %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="553"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="554"/>
         <source>You created %1</source>
         <translation>Você criou %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="555"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="556"/>
         <source>You changed %1</source>
         <translation>Você modificou %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="578"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>Synced %1</source>
         <translation>%1 sincronizado</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%n day ago</source>
-        <translation><numerusform>%n dia atrás</numerusform><numerusform>%n dias atrás</numerusform></translation>
+        <translation><numerusform>%n dia atrás</numerusform><numerusform>%n dias atrás</numerusform><numerusform>%n dias atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n days ago</source>
-        <translation><numerusform>%n dia atrás</numerusform><numerusform>%n dias atrás</numerusform></translation>
+        <translation><numerusform>%n dia atrás</numerusform><numerusform>%n dias atrás</numerusform><numerusform>%n dias atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="488"/>
@@ -6174,12 +6174,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="494"/>
         <source>%n hour ago</source>
-        <translation><numerusform>%n hora atrás</numerusform><numerusform>%n horas atrás</numerusform></translation>
+        <translation><numerusform>%n hora atrás</numerusform><numerusform>%n horas atrás</numerusform><numerusform>%n horas atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="496"/>
         <source>%n hours ago</source>
-        <translation><numerusform>%n hora atrás</numerusform><numerusform>%n horas atrás</numerusform></translation>
+        <translation><numerusform>%n hora atrás</numerusform><numerusform>%n horas atrás</numerusform><numerusform>%n horas atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="503"/>
@@ -6194,12 +6194,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="509"/>
         <source>%n minute ago</source>
-        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
+        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="511"/>
         <source>%n minutes ago</source>
-        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
+        <translation><numerusform>%n minuto atrás</numerusform><numerusform>%n minutos atrás</numerusform><numerusform>%n minutos atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="515"/>
@@ -6434,32 +6434,32 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="335"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n ano</numerusform><numerusform>%n anos</numerusform></translation>
+        <translation><numerusform>%n ano</numerusform><numerusform>%n anos</numerusform><numerusform>%n anos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="336"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n mês</numerusform><numerusform>%n meses</numerusform></translation>
+        <translation><numerusform>%n mês</numerusform><numerusform>%n meses</numerusform><numerusform>%n meses</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n dia</numerusform><numerusform>%n dias</numerusform></translation>
+        <translation><numerusform>%n dia</numerusform><numerusform>%n dias</numerusform><numerusform>%n dias</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform></translation>
+        <translation><numerusform>%n hora</numerusform><numerusform>%n horas</numerusform><numerusform>%n horas</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform></translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minutos</numerusform><numerusform>%n minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform></translation>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundos</numerusform><numerusform>%n segundos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="364"/>
