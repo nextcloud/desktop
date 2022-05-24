@@ -203,13 +203,6 @@ void ownCloudGui::slotSyncStateChange(Folder *folder)
 
     qCInfo(lcApplication) << "Sync state changed for folder " << folder->remoteUrl().toString() << ": " << result.statusString();
 
-    if (result.status() == SyncResult::Success
-        || result.status() == SyncResult::Problem
-        || result.status() == SyncResult::SyncAbortRequested
-        || result.status() == SyncResult::Error) {
-        Logger::instance()->enterNextLogFile();
-    }
-
     if (result.status() == SyncResult::NotYetStarted) {
         _settingsDialog->slotRefreshActivity(folder->accountState());
     }

@@ -78,13 +78,13 @@ public:
     }
     void setLogRules(const QSet<QString> &rules);
 
-public slots:
-    void enterNextLogFile();
-
 private:
     Logger(QObject *parent = nullptr);
     ~Logger() override;
 
+    void rotateLog();
+
+    void open(const QString &name);
     void close();
     void dumpCrashLog();
 

@@ -528,7 +528,6 @@ void Application::setupLogging()
     logger->setLogExpire(_logExpire);
     logger->setLogFlush(_logFlush);
     logger->setLogDebug(_logDebug);
-    logger->enterNextLogFile();
 
     // Possibly configure logging from config file
     LogBrowser::setupLoggingFromConfig();

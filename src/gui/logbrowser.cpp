@@ -94,7 +94,6 @@ void LogBrowser::setupLoggingFromConfig()
         } else {
             logger->setLogExpire(std::chrono::hours(0));
         }
-        logger->enterNextLogFile();
     } else {
         logger->disableTemporaryFolderLogDir();
     }
