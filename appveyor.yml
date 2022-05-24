@@ -16,7 +16,7 @@ init:
     }
     function runTests() {
         echo "Inside crafttests()"
-        cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
+        cd C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build
         Get-ChildItem .
         & OpenCppCoverage
         $LASTEXITCODE = 0
