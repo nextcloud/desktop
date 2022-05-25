@@ -38,8 +38,6 @@ namespace OCC {
 
 // ==============================================================================
 
-const std::chrono::hours defaultExpireDuration(4);
-
 LogBrowser::LogBrowser(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::LogBrowser)
@@ -58,9 +56,11 @@ LogBrowser::LogBrowser(QWidget *parent)
         ConfigFile().setLogHttp(b);
     });
 
-    ui->deleteLogsButton->setText(tr("Delete logs older than %1 hours").arg(QString::number(defaultExpireDuration.count())));
-    ui->deleteLogsButton->setChecked(bool(ConfigFile().automaticDeleteOldLogsAge()));
-    connect(ui->deleteLogsButton, &QCheckBox::toggled, this, &LogBrowser::toggleLogDeletion);
+    ui->spinBox_numberOflogsToKeep->setValue(ConfigFile().automaticDeleteOldLogs());
+    connect(ui->spinBox_numberOflogsToKeep, qOverload<int>(&QSpinBox::valueChanged), this, [](int i) {
+        ConfigFile().setAutomaticDeleteOldLogs(i);
+        Logger::instance()->setMaxLogFiles(i);
+    });
 
 
     connect(ui->openFolderButton, &QPushButton::clicked, this, []() {
@@ -89,11 +89,7 @@ void LogBrowser::setupLoggingFromConfig()
             return;
 
         logger->setupTemporaryFolderLogDir();
-        if (auto deleteOldLogsHours = config.automaticDeleteOldLogsAge()) {
-            logger->setLogExpire(*deleteOldLogsHours);
-        } else {
-            logger->setLogExpire(std::chrono::hours(0));
-        }
+        Logger::instance()->setMaxLogFiles(config.automaticDeleteOldLogs());
     } else {
         logger->disableTemporaryFolderLogDir();
     }
@@ -104,20 +100,6 @@ void LogBrowser::togglePermanentLogging(bool enabled)
     ConfigFile config;
     config.setAutomaticLogDir(enabled);
     setupLoggingFromConfig();
-}
-
-void LogBrowser::toggleLogDeletion(bool enabled)
-{
-    ConfigFile config;
-    auto logger = Logger::instance();
-
-    if (enabled) {
-        config.setAutomaticDeleteOldLogsAge(defaultExpireDuration);
-        logger->setLogExpire(defaultExpireDuration);
-    } else {
-        config.setAutomaticDeleteOldLogsAge({});
-        logger->setLogExpire(std::chrono::hours(0));
-    }
 }
 
 } // namespace

@@ -224,7 +224,6 @@ Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
     , _gui(nullptr)
     , _theme(Theme::instance())
-    , _logExpire(0)
     , _logFlush(false)
     , _logDebug(false)
     , _userTriggeredConnect(false)
@@ -525,7 +524,6 @@ void Application::setupLogging()
     auto logger = Logger::instance();
     logger->setLogFile(_logFile);
     logger->setLogDir(_logDir);
-    logger->setLogExpire(_logExpire);
     logger->setLogFlush(_logFlush);
     logger->setLogDebug(_logDebug);
 
@@ -604,7 +602,6 @@ void Application::parseOptions(const QStringList &arguments)
     auto quitInstanceOption = addOption({ { "q", "quit" }, tr("Quit the running instance.") });
     auto logFileOption = addOption({ "logfile", tr("Write log to file (use - to write to stdout)."), "filename" });
     auto logDirOption = addOption({ "logdir", tr("Write each sync log output in a new file in folder."), "name" });
-    auto logExpireOption = addOption({ "logexpire", tr("Remove logs older than <hours> hours (to be used with --logdir)."), "hours" });
     auto logFlushOption = addOption({ "logflush", tr("Flush the log file after every write.") });
     auto logDebugOption = addOption({ "logdebug", tr("Output debug-level messages in the log.") });
     auto languageOption = addOption({ "language", tr("Override UI language."), "language" });
@@ -629,9 +626,6 @@ void Application::parseOptions(const QStringList &arguments)
     }
     if (parser.isSet(logDirOption)) {
         _logDir = parser.value(logDirOption);
-    }
-    if (parser.isSet(logExpireOption)) {
-        _logExpire = std::chrono::hours(parser.value(logExpireOption).toInt());
     }
     if (parser.isSet(logFlushOption)) {
         _logFlush = true;

@@ -35,6 +35,7 @@
 namespace {
 constexpr int crashLogSizeC = 20;
 constexpr int maxLogSizeC = 1024 * 1024 * 100; // 100 MiB
+constexpr int minLogsToKeepC = 5;
 
 #ifdef Q_OS_WIN
 bool isDebuggerPresent()
@@ -65,6 +66,7 @@ Logger *Logger::instance()
 
 Logger::Logger(QObject *parent)
     : QObject(parent)
+    , _maxLogFiles(minLogsToKeepC)
 {
     qSetMessagePattern(loggerPattern());
     _crashLog.resize(crashLogSizeC);
@@ -172,10 +174,9 @@ void Logger::setLogFile(const QString &name)
     open(name);
 }
 
-void Logger::setLogExpire(std::chrono::hours expire)
+void Logger::setMaxLogFiles(int i)
 {
-    _logExpire = expire;
-    rotateLog();
+    _maxLogFiles = std::max(i, minLogsToKeepC);
 }
 
 void Logger::setLogDir(const QString &dir)
@@ -303,16 +304,16 @@ void Logger::rotateLog()
         // set the creation time to now
         _logFile.setFileTime(now, QFileDevice::FileTime::FileBirthTime);
 
-        QtConcurrent::run([now, previousLog, dir, logExpire = _logExpire] {
+        QtConcurrent::run([now, previousLog, dir, maxLogFiles = _maxLogFiles] {
             // Expire old log files and deal with conflicts
-            const auto &files = dir.entryList(QStringList(QStringLiteral("*" APPLICATION_SHORTNAME "-*.log.gz")),
-                QDir::Files, QDir::Name);
-            for (const auto &s : files) {
-                if (logExpire.count() > 0) {
-                    std::chrono::seconds expireSeconds(logExpire);
-                    QFileInfo fileInfo(dir.absoluteFilePath(s));
-                    if (fileInfo.lastModified().addSecs(expireSeconds.count()) < now) {
-                        QFile::remove(fileInfo.absoluteFilePath());
+            auto files = dir.entryList(QStringList(QStringLiteral("*" APPLICATION_SHORTNAME "-*.log.gz")), QDir::Files, QDir::Name);
+            if (files.size() > maxLogFiles) {
+                std::sort(files.begin(), files.end(), std::greater<QString>());
+                // remove the maxLogFiles newest, we keep them
+                files.erase(files.begin(), files.begin() + maxLogFiles);
+                for (const auto &s : files) {
+                    if (!QFile::remove(dir.absoluteFilePath(s))) {
+                        std::cerr << "Failed to remove: " << qPrintable(s) << std::endl;
                     }
                 }
             }

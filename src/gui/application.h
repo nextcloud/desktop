@@ -117,7 +117,6 @@ private:
     bool _quitInstance = false;
     QString _logFile;
     QString _logDir;
-    std::chrono::hours _logExpire;
     bool _logFlush;
     bool _logDebug;
     bool _userTriggeredConnect;

@@ -71,7 +71,7 @@ const QString minChunkSizeC() { return QStringLiteral("minChunkSize"); }
 const QString maxChunkSizeC() { return QStringLiteral("maxChunkSize"); }
 const QString targetChunkUploadDurationC() { return QStringLiteral("targetChunkUploadDuration"); }
 const QString automaticLogDirC() { return QStringLiteral("logToTemporaryLogDir"); }
-const QString deleteOldLogsAfterHoursC() { return QStringLiteral("temporaryLogDirDeleteOldLogsAfterHours"); }
+const QString numberOfLogsToKeepC() { return QStringLiteral("numberOfLogsToKeep"); }
 const QString showExperimentalOptionsC() { return QStringLiteral("showExperimentalOptions"); }
 const QString clientVersionC() { return QStringLiteral("clientVersion"); }
 
@@ -800,26 +800,16 @@ void ConfigFile::setAutomaticLogDir(bool enabled)
     settings.setValue(automaticLogDirC(), enabled);
 }
 
-Optional<chrono::hours> ConfigFile::automaticDeleteOldLogsAge() const
+int ConfigFile::automaticDeleteOldLogs() const
 {
     auto settings = makeQSettings();
-    auto value = settings.value(deleteOldLogsAfterHoursC());
-    if (!value.isValid())
-        return chrono::hours(4);
-    auto hours = value.toInt();
-    if (hours <= 0)
-        return {};
-    return chrono::hours(hours);
+    return settings.value(numberOfLogsToKeepC()).toInt();
 }
 
-void ConfigFile::setAutomaticDeleteOldLogsAge(Optional<chrono::hours> expireTime)
+void ConfigFile::setAutomaticDeleteOldLogs(int number)
 {
     auto settings = makeQSettings();
-    if (!expireTime) {
-        settings.setValue(deleteOldLogsAfterHoursC(), -1);
-    } else {
-        settings.setValue(deleteOldLogsAfterHoursC(), QVariant::fromValue(expireTime->count()));
-    }
+    settings.setValue(numberOfLogsToKeepC(), number);
 }
 
 void ConfigFile::setLogHttp(bool b)
