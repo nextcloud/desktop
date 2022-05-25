@@ -21,7 +21,7 @@ init:
         & OpenCppCoverage
         $LASTEXITCODE = 0
         echo "Inside crafttests1()"
-        & OpenCppCoverage --modules (Get-Item .).FullName --export_type cobertura:test_coverage.xml --cover_children "C:\Program Files\CMake\bin\ctest.exe"
+        & "C:\Program Files\CMake\bin\ctest.exe"
         cd ~
         echo $LASTEXITCODE
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
