@@ -69,22 +69,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar chiamante notifica Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Notifica di risposta chiamata Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Rifiuta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Notifica di rifiuto chiamata Talk</translation>
     </message>
 </context>
 <context>
@@ -331,17 +331,17 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="876"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>File %1 è già bloccato da %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="878"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Operazione di blocco di %1 fallita con errore %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="880"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Operazione di sblocco di %1 fallita con errore %2</translation>
     </message>
 </context>
 <context>
@@ -807,12 +807,12 @@ Questa azione interromperà qualsiasi sincronizzazione attualmente in esecuzione
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Recupero attività …</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Recupero attività…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="559"/>
@@ -2176,7 +2176,7 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mostra notifiche di chiamata</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2270,7 +2270,7 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="151"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Mostra finestre di notifica chiamata.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="165"/>
@@ -2518,7 +2518,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Il file &quot;%1&quot; non è stato sincronizzato perché il nome contiene caratteri non consentiti in questo sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
@@ -2528,17 +2528,17 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="89"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>I seguenti caratteri non sono consentiti nel sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; spazi iniziali/finali</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Controllo permessi per rinominare …</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions...</source>
-        <translation type="unfinished"/>
+        <translation>Controllo permessi per rinominare...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
@@ -2548,27 +2548,27 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Recupero dei permessi fallito con errore %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Il nome del file contiene spazi all&apos;inizio e alla fine.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Il nome del file contiene spazi all&apos;inizio.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Il nome del file contiene spazi alla fine.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Usa nome non valido</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="208"/>
@@ -2588,7 +2588,7 @@ Gli elementi per i quali è consentita l&apos;eliminazione saranno eliminati se 
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere il file locale. %1</translation>
     </message>
 </context>
 <context>
@@ -3573,12 +3573,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="311"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Il nome del file contiene spazi all&apos;inizio.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Il nome del file contiene spazi all&apos;inizio e alla fine.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="319"/>
@@ -4287,7 +4287,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Bloccato da %1 - Scade fra %2 minuti</numerusform><numerusform>Bloccati da %1 - Scade fra %2 minuti</numerusform><numerusform>Bloccati da %1 - Scade fra %2 minuti</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="126"/>
@@ -4676,23 +4676,23 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Blocca file</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Sblocca file</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Bloccato da %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Scade fra in %1 minuti</numerusform><numerusform>Scade fra in %1 minuti</numerusform><numerusform>Scade fra in %1 minuti</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -5308,7 +5308,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Scarica</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="155"/>

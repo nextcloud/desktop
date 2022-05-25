@@ -6109,12 +6109,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
         <source>%n day ago</source>
-        <translation type="unfinished"><numerusform>Hace %n día</numerusform><numerusform></numerusform><numerusform>Hace %n días</numerusform></translation>
+        <translation><numerusform>Hace %n día</numerusform><numerusform>Hace %n días</numerusform><numerusform>Hace %n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="484"/>
         <source>%n days ago</source>
-        <translation type="unfinished"><numerusform>Hace %n día</numerusform><numerusform></numerusform><numerusform>Hace %n días</numerusform></translation>
+        <translation><numerusform>Hace %n día</numerusform><numerusform>Hace %n días</numerusform><numerusform>Hace %n días</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="488"/>
@@ -6394,7 +6394,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform>%n día</numerusform><numerusform></numerusform><numerusform>%n días</numerusform></translation>
+        <translation><numerusform>%n día</numerusform><numerusform>%n días</numerusform><numerusform>%n días</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>

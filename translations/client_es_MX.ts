@@ -1362,7 +1362,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform>%1 y %n otro(s) archivo(s) han sido eliminados. </numerusform><numerusform></numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido eliminados. </numerusform></translation>
+        <translation><numerusform>%1 y %n otro(s) archivo(s) han sido eliminados. </numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido eliminados. </numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido eliminados. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="430"/>
@@ -1373,7 +1373,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="380"/>
         <source>%1 and %n other file(s) have been downloaded.</source>
-        <translation type="unfinished"><numerusform>%1 y %n otro(s) archivo(s) han sido descargados. </numerusform><numerusform></numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido descargados. </numerusform></translation>
+        <translation><numerusform>%1 y %n otro(s) archivo(s) han sido descargados. </numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido descargados. </numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido descargados. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="382"/>
@@ -1395,7 +1395,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform>%1 y %n otro(s) archivo(s) han sido actualizados.</numerusform><numerusform></numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido actualizados.</numerusform></translation>
+        <translation><numerusform>%1 y %n otro(s) archivo(s) han sido actualizados.</numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido actualizados.</numerusform><numerusform>%1 y %n otro(s) archivo(s) han sido actualizados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="444"/>
@@ -1406,7 +1406,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform>%1 ha sido renombrado como %2 y %n otro(s) archivo(s) han sido renombrados. </numerusform><numerusform></numerusform><numerusform>%1 ha sido renombrado como %2 y %n otro(s) archivo(s) han sido renombrados. </numerusform></translation>
+        <translation><numerusform>%1 ha sido renombrado como %2 y %n otro(s) archivo(s) han sido renombrados. </numerusform><numerusform>%1 ha sido renombrado como %2 y %n otro(s) archivo(s) han sido renombrados. </numerusform><numerusform>%1 ha sido renombrado como %2 y %n otro(s) archivo(s) han sido renombrados. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="451"/>
@@ -1417,7 +1417,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform>%1 se ha movido a %2 y %n otro(s) archivo(s) han sido movidos.</numerusform><numerusform></numerusform><numerusform>%1 se ha movido a %2 y %n otro(s) archivo(s) han sido movidos.</numerusform></translation>
+        <translation><numerusform>%1 se ha movido a %2 y %n otro(s) archivo(s) han sido movidos.</numerusform><numerusform>%1 se ha movido a %2 y %n otro(s) archivo(s) han sido movidos.</numerusform><numerusform>%1 se ha movido a %2 y %n otro(s) archivo(s) han sido movidos.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="458"/>
@@ -1427,7 +1427,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform>%1 y %n otro(s) archivo(s) tienen confictos de sincronización.</numerusform><numerusform></numerusform><numerusform>%1 y %n otro(s) archivo(s) tienen confictos de sincronización.</numerusform></translation>
+        <translation><numerusform>%1 y %n otro(s) archivo(s) tienen confictos de sincronización.</numerusform><numerusform>%1 y %n otro(s) archivo(s) tienen confictos de sincronización.</numerusform><numerusform>%1 y %n otro(s) archivo(s) tienen confictos de sincronización.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="465"/>
@@ -1437,7 +1437,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform>%1 y %n otro(s) archivo(s) no puideron ser sincronizado por errores. Consulta la bitácora para más detalles. </numerusform><numerusform></numerusform><numerusform>%1 y %n otro(s) archivo(s) no puideron ser sincronizado por errores. Consulta la bitácora para más detalles. </numerusform></translation>
+        <translation><numerusform>%1 y %n otro(s) archivo(s) no puideron ser sincronizado por errores. Consulta la bitácora para más detalles. </numerusform><numerusform>%1 y %n otro(s) archivo(s) no puideron ser sincronizado por errores. Consulta la bitácora para más detalles. </numerusform><numerusform>%1 y %n otro(s) archivo(s) no puideron ser sincronizado por errores. Consulta la bitácora para más detalles. </numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
@@ -6394,32 +6394,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="335"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform>%n año(s)</numerusform><numerusform></numerusform><numerusform>%n año(s)</numerusform></translation>
+        <translation><numerusform>%n año(s)</numerusform><numerusform>%n año(s)</numerusform><numerusform>%n año(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="336"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform>%n mes(es)</numerusform><numerusform></numerusform><numerusform>%n mes(es)</numerusform></translation>
+        <translation><numerusform>%n mes(es)</numerusform><numerusform>%n mes(es)</numerusform><numerusform>%n mes(es)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="337"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform>%n día(s)</numerusform><numerusform></numerusform><numerusform>%n día(s)</numerusform></translation>
+        <translation><numerusform>%n día(s)</numerusform><numerusform>%n día(s)</numerusform><numerusform>%n día(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="338"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform>%n hora(s)</numerusform><numerusform></numerusform><numerusform>%n hora(s)</numerusform></translation>
+        <translation><numerusform>%n hora(s)</numerusform><numerusform>%n hora(s)</numerusform><numerusform>%n hora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="339"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform>%n minuto(s)</numerusform><numerusform></numerusform><numerusform>%n minuto(s)</numerusform></translation>
+        <translation><numerusform>%n minuto(s)</numerusform><numerusform>%n minuto(s)</numerusform><numerusform>%n minuto(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="340"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform>%n segundo(s)</numerusform><numerusform></numerusform><numerusform>%n segundo(s)</numerusform></translation>
+        <translation><numerusform>%n segundo(s)</numerusform><numerusform>%n segundo(s)</numerusform><numerusform>%n segundo(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="364"/>
