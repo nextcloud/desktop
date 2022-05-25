@@ -319,7 +319,7 @@ bool ConnectionValidator::setAndCheckServerInfo(const QString &version, const QS
 
     // We cannot deal with servers < 10.0.0
     if (_account->serverVersionUnsupported()) {
-        _errors.append(tr("The configured server for this client is too old"));
+        _errors.append(tr("The configured server for this client is too old."));
         _errors.append(tr("Please update to the latest server and restart the client."));
         reportResult(ServerVersionMismatch);
         return false;
