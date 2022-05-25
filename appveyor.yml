@@ -17,7 +17,6 @@ init:
 install:
 - ps: |
     #use cmd to silence powershell behaviour for stderr
-    Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
     iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/KDE/craft/master/setup/install_craft.ps1'))
     & C:\CraftRoot\craft\craftenv.ps1
     craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
