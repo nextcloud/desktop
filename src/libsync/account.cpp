@@ -310,9 +310,6 @@ bool Account::serverVersionUnsupported() const
     if (capabilities().status().legacyVersion < QVersionNumber(10)) {
         return true;
     }
-    if (capabilities().status().productname.endsWith(QLatin1String("Nextcloud"))) {
-        return true;
-    }
     return false;
 }
 
