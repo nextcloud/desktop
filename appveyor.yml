@@ -15,28 +15,28 @@ init:
         if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
     }
     function crafttests() {
-        cmd /C "echo %PATH%"
-        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+        craft --test nextcloud-client
     }
 
 install:
 - ps: |
     #use cmd to silence powershell behaviour for stderr
-    & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+    Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+    iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/KDE/craft/master/setup/install_craft.ps1'))
+    & C:\CraftRoot\craft\craftenv.ps1
     craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
-    craft craft
-    craft --install-deps nextcloud-client
-    # craft nsis
+    craft nextcloud-client
+    craft nsis
     choco install opencppcoverage
 - set PATH=C:\Program Files\OpenCppCoverage;%PATH%
 
 build_script:
 - ps: |
-    craft --src-dir $env:APPVEYOR_BUILD_FOLDER nextcloud-client
+    craft --compile nextcloud-client
 
 test_script:
 - ps: |
-    crafttests --test --src-dir $env:APPVEYOR_BUILD_FOLDER nextcloud-client
+    crafttests
 
 environment:
     matrix:
