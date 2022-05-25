@@ -97,6 +97,8 @@ QtObject {
 
     readonly property var fontMetrics: FontMetrics {}
 
+    readonly property int activityContentSpace: 4
+
     function variableSize(size) {
         return size * (1 + Math.min(pixelSize / 100, 1));       
     }
