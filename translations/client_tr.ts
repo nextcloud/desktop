@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
         <source>Talk notification caller avatar</source>
-        <translation>Talk bildirimi arayan avatarı</translation>
+        <translation>Talk bildirimi çağrı yapan avatarı</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
