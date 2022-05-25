@@ -71,7 +71,7 @@ void PropagateRemoteMove::start()
     }
 
     QString remoteSource = propagator()->fullRemotePath(origin);
-    QString remoteDestination = QDir::cleanPath(propagator()->account()->davUrl().path() + propagator()->fullRemotePath(_item->_renameTarget));
+    QString remoteDestination = QDir::cleanPath(propagator()->webDavUrl().path() + propagator()->fullRemotePath(_item->_renameTarget));
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto itype = _item->_type;
