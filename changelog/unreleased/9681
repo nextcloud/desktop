@@ -1,4 +1,4 @@
-Bugfix: Deadlock when the user requested a context menu in a folder selection dialog
+Bugfix: Deadlock in folder context menu in a folder selection dialog
 
 We fixed a deadlock when a user requested a context menu in a folder slection dialog on Windows.
 
