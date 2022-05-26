@@ -55,6 +55,7 @@ jobs:
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
+      CRAFT_TARGET: windows-msvc2019_64-cl
     steps:
       - uses: actions/checkout@v2
         with:
@@ -73,7 +74,7 @@ jobs:
           & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
           
           function craft() {
-              python "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+              python "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
           
           craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
