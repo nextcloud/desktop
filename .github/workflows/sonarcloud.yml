@@ -61,18 +61,17 @@ jobs:
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
-      - name: Restore cache
-        uses: actions/cache@v2
+      - name: Cache Install Craft Master With Nextcloud Client Deps
+        id: cache-install-craft-master-nextcloud-client-deps
+        uses: actions/cache@v3
         with:
-          path: /cache
-          key: ${{ runner.os }}
+          path: C:\CraftMaster
+          key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps
 
-      - name: Install
+      - name: Install Craft Master With Nextcloud Client Deps
+        if: cache-install-craft-master-nextcloud-client-deps.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
-          choco install opencppcoverage
-          echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\CraftMaster\windows-msvc2019_64-cl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
           
           function craft() {
@@ -83,6 +82,25 @@ jobs:
           craft craft
           craft --install-deps nextcloud-client
           craft nsis
+          
+      - name: Cache Install OpenCppCoverage
+        id: cache-install-opencppcoverage
+        uses: actions/cache@v3
+        with:
+          path: C:\Program Files\OpenCppCoverage
+          key: ${{ runner.os }}-cache-install-opencppcoverage
+          
+      - name: Install OpenCppCoverage
+        if: cache-install-opencppcoverage.outputs.cache-hit != 'true'
+        shell: pwsh
+        run: |
+          choco install opencppcoverage
+          
+      - name: Setup PATH
+        shell: pwsh
+        run: |
+          echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\CraftMaster\windows-msvc2019_64-cl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           
       - name: Compile
         shell: pwsh
