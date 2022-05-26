@@ -16,7 +16,7 @@ init:
     }
     function runTests() {
         cmd /C "echo %PATH%"
-        $buildFolder = C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
+        $buildFolder = "C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build"
         cd "$buildFolder/bin"
         
         echo "sources at: $env:APPVEYOR_BUILD_FOLDER"
