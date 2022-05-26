@@ -137,7 +137,9 @@ jobs:
                       & OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
                       $previousCov += "--input_coverage=$testFile.cov "
                   } else {
-                      $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} $previousCov + $testFile"
+                      $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} "
+                      $runLastTestAndMergeReport += $previousCov
+                      $runLastTestAndMergeReport += $testFile
                       Invoke-Expression $runLastTestAndMergeReport
                   }
               }
