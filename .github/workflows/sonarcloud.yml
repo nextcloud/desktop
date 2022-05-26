@@ -68,7 +68,8 @@ jobs:
 
       - name: Install
         uses: actions/setup-python@v3
-        with: python-version: '3.9'
+        with:
+          python-version: '3.9'
         shell: pwsh
         run: |
           choco install opencppcoverage
