@@ -56,7 +56,7 @@ jobs:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
       CRAFT_TARGET: windows-msvc2019_64-cl
-      COBERTURA_COVERAGE_FILE: ${{ github.workspace }}/cobertura_coverage/coverage.xml
+      COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
     steps:
       - uses: actions/checkout@v2
         with:
@@ -109,15 +109,23 @@ jobs:
           function craft() {
               python "C:\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
+          echo "GetChildItem C:\windows-msvc2019_64-cl"
+          Get-ChildItem -Path C:\windows-msvc2019_64-cl -Recurse
+          
+          craft --search nextcloud-client
           
           craft --src-dir ${{ github.workspace }} nextcloud-client
           
       - name: Run tests
         shell: pwsh
         run: |
-          mkdir build
           function runTests() {
               cmd /C "echo %PATH%"
+              
+              echo "runTests()!!!"
+              echo "GetChildItem ."
+              Get-ChildItem -Path . -Recurse
+              
               $buildFolder = "C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build"
               cd "$buildFolder/bin"
         
