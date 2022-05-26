@@ -16,7 +16,6 @@ init:
     }
     function crafttests() {
         cmd /C "echo %PATH%"
-        C:\CraftMaster\windows-msvc2019_64-cl\dev-utils\bin\ctest.exe -VV C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build --output-on-failure --timeout 300 -j 2
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
         C:\CraftMaster\windows-msvc2019_64-cl\dev-utils\bin\ctest.exe -VV --output-on-failure --timeout 300 -j 2 -c $env:TARGET
         # & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
@@ -31,7 +30,7 @@ install:
     craft --install-deps nextcloud-client
     # craft nsis
     choco install opencppcoverage
-- set PATH=C:\Program Files\OpenCppCoverage;%PATH%
+- set PATH=C:\Program Files\OpenCppCoverage;C:\CraftMaster\windows-msvc2019_64-cl\bin;%PATH%
 
 build_script:
 - ps: |
