@@ -56,7 +56,7 @@ jobs:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
       CRAFT_TARGET: windows-msvc2019_64-cl
-      COBERTURA_COVERAGE_FILE: ${{ github.workspace }}/cobertura_coverage/coverage.xml"
+      COBERTURA_COVERAGE_FILE: ${{ github.workspace }}/cobertura_coverage/coverage.xml
     steps:
       - uses: actions/checkout@v2
         with:
