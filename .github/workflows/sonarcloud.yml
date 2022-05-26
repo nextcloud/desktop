@@ -65,18 +65,20 @@ jobs:
         with:
           path: /cache
           key: ${{ runner.os }}
-          
+
       - name: Install
+        uses: actions/setup-python@v3
+        with: python-version: '3.9'
+        shell: pwsh
         run: |
-          choco install openssl
-          choco install qt5-default --version 5.15.2
+          choco install opencppcoverage
+          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
           
-      - name: Compile
-        run: |
-          mkdir build
-          cmake . -G"Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX=$USERPROFILE\nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=1 -Bbuild
-          cd build
-          cmake --build . --config Debug --target install
-      - name: Run tests
-        run: |
-          ctest --output-on-failure --output-junit testResult.xml test
+          function craft() {
+              python "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+          }
+          
+          craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
+          craft craft
+          craft --install-deps nextcloud-client
+          craft nsis
