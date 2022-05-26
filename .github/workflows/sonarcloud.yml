@@ -48,3 +48,31 @@ jobs:
           cp sonar-project.properties build
           cd build
           sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
+    
+    build-on-windows:
+      name: Build
+      runs-on: windows-2019
+      container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
+      env:
+        SONAR_SERVER_URL: "https://sonarcloud.io"
+        BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
+      steps:
+        - uses: actions/checkout@v2
+          with:
+            fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+        - name: Restore cache
+          uses: actions/cache@v2
+          with:
+            path: /cache
+            key: ${{ runner.os }}
+            
+        - name: Compile
+        run: |
+          mkdir build
+          cmake . -G"Visual Studio 16 2019" -DCMAKE_INSTALL_PREFIX=$USERPROFILE\nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTING=1 -Bbuild
+          cd build
+          cmake --build . --config Debug --target install
+        - name: Run tests
+        run: |
+          ctest --output-on-failure --output-junit testResult.xml test
