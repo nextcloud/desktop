@@ -67,16 +67,16 @@ jobs:
         uses: actions/cache@v3
         with:
           path: CraftMaster
-          key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps
+          key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps-1
 
       - name: Install Craft Master With Nextcloud Client Deps
         if: steps.cache-install-craft-master-nextcloud-client-deps.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
-          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster 2>&1"
           
           function craft() {
-              python "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
+              python "C:\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
           
           craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
@@ -107,7 +107,7 @@ jobs:
         shell: pwsh
         run: |
           function craft() {
-              python "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
+              python "C:\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
           
           craft --src-dir ${{ github.workspace }} nextcloud-client
