@@ -68,6 +68,7 @@ jobs:
           
       - name: Install
         run: |
+          choco install openssl
           choco install qt5-default --version 5.15.2
           
       - name: Compile
