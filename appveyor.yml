@@ -16,7 +16,8 @@ init:
     }
     function runTests() {
         cmd /C "echo %PATH%"
-        cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
+        $buildFolder = C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
+        cd "$buildFolder/bin"
         
         echo "sources at: $env:APPVEYOR_BUILD_FOLDER"
         
@@ -34,7 +35,7 @@ init:
                 & OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
                 $previousCov += "--input_coverage=$testFile.cov "
             } else {
-                $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:../test_coverage_cobertura/test_coverage_final.xml --export_type html:../test_coverage_html" + " $previousCov" + $testFile
+                $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:$buildFolder/test_coverage_cobertura/test_coverage_final.xml --export_type html:$buildFolder/test_coverage_html" + " $previousCov" + $testFile
                 Invoke-Expression $runLastTestAndMergeReport
             }
         }
