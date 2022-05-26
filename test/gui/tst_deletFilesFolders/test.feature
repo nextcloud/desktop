@@ -1,3 +1,4 @@
+@skip @issue-9733
 Feature: deleting files and folders
 
   	As a user

@@ -1,3 +1,4 @@
+@skip @issue-9733
 Feature: remove account connection
 
   As a user

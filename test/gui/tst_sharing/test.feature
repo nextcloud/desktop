@@ -1,3 +1,4 @@
+@skip @issue-9733
 Feature: Sharing
 
     As a user
