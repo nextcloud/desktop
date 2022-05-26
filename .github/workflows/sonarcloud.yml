@@ -81,3 +81,44 @@ jobs:
           craft craft
           craft --install-deps nextcloud-client
           craft nsis
+          
+      - name: Compile
+        shell: pwsh
+        run: |
+          function craft() {
+              python "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
+          }
+          
+          craft --src-dir ${{ github.workspace }} nextcloud-client
+          
+      - name: Run tests
+        shell: pwsh
+        run: |
+          function runTests() {
+              cmd /C "echo %PATH%"
+              $buildFolder = "C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build"
+              cd "$buildFolder/bin"
+        
+              echo "sources at: ${{ github.workspace }}"
+        
+              $testFiles = Get-ChildItem . -Recurse | where {$_.name -clike "*Test.exe"} | select -expand name
+        
+              $totalTests = $testFiles.count
+        
+              $counter = 0
+        
+              $previousCov = "";
+        
+              foreach ($testFile in $testFiles) {
+                  $counter += 1
+                  if($counter -ne $totalTests) {
+                      & OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
+                      $previousCov += "--input_coverage=$testFile.cov "
+                  } else {
+                      $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:$buildFolder/test_coverage_cobertura/test_coverage_final.xml --export_type html:$buildFolder/test_coverage_html" + " $previousCov" + $testFile
+                      Invoke-Expression $runLastTestAndMergeReport
+                  }
+              }
+          }
+          
+          runTests
