@@ -72,6 +72,7 @@ jobs:
         run: |
           choco install opencppcoverage
           echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "C:\CraftMaster\windows-msvc2019_64-cl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
           
           function craft() {
