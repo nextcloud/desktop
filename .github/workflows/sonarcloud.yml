@@ -65,7 +65,7 @@ jobs:
         id: cache-install-craft-master-nextcloud-client-deps
         uses: actions/cache@v3
         with:
-          path: C:\CraftMaster
+          path: CraftMaster
           key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps
 
       - name: Install Craft Master With Nextcloud Client Deps
