@@ -18,6 +18,8 @@ init:
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
         
+        echo "sources at: $env:APPVEYOR_BUILD_FOLDER"
+        
         $testFiles = Get-ChildItem . -Recurse | where {$_.name -clike "*Test.exe"} | select -expand name
         
         $totalTests = $testFiles.count
@@ -29,10 +31,10 @@ init:
         foreach ($testFile in $testFiles) {
             $counter += 1
             if($counter -ne $totalTests) {
-                & OpenCppCoverage.exe --sources nextcloud-client --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
+                & OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
                 $previousCov += "--input_coverage=$testFile.cov "
             } else {
-                $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources nextcloud-client --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:../test_coverage_cobertura/test_coverage_final.xml --export_type html:../test_coverage_html" + " $previousCov" + $testFile
+                $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources $env:APPVEYOR_BUILD_FOLDER --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:../test_coverage_cobertura/test_coverage_final.xml --export_type html:../test_coverage_html" + " $previousCov" + $testFile
                 Invoke-Expression $runLastTestAndMergeReport
             }
         }
