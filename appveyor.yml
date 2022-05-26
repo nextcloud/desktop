@@ -17,7 +17,7 @@ init:
     function runTests() {
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
-        & OpenCppCoverage.exe --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --output-on-failure --timeout 300 -j (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+        & OpenCppCoverage.exe --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --output-on-failure --timeout 300 -j (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
     }
 
 install:
