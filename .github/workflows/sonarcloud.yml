@@ -50,9 +50,8 @@ jobs:
           sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cfamily.build-wrapper-output="${{ env.BUILD_WRAPPER_OUT_DIR }}"
     
   build-on-windows:
-    name: Build
+    name: Build-on-windows
     runs-on: windows-2019
-    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
@@ -66,7 +65,11 @@ jobs:
         with:
           path: /cache
           key: ${{ runner.os }}
-            
+          
+      - name: Install
+        run: |
+          choco install qt5-default --version 5.15.2
+          
       - name: Compile
         run: |
           mkdir build
