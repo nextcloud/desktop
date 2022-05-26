@@ -67,8 +67,6 @@ jobs:
           key: ${{ runner.os }}
 
       - name: Install
-        with:
-          python-version: '3.9'
         shell: pwsh
         run: |
           choco install opencppcoverage
