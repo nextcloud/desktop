@@ -67,7 +67,6 @@ jobs:
           key: ${{ runner.os }}
 
       - name: Install
-        uses: actions/setup-python@v3
         with:
           python-version: '3.9'
         shell: pwsh
