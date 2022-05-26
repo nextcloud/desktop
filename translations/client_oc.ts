@@ -6101,7 +6101,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="556"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Avètz modificat %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
@@ -6216,7 +6216,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="27"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>Cercatz de fichièrs, messatges, eveniment...</translation>
     </message>
 </context>
 <context>
