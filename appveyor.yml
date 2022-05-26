@@ -16,8 +16,26 @@ init:
     }
     function runTests() {
         cmd /C "echo %PATH%"
-        cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
-        & OpenCppCoverage.exe --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --export_type cobertura:test_coverage.xml --cover_children -- ctest.exe --output-on-failure --timeout 300 -j (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+        cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build/bin
+        
+        $testFiles = Get-ChildItem . -Recurse | where {$_.name -clike "*Test.exe"} | select -expand name
+        
+        $totalTests = $testFiles.count
+        
+        $counter = 0
+        
+        $previousCov = "";
+        
+        foreach ($testFile in $testFiles) {
+            $counter += 1
+            if($counter -ne $totalTests) {
+                & OpenCppCoverage.exe --sources nextcloud-client --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
+                $previousCov += "--input_coverage=$testFile.cov "
+            } else {
+                $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources nextcloud-client --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:../test_coverage_cobertura/test_coverage_final.xml --export_type html:../test_coverage_html" + " $previousCov" + $testFile
+                Invoke-Expression $runLastTestAndMergeReport
+            }
+        }
     }
 
 install:
