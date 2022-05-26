@@ -69,7 +69,7 @@ jobs:
           key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps
 
       - name: Install Craft Master With Nextcloud Client Deps
-        if: cache-install-craft-master-nextcloud-client-deps.outputs.cache-hit != 'true'
+        if: steps.cache-install-craft-master-nextcloud-client-deps.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
@@ -91,7 +91,7 @@ jobs:
           key: ${{ runner.os }}-cache-install-opencppcoverage
           
       - name: Install OpenCppCoverage
-        if: cache-install-opencppcoverage.outputs.cache-hit != 'true'
+        if: steps.cache-install-opencppcoverage.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           choco install opencppcoverage
