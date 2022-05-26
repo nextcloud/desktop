@@ -17,7 +17,7 @@ init:
     function crafttests() {
         cmd /C "echo %PATH%"
         cd C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build
-        C:\CraftMaster\windows-msvc2019_64-cl\dev-utils\bin\ctest.exe -VV --output-on-failure --timeout 300 -j 2 -c $env:TARGET
+        & OpenCppCoverage.exe --modules $env:APPVEYOR_BUILD_FOLDER --excluded_modules="C:\Program Files\CMake\bin\ctest.exe" --quiet --export_type cobertura:test_coverage.xml --cover_children -- C:\CraftMaster\windows-msvc2019_64-cl\dev-utils\bin\ctest.exe -VV --output-on-failure --timeout 300 -j 2 -c $env:TARGET
         # & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --verbose --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
     }
 
