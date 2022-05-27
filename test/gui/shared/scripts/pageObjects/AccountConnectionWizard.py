@@ -22,22 +22,23 @@ class AccountConnectionWizard:
         "window": names.owncloudWizard_OCC_OwncloudWizard,
     }
     ERROR_LABEL = {
-        "name": "errorLabel",
+        "name": "errorMessageLabel",
         "type": "QLabel",
         "visible": 1,
-        "window": names.owncloudWizard_OCC_OwncloudWizard,
+        "window": names.setupWizardWindow_OCC_Wizard_SetupWizardWindow,
     }
     CREDENTIAL_PAGE = {
-        "name": "OwncloudHttpCredsPage",
-        "type": "OCC::OwncloudHttpCredsPage",
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "name": "BasicCredentialsSetupWizardPage",
+        "type": "OCC::Wizard::BasicCredentialsSetupWizardPage",
         "visible": 1,
-        "window": names.owncloudWizard_OCC_OwncloudWizard,
     }
+
     ADVANCE_SETUP_PAGE = {
         "name": "OwncloudAdvancedSetupPage",
         "type": "OCC::OwncloudAdvancedSetupPage",
         "visible": 1,
-        "window": names.owncloudWizard_OCC_OwncloudWizard,
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
     }
     MANUAL_SYNC_FOLDER_OPTION = {
         "name": "rManualFolder",
@@ -93,9 +94,16 @@ class AccountConnectionWizard:
             clientDetails['server'],
         )
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
-        squish.clickButton(
-            squish.waitForObject(self.CONFIRM_INSECURE_CONNECTION_BUTTON)
-        )
+
+        try:
+            squish.clickButton(
+                squish.waitForObject(self.CONFIRM_INSECURE_CONNECTION_BUTTON)
+            )
+        except:
+            test.log(
+                "No insecure connection warning for server " + clientDetails['server']
+            )
+            pass
 
     def addUserCreds(self, context):
         clientDetails = getClientDetails(context)

@@ -1157,8 +1157,7 @@ def step(context):
 
 @When('the user accepts the certificate')
 def step(context):
-    clickButton(waitForObject(names.oCC_SslErrorDialog_cbTrustConnect_QCheckBox))
-    clickButton(waitForObject(names.oCC_SslErrorDialog_OK_QPushButton))
+    clickButton(waitForObject(names.oCC_TlsErrorDialog_Yes_QPushButton))
 
 
 @Then('the lock shown should be closed')
@@ -1462,3 +1461,8 @@ def step(context, username, foldername):
     source_dir = join(context.userData['tempFolderPath'], foldername)
     destination_dir = getUserSyncPath(context, username)
     shutil.move(source_dir, destination_dir)
+
+
+@Then("credentials wizard should be visible")
+def step(context):
+    waitForObject(AccountConnectionWizard.CREDENTIAL_PAGE)
