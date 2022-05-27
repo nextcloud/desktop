@@ -57,6 +57,7 @@ jobs:
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
       CRAFT_TARGET: windows-msvc2019_64-cl
       COBERTURA_COVERAGE_FILE: ${{ github.workspace }}\cobertura_coverage\coverage.xml
+      CRAFT_MASTER_LOCATION: ${{ github.workspace }}\CraftMaster
     steps:
       - uses: actions/checkout@v2
         with:
@@ -66,17 +67,17 @@ jobs:
         id: cache-install-craft-master-nextcloud-client-deps
         uses: actions/cache@v3
         with:
-          path: CraftMaster
+          path: ${{ env.CRAFT_MASTER_LOCATION }}
           key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps-1
 
       - name: Install Craft Master With Nextcloud Client Deps
         if: steps.cache-install-craft-master-nextcloud-client-deps.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
-          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster 2>&1"
+          & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git ${{ env.CRAFT_MASTER_LOCATION }} 2>&1"
           
           function craft() {
-              python "C:\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
+              python "${{ env.CRAFT_MASTER_LOCATION }}\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
           
           craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
@@ -101,13 +102,13 @@ jobs:
         shell: pwsh
         run: |
           echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "C:\CraftMaster\windows-msvc2019_64-cl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "${{ env.CRAFT_MASTER_LOCATION }}\windows-msvc2019_64-cl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           
       - name: Compile
         shell: pwsh
         run: |
           function craft() {
-              python "C:\CraftMaster\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
+              python "${{ env.CRAFT_MASTER_LOCATION }}\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
           echo "GetChildItem C:\windows-msvc2019_64-cl"
           Get-ChildItem -Path C:\windows-msvc2019_64-cl -Recurse
@@ -122,12 +123,40 @@ jobs:
           function runTests() {
               cmd /C "echo %PATH%"
               
-              echo "runTests()!!!"
-              echo "C:\windows-msvc2019_64-cl\build ."
-              Get-ChildItem -Path C:\windows-msvc2019_64-cl\build -Recurse
-              Get-ChildItem -Path C:\CraftMaster -Recurse
-              
-              
+              $binFolder = "C:\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin"
+              cd $binFolder
+        
+              echo "sources at: ${{ github.workspace }}"
+        
+              $testFiles = Get-ChildItem . -Recurse | where {$_.name -clike "*Test.exe"} | select -expand name
+        
+              $totalTests = $testFiles.count
+        
+              $counter = 0
+        
+              $previousCov = "";
+        
+              foreach ($testFile in $testFiles) {
+                  $counter += 1
+                  if($counter -ne $totalTests) {
+                      & OpenCppCoverage.exe --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type binary:$testFile.cov $testFile
+                      $previousCov += "--input_coverage=$testFile.cov "
+                  } else {
+                      $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} "
+                      $runLastTestAndMergeReport += $previousCov
+                      $runLastTestAndMergeReport += $testFile
+                      Invoke-Expression $runLastTestAndMergeReport
+                  }
+              }
           }
           
           runTests
+          
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cp sonar-project.properties build
+          cd build
+          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cxx.cobertura.reportPaths="${{ env.COBERTURA_COVERAGE_FILE }}"
