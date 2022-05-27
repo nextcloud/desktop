@@ -123,7 +123,7 @@ jobs:
           function runTests() {
               cmd /C "echo %PATH%"
               
-              $binFolder = "C:\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin"
+              $binFolder = "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\build\nextcloud-client\work\build\bin"
               cd $binFolder
         
               echo "sources at: ${{ github.workspace }}"
