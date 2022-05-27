@@ -123,43 +123,11 @@ jobs:
               cmd /C "echo %PATH%"
               
               echo "runTests()!!!"
-              echo "GetChildItem ."
-              Get-ChildItem -Path . -Recurse
+              echo "C:\windows-msvc2019_64-cl\build ."
+              Get-ChildItem -Path C:\windows-msvc2019_64-cl\build -Recurse
+              Get-ChildItem -Path C:\CraftMaster -Recurse
               
-              $buildFolder = "C:/CraftMaster/windows-msvc2019_64-cl/build/nextcloud-client/work/build"
-              cd "$buildFolder/bin"
-        
-              echo "sources at: ${{ github.workspace }}"
-        
-              $testFiles = Get-ChildItem . -Recurse | where {$_.name -clike "*Test.exe"} | select -expand name
-        
-              $totalTests = $testFiles.count
-        
-              $counter = 0
-        
-              $previousCov = "";
-        
-              foreach ($testFile in $testFiles) {
-                  $counter += 1
-                  if($counter -ne $totalTests) {
-                      & OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type binary:$testFile.cov $testFile
-                      $previousCov += "--input_coverage=$testFile.cov "
-                  } else {
-                      $runLastTestAndMergeReport = "OpenCppCoverage.exe --sources ${{ github.workspace }} --modules C:\CraftMaster\windows-msvc2019_64-cl\build\nextcloud-client\work\build\bin\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} "
-                      $runLastTestAndMergeReport += $previousCov
-                      $runLastTestAndMergeReport += $testFile
-                      Invoke-Expression $runLastTestAndMergeReport
-                  }
-              }
+              
           }
           
           runTests
-          
-      - name: Run sonar-scanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          cp sonar-project.properties build
-          cd build
-          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cxx.cobertura.reportPaths="${{ env.COBERTURA_COVERAGE_FILE }}"
