@@ -4,8 +4,6 @@ from objectmaphelper import *
 
 settings_OCC_SettingsDialog = {"name": "Settings", "type": "OCC::SettingsDialog", "visible": 1}
 owncloudWizard_OCC_OwncloudWizard = {"name": "owncloudWizard", "type": "OCC::OwncloudWizard", "visible": 1}
-owncloudWizard_label_2_QLabel = {"name": "label_2", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
-leUrl_OCC_PostfixLineEdit = {"buddy": owncloudWizard_label_2_QLabel, "name": "leUrl", "type": "OCC::PostfixLineEdit", "visible": 1}
 owncloudWizard_qt_passive_wizardbutton1_QPushButton = {"name": "__qt__passive_wizardbutton1", "type": "QPushButton", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
 owncloudWizard_lLocal_QLabel = {"name": "lLocal", "type": "QLabel", "visible": 1, "window": owncloudWizard_OCC_OwncloudWizard}
 pbSelectLocalFolder_QPushButton = {"buddy": owncloudWizard_lLocal_QLabel, "name": "pbSelectLocalFolder", "type": "QPushButton", "visible": 1}
@@ -116,3 +114,15 @@ linkShares_QToolButton_2 = {"container": oCC_ShareLinkWidget_linkShares_QTableWi
 oCC_ShareLinkWidget_Delete_QPushButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "text": "Delete", "type": "QPushButton", "unnamed": 1, "visible": 1}
 oCC_ShareLinkWidget_pushButton_setPassword_QPushButton = {"container": qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget, "name": "pushButton_setPassword", "type": "QPushButton", "visible": 1}
 remove_All_Files_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Remove All Files?"}
+setupWizardWindow_OCC_Wizard_SetupWizardWindow = {"name": "SetupWizardWindow", "type": "OCC::Wizard::SetupWizardWindow", "visible": 1}
+setupWizardWindow_contentWidget_QStackedWidget = {"name": "contentWidget", "type": "QStackedWidget", "visible": 1, "window": setupWizardWindow_OCC_Wizard_SetupWizardWindow}
+contentWidget_urlLineEdit_QLineEdit = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "urlLineEdit", "type": "QLineEdit", "visible": 1}
+setupWizardWindow_nextButton_QPushButton = {"name": "nextButton", "type": "QPushButton", "visible": 1, "window": setupWizardWindow_OCC_Wizard_SetupWizardWindow}
+insecure_connection_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Insecure connection"}
+insecure_connection_Confirm_QPushButton = {"text": "Confirm", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": insecure_connection_QMessageBox}
+contentWidget_usernameLineEdit_QLineEdit = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "usernameLineEdit", "type": "QLineEdit", "visible": 1}
+contentWidget_passwordLineEdit_QLineEdit = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "passwordLineEdit", "type": "QLineEdit", "visible": 1}
+contentWidget_advancedConfigGroupBox_QGroupBox = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "advancedConfigGroupBox", "type": "QGroupBox", "visible": 1}
+advancedConfigGroupBox_localDirectoryGroupBox_QGroupBox = {"container": contentWidget_advancedConfigGroupBox_QGroupBox, "name": "localDirectoryGroupBox", "type": "QGroupBox", "visible": 1}
+localDirectoryGroupBox_localDirectoryLineEdit_QLineEdit = {"container": advancedConfigGroupBox_localDirectoryGroupBox_QGroupBox, "name": "localDirectoryLineEdit", "type": "QLineEdit", "visible": 1}
+localDirectoryGroupBox_chooseLocalDirectoryButton_QToolButton = {"container": advancedConfigGroupBox_localDirectoryGroupBox_QGroupBox, "name": "chooseLocalDirectoryButton", "type": "QToolButton", "visible": 1}

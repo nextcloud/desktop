@@ -992,10 +992,6 @@ def step(context, displayname, host):
 
 @Then('connection wizard should be visible')
 def step(context):
-    test.compare(
-        str(waitForObjectExists(names.owncloudWizard_label_2_QLabel).text),
-        'Ser&ver Address',
-    )
     waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
 
 
