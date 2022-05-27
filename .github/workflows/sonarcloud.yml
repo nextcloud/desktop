@@ -111,7 +111,6 @@ jobs:
               python "${{ env.CRAFT_MASTER_LOCATION }}\CraftMaster.py" --verbose --config "${{ github.workspace }}\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=${{ github.workspace }}" --target ${{ env.CRAFT_TARGET }} -c $args
           }
           echo "GetChildItem C:\windows-msvc2019_64-cl"
-          Get-ChildItem -Path C:\windows-msvc2019_64-cl -Recurse
           
           craft --search nextcloud-client
           
