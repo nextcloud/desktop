@@ -68,7 +68,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.CRAFT_MASTER_LOCATION }}
-          key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps-1
+          key: ${{ runner.os }}-cache-install-craft-master-nextcloud-client-deps-2
 
       - name: Install Craft Master With Nextcloud Client Deps
         if: steps.cache-install-craft-master-nextcloud-client-deps.outputs.cache-hit != 'true'
