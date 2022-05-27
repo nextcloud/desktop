@@ -25,6 +25,7 @@ Summary
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 * Enhancement - Support for OCIS Spaces: [#9154](https://github.com/owncloud/client/pull/9154)
 * Enhancement - Set Windows VFS placeholders readonly if needed: [#9598](https://github.com/owncloud/client/issues/9598)
+* Enhancement - Create continuous log files: [#9731](https://github.com/owncloud/client/issues/9731)
 
 Details
 -------
@@ -141,6 +142,18 @@ Details
 
    https://github.com/owncloud/client/issues/9598
    https://github.com/owncloud/client-desktop-vfs-win/issues/24
+
+* Enhancement - Create continuous log files: [#9731](https://github.com/owncloud/client/issues/9731)
+
+   Previously, when logging was enabled, we started a new log file for every sync. This worked
+   quite well if you sync a single account and a single folder. With spaces however we have a
+   multitude of sync folders, which resulted in hundreds of tiny log files.
+
+   Now, as soon as a log file's size exceeds 100 MiB, a new log file is started, and the old one is moved
+   and compressed. The option to delete log files older than 4h was replaced by an option to keep a
+   number of log files.
+
+   https://github.com/owncloud/client/issues/9731
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
