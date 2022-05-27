@@ -29,6 +29,25 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
     connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
         _ui->usernameLineEdit->setFocus();
     });
+
+    // branding
+    switch (Theme::instance()->userIDType()) {
+    case Theme::UserIDUserName:
+        _ui->usernameLabel->setText(tr("Username"));
+        break;
+    case Theme::UserIDEmail:
+        _ui->usernameLabel->setText(tr("E-mail address"));
+        break;
+    case Theme::UserIDCustom:
+        _ui->usernameLabel->setText(Theme::instance()->customUserID());
+        break;
+    default:
+        Q_UNREACHABLE();
+    }
+
+    if (!Theme::instance()->userIDHint().isEmpty()) {
+        _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
+    }
 }
 
 QString BasicCredentialsSetupWizardPage::username() const
