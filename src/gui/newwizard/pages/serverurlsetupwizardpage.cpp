@@ -32,11 +32,21 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
     if (!Theme::instance()->wizardUrlHint().isEmpty()) {
         _ui->urlLineEdit->setPlaceholderText(Theme::instance()->wizardUrlHint());
     }
+
+    if (!Theme::instance()->wizardUrlPostfix().isEmpty()) {
+        _ui->urlLineEdit->setPostfix(Theme::instance()->wizardUrlPostfix());
+    }
 }
 
 QString ServerUrlSetupWizardPage::userProvidedUrl() const
 {
-    return _ui->urlLineEdit->text();
+    QString url = _ui->urlLineEdit->text();
+
+    if (!Theme::instance()->wizardUrlPostfix().isEmpty()) {
+        url += Theme::instance()->wizardUrlPostfix();
+    }
+
+    return url;
 }
 
 ServerUrlSetupWizardPage::~ServerUrlSetupWizardPage()

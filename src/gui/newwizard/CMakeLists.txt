@@ -37,6 +37,8 @@ add_library(newwizard STATIC
     jobs/checkbasicauthjobfactory.cpp
     jobs/checkbasicauthjobfactory.h
 
+    postfixlineedit.cpp
+
     syncmode.cpp
 )
 target_link_libraries(newwizard PUBLIC Qt5::Widgets libsync)
