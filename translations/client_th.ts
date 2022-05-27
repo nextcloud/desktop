@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="46"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>ใน %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>ดูกิจกรรม</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
@@ -79,7 +79,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>ปฏิเสธ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
@@ -187,7 +187,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถย้าย &quot;%1&quot; ไปยัง &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -226,7 +226,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation type="unfinished"/>
+        <translation>การยืนยันตัวตนผ่านเบราว์เซอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
@@ -323,7 +323,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 ไม่สามารถปลดล็อกโฟลเดอร์เข้ารหัส %2&quot;.</translation>
+        <translation>&quot;%1 ไม่สามารถปลดล็อกโฟลเดอร์เข้ารหัส %2&quot;</translation>
     </message>
 </context>
 <context>
@@ -1710,12 +1710,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
         <source>Sync is paused.</source>
-        <translation>การประสานข้อมูลถูกหยุดไว้ชั่วคราว</translation>
+        <translation>การซิงค์ถูกหยุดไว้ชั่วคราว</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1534"/>
         <source>%1 (Sync is paused)</source>
-        <translation>%1 (การประสานข้อมูลถูกหยุดชั่วคราว)</translation>
+        <translation>%1 (การซิงค์ถูกหยุดชั่วคราว)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1542"/>
@@ -1883,7 +1883,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
         <source>↓ %1/s</source>
-        <translation type="unfinished"/>
+        <translation>↓ %1/วิ</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
@@ -2185,12 +2185,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;เริ่มต้นใหม่ &amp;&amp; อัพเดท</translation>
+        <translation>&amp;เริ่มต้นใหม่และอัปเดต</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>&amp;ตรวจสอบการอัปเดตตอนนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
@@ -2344,7 +2344,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="156"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Click here&lt;/a&gt; to request an app password from the web interface.</source>
-        <translation>&lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อขอรหัสผ่านแอพฯ จากเว็บอินเตอร์เฟส</translation>
+        <translation>&lt;a href=&quot;%1&quot;&gt;คลิกที่นี่&lt;/a&gt; เพื่อขอรหัสผ่านแอปจากเว็บอินเตอร์เฟซ</translation>
     </message>
 </context>
 <context>
@@ -2898,17 +2898,17 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="130"/>
         <source>The reply from the server did not contain all expected fields</source>
-        <translation>การตอบกลับจากเซิร์ฟเวอร์ไม่ได้มีฟิลด์ที่ต้องการ</translation>
+        <translation>การตอบกลับจากเซิร์ฟเวอร์ไม่ได้มีฟิลด์ที่ต้องการทั้งหมด</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="134"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;เข้าสู่ระบบล้มเหลว&lt;/h1&gt;%1&lt;p&gt;</translation>
+        <translation>&lt;h1&gt;ไม่สามารถเข้าสู่ระบบ&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;บัญผู้ใช้ไม่ถูกต้อง&lt;/h1&gt; &lt;p&gt;คุณลงชื่อเข้าใช้ด้วยบัญชีผู้ใช้ &lt;em&gt;%1&lt;/em&gt; คุณจะต้องลงชื่อเข้าใช้ด้วยบัญชี &lt;em&gt;%2&lt;/em&gt; &lt;br&gt;โปรดออกจากระบบ %3 ในแท็บอื่นแล้ว &lt;a href=&apos;%4&apos;&gt;คลิกที่นี่&lt;/a&gt; เพื่อเข้าสู่ระบบในฐานะผู้ใช้ &lt;/p&gt;</translation>
+        <translation>&lt;h1&gt;บัญผู้ใช้ไม่ถูกต้อง&lt;/h1&gt; &lt;p&gt;คุณลงชื่อเข้าใช้ด้วยบัญชีผู้ใช้ &lt;em&gt;%1&lt;/em&gt; คุณจะต้องลงชื่อเข้าใช้ด้วยบัญชี &lt;em&gt;%2&lt;/em&gt; &lt;br&gt;โปรดออกจากระบบ %3 ในแท็บอื่นแล้ว &lt;a href=&apos;%4&apos;&gt;คลิกที่นี่&lt;/a&gt; เพื่อเข้าสู่ระบบในฐานะผู้ใช้ %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -2916,7 +2916,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 Update Ready</source>
-        <translation>มี %1 พร้อมอัพเดทใหม่</translation>
+        <translation>%1 พร้อมอัปเดตใหม่</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
@@ -4494,7 +4494,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
         <source>I shared something with you</source>
-        <translation>ฉันแชร์บางอย่างกับคุณ</translation>
+        <translation>ฉันได้แชร์ไฟล์ให้คุณ</translation>
     </message>
 </context>
 <context>
@@ -4594,7 +4594,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1006"/>
         <source>I shared something with you</source>
-        <translation>ฉันแชร์บางอย่างกับคุณ</translation>
+        <translation>ฉันได้แชร์ไฟล์ให้คุณ</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1019"/>
@@ -4616,7 +4616,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1022"/>
         <source>Copy private link to clipboard</source>
-        <translation>คัดลอกลิงค์ส่วนตัวไปยังคลิปบอร์ด</translation>
+        <translation>คัดลอกลิงก์ส่วนตัวไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1023"/>
@@ -4762,7 +4762,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="103"/>
         <source>Issuer:</source>
-        <translation>ผู้แจ้งปัญหา:</translation>
+        <translation>ผู้รับรอง:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="104"/>
@@ -6024,7 +6024,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="56"/>
         <source>Re-open Browser</source>
-        <translation>เปิดเบราเซอร์อีกครั้ง</translation>
+        <translation>เปิดเบราว์เซอร์อีกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
@@ -6166,7 +6166,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/utility.cpp" line="515"/>
         <source>Some time ago</source>
-        <translation>บางเวลาที่ผ่านมา</translation>
+        <translation>เมื่อไม่นานมานี้</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncresult.cpp" line="139"/>
@@ -6768,7 +6768,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Preparing to sync</source>
-        <translation>เตรียมความพร้อมในการประสานข้อมูล</translation>
+        <translation>กำลังเตรียมการซิงค์</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
@@ -6778,7 +6778,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync is paused</source>
-        <translation>การประสานข้อมูลถูกหยุดชั่วคราว</translation>
+        <translation>การซิงค์หยุดชั่วคราว</translation>
     </message>
 </context>
 <context>
@@ -6877,7 +6877,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="346"/>
         <source>&lt;br/&gt;Account %1 does not have activities enabled.</source>
-        <translation>&lt;br /&gt;บัญชี %1 ไม่มีกิจกรรมที่เปิดใช้งาน</translation>
+        <translation>&lt;br /&gt;บัญชี %1 ไม่ได้เปิดใช้กิจกรรม</translation>
     </message>
 </context>
 <context>
@@ -6960,7 +6960,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/synclogdialog.ui" line="14"/>
         <source>Synchronisation Log</source>
-        <translation>การประสานข้อมูลไฟล์ Log</translation>
+        <translation>บันทึกการประสานข้อมูล</translation>
     </message>
 </context>
 <context>
@@ -6968,7 +6968,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentialsdialog.cpp" line="34"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>เข้าสู่ระบบ</translation>
     </message>
 </context>
 <context>
