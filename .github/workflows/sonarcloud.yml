@@ -150,3 +150,11 @@ jobs:
           }
           
           runTests
+          
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
+          cp sonar-project.properties build
+          sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}" --define sonar.cxx.cobertura.reportPaths="${{ env.COBERTURA_COVERAGE_FILE }}"
