@@ -102,7 +102,7 @@ jobs:
         shell: pwsh
         run: |
           echo "C:\Program Files\OpenCppCoverage" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          echo "${{ env.CRAFT_MASTER_LOCATION }}\windows-msvc2019_64-cl\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          echo "${{ github.workspace }}\${{ env.CRAFT_TARGET }}\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
           
       - name: Compile
         shell: pwsh
