@@ -27,6 +27,11 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
 
     _ui->logoLabel->setText(QString());
     _ui->logoLabel->setPixmap(Theme::instance()->wizardHeaderLogo().pixmap(200, 200));
+
+    // we already use a placeholder, but it may be overwritten by the theme
+    if (!Theme::instance()->wizardUrlHint().isEmpty()) {
+        _ui->urlLineEdit->setPlaceholderText(Theme::instance()->wizardUrlHint());
+    }
 }
 
 QString ServerUrlSetupWizardPage::userProvidedUrl() const
