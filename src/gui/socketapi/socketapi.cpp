@@ -1102,7 +1102,7 @@ void SocketApi::sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
         const auto lockExpirationTime = record._lockstate._lockTime + record._lockstate._lockTimeout;
         const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
         const auto remainingTimeInMinute = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
-        listener->sendMessage(QLatin1String("MENU_ITEM:LOCKED_FILE_DATE:d:") + tr("Expire in %1 minutes", "remaining time before lock expire", remainingTimeInMinute).arg(remainingTimeInMinute));
+        listener->sendMessage(QLatin1String("MENU_ITEM:LOCKED_FILE_DATE:d:") + tr("Expires in %1 minutes", "remaining time before lock expires", remainingTimeInMinute).arg(remainingTimeInMinute));
     }
 }
 
