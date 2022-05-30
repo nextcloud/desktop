@@ -28,7 +28,7 @@ Item {
         rightPadding: sendReplyMessageButton.width
         visible: model.messageSent === ""
 
-        color: Style.ncSecondaryTextColor
+        color: Style.ncTextColor
         placeholderText: qsTr("Reply to …")
 
         onAccepted: root.sendReplyMessage()
@@ -49,6 +49,7 @@ Item {
             flat: true
             enabled: replyMessageTextField.text !== ""
             onClicked: root.sendReplyMessage()
+            background: null
 
             icon {
                 source: "image://svgimage-custom-color/send.svg" + "/" + Style.menuBorder
