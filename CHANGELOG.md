@@ -14,6 +14,7 @@ Summary
 * Bugfix - Use UTF-8 for .owncloudsync.log: [#9571](https://github.com/owncloud/client/pull/9571)
 * Bugfix - Crash when interacting with a folder in an error state: [#9600](https://github.com/owncloud/client/issues/9600)
 * Bugfix - Deadlock in folder context menu in a folder selection dialog: [#9681](https://github.com/owncloud/client/issues/9681)
+* Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -67,6 +68,14 @@ Details
    We fixed a deadlock when a user requested a context menu in a folder slection dialog on Windows.
 
    https://github.com/owncloud/client/issues/9681
+
+* Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
+
+   We used to add those bookmarks in a Gtk+ 2 compatible way only. Now, bookmarks are added to the
+   file belonging to Gtk+ 3, dropping support for end-of-life Gtk+ 2. The bookmarks are now shown
+   again for all Gtk+ 3 compatible file browsers, including Thunar, Nautilus, Nemo, Caja, etc.
+
+   https://github.com/owncloud/client/pull/9752
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
