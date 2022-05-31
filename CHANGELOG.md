@@ -121,7 +121,20 @@ Details
 
    https://github.com/owncloud/client/issues/9249
    https://github.com/owncloud/client/pull/9482
+   https://github.com/owncloud/client/pull/9563
    https://github.com/owncloud/client/pull/9566
+   https://github.com/owncloud/client/pull/9577
+   https://github.com/owncloud/client/pull/9596
+   https://github.com/owncloud/client/pull/9606
+   https://github.com/owncloud/client/pull/9621
+   https://github.com/owncloud/client/pull/9629
+   https://github.com/owncloud/client/pull/9636
+   https://github.com/owncloud/client/pull/9637
+   https://github.com/owncloud/client/pull/9642
+   https://github.com/owncloud/client/pull/9643
+   https://github.com/owncloud/client/pull/9697
+   https://github.com/owncloud/client/pull/9720
+   https://github.com/owncloud/client/pull/9746
 
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 
