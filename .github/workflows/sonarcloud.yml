@@ -102,7 +102,7 @@ jobs:
               if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
           }
           
-          craftWithWrapper --src-dir ${{ github.workspace }} nextcloud-client
+          craft --src-dir ${{ github.workspace }} nextcloud-client
           
       - name: Run tests
         shell: pwsh
