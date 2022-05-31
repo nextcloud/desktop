@@ -1,0 +1,7 @@
+Bugfix: Fix adding bookmarks on Gtk+ 3 based desktops
+
+We used to add those bookmarks in a Gtk+ 2 compatible way only.
+Now, bookmarks are added to the file belonging to Gtk+ 3, dropping support for end-of-life Gtk+ 2.
+The bookmarks are now shown again for all Gtk+ 3 compatible file browsers, including Thunar, Nautilus, Nemo, Caja, etc.
+
+https://github.com/owncloud/client/pull/9752
