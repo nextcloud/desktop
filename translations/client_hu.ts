@@ -4295,6 +4295,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <source>Locked by %1 - Expires in %2 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
         <translation><numerusform>%1 zárolta – %2 perc múlva lejár</numerusform><numerusform>%1 zárolta – %2 perc múlva lejár</numerusform></translation>
@@ -4697,6 +4703,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
         <translation>%1 zárolta</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
+        <source>Expires in %1 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
@@ -6256,7 +6268,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Válasz…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="68"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="69"/>
         <source>Send reply to chat message</source>
         <translation>Válasz küldése a csevegőüzenetre</translation>
     </message>

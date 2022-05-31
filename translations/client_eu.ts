@@ -4295,6 +4295,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <source>Locked by %1 - Expires in %2 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
         <translation><numerusform>%1-(e)k blokeatuta - minutu %2ean iraungiko da</numerusform><numerusform>%1-(e)k blokeatuta - %2 minututan iraungiko da</numerusform></translation>
@@ -4697,6 +4703,12 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
         <translation>%1-(e)k blokeatuta</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
+        <source>Expires in %1 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
@@ -6256,7 +6268,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erantzun honi ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="68"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="69"/>
         <source>Send reply to chat message</source>
         <translation>Bidali erantzuna txat-mezuari</translation>
     </message>
