@@ -1,4 +1,3 @@
-@skip @issue-9733
 Feature: Visually check all tabs
 
     As a user

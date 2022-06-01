@@ -1,4 +1,3 @@
-@skip @issue-9733
 Feature: edit files
 
     As a user
