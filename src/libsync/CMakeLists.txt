@@ -69,30 +69,14 @@ endif()
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 set(owncloudsync_HEADERS
-    account.h
-    syncengine.h
-    configfile.h
-    networkjobs.h
-    progressdispatcher.h
-    syncfileitem.h
-    syncresult.h
+    ${CMAKE_CURRENT_BINARY_DIR}/owncloudlib.h
+    logger.h
 )
 
-set(creds_HEADERS
-    creds/abstractcredentials.h
-    creds/httpcredentials.h
+INSTALL(
+    FILES ${owncloudsync_HEADERS}
+    DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}
 )
-
-IF (NOT APPLE)
-    INSTALL(
-        FILES ${owncloudsync_HEADERS}
-        DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/mirall
-    )
-    INSTALL(
-        FILES ${creds_HEADERS}
-        DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}/creds
-    )
-ENDIF(NOT APPLE)
 
 add_library(libsync SHARED ${libsync_SRCS})
 

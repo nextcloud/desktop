@@ -15,15 +15,14 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <QObject>
-#include <QList>
 #include <QDateTime>
 #include <QFile>
+#include <QList>
+#include <QMutex>
+#include <QObject>
+#include <QSet>
 #include <QTextStream>
-#include <qmutex.h>
-#include <chrono>
 
-#include "common/utility.h"
 #include "owncloudlib.h"
 
 namespace OCC {
