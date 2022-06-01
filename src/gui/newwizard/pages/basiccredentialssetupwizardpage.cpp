@@ -24,7 +24,9 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
 {
     _ui->setupUi(this);
 
-    _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), Theme::instance()->wizardHeaderTitleColor().name()));
+    const QString linkColor = Theme::instance()->wizardHeaderTitleColor().name();
+
+    _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), linkColor));
 
     connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
         _ui->usernameLineEdit->setFocus();
@@ -50,6 +52,9 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
     if (!Theme::instance()->userIDHint().isEmpty()) {
         _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
     }
+
+    QString appPasswordUrl = QStringLiteral("%1/settings/personal?sectionid=security#apppasswords").arg(serverUrl.toString());
+    _ui->appPasswordLabel->setText(tr("Click <a href='%1' style='color: %2;'>here</a> to set up an app password.").arg(appPasswordUrl, linkColor));
 }
 
 QString BasicCredentialsSetupWizardPage::username() const
