@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="46"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>În %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Vezi activitatea</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="84"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="95"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Afișați mai multe acțiuni</translation>
     </message>
 </context>
 <context>
@@ -48,12 +48,12 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="185"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Respingeți</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="227"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Deschideți dialogul de partajare</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de activități</translation>
     </message>
 </context>
 <context>
@@ -69,22 +69,22 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar al apelantului de notificare a conversației</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Notificarea apelului Answer Talk</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Respinge</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Refuzați notificarea apelului Talk</translation>
     </message>
 </context>
 <context>
@@ -187,7 +187,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation> Nu s-a putut muta &quot;%1&quot; în &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -331,17 +331,17 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="876"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 este deja blocat de %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="878"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Operațiunea de blocare pe %1 a eșuat cu eroarea %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="880"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Operațiunea de deblocare pe %1 a eșuat cu eroarea %2</translation>
     </message>
 </context>
 <context>
@@ -807,12 +807,12 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Activități de căutare ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Activități de căutare...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="559"/>
@@ -949,68 +949,68 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 nu poate fi încărcat deoarece există un alt fișier cu același nume, care diferă doar în cazul în care, există</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 are o oră de modificare invalidă. Nu îl încărcați pe server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="294"/>
         <source>File Removed (start upload) %1</source>
-        <translation type="unfinished"/>
+        <translation>Fișier eliminat (începe încărcarea) %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 are o oră de modificare invalidă. Nu îl încărcați pe server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="313"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul local s-a modificat în timpul sincronizării. Acesta va fi reluat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="327"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="646"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul local s-a modificat în timpul sincronizării.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eroare de rețea: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eroare de rețea: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Eroare de actualizare a metadatelor: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="468"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul %1 este în curs de utilizare</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="629"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>Fișierul local a fost eliminat în timpul sincronizării.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Restaurarea a eșuat: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>; Restaurare eșuată: %1</translation>
     </message>
 </context>
 <context>
@@ -1199,22 +1199,22 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Eroare la anularea ștergerii unui fișier</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Eroare la anularea ștergerii unui fișier</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation> Eroare la anularea ștergerii lui %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>Eroare la anularea ștergerii lui %1</translation>
     </message>
 </context>
 <context>
@@ -1553,7 +1553,9 @@ Dacă această acțiune nu este intenționată atunci se pot recupera datele șt
         <source>This sync would reset the files to an earlier time in the sync folder '%1'.
 This might be because a backup was restored on the server.
 Continuing the sync as normal will cause all your files to be overwritten by an older file in an earlier state. Do you want to keep your local most recent files as conflict files?</source>
-        <translation type="unfinished"/>
+        <translation>Această sincronizare ar reseta fișierele la o dată anterioară în dosarul de sincronizare &quot;%1&quot;.
+Acest lucru se poate datora faptului că pe server a fost restaurată o copie de rezervă.
+Continuarea sincronizării în mod normal va face ca toate fișierele dvs. să fie suprascrise de un fișier mai vechi într-o stare anterioară. Doriți să păstrați cele mai recente fișiere locale ca fișiere de conflict?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1087"/>
@@ -1576,7 +1578,10 @@ Continuing the sync as normal will cause all your files to be overwritten by an 
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Toate fișierele din dosarul de sincronizare &quot;%1&quot; au fost șterse de pe server.
+Aceste ștergeri vor fi sincronizate în dosarul de sincronizare local, făcând aceste fișiere indisponibile, cu excepția cazului în care aveți dreptul de a le restaura. 
+Dacă decideți să restaurați fișierele, acestea vor fi resincronizate cu serverul, dacă aveți drepturi în acest sens.
+Dacă decideți să ștergeți fișierele, acestea vor fi indisponibile pentru dumneavoastră, cu excepția cazului în care sunteți proprietarul.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1260"/>
@@ -1593,14 +1598,17 @@ Dacă această acțiune a fost un accident și dorești să pastrezi fișierele,
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation type="unfinished"/>
+        <translation>Toate fișierele din dosarul de sincronizare &quot;%1&quot; au fost șterse de pe server.
+Aceste ștergeri vor fi sincronizate în dosarul de sincronizare local, făcând aceste fișiere indisponibile, cu excepția cazului în care aveți dreptul de a le restaura. 
+Dacă decideți să restaurați fișierele, acestea vor fi resincronizate cu serverul, dacă aveți drepturi în acest sens.
+Dacă decideți să ștergeți fișierele, acestea vor fi indisponibile pentru dumneavoastră, cu excepția cazului în care sunteți proprietarul.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1274"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation type="unfinished"/>
+        <translation>Toate fișierele din dosarul de sincronizare locală &quot;%1&quot; au fost șterse. Aceste ștergeri vor fi sincronizate cu serverul dvs., făcând aceste fișiere indisponibile dacă nu sunt restaurate.Sunteți sigur că doriți să sincronizați aceste acțiuni cu serverul?Dacă a fost un accident și decideți să păstrați fișierele, acestea vor fi resincronizate de pe server.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1278"/>
@@ -2110,12 +2118,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="213"/>
         <source>We received an unexpected download Content-Length.</source>
-        <translation type="unfinished"/>
+        <translation>Am primit o descărcare neașteptată Content-Length.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="241"/>
         <source>Server returned wrong content-range</source>
-        <translation type="unfinished"/>
+        <translation>Serverul a returnat un interval de conținut greșit</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="367"/>
@@ -2144,7 +2152,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="72"/>
         <source>For System Tray</source>
-        <translation type="unfinished"/>
+        <translation>Pentru System Tray</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
@@ -2164,7 +2172,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Afișează notificările de apeluri</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2174,7 +2182,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="114"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Verificarea automată a actualizărilor</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
@@ -2185,7 +2193,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="151"/>
         <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>stabil</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
@@ -2196,12 +2204,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Restart &amp;&amp; Actualizare</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
         <source>&amp;Check for Update now</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Verifică pentru actualizare acum</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
@@ -2211,12 +2219,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Crearea arhivei de depanare ...</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation type="unfinished"/>
+        <translation>Cereți o confirmare înainte de a sincroniza foldere mai mari de</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
