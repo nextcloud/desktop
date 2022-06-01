@@ -1794,7 +1794,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="229"/>
         <source>There are unresolved conflicts. Click for details.</source>
-        <translation type="unfinished"/>
+        <translation>I a de conflictes pas resolguts. Clicatz pels detalhs.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="235"/>

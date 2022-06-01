@@ -4296,7 +4296,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uzamčeno %1 – platnost skončí za %2 minutu</numerusform><numerusform>Uzamčeno %1 – platnost skončí za %2 minuty</numerusform><numerusform>Uzamčeno %1 – platnost skončí za %2 minut</numerusform><numerusform>Uzamčeno %1 – platnost skončí za %2 minuty</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4707,7 +4707,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Platnost skončí za %1 minutu</numerusform><numerusform>Platnost skončí za %1 minuty</numerusform><numerusform>Platnost skončí za %1 minut</numerusform><numerusform>Platnost skončí za %1 minuty</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>

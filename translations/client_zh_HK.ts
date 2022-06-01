@@ -4296,7 +4296,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>被 %1 鎖上 - %2 分鐘後過期</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4707,7 +4707,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 分鐘後過期</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>

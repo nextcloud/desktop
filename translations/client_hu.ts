@@ -4297,7 +4297,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 zárolta – %2 perc múlva lejár</numerusform><numerusform>%1 zárolta – %2 perc múlva lejár</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4708,7 +4708,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 perc múlva lejár</numerusform><numerusform>%1 perc múlva lejár</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>

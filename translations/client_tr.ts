@@ -4297,7 +4297,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 tarafından kilitlenmiş - %2 dakika sonra açılacak</numerusform><numerusform>%1 tarafından kilitlenmiş - %2 dakika sonra açılacak</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4708,7 +4708,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dakika sonra açılacak</numerusform><numerusform>%1 dakika sonra açılacak</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>

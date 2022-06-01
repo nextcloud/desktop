@@ -4297,7 +4297,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1-(e)k blokeatuta - Minutu %2ean iraungiko da</numerusform><numerusform>%1-(e)k blokeatuta - %2 minututan iraungiko da</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4708,7 +4708,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Minutu %1ean iraungiko da</numerusform><numerusform>%1 minututan iraungiko da</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
