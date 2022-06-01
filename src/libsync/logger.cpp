@@ -13,7 +13,6 @@
  */
 
 #include "logger.h"
-#include "config.h"
 #include "theme.h"
 
 #include <QCoreApplication>
@@ -146,7 +145,7 @@ void Logger::open(const QString &name)
     }
     _logstream.reset(new QTextStream(&_logFile));
     _logstream->setCodec("UTF-8");
-    (*_logstream) << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner) << Qt::endl;
+    (*_logstream) << Theme::instance()->aboutVersions(Theme::VersionFormat::OneLiner) << qApp->applicationName() << Qt::endl;
 }
 
 void Logger::close()
@@ -203,7 +202,7 @@ void Logger::setLogDebug(bool debug)
 
 QString Logger::temporaryFolderLogDirPath() const
 {
-    return QDir::temp().filePath(QStringLiteral(APPLICATION_SHORTNAME "-logdir"));
+    return QDir::temp().filePath(QStringLiteral("%1-logdir").arg(qApp->applicationName()));
 }
 
 void Logger::setupTemporaryFolderLogDir()
@@ -242,7 +241,7 @@ void Logger::setLogRules(const QSet<QString> &rules)
 
 void Logger::dumpCrashLog()
 {
-    QFile logFile(QDir::tempPath() + QStringLiteral("/" APPLICATION_NAME "-crash.log"));
+    QFile logFile(QStringLiteral("%1/%2-crash.log").arg(QDir::tempPath(), qApp->applicationName()));
     if (logFile.open(QFile::WriteOnly)) {
         QTextStream out(&logFile);
         out.setCodec("UTF-8");
@@ -284,7 +283,7 @@ void Logger::rotateLog()
         }
 
         // Tentative new log name, will be adjusted if one like this already exists
-        const QString logName = dir.filePath(QStringLiteral(APPLICATION_SHORTNAME ".log"));
+        const QString logName = dir.filePath(QStringLiteral("%1.log").arg(qApp->applicationName()));
         QString previousLog;
 
         if (_logFile.isOpen()) {
@@ -293,7 +292,7 @@ void Logger::rotateLog()
         // rename previous log file if size != 0
         const auto info = QFileInfo(logName);
         if (info.exists(logName) && !info.size() == 0) {
-            previousLog = dir.filePath(QStringLiteral(APPLICATION_SHORTNAME "-%1.log").arg(info.created().toString(QStringLiteral("MMdd_hh.mm.ss.zzz"))));
+            previousLog = dir.filePath(QStringLiteral("%1-%2.log").arg(qApp->applicationName(), info.created().toString(QStringLiteral("MMdd_hh.mm.ss.zzz"))));
             if (!QFile(logName).rename(previousLog)) {
                 std::cerr << "Failed to rename: " << qPrintable(logName) << " to " << qPrintable(previousLog) << std::endl;
             }
@@ -306,7 +305,7 @@ void Logger::rotateLog()
 
         QtConcurrent::run([now, previousLog, dir, maxLogFiles = _maxLogFiles] {
             // Expire old log files and deal with conflicts
-            auto files = dir.entryList(QStringList(QStringLiteral("*" APPLICATION_SHORTNAME "-*.log.gz")), QDir::Files, QDir::Name);
+            auto files = dir.entryList(QStringList(QStringLiteral("*%1-*.log.gz").arg(qApp->applicationName())), QDir::Files, QDir::Name);
             if (files.size() > maxLogFiles) {
                 std::sort(files.begin(), files.end(), std::greater<QString>());
                 // remove the maxLogFiles newest, we keep them
