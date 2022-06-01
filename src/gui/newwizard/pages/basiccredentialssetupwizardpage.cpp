@@ -31,19 +31,21 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
     });
 
     // branding
-    switch (Theme::instance()->userIDType()) {
-    case Theme::UserIDUserName:
-        _ui->usernameLabel->setText(tr("Username"));
-        break;
-    case Theme::UserIDEmail:
-        _ui->usernameLabel->setText(tr("E-mail address"));
-        break;
-    case Theme::UserIDCustom:
-        _ui->usernameLabel->setText(Theme::instance()->customUserID());
-        break;
-    default:
-        Q_UNREACHABLE();
-    }
+    const QString usernameLabelText = []() {
+        switch (Theme::instance()->userIDType()) {
+        case Theme::UserIDUserName:
+            return tr("Username");
+        case Theme::UserIDEmail:
+            return tr("E-mail address");
+        case Theme::UserIDCustom:
+            return Theme::instance()->customUserID();
+        default:
+            Q_UNREACHABLE();
+        }
+    }();
+
+    _ui->usernameLabel->setText(usernameLabelText);
+    _ui->usernameLineEdit->setPlaceholderText(usernameLabelText);
 
     if (!Theme::instance()->userIDHint().isEmpty()) {
         _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
