@@ -84,10 +84,6 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
                         setJobResult(job, newUrl);
                     });
 
-                    connect(dialog, &UpdateUrlDialog::accepted, job, [=]() {
-                        setJobResult(job, newUrl);
-                    });
-
                     connect(dialog, &UpdateUrlDialog::rejected, job, [=]() {
                         setJobError(job, tr("User rejected redirect from %1 to %2").arg(oldUrl.toDisplayString(), newUrl.toDisplayString()), nullptr);
                     });
