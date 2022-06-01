@@ -4297,7 +4297,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Zablokowane przez %1 - wygasa za %2 minutę</numerusform><numerusform>Zablokowane przez %1 - wygasa za %2 minuty</numerusform><numerusform>Zablokowane przez %1 - wygasa za %2 minut</numerusform><numerusform>Zablokowane przez %1 - wygasa za %2 minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4708,7 +4708,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Wygasa za %1 minutę</numerusform><numerusform>Wygasa za %1 minuty</numerusform><numerusform>Wygasa za %1 minut</numerusform><numerusform>Wygasa za %1 minut</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
