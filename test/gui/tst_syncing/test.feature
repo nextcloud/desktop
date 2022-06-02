@@ -1,4 +1,3 @@
-@skip @issue-9733
 Feature: Syncing files
 
     As a user
@@ -33,7 +32,7 @@ Feature: Syncing files
         And the folder "simple-folder" should exist on the file system
         And the folder "large-folder" should exist on the file system
 
-
+    @skip @issue-9733
     Scenario: Syncing a file from the server and creating a conflict
         Given user "Alice" has uploaded file on the server with content "server content" to "/conflict.txt"
         And user "Alice" has set up a client with default settings
@@ -57,7 +56,7 @@ Feature: Syncing files
             client content
             """
 
-
+    @skip @issue-9733
     Scenario: Sync all is selected by default
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -70,7 +69,7 @@ Feature: Syncing files
         Then the dialog chose_what_to_sync should be visible
         And the sync all checkbox should be checked
 
-
+    @skip @issue-9733
     Scenario: Sync only one folder from the server
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -86,7 +85,7 @@ Feature: Syncing files
         Then the folder "simple-folder" should exist on the file system
         But the folder "large-folder" should not exist on the file system
 
-
+    @skip @issue-9733
     Scenario: Connect account with manual sync folder option
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -102,7 +101,7 @@ Feature: Syncing files
         But the folder "large-folder" should not exist on the file system
         And the file "lorem.txt" should not exist on the file system
 
-
+    @skip @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" on the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
