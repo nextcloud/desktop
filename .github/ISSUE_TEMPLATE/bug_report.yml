@@ -1,0 +1,127 @@
+name: "Bug report"
+description: "Report a bug to help us improve the ownCloud desktop client"
+labels: ["bug"]
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      We appreciate you taking the time to make the ownCloud desktop client better by reporting a bug. In order for us to quickly grasp the problem, please do not hesitate to provide as many details as possible. There is no need to be afraid of overloading the issue.
+
+      In case you have little experience in reporting bugs, we kindly ask you to read https://www.chiark.greenend.org.uk/~sgtatham/bugs.html, which provides a great introduction to the matter.
+
+      **Please note: this is an issue tracker.** Questions are best asked in our [**community forum**](https://central.owncloud.org) or our [**community chat**](https://talk.owncloud.org)!
+
+- type: checkboxes
+  id: presubmission-checks
+  attributes:
+    label: Pre-submission Checks
+    description: |
+      Before submitting your bug report, please make sure you fulfill the following criteria. Otherwise, your issue will most likely be dismissed.
+    options:
+      - label: I [checked for similar issues](https://github.com/owncloud/client/issues?q=), but could not find any. I also checked the closed issues. I could not contribute additional information to any existing issue.
+        required: true
+      - label: I will take the time to fill in all the required fields. I know that the bug report may be dismissed otherwise due to lack of information.
+        required: true
+
+- type: textarea
+  id: description
+  attributes:
+    label: Describe the bug
+    description: Please provide a detailed, precise description of the bug. Please do not hesitate to add as many details as possible, every information is relevant.
+    placeholder: While clicking on button [...], the application unexpectedly [...]
+  validations:
+    required: true
+
+- type: textarea
+  id: expected-behavior
+  attributes:
+    label: Expected behavior
+    description: Please explain which behavior you expected from the application. We need to know what you think should have happened.
+    placeholder: "I expected to see [...]"
+  validations:
+    required: true
+
+- type: textarea
+  id: reproduce
+  attributes:
+    label: Steps to reproduce the issue
+    description: |
+      Ideally, we can reproduce the issue using steps you describe to us. This allows us to perform our own tests and thus better understand the issue.
+      Please don't hesitate to add as many details as possible.
+    placeholder: |
+      1. Enter [...] into [...]
+      2. Click on [...]
+      3. Scroll down to [...]
+      4. See the error message
+
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: Please add screenshots if possible that visualize your problem and/or show how to reproduce the bug.
+    placeholder: Add your screenshots here!
+
+- type: textarea
+  id: logs
+  attributes:
+    label: Logs
+    description: |
+      Please add (complete) log contents or files to this section. Logs contain very valuable information. **Make sure to redact personal/private information!**
+      If your logs are longer than 10 lines, you should paste them on a pastebin service (e.g., [Gist](https://gist.github.com)) and insert links here.
+    placeholder: Add your logs here!
+
+- type: textarea
+  id: client-version
+  attributes:
+    label: Client version number
+    description: Please provide the **ownCloud desktop client and Qt version number** (see the *Version* tab in the *About* dialog, which can be found in the client settings).
+    placeholder: |
+      Example:
+      ownCloud 2.10.1 (build 7188) 82eefd Apr 5 2022 11:25:27
+      Libraries Qt 5.12.11, OpenSSL 1.1.1k 25 Mar 2021
+      Using virtual files plugin: suffix
+      ubuntu-5.4.0-109-generic
+  validations:
+    required: true
+
+- type: input
+  id: os-version
+  attributes:
+    label: Desktop environment (Linux only)
+    description: Please provide a precise description of the desktop environment version used on your Linux-based operating system.
+    placeholder: "Example: Fedora 36 with GNOME 3 version 42.0, ..."
+
+- type: input
+  id: linux-client-packaging
+  attributes:
+    label: Client package version and origin (Linux only)
+    description: In case you use a Linux-based operating system, please describe how you installed the ownCloud desktop client, and where you installed it from (e.g., from your distribution, from the ownCloud-provided mirrors, etc.).
+    placeholder: "Example: Installed from https://download.owncloud.com/desktop/ownCloud/stable/latest/"
+
+- type: input
+  id: windows-install-path
+  attributes:
+    label: Installation path (Windows only)
+    description: In case you use Windows, we'd like to know which path you installed the client into.
+    placeholder: "Example: C:\\Program Files\\ownCloud"
+
+- type: textarea
+  id: server-info
+  attributes:
+    label: Server information
+    description: |
+      Please include all relevant information (e.g., server operating system version, web server, database and PHP version (applicable to ownCloud 10 only), storage backend (in case external storage is used).
+    placeholder: |
+      ownCloud 10.9.1 (stable) on Ubuntu 20.04 using PHP 7.3
+
+      PHP 7.4.3 (cli) (built: Mar  2 2022 15:36:52) ( NTS )
+      Copyright (c) The PHP Group
+      Zend Engine v3.4.0, Copyright (c) Zend Technologies
+          with Zend OPcache v7.4.3, Copyright (c), by Zend Technologies
+
+- type: textarea
+  id: additional-context
+  attributes:
+    label: Additional context
+    description: Any other information you'd like to include.

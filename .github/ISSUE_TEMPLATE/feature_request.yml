@@ -1,0 +1,59 @@
+name: "Feature request"
+description: "Propose a new feature for the ownCloud desktop client"
+labels: ["enhancement"]
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      Thank you for your interest in making the ownCloud desktop client better! Your feature proposals are highly welcome.
+
+      Please try to describe your feature as precisely as possible. If we fully understand a feature request, we can discuss it with you a lot better. Please don't hesitate to add screenshots or mockups, which greatly aide 
+
+      **Please note: this is an issue tracker.** Questions are best asked in our [**community forum**](https://central.owncloud.org) or our [**community chat**](https://talk.owncloud.org)!
+
+- type: checkboxes
+  id: presubmission-checks
+  attributes:
+    label: Pre-submission Checks
+    description: |
+      Before submitting your feature proposal, please make sure you fulfill the following criteria. Otherwise, your issue will most likely be dismissed.
+    options:
+      - label: I [checked for similar issues](https://github.com/owncloud/client/issues?q=), but could not find any. I also checked the closed issues. I could not contribute additional information to any existing issue.
+        required: true
+      - label: I will take the time to fill in all the required fields. I know that the bug report may be dismissed otherwise due to lack of information.
+        required: true
+
+- type: textarea
+  id: description
+  attributes:
+    label: Feature description
+    description: |
+      Please describe your suggestion, including as many details as possible.
+      Is your feature request related to an existing issue? In this case, please describe the problem or provide a link to the issue.
+    placeholder: I would like to have another button that [...]
+  validations:
+    required: true
+
+- type: textarea
+  id: proposed-solution
+  attributes:
+    label: Proposed solution
+    description: Please explain the solution you have in mind.
+    placeholder: Instead of using a text field, I would like a dropdown containing a list of choices [...]
+  validations:
+    required: true
+
+- type: textarea
+  id: alternatives
+  attributes:
+    label: Alternative solutions you considered
+    description: |
+      Please list alternative solutions or features you considered to cover your use case. Feel free to discuss their pros and cons.
+
+- type: textarea
+  id: additional-context
+  attributes:
+    label: Additional context
+    description: Any other information you'd like to include, for instance, screnshots, mockups, etc.
+
