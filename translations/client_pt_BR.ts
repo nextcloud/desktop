@@ -807,7 +807,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Buscando atividades…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
@@ -2517,7 +2517,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>O arquivo &quot;%1&quot; não pôde ser sincronizado porque o nome contém caracteres que não são permitidos neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
@@ -2527,17 +2527,17 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="89"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Os seguintes caracteres não são permitidos no sistema: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; espaços à esquerda/à direita</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Verificando renomeação de permissões…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions...</source>
-        <translation type="unfinished"/>
+        <translation>Verificando permissões de renomeação...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
@@ -2547,27 +2547,27 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao buscar permissões com erro %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo contém espaços à esquerda e à direita.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo contém espaços à esquerda.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo contém espaços à direita.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Usar nome inválido</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="208"/>
@@ -2587,7 +2587,7 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem a remoç
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível renomear o arquivo local. %1</translation>
     </message>
 </context>
 <context>
@@ -3581,12 +3581,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/libsync/discovery.cpp" line="311"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo contém espaços antes.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>O nome do arquivo contém espaços antes e depois.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="319"/>
@@ -4295,7 +4295,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform><numerusform>Bloqueado por %1 - Expira em %2 minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
@@ -4706,7 +4706,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Expira em 1% minutos</numerusform><numerusform>Expira em 1% minutos</numerusform><numerusform>Expira em 1% minutos</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
@@ -5328,7 +5328,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/systray.cpp" line="105"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Baixar</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="155"/>
