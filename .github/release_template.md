@@ -16,7 +16,7 @@ __TODO__:
 * [ ] DEV: Check for new OpenSSL version 
 * [ ] DEV: Check [dependencies](https://confluence.owncloud.com/display/OG/Dependencies) for updates
 * [ ] DEV: Prepare the release in a `X.x` version branch (a patch release is maintained in the minor release branch)  
-  If this *is* a minor release:
+  If this *is* a major or minor release:
   * [ ] DEV: Create new `X.x` version branch.
   * [ ] Adjust branch of Cron Job `nightly-2-x` to the next release branch  @individual-it
 * [ ] QA: Make sure [squish tests](https://confluence.owncloud.com/display/OG/Squish+Testing#SquishTesting-Prerequisite) are running successfully on X.x branch and on nightly builds for the current release, e.g. ``nightly-2-10`` 
@@ -42,7 +42,6 @@ __TODO__:
        * [ ] manually deploy a linux download repo, or use a download repo from https://download.owncloud.com/desktop/ownCloud/testing/
        * [ ] in defs.sh edit `repo=` and update `platform_docker_images=`
        * [ ] RUN.sh -> paste the log/test_YYYYMMDD_hhmm.log file into the client release ticket.
-       * [ ] TO DO: extend 08-appimage.sh ("xvfb-run")
 * [ ] QA: [Antivirus scan](https://confluence.owncloud.com/display/OG/Virus+Scanning)
 * [ ] QA: Create testplan according to release type (patch release: add tests in a comment, for major/minor release: create a separate ticket), for testplan templates see https://confluence.owncloud.com/display/OG/Desktop+Client+Release+Process and link here
 * [ ] QA: Add changelog testing as a comment (to the testplan ticket or here), changeLog issues see https://github.com/owncloud/client/releases/ and link here
