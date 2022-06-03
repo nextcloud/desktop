@@ -544,7 +544,7 @@ Feature: Sharing
         Then the last public link share response of user "Alice" should include the following fields on the server
             | expireDate | 2038-07-21 |
 
-    @skip @issue-9733
+
     Scenario Outline: simple sharing of folder by public link with different roles
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has set up a client with default settings
