@@ -145,7 +145,7 @@ def hook(context):
             generateStacktrace(context, coredumps)
             test.log("Stacktrace generated!")
         except Exception as err:
-            test.log("Exception occured:" + err)
+            test.log("Exception occured:" + str(err))
     else:
         test.log("No coredump found!")
 
