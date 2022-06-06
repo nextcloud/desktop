@@ -130,10 +130,18 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
 
 void User::slotBuildIncomingCallDialogs(const ActivityList &list)
 {
-    const auto systray = Systray::instance();
     const ConfigFile cfg;
+    const auto userStatus = _account->account()->userStatusConnector()->userStatus().state();
+    if (userStatus == OCC::UserStatus::OnlineStatus::DoNotDisturb ||
+            !cfg.optionalServerNotifications() ||
+            !cfg.showCallNotifications() ||
+            !isDesktopNotificationsAllowed()) {
+        return;
+    }
 
-    if(systray && cfg.showCallNotifications()) {
+    const auto systray = Systray::instance();
+
+    if(systray) {
         for(const auto &activity : list) {
             systray->createCallDialog(activity);
         }
