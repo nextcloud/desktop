@@ -336,7 +336,8 @@ int main(int argc, char **argv)
     if (options.silent) {
         qInstallMessageHandler(nullMessageHandler);
     } else {
-        qSetMessagePattern("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+        qSetMessagePattern(
+            "%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
     }
 
     AccountPtr account = Account::create();
@@ -346,14 +347,19 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
 
-    if (options.target_url.contains("/webdav", Qt::CaseInsensitive) || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
+    if (options.target_url.contains("/webdav", Qt::CaseInsensitive)
+        || options.target_url.contains("/dav", Qt::CaseInsensitive)) {
         qWarning("Dav or webdav in server URL.");
-        std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:" << std::endl
+        std::cerr << "Error! Please specify only the base URL of your host with username and password. Example:"
+                  << std::endl
                   << "http(s)://username:password@cloud.example.com" << std::endl;
         return EXIT_FAILURE;
     }
 
-    QUrl hostUrl = QUrl::fromUserInput((options.target_url.endsWith(QLatin1Char('/')) || options.target_url.endsWith(QLatin1Char('\\'))) ? options.target_url.chopped(1) : options.target_url);
+    QUrl hostUrl = QUrl::fromUserInput(
+        (options.target_url.endsWith(QLatin1Char('/')) || options.target_url.endsWith(QLatin1Char('\\')))
+            ? options.target_url.chopped(1)
+            : options.target_url);
 
     // Order of retrieval attempt (later attempts override earlier ones):
     // 1. From URL
@@ -453,8 +459,8 @@ int main(int argc, char **argv)
     job->start();
     loop.exec();
 
-    if (job->reply()->error() != QNetworkReply::NoError){
-        std::cout<<"Error connecting to server\n";
+    if (job->reply()->error() != QNetworkReply::NoError) {
+        std::cout << "Error connecting to server\n";
         return EXIT_FAILURE;
     }
 
@@ -483,7 +489,10 @@ restart_sync:
             qCritical() << "Could not open file containing the list of unsynced folders: " << options.unsyncedfolders;
         } else {
             // filter out empty lines and comments
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegularExpression("\\S+")).filter(QRegularExpression("^[^#]"));
+            selectiveSyncList = QString::fromUtf8(f.readAll())
+                                    .split('\n')
+                                    .filter(QRegularExpression("\\S+"))
+                                    .filter(QRegularExpression("^[^#]"));
 
             for (int i = 0; i < selectiveSyncList.count(); ++i) {
                 if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
@@ -494,7 +503,8 @@ restart_sync:
     }
 
     Cmd cmd;
-    QString dbPath = options.source_dir + SyncJournalDb::makeDbName(options.source_dir, credentialFreeUrl, folder, user);
+    QString dbPath =
+        options.source_dir + SyncJournalDb::makeDbName(options.source_dir, credentialFreeUrl, folder, user);
     SyncJournalDb db(dbPath);
 
     if (!selectiveSyncList.empty()) {
@@ -507,11 +517,61 @@ restart_sync:
     SyncEngine engine(account, options.source_dir, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
-    QObject::connect(&engine, &SyncEngine::finished,
-        [&app](bool result) { app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE); });
+
+    static const quint32 maxSyncRetries = 5;
+    quint32 numSyncRetries = 0;
+    QTimer retryTimer;
+    bool isPendingStartSync = false;
+
+    QObject::connect(&retryTimer, &QTimer::timeout, [&engine, &numSyncRetries, &isPendingStartSync]() {
+        if (engine.isSyncRunning()) {
+            qInfo() << "Sync was already running. Do not run new sync.";
+            return;
+        }
+        ++numSyncRetries;
+        isPendingStartSync = true;
+        qInfo() << "Retrying the sync. numSyncRetries:" << numSyncRetries;
+        QMetaObject::invokeMethod(&engine, [&engine, &isPendingStartSync]() {
+            engine.startSync();
+            isPendingStartSync = false;
+        }, Qt::QueuedConnection);
+    });
+
+    const auto scheduleRetryIfPossible = [&numSyncRetries, &retryTimer, &isPendingStartSync]() {
+        if (retryTimer.isActive() || isPendingStartSync) {
+            return;
+        }
+
+        if (numSyncRetries < maxSyncRetries) {
+            const auto retryInterval = (numSyncRetries + 1) * 1000 * 60;
+            qInfo() << "Going to retry in" << retryInterval << "ms";
+            retryTimer.setInterval(retryInterval);
+            retryTimer.setSingleShot(true);
+            retryTimer.start();
+        } else {
+            qCritical() << "Max retries reached. Check your connection or/and server.";
+        }
+    };
+
+    QObject::connect(&engine, &SyncEngine::finished, [&app, &retryTimer, &scheduleRetryIfPossible](bool result) {
+        if (!result) {
+            scheduleRetryIfPossible();
+        }
+        if (result || !retryTimer.isActive()) {
+            app.exit(result ? EXIT_SUCCESS : EXIT_FAILURE);
+        }
+    });
     QObject::connect(&engine, &SyncEngine::transmissionProgress, &cmd, &Cmd::transmissionProgressSlot);
-    QObject::connect(&engine, &SyncEngine::syncError,
-        [](const QString &error) { qWarning() << "Sync error:" << error; });
+    QObject::connect(&engine, &SyncEngine::aboutToPropagate, [&numSyncRetries](SyncFileItemVector &) {
+        numSyncRetries = 0;
+    });
+    QObject::connect(&engine, &SyncEngine::syncError, [&retryTimer, &scheduleRetryIfPossible, &isPendingStartSync](const QString &error) {
+        if (retryTimer.isActive() || isPendingStartSync) {
+            return;
+        }
+        qWarning() << "Sync error:" << error;
+        scheduleRetryIfPossible();
+    });
 
 
     // Exclude lists
