@@ -32,6 +32,7 @@
 #include <QObject>
 #include <QProcess>
 #include <QRandomGenerator>
+#include <QRegularExpression>
 #include <QSettings>
 #include <QStandardPaths>
 #include <QSysInfo>
@@ -604,6 +605,28 @@ QDebug &operator<<(QDebug &debug, nanoseconds in)
                  << min.count() << "min, "
                  << s.count() << "s, "
                  << ms.count() << "ms)";
+}
+
+QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &values)
+{
+    static const QRegularExpression pattern(QStringLiteral("@{([^{}]+)}"));
+    const auto replace = [&templ, &values](QRegularExpressionMatchIterator it) {
+        while (it.hasNext()) {
+            const auto match = it.next();
+            Q_ASSERT(match.lastCapturedIndex() == 1);
+            Q_ASSERT(values.contains(match.captured(1)));
+            templ.replace(match.captured(0), values.value(match.captured(1)));
+        }
+    };
+
+    auto matches = pattern.globalMatch(templ);
+    do {
+        replace(matches);
+        // the placeholder can again contain a placeholder
+        matches = pattern.globalMatch(templ);
+    } while (matches.hasNext());
+
+    return templ;
 }
 
 } // namespace OCC

@@ -358,6 +358,11 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
         Q_UNREACHABLE();
     }
 
+    /**
+     * Replace all occurances of @{} values in template with the values from values
+     */
+    OCSYNC_EXPORT QString renderTemplate(QString templ, const QMap<QString, QString> &values);
+
 #ifdef Q_OS_LINUX
     OCSYNC_EXPORT QString appImageLocation();
     OCSYNC_EXPORT bool runningInAppImage();

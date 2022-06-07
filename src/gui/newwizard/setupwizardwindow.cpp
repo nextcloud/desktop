@@ -17,12 +17,10 @@ using namespace OCC;
 
 QString replaceCssColors(QString stylesheet)
 {
-    QString rv = stylesheet;
-
-    rv = stylesheet.replace(QStringLiteral("@WIZARD_BACKGROUND_COLOR@"), Theme::instance()->wizardHeaderBackgroundColor().name());
-    rv = stylesheet.replace(QStringLiteral("@WIZARD_FONT_COLOR@"), Theme::instance()->wizardHeaderTitleColor().name());
-
-    return rv;
+    return Utility::renderTemplate(stylesheet, {
+                                                   { QStringLiteral("WIZARD_BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name() }, //
+                                                   { QStringLiteral("WIZARD_FONT_COLOR"), Theme::instance()->wizardHeaderTitleColor().name() } //
+                                               });
 }
 
 }

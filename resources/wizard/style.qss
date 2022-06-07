@@ -8,7 +8,7 @@
     the navigation/pagination part is located outside the content widget, so it won't be affected by this stylesheet
     especially since we prefix all rules with #contentWidget
 
-    note that @...@ are variables replaced by our own code when loading the stylesheet
+    note that @\{...\} are variables replaced by our own code when loading the stylesheet
     they represent theme-specific colors
  */
 
@@ -18,7 +18,7 @@
  */
 #contentWidget
 {
-    background-color: @WIZARD_BACKGROUND_COLOR@;
+    background-color: @{WIZARD_BACKGROUND_COLOR};
 }
 
 /* selectively set the font color for most labels and one group box title */
@@ -35,7 +35,7 @@
 #contentWidget #passwordLabel,
 #contentWidget #advancedConfigGroupBox::title
 {
-    color: @WIZARD_FONT_COLOR@;
+    color: @{WIZARD_FONT_COLOR};
 }
 
 /*
