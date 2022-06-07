@@ -81,12 +81,12 @@ void RequestEtagJob::start()
     QNetworkRequest req;
     req.setRawHeader("Depth", "0");
 
-    QByteArray xml("<?xml version=\"1.0\" ?>\n"
-                   "<d:propfind xmlns:d=\"DAV:\">\n"
-                   "  <d:prop>\n"
-                   "    <d:getetag/>\n"
-                   "  </d:prop>\n"
-                   "</d:propfind>\n");
+    const auto xml = QByteArrayLiteral("<?xml version=\"1.0\" ?>\n"
+                                       "<d:propfind xmlns:d=\"DAV:\">\n"
+                                       "  <d:prop>\n"
+                                       "    <d:getetag/>\n"
+                                       "  </d:prop>\n"
+                                       "</d:propfind>\n");
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
