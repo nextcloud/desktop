@@ -81,12 +81,12 @@ void RequestEtagJob::start()
     QNetworkRequest req;
     req.setRawHeader("Depth", "0");
 
-    const auto xml = QByteArrayLiteral("<?xml version=\"1.0\" ?>\n"
-                                       "<d:propfind xmlns:d=\"DAV:\">\n"
-                                       "  <d:prop>\n"
-                                       "    <d:getetag/>\n"
-                                       "  </d:prop>\n"
-                                       "</d:propfind>\n");
+    const QByteArray xml = QByteArrayLiteral("<?xml version=\"1.0\" ?>\n"
+                                             "<d:propfind xmlns:d=\"DAV:\">\n"
+                                             "  <d:prop>\n"
+                                             "    <d:getetag/>\n"
+                                             "  </d:prop>\n"
+                                             "</d:propfind>\n");
     QBuffer *buf = new QBuffer(this);
     buf->setData(xml);
     buf->open(QIODevice::ReadOnly);
@@ -107,8 +107,8 @@ bool RequestEtagJob::finished()
         reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
         QByteArray etag;
         while (!reader.atEnd()) {
-            QXmlStreamReader::TokenType type = reader.readNext();
-            if (type == QXmlStreamReader::StartElement && reader.namespaceUri() == QLatin1String("DAV:")) {
+            reader.readNextStartElement();
+            if (reader.namespaceUri() == QLatin1String("DAV:")) {
                 QString name = reader.name().toString();
                 if (name == QLatin1String("getetag")) {
                     auto etagText = reader.readElementText();
