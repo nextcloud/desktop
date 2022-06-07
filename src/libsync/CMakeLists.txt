@@ -71,6 +71,7 @@ endif()
 set(owncloudsync_HEADERS
     ${CMAKE_CURRENT_BINARY_DIR}/owncloudlib.h
     logger.h
+    accessmanager.h
 )
 
 INSTALL(
