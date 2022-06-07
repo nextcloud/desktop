@@ -554,18 +554,15 @@ void OAuth::openBrowser()
     });
 }
 
-void OAuth::dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData)
-{
-    // the default class (used by the wizard only) doesn't know how to handle such data, and also doesn't need to
-    // only the derived AccountBasedOAuth class must be able to handle the data
-    Q_UNUSED(dynamicRegistrationData);
-}
-
-
 AccountBasedOAuth::AccountBasedOAuth(AccountPtr account, QObject *parent)
     : OAuth(account->url(), account->davUser(), account->accessManager(), {}, parent)
     , _account(account)
 {
+    connect(this, &AccountBasedOAuth::dynamicRegistrationDataReceived, this, [this](const QVariantMap &dynamicRegistrationData) {
+        // the base class doesn't use the data at all, so no need to call its implementation
+        auto credentialsJob = _account->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
+        credentialsJob->start();
+    });
 }
 
 void AccountBasedOAuth::startAuthentication()
@@ -605,13 +602,6 @@ void AccountBasedOAuth::fetchWellKnown()
             }
         }
     });
-}
-
-void AccountBasedOAuth::dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData)
-{
-    // the base class doesn't use the data at all, so no need to call its implementation
-    auto credentialsJob = _account->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
-    credentialsJob->start();
 }
 
 #include "oauth.moc"

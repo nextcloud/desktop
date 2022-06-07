@@ -91,6 +91,8 @@ Q_SIGNALS:
 
     void fetchWellKnownFinished();
 
+    void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData);
+
 protected:
     QUrl _serverUrl;
     QString _davUser;
@@ -100,8 +102,6 @@ protected:
 
     virtual void fetchWellKnown();
 
-    // not an ideal solution to use a virtual method as a callback for the child class to override, but it's the easiest option
-    virtual void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData);
 
 private:
     void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QString &userName, const QString &displayName, const QUrl &messageUrl);
@@ -138,8 +138,6 @@ public:
 
 protected:
     void fetchWellKnown() override;
-
-    void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData) override;
 
 private:
     AccountPtr _account;
