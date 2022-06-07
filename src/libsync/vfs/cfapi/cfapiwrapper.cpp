@@ -760,9 +760,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
     dehydrationRange.StartingOffset.QuadPart = 0;
     dehydrationRange.Length.QuadPart = size;
 
-    const qint64 result = CfUpdatePlaceholder(handle.get(), nullptr,
-                                              fileIdentity.data(), sizeToDWORD(fileIdentitySize),
-                                              &dehydrationRange, 1, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+    const auto result = CfDehydratePlaceholder(handle.get(), dehydrationRange.StartingOffset, dehydrationRange.Length, CF_DEHYDRATE_FLAG_NONE, nullptr);
 
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
