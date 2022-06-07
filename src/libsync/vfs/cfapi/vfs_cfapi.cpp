@@ -133,6 +133,7 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
     const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);
+    qCInfo(lcCfApi()) << localPath;
     const auto handle = cfapi::handleForPath(localPath);
     if (handle) {
         auto result = cfapi::dehydratePlaceholder(handle, item._modtime, item._size, item._fileId);
@@ -188,6 +189,16 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
     const auto isWindowsShortcut = !isDirectory && FileSystem::isLnkFile(stat->path);
 
     const auto isExcludeFile = !isDirectory && FileSystem::isExcludeFile(stat->path);
+
+    qCInfo(lcCfApi()) << "file attributes" << stat->path << Qt::hex << ffd->dwFileAttributes
+                      << (isDirectory ? "isDirectory" : "\"\"")
+                      << (isSparseFile ? "isSparseFile" : "\"\"")
+                      << (isPinned ? "isPinned" : "\"\"")
+                      << (isUnpinned ? "isUnpinned" : "\"\"")
+                      << (hasReparsePoint ? "hasReparsePoint" : "\"\"")
+                      << (hasCloudTag ? "hasCloudTag" : "\"\"")
+                      << (isWindowsShortcut ? "isWindowsShortcut" : "\"\"")
+                      << (isExcludeFile ? "isExcludeFile" : "\"\"");
 
     // It's a dir with a reparse point due to the placeholder info (hence the cloud tag)
     // if we don't remove the reparse point flag the discovery will end up thinking

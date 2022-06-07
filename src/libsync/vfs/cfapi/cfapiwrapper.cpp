@@ -744,6 +744,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
 {
     Q_ASSERT(handle);
 
+    qCInfo(lcCfApiWrapper()) << pathForHandle(handle);
+
     if (modtime <= 0) {
         return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(pathForHandle(handle)).arg(modtime)};
     }
@@ -765,6 +767,8 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't update placeholder info" };
+    } else {
+        qCInfo(lcCfApiWrapper()) << pathForHandle(handle) << result;
     }
 
     return OCC::Vfs::ConvertToPlaceholderResult::Ok;

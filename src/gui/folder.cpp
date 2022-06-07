@@ -584,7 +584,12 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 
 
     SyncJournalFileRecord record;
-    _journal.getFileRecord(relativePathBytes, &record);
+    auto result = _journal.getFileRecord(relativePathBytes, &record);
+    if (!result) {
+        qCInfo(lcFolder()) << "file record invalid" << relativePathBytes << record.path();
+    } else {
+        qCInfo(lcFolder()) << "file record valid" << relativePathBytes << record.path();
+    }
     if (reason != ChangeReason::UnLock) {
         // Check that the mtime/size actually changed or there was
         // an attribute change (pin state) that caused the notification
@@ -594,10 +599,13 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
             spurious = true;
 
             if (auto pinState = _vfs->pinState(relativePath.toString())) {
-                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
+                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile()) {
                     spurious = false;
-                if (*pinState == PinState::OnlineOnly && record.isFile())
+                }
+                if (*pinState == PinState::OnlineOnly && record.isFile()) {
                     spurious = false;
+                }
+                qCInfo(lcFolder) << *pinState << (record.isVirtualFile() ? "isVirtualFile" : "\"\"") << (record.isFile() ? "isFile" : "\"\"");
             }
         }
         if (spurious) {
