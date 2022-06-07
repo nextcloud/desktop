@@ -175,10 +175,6 @@ Window {
                         }
                     }
 
-                    Loader {
-                        id: userStatusSelectorDialogLoader
-                    }
-
                     Menu {
                         id: accountMenu
 
@@ -221,15 +217,36 @@ Window {
                             userLineInstantiator.active = true;
                         }
 
+                        Loader {
+                            id: userStatusSelectorDialogLoader
+
+                            property int userIndex
+
+                            function openDialog(newUserIndex) {
+                                console.log(`About to show dialog for user with index ${newUserIndex}`);
+                                userIndex = newUserIndex;
+                                active = true;
+                                item.show();
+                            }
+
+                            active: false
+                            sourceComponent: UserStatusSelectorDialog {
+                                userIndex: userStatusSelectorDialogLoader.userIndex
+                            }
+
+                            onLoaded: {
+                                item.model.load(userIndex);
+                                item.show();
+                            }
+                        }
+
                         Instantiator {
                             id: userLineInstantiator
                             model: UserModel
                             delegate: UserLine {
                                 onShowUserStatusSelectorDialog: {
-                                    userStatusSelectorDialogLoader.source = "qrc:/qml/src/gui/UserStatusSelectorDialog.qml"
-                                    userStatusSelectorDialogLoader.item.title = qsTr("Set user status")
-                                    userStatusSelectorDialogLoader.item.model.load(index)
-                                    userStatusSelectorDialogLoader.item.show()
+                                    userStatusSelectorDialogLoader.openDialog(model.index);
+                                    accountMenu.close();
                                 }
                             }
                             onObjectAdded: accountMenu.insertItem(index, object)
