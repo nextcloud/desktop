@@ -2615,7 +2615,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
         <source>&lt;p&gt;Licensed under the GNU General Public License (GPL) Version 2.0 or any later version.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;GNU General Public License (GPL)バージョン2.0以降のバージョンでライセンスされています。&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;GNU General Public License (GPL)バージョン2.0以降のバージョンで許諾されています。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
