@@ -184,10 +184,7 @@ MenuItem {
                     font.pixelSize: Style.topLinePixelSize
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true
-                    onClicked: {
-                        showUserStatusSelectorDialog(index)
-                        accountMenu.close()
-                    }
+                    onClicked: showUserStatusSelectorDialog(index)
 
                     background: Item {
                         height: parent.height

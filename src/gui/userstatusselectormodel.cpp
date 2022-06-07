@@ -79,6 +79,7 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
 void UserStatusSelectorModel::load(int id)
 {
     reset();
+    qCDebug(lcUserStatusDialogModel) << "Loading user status connector for user with index: " << id;
     _userStatusConnector = UserModel::instance()->userStatusConnector(id);
     init();
 }
@@ -177,7 +178,7 @@ void UserStatusSelectorModel::clearError()
 
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 {
-    if (status == _userStatus.state()) {
+    if (!_userStatusConnector || status == _userStatus.state()) {
         return;
     }
 
