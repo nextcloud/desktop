@@ -179,13 +179,13 @@ private:
 
 OAuth::OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent)
     : QObject(parent)
-    , _clientId(Theme::instance()->oauthClientId())
-    , _clientSecret(Theme::instance()->oauthClientSecret())
-    , _redirectUrl(Theme::instance()->oauthLocalhost())
     , _serverUrl(serverUrl)
     , _davUser(davUser)
     , _dynamicRegistrationData(dynamicRegistrationData)
     , _networkAccessManager(networkAccessManager)
+    , _clientId(Theme::instance()->oauthClientId())
+    , _clientSecret(Theme::instance()->oauthClientSecret())
+    , _redirectUrl(Theme::instance()->oauthLocalhost())
 {
 }
 
