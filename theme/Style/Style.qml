@@ -13,8 +13,9 @@ QtObject {
     readonly property color ncSecondaryTextColor: "#808080"
     readonly property color ncHeaderTextColor: "white"
     readonly property color lightHover: Theme.darkMode ? Qt.lighter(backgroundColor, 2) : Qt.darker(backgroundColor, 1.05)
-    readonly property color menuBorder: ncSecondaryTextColor
+    readonly property color menuBorder: Theme.darkMode ? Qt.lighter(backgroundColor, 2.5) : Qt.darker(backgroundColor, 1.5)
     readonly property color backgroundColor: Theme.systemPalette.base
+    readonly property color buttonBackgroundColor: Theme.systemPalette.button
 
     // ErrorBox colors
     readonly property color errorBoxTextColor:       Theme.errorBoxTextColor
@@ -47,6 +48,13 @@ QtObject {
     property int currentAccountButtonWidth: 220
     property int currentAccountButtonRadius: 2
     property int currentAccountLabelWidth: 128
+
+    property int normalBorderWidth: 1
+    property int thickBorderWidth: 2
+    property int veryRoundedButtonRadius: 100
+    property int mediumRoundedButtonRadius: 8
+    property int slightlyRoundedButtonRadius: 5
+    property double hoverOpacity: 0.7
 
     property url stateOnlineImageSource: Theme.stateOnlineImageSource
     property url stateOfflineImageSource: Theme.stateOfflineImageSource
