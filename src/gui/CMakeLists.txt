@@ -376,7 +376,7 @@ endif()
 
 function(generate_sized_png_from_svg icon_path size)
   set(options)
-  set(oneValueArgs OUTPUT_ICON_NAME OUTPUT_ICON_PATH)
+  set(oneValueArgs OUTPUT_ICON_NAME OUTPUT_ICON_FULL_NAME_WLE OUTPUT_ICON_PATH)
   set(multiValueArgs)
 
   cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
@@ -392,11 +392,17 @@ function(generate_sized_png_from_svg icon_path size)
     set(icon_name_dir ${ARG_OUTPUT_ICON_PATH})
   endif ()
 
-  if (EXISTS "${icon_name_dir}/${size}-${icon_name_wle}.png")
+  set(output_icon_full_name_wle "${size}-${icon_name_wle}")
+
+  if (ARG_OUTPUT_ICON_FULL_NAME_WLE)
+    set(output_icon_full_name_wle ${ARG_OUTPUT_ICON_FULL_NAME_WLE})
+  endif ()
+
+  if (EXISTS "${icon_name_dir}/${output_icon_full_name_wle}.png")
     return()
   endif()
 
-  set(icon_output_name "${size}-${icon_name_wle}.png")
+  set(icon_output_name "${output_icon_full_name_wle}.png")
   message(STATUS "Generate ${icon_output_name}")
   execute_process(COMMAND
     "${SVG_CONVERTER}" -w ${size} -h ${size} "${icon_path}" -o "${icon_output_name}"
@@ -412,6 +418,23 @@ function(generate_sized_png_from_svg icon_path size)
   else()
   endif()
 endfunction()
+
+set(STATE_ICONS_COLORS colored black white)
+
+foreach(state_icons_color ${STATE_ICONS_COLORS})
+    set(STATE_ICONS_PATH "${theme_dir}/${state_icons_color}/")
+
+    message("Generating state icons from SVG in path: "${STATE_ICONS_PATH})
+
+    file(GLOB_RECURSE STATE_ICONS_SVG "${STATE_ICONS_PATH}/state-*.svg")
+
+    foreach(state_icon_svg ${STATE_ICONS_SVG})
+        get_filename_component(status_icon_name_wle ${state_icon_svg} NAME_WLE)
+        foreach(size IN ITEMS 16;32;64;128;256)
+            generate_sized_png_from_svg(${state_icon_svg} ${size} OUTPUT_ICON_FULL_NAME_WLE "${status_icon_name_wle}-${size}")
+        endforeach()
+    endforeach()
+endforeach()
 
 if ((APPLICATION_ICON_SET MATCHES "PNG")
     AND
