@@ -187,4 +187,5 @@ convert.exe
 *-icon-win-folder.png
 *-sidebar.png
 *-w10startmenu.png
+*state-*.png
 theme.qrc
