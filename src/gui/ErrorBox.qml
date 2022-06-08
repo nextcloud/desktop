@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Controls 2.15
 
 import Style 1.0
 
@@ -19,7 +20,7 @@ Item {
         border.color: errorBox.borderColor
     }
 
-    Text {
+    Label {
         id: errorMessage
         
         anchors.fill: parent
