@@ -25,9 +25,12 @@ public:
 
     qint64 bytesAvailable() const override
     {
-        if (aborted)
-            return 0;
-        return std::min(size, fakeSize) + QIODevice::bytesAvailable();
+        switch (state) {
+        case State::Ok:
+            return std::min(size, fakeSize) + QIODevice::bytesAvailable();
+        default:
+            return FakeGetReply::bytesAvailable();
+        }
     }
 
     qint64 readData(char *data, qint64 maxlen) override

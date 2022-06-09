@@ -560,45 +560,57 @@ FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::
     Q_ASSERT(!fileName.isEmpty());
     fileInfo = remoteRootFileInfo.find(fileName);
     if (!fileInfo) {
-        qDebug() << "meh;";
+        qDebug() << "Could not find file" << fileName << "on the remote";
+        state = State::FileNotFound;
     }
-    Q_ASSERT_X(fileInfo, Q_FUNC_INFO, "Could not find file on the remote");
     QMetaObject::invokeMethod(this, &FakeGetReply::respond, Qt::QueuedConnection);
 }
 
 void FakeGetReply::respond()
 {
-    if (aborted) {
+    switch (state) {
+    case State::Aborted:
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
         emit metaDataChanged();
-        emit finished();
-        return;
+        break;
+    case State::FileNotFound:
+        setError(ContentNotFoundError, QStringLiteral("File Not Found"));
+        emit metaDataChanged();
+        break;
+    case State::Ok:
+        payload = fileInfo->contentChar;
+        size = fileInfo->contentSize;
+        setHeader(QNetworkRequest::ContentLengthHeader, size);
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
+        setRawHeader("OC-ETag", fileInfo->etag);
+        setRawHeader("ETag", fileInfo->etag);
+        setRawHeader("OC-FileId", fileInfo->fileId);
+        setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
+        emit metaDataChanged();
+        if (bytesAvailable()) {
+            emit readyRead();
+        }
     }
-    payload = fileInfo->contentChar;
-    size = fileInfo->contentSize;
-    setHeader(QNetworkRequest::ContentLengthHeader, size);
-    setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
-    setRawHeader("OC-ETag", fileInfo->etag);
-    setRawHeader("ETag", fileInfo->etag);
-    setRawHeader("OC-FileId", fileInfo->fileId);
-    setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
-    emit metaDataChanged();
-    if (bytesAvailable())
-        emit readyRead();
     emit finished();
 }
 
 void FakeGetReply::abort()
 {
     setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-    aborted = true;
+    state = State::Aborted;
 }
 
 qint64 FakeGetReply::bytesAvailable() const
 {
-    if (aborted)
+    switch (state) {
+    case State::Ok:
+        return size + QIODevice::bytesAvailable();
+    case State::Aborted:
+        Q_FALLTHROUGH();
+    case State::FileNotFound:
         return 0;
-    return size + QIODevice::bytesAvailable();
+    }
+    Q_UNREACHABLE(); // Unreachable, but GCC on CentOS 7 does not understand that.
 }
 
 qint64 FakeGetReply::readData(char *data, qint64 maxlen)

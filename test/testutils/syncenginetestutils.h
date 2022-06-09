@@ -342,10 +342,16 @@ class FakeGetReply : public FakeReply
 {
     Q_OBJECT
 public:
+    enum class State {
+        Ok,
+        Aborted,
+        FileNotFound,
+    };
+
     const FileInfo *fileInfo;
     char payload;
     int size;
-    bool aborted = false;
+    State state = State::Ok;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
