@@ -87,6 +87,7 @@ ColumnLayout {
     }
 
     GridView {
+        id: emojiView
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.preferredHeight: metrics.height * 8
@@ -123,6 +124,16 @@ ColumnLayout {
                 chosen(modelData.unicode);
                 emojiModel.emojiUsed(modelData);
             }
+        }
+
+        Label {
+            id: placeholderMessage
+            anchors.centerIn: parent
+            text: qsTr("No recent emojis")
+            color: Style.ncSecondaryTextColor
+            wrapMode: Text.Wrap
+            font.bold: true
+            visible: emojiView.count === 0
         }
 
         ScrollBar.vertical: ScrollBar {}
