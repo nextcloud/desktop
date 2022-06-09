@@ -48,7 +48,7 @@ void ServerUrlSetupWizardState::evaluatePage()
     _context->resetAccountBuilder();
 
     auto serverUrlSetupWizardPage = qobject_cast<ServerUrlSetupWizardPage *>(_page);
-    OC_ASSERT(serverUrlSetupWizardPage != nullptr);
+    Q_ASSERT(serverUrlSetupWizardPage != nullptr);
 
     const QUrl serverUrl = [serverUrlSetupWizardPage]() {
         QString userProvidedUrl = serverUrlSetupWizardPage->userProvidedUrl();
@@ -56,7 +56,6 @@ void ServerUrlSetupWizardState::evaluatePage()
         // fix scheme if necessary
         // using HTTPS as a default is a real ly good idea nowadays, users can still enter http:// explicitly if they wish to
         if (!std::any_of(supportedUrlSchemesC.begin(), supportedUrlSchemesC.end(), [userProvidedUrl](const QString &scheme) {
-                qCDebug(lcSetupWizardServerUrlState) << "no URL scheme provided, prepending default URL scheme" << defaultUrlSchemeC;
                 return userProvidedUrl.startsWith(scheme);
             })) {
             qInfo(lcSetupWizardServerUrlState) << "no URL scheme provided, prepending default URL scheme" << defaultUrlSchemeC;

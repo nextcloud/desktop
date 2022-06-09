@@ -26,10 +26,14 @@ SetupWizardController::SetupWizardController(QWidget *parent)
     , _context(new SetupWizardContext(parent, this))
 {
     // initialize pagination
-    const QStringList paginationEntries = { tr("Server URL"), tr("Credentials"), tr("Sync Options") };
-    _context->window()->setPaginationEntries(paginationEntries);
+    _context->window()->setNavigationEntries({
+        SetupWizardState::ServerUrlState,
+        SetupWizardState::CredentialsState,
+        SetupWizardState::AccountConfiguredState,
+    });
 
-    nextStep(std::nullopt);
+    // set up initial state
+    changeStateTo(SetupWizardState::FirstState);
 
     // allow settings dialog to clean up the wizard controller and all the objects it created
     connect(_context->window(), &SetupWizardWindow::rejected, this, [this]() {
@@ -37,24 +41,26 @@ SetupWizardController::SetupWizardController(QWidget *parent)
         Q_EMIT finished(nullptr, SyncMode::Invalid);
     });
 
-    connect(_context->window(), &SetupWizardWindow::paginationEntryClicked, this, [this, paginationEntries](PageIndex currentPage, PageIndex clickedPageIndex) {
-        Q_ASSERT(currentPage < paginationEntries.size());
-        qCDebug(lcSetupWizardController) << "pagination entry clicked: current page" << currentPage << "clicked page" << clickedPageIndex;
-        nextStep(clickedPageIndex);
+    connect(_context->window(), &SetupWizardWindow::paginationEntryClicked, this, [this](SetupWizardState clickedState) {
+        qCDebug(lcSetupWizardController) << "pagination entry clicked: current state" << _currentState << "clicked state" << clickedState;
+        changeStateTo(clickedState);
     });
 
-    connect(_context->window(), &SetupWizardWindow::nextButtonClicked, this, [this, paginationEntries](PageIndex currentPage) {
-        Q_ASSERT(currentPage < paginationEntries.size());
-        qCDebug(lcSetupWizardController) << "next button clicked on current page" << currentPage;
+    connect(_context->window(), &SetupWizardWindow::nextButtonClicked, this, [this]() {
+        qCDebug(lcSetupWizardController) << "next button clicked, current state" << _currentState;
         _currentState->evaluatePage();
     });
 
     // in case the back button is clicked, the current page's data is dismissed, and the previous page should be shown
-    connect(_context->window(), &SetupWizardWindow::backButtonClicked, this, [this](PageIndex currentPage) {
-        // back button should be disabled on the first page
-        Q_ASSERT(currentPage > 0);
-        qCDebug(lcSetupWizardController) << "back button clicked on current page" << currentPage;
-        nextStep(currentPage - 1);
+    connect(_context->window(), &SetupWizardWindow::backButtonClicked, this, [this]() {
+        // with enum classes, we have to explicitly cast to a numeric value
+        const auto currentStateIdx = static_cast<int>(_currentState->state());
+        Q_ASSERT(currentStateIdx > 0);
+
+        qCDebug(lcSetupWizardController) << "back button clicked, current state" << _currentState;
+
+        const auto previousState = static_cast<SetupWizardState>(currentStateIdx - 1);
+        changeStateTo(previousState);
     });
 }
 
@@ -63,51 +69,24 @@ SetupWizardWindow *SetupWizardController::window()
     return _context->window();
 }
 
-void SetupWizardController::nextStep(std::optional<PageIndex> desiredPage)
+void SetupWizardController::changeStateTo(SetupWizardState nextState)
 {
     // should take care of cleaning up the page once the function has finished
     QScopedPointer<AbstractSetupWizardState> page(_currentState);
 
-    // initial state
-    if (_currentState == nullptr) {
-        Q_ASSERT(!desiredPage.has_value());
-        desiredPage = 0;
-    }
-
-    // "next button" workflow
-    if (!desiredPage.has_value()) {
-        switch (_currentState->state()) {
-        case SetupWizardState::ServerUrlState: {
-            desiredPage = 1;
-            break;
-        }
-        case SetupWizardState::CredentialsState: {
-            desiredPage = 2;
-            break;
-        }
-        case SetupWizardState::AccountConfiguredState: {
-            const auto *pagePtr = qobject_cast<AccountConfiguredWizardPage *>(_currentState->page());
-
-            auto account = _context->accountBuilder().build();
-            Q_ASSERT(account != nullptr);
-            Q_EMIT finished(account, pagePtr->syncMode());
-            return;
-        }
-        default:
-            Q_UNREACHABLE();
-        }
-    }
+    // validate initial state
+    Q_ASSERT(nextState == SetupWizardState::FirstState || _currentState != nullptr);
 
     if (_currentState != nullptr) {
         _currentState->deleteLater();
     }
 
-    switch (desiredPage.value()) {
-    case 0: {
+    switch (nextState) {
+    case SetupWizardState::ServerUrlState: {
         _currentState = new ServerUrlSetupWizardState(_context);
         break;
     }
-    case 1: {
+    case SetupWizardState::CredentialsState: {
         switch (_context->accountBuilder().authType()) {
         case DetermineAuthTypeJob::AuthType::Basic:
             _currentState = new BasicCredentialsSetupWizardState(_context);
@@ -121,7 +100,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> desiredPage)
 
         break;
     }
-    case 2: {
+    case SetupWizardState::AccountConfiguredState: {
         _currentState = new AccountConfiguredSetupWizardState(_context);
         break;
     }
@@ -129,24 +108,43 @@ void SetupWizardController::nextStep(std::optional<PageIndex> desiredPage)
         Q_UNREACHABLE();
     }
 
-    OC_ASSERT(desiredPage.has_value());
-    OC_ASSERT(_currentState != nullptr);
+    Q_ASSERT(_currentState != nullptr);
+    Q_ASSERT(_currentState->state() == nextState);
 
-    qDebug() << "Current wizard state:" << _currentState->state();
+    qCDebug(lcSetupWizardController) << "Current wizard state:" << _currentState->state();
 
-    connect(_currentState, &AbstractSetupWizardState::evaluationSuccessful, this, [this, desiredPage]() {
+    connect(_currentState, &AbstractSetupWizardState::evaluationSuccessful, this, [this]() {
         _currentState->deleteLater();
-        //        nextStep(desiredPage.value() + 1);
-        nextStep(std::nullopt);
+
+        switch (_currentState->state()) {
+        case SetupWizardState::ServerUrlState: {
+            changeStateTo(SetupWizardState::CredentialsState);
+            return;
+        }
+        case SetupWizardState::CredentialsState: {
+            changeStateTo(SetupWizardState::AccountConfiguredState);
+            return;
+        }
+        case SetupWizardState::AccountConfiguredState: {
+            const auto *pagePtr = qobject_cast<AccountConfiguredWizardPage *>(_currentState->page());
+
+            auto account = _context->accountBuilder().build();
+            Q_ASSERT(account != nullptr);
+            Q_EMIT finished(account, pagePtr->syncMode());
+            return;
+        }
+        default:
+            Q_UNREACHABLE();
+        }
     });
 
-    connect(_currentState, &AbstractSetupWizardState::evaluationFailed, this, [this, desiredPage](const QString &errorMessage) {
+    connect(_currentState, &AbstractSetupWizardState::evaluationFailed, this, [this](const QString &errorMessage) {
         _currentState->deleteLater();
         _context->window()->showErrorMessage(errorMessage);
-        nextStep(desiredPage);
+        changeStateTo(_currentState->state());
     });
 
-    _context->window()->displayPage(_currentState->page(), desiredPage.value());
+    _context->window()->displayPage(_currentState->page(), _currentState->state());
 }
 
 SetupWizardController::~SetupWizardController() noexcept

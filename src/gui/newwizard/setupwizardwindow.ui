@@ -120,7 +120,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="OCC::Wizard::Pagination" name="pagination" native="true"/>
+        <widget class="OCC::Wizard::Navigation" name="navigation" native="true"/>
        </item>
        <item>
         <spacer name="horizontalSpacer_2">
@@ -157,9 +157,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>OCC::Wizard::Pagination</class>
+   <class>OCC::Wizard::Navigation</class>
    <extends>QWidget</extends>
-   <header>pagination.h</header>
+   <header>navigation.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

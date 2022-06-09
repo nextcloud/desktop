@@ -28,8 +28,8 @@ add_library(newwizard STATIC
     setupwizardaccountbuilder.cpp
     setupwizardaccountbuilder.h
 
-    pagination.cpp
-    pagination.h
+    navigation.cpp
+    navigation.h
 
     jobs/resolveurljobfactory.cpp
     jobs/resolveurljobfactory.h

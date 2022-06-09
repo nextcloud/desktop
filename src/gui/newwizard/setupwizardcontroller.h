@@ -52,7 +52,7 @@ Q_SIGNALS:
     void finished(AccountPtr newAccount, SyncMode syncMode);
 
 private:
-    void nextStep(std::optional<PageIndex> desiredPage);
+    void changeStateTo(SetupWizardState nextState);
 
     SetupWizardContext *_context = nullptr;
 

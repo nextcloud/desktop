@@ -31,9 +31,26 @@ Q_NAMESPACE
  */
 enum class SetupWizardState {
     ServerUrlState,
+    FirstState = ServerUrlState,
+
     CredentialsState,
+
     AccountConfiguredState,
+    FinalState = AccountConfiguredState,
 };
 Q_ENUM_NS(SetupWizardState)
 
+static QString setupWizardStateToText(SetupWizardState state)
+{
+    switch (state) {
+    case SetupWizardState::ServerUrlState:
+        return QObject::tr("Server URL");
+    case SetupWizardState::CredentialsState:
+        return QObject::tr("Credentials");
+    case SetupWizardState::AccountConfiguredState:
+        return QObject::tr("Sync Options");
+    default:
+        Q_UNREACHABLE();
+    }
+}
 }

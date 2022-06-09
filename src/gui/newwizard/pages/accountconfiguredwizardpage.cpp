@@ -86,7 +86,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     });
 
     // this should be handled on application startup, too
-    OC_ENFORCE(!Theme::instance()->forceVirtualFilesOption() || vfsIsAvailable);
+    Q_ASSERT(!Theme::instance()->forceVirtualFilesOption() || vfsIsAvailable);
 
     if (Theme::instance()->forceVirtualFilesOption()) {
         // this has no visual effect, but is needed for syncMode()

@@ -54,7 +54,7 @@ SetupWizardState AccountConfiguredSetupWizardState::state() const
 void AccountConfiguredSetupWizardState::evaluatePage()
 {
     auto accountConfiguredSetupWizardPage = qobject_cast<AccountConfiguredWizardPage *>(_page);
-    OC_ASSERT(accountConfiguredSetupWizardPage != nullptr);
+    Q_ASSERT(accountConfiguredSetupWizardPage != nullptr);
 
     if (accountConfiguredSetupWizardPage->syncMode() != Wizard::SyncMode::ConfigureUsingFolderWizard) {
         _context->accountBuilder().setDefaultSyncTargetDir(QDir::fromNativeSeparators(accountConfiguredSetupWizardPage->syncTargetDir()));

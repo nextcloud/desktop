@@ -48,12 +48,12 @@ SetupWizardWindow::SetupWizardWindow(QWidget *parent)
 
     connect(_ui->backButton, &QPushButton::clicked, this, [this]() {
         slotStartTransition();
-        emit backButtonClicked(_ui->pagination->activePageIndex());
+        Q_EMIT backButtonClicked();
     });
 
-    connect(_ui->pagination, &Pagination::paginationEntryClicked, this, [this](PageIndex clickedPageIndex) {
+    connect(_ui->navigation, &Navigation::paginationEntryClicked, this, [this](SetupWizardState clickedState) {
         slotStartTransition();
-        emit paginationEntryClicked(_ui->pagination->activePageIndex(), clickedPageIndex);
+        Q_EMIT paginationEntryClicked(clickedState);
     });
 
     resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
@@ -92,19 +92,19 @@ void SetupWizardWindow::loadStylesheet()
     _ui->contentWidget->setStyleSheet(stylesheet);
 }
 
-void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex index)
+void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardState state)
 {
     _transitioning = false;
     _ui->backButton->setEnabled(true);
     _ui->nextButton->setEnabled(true);
 
-    if (index == 0) {
+    if (state == SetupWizardState::FirstState) {
         _ui->backButton->setEnabled(false);
-    } else if (index == _ui->pagination->entriesCount()) {
+    } else if (state == SetupWizardState::FinalState) {
         _ui->nextButton->setEnabled(false);
     }
 
-    if (index >= (_ui->pagination->entriesCount() - 1)) {
+    if (state == SetupWizardState::FinalState) {
         _ui->nextButton->setText(tr("Finish"));
     } else {
         _ui->nextButton->setText(tr("Next >"));
@@ -116,8 +116,8 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, PageIndex ind
     // initial check whether to enable the next button right away
     slotUpdateNextButton();
 
-    _ui->pagination->setActivePageIndex(index);
-    _ui->pagination->setEnabled(true);
+    _ui->navigation->setActiveState(state);
+    _ui->navigation->setEnabled(true);
 
     connect(_ui->errorMessageDismissButton, &QPushButton::clicked, this, &SetupWizardWindow::slotHideErrorMessageWidget);
 
@@ -141,7 +141,7 @@ void SetupWizardWindow::slotStartTransition()
     // until a new page is displayed by the controller, we want to prevent the user from initiating another page change
     _ui->backButton->setEnabled(false);
     _ui->nextButton->setEnabled(false);
-    _ui->pagination->setEnabled(false);
+    _ui->navigation->setEnabled(false);
     // also, we should assume the user has seen the error message in case one is shown
     slotHideErrorMessageWidget();
 }
@@ -171,9 +171,9 @@ void SetupWizardWindow::showErrorMessage(const QString &errorMessage)
     _ui->errorMessageWidget->show();
 }
 
-void SetupWizardWindow::setPaginationEntries(const QStringList &paginationEntries)
+void SetupWizardWindow::setNavigationEntries(const QList<SetupWizardState> &entries)
 {
-    _ui->pagination->setEntries(paginationEntries);
+    _ui->navigation->setEntries(entries);
 }
 
 void SetupWizardWindow::slotUpdateNextButton()
@@ -228,6 +228,6 @@ SetupWizardWindow::~SetupWizardWindow() noexcept
 void SetupWizardWindow::slotMoveToNextPage()
 {
     slotStartTransition();
-    emit nextButtonClicked(_ui->pagination->activePageIndex());
+    Q_EMIT nextButtonClicked();
 }
 }

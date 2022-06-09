@@ -15,8 +15,8 @@
 #pragma once
 
 #include "3rdparty/QProgressIndicator/QProgressIndicator.h"
+#include "navigation.h"
 #include "pages/abstractsetupwizardpage.h"
-#include "pagination.h"
 #include "setupwizardaccountbuilder.h"
 
 #include <QDialog>
@@ -32,9 +32,10 @@ class SetupWizardWindow;
 }
 
 namespace OCC::Wizard {
+
 /**
-     * This class contains the UI-specific code. It hides the complexity from the controller, and provides a high-level API.
-     */
+ * This class contains the UI-specific code. It hides the complexity from the controller, and provides a high-level API.
+ */
 class SetupWizardWindow : public QDialog
 {
     Q_OBJECT
@@ -47,14 +48,14 @@ public:
      * Set entries in the pagination at the bottom of the wizard UI.
      * The entries are identified by their position in the list (read: index).
      */
-    void setPaginationEntries(const QStringList &paginationEntries);
+    void setNavigationEntries(const QList<SetupWizardState> &entries);
 
     /**
      * Render this page within the wizard window.
      * @param page page to render
      * @param index index to highlight in pagination (also used to decide which buttons to enable)
      */
-    void displayPage(AbstractSetupWizardPage *page, PageIndex index);
+    void displayPage(AbstractSetupWizardPage *page, SetupWizardState state);
 
     void showErrorMessage(const QString &errorMessage);
 
@@ -64,9 +65,9 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 Q_SIGNALS:
-    void paginationEntryClicked(PageIndex currentPage, PageIndex clickedPageIndex);
-    void nextButtonClicked(PageIndex currentPage);
-    void backButtonClicked(PageIndex currentPage);
+    void paginationEntryClicked(SetupWizardState clickedState);
+    void nextButtonClicked();
+    void backButtonClicked();
 
 public Q_SLOTS:
     /**
@@ -92,6 +93,6 @@ private:
     // need to keep track of the current page for event filtering
     AbstractSetupWizardPage *_currentPage = nullptr;
     // during a transition, the event filter must be disabled
-    bool _transitioning;
+    bool _transitioning = false;
 };
 }

@@ -27,7 +27,7 @@ BasicCredentialsSetupWizardState::BasicCredentialsSetupWizardState(SetupWizardCo
 void BasicCredentialsSetupWizardState::evaluatePage()
 {
     auto *basicCredentialsSetupWizardPage = qobject_cast<BasicCredentialsSetupWizardPage *>(_page);
-    OC_ASSERT(basicCredentialsSetupWizardPage != nullptr);
+    Q_ASSERT(basicCredentialsSetupWizardPage != nullptr);
 
     const QString username = basicCredentialsSetupWizardPage->username();
     const QString password = basicCredentialsSetupWizardPage->password();
