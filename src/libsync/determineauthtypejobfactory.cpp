@@ -60,18 +60,21 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
 
         const auto authChallenge = reply->rawHeader(QByteArrayLiteral("WWW-Authenticate")).toLower();
 
-        // we fall back to basic in any case
-        if (authChallenge.contains(QByteArrayLiteral("bearer "))) {
-            setJobResult(job, QVariant::fromValue(AuthType::OAuth));
-        } else {
-            if (authChallenge.isEmpty()) {
-                qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+        const AuthType authType = [authChallenge]() {
+            // we fall back to basic in any case
+            if (authChallenge.contains(QByteArrayLiteral("bearer "))) {
+                return AuthType::OAuth;
+            } else {
+                if (authChallenge.isEmpty()) {
+                    qCWarning(lcDetermineAuthTypeJob) << "Did not receive WWW-Authenticate reply to auth-test PROPFIND";
+                }
+
+                return AuthType::Basic;
             }
+        }();
 
-            setJobResult(job, QVariant::fromValue(AuthType::Basic));
-        }
-
-        qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << reply->url() << "is" << job->result();
+        qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << reply->url() << "is" << authType;
+        setJobResult(job, qVariantFromValue(authType));
     });
 
     return job;
