@@ -1,0 +1,62 @@
+/*
+ * Copyright (C) Fabian Müller <fmueller@owncloud.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ */
+
+#include "setupwizardcontext.h"
+
+namespace OCC::Wizard {
+
+SetupWizardContext::SetupWizardContext(QWidget *windowParent, QObject *parent)
+    : QObject(parent)
+    , _window(new SetupWizardWindow(windowParent))
+{
+    resetAccessManager();
+}
+
+SetupWizardContext::~SetupWizardContext()
+{
+    _window->deleteLater();
+    _accessManager->deleteLater();
+}
+
+AccessManager *SetupWizardContext::resetAccessManager()
+{
+    if (_accessManager != nullptr) {
+        _accessManager->deleteLater();
+    }
+
+    _accessManager = new AccessManager(this);
+    return _accessManager;
+}
+
+SetupWizardWindow *SetupWizardContext::window() const
+{
+    return _window;
+}
+
+SetupWizardAccountBuilder &SetupWizardContext::accountBuilder()
+{
+    return _accountBuilder;
+}
+
+AccessManager *SetupWizardContext::accessManager() const
+{
+    return _accessManager;
+}
+
+void SetupWizardContext::resetAccountBuilder()
+{
+    _accountBuilder = {};
+}
+
+} // OCC::Wizard

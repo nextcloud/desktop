@@ -113,6 +113,10 @@ AccountPtr SetupWizardAccountBuilder::build()
 
     newAccountPtr->addApprovedCerts({ _customTrustedCaCertificates.begin(), _customTrustedCaCertificates.end() });
 
+    if (!_defaultSyncTargetDir.isEmpty()) {
+        newAccountPtr->setDefaultSyncRoot(_defaultSyncTargetDir);
+    }
+
     return newAccountPtr;
 }
 
@@ -153,5 +157,10 @@ void SetupWizardAccountBuilder::clearCustomTrustedCaCertificates()
 AbstractAuthenticationStrategy *SetupWizardAccountBuilder::authenticationStrategy() const
 {
     return _authenticationStrategy.get();
+}
+
+void SetupWizardAccountBuilder::setDefaultSyncTargetDir(const QString &syncTargetDir)
+{
+    _defaultSyncTargetDir = syncTargetDir;
 }
 }

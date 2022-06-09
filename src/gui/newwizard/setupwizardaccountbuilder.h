@@ -119,6 +119,9 @@ public:
     QString displayName() const;
     void setDisplayName(const QString &displayName);
 
+    // getter is not needed at the moment
+    void setDefaultSyncTargetDir(const QString &syncTargetDir);
+
     /**
      * Store custom CA certificate for the newly built account.
      * @param customTrustedCaCertificate certificate to store
@@ -146,5 +149,7 @@ private:
     std::unique_ptr<AbstractAuthenticationStrategy> _authenticationStrategy;
 
     QSet<QSslCertificate> _customTrustedCaCertificates;
+
+    QString _defaultSyncTargetDir;
 };
 }

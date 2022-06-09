@@ -87,10 +87,10 @@ private:
 
     // the wizard window keeps at most one widget inside the content widget's layout
     // we keep a pointer in order to be able to delete it (and thus remove it from the window) when replacing the content
-    QPointer<QWidget> _currentContentWidget;
+    QWidget *_currentContentWidget = nullptr;
 
     // need to keep track of the current page for event filtering
-    QPointer<AbstractSetupWizardPage> _currentPage;
+    AbstractSetupWizardPage *_currentPage = nullptr;
     // during a transition, the event filter must be disabled
     bool _transitioning;
 };

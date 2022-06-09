@@ -17,7 +17,9 @@
 #include "account.h"
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
+#include "setupwizardcontext.h"
 #include "setupwizardwindow.h"
+#include "states/abstractsetupwizardstate.h"
 #include "syncmode.h"
 
 #include <QDialog>
@@ -50,16 +52,12 @@ Q_SIGNALS:
     void finished(AccountPtr newAccount, SyncMode syncMode);
 
 private:
-    void nextStep(std::optional<PageIndex> currentPage, std::optional<PageIndex> userName);
+    void nextStep(std::optional<PageIndex> desiredPage);
 
-    SetupWizardWindow *_wizardWindow;
+    SetupWizardContext *_context = nullptr;
 
     // keeping a pointer on the current page allows us to check whether the controller has been initialized yet
     // the pointer is also used to clean up the page
-    QPointer<AbstractSetupWizardPage> _currentPage;
-
-    SetupWizardAccountBuilder _accountBuilder;
-
-    AccessManager *_accessManager;
+    AbstractSetupWizardState *_currentState = nullptr;
 };
 }

@@ -194,7 +194,7 @@ bool SetupWizardWindow::eventFilter(QObject *obj, QEvent *event)
             break;
         }
 
-        if (obj == _currentPage.data() || obj == this) {
+        if (obj == _currentPage || obj == this) {
             if (event->type() == QEvent::KeyPress) {
                 auto keyEvent = dynamic_cast<QKeyEvent *>(event);
 
