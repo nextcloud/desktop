@@ -99,7 +99,7 @@ Systray::Systray()
 
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
 
-#ifdef Q_OS_MACOS
+#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     setUserNotificationCenterDelegate();
     checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
     registerNotificationCategories(QString(tr("Download")));
@@ -307,7 +307,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
         QDBusConnection::sessionBus().asyncCall(method);
     } else
 #endif
-#ifdef Q_OS_OSX
+#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
         if (canOsXSendUserNotification()) {
         sendOsXUserNotification(title, message);
     } else
@@ -319,7 +319,7 @@ void Systray::showMessage(const QString &title, const QString &message, MessageI
 
 void Systray::showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl)
 {
-#ifdef Q_OS_MACOS
+#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     sendOsXUpdateNotification(title, message, webUrl);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
     Q_UNUSED(webUrl);
