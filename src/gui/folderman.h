@@ -25,7 +25,7 @@
 #include "navigationpanehelper.h"
 #include "syncfileitem.h"
 
-#include "newwizard/syncmode.h"
+#include "newwizard/enums.h"
 
 class TestFolderMigration;
 

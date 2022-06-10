@@ -19,7 +19,7 @@ void Navigation::setEntries(const QList<SetupWizardState> &newEntries)
     removeAllItems();
 
     for (const auto state : newEntries) {
-        const QString &text = setupWizardStateToText(state);
+        const QString text = Utility::enumToDisplayName(state);
 
         auto newButton = new QRadioButton(text, this);
 

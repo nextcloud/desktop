@@ -14,10 +14,10 @@
 
 #pragma once
 
+#include "enums.h"
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
 #include "setupwizardcontext.h"
-#include "setupwizardstate.h"
 #include "setupwizardwindow.h"
 
 namespace OCC::Wizard {

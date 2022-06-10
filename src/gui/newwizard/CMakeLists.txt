@@ -1,4 +1,6 @@
 add_library(newwizard STATIC
+    enums.cpp
+
     pages/abstractsetupwizardpage.h
     pages/abstractsetupwizardpage.cpp
 
@@ -39,9 +41,6 @@ add_library(newwizard STATIC
 
     postfixlineedit.cpp
 
-    syncmode.cpp
-
-    states/setupwizardstate.cpp
     states/abstractsetupwizardstate.cpp
     states/serverurlsetupwizardstate.cpp
     states/basiccredentialssetupwizardstate.cpp

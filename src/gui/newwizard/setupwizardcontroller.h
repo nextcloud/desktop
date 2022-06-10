@@ -15,12 +15,12 @@
 #pragma once
 
 #include "account.h"
+#include "enums.h"
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
 #include "setupwizardcontext.h"
 #include "setupwizardwindow.h"
 #include "states/abstractsetupwizardstate.h"
-#include "syncmode.h"
 
 #include <QDialog>
 #include <optional>

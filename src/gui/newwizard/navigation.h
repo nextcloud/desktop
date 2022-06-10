@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "states/setupwizardstate.h"
+#include "enums.h"
 
 #include <QHBoxLayout>
 #include <QMap>
