@@ -1299,11 +1299,8 @@ def step(context):
 @Then('the sync all checkbox should be checked')
 def step(context):
     newAccount = AccountConnectionWizard()
-    test.compare(
-        waitForObjectExists(newAccount.SYNC_DIALOG_ROOT_FOLDER).checkState,
-        "checked",
-        "Assert sync all checkbox is checked",
-    )
+    state = waitForObject(newAccount.SYNC_DIALOG_ROOT_FOLDER)["checkState"]
+    test.compare("checked", state, "Sync all checkbox is checked")
 
 
 @Then("the folders should be in the following order:")
@@ -1466,3 +1463,25 @@ def step(context, username, foldername):
 @Then("credentials wizard should be visible")
 def step(context):
     waitForObject(AccountConnectionWizard.CREDENTIAL_PAGE)
+
+
+@When("the user selects configure_synchronization_manually option in advanced section")
+def step(context):
+    newAccount = AccountConnectionWizard()
+    clickButton(waitForObject(newAccount.CONF_SYNC_MANUALLY_RADIO_BUTTON))
+    clickButton(waitForObject(newAccount.NEXT_BUTTON))
+
+
+@When("the user clicks on the next button in sync connection wizard")
+def step(context):
+    newAccount = AccountConnectionWizard()
+    waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
+    clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+
+
+@When('the user selects "|any|" as a remote destination folder')
+def step(context, folderName):
+    newAccount = AccountConnectionWizard()
+    waitForObject(newAccount.SELECT_REMOTE_DESTINATION_FOLDER_WIZARD)
+    newAccount.selectARootSyncDirectory(folderName)
+    clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))

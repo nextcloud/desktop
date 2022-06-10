@@ -53,11 +53,23 @@ class AccountConnectionWizard:
         "window": names.owncloudWizard_OCC_OwncloudWizard,
     }
     SELECTIVE_SYNC_DIALOG = names.choose_What_to_Sync_OCC_SelectiveSyncDialog
+    SELECT_REMOTE_DESTINATION_FOLDER_WIZARD = (
+        names.add_Folder_Sync_Connection_groupBox_QGroupBox
+    )
+    ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON = (
+        names.add_Folder_Sync_Connection_qt_passive_wizardbutton1_QPushButton
+    )
+    CONF_SYNC_MANUALLY_RADIO_BUTTON = (
+        names.syncModeGroupBox_configureSyncManuallyRadioButton_QRadioButton
+    )
+    ADD_FOLDER_SYNC_CONNECTION_WIZARD = (
+        names.add_Folder_Sync_Connection_FolderWizardSourcePage_OCC_FolderWizardLocalPath
+    )
     SYNC_DIALOG_FOLDER_TREE = names.choose_What_To_Synchronize_QTreeWidget
     SYNC_DIALOG_ROOT_FOLDER = {
         "column": 0,
-        "container": SYNC_DIALOG_FOLDER_TREE,
-        "text": "/",
+        "container": names.add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget,
+        "text": "ownCloud",
         "type": "QModelIndex",
     }
     SYNC_DIALOG_OK_BUTTON = {
@@ -182,4 +194,15 @@ class AccountConnectionWizard:
                     "visible": True,
                 }
             )
+        )
+
+    def selectARootSyncDirectory(self, folderName):
+        squish.mouseClick(
+            squish.waitForObjectItem(
+                names.groupBox_folderTreeWidget_QTreeWidget, folderName
+            ),
+            0,
+            0,
+            squish.Qt.NoModifier,
+            squish.Qt.LeftButton,
         )
