@@ -103,7 +103,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (column) {
         case Columns::Image: {
-            auto it = _images.find(item.getId());
+            auto it = _images.constFind(item.getId());
             if (it != _images.cend()) {
                 return QVariant::fromValue(*it);
             }
@@ -125,13 +125,16 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             });
             job->start();
             return _images[item.getId()];
-        } break;
+        }
+        default:
+            return {};
         }
     case Qt::SizeHintRole: {
         switch (column) {
-        case Columns::Image: {
+        case Columns::Image:
             return ImageSizeC;
-        }
+        default:
+            return {};
         }
     }
     }

@@ -89,10 +89,10 @@ class SelectiveSyncDialog : public QDialog
     Q_OBJECT
 public:
     // Dialog for a specific folder (used from the account settings button)
-    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    explicit SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent = nullptr, Qt::WindowFlags f = {});
 
     // Dialog for the whole account (Used from the wizard)
-    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, QWidget *parent = nullptr, Qt::WindowFlags f = nullptr);
+    explicit SelectiveSyncDialog(AccountPtr account, const QString &folder, QWidget *parent = nullptr, Qt::WindowFlags f = {});
 
     void accept() override;
 

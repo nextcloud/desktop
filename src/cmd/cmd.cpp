@@ -540,6 +540,8 @@ int main(int argc, char **argv)
         });
     } else {
         QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
+            Q_UNUSED(reply)
+
             qCritical() << "SSL error encountered";
             for (auto e : errors) {
                 qCritical() << e.errorString();

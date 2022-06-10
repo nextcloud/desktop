@@ -109,6 +109,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
     auto checkServerJob = CheckServerJobFactory(nam).startJob(_account->url());
 
     connect(nam, &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
+        Q_UNUSED(reply)
         Q_EMIT sslErrors(errors);
     });
 

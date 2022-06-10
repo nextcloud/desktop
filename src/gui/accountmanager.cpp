@@ -51,7 +51,6 @@ const QString userUUIDC()
 static const char caCertsKeyC[] = "CaCertificates";
 static const char accountsC[] = "Accounts";
 static const char versionC[] = "version";
-static const char serverVersionC[] = "serverVersion";
 
 auto capabilitesC()
 {

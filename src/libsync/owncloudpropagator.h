@@ -376,9 +376,9 @@ public:
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
         , _syncOptions(options)
-        , _webDavUrl(baseUrl)
         , _localDir((localDir.endsWith(QLatin1Char('/'))) ? localDir : localDir + QLatin1Char('/'))
         , _remoteFolder((remoteFolder.endsWith(QLatin1Char('/'))) ? remoteFolder : remoteFolder + QLatin1Char('/'))
+        , _webDavUrl(baseUrl)
     {
         _chunkSize = _syncOptions._initialChunkSize;
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
