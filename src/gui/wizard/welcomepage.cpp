@@ -84,9 +84,6 @@ void WelcomePage::setupSlideShow()
 
 void WelcomePage::setupLoginButton()
 {
-    const auto appName = Theme::instance()->appNameGUI();
-
-    _ui->loginButton->setText(tr("Log in to your %1").arg(appName));
     connect(_ui->loginButton, &QPushButton::clicked, this, [this](bool /*checked*/) {
         _nextPage = WizardCommon::Page_ServerSetup;
         _ocWizard->next();
