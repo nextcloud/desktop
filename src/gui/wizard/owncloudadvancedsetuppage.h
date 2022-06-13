@@ -20,6 +20,7 @@
 
 #include "wizard/owncloudwizardcommon.h"
 #include "ui_owncloudadvancedsetuppage.h"
+#include "elidedlabel.h"
 
 class QProgressIndicator;
 
@@ -76,7 +77,6 @@ private:
     QString checkLocalSpace(qint64 remoteSize) const;
     void customizeStyle();
     void setServerAddressLabelUrl(const QUrl &url);
-    void setLocalFolderPushButtonPath(const QString &path);
     void styleSyncLogo();
     void styleLocalFolderLabel();
     void setResolutionGuiVisible(bool value);
@@ -93,10 +93,12 @@ private:
     bool _localFolderValid = false;
     QProgressIndicator *_progressIndi;
     QString _remoteFolder;
+    QString _localPath;
     QStringList _selectiveSyncBlacklist;
     qint64 _rSize = -1;
     qint64 _rSelectedSize = -1;
     OwncloudWizard *_ocWizard;
+    QScopedPointer<ElidedLabel> _filePathLabel;
 };
 
 } // namespace OCC
