@@ -15,14 +15,15 @@ Button {
     property color textColor: Style.ncTextColor
     property color textColorHovered: textColor
 
-    property color bgColor: "transparent"
+    property alias bgColor: bgRectangle.color
 
     property bool bold: false
 
     property real bgOpacity: 0.3
 
     background: Rectangle {
-        color: root.bgColor
+        id: bgRectangle
+        color: "transparent"
         opacity: parent.hovered ? 1.0 : bgOpacity
         radius: width / 2
     }
