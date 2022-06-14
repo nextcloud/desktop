@@ -17,6 +17,9 @@ MouseArea {
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
     readonly property bool isCallActivity: model.objectType === "call"
 
+    property color adjustedHeaderColor: Theme.darkMode ? Qt.lighter(UserModel.currentUser.headerColor, 2)
+                                                       : Qt.darker(UserModel.currentUser.headerColor, 1.5)
+
     signal fileActivityButtonClicked(string absolutePath)
 
     enabled: (model.path !== "" || model.link !== "" || model.isCurrentUserFileActivity === true)
@@ -74,6 +77,8 @@ MouseArea {
 
             activityData: model
 
+            adjustedHeaderColor: root.adjustedHeaderColor
+
             onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.absolutePath)
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.index)
         }
@@ -112,6 +117,8 @@ MouseArea {
             maxActionButtons: activityModel.maxActionButtons
 
             flickable: root.flickable
+
+            adjustedHeaderColor: root.adjustedHeaderColor
 
             onTriggerAction: activityModel.slotTriggerAction(model.index, actionIndex)
             onShowReplyField: root.toggleReplyOptions()
