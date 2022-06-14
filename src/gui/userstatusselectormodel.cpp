@@ -301,7 +301,6 @@ Optional<ClearAt> UserStatusSelectorModel::clearStageTypeToDateTime(ClearStageTy
 
 void UserStatusSelectorModel::setUserStatus()
 {
-    Q_ASSERT(_userStatusConnector);
     if (!_userStatusConnector) {
         return;
     }
@@ -312,7 +311,6 @@ void UserStatusSelectorModel::setUserStatus()
 
 void UserStatusSelectorModel::clearUserStatus()
 {
-    Q_ASSERT(_userStatusConnector);
     if (!_userStatusConnector) {
         return;
     }
