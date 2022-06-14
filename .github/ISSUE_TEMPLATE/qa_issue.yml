@@ -1,0 +1,78 @@
+name: "QA issue"
+description: "Issues created by the ownCloud desktop client QA team"
+labels: ["QA:team"]
+title: "[QA] "
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      **This form is meant for the ownCloud desktop client QA team!** In case you want to report a bug or request a feature, please use the corresponding forms.
+
+      **Please note: this is an issue tracker.** Questions are best asked in our [**community forum**](https://central.owncloud.org) or our [**community chat**](https://talk.owncloud.org)!
+
+- type: checkboxes
+  id: presubmission-checks
+  attributes:
+    label: Pre-submission Checks
+    description: |
+      Before submitting your feature proposal, please make sure you fulfill the following criteria. Otherwise, your issue will most likely be dismissed.
+    options:
+      - label: I [checked for similar issues](https://github.com/owncloud/client/issues?q=), but could not find any. I also checked the closed issues. I could not contribute additional information to any existing issue.
+        required: true
+      - label: I will take the time to fill in all the required fields. I know that the bug report may be dismissed otherwise due to lack of information.
+        required: true
+
+- type: textarea
+  id: description
+  attributes:
+    label: Describe the QA issue
+    description: |
+      Please describe your issue, including as many details as possible.
+      Is your issue related to an existing issue? In this case, please describe the problem or provide a link to the issue.
+    placeholder: "While testing ..., I noticed the following problem: ..."
+  validations:
+    required: true
+
+- type: textarea
+  id: reproduce
+  attributes:
+    label: Steps to reproduce the issue
+    description: |
+      Ideally, we can reproduce the issue using steps you describe to us. This allows us to perform our own tests and thus better understand the issue.
+      Please don't hesitate to add as many details as possible.
+    placeholder: |
+      1. Enter [...] into [...]
+      2. Click on [...]
+      3. Scroll down to [...]
+      4. See the error message
+  validations:
+    required: true
+
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: Please add screenshots if possible that visualize your problem and/or show how to reproduce the bug.
+    placeholder: Add your screenshots here!
+  validations:
+    required: true
+
+- type: textarea
+  id: expected-behavior
+  attributes:
+    label: Expected behavior
+    description: Please explain which behavior you expected from the application. We need to know what you think should have happened.
+    placeholder: "I expected to see [...]"
+
+- type: textarea
+  id: actual-behavior
+  attributes:
+    label: Actual behavior
+    description: Please explain what behavior you actually experienced. Please do not hesitate to provide a detailed description. The better we understand what has happened, the easier we can solve the problem.
+    placeholder: "The client unexpectedly [...]"
+
+- type: markdown
+  attributes:
+    value: |
+      **This form is meant for the ownCloud desktop client QA team!** In case you want to report a bug or request a feature, please use the corresponding forms.
