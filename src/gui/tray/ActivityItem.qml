@@ -20,8 +20,6 @@ MouseArea {
     property color adjustedHeaderColor: Theme.darkMode ? Qt.lighter(UserModel.currentUser.headerColor, 2)
                                                        : Qt.darker(UserModel.currentUser.headerColor, 1.5)
 
-    signal fileActivityButtonClicked(string absolutePath)
-
     enabled: (model.path !== "" || model.link !== "" || model.isCurrentUserFileActivity === true)
     hoverEnabled: true
 
