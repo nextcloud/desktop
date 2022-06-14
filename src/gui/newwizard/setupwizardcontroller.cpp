@@ -11,6 +11,8 @@
 #include "states/basiccredentialssetupwizardstate.h"
 #include "states/oauthcredentialssetupwizardstate.h"
 #include "states/serverurlsetupwizardstate.h"
+#include "states/webfingersetupwizardstate.h"
+#include "theme.h"
 
 #include <QClipboard>
 #include <QTimer>
@@ -26,11 +28,20 @@ SetupWizardController::SetupWizardController(QWidget *parent)
     , _context(new SetupWizardContext(parent, this))
 {
     // initialize pagination
-    _context->window()->setNavigationEntries({
-        SetupWizardState::ServerUrlState,
-        SetupWizardState::CredentialsState,
-        SetupWizardState::AccountConfiguredState,
-    });
+    if (Theme::instance()->wizardEnableWebfinger()) {
+        _context->window()->setNavigationEntries({
+            SetupWizardState::ServerUrlState,
+            SetupWizardState::WebFingerState,
+            SetupWizardState::CredentialsState,
+            SetupWizardState::AccountConfiguredState,
+        });
+    } else {
+        _context->window()->setNavigationEntries({
+            SetupWizardState::ServerUrlState,
+            SetupWizardState::CredentialsState,
+            SetupWizardState::AccountConfiguredState,
+        });
+    }
 
     // set up initial state
     changeStateTo(SetupWizardState::FirstState);
@@ -59,7 +70,13 @@ SetupWizardController::SetupWizardController(QWidget *parent)
 
         qCDebug(lcSetupWizardController) << "back button clicked, current state" << _currentState;
 
-        const auto previousState = static_cast<SetupWizardState>(currentStateIdx - 1);
+        auto previousState = static_cast<SetupWizardState>(currentStateIdx - 1);
+
+        // skip WebFinger page when WebFinger is not available
+        if (previousState == SetupWizardState::WebFingerState && !Theme::instance()->wizardEnableWebfinger()) {
+            previousState = SetupWizardState::ServerUrlState;
+        }
+
         changeStateTo(previousState);
     });
 }
@@ -84,6 +101,10 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
     switch (nextState) {
     case SetupWizardState::ServerUrlState: {
         _currentState = new ServerUrlSetupWizardState(_context);
+        break;
+    }
+    case SetupWizardState::WebFingerState: {
+        _currentState = new WebFingerSetupWizardState(_context);
         break;
     }
     case SetupWizardState::CredentialsState: {
@@ -118,6 +139,15 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
 
         switch (_currentState->state()) {
         case SetupWizardState::ServerUrlState: {
+            if (Theme::instance()->wizardEnableWebfinger()) {
+                changeStateTo(SetupWizardState::WebFingerState);
+            } else {
+                changeStateTo(SetupWizardState::CredentialsState);
+            }
+            return;
+            Q_FALLTHROUGH();
+        }
+        case SetupWizardState::WebFingerState: {
             changeStateTo(SetupWizardState::CredentialsState);
             return;
         }

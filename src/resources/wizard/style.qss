@@ -26,6 +26,7 @@
 #contentWidget #serverUrlLabel,
 #contentWidget #youreAllSetLabel,
 #contentWidget #enterYourCredentialsLabel,
+#contentWidget #enterYourUsernameLabel,
 #contentWidget #urlLabel,
 #contentWidget #usernameLabel,
 #contentWidget #passwordLabel,

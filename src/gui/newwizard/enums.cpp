@@ -29,6 +29,8 @@ QString OCC::Utility::enumToDisplayName(SetupWizardState state)
     switch (state) {
     case SetupWizardState::ServerUrlState:
         return QApplication::translate(contextC, "Server URL");
+    case SetupWizardState::WebFingerState:
+        return QApplication::translate(contextC, "WebFinger");
     case SetupWizardState::CredentialsState:
         return QApplication::translate(contextC, "Credentials");
     case SetupWizardState::AccountConfiguredState:

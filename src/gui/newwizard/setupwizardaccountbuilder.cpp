@@ -96,6 +96,11 @@ DetermineAuthTypeJob::AuthType SetupWizardAccountBuilder::authType()
     return _authType;
 }
 
+void SetupWizardAccountBuilder::setWebFingerUsername(const QString &username)
+{
+    _webFingerUsername = username;
+}
+
 AccountPtr SetupWizardAccountBuilder::build()
 {
     auto newAccountPtr = Account::create();
@@ -162,5 +167,20 @@ AbstractAuthenticationStrategy *SetupWizardAccountBuilder::authenticationStrateg
 void SetupWizardAccountBuilder::setDefaultSyncTargetDir(const QString &syncTargetDir)
 {
     _defaultSyncTargetDir = syncTargetDir;
+}
+
+QString SetupWizardAccountBuilder::webFingerUsername() const
+{
+    return _webFingerUsername;
+}
+
+void SetupWizardAccountBuilder::setWebFingerServerUrl(const QUrl &webFingerServerUrl)
+{
+    _webFingerServerUrl = webFingerServerUrl;
+}
+
+QUrl SetupWizardAccountBuilder::webFingerServerUrl() const
+{
+    return _webFingerServerUrl;
 }
 }

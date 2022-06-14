@@ -449,6 +449,11 @@ public:
      */
     virtual bool allowDuplicatedFolderSyncPair() const;
 
+    /**
+     * Enable Webfinger page in setup wizard.
+     */
+    virtual bool wizardEnableWebfinger() const;
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;

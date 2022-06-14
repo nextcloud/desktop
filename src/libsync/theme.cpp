@@ -686,6 +686,11 @@ bool Theme::allowDuplicatedFolderSyncPair() const
     return true;
 }
 
+bool Theme::wizardEnableWebfinger() const
+{
+    return false;
+}
+
 template <>
 OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(Theme::UserIDType userIdType)
 {

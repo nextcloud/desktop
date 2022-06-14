@@ -44,6 +44,14 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
     _ui->appPasswordLabel->setText(tr("Click <a href='%1' style='color: %2;'>here</a> to set up an app password.").arg(appPasswordUrl, linkColor));
 }
 
+BasicCredentialsSetupWizardPage *BasicCredentialsSetupWizardPage::createForWebFinger(const QUrl &serverUrl, const QString &username)
+{
+    auto page = new BasicCredentialsSetupWizardPage(serverUrl);
+    page->_ui->usernameLineEdit->setText(username);
+    page->_ui->usernameLineEdit->setEnabled(false);
+    return page;
+}
+
 QString BasicCredentialsSetupWizardPage::username() const
 {
     return _ui->usernameLineEdit->text();

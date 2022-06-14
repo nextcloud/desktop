@@ -97,11 +97,27 @@ public:
     SetupWizardAccountBuilder();
 
     /**
-     * Set server URL.
+     * Set ownCloud server URL as well as the authentication type that needs to be used with this server.
      * @param serverUrl URL to server
      */
     void setServerUrl(const QUrl &serverUrl, DetermineAuthTypeJob::AuthType workflowType);
     QUrl serverUrl() const;
+
+    /**
+     * Set URL of WebFinger server used to look up the user's server.
+     * Only used when WebFinger support is enabled by the theme.
+     * @param webFingerServerUrl URL to WebFinger server
+     */
+    void setWebFingerServerUrl(const QUrl &webFingerServerUrl);
+    QUrl webFingerServerUrl() const;
+
+    /**
+     * Set URL of WebFinger server used to look up the user's server.
+     * Only used when WebFinger support is enabled by the theme.
+     * @param username
+     */
+    void setWebFingerUsername(const QString &username);
+    QString webFingerUsername() const;
 
     // TODO: move this out of the class's state
     DetermineAuthTypeJob::AuthType authType();
@@ -142,11 +158,14 @@ public:
 private:
     QUrl _serverUrl;
 
-    QString _displayName;
+    QString _webFingerUsername;
+    QUrl _webFingerServerUrl;
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 
     std::unique_ptr<AbstractAuthenticationStrategy> _authenticationStrategy;
+
+    QString _displayName;
 
     QSet<QSslCertificate> _customTrustedCaCertificates;
 

@@ -15,6 +15,7 @@
 #include "serverurlsetupwizardstate.h"
 #include "determineauthtypejobfactory.h"
 #include "jobs/resolveurljobfactory.h"
+#include "theme.h"
 
 #include <QDebug>
 #include <QMessageBox>
@@ -33,7 +34,15 @@ Q_LOGGING_CATEGORY(lcSetupWizardServerUrlState, "setupwizard.states.serverurl");
 ServerUrlSetupWizardState::ServerUrlSetupWizardState(SetupWizardContext *context)
     : AbstractSetupWizardState(context)
 {
-    _page = new ServerUrlSetupWizardPage(_context->accountBuilder().serverUrl());
+    auto serverUrl = [this]() {
+        if (Theme::instance()->wizardEnableWebfinger()) {
+            return _context->accountBuilder().webFingerServerUrl();
+        } else {
+            return _context->accountBuilder().serverUrl();
+        }
+    }();
+
+    _page = new ServerUrlSetupWizardPage(serverUrl);
 }
 
 SetupWizardState ServerUrlSetupWizardState::state() const
@@ -105,20 +114,25 @@ void ServerUrlSetupWizardState::evaluatePage()
 
             const auto resolvedUrl = qvariant_cast<QUrl>(resolveJob->result());
 
-            // next, we need to find out which kind of authentication page we have to present to the user
-            auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(resolvedUrl);
-
-            connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
-                authTypeJob->deleteLater();
-
-                if (authTypeJob->result().isNull()) {
-                    Q_EMIT evaluationFailed(authTypeJob->errorMessage());
-                    return;
-                }
-
-                _context->accountBuilder().setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
+            if (Theme::instance()->wizardEnableWebfinger()) {
+                _context->accountBuilder().setWebFingerServerUrl(resolvedUrl);
                 Q_EMIT evaluationSuccessful();
-            });
+            } else {
+                // next, we need to find out which kind of authentication page we have to present to the user
+                auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager(), this).startJob(resolvedUrl);
+
+                connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
+                    authTypeJob->deleteLater();
+
+                    if (authTypeJob->result().isNull()) {
+                        Q_EMIT evaluationFailed(authTypeJob->errorMessage());
+                        return;
+                    }
+
+                    _context->accountBuilder().setServerUrl(resolvedUrl, qvariant_cast<DetermineAuthTypeJob::AuthType>(authTypeJob->result()));
+                    Q_EMIT evaluationSuccessful();
+                });
+            }
         });
 
         connect(

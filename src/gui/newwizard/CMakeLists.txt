@@ -8,6 +8,10 @@ add_library(newwizard STATIC
     pages/serverurlsetupwizardpage.h
     pages/serverurlsetupwizardpage.cpp
 
+    pages/webfingersetupwizardpage.ui
+    pages/webfingersetupwizardpage.h
+    pages/webfingersetupwizardpage.cpp
+
     pages/basiccredentialssetupwizardpage.ui
     pages/basiccredentialssetupwizardpage.h
     pages/basiccredentialssetupwizardpage.cpp
@@ -43,6 +47,7 @@ add_library(newwizard STATIC
 
     states/abstractsetupwizardstate.cpp
     states/serverurlsetupwizardstate.cpp
+    states/webfingersetupwizardstate.cpp
     states/basiccredentialssetupwizardstate.cpp
     states/oauthcredentialssetupwizardstate.cpp
     states/accountconfiguredsetupwizardstate.cpp

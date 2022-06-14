@@ -30,6 +30,8 @@ public:
     BasicCredentialsSetupWizardPage(const QUrl &serverUrl);
     ~BasicCredentialsSetupWizardPage() noexcept override;
 
+    static BasicCredentialsSetupWizardPage *createForWebFinger(const QUrl &serverUrl, const QString &username);
+
     QString username() const;
     QString password() const;
 

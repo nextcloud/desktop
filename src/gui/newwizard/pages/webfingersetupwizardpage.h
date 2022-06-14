@@ -14,38 +14,28 @@
 
 #pragma once
 
-#include "common/utility.h"
-#include "enums.h"
+#include "abstractsetupwizardpage.h"
 
-#include <QObject>
-
-namespace OCC::Wizard {
-Q_NAMESPACE
-
-enum class SetupWizardState {
-    ServerUrlState,
-    FirstState = ServerUrlState,
-
-    WebFingerState,
-
-    CredentialsState,
-
-    AccountConfiguredState,
-    FinalState = AccountConfiguredState,
-};
-Q_ENUM_NS(SetupWizardState)
-
-enum class SyncMode {
-    Invalid = 0,
-    SyncEverything,
-    ConfigureUsingFolderWizard,
-    UseVfs,
-};
-Q_ENUM_NS(SyncMode)
-
+namespace Ui {
+class WebFingerSetupWizardPage;
 }
 
-namespace OCC {
-template <>
-QString Utility::enumToDisplayName(Wizard::SetupWizardState state);
+namespace OCC::Wizard {
+
+class WebFingerSetupWizardPage : public AbstractSetupWizardPage
+{
+    Q_OBJECT
+
+public:
+    WebFingerSetupWizardPage(const QUrl &serverUrl);
+    ~WebFingerSetupWizardPage() noexcept override;
+
+    QString username() const;
+
+    bool validateInput() override;
+
+private:
+    ::Ui::WebFingerSetupWizardPage *_ui;
+};
+
 }
