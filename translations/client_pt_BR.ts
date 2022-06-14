@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="169"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>RótuloTexto</translation>
     </message>
 </context>
 <context>
