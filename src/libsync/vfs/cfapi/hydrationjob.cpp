@@ -226,8 +226,6 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
 
 void OCC::HydrationJob::cancel()
 {
-    Q_ASSERT(_signalSocket);
-
     _isCancelled = true;
     if (_job) {
         _job->cancel();
