@@ -64,4 +64,10 @@ bool OAuthCredentialsSetupWizardPage::validateInput()
     return false;
 }
 
+void OAuthCredentialsSetupWizardPage::setButtonsEnabled(bool enabled)
+{
+    _ui->copyUrlToClipboardButton->setEnabled(enabled);
+    _ui->openBrowserButton->setEnabled(enabled);
+}
+
 } // namespace OCC::Wizard

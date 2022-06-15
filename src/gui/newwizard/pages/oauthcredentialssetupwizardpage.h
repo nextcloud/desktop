@@ -33,6 +33,8 @@ public:
 
     bool validateInput() override;
 
+    void setButtonsEnabled(bool enabled);
+
 Q_SIGNALS:
     void openBrowserButtonPushed();
     void copyUrlToClipboardButtonPushed();

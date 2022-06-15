@@ -15,6 +15,7 @@
 #include <QApplication>
 #include <QClipboard>
 
+#include "gui/application.h"
 #include "oauthcredentialssetupwizardstate.h"
 
 namespace OCC::Wizard {
@@ -60,10 +61,15 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
         oAuth->openBrowser();
     });
 
+    oAuthCredentialsPage->setButtonsEnabled(false);
+    connect(oAuth, &OAuth::authorisationLinkChanged, this, [oAuthCredentialsPage]() {
+        oAuthCredentialsPage->setButtonsEnabled(true);
+    });
+
     connect(oAuthCredentialsPage, &OAuthCredentialsSetupWizardPage::copyUrlToClipboardButtonPushed, this, [oAuth]() {
-        // TODO: use authorisationLinkAsync
-        auto link = oAuth->authorisationLink().toString();
-        QApplication::clipboard()->setText(link);
+        const auto link = oAuth->authorisationLink();
+        Q_ASSERT(!link.isEmpty());
+        ocApp()->clipboard()->setText(link.toString());
     });
 
     // moving to next page is only possible once we see a request to our embedded web server

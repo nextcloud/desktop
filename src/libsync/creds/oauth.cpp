@@ -247,15 +247,15 @@ void OAuth::startAuthentication()
                 _clientId = clientId;
                 _clientSecret = clientSecret;
                 Q_EMIT dynamicRegistrationDataReceived(dynamicRegistrationData);
-                Q_EMIT authorisationLinkChanged(authorisationLink());
+                Q_EMIT authorisationLinkChanged();
             });
             connect(job, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
                 qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
-                Q_EMIT authorisationLinkChanged(authorisationLink());
+                Q_EMIT authorisationLinkChanged();
             });
             job->start();
         } else {
-            Q_EMIT authorisationLinkChanged(authorisationLink());
+            Q_EMIT authorisationLinkChanged();
         }
     });
     fetchWellKnown();
@@ -476,6 +476,8 @@ QByteArray OAuth::generateRandomString(size_t size) const
 QUrl OAuth::authorisationLink() const
 {
     Q_ASSERT(_server.isListening());
+    Q_ASSERT(_wellKnownFinished);
+
     const QByteArray code_challenge = QCryptographicHash::hash(_pkceCodeVerifier, QCryptographicHash::Sha256)
                                           .toBase64(QByteArray::Base64UrlEncoding | QByteArray::OmitTrailingEquals);
     QUrlQuery query { { QStringLiteral("response_type"), QStringLiteral("code") },
@@ -497,16 +499,8 @@ QUrl OAuth::authorisationLink() const
     const QUrl url = _authEndpoint.isValid()
         ? Utility::concatUrlPath(_authEndpoint, {}, query)
         : Utility::concatUrlPath(_serverUrl, QStringLiteral("/index.php/apps/oauth2/authorize"), query);
-    return url;
-}
 
-void OAuth::authorisationLinkAsync(std::function<void (const QUrl &)> callback) const
-{
-    if (_wellKnownFinished) {
-        callback(authorisationLink());
-    } else {
-        connect(this, &OAuth::authorisationLinkChanged, callback);
-    }
+    return url;
 }
 
 void OAuth::fetchWellKnown()
@@ -573,22 +567,22 @@ bool isUrlValid(const QUrl &url)
 
 void OAuth::openBrowser()
 {
-    authorisationLinkAsync([this](const QUrl &link) {
-        if (!isUrlValid(link)) {
-            qCWarning(lcOauth) << "URL validation failed";
-            QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
-                Q_ARG(QString, tr("Oauth2 Error")),
-                Q_ARG(QString, tr("Oauth2 authentication requires a secured connection.")));
-            emit result(Error, QString());
-            return;
-        }
+    Q_ASSERT(!authorisationLink().isEmpty());
 
-        if (!QDesktopServices::openUrl(link)) {
-            qCWarning(lcOauth) << "QDesktopServices::openUrl Failed";
-            // We cannot open the browser, then we claim we don't support OAuth.
-            emit result(NotSupported, QString());
-        }
-    });
+    if (!isUrlValid(authorisationLink())) {
+        qCWarning(lcOauth) << "URL validation failed";
+        QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
+            Q_ARG(QString, tr("Oauth2 Error")),
+            Q_ARG(QString, tr("Oauth2 authentication requires a secured connection.")));
+        emit result(Error, QString());
+        return;
+    }
+
+    if (!QDesktopServices::openUrl(authorisationLink())) {
+        qCWarning(lcOauth) << "QDesktopServices::openUrl Failed";
+        // We cannot open the browser, then we claim we don't support OAuth.
+        emit result(NotSupported, QString());
+    }
 }
 
 AccountBasedOAuth::AccountBasedOAuth(AccountPtr account, QObject *parent)

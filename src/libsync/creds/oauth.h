@@ -67,12 +67,6 @@ public:
     void refreshAuthentication(const QString &refreshToken);
     void openBrowser();
     QUrl authorisationLink() const;
-    /**
-     * Call the callback when the call to the well-known endpoint finishes.
-     * (or immediatly if it is ready)
-     * The callback will not be called if this object gets destroyed
-     */
-    void authorisationLinkAsync(std::function<void(const QUrl&)> callback) const;
 
 Q_SIGNALS:
     /**
@@ -84,7 +78,7 @@ Q_SIGNALS:
     /**
      * emitted when the call to the well-known endpoint is finished
      */
-    void authorisationLinkChanged(const QUrl &);
+    void authorisationLinkChanged();
 
     void refreshError(QNetworkReply::NetworkError error, const QString &errorString);
     void refreshFinished(const QString &accessToken, const QString &refreshToken);

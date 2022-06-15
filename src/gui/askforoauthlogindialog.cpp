@@ -35,6 +35,14 @@ AskForOAuthLoginDialog::AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *p
 
     setFixedSize(this->sizeHint());
 
+    auto creds = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials());
+    Q_ASSERT(creds != nullptr);
+
+    connect(creds, &HttpCredentialsGui::authorisationLinkChanged, this, [this]() {
+        _ui->copyUrlToClipboardButton->setEnabled(true);
+        _ui->openBrowserButton->setEnabled(true);
+    });
+
     connect(_ui->openBrowserButton, &QPushButton::clicked, this, [this, accountPtr]() {
         qobject_cast<HttpCredentialsGui *>(accountPtr->credentials())->openBrowser();
         _ui->openBrowserButton->setText(tr("Reopen browser"));
