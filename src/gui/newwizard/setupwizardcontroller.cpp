@@ -7,6 +7,7 @@
 #include "gui/folderman.h"
 #include "jobs/checkbasicauthjobfactory.h"
 #include "jobs/resolveurljobfactory.h"
+#include "logging.h"
 #include "networkjobs/fetchuserinfojobfactory.h"
 #include "pages/accountconfiguredwizardpage.h"
 #include "pages/basiccredentialssetupwizardpage.h"
@@ -100,7 +101,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                 if (!std::any_of(supportedUrlSchemesC.begin(), supportedUrlSchemesC.end(), [userProvidedUrl](const QString &scheme) {
                         return userProvidedUrl.startsWith(scheme);
                     })) {
-                    qDebug() << "no URL scheme provided, prepending default URL scheme" << defaultUrlSchemeC;
+                    qCDebug(lcWizard) << "no URL scheme provided, prepending default URL scheme" << defaultUrlSchemeC;
                     userProvidedUrl.prepend(defaultUrlSchemeC);
                 }
 

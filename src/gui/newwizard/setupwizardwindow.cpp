@@ -4,6 +4,7 @@
 #include "gui/application.h"
 #include "gui/owncloudgui.h"
 #include "gui/settingsdialog.h"
+#include "logging.h"
 #include "theme.h"
 
 #include <QLabel>
@@ -66,7 +67,7 @@ SetupWizardWindow::SetupWizardWindow(QWidget *parent)
     if (OC_ENSURE(fusionStyle != nullptr)) {
         _ui->contentWidget->setStyle(fusionStyle);
     } else {
-        qDebug() << "Could not set up default style, wizard contents will be shown using default style";
+        qCDebug(lcWizard) << "Could not set up default style, wizard contents will be shown using default style";
     }
 
     loadStylesheet();
@@ -85,7 +86,7 @@ void SetupWizardWindow::loadStylesheet()
     QFile file(path);
     Q_ASSERT(file.exists());
     if (!OC_ENSURE(file.open(QIODevice::ReadOnly))) {
-        qCritical() << "failed to load stylesheet";
+        qCCritical(lcWizard) << "failed to load stylesheet";
     }
 
     QString stylesheet = replaceCssColors(QString::fromUtf8(file.readAll()));

@@ -40,6 +40,8 @@ add_library(newwizard STATIC
     postfixlineedit.cpp
 
     syncmode.cpp
+
+    logging.cpp
 )
 target_link_libraries(newwizard PUBLIC Qt5::Widgets libsync)
 set_target_properties(newwizard PROPERTIES AUTOUIC ON AUTORCC ON)
