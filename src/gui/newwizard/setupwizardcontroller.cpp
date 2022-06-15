@@ -43,17 +43,18 @@ SetupWizardController::SetupWizardController(QWidget *parent)
 
     // allow settings dialog to clean up the wizard controller and all the objects it created
     connect(_wizardWindow, &SetupWizardWindow::rejected, this, [this]() {
+        qCDebug(lcWizard) << "wizard window closed";
         Q_EMIT finished(nullptr, SyncMode::Invalid);
     });
 
     connect(_wizardWindow, &SetupWizardWindow::paginationEntryClicked, this, [this, paginationEntries](PageIndex currentPage, PageIndex clickedPageIndex) {
         Q_ASSERT(currentPage < paginationEntries.size());
-
+        qCDebug(lcWizard) << "pagination entry clicked: current page" << currentPage << "clicked page" << clickedPageIndex;
         nextStep(currentPage, clickedPageIndex);
     });
     connect(_wizardWindow, &SetupWizardWindow::nextButtonClicked, this, [this, paginationEntries](PageIndex currentPage) {
         Q_ASSERT(currentPage < paginationEntries.size());
-
+        qCDebug(lcWizard) << "next button clicked on current page" << currentPage;
         nextStep(currentPage, std::nullopt);
     });
 
@@ -61,7 +62,7 @@ SetupWizardController::SetupWizardController(QWidget *parent)
     connect(_wizardWindow, &SetupWizardWindow::backButtonClicked, this, [this](PageIndex currentPage) {
         // back button should be disabled on the first page
         Q_ASSERT(currentPage > 0);
-
+        qCDebug(lcWizard) << "back button clicked on current page" << currentPage;
         nextStep(currentPage, currentPage - 1);
     });
 }
