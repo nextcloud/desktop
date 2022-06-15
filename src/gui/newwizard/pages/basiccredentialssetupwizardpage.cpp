@@ -32,20 +32,7 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
         _ui->usernameLineEdit->setFocus();
     });
 
-    // branding
-    const QString usernameLabelText = []() {
-        switch (Theme::instance()->userIDType()) {
-        case Theme::UserIDUserName:
-            return tr("Username");
-        case Theme::UserIDEmail:
-            return tr("E-mail address");
-        case Theme::UserIDCustom:
-            return Theme::instance()->customUserID();
-        default:
-            Q_UNREACHABLE();
-        }
-    }();
-
+    const QString usernameLabelText = Utility::enumToDisplayName(Theme::instance()->userIDType());
     _ui->usernameLabel->setText(usernameLabelText);
     _ui->usernameLineEdit->setPlaceholderText(usernameLabelText);
 

@@ -15,9 +15,11 @@
 #ifndef _THEME_H
 #define _THEME_H
 
+#include "common/utility.h"
+#include "syncresult.h"
+
 #include <QFileInfo>
 #include <QObject>
-#include "syncresult.h"
 
 class QIcon;
 class QString;
@@ -477,5 +479,8 @@ private:
     const bool _hasBrandedDark = hasTheme(IconType::BrandedIcon, QStringLiteral("dark"));
 #endif
 };
+
+template <>
+QString OCC::Utility::enumToDisplayName(Theme::UserIDType userIdType);
 }
 #endif // _THEME_H

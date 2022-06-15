@@ -686,5 +686,19 @@ bool Theme::allowDuplicatedFolderSyncPair() const
     return true;
 }
 
+template <>
+OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(Theme::UserIDType userIdType)
+{
+    switch (userIdType) {
+    case Theme::UserIDUserName:
+        return QCoreApplication::tr("Username");
+    case Theme::UserIDEmail:
+        return QCoreApplication::tr("E-mail address");
+    case Theme::UserIDCustom:
+        return Theme::instance()->customUserID();
+    default:
+        Q_UNREACHABLE();
+    }
+}
 
 } // end namespace client
