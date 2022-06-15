@@ -86,7 +86,6 @@ void cfApiSendTransferInfo(const CF_CONNECTION_KEY &connectionKey, const CF_TRAN
 
 void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const CF_CALLBACK_PARAMETERS *callbackParameters)
 {
-    qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart;
     const auto sendTransferError = [=] {
         cfApiSendTransferInfo(callbackInfo->ConnectionKey,
                               callbackInfo->TransferKey,
@@ -111,6 +110,8 @@ void CALLBACK cfApiFetchDataCallback(const CF_CALLBACK_INFO *callbackInfo, const
     Q_ASSERT(vfs->metaObject()->className() == QByteArrayLiteral("OCC::VfsCfApi"));
     const auto path = QString(QString::fromWCharArray(callbackInfo->VolumeDosName) + QString::fromWCharArray(callbackInfo->NormalizedPath));
     const auto requestId = QString::number(callbackInfo->TransferKey.QuadPart, 16);
+
+    qDebug(lcCfApiWrapper) << "Fetch data callback called. File size:" << callbackInfo->FileSize.QuadPart << path;
 
     const auto invokeResult = QMetaObject::invokeMethod(vfs, [=] { vfs->requestHydration(requestId, path); }, Qt::QueuedConnection);
     if (!invokeResult) {
@@ -271,8 +272,14 @@ void deletePlaceholderInfo(CF_PLACEHOLDER_BASIC_INFO *info)
 
 std::wstring pathForHandle(const OCC::CfApiWrapper::FileHandle &handle)
 {
+    qCInfo(lcCfApiWrapper()) << "pathForHandle" << "use of handle" << handle.get();
     wchar_t buffer[MAX_PATH];
     const qint64 result = GetFinalPathNameByHandle(handle.get(), buffer, MAX_PATH, VOLUME_NAME_DOS);
+
+    if (result == 0) {
+        return {};
+    }
+
     Q_ASSERT(result < MAX_PATH);
     return std::wstring(buffer);
 }
@@ -600,15 +607,17 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
     if (pathFileInfo.isDir()) {
         HANDLE handle = nullptr;
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
+        qCInfo(lcCfApiWrapper()) << "CfOpenFileWithOplock" << path << path.toStdWString() << handle;
         if (openResult == S_OK) {
-            return {handle, [](HANDLE h) { CfCloseHandle(h); }};
+            return {handle, [](HANDLE h) { qCInfo(lcCfApiWrapper()) << "CfCloseHandle" << h; CfCloseHandle(h); }};
         }
     } else if (pathFileInfo.isFile()) {
         const auto longpath = OCC::FileSystem::longWinPath(path);
         const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        qCInfo(lcCfApiWrapper()) << "CreateFile" << path << path.toStdWString() << handle;
         if (handle != INVALID_HANDLE_VALUE) {
-            return {handle, [](HANDLE h) { CloseHandle(h); }};
+            return {handle, [](HANDLE h) { qCInfo(lcCfApiWrapper()) << "CloseHandle" << h; CloseHandle(h); }};
         } else {
             qCCritical(lcCfApiWrapper) << "Could not CreateFile for longpath:" << longpath << "with error:" << GetLastError();
         }
@@ -620,6 +629,8 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
 OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const FileHandle &handle)
 {
     Q_ASSERT(handle);
+
+    qCInfo(lcCfApiWrapper()) << "findPlaceholderInfo" << "use of handle" << handle.get();
 
     constexpr auto fileIdMaxLength = 128;
     const auto infoSize = sizeof(CF_PLACEHOLDER_BASIC_INFO) + fileIdMaxLength;
@@ -635,6 +646,7 @@ OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const 
 
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::setPinState(const FileHandle &handle, OCC::PinStateEnums::PinState state, SetPinRecurseMode mode)
 {
+    qCInfo(lcCfApiWrapper()) << "setPinState" << "use of handle" << handle.get();
     const auto cfState = pinStateToCfPinState(state);
     const auto flags = pinRecurseModeToCfSetPinFlags(mode);
 
@@ -700,6 +712,7 @@ OCC::Result<void, QString> OCC::CfApiWrapper::createPlaceholderInfo(const QStrin
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::updatePlaceholderInfo(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId, const QString &replacesPath)
 {
     Q_ASSERT(handle);
+    qCInfo(lcCfApiWrapper()) << "updatePlaceholderInfo" << "use of handle" << handle.get();
 
     if (modtime <= 0) {
         return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(pathForHandle(handle)).arg(modtime)};
@@ -743,6 +756,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
 OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::dehydratePlaceholder(const FileHandle &handle, time_t modtime, qint64 size, const QByteArray &fileId)
 {
     Q_ASSERT(handle);
+    qCInfo(lcCfApiWrapper()) << "dehydratePlaceholder" << "use of handle" << handle.get();
 
     if (modtime <= 0) {
         return {QString{"Could not update metadata due to invalid modification time for %1: %2"}.arg(pathForHandle(handle)).arg(modtime)};
@@ -778,6 +792,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     Q_UNUSED(size);
 
     Q_ASSERT(handle);
+    qCInfo(lcCfApiWrapper()) << "convertToPlaceholder" << "use of handle" << handle.get();
 
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
