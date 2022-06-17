@@ -86,7 +86,7 @@ ComboBox {
         id: clearStatusDelegate
         width: clearComboBox.width
         contentItem: Label {
-            text: modelData
+            text: modelData.display
             color: Style.ncTextColor
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
