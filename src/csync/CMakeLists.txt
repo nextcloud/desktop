@@ -24,11 +24,15 @@ endif()
 configure_file(csync_version.h.in ${CMAKE_CURRENT_BINARY_DIR}/csync_version.h)
 
 add_library(csync SHARED ${common_SOURCES} ${csync_SRCS})
+set_target_properties(csync PROPERTIES EXPORT_NAME CSync)
 
 target_include_directories(csync
-    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/std
-    # include root source dir in order to make src/common available to the targets
-    PUBLIC ${PROJECT_SOURCE_DIR}/src
+    PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/std
+    PUBLIC
+        # include root source dir in order to make src/common available to the targets
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>
+        $<INSTALL_INTERFACE:include>
 )
 
 target_compile_definitions(csync
@@ -68,17 +72,21 @@ generate_export_header(csync
 )
 
 target_link_libraries(csync
-  ${CSYNC_REQUIRED_LIBRARIES}
-  SQLite::SQLite3
-  ZLIB::ZLIB
-  Qt5::Core Qt5::Concurrent
+    PUBLIC
+        Qt5::Core
+    PRIVATE
+        Qt5::Concurrent
+        SQLite::SQLite3
+        ZLIB::ZLIB
 )
 
 # For src/common/utility_mac.cpp
 if (APPLE)
     find_library(FOUNDATION_LIBRARY NAMES Foundation)
     find_library(CORESERVICES_LIBRARY NAMES CoreServices)
-    target_link_libraries(csync ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
+    target_link_libraries(csync
+        PRIVATE
+            ${FOUNDATION_LIBRARY} ${CORESERVICES_LIBRARY})
 endif()
 
 set_target_properties(
@@ -91,7 +99,17 @@ set_target_properties(
       SOVERSION
         "0"
 )
-INSTALL(TARGETS csync ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
+
+INSTALL(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/ocsynclib.h
+        ../common/filesystembase.h
+        ../common/utility.h
+    DESTINATION
+        ${INCLUDE_INSTALL_DIR}/ownCloud/common
+)
+
+INSTALL(TARGETS csync EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 
 configure_file(config_csync.h.cmake ${CMAKE_CURRENT_BINARY_DIR}/config_csync.h)
 

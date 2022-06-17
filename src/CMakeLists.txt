@@ -52,3 +52,5 @@ if (NOT BUILD_LIBRARIES_ONLY)
 endif(NOT BUILD_LIBRARIES_ONLY)
 
 add_subdirectory(plugins)
+
+install(EXPORT ownCloudConfig DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/ownCloud"  NAMESPACE ownCloud::)

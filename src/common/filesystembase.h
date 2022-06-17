@@ -18,7 +18,6 @@
 
 #pragma once
 
-#include "config.h"
 #include "ocsynclib.h"
 
 #include "utility.h"

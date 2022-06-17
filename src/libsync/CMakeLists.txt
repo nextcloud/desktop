@@ -68,22 +68,25 @@ else()
 endif()
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
-set(owncloudsync_HEADERS
-    ${CMAKE_CURRENT_BINARY_DIR}/owncloudlib.h
-    logger.h
-    accessmanager.h
-)
-
 INSTALL(
-    FILES ${owncloudsync_HEADERS}
-    DESTINATION ${INCLUDE_INSTALL_DIR}/${synclib_NAME}
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/owncloudlib.h
+        logger.h
+        accessmanager.h
+    DESTINATION ${INCLUDE_INSTALL_DIR}/ownCloud/libsync
 )
 
 add_library(libsync SHARED ${libsync_SRCS})
+set_target_properties(libsync PROPERTIES EXPORT_NAME SyncCore)
 
-target_link_libraries(libsync PUBLIC
-    csync
-    Qt5::Core Qt5::Network
+target_link_libraries(libsync
+    PUBLIC
+        csync
+        Qt5::Core
+        Qt5::Network
+    PRIVATE
+        Qt5::Concurrent
+        ZLIB::ZLIB
 )
 target_compile_definitions(libsync
     PRIVATE QT_NO_CAST_TO_ASCII
@@ -96,7 +99,7 @@ target_compile_definitions(libsync
             QT_NO_FOREACH
 )
 
-target_link_libraries(libsync PUBLIC OpenAPI::LibreGraphAPI)
+target_link_libraries(libsync PUBLIC $<BUILD_INTERFACE:OpenAPI::LibreGraphAPI>)
 add_subdirectory(graphapi)
 
 if ( APPLE )
@@ -109,7 +112,11 @@ endif()
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt5 REQUIRED COMPONENTS Widgets)
-    target_link_libraries(libsync PUBLIC Qt5::Widgets qt5keychain)
+    target_link_libraries(libsync
+        PUBLIC
+            Qt5::Widgets
+        PRIVATE
+            qt5keychain)
 endif()
 
 if(Inotify_FOUND)
@@ -132,5 +139,4 @@ set_target_properties(libsync PROPERTIES
         VERSION ${MIRALL_VERSION}
         SOVERSION ${MIRALL_SOVERSION}
 )
-install(TARGETS libsync ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-
+install(TARGETS libsync EXPORT ownCloudConfig ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

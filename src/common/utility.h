@@ -21,6 +21,7 @@
 #define UTILITY_H
 
 #include "ocsynclib.h"
+
 #include <QByteArray>
 #include <QDateTime>
 #include <QElapsedTimer>
@@ -30,6 +31,7 @@
 #include <QString>
 #include <QUrl>
 #include <QUrlQuery>
+
 #include <functional>
 #include <memory>
 
