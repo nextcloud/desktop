@@ -691,9 +691,9 @@ OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(Theme::UserIDType userIdT
 {
     switch (userIdType) {
     case Theme::UserIDUserName:
-        return QCoreApplication::tr("Username");
+        return QCoreApplication::translate("Type of user ID", "Username");
     case Theme::UserIDEmail:
-        return QCoreApplication::tr("E-mail address");
+        return QCoreApplication::translate("Type of user ID", "E-mail address");
     case Theme::UserIDCustom:
         return Theme::instance()->customUserID();
     default:
