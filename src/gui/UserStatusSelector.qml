@@ -53,12 +53,12 @@ ColumnLayout {
         }
 
         UserStatusSelectorButton {
-            checked: NC.UserStatus.Online == userStatusSelectorModel.onlineStatus
+            checked: NC.UserStatus.Online === userStatusSelectorModel.onlineStatus
             checkable: true
             icon.source: userStatusSelectorModel.onlineIcon
             icon.color: "transparent"
             text: qsTr("Online")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.Online)
+            onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Online
 
             Layout.fillWidth: true
             implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -67,12 +67,12 @@ ColumnLayout {
             Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
         }
         UserStatusSelectorButton {
-            checked: NC.UserStatus.Away == userStatusSelectorModel.onlineStatus
+            checked: NC.UserStatus.Away === userStatusSelectorModel.onlineStatus
             checkable: true
             icon.source: userStatusSelectorModel.awayIcon
             icon.color: "transparent"
             text: qsTr("Away")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.Away)
+            onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Away
 
             Layout.fillWidth: true
             implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -82,13 +82,13 @@ ColumnLayout {
             
         }
         UserStatusSelectorButton {
-            checked: NC.UserStatus.DoNotDisturb == userStatusSelectorModel.onlineStatus
+            checked: NC.UserStatus.DoNotDisturb === userStatusSelectorModel.onlineStatus
             checkable: true
             icon.source: userStatusSelectorModel.dndIcon
             icon.color: "transparent"
             text: qsTr("Do not disturb")
             secondaryText: qsTr("Mute all notifications")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.DoNotDisturb)
+            onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.DoNotDisturb
 
             Layout.fillWidth: true
             implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -97,13 +97,13 @@ ColumnLayout {
             Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
         }
         UserStatusSelectorButton {
-            checked: NC.UserStatus.Invisible == userStatusSelectorModel.onlineStatus
+            checked: NC.UserStatus.Invisible === userStatusSelectorModel.onlineStatus
             checkable: true
             icon.source: userStatusSelectorModel.invisibleIcon
             icon.color: "transparent"
             text: qsTr("Invisible")
             secondaryText: qsTr("Appear offline")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.Invisible)
+            onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Invisible
 
             Layout.fillWidth: true
             implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
@@ -214,7 +214,7 @@ ColumnLayout {
             text: userStatusSelectorModel.userStatusMessage
             color: Style.ncTextColor
             selectByMouse: true
-            onEditingFinished: userStatusSelectorModel.setUserStatusMessage(text)
+            onEditingFinished: userStatusSelectorModel.userStatusMessage = text
 
             property color borderColor: activeFocus ? Style.ncBlue : Style.menuBorder
 
@@ -247,7 +247,7 @@ ColumnLayout {
     }
 
     Repeater {
-        model: userStatusSelectorModel.predefinedStatusesCount
+        model: userStatusSelectorModel.predefinedStatuses
 
         PredefinedStatusButton {
             id: control
@@ -256,9 +256,9 @@ ColumnLayout {
             Layout.rightMargin: Style.standardSpacing
             internalSpacing: Style.standardSpacing + fieldButton.padding + userStatusMessageTextField.padding
 
-            emoji: userStatusSelectorModel.predefinedStatus(index).icon
-            text: "<b>" + userStatusSelectorModel.predefinedStatus(index).message + "</b> – " + userStatusSelectorModel.predefinedStatusClearAt(index)
-            onClicked: userStatusSelectorModel.setPredefinedStatus(index)
+            emoji: modelData.icon
+            text: "<b>%1</b> – %2".arg(modelData.message).arg(userStatusSelectorModel.clearAtReadable(modelData))
+            onClicked: userStatusSelectorModel.setPredefinedStatus(modelData)
         }
     }
 
@@ -279,9 +279,11 @@ ColumnLayout {
            id: clearComboBox
 
            Layout.fillWidth: true
-           model: userStatusSelectorModel.clearAtValues
-           displayText: userStatusSelectorModel.clearAt
-           onActivated: userStatusSelectorModel.setClearAt(index)
+           model: userStatusSelectorModel.clearStageTypes
+           textRole: "display"
+           valueRole: "clearStageType"
+           displayText: userStatusSelectorModel.clearAtDisplayString
+           onActivated: userStatusSelectorModel.setClearAt(currentValue)
        }
    }
 
