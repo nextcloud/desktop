@@ -2977,7 +2977,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
         <source>Downloading %1. Please wait …</source>
-        <translation>正在下载 ％1。请稍候…</translation>
+        <translation>正在下载 %1。请稍候…</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
