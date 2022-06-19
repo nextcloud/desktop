@@ -14,7 +14,6 @@
 #include "syncfileitem.h"
 #include "systray.h"
 #include "tray/activitylistmodel.h"
-#include "tray/notificationcache.h"
 #include "tray/unifiedsearchresultslistmodel.h"
 #include "tray/talkreply.h"
 #include "userstatusconnector.h"
@@ -70,8 +69,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
 
     connect(FolderMan::instance(), &FolderMan::folderListChanged, this, &User::hasLocalFolderChanged);
 
-    connect(this, &User::guiLog, Logger::instance(), &Logger::guiLog);
-
     connect(_account->account().data(), &Account::accountChangedAvatar, this, &User::avatarChanged);
     connect(_account->account().data(), &Account::userStatusChanged, this, &User::statusChanged);
     connect(_account.data(), &AccountState::desktopNotificationsAllowedChanged, this, &User::desktopNotificationsAllowedChanged);
@@ -85,8 +82,15 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 }
 
-void User::showDesktopNotification(const QString &title, const QString &message)
+void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
 {
+    // Notification ids are uints, which are 4 bytes. Error activities don't have ids, however, so we generate one.
+    // To avoid possible collisions between the activity ids which are actually the notification ids received from
+    // the server (which are always positive) and our "fake" error activity ids, we assign a negative id to the
+    // error notification.
+    //
+    // To ensure that we can still treat an unsigned int as normal, we use a long, which is 8 bytes.
+
     ConfigFile cfg;
     if (!cfg.optionalServerNotifications() || !isDesktopNotificationsAllowed()) {
         return;
@@ -95,16 +99,15 @@ void User::showDesktopNotification(const QString &title, const QString &message)
     // after one hour, clear the gui log notification store
     constexpr qint64 clearGuiLogInterval = 60 * 60 * 1000;
     if (_guiLogTimer.elapsed() > clearGuiLogInterval) {
-        _notificationCache.clear();
+        _notifiedNotifications.clear();
     }
 
-    const NotificationCache::Notification notification { title, message };
-    if (_notificationCache.contains(notification)) {
+    if (_notifiedNotifications.contains(notificationId)) {
         return;
     }
 
-    _notificationCache.insert(notification);
-    emit guiLog(notification.title, notification.message);
+    _notifiedNotifications.insert(notificationId);
+    Logger::instance()->postGuiLog(title, message);
     // restart the gui log timer now that we show a new notification
     _guiLogTimer.start();
 }
@@ -118,18 +121,27 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
             qCInfo(lcActivity) << "Activity in blacklist, skip";
             continue;
         }
-        const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
-        showDesktopNotification(activity._subject, message);
+        const auto message = activity._objectType == QStringLiteral("chat")
+            ? activity._message : AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
+        showDesktopNotification(activity._subject, message, activity._id); // We assigned the notif. id to the activity id
         _activityModel->addNotificationToActivityList(activity);
     }
 }
 
 void User::slotBuildIncomingCallDialogs(const ActivityList &list)
 {
-    const auto systray = Systray::instance();
     const ConfigFile cfg;
+    const auto userStatus = _account->account()->userStatusConnector()->userStatus().state();
+    if (userStatus == OCC::UserStatus::OnlineStatus::DoNotDisturb ||
+            !cfg.optionalServerNotifications() ||
+            !cfg.showCallNotifications() ||
+            !isDesktopNotificationsAllowed()) {
+        return;
+    }
 
-    if(systray && cfg.showCallNotifications()) {
+    const auto systray = Systray::instance();
+
+    if(systray) {
         for(const auto &activity : list) {
             systray->createCallDialog(activity);
         }
@@ -502,10 +514,13 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
         activity._accName = folderInstance->accountState()->account()->displayName();
         activity._folder = folderAlias;
 
+        // Error notifications don't have ids by themselves so we will create one for it
+        activity._id = -static_cast<int>(qHash(activity._subject + activity._message));
+
         // add 'other errors' to activity list
         _activityModel->addErrorToActivityList(activity);
 
-        showDesktopNotification(activity._subject, activity._message);
+        showDesktopNotification(activity._subject, activity._message, activity._id);
 
         if (!_expiredActivitiesCheckTimer.isActive()) {
             _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
@@ -607,13 +622,14 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
         qCWarning(lcActivity) << "Item " << item->_file << " retrieved resulted in error " << item->_errorString;
 
         activity._subject = item->_errorString;
+        activity._id = -static_cast<int>(qHash(activity._subject + activity._message));
 
         if (item->_status == SyncFileItem::Status::FileIgnored) {
             _activityModel->addIgnoredFileToList(activity);
         } else {
             // add 'protocol error' to activity list
             if (item->_status == SyncFileItem::Status::FileNameInvalid) {
-                showDesktopNotification(item->_file, activity._subject);
+                showDesktopNotification(item->_file, activity._subject, activity._id);
             }
             _activityModel->addErrorToActivityList(activity);
         }

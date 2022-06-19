@@ -47,8 +47,6 @@ void ServerNotificationHandler::slotFetchNotifications()
         this, &ServerNotificationHandler::slotNotificationsReceived);
     QObject::connect(_notificationJob.data(), &JsonApiJob::etagResponseHeaderReceived,
         this, &ServerNotificationHandler::slotEtagResponseHeaderReceived);
-    QObject::connect(_notificationJob.data(), &JsonApiJob::allowDesktopNotificationsChanged,
-            this, &ServerNotificationHandler::slotAllowDesktopNotificationsChanged);
     _notificationJob->setProperty(propertyAccountStateC, QVariant::fromValue<AccountState *>(_accountState));
     _notificationJob->addRawHeader("If-None-Match", _accountState->notificationsEtagResponseHeader());
     _notificationJob->start();
@@ -60,14 +58,6 @@ void ServerNotificationHandler::slotEtagResponseHeaderReceived(const QByteArray 
         qCWarning(lcServerNotification) << "New Notification ETag Response Header received " << value;
         auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
         account->setNotificationsEtagResponseHeader(value);
-    }
-}
-
-void ServerNotificationHandler::slotAllowDesktopNotificationsChanged(bool isAllowed)
-{
-    auto *account = qvariant_cast<AccountState *>(sender()->property(propertyAccountStateC));
-    if (account != nullptr) {
-       account->setDesktopNotificationsAllowed(isAllowed);
     }
 }
 
@@ -159,12 +149,19 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         // Add another action to dismiss notification on server
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
-        ActivityLink al;
-        al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
-        al._verb = "DELETE";
-        al._primary = false;
-        a._links.append(al);
+        constexpr auto deleteVerb = "DELETE";
+        const auto itLink = std::find_if(std::cbegin(a._links), std::cend(a._links), [deleteVerb](const ActivityLink& link) {
+            Q_UNUSED(deleteVerb)
+            return link._verb == deleteVerb;
+        });
+        if (itLink == std::cend(a._links)) {
+            ActivityLink al;
+            al._label = tr("Dismiss");
+            al._link = Utility::concatUrlPath(ai->account()->url(), notificationsPath + "/" + QString::number(a._id)).toString();
+            al._verb = deleteVerb;
+            al._primary = false;
+            a._links.append(al);
+        }
 
         list.append(a);
     }

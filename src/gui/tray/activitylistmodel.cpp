@@ -248,11 +248,13 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             }
         } else {
             // We have an activity
-            if (a._darkIcon.isEmpty()) {
+            if (a._icon.isEmpty()) {
                 colorIconPath.append("activity.svg");
                 return colorIconPath;
             }
-            return role == DarkIconRole ? a._darkIcon : a._lightIcon;
+
+            const QString basePath = QStringLiteral("image://tray-image-provider/") % a._icon % QStringLiteral("/");
+            return role == DarkIconRole ? QString(basePath + QStringLiteral("white")) : QString(basePath + QStringLiteral("black"));
         }
     };
 
@@ -483,10 +485,9 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
         a._accName = _accountState->account()->displayName();
         a._id = -2;
         a._objectType = dummyFetchingActivityObjectType;
-        a._subject = tr("Fetching activities…");
+        a._subject = tr("Fetching activities …");
         a._dateTime = QDateTime::currentDateTime();
-        a._darkIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
-        a._lightIcon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
+        a._icon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
 
         beginInsertRows({}, 0, 0);
         _finalList.prepend(a);
@@ -687,6 +688,10 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::accepted, folder, [folder]() {
             folder->scheduleThisFolderSoon();
         });
+        connect(_currentInvalidFilenameDialog, &InvalidFilenameDialog::acceptedInvalidName, folder, [folder](const QString& filePath) {
+            folder->acceptInvalidFileName(filePath);
+            folder->scheduleThisFolderSoon();
+        });
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
@@ -773,9 +778,9 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
     }
 
     for (const auto &activityLink : activity._links) {
-        if (activityLink._verb == QStringLiteral("DELETE")
-            || (activity._objectType == QStringLiteral("chat") || activity._objectType == QStringLiteral("call")
-                || activity._objectType == QStringLiteral("room"))) {
+        if (activityLink._primary
+            || activityLink._verb == QStringLiteral("DELETE")
+            || activityLink._verb == QStringLiteral("WEB")) {
             customList << ActivityListModel::convertLinkToActionButton(activityLink);
         }
     }
@@ -792,10 +797,8 @@ QVariant ActivityListModel::convertLinkToActionButton(const OCC::ActivityLink &a
     const QString replyButtonPath = QStringLiteral("image://svgimage-custom-color/reply.svg");
 
     if (isReplyIconApplicable) {
-        activityLinkCopy._imageSource =
-            QString(replyButtonPath + "/" + OCC::Theme::instance()->wizardHeaderBackgroundColor().name());
-        activityLinkCopy._imageSourceHovered =
-            QString(replyButtonPath + "/" + OCC::Theme::instance()->wizardHeaderTitleColor().name());
+        activityLinkCopy._imageSource = QString(replyButtonPath + "/");
+        activityLinkCopy._imageSourceHovered = QString(replyButtonPath + "/");
     }
 
     return QVariant::fromValue(activityLinkCopy);

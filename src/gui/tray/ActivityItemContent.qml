@@ -26,10 +26,10 @@ RowLayout {
         id: thumbnailItem
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         Layout.preferredWidth: Style.trayListItemIconSize
-        Layout.preferredHeight: model.thumbnail.isMimeTypeIcon ? Style.trayListItemIconSize * 0.9 : Style.trayListItemIconSize
+        Layout.preferredHeight: model.thumbnail && model.thumbnail.isMimeTypeIcon ? Style.trayListItemIconSize * 0.9 : Style.trayListItemIconSize
         readonly property int imageWidth: width * (1 - Style.thumbnailImageSizeReduction)
         readonly property int imageHeight: height * (1 - Style.thumbnailImageSizeReduction)
-        readonly property int thumbnailRadius: model.thumbnail.isUserAvatar ? width / 2 : 3
+        readonly property int thumbnailRadius: model.thumbnail && model.thumbnail.isUserAvatar ? width / 2 : 3
 
         Loader {
             id: thumbnailImageLoader
@@ -106,11 +106,11 @@ RowLayout {
     Column {
         id: activityTextColumn
 
-        Layout.topMargin: 4
+        Layout.topMargin: Style.activityContentSpace
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignLeft | Qt.AlignVCenter
 
-        spacing: 4
+        spacing: Style.activityContentSpace
 
         Label {
             id: activityTextTitle
@@ -165,20 +165,6 @@ RowLayout {
             font.pixelSize: Style.topLinePixelSize
             color: Style.ncSecondaryTextColor
             visible: text !== ""
-        }
-
-        Loader {
-            id: talkReplyTextFieldLoader
-            active: isChatActivity && isTalkReplyPossible
-            visible: isTalkReplyOptionVisible
-
-            anchors.top: activityTextDateTime.bottom
-            anchors.topMargin: 10
-
-            sourceComponent: TalkReplyTextField {
-                id: talkReplyMessage
-                anchors.fill: parent
-            }
         }
     }
 

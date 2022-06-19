@@ -141,7 +141,7 @@ Updater *Updater::create()
         return nullptr;
     }
 
-#if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
+#if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     return new SparkleUpdater(url);
 #elif defined(Q_OS_WIN32)
     // Also for MSI

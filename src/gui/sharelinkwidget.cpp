@@ -301,13 +301,13 @@ void ShareLinkWidget::setupUiOptions()
     }
 
     // Adds action to unshare widget (check box)
-    _unshareLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/delete.svg"),
-        tr("Delete link"));
+    _unshareLinkAction.reset(_linkContextMenu->addAction(QIcon(":/client/theme/delete.svg"),
+        tr("Delete link")));
 
     _linkContextMenu->addSeparator();
 
-    _addAnotherLinkAction = _linkContextMenu->addAction(QIcon(":/client/theme/add.svg"),
-        tr("Add another link"));
+    _addAnotherLinkAction.reset(_linkContextMenu->addAction(QIcon(":/client/theme/add.svg"),
+        tr("Add another link")));
 
     _ui->enableShareLink->setIcon(QIcon(":/client/theme/copy.svg"));
     disconnect(_ui->enableShareLink, &QPushButton::clicked, this, &ShareLinkWidget::slotCreateShareLink);
@@ -487,8 +487,11 @@ void ShareLinkWidget::toggleExpireDateOptions(const bool enable)
     const auto date = enable ? _linkShare->getExpireDate() : QDate::currentDate().addDays(1);
     _ui->calendar->setDate(date);
     _ui->calendar->setMinimumDate(QDate::currentDate().addDays(1));
-    _ui->calendar->setMaximumDate(
-        QDate::currentDate().addDays(_account->capabilities().sharePublicLinkExpireDateDays()));
+
+    if(_account->capabilities().sharePublicLinkExpireDateDays() > 0) {
+        _ui->calendar->setMaximumDate(QDate::currentDate().addDays(_account->capabilities().sharePublicLinkExpireDateDays()));
+    }
+
     _ui->calendar->setFocus();
     
     if (!enable && _linkShare && _linkShare->getExpireDate().isValid()) {
@@ -540,7 +543,7 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
     const auto state = action->isChecked();
     SharePermissions perm = SharePermissionRead;
 
-    if (action == _addAnotherLinkAction) {
+    if (action == _addAnotherLinkAction.data()) {
         emit createLinkShare();
 
     } else if (action == _readOnlyLinkAction && state) {
@@ -567,7 +570,7 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
     } else if (action == _noteLinkAction) {
         toggleNoteOptions(state);
 
-    } else if (action == _unshareLinkAction) {
+    } else if (action == _unshareLinkAction.data()) {
         confirmAndDeleteShare();
     }
 }
@@ -593,9 +596,13 @@ void ShareLinkWidget::slotStyleChanged()
 
 void ShareLinkWidget::customizeStyle()
 {
-    _unshareLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/delete.svg"));
+    if(_unshareLinkAction) {
+        _unshareLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/delete.svg"));
+    }
 
-    _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/add.svg"));
+    if(_addAnotherLinkAction) {
+        _addAnotherLinkAction->setIcon(Theme::createColorAwareIcon(":/client/theme/add.svg"));
+    }
 
     _ui->enableShareLink->setIcon(Theme::createColorAwareIcon(":/client/theme/copy.svg"));
 

@@ -256,8 +256,14 @@ void OcsUserStatusConnector::onUserStatusFetched(const QJsonDocument &json, int 
         return;
     }
 
+    const auto oldOnlineState = _userStatus.state();
     _userStatus = jsonToUserStatus(json);
+
     emit userStatusFetched(_userStatus);
+
+    if (oldOnlineState != _userStatus.state()) {
+        emit serverUserStatusChanged();
+    }
 }
 
 void OcsUserStatusConnector::startFetchPredefinedStatuses()
@@ -396,7 +402,9 @@ void OcsUserStatusConnector::setUserStatus(const UserStatus &userStatus)
         return;
     }
 
-    setUserStatusOnlineStatus(userStatus.state());
+    if (userStatus.state() != _userStatus.state()) {
+        setUserStatusOnlineStatus(userStatus.state());
+    }
     setUserStatusMessage(userStatus);
 }
 
@@ -407,6 +415,15 @@ void OcsUserStatusConnector::onUserStatusOnlineStatusSet(const QJsonDocument &js
     if (statusCode != 200) {
         emit error(Error::CouldNotSetUserStatus);
         return;
+    }
+
+    const auto oldOnlineState = _userStatus.state();
+    _userStatus.setState(jsonToUserStatus(json).state());
+
+    emit userStatusSet();
+
+    if (oldOnlineState != _userStatus.state()) {
+        emit serverUserStatusChanged();
     }
 }
 
@@ -449,7 +466,10 @@ void OcsUserStatusConnector::onMessageCleared(const QJsonDocument &json, int sta
         return;
     }
 
+    const auto onlineState = _userStatus.state();
+
     _userStatus = {};
+    _userStatus.setState(onlineState);
     emit messageCleared();
 }
 }

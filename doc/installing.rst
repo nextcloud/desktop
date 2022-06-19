@@ -34,7 +34,7 @@ System Requirements
 ----------------------------------
 
 - Windows 8.1+
-- macOS 10.12+ (64-bit only)
+- macOS 10.14+ (64-bit only)
 - Linux
 - FreeBSD
 

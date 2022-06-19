@@ -40,8 +40,13 @@ public:
 };
 
 #ifdef Q_OS_MACOS
+enum MacNotificationAuthorizationOptions {
+    Default = 0,
+    Provisional
+};
+
 void setUserNotificationCenterDelegate();
-void checkNotificationAuth();
+void checkNotificationAuth(MacNotificationAuthorizationOptions authOptions = MacNotificationAuthorizationOptions::Provisional);
 void registerNotificationCategories(const QString &localizedDownloadString);
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
@@ -118,6 +123,8 @@ private:
     static Systray *_instance;
     Systray();
 
+    void setupContextMenu();
+
     QScreen *currentScreen() const;
     QRect currentScreenRect() const;
     QPoint computeWindowReferencePoint() const;
@@ -132,6 +139,7 @@ private:
     bool _isOpen = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
+    QPointer<QMenu> _contextMenu;
 
     AccessManagerFactory _accessManagerFactory;
 

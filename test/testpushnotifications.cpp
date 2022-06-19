@@ -69,14 +69,18 @@ private slots:
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
-        account->setPushNotificationsReconnectInterval(0);
 
         // Let if fail a few times
         QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+        account->pushNotifications()->setup();
         QVERIFY(failThreeAuthenticationAttempts(fakeServer, account));
+
+        account->setPushNotificationsReconnectInterval(0);
 
         // Push notifications should try to reconnect
         QVERIFY(fakeServer.authenticateAccount(account));
+
+        account->setPushNotificationsReconnectInterval(1000 * 60 * 2);
     }
 
     void testSetup_correctCredentials_authenticateAndEmitReady()
@@ -250,7 +254,6 @@ private slots:
     {
         FakeWebSocketServer fakeServer;
         auto account = FakeWebSocketServer::createAccount();
-        account->setPushNotificationsReconnectInterval(0);
         QSignalSpy pushNotificationsDisabledSpy(account.data(), &OCC::Account::pushNotificationsDisabled);
         QVERIFY(pushNotificationsDisabledSpy.isValid());
 

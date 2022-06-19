@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) by Roeland Jago Douma <roeland@famdouma.nl>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -102,7 +102,9 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
         const auto lockExpirationTime = _filelockState._lockTime + _filelockState._lockTimeout;
         const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
         const auto remainingTimeInMinute = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
-        _ui->label_lockinfo->setText(tr("Locked by %1 - Expire in %2 minutes", "remaining time before lock expire", remainingTimeInMinute).arg(_filelockState._lockOwnerDisplayName).arg(remainingTimeInMinute));
+        _ui->label_lockinfo->setText(tr("Locked by %1 - Expires in %2 minutes", "remaining time before lock expires", remainingTimeInMinute).arg(_filelockState._lockOwnerDisplayName).arg(remainingTimeInMinute));
+    } else {
+        _ui->label_lockinfo->setVisible(false);
     }
 
     QString ocDir(_sharePath);
@@ -196,9 +198,13 @@ void ShareDialog::initLinkShareWidget()
     if(_linkWidgetList.size() == 0) {
         _emptyShareLinkWidget = new ShareLinkWidget(_accountState->account(), _sharePath, _localPath, _maxSharingPermissions, _ui->scrollArea);
         _linkWidgetList.append(_emptyShareLinkWidget);
-        connect(this, &ShareDialog::toggleShareLinkAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleShareLinkAnimation);
-        connect(_emptyShareLinkWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
 
+        _emptyShareLinkWidget->slotStyleChanged(); // Get the initial customizeStyle() to happen
+
+        connect(this, &ShareDialog::toggleShareLinkAnimation, _emptyShareLinkWidget, &ShareLinkWidget::slotToggleShareLinkAnimation);
+        connect(this, &ShareDialog::styleChanged, _emptyShareLinkWidget, &ShareLinkWidget::slotStyleChanged);
+
+        connect(_emptyShareLinkWidget, &ShareLinkWidget::createLinkShare, this, &ShareDialog::slotCreateLinkShare);
         connect(_emptyShareLinkWidget, &ShareLinkWidget::createPassword, this, &ShareDialog::slotCreatePasswordForLinkShare);
 
         _ui->verticalLayout->insertWidget(_linkWidgetList.size()+1, _emptyShareLinkWidget);
@@ -321,6 +327,8 @@ void ShareDialog::showSharingUi()
         
         // Connect styleChanged events to our widget, so it can adapt (Dark-/Light-Mode switching)
         connect(this, &ShareDialog::styleChanged, _userGroupWidget, &ShareUserGroupWidget::slotStyleChanged);
+
+        _userGroupWidget->slotStyleChanged();
 
         _ui->verticalLayout->insertWidget(1, _userGroupWidget);
         _scrollAreaLayout->addLayout(_userGroupWidget->shareUserGroupLayout());

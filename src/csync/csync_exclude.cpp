@@ -165,9 +165,7 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
     // as '.' is a separator that is not stored internally, so let's
     // not allow to sync those to avoid file loss/ambiguities (#416)
     if (blen > 1) {
-        if (bname.at(blen - 1) == QLatin1Char(' ')) {
-            return CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
-        } else if (bname.at(blen - 1) == QLatin1Char('.')) {
+        if (bname.at(blen - 1) == QLatin1Char('.')) {
             return CSYNC_FILE_EXCLUDE_INVALID_CHAR;
         }
     }
@@ -320,14 +318,26 @@ bool ExcludedFiles::reloadExcludeFiles()
     bool success = true;
     const auto keys = _excludeFiles.keys();
     for (const auto& basePath : keys) {
-        for (const auto &excludeFile : _excludeFiles.value(basePath)) {
+        const auto itValue = _excludeFiles.find(basePath);
+        if (itValue == std::end(_excludeFiles)) {
+            continue;
+        }
+        auto &excludeFiles = *itValue;
+        for (auto excludeFileIt = std::begin(excludeFiles); excludeFileIt != std::end(excludeFiles); ) {
+            const auto &excludeFile = *excludeFileIt;
             QFile file(excludeFile);
-            if (file.exists() && file.open(QIODevice::ReadOnly)) {
+            if (!file.exists()) {
+                excludeFileIt = excludeFiles.erase(excludeFileIt);
+                continue;
+            }
+
+            if (file.open(QIODevice::ReadOnly)) {
                 loadExcludeFilePatterns(basePath, file);
             } else {
                 success = false;
                 qWarning() << "System exclude list file could not be opened:" << excludeFile;
             }
+            ++excludeFileIt;
         }
     }
 
