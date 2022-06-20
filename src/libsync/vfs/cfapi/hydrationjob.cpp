@@ -257,7 +257,10 @@ void OCC::HydrationJob::emitFinished(Status status)
         _transferDataSocket->disconnectFromServer();
         return;
     }
-    _transferDataSocket->close();
+
+    if (_transferDataSocket) {
+        _transferDataSocket->close();
+    }
 
     emit finished(this);
 }
