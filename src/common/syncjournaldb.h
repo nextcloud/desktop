@@ -220,6 +220,12 @@ public:
     void close();
 
     /**
+     * allow to reopen/recreate the db after it was closed (unit tests)
+     * This is usually not allowed to prevent accidential recreation of db.
+     */
+    void allowReopen();
+
+    /**
      * Returns the checksum type for an id.
      */
     QByteArray getChecksumType(int checksumTypeId);
@@ -413,6 +419,11 @@ private:
     QByteArray _journalMode;
 
     PreparedSqlQueryManager _queryManager;
+
+    /**
+     * Whether the db was already closed, prevent recreation
+     */
+    bool _closed = false;
 };
 
 bool OCSYNC_EXPORT

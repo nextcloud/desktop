@@ -39,6 +39,7 @@ static void assertCsyncJournalOk(SyncJournalDb &journal)
 #if defined(Q_OS_WIN) // Make sure the file does not appear in the FileInfo
     FileSystem::setFileHidden(journal.databaseFilePath() + "-shm", true);
 #endif
+    journal.allowReopen();
 }
 
 SyncFileItemPtr findDiscoveryItem(const SyncFileItemSet &spy, const QString &path)

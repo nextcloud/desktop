@@ -1,0 +1,5 @@
+Bugfix: Database was recreated after its removal
+
+We fixed a bug whre the database was recreated during the removal of a sync folder connection.
+
+https://github.com/owncloud/client/issues/9791
