@@ -54,3 +54,9 @@ endif(NOT BUILD_LIBRARIES_ONLY)
 add_subdirectory(plugins)
 
 install(EXPORT ownCloudConfig DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/ownCloud"  NAMESPACE ownCloud::)
+
+ecm_setup_version(PROJECT VARIABLE_PREFIX ownCloud
+                        PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/ownCloudConfigVersion.cmake"
+                        SOVERSION ${MIRALL_SOVERSION})
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/ownCloudConfigVersion.cmake" DESTINATION "${KDE_INSTALL_CMAKEPACKAGEDIR}/ownCloud")

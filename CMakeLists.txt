@@ -18,6 +18,7 @@ set(APPLE_SUPPRESS_X11_WARNING ON)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(ECMMarkNonGuiExecutable)
+include(ECMSetupVersion)
 
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
