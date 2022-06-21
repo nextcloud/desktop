@@ -16,6 +16,7 @@ RowLayout {
     property bool displayActions: false
 
     property color moreActionsButtonColor: "transparent"
+    property color adjustedHeaderColor: "transparent"
 
     property int maxActionButtons: 0
 
@@ -43,10 +44,10 @@ RowLayout {
             text: model.modelData.label
             toolTipText: model.modelData.label
 
-            imageSource: model.modelData.imageSource ? model.modelData.imageSource + UserModel.currentUser.headerColor : ""
+            imageSource: model.modelData.imageSource ? model.modelData.imageSource + root.adjustedHeaderColor : ""
             imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
 
-            textColor: imageSource !== "" ? UserModel.currentUser.headerColor : Style.ncTextColor
+            textColor: imageSource !== "" ? root.adjustedHeaderColor : Style.ncTextColor
             textColorHovered: imageSource !== "" ? UserModel.currentUser.headerTextColor : Style.ncTextColor
 
             bold: primary
