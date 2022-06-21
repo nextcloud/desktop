@@ -42,7 +42,6 @@ RowLayout {
             Layout.preferredWidth: primary ? -1 : parent.height
 
             text: model.modelData.label
-            toolTipText: model.modelData.label
 
             imageSource: model.modelData.imageSource ? model.modelData.imageSource + root.adjustedHeaderColor : ""
             imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
