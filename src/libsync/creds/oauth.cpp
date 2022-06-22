@@ -391,12 +391,10 @@ void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessTo
         qCWarning(lcOauth) << "We expected the user" << _davUser << "but the server answered with user" << userName;
         const QString message = tr("<h1>Wrong user</h1>"
                                    "<p>You logged-in with user <em>%1</em>, but must login with user <em>%2</em>.<br>"
-                                   "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
-                                   "and log in as user %2</p>")
-                                    .arg(userName, _davUser, Theme::instance()->appNameGUI(),
-                                        authorisationLink().toString(QUrl::FullyEncoded));
+                                   "Please return to the %3 client and restart the authentication.</p>")
+                                    .arg(userName, _davUser, Theme::instance()->appNameGUI());
         httpReplyAndClose(socket, QByteArrayLiteral("403 Forbidden"), message.toUtf8());
-        // We are still listening on the socket so we will get the new connection
+        emit result(Error);
         return;
     }
     const auto loginSuccessfullHtml = QByteArrayLiteral("<h1>Login Successful</h1><p>You can close this window.</p>");
