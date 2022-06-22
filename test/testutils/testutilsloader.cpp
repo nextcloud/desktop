@@ -1,5 +1,6 @@
 #include "configfile.h"
 #include "logger.h"
+#include "resources/loadresources.h"
 
 #include <QCoreApplication>
 #include <QTemporaryDir>
@@ -7,6 +8,9 @@
 namespace {
 void setupLogger()
 {
+    // load the resources
+    static const OCC::ResourcesLoader resources;
+
     static QTemporaryDir dir;
     OCC::ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
 

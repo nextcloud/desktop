@@ -186,28 +186,8 @@ set_target_properties(owncloud PROPERTIES
     AUTOUIC ON
     AUTORCC ON
 )
-target_link_libraries(owncloud owncloudCore)
+target_link_libraries(owncloud owncloudCore owncloudResources)
 
-
-find_package(Qt5LinguistTools)
-if(Qt5LinguistTools_FOUND)
-    # Handle Translations, pick all client_* files from trans directory.
-    file(GLOB client_translations ${CMAKE_SOURCE_DIR}/translations/client_*.ts)
-    qt5_add_translation(client_compiled_translations ${client_translations})
-    target_sources(owncloud PRIVATE ${client_compiled_translations})
-    add_resources_to_target(
-        TARGET owncloud
-        PREFIX translations
-        FILES "${client_compiled_translations}"
-    )
-endif()
-
-#TODO Move resources files
-target_sources(owncloud PRIVATE
-    ${PROJECT_SOURCE_DIR}/client.qrc
-    ${PROJECT_SOURCE_DIR}/core_theme.qrc)
-
-generate_theme(owncloud OWNCLOUD_SIDEBAR_ICONS)
 MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")
 
 ecm_add_app_icon(appIcons ICONS "${OWNCLOUD_ICONS}" SIDEBAR_ICONS "${OWNCLOUD_SIDEBAR_ICONS}" OUTFILE_BASENAME "${APPLICATION_ICON_NAME}")

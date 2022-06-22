@@ -18,6 +18,7 @@
 #include "common/utility.h"
 #include "guiutility.h"
 #include "platform.h"
+#include "resources/loadresources.h"
 #include "theme.h"
 
 #include "updater/updater.h"
@@ -41,8 +42,8 @@ void warnSystray()
 
 int main(int argc, char **argv)
 {
-    Q_INIT_RESOURCE(client);
-
+    // load the resources
+    const OCC::ResourcesLoader resource;
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
 
     // Create a `Platform` instance so it can set-up/tear-down stuff for us, and do any

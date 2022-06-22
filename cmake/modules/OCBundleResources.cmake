@@ -71,7 +71,7 @@ function(__write_qrc_file_footer QRC_PATH)
 endfunction()
 
 function(generate_theme TARGET OWNCLOUD_SIDEBAR_ICONS_OUT)
-    if(NOT "${OEM_THEME_DIR}" STREQUAL "${PROJECT_SOURCE_DIR}")
+    if(NOT "${OEM_THEME_DIR}" STREQUAL "${PROJECT_SOURCE_DIR}/src/resources/")
         set(QRC_PATH ${CMAKE_CURRENT_BINARY_DIR}/theme.qrc)
         __write_qrc_file_header(${QRC_PATH} theme)
 
@@ -89,6 +89,7 @@ function(generate_theme TARGET OWNCLOUD_SIDEBAR_ICONS_OUT)
         __write_qrc_file_footer(${QRC_PATH})
 
         target_sources(${TARGET} PRIVATE ${QRC_PATH})
+        target_compile_definitions(${TARGET} PRIVATE BRANDING_AVAILABLE)
 
         # add executable icon on windows and osx
         file(GLOB_RECURSE OWNCLOUD_SIDEBAR_ICONS "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-sidebar.png")

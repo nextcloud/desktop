@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/client">
+        <file alias="resources/light/folder-sync.svg">font-awesome/light/folder-solid.svg</file>
+        <file alias="resources/light/settings.svg">font-awesome/light/cog-solid.svg</file>
+        <file alias="resources/light/activity.svg">font-awesome/light/bolt-solid.svg</file>
+        <file alias="resources/light/lock-https.svg">font-awesome/light/lock-solid.svg</file>
+        <file alias="resources/light/lock-http.svg">font-awesome/light/lock-open-solid.svg</file>
+        <file alias="resources/light/account.svg">font-awesome/light/user-solid.svg</file>
+        <file alias="resources/light/more.svg">font-awesome/light/ellipsis-h-solid.svg</file>
+        <file alias="resources/light/delete.svg">font-awesome/light/trash-solid.svg</file>
+        <file alias="resources/light/bell.svg">font-awesome/light/bell-solid.svg</file>
+        <file alias="resources/light/quit.svg">font-awesome/light/power-off-solid.svg</file>
+        <file alias="resources/light/plus-solid.svg">font-awesome/light/plus-solid.svg</file>
+        <file alias="resources/light/warning.svg">font-awesome/light/exclamation-triangle-solid.svg</file>
+        <file alias="resources/light/ban.svg">font-awesome/dark/ban-solid.svg</file>
+        <file alias="resources/light/check.svg">font-awesome/dark/check-solid.svg</file>
+        <file alias="resources/light/step-forward.svg">font-awesome/dark/step-forward-solid.svg</file>
+        <file alias="resources/light/clipboard.svg">font-awesome/dark/clipboard-solid.svg</file>
+
+        <file alias="resources/dark/folder-sync.svg">font-awesome/dark/folder-solid.svg</file>
+        <file alias="resources/dark/settings.svg">font-awesome/dark/cog-solid.svg</file>
+        <file alias="resources/dark/activity.svg">font-awesome/dark/bolt-solid.svg</file>
+        <file alias="resources/dark/lock-https.svg">font-awesome/dark/lock-solid.svg</file>
+        <file alias="resources/dark/lock-http.svg">font-awesome/dark/lock-open-solid.svg</file>
+        <file alias="resources/dark/account.svg">font-awesome/dark/user-solid.svg</file>
+        <file alias="resources/dark/more.svg">font-awesome/dark/ellipsis-h-solid.svg</file>
+        <file alias="resources/dark/delete.svg">font-awesome/dark/trash-solid.svg</file>
+        <file alias="resources/dark/bell.svg">font-awesome/dark/bell-solid.svg</file>
+        <file alias="resources/dark/quit.svg">font-awesome/dark/power-off-solid.svg</file>
+        <file alias="resources/dark/plus-solid.svg">font-awesome/dark/plus-solid.svg</file>
+        <file alias="resources/dark/warning.svg">font-awesome/dark/exclamation-triangle-solid.svg</file>
+        <file alias="resources/dark/ban.svg">font-awesome/dark/ban-solid.svg</file>
+        <file alias="resources/dark/check.svg">font-awesome/dark/check-solid.svg</file>
+        <file alias="resources/dark/step-forward.svg">font-awesome/dark/step-forward-solid.svg</file>
+        <file alias="resources/dark/clipboard.svg">font-awesome/dark/clipboard-solid.svg</file>
+
+        <file alias="resources/wizard/style.qss">wizard/style.qss</file>
+    </qresource>
+</RCC>
