@@ -2,12 +2,12 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="32"/>
         <source>Open %1 locally</source>
         <translation>Открыть «%1» на ПК</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="46"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="49"/>
         <source>In %1</source>
         <translation>В %1</translation>
     </message>
@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="84"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="95"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="85"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="96"/>
         <source>Show more actions</source>
         <translation>Показывать больше действий</translation>
     </message>
@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="185"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="196"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="187"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation>Отказать</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="227"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation>Открыть диалоговое окно общего доступа</translation>
     </message>
@@ -1469,7 +1469,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="842"/>
         <source>Could not read system exclude file</source>
-        <translation>Невозможно прочесть системный файл исключений</translation>
+        <translation>Не удалось прочитать файл исключений сихнронизации</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1109"/>
@@ -1482,13 +1482,13 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="1112"/>
         <source>A folder from an external storage has been added.
 </source>
-        <translation>Добавлена папка внешнего хранилища.
+        <translation>Была добавлена папка из внешнего хранилища.
 </translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1113"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Чтобы скачать его, перейдите в параметры приложения и отметьте его для синхронизации.</translation>
+        <translation>Чтобы скачать новую папку, перейдите в параметры приложения и отметьте её для синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1173"/>
@@ -5438,7 +5438,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="525"/>
         <source>Synced %1</source>
-        <translation>Синхронизировано %1</translation>
+        <translation>«%1» синхронизирован</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="527"/>
