@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>280</height>
+    <width>385</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>480</width>
-    <height>250</height>
+    <width>320</width>
+    <height>240</height>
    </size>
   </property>
   <layout class="QVBoxLayout" name="shareDialogVerticalLayout">
@@ -27,7 +27,7 @@
     <number>0</number>
    </property>
    <property name="sizeConstraint">
-    <enum>QLayout::SetFixedSize</enum>
+    <enum>QLayout::SetMinimumSize</enum>
    </property>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -49,7 +49,7 @@
         <number>0</number>
        </property>
        <property name="spacing">
-	<number>2</number>
+        <number>2</number>
        </property>
        <item row="0" column="1">
         <widget class="QLabel" name="label_name">
@@ -117,7 +117,6 @@
          </property>
          <property name="font">
           <font>
-           <weight>50</weight>
            <bold>false</bold>
           </font>
          </property>
@@ -132,7 +131,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="0" rowspan="3">
+       <item row="0" column="0" rowspan="4">
         <widget class="QLabel" name="label_icon">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
@@ -162,7 +161,7 @@
      <item>
       <widget class="QScrollArea" name="scrollArea">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -170,7 +169,7 @@
        <property name="minimumSize">
         <size>
          <width>0</width>
-         <height>200</height>
+         <height>0</height>
         </size>
        </property>
        <property name="frameShape">
@@ -196,9 +195,15 @@
          <rect>
           <x>0</x>
           <y>0</y>
-          <width>460</width>
-          <height>200</height>
+          <width>359</width>
+          <height>320</height>
          </rect>
+        </property>
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
        </widget>
       </widget>
