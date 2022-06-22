@@ -40,7 +40,10 @@
 #include "socketapi/socketapi.h"
 #include "theme.h"
 #include "translations.h"
+
+#ifdef WITH_AUTO_UPDATER
 #include "updater/ocupdater.h"
+#endif
 
 #include "config.h"
 
@@ -370,6 +373,7 @@ Application::Application(int &argc, char **argv)
     connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
+#ifdef WITH_AUTO_UPDATER
     // Update checks
     UpdaterScheduler *updaterScheduler = new UpdaterScheduler(this);
     connect(updaterScheduler, &UpdaterScheduler::updaterAnnouncement,
@@ -378,6 +382,7 @@ Application::Application(int &argc, char **argv)
         });
     connect(updaterScheduler, &UpdaterScheduler::requestRestart,
         _folderManager.data(), &FolderMan::slotScheduleAppRestart);
+#endif
 
     // Cleanup at Quit.
     connect(this, &QCoreApplication::aboutToQuit, this, &Application::slotCleanup);

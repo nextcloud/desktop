@@ -104,6 +104,9 @@ option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 # build the GUI component, when disabled only owncloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
 
+# build the auto updater component
+option(WITH_AUTO_UPDATER "WITH_AUTO_UPDATER" ON)
+
 # specify additional vfs plugins
 set(VIRTUAL_FILE_SYSTEM_PLUGINS off suffix win CACHE STRING "Name of internal plugin in src/libsync/vfs or the locations of virtual file plugins")
 

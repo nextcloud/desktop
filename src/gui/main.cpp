@@ -21,7 +21,9 @@
 #include "resources/loadresources.h"
 #include "theme.h"
 
+#ifdef WITH_AUTO_UPDATER
 #include "updater/updater.h"
+#endif
 
 #include <QTimer>
 #include <QMessageBox>
@@ -59,6 +61,8 @@ int main(int argc, char **argv)
     // TODO: 2.11 move to platform class
     Utility::startShutdownWatcher();
 #endif
+
+#ifdef WITH_AUTO_UPDATER
     // if handleStartup returns true, main()
     // needs to terminate here, e.g. because
     // the updater is triggered
@@ -66,6 +70,7 @@ int main(int argc, char **argv)
     if (updater && updater->handleStartup()) {
         return 1;
     }
+#endif
 
     // if the application is already running, notify it.
     if (app.isRunning()) {

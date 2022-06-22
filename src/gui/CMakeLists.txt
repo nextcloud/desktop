@@ -168,7 +168,10 @@ elseif(UNIX AND NOT APPLE )
             guiutility_unix.cpp)
 endif()
 
-add_subdirectory(updater)
+if(WITH_AUTO_UPDATER)
+    add_subdirectory(updater)
+    target_compile_definitions(owncloudCore PRIVATE WITH_AUTO_UPDATER)
+endif()
 
 
 if(WITH_CRASHREPORTER)

@@ -1,0 +1,5 @@
+Enhancement: Add CMakeOption WITH_AUTO_UPDATER
+
+WITH_AUTO_UPDATER allows to build the client without the auto updater.
+
+https://github.com/owncloud/client/issues/9082

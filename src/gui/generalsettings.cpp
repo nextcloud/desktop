@@ -21,12 +21,15 @@
 #include "configfile.h"
 #include "theme.h"
 
+#ifdef WITH_AUTO_UPDATER
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
 #ifdef Q_OS_MAC
 // FIXME We should unify those, but Sparkle does everything behind the scene transparently
 #include "updater/sparkleupdater.h"
 #endif
+#endif
+
 #include "ignorelisteditor.h"
 
 #include "config.h"
@@ -110,6 +113,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     connect(AccountManager::instance(), &AccountManager::accountAdded, this, &GeneralSettings::loadMiscSettings);
 
     // Only our standard brandings currently support beta channel
+#ifdef WITH_AUTO_UPDATER
     if (Theme::instance()->appName() != QLatin1String("testpilotcloud")) {
 #ifdef Q_OS_MAC
         // Because we don't have any statusString from the SparkleUpdater anyway we can hide the whole thing
@@ -122,6 +126,9 @@ GeneralSettings::GeneralSettings(QWidget *parent)
         }
 #endif
     }
+#else
+    _ui->updaterWidget->hide();
+#endif
     connect(_ui->about_pushButton, &QPushButton::clicked, this, &GeneralSettings::showAbout);
 
     if (!Theme::instance()->aboutShowCopyright()) {
@@ -166,6 +173,7 @@ void GeneralSettings::showEvent(QShowEvent *)
 
 void GeneralSettings::slotUpdateInfo()
 {
+#ifdef WITH_AUTO_UPDATER
     if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
         // updater disabled on compile
         _ui->updaterWidget->setVisible(false);
@@ -194,10 +202,12 @@ void GeneralSettings::slotUpdateInfo()
     _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
     connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
+#endif
 }
 
 void GeneralSettings::slotUpdateChannelChanged(int index)
 {
+#ifdef WITH_AUTO_UPDATER
     QString channel = index == 0 ? QStringLiteral("stable") : QStringLiteral("beta");
     if (channel == ConfigFile().updateChannel())
         return;
@@ -239,6 +249,7 @@ void GeneralSettings::slotUpdateChannelChanged(int index)
         }
     });
     msgBox->open();
+#endif
 }
 
 void GeneralSettings::saveMiscSettings()
