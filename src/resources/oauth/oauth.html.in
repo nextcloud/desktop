@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+<title>@{TITLE}</title>
+<style>
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: @{BACKGROUND_COLOR};
+    color: @{FONT_COLOR};
+    font-family: "Noto Sans", OpenSans, Verdana, Helvetica, Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+}
+
+.content {
+    text-align: center;
+}
+</style>
+</head>
+
+<body>
+<div class="row">
+    <div class="content">
+        <img src="data:image/png;base64,@{ICON}" />
+        @{CONTENT}
+    </div>
+</div>
+</body>

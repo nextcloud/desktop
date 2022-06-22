@@ -1,0 +1,7 @@
+Enhancement: Display a correct error when the wrong user was authenticated
+
+When the wrong user was authenticated using oauth we used to display a misleading message.
+We now also style the html response the client provides to the file browser.
+
+https://github.com/owncloud/client/issues/9772
+https://github.com/owncloud/client/pull/9813

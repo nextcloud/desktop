@@ -614,7 +614,13 @@ QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &val
         while (it.hasNext()) {
             const auto match = it.next();
             Q_ASSERT(match.lastCapturedIndex() == 1);
-            Q_ASSERT(values.contains(match.captured(1)));
+            Q_ASSERT([&] {
+                if (!values.contains(match.captured(1))) {
+                    qCCritical(lcUtility) << "Unknown key:" << match.captured(1);
+                    return false;
+                }
+                return true;
+            }());
             templ.replace(match.captured(0), values.value(match.captured(1)));
         }
     };
