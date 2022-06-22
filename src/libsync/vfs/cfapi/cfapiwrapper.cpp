@@ -604,14 +604,19 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
-    if (pathFileInfo.isDir()) {
+    if (pathFileInfo.isDir() || pathFileInfo.isFile()) {
         HANDLE handle = nullptr;
-        const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), CF_OPEN_FILE_FLAG_NONE, &handle);
+        CF_OPEN_FILE_FLAGS openFlags = CF_OPEN_FILE_FLAG_NONE;
+        if (pathFileInfo.isFile()) {
+            openFlags = CF_OPEN_FILE_FLAG_WRITE_ACCESS | CF_OPEN_FILE_FLAG_DELETE_ACCESS;
+        }
+        const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), openFlags, &handle);
         qCInfo(lcCfApiWrapper()) << "CfOpenFileWithOplock" << path << path.toStdWString() << handle;
         if (openResult == S_OK) {
             return {handle, [](HANDLE h) { qCInfo(lcCfApiWrapper()) << "CfCloseHandle" << h; CfCloseHandle(h); }};
         }
-    } else if (pathFileInfo.isFile()) {
+    }
+    if (pathFileInfo.isFile()) {
         const auto longpath = OCC::FileSystem::longWinPath(path);
         const auto handle = CreateFile(longpath.toStdWString().data(), 0, 0, nullptr,
                                        OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
@@ -797,7 +802,6 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
     const qint64 result = CfConvertToPlaceholder(handle.get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), CF_CONVERT_FLAG_MARK_IN_SYNC, nullptr, nullptr);
-    Q_ASSERT(result == S_OK);
     if (result != S_OK) {
         qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't convert to placeholder" };
