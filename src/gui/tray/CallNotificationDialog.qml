@@ -10,7 +10,7 @@ import QtGraphicalEffects 1.15
 Window {
     id: root
     color: "transparent"
-    flags: Qt.Dialog | Qt.FramelessWindowHint
+    flags: Qt.Dialog | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     readonly property int windowSpacing: 10
     readonly property int windowWidth: 240
