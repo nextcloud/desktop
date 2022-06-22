@@ -1472,10 +1472,12 @@ def step(context):
     clickButton(waitForObject(newAccount.NEXT_BUTTON))
 
 
-@When("the user clicks on the next button in sync connection wizard")
-def step(context):
+@When('the user "|any|" clicks on the next button in sync connection wizard')
+def step(context, userName):
     newAccount = AccountConnectionWizard()
     waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
+    syncPath = createUserSyncPath(context, userName)
+    type(newAccount.CHOOSE_LOCAL_SYNC_FOLDER, syncPath)
     clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
 
 
