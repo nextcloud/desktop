@@ -142,23 +142,23 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
         return;
 
     case UserStatusConnector::Error::CouldNotFetchUserStatus:
-        setError(tr("Could not fetch user status. Make sure you are connected to the server."));
+        setError(tr("Could not fetch status. Make sure you are connected to the server."));
         return;
 
     case UserStatusConnector::Error::UserStatusNotSupported:
-        setError(tr("User status feature is not supported. You will not be able to set your user status."));
+        setError(tr("Status feature is not supported. You will not be able to set your status."));
         return;
 
     case UserStatusConnector::Error::EmojisNotSupported:
-        setError(tr("Emojis feature is not supported. Some user status functionality may not work."));
+        setError(tr("Emojis are not supported. Some status functionality may not work."));
         return;
 
     case UserStatusConnector::Error::CouldNotSetUserStatus:
-        setError(tr("Could not set user status. Make sure you are connected to the server."));
+        setError(tr("Could not set status. Make sure you are connected to the server."));
         return;
 
     case UserStatusConnector::Error::CouldNotClearMessage:
-        setError(tr("Could not clear user status message. Make sure you are connected to the server."));
+        setError(tr("Could not clear status message. Make sure you are connected to the server."));
         return;
     }
 

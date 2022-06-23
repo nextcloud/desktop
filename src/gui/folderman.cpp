@@ -1497,7 +1497,7 @@ QString FolderMan::trayTooltipStatusString(
     QString folderMessage;
     switch (syncStatus) {
     case SyncResult::Undefined:
-        folderMessage = tr("Undefined State.");
+        folderMessage = tr("Undefined state.");
         break;
     case SyncResult::NotYetStarted:
         folderMessage = tr("Waiting to start syncing.");
@@ -1513,16 +1513,16 @@ QString FolderMan::trayTooltipStatusString(
         if (hasUnresolvedConflicts) {
             folderMessage = tr("Sync finished with unresolved conflicts.");
         } else {
-            folderMessage = tr("Last Sync was successful.");
+            folderMessage = tr("Last sync was successful.");
         }
         break;
     case SyncResult::Error:
         break;
     case SyncResult::SetupError:
-        folderMessage = tr("Setup Error.");
+        folderMessage = tr("Setup error.");
         break;
     case SyncResult::SyncAbortRequested:
-        folderMessage = tr("User Abort.");
+        folderMessage = tr("Sync request was cancelled.");
         break;
     case SyncResult::Paused:
         folderMessage = tr("Sync is paused.");

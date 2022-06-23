@@ -5,7 +5,7 @@ import com.nextcloud.desktopclient 1.0 as NC
 Window {
     id: dialog
 
-    title: qsTr("Set user status")
+    title: qsTr("Set account status")
     
     property NC.UserStatusSelectorModel model: NC.UserStatusSelectorModel {
         onFinished: dialog.close()

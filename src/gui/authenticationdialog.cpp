@@ -34,7 +34,7 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
     lay->addWidget(label);
 
     auto *form = new QFormLayout;
-    form->addRow(tr("&User:"), _user);
+    form->addRow(tr("&Username:"), _user);
     form->addRow(tr("&Password:"), _password);
     lay->addLayout(form);
     _password->setEchoMode(QLineEdit::Password);
