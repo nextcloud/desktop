@@ -96,7 +96,7 @@ void HttpCredentialsGui::showDialog()
 {
     QString msg = tr("Please enter %1 password:<br>"
                      "<br>"
-                     "User: %2<br>"
+                     "Username: %2<br>"
                      "Account: %3<br>")
                       .arg(Utility::escape(Theme::instance()->appNameGUI()),
                           Utility::escape(_user),

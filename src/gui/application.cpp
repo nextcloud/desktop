@@ -333,7 +333,7 @@ Application::Application(int &argc, char **argv)
                 nullptr,
                 tr("Error accessing the configuration file"),
                 tr("There was an error while accessing the configuration "
-                   "file at %1. Please make sure the file can be accessed by your user.")
+                   "file at %1. Please make sure the file can be accessed by your system account.")
                     .arg(ConfigFile().configFile()),
                 tr("Quit %1").arg(Theme::instance()->appNameGUI()));
             QTimer::singleShot(0, qApp, SLOT(quit()));
