@@ -105,12 +105,6 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const QS
 ConfigFile::ConfigFile()
 {
     QSettings::setDefaultFormat(QSettings::IniFormat);
-
-    const QString config = configFile();
-
-    QSettings settings(config, QSettings::IniFormat);
-    settings.beginGroup(defaultConnection());
-
     // run init only once
     static bool init = [this]() {
         setLogHttp(logHttp());
@@ -160,7 +154,7 @@ void ConfigFile::setShowInExplorerNavigationPane(bool show)
 
 std::chrono::seconds ConfigFile::timeout() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
+    auto settings = makeQSettings();
     const auto val = settings.value(timeoutC()).toInt(); // default to 5 min
     return val ? std::chrono::seconds(val) : 5min;
 }
@@ -850,7 +844,8 @@ void ConfigFile::setClientVersionString(const QString &version)
 
 std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group)
 {
-    auto settings = std::make_unique<QSettings>(ConfigFile::configFile(), QSettings::IniFormat);
+    // this actually works by move magic
+    std::unique_ptr<QSettings> settings(new QSettings(makeQSettings()));
     settings->beginGroup(group);
     return settings;
 }
