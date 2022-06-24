@@ -85,7 +85,7 @@ public:
     bool isOpen();
     QString windowTitle() const;
     bool useNormalWindow() const;
-    void createCallDialog(const Activity &callNotification);
+    void createCallDialog(const Activity &callNotification, const AccountStatePtr accountState);
 
     Q_INVOKABLE void pauseResumeSync();
     Q_INVOKABLE bool syncIsPaused();

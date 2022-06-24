@@ -72,6 +72,8 @@ set(client_SRCS
     application.cpp
     invalidfilenamedialog.h
     invalidfilenamedialog.cpp
+    callstatechecker.h
+    callstatechecker.cpp
     conflictdialog.h
     conflictdialog.cpp
     conflictsolver.h
