@@ -2,12 +2,12 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="32"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>Open %1 locally</source>
         <translation>Otvoriť %1 lokálne</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="49"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="47"/>
         <source>In %1</source>
         <translation>V %1</translation>
     </message>
@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="85"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="96"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="84"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="95"/>
         <source>Show more actions</source>
         <translation>Zobraziť ďalšie akcie</translation>
     </message>
@@ -2549,27 +2549,27 @@ Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepodarilo sa načítať oprávnenia s chybou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na začiatku a na konci.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na začiatku.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na konci.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Použiť neplatné meno</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="208"/>
@@ -2589,7 +2589,7 @@ Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstr
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Nie je možné premenovať lokálny súbor. %1</translation>
     </message>
 </context>
 <context>
@@ -3582,12 +3582,12 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="311"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na začiatku.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Názov súboru obsahuje medzery na začiatku a na konci.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="319"/>
@@ -3667,7 +3667,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="843"/>
         <source>Cannot sync due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Chyba pri synchronizácii z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -4296,13 +4296,13 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minútu</numerusform><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minúty</numerusform><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minút</numerusform><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minút</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minútu</numerusform><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minúty</numerusform><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minút</numerusform><numerusform>Uzamknuté od %1 – platnosť vyprší o %2 minút</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="126"/>
@@ -5664,7 +5664,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Prihlásiť sa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -5675,7 +5675,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Zaregistrovať sa u poskytovateľa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
