@@ -150,6 +150,9 @@ void Systray::setupContextMenu()
     }
 
     _contextMenu = new QMenu();
+    // NOTE: for reasons unclear, setting the the new menu after adding all the actions
+    // will not work on GNOME, as the old menu will not be correctly replaced.
+    setContextMenu(_contextMenu);
 
     if (AccountManager::instance()->accounts().isEmpty()) {
         _contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
@@ -162,7 +165,6 @@ void Systray::setupContextMenu()
     _contextMenu->addAction(tr("Settings"), this, &Systray::openSettings);
     _contextMenu->addAction(tr("Help"), this, &Systray::openHelp);
     _contextMenu->addAction(tr("Exit %1").arg(Theme::instance()->appNameGUI()), this, &Systray::shutdown);
-    setContextMenu(_contextMenu);
 
     connect(_contextMenu, &QMenu::aboutToShow, [=] {
         const auto folders = FolderMan::instance()->map();
