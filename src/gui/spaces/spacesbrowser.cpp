@@ -42,8 +42,6 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     header->hideSection(static_cast<int>(SpacesModel::Columns::WebDavUrl));
     // not used yet
     header->hideSection(static_cast<int>(SpacesModel::Columns::WebUrl));
-    // not relevant for users
-    header->hideSection(static_cast<int>(SpacesModel::Columns::LocalMountPoint));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         auto menu = new QMenu(this);

@@ -29,7 +29,6 @@ namespace {
 
 const auto mountpointC = QLatin1String("mountpoint");
 const auto personalC = QLatin1String("personal");
-const auto projectC = QLatin1String("project");
 const auto shareC = QLatin1String("virtual");
 
 }
@@ -67,12 +66,4 @@ QString Drives::getDriveDisplayName(const OpenAPI::OAIDrive &drive)
         return tr("Shares");
     }
     return drive.getName();
-}
-
-QString OCC::GraphApi::Drives::getDriveMountPoint(const OpenAPI::OAIDrive &drive)
-{
-    if (drive.getDriveType() == projectC) {
-        return tr("Spaces");
-    }
-    return QString();
 }

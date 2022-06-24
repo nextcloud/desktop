@@ -632,9 +632,7 @@ QString FolderWizard::destination() const
     }
     QString defaultPath = _account->defaultSyncRoot();
     if (_account->capabilities().spacesSupport().enabled) {
-        defaultPath += QDir::separator() + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::LocalMountPoint).toString();
-        FolderMan::prepareFolder(defaultPath);
-        defaultPath += QDir::separator() + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
+        defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
     };
     return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }

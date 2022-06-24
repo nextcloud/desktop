@@ -34,8 +34,6 @@ namespace GraphApi {
          */
         static QString getDriveDisplayName(const OpenAPI::OAIDrive &drive);
 
-        static QString getDriveMountPoint(const OpenAPI::OAIDrive &drive);
-
         const QList<OpenAPI::OAIDrive> &drives() const;
 
     private:

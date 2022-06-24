@@ -31,7 +31,6 @@ public:
         Description,
         WebUrl,
         WebDavUrl,
-        LocalMountPoint,
 
         ColumnCount
     };

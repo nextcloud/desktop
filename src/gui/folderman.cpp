@@ -1318,7 +1318,7 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
 
 QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
 {
-    QString folder = canonicalPath(basePath);
+    QString folder = basePath;
 
     // If the parent folder is a sync folder or contained in one, we can't
     // possibly find a valid sync folder inside it.
