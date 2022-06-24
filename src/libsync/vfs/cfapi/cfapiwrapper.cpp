@@ -659,7 +659,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::se
     if (result == S_OK) {
         return OCC::Vfs::ConvertToPlaceholderResult::Ok;
     } else {
-        qCWarning(lcCfApiWrapper) << "Couldn't set pin state" << state << "for" << pathForHandle(handle) << "with recurse mode" << mode << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        qCWarning(lcCfApiWrapper) << "Couldn't set pin state" << state << "for" << "with recurse mode" << mode << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't set pin state" };
     }
 }
@@ -746,7 +746,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::up
                                               nullptr, 0, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
+        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage()) << replacesPath;
         return { "Couldn't update placeholder info" };
     }
 
@@ -784,7 +784,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
                                               &dehydrationRange, 1, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
 
     if (result != S_OK) {
-        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't update placeholder info" };
     }
 
@@ -803,7 +803,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
     const qint64 result = CfConvertToPlaceholder(handle.get(), fileIdentity.data(), sizeToDWORD(fileIdentitySize), CF_CONVERT_FLAG_MARK_IN_SYNC, nullptr, nullptr);
     if (result != S_OK) {
-        qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << pathForHandle(handle) << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
+        qCCritical(lcCfApiWrapper) << "Couldn't convert to placeholder" << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
         return { "Couldn't convert to placeholder" };
     }
 
