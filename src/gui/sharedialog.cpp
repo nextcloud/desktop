@@ -35,6 +35,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QFrame>
+#include <QScrollBar>
 
 namespace {
 QString createRandomPassword()
@@ -160,6 +161,8 @@ ShareDialog::ShareDialog(QPointer<AccountState> accountState,
     _ui->verticalLayout->addWidget(_internalLinkWidget);
     _internalLinkWidget->setupUiOptions();
     connect(this, &ShareDialog::styleChanged, _internalLinkWidget, &InternalLinkWidget::slotStyleChanged);
+
+    adjustScrollWidget();
 }
 
 ShareLinkWidget *ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
@@ -189,6 +192,7 @@ ShareLinkWidget *ShareDialog::addLinkShareWidget(const QSharedPointer<LinkShare>
     _scrollAreaLayout->addWidget(linkShareWidget);
     
     linkShareWidget->setupUiOptions();
+    adjustScrollWidget();
 
     return linkShareWidget;
 }
@@ -216,6 +220,8 @@ void ShareDialog::initLinkShareWidget()
         _linkWidgetList.removeAll(_emptyShareLinkWidget);
         _emptyShareLinkWidget = nullptr;
     }
+
+    adjustScrollWidget();
 }
 
 void ShareDialog::slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkShare)
@@ -223,7 +229,6 @@ void ShareDialog::slotAddLinkShareWidget(const QSharedPointer<LinkShare> &linkSh
     emit toggleShareLinkAnimation(true);
     const auto addedLinkShareWidget = addLinkShareWidget(linkShare);
     initLinkShareWidget();
-    adjustScrollWidgetSize();
     if (linkShare->isPasswordSet()) {
         addedLinkShareWidget->focusPasswordLineEdit();
     }
@@ -247,20 +252,29 @@ void ShareDialog::slotSharesFetched(const QList<QSharedPointer<Share>> &shares)
     }
 
     initLinkShareWidget();
-    adjustScrollWidgetSize();
     emit toggleShareLinkAnimation(false);
 }
 
-void ShareDialog::adjustScrollWidgetSize()
+void ShareDialog::adjustScrollWidget()
 {
-    const auto count = _scrollAreaLayout->count();
-    const auto margin = 10;
-    const auto height = _linkWidgetList.empty() ? 0 : _linkWidgetList.last()->sizeHint().height() + margin;
-    const auto totalHeight = height * count;
-    _ui->scrollArea->setFixedWidth(_ui->verticalLayout->sizeHint().width());
-    _ui->scrollArea->setFixedHeight(totalHeight > 400 ? 400 : totalHeight);
-    _ui->scrollArea->setVisible(height > 0);
-    _ui->scrollArea->setFrameShape(count > 6 ? QFrame::StyledPanel : QFrame::NoFrame);
+    _ui->scrollArea->setVisible(_scrollAreaLayout->count() > 0);
+
+    // Sometimes the contentRect returns a height of 0, so we need a backup plan
+    const auto scrollAreaContentHeight = _scrollAreaLayout->contentsRect().height();
+
+    auto linkWidgetHeights = 0;
+
+    if(scrollAreaContentHeight == 0 && !_linkWidgetList.empty()) {
+        for (const auto linkWidget : _linkWidgetList) {
+            linkWidgetHeights += linkWidget->height() - 10;
+        }
+    }
+
+    const auto overAvailableHeight = scrollAreaContentHeight > _ui->scrollArea->height() ||
+            linkWidgetHeights > _ui->scrollArea->height();
+
+    _ui->scrollArea->setFrameShape(overAvailableHeight ? QFrame::StyledPanel : QFrame::NoFrame);
+    _ui->verticalLayout->setSpacing(overAvailableHeight ? 10 : 0);
 }
 
 ShareDialog::~ShareDialog()
@@ -341,6 +355,8 @@ void ShareDialog::showSharingUi()
             _manager->fetchShares(_sharePath);
         }
     }
+
+    adjustScrollWidget();
 }
 
 void ShareDialog::initShareManager()
@@ -421,7 +437,6 @@ void ShareDialog::slotDeleteShare()
     _scrollAreaLayout->removeWidget(sharelinkWidget);
     _linkWidgetList.removeAll(sharelinkWidget);
     initLinkShareWidget();
-    adjustScrollWidgetSize();
 }
 
 void ShareDialog::slotThumbnailFetched(const int &statusCode, const QByteArray &reply)
@@ -468,6 +483,12 @@ void ShareDialog::changeEvent(QEvent *e)
     }
 
     QDialog::changeEvent(e);
+}
+
+void ShareDialog::resizeEvent(QResizeEvent *event)
+{
+    adjustScrollWidget();
+    QDialog::resizeEvent(event);
 }
 
 } // namespace OCC

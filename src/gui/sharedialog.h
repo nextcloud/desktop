@@ -78,13 +78,14 @@ signals:
 
 protected:
     void changeEvent(QEvent *) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     void showSharingUi();
     void initShareManager();
     ShareLinkWidget *addLinkShareWidget(const QSharedPointer<LinkShare> &linkShare);
     void initLinkShareWidget();
-    void adjustScrollWidgetSize();
+    void adjustScrollWidget();
 
     Ui::ShareDialog *_ui;
 
