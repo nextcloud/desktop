@@ -398,7 +398,7 @@ Window {
                             Layout.preferredWidth: Style.accountAvatarSize
 
                             Accessible.role: Accessible.Graphic
-                            Accessible.name: qsTr("Current user avatar")
+                            Accessible.name: qsTr("Current account avatar")
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
@@ -437,7 +437,7 @@ Window {
                                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                                 Accessible.role: Accessible.Indicator
-                                Accessible.name: UserModel.desktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                                Accessible.name: UserModel.desktopNotificationsAllowed ? qsTr("Current account status is online") : qsTr("Current account status is do not disturb")
                             }
                         }
 

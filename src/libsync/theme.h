@@ -397,7 +397,7 @@ public:
     /**
      * @brief How to handle the userID
      *
-     * @value UserIDUserName Wizard asks for user name as ID
+     * @value UserIDUserName Wizard asks for username as ID
      * @value UserIDEmail Wizard asks for an email as ID
      * @value UserIDCustom Specify string in \ref customUserID
      */

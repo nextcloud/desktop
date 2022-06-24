@@ -1240,7 +1240,7 @@ bool ClientSideEncryption::newMnemonicGenerated() const
 void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QByteArray &key) {
     QString msg = tr("Please enter your end to end encryption passphrase:<br>"
                      "<br>"
-                     "User: %2<br>"
+                     "Username: %2<br>"
                      "Account: %3<br>")
                       .arg(Utility::escape(account->credentials()->user()),
                            Utility::escape(account->displayName()));

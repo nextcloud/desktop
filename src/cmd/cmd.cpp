@@ -125,7 +125,7 @@ private:
 QString queryPassword(const QString &user)
 {
     EchoDisabler disabler;
-    std::cout << "Password for user " << qPrintable(user) << ": ";
+    std::cout << "Password for account with username " << qPrintable(user) << ": ";
     std::string s;
     std::getline(std::cin, s);
     return QString::fromStdString(s);
@@ -383,7 +383,7 @@ int main(int argc, char **argv)
 
     if (options.interactive) {
         if (user.isEmpty()) {
-            std::cout << "Please enter user name: ";
+            std::cout << "Please enter username: ";
             std::string s;
             std::getline(std::cin, s);
             user = QString::fromStdString(s);
