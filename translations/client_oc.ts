@@ -2,12 +2,12 @@
 <context>
     <name>ActivityItem</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="32"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>Open %1 locally</source>
         <translation>Dobrir %1 localement</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItem.qml" line="49"/>
+        <location filename="../src/gui/tray/ActivityItem.qml" line="47"/>
         <source>In %1</source>
         <translation type="unfinished"/>
     </message>
@@ -36,8 +36,8 @@
 <context>
     <name>ActivityItemActions</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="85"/>
-        <location filename="../src/gui/tray/ActivityItemActions.qml" line="96"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="84"/>
+        <location filename="../src/gui/tray/ActivityItemActions.qml" line="95"/>
         <source>Show more actions</source>
         <translation type="unfinished"/>
     </message>
