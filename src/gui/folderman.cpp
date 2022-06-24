@@ -22,7 +22,6 @@
 #include "filesystem.h"
 #include "folder.h"
 #include "lockwatcher.h"
-#include "ocwizard_deprecated.h"
 #include "selectivesyncdialog.h"
 #include "socketapi/socketapi.h"
 #include "syncresult.h"
@@ -1443,7 +1442,7 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
         if (folderDefinition.virtualFilesMode != Vfs::Off && useVfs)
             newFolder->setRootPinState(PinState::OnlineOnly);
 
-        if (!OwncloudWizard::isConfirmBigFolderChecked()) {
+        if (!ConfigFile().newBigFolderSizeLimit().first) {
             // The user already accepted the selective sync dialog. everything is in the white list
             newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
                 QStringList() << QLatin1String("/"));
