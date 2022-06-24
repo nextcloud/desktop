@@ -604,7 +604,7 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         return {};
     }
 
-    if (pathFileInfo.isDir() || pathFileInfo.isFile()) {
+    if (pathFileInfo.isDir()) {
         HANDLE handle = nullptr;
         CF_OPEN_FILE_FLAGS openFlags = CF_OPEN_FILE_FLAG_NONE;
         if (pathFileInfo.isFile()) {
@@ -613,7 +613,15 @@ OCC::CfApiWrapper::FileHandle OCC::CfApiWrapper::handleForPath(const QString &pa
         const qint64 openResult = CfOpenFileWithOplock(path.toStdWString().data(), openFlags, &handle);
         qCInfo(lcCfApiWrapper()) << "CfOpenFileWithOplock" << path << path.toStdWString() << handle;
         if (openResult == S_OK) {
-            return {handle, [](HANDLE h) { qCInfo(lcCfApiWrapper()) << "CfCloseHandle" << h; CfCloseHandle(h); }};
+            auto result = OCC::CfApiWrapper::FileHandle{handle, [](HANDLE h) { qCInfo(lcCfApiWrapper()) << "CfCloseHandle" << h; CfCloseHandle(h); }};
+            if (pathFileInfo.isFile()) {
+                const auto checkHandle = findPlaceholderInfo(result);
+                if (checkHandle) {
+                    return result;
+                }
+            } else {
+                return result;
+            }
         }
     }
     if (pathFileInfo.isFile()) {
