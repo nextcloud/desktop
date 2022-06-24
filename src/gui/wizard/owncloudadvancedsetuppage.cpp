@@ -43,8 +43,13 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     , _ocWizard(wizard)
 {
     _ui.setupUi(this);
-
     setupResoultionWidget();
+
+    _filePathLabel.reset(new ElidedLabel);
+    _filePathLabel->setElideMode(Qt::ElideMiddle);
+    _filePathLabel->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    _filePathLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+    _ui.locationsGridLayout->addWidget(_filePathLabel.data(), 3, 3);
 
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
@@ -116,6 +121,7 @@ void OwncloudAdvancedSetupPage::setupCustomization()
     variant = theme->customMedia(Theme::oCSetupBottom);
     WizardCommon::setupCustomMedia(variant, _ui.bottomLabel);
 
+    WizardCommon::customizeHintLabel(_filePathLabel.data());
     WizardCommon::customizeHintLabel(_ui.lFreeSpace);
     WizardCommon::customizeHintLabel(_ui.lSyncEverythingSizeLabel);
     WizardCommon::customizeHintLabel(_ui.lSelectiveSyncSizeLabel);
@@ -188,10 +194,11 @@ void OwncloudAdvancedSetupPage::fetchUserAvatar()
 {
     // Reset user avatar
     const auto appIcon = Theme::instance()->applicationIcon();
-    _ui.lServerIcon->setPixmap(appIcon.pixmap(48));
+    // To match the folder icon opposite the avatar -- that is 60x60, minus padding
+    _ui.lServerIcon->setPixmap(appIcon.pixmap(32));
     // Fetch user avatar
     const auto account = _ocWizard->account();
-    auto avatarSize = 64;
+    auto avatarSize = 32;
     if (Theme::isHidpi()) {
         avatarSize *= 2;
     }
@@ -256,8 +263,6 @@ void OwncloudAdvancedSetupPage::updateStatus()
 
     QString t;
 
-    setLocalFolderPushButtonPath(locFolder);
-
     if (dataChanged()) {
         if (_remoteFolder.isEmpty() || _remoteFolder == QLatin1String("/")) {
             t = "";
@@ -276,6 +281,8 @@ void OwncloudAdvancedSetupPage::updateStatus()
     } else {
         setResolutionGuiVisible(false);
     }
+
+    _filePathLabel->setText(QDir::toNativeSeparators(locFolder));
 
     QString lfreeSpaceStr = Utility::octetsToString(availableLocalSpace());
     _ui.lFreeSpace->setText(QString(tr("%1 free space", "%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB")).arg(lfreeSpaceStr));
@@ -428,7 +435,6 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
         // TODO: remove when UX decision is made
         refreshVirtualFilesAvailibility(dir);
 
-        setLocalFolderPushButtonPath(dir);
         wizard()->setProperty("localFolder", dir);
         updateStatus();
     }
@@ -436,22 +442,6 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
     qint64 rSpace = _ui.rSyncEverything->isChecked() ? _rSize : _rSelectedSize;
     QString errorStr = checkLocalSpace(rSpace);
     setErrorString(errorStr);
-}
-
-
-void OwncloudAdvancedSetupPage::setLocalFolderPushButtonPath(const QString &path)
-{
-    const auto homeDir = QDir::homePath().endsWith('/') ? QDir::homePath() : QDir::homePath() + QLatin1Char('/');
-
-    if (!path.startsWith(homeDir)) {
-        _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(path));
-        return;
-    }
-
-    auto prettyPath = path;
-    prettyPath.remove(0, homeDir.size());
-
-    _ui.pbSelectLocalFolder->setText(QDir::toNativeSeparators(prettyPath));
 }
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
