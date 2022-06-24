@@ -3,6 +3,9 @@
         <file>src/gui/UserStatusSelector.qml</file>
         <file>src/gui/UserStatusSelectorDialog.qml</file>
         <file>src/gui/EmojiPicker.qml</file>
+        <file>src/gui/UserStatusSelectorButton.qml</file>
+        <file>src/gui/PredefinedStatusButton.qml</file>
+        <file>src/gui/BasicComboBox.qml</file>
         <file>src/gui/ErrorBox.qml</file>
         <file>src/gui/tray/Window.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
