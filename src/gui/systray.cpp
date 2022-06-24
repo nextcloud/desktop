@@ -23,6 +23,7 @@
 #include "tray/trayimageprovider.h"
 #include "configfile.h"
 #include "accessmanager.h"
+#include "callstatechecker.h"
 
 #include <QCursor>
 #include <QGuiApplication>
@@ -98,6 +99,7 @@ Systray::Systray()
     );
 
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
+    qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
 
 #if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     setUserNotificationCenterDelegate();
@@ -183,7 +185,7 @@ void Systray::setupContextMenu()
     });
 }
 
-void Systray::createCallDialog(const Activity &callNotification)
+void Systray::createCallDialog(const Activity &callNotification, const AccountStatePtr accountState)
 {
     qCDebug(lcSystray) << "Starting a new call dialog for notification with id: " << callNotification._id << "with text: " << callNotification._subject;
 
@@ -208,6 +210,7 @@ void Systray::createCallDialog(const Activity &callNotification)
         }
 
         const QVariantMap initialProperties{
+            {"accountState", QVariant::fromValue(accountState.data())},
             {"talkNotificationData", talkNotificationData},
             {"links", links},
             {"subject", callNotification._subject},

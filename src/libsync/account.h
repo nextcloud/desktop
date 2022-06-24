@@ -223,7 +223,10 @@ public:
      */
     int serverVersionInt() const;
 
-    static int makeServerVersion(int majorVersion, int minorVersion, int patchVersion);
+    static constexpr int makeServerVersion(const int majorVersion, const int minorVersion, const int patchVersion) {
+        return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
+    };
+
     void setServerVersion(const QString &version);
 
     /** Whether the server is too old.

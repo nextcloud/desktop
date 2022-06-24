@@ -657,11 +657,6 @@ int Account::serverVersionInt() const
         components.value(2).toInt());
 }
 
-int Account::makeServerVersion(int majorVersion, int minorVersion, int patchVersion)
-{
-    return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
-}
-
 bool Account::serverVersionUnsupported() const
 {
     if (serverVersionInt() == 0) {
