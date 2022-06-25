@@ -65,6 +65,14 @@
     </message>
 </context>
 <context>
+    <name>BasicComboBox</name>
+    <message>
+        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <source>Clear status message menu</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CallNotificationDialog</name>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
@@ -911,6 +919,11 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>Se ha producido un error al acceder al archivo de configuración en %1. Por favor asegúrese de que el archivo es accesible por su usuario.</translation>
     </message>
     <message>
+        <location filename="../src/gui/application.cpp" line="335"/>
+        <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/application.cpp" line="338"/>
         <source>Quit %1</source>
         <translation>Salir %1</translation>
@@ -932,6 +945,11 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &apos;%1&apos; at %2.</source>
         <translation>Introducir usuario y contraseña para &apos;%1&apos; en %2.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
+        <source>&amp;Username:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1027,6 +1045,11 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Por favor, introduce la frase de seguridad del cifrado extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Cuenta: %3&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
+        <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1692,6 +1715,11 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>Estado no definido.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined state.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
         <source>Waiting to start syncing.</source>
         <translation>Esperando para comenzar la sincronización.</translation>
@@ -1712,11 +1740,6 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>La sincronización ha tenido éxito, pero hay conflictos sin resolver.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1514"/>
-        <source>Sync finished with unresolved conflicts.</source>
-        <translation>La sincronización finalizó pero con conflictos sin resolver.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last Sync was successful.</source>
         <translation>La última sincronización se ha realizado con éxito.</translation>
@@ -1730,6 +1753,26 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>User Abort.</source>
         <translation>Interrumpido por el usuario.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1514"/>
+        <source>Sync finished with unresolved conflicts.</source>
+        <translation>La sincronización finalizó pero con conflictos sin resolver.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1516"/>
+        <source>Last sync was successful.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1522"/>
+        <source>Setup error.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <source>Sync request was cancelled.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -2349,6 +2392,11 @@ Tenga en cuenta que esto sólo selecciona de qué grupo se tomarán las actualiz
     <name>OCC::HttpCredentialsGui</name>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
+        <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Por favor, introduzca la contraseña de %1:&lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Cuenta: %3&lt;br&gt;</translation>
     </message>
@@ -2943,6 +2991,11 @@ Los registros se guardarán en: %1</translation>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Usuario incorrecto&lt;/h1&gt;&lt;p&gt;Se ha intentado iniciar sesión con el usuario: &lt;em&gt;%1&lt;/em&gt;, pero debe iniciar sesión con el usuario: &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Por favor, cierre la sesión de %3 en otra pestaña, haga&lt;a href=&apos;%4&apos;&gt;clic aquí&lt;/a&gt; e inicie sesión como el usuario %2&lt;/p&gt;</translation>
     </message>
+    <message>
+        <location filename="../src/gui/creds/oauth.cpp" line="140"/>
+        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::OCUpdater</name>
@@ -3061,14 +3114,14 @@ for additional privileges during the process.</source>
         <translation>Configurar opciones de carpeta local</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
-        <source>Connect</source>
-        <translation>Conectar</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="54"/>
         <source>Connect …</source>
         <translation>Conectando...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="60"/>
+        <source>Connect</source>
+        <translation>Conectar</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="94"/>
@@ -4296,15 +4349,15 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
-        <source>Locked by %1 - Expires in %2 minutes</source>
-        <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Bloqueado por %1. Expira en %2 minuto</numerusform><numerusform>Bloqueado por %1. Expira en %2 minutos</numerusform><numerusform>Bloqueado por %1. Expira en %2 minutos</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
         <translation><numerusform>Bloqueado por %1 - Caduca en %2 minutos</numerusform><numerusform>Bloqueados por %1 - Caduca en %2 minutos</numerusform><numerusform>Bloqueado por %1 - Caduca en %2 minutos</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="106"/>
+        <source>Locked by %1 - Expires in %2 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation><numerusform>Bloqueado por %1. Expira en %2 minuto</numerusform><numerusform>Bloqueado por %1. Expira en %2 minutos</numerusform><numerusform>Bloqueado por %1. Expira en %2 minutos</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="126"/>
@@ -5503,9 +5556,19 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>No se ha podido obtener el estado del usuario. Asegúrese de que está conectado al servidor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
         <translation>La función de estado de usuario no es compatible. No podrás establecer tu estado de usuario.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5513,14 +5576,29 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>La función de emojis no es compatible. Es posible que algunas funciones de estado del usuario no funcionen.</translation>
     </message>
     <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
         <translation>No se ha podido establecer el estado del usuario. Asegúrese de que está conectado al servidor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>No se ha podido borrar el mensaje de estado del usuario. Asegúrese de que está conectado al servidor.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -5651,9 +5729,19 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Ha sido cerrada la sesión de %1 como usuario %2. Por favor, inicie sesión de nuevo.</translation>
     </message>
     <message>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <source>You have been logged out of your account %1 at %2. Please login again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the user: %1</source>
         <translation>Por favor, entra con el usuario: %1</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <source>Please login with the account: %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5963,9 +6051,24 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
+        <source>&amp;Local Folder</source>
+        <translation>Carpeta &amp;local</translation>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="90"/>
         <source>S&amp;ync everything from server</source>
         <translation>Sincronizar todo desde el servidor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
+        <source>Username</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
+        <source>Local Folder</source>
+        <translation>Carpeta Local</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
@@ -5973,9 +6076,9 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Usuario</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
-        <source>Server address</source>
-        <translation>Nombre del servidor</translation>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
+        <source>Choose different folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -5988,24 +6091,24 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Preguntar si se desea sincronizar carpetas de almacenamiento e&amp;xterno</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="131"/>
+        <source>Server address</source>
+        <translation>Nombre del servidor</translation>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="175"/>
         <source>Sync Logo</source>
         <translation>Sync Logo</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="225"/>
-        <source>&amp;Local Folder</source>
-        <translation>Carpeta &amp;local</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
-        <source>Local Folder</source>
-        <translation>Carpeta Local</translation>
-    </message>
-    <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="408"/>
         <source>Synchronize everything from server</source>
         <translation>Sincronizar todo desde el servidor</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
+        <source>Server</source>
+        <translation>Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="464"/>
@@ -6027,11 +6130,6 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="576"/>
         <source>Choose what to sync</source>
         <translation>Elija qué sincronizar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
-        <source>Server</source>
-        <translation>Servidor</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="344"/>
@@ -6330,6 +6428,16 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <source>Current account status is online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current user status is online</source>
         <translation>El estado actual del usuario es en línea</translation>
     </message>
@@ -6404,9 +6512,19 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>No molestar</translation>
     </message>
     <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
+        <source>Mute all notifications</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
         <source>Invisible</source>
         <translation>Invisible</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
+        <source>Appear offline</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6432,6 +6550,14 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/UserStatusSelector.qml" line="184"/>
         <source>Set status message</source>
         <translation>Establecer un mensaje de estado</translation>
+    </message>
+</context>
+<context>
+    <name>UserStatusSelectorDialog</name>
+    <message>
+        <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
+        <source>Set account status</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6590,6 +6716,21 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El estado actual del usuario es no molestar</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <source>Current account avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <source>Current account status is online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
         <source>Account switcher and settings menu</source>
         <translation>Cambiador de cuentas y menú de configuración</translation>
@@ -6610,14 +6751,29 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Desconectado</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Abrir diálogo de compartir</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="567"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir Nextcloud Talk en el navegador</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="587"/>
+        <source>More apps</source>
+        <translation>Más aplicaciones</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Menú de apps</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="628"/>
+        <source>Open %1 in browser</source>
+        <translation>Abrir %1 en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6628,21 +6784,6 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
         <translation>Abre %1 en local</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Abrir diálogo de compartir</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="587"/>
-        <source>More apps</source>
-        <translation>Más aplicaciones</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="628"/>
-        <source>Open %1 in browser</source>
-        <translation>Abrir %1 en el navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
