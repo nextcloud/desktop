@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Statusmeldungs-Menü löschen</translation>
     </message>
 </context>
 <context>
@@ -921,7 +921,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="335"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Beim Zugriff auf die Konfigurationsdatei unter %1 ist ein Fehler aufgetreten. Stellen Sie sicher, dass Ihr Systemkonto auf die Datei zugreifen kann.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="338"/>
@@ -949,7 +949,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Benutzername:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1049,7 +1049,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Geben Sie Ihre Passphrase für Ende-zu-Ende-Verschlüsselung ein:&lt;br&gt;&lt;br&gt;Benutzername: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1715,7 +1715,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Undefinierter Zustand.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -1760,17 +1760,17 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Die letzte Synchronisierung war erfolgreich.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Einrichtungsfehler.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisierungsanfrage wurde abgebrochen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -2391,7 +2391,7 @@ Beachten Sie bitte, dass hierdurch nur ausgewählt wird, aus welchem Pool Upgrad
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Bitte %1 Passwort:&lt;br&gt;&lt;br&gt;Benutzername: %2&lt;br&gt;Konto: %3&lt;br&gt;eingeben</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
@@ -2992,7 +2992,7 @@ Protokolle werden in % 1 geschrieben</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Falsches Konto&lt;/h1&gt;&lt;p&gt;Sie haben sich mit dem Konto &lt;em&gt;%1&lt;/em&gt; angemeldet, müssen aber das Konto &lt;em&gt;%2&lt;/em&gt; verwenden.&lt;br&gt;Bitte melden von %3 in einem anderen Tab abmelden und &lt;a href=&apos;%4&apos;&gt;klicken Sie hier&lt;/a&gt; um sich mit %2 anzumelden&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5556,7 +5556,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerstatus konnte nicht abgerufen werden. Bitte sicherstellen, dass Sie mit dem Server verbunden sind.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5566,7 +5566,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerstatus-Funktion wird nicht unterstützt. Benutzerstatus kann nicht gesetzt werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5576,7 +5576,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emoji-Funktion wird nicht unterstützt. Einige Benutzerstatus-Funktionen funktionieren unter Umständen nicht.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5586,7 +5586,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Benutzerstatus konnte nicht gesetzt werden. Bitte sicherstellen, dass eine Verbindung mit dem Server besteht.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
@@ -5596,7 +5596,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Statusnachricht konnte nicht gelöscht werden. Bitte sicherstellen, dass eine Verbindung mit dem Server besteht.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -5729,7 +5729,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Sie wurden von Ihrem Konto %1 als %2 abgemeldet. Bitte melden Sie sich erneut an.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -5739,7 +5739,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Bitte mit folgendem Konto anmelden: %1</translation>
     </message>
 </context>
 <context>
@@ -6061,7 +6061,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Benutzername</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6076,7 +6076,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Anderen Ordner wählen</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -6427,12 +6427,12 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Aktueller Kontostatus ist online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Aktueller Kontostatus ist &quot;Nicht stören&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
@@ -6512,7 +6512,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Alle Benachrichtigungen stummschalten</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
@@ -6522,7 +6522,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Offline erscheinen</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6555,7 +6555,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
         <source>Set account status</source>
-        <translation type="unfinished"/>
+        <translation>Kontostatus setzen</translation>
     </message>
 </context>
 <context>
@@ -6716,17 +6716,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/tray/Window.qml" line="401"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar des aktuellen Kontos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Aktueller Kontostatus ist online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Aktueller Kontostatus ist &quot;Nicht stören&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>

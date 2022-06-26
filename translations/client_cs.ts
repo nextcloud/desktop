@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Vyčistit nabídku se stavovými zprávami</translation>
     </message>
 </context>
 <context>
@@ -921,7 +921,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/application.cpp" line="335"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Došlo k chybě při přístupu k souboru s nastaveními %1. Ověřte, že váš účet na systému má k souboru přístup.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="338"/>
@@ -949,7 +949,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Uživatelské jméno:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1049,7 +1049,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatelské jméno: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1714,7 +1714,7 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -1759,17 +1759,17 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Chyba nastavení.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Požadavek na synchronizaci zrušen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -2390,7 +2390,7 @@ Poznamenejme, že je možné přejít na novější verzi, ale není možné se 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Zadejte heslo %1:&lt;br&gt;&lt;br&gt;Uživatelské jméno: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
@@ -2991,7 +2991,7 @@ Záznamy událostí budou zapisovány do %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Nesprávný účet&lt;/h1&gt;&lt;p&gt;Přihlásili jste se účtem &lt;em&gt;%1&lt;/em&gt;, ale je třeba, abyste se přihlásili účtem &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Odhlaste se z %3 v jiné kartě, pak &lt;a href=&apos;%4&apos;&gt;klikněte sem&lt;/a&gt; a přihlaste se jako %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5556,7 +5556,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se zjistit stav. Ověřte, že jste připojení k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5566,7 +5566,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Funkce stavu není podporována. Nebudete moci nastavit svůj stav.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5576,7 +5576,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emotikony nejsou není podporovány. Některé funkce stavu nemusí fungovat.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5586,7 +5586,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se nastavit stav. Ověřte, že jste připojení k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
@@ -5596,7 +5596,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se vyčistit zprávu stavu. Ověřte, že jste připojení k serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -5729,7 +5729,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Byli jste odhlášeni ze svého účtu %1 na %2. Znovu se přihlaste.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -5739,7 +5739,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Přihlaste se účtem: %1</translation>
     </message>
 </context>
 <context>
@@ -6061,7 +6061,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Uživatelské jméno</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6076,7 +6076,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Zvolte jinou složku</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -6427,12 +6427,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Stávající stav účtu je online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Stávající stav účtu je nerušit</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
@@ -6512,7 +6512,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Ztlumit veškerá upozornění</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
@@ -6522,7 +6522,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Jevit se offline</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6555,7 +6555,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
         <source>Set account status</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit stav účtu</translation>
     </message>
 </context>
 <context>
@@ -6716,17 +6716,17 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/Window.qml" line="401"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Stávající zástupný obrázek uživatele</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Stávající stav účtu je online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Stávající stav účtu je nerušit</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
