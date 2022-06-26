@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Durum iletisini kaldırma menüsü</translation>
     </message>
 </context>
 <context>
@@ -921,7 +921,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="335"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>%1 üzerindeki yapılandırma dosyasına erişilirken bir sorun çıktı. Lütfen sistem hesabınızın yapılandırma dosyasına erişme izinlerinin olduğundan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="338"/>
@@ -949,7 +949,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kullanıcı adı:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1049,7 +1049,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı adı: %2&lt;br&gt;Hesap: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1715,7 +1715,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Tanımlanmamış durum.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -1760,17 +1760,17 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Son eşitleme başarılıydı.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Kurulum sorunu.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Eşitleme isteği iptal edildi.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -2391,7 +2391,7 @@ Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen %1 parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı adı: %2&lt;br&gt;Hesap: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
@@ -2992,7 +2992,7 @@ Günlükler %1 üzerine yazılacak</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Hesap yanlış&lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; hesabıyla oturum açtınız. Ancak &lt;em&gt;%2&lt;/em&gt; hesabıyla oturum açmalıydınız.&lt;br&gt;Lütfen başka bir sekmde %3 oturumunu kapatın ve %2 ile oturum açmak için &lt;a href=&apos;%4&apos;&gt;buraya tıklayın&lt;/a&gt; &lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5557,7 +5557,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Durum alınamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5567,7 +5567,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Durum özelliği desteklenmiyor. Kullanıcı durumu ayarlanamayabilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5577,7 +5577,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emojiler desteklenmiyor. Bazı durum işlevleri çalışmayabilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5587,7 +5587,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Durum ayarlanamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
@@ -5597,7 +5597,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Durum iletisi kaldırılamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -5730,7 +5730,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>%2 üzerindeki %1 hesabınızın oturumunu kapattınız. Lütfen yeniden oturum açın.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -5740,7 +5740,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen şu hesap ile oturum açın: %1</translation>
     </message>
 </context>
 <context>
@@ -6062,7 +6062,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6077,7 +6077,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Farklı bir klasör seçin</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -6428,22 +6428,22 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current user status is online</source>
-        <translation>Geçerli kullanıcı durumu çevrimiçi</translation>
+        <translation>Kullanıcının geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current user status is do not disturb</source>
-        <translation>Geçerli kullanıcı durumu rahatsız etmeyin</translation>
+        <translation>Kullanıcının geçerli durumu: Rahatsız etmeyin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="94"/>
@@ -6513,7 +6513,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Tüm bildirimleri kapat</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
@@ -6523,7 +6523,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Çevrimdışı görün</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6556,7 +6556,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
         <source>Set account status</source>
-        <translation type="unfinished"/>
+        <translation>Hesap durumunu ayarla</translation>
     </message>
 </context>
 <context>
@@ -6707,27 +6707,27 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/tray/Window.qml" line="423"/>
         <source>Current user status is online</source>
-        <translation>Geçerli kullanıcı durumu çevrimiçi</translation>
+        <translation>Kullanıcının geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="423"/>
         <source>Current user status is do not disturb</source>
-        <translation>Geçerli kullanıcı durumu rahatsız etmeyin</translation>
+        <translation>Kullanıcının geçerli durumu: Rahatsız etmeyin</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="401"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Geçerli hesap avatarı</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
