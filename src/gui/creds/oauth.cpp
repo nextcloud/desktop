@@ -140,7 +140,7 @@ void OAuth::start()
                         QString message = tr("<h1>Wrong account</h1>"
                                              "<p>You logged in with the account <em>%1</em>, but must log in with the account <em>%2</em>.<br>"
                                              "Please log out of %3 in another tab, then <a href='%4'>click here</a> "
-                                             "and log in with %2</p>")
+                                             "and log in with %2.</p>")
                                               .arg(user, _expectedUser, Theme::instance()->appNameGUI(),
                                                   authorisationLink().toString(QUrl::FullyEncoded));
                         httpReplyAndClose(socket, "200 OK", message.toUtf8().constData());
