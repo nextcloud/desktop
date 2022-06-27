@@ -403,7 +403,7 @@ void AccountManager::displayMnemonic(const QString& mnemonic)
     auto *widget = new QDialog;
     Ui_Dialog ui;
     ui.setupUi(widget);
-    widget->setWindowTitle(tr("End to end encryption mnemonic"));
+    widget->setWindowTitle(tr("End-to-end encryption mnemonic"));
     ui.label->setText(tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
                          "Please note these down and keep them safe. "
                          "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
