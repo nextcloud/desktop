@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Állapotüzenet-menü ürítése</translation>
     </message>
 </context>
 <context>
@@ -921,7 +921,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="335"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Hiba történt a következő konfigurációs fájl elérésekor: %1. Győződjön meg róla, hogy a fájlt eléri a rendszerfiók.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="338"/>
@@ -949,7 +949,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Felhasználónév:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1049,7 +1049,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Adja meg a végpontok közötti titkosítási jelmondatát:&lt;br&gt;&lt;br&gt;Felhasználónév: %2&lt;br&gt;Fiók: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1715,7 +1715,7 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Nem definiált állapot.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -1760,17 +1760,17 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>A legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Beállítási hiba.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Szinkronizálási kérés megszakítva.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -2391,7 +2391,7 @@ Ne feledje, hogy ez csak azt választja ki, hogy a frissítések milyen készlet
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Adja meg %1 jelszavát:&lt;br&gt;&lt;br&gt;Felhasználónév: %2&lt;br&gt;Fiók: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
@@ -2993,7 +2993,7 @@ A naplók ide lesznek írva: %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Hibás felhasználó&lt;/h1&gt;&lt;p&gt;A(z) &lt;em&gt;%1&lt;/em&gt; fiókkal jelentkezett be, de a(z) &lt;em&gt;%2&lt;/em&gt; fiókkal kell belépnie.&lt;br&gt;Jelentkezzen ki ebből egy másik lapon: %3, majd &lt;a href=&apos;%4&apos;&gt;kattintson ide&lt;/a&gt;, és jelentkezzen be, mint %2&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -5557,7 +5557,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Az állapot nem kérhető le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5567,7 +5567,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Az állapot funkció nem támogatott. Nem fog tudni egyéni állapotot beállítani.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5577,7 +5577,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Az emodzsik nem támogatottak. Egyes állapotfunkciók lehet, hogy nem fognak működni.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5587,7 +5587,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Az állapot nem állítható be. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
@@ -5597,7 +5597,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Az állapotüzenet nem törölhető. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -5730,7 +5730,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Kijelentkezett a(z) %1 fiókjából a(z) %2 oldalon. Jelentkezzen be újra.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
@@ -5740,7 +5740,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Jelentkezzen be a következő fiókkal: %1</translation>
     </message>
 </context>
 <context>
@@ -6062,7 +6062,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Felhasználónév</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6077,7 +6077,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Válasszon másik mappát</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -6428,12 +6428,12 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Jelenlegi fiókállapot: online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Jelenlegi fiókállapot: ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
@@ -6513,7 +6513,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Összes értesítés némítása</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
@@ -6523,7 +6523,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Megjelenés nem kapcsolódottként</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6556,7 +6556,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
         <source>Set account status</source>
-        <translation type="unfinished"/>
+        <translation>Fiókállapot beállítása</translation>
     </message>
 </context>
 <context>
@@ -6717,17 +6717,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     <message>
         <location filename="../src/gui/tray/Window.qml" line="401"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Jelenlegi fiókprofilkép</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Jelenlegi fiókállapot: online</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Jelenlegi fiókállapot: ne zavarjanak</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>
