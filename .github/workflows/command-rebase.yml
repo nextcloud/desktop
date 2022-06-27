@@ -9,9 +9,14 @@ on:
   issue_comment:
     types: created
 
+permissions:	
+  contents: read	
+
 jobs:
   rebase:
     runs-on: ubuntu-latest
+    permissions:
+      contents: none
 
     # On pull requests and if the comment starts with `/rebase`
     if: github.event.issue.pull_request != '' && startsWith(github.event.comment.body, '/rebase')
@@ -31,11 +36,8 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.COMMAND_BOT_PAT }}
 
-      - name: Fix permissions
-        run: git config --global --add safe.directory /github/workspace
-
       - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.5
+        uses: cirrus-actions/rebase@1.7
         env:
           GITHUB_TOKEN: ${{ secrets.COMMAND_BOT_PAT }}
 
