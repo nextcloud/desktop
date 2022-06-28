@@ -79,7 +79,7 @@ Q_SIGNALS:
      * The state has changed.
      * when logged in, token has the value of the token.
      */
-    void result(OAuth::Result result, const QString &userName = QString(), const QString &token = QString(), const QString &displayName = QString(), const QString &refreshToken = QString());
+    void result(OAuth::Result result, const QString &userName = QString(), const QString &token = QString(), const QString &refreshToken = QString(), const QString &displayName = QString());
 
     /**
      * emitted when the call to the well-known endpoint is finished

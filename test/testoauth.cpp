@@ -256,7 +256,7 @@ public:
         return jsonData.toJson();
     }
 
-    virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &displayName, const QString &refreshToken)
+    virtual void oauthResult(OAuth::Result result, const QString &user, const QString &token, const QString &refreshToken, const QString &displayName)
     {
         QCOMPARE(result, OAuth::LoggedIn);
         QCOMPARE(state, UserInfoFetched);

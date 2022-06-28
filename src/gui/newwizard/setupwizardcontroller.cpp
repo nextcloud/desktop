@@ -237,7 +237,7 @@ void SetupWizardController::nextStep(std::optional<PageIndex> currentPage, std::
                         // username might not be set yet, shouldn't matter, though
                         auto oAuth = new OAuth(_accountBuilder.serverUrl(), QString(), _accessManager, {}, this);
 
-                        connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &userName, const QString &token, const QString &displayName, const QString &refreshToken) {
+                        connect(oAuth, &OAuth::result, this, [this, newPage](OAuth::Result result, const QString &userName, const QString &token, const QString &refreshToken, const QString &displayName) {
                             // the button may not be clicked any more, since the server has been shut down right before this signal was emitted by the OAuth instance
                             newPage->disableButtons();
 

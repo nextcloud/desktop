@@ -88,7 +88,7 @@ void HttpCredentialsGui::askFromUserAsync()
 }
 
 void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
-    const QString &token, const QString &refreshToken)
+    const QString &token, const QString &refreshToken, const QString &)
 {
     _asyncAuth.reset();
     switch (r) {

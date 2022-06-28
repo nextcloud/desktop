@@ -442,7 +442,7 @@ void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessTo
     } else {
         httpReplyAndClose(socket, QStringLiteral("200 OK"), loginSuccessfullTitle, loginSuccessfullHtml);
     }
-    emit result(LoggedIn, userName, accessToken, displayName, refreshToken);
+    emit result(LoggedIn, userName, accessToken, refreshToken, displayName);
 }
 
 QNetworkReply *OAuth::postTokenRequest(const QList<QPair<QString, QString>> &queryItems)
