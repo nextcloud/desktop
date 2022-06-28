@@ -27,6 +27,7 @@ Summary
 * Enhancement - Support for OCIS Spaces: [#9154](https://github.com/owncloud/client/pull/9154)
 * Enhancement - Set Windows VFS placeholders readonly if needed: [#9598](https://github.com/owncloud/client/issues/9598)
 * Enhancement - Create continuous log files: [#9731](https://github.com/owncloud/client/issues/9731)
+* Enhancement - Display a correct error when the wrong user was authenticated: [#9772](https://github.com/owncloud/client/issues/9772)
 
 Details
 -------
@@ -176,6 +177,14 @@ Details
    number of log files.
 
    https://github.com/owncloud/client/issues/9731
+
+* Enhancement - Display a correct error when the wrong user was authenticated: [#9772](https://github.com/owncloud/client/issues/9772)
+
+   When the wrong user was authenticated using oauth we used to display a misleading message. We
+   now also style the html response the client provides to the file browser.
+
+   https://github.com/owncloud/client/issues/9772
+   https://github.com/owncloud/client/pull/9813
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
