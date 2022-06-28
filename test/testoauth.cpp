@@ -464,5 +464,5 @@ private slots:
 };
 
 
-QTEST_GUILESS_MAIN(TestOAuth)
+QTEST_MAIN(TestOAuth)
 #include "testoauth.moc"
