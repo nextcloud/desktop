@@ -682,7 +682,6 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
     Q_ASSERT(!file.isEmpty());
 
     if (!file.isEmpty() && Utility::fsCasePreserving()) {
-        qCDebug(lcPropagator) << "CaseClashCheck for " << file;
 #ifdef Q_OS_MAC
         const QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
@@ -718,6 +717,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
         const QString fn = fileInfo.fileName();
         const QStringList list = fileInfo.dir().entryList({ fn });
         if (list.count() > 1 || (list.count() == 1 && list[0] != fn)) {
+            qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << list.constFirst();
             return true;
         }
 #endif
