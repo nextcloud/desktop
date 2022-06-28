@@ -1238,7 +1238,7 @@ bool ClientSideEncryption::newMnemonicGenerated() const
 }
 
 void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QByteArray &key) {
-    QString msg = tr("Please enter your end to end encryption passphrase:<br>"
+    QString msg = tr("Please enter your end-to-end encryption passphrase:<br>"
                      "<br>"
                      "Username: %2<br>"
                      "Account: %3<br>")
