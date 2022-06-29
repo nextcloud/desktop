@@ -22,6 +22,7 @@ Summary
 * Change - Rewrote TLS error handling: [#9655](https://github.com/owncloud/client/issues/9655)
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
+* Enhancement - Add CMakeOption WITH_AUTO_UPDATER: [#9082](https://github.com/owncloud/client/issues/9082)
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 * Enhancement - Remove use of legacy DAV endpoint: [#9538](https://github.com/owncloud/client/pull/9538)
 * Enhancement - Support for OCIS Spaces: [#9154](https://github.com/owncloud/client/pull/9154)
@@ -122,6 +123,12 @@ Details
 
    https://github.com/owncloud/client/issues/8923
    https://github.com/owncloud/client/pull/9376
+
+* Enhancement - Add CMakeOption WITH_AUTO_UPDATER: [#9082](https://github.com/owncloud/client/issues/9082)
+
+   WITH_AUTO_UPDATER allows to build the client without the auto updater.
+
+   https://github.com/owncloud/client/issues/9082
 
 * Enhancement - Rewrite wizard from scratch: [#9249](https://github.com/owncloud/client/issues/9249)
 
