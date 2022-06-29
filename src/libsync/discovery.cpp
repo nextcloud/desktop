@@ -352,6 +352,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     const auto serverFileIsLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked";
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
     qCInfo(lcDisco).nospace() << "Processing " << path._original
+                              << " | (db/local/remote)"
                               << " | valid: " << dbEntry.isValid() << "/" << hasLocal << "/" << hasServer
                               << " | mtime: " << dbEntry._modtime << "/" << localEntry.modtime << "/" << serverEntry.modtime
                               << " | size: " << dbEntry._fileSize << "/" << localEntry.size << "/" << serverEntry.size
