@@ -17,15 +17,13 @@ Item {
         root.sendReply(replyMessageTextField.text);
     }
 
-    height: 38
-    width: 250
-
     TextField {
         id: replyMessageTextField
 
+        height: Style.talkReplyTextFieldPreferredHeight
+
         anchors.fill: parent
-        topPadding: 4
-        rightPadding: sendReplyMessageButton.width
+
         visible: model.messageSent === ""
 
         color: Style.ncTextColor
@@ -42,9 +40,11 @@ Item {
         }
 
         Button {
-            id: sendReplyMessageButton  
-            width: 32
+            id: sendReplyMessageButton
+
+            width: Style.talkReplyTextFieldPreferredWidth * 0.12
             height: parent.height
+
             opacity: 0.8
             flat: true
             enabled: replyMessageTextField.text !== ""
@@ -53,8 +53,6 @@ Item {
 
             icon {
                 source: "image://svgimage-custom-color/send.svg" + "/" + Style.menuBorder
-                width: 38
-                height: 38
                 color: hovered || !sendReplyMessageButton.enabled? Style.menuBorder : UserModel.currentUser.accentColor
             }
 

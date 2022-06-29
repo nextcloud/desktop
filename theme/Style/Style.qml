@@ -65,6 +65,9 @@ QtObject {
 
     property int activityLabelBaseWidth: 240
 
+    property int talkReplyTextFieldPreferredHeight: 34
+    property int talkReplyTextFieldPreferredWidth: 250
+
     property int activityItemActionPrimaryButtonMinWidth: 100
     property int activityItemActionSecondaryButtonMinWidth: 80
 
