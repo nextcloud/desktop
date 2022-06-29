@@ -77,6 +77,9 @@ public:
     enum class NotificationPosition { Default, TopLeft, TopRight, BottomLeft, BottomRight };
     Q_ENUM(NotificationPosition);
 
+    enum class WindowPosition { Default, Center };
+    Q_ENUM(WindowPosition);
+
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
@@ -91,7 +94,6 @@ public:
     Q_INVOKABLE bool syncIsPaused();
     Q_INVOKABLE void setOpened();
     Q_INVOKABLE void setClosed();
-    Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
     Q_INVOKABLE void forceWindowInit(QQuickWindow *window) const;
     Q_INVOKABLE void positionNotificationWindow(QQuickWindow *window) const;
 
@@ -103,8 +105,10 @@ signals:
     void openHelp();
     void shutdown();
 
+    // These window signals are listened to in Window.qml
     void hideWindow();
-    void showWindow();
+    void showWindow(WindowPosition position = WindowPosition::Default);
+
     void openShareDialog(const QString &sharePath, const QString &localPath);
     void showFileActivityDialog(const QString &objectName, const int objectId);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
@@ -112,6 +116,8 @@ signals:
 
 public slots:
     void slotNewUserSelected();
+    void positionWindowAtTray(QQuickWindow *window) const;
+    void positionWindowAtScreenCenter(QQuickWindow *window) const;
 
 private slots:
     void slotUnpauseAllFolders();

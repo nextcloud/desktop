@@ -78,10 +78,20 @@ Window {
 
     Connections {
         target: Systray
-        function onShowWindow() {
+
+        function onShowWindow(position) {
+            if(trayWindow.visible) {
+                return;
+            }
+
             accountMenu.close();
             appsMenu.close();
-            Systray.positionWindow(trayWindow);
+
+            if(position === Systray.WindowPosition.Center) {
+                Systray.positionWindowAtScreenCenter(trayWindow);
+            } else {
+                Systray.positionWindowAtTray(trayWindow);
+            }
 
             trayWindow.show();
             trayWindow.raise();
@@ -90,6 +100,7 @@ Window {
             Systray.setOpened();
             UserModel.fetchCurrentActivityModel();
         }
+
         function onHideWindow() {
             trayWindow.hide();
             Systray.setClosed();
