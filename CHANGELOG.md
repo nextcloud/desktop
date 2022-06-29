@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Compare usernames case insensitive: [#5174](https://github.com/owncloud/enterprise/issues/5174)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
@@ -32,6 +33,13 @@ Summary
 
 Details
 -------
+
+* Bugfix - Compare usernames case insensitive: [#5174](https://github.com/owncloud/enterprise/issues/5174)
+
+   We fixed a bug where the user name was compared with the name provided by the server in a case
+   sensitive way.
+
+   https://github.com/owncloud/enterprise/issues/5174
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 
