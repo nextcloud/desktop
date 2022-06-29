@@ -360,6 +360,11 @@
         <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>Şifreli kimliğiniz korunmak için 12 sözlük sözcüğünden oluşan bir anımsatıcı ile şifrelendi. Lütfen bu sözcükleri not ederek güvenli bir yerde saklayın. Bu bilgi hesabınıza başka aygıtlar (cep telefonu ya da bilgisayar) eklemek istediğinizde gerekir.</translation>
@@ -1048,8 +1053,8 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı adı: %2&lt;br&gt;Hesap: %3&lt;br&gt;</translation>
+        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -2991,8 +2996,8 @@ Günlükler %1 üzerine yazılacak</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
-        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Hesap yanlış&lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; hesabıyla oturum açtınız. Ancak &lt;em&gt;%2&lt;/em&gt; hesabıyla oturum açmalıydınız.&lt;br&gt;Lütfen başka bir sekmde %3 oturumunu kapatın ve %2 ile oturum açmak için &lt;a href=&apos;%4&apos;&gt;buraya tıklayın&lt;/a&gt; &lt;/p&gt;</translation>
+        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

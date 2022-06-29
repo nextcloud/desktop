@@ -360,6 +360,11 @@
         <translation>Végpontok közötti titkosítás mnemonikus kódja</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>A kriptográfiai személyazonossága megvédéséhez, egy 12 szótári szóból álló mnemonikus kóddal titkosítjuk. Jegyezze meg ezeket, és tartsa azokat biztonságban. Szüksége lesz rájuk, ha egy új eszközt akar hozzáadni a fiókjához (például a mobiltelefonját vagy a laptopját).</translation>
@@ -1048,8 +1053,8 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Adja meg a végpontok közötti titkosítási jelmondatát:&lt;br&gt;&lt;br&gt;Felhasználónév: %2&lt;br&gt;Fiók: %3&lt;br&gt;</translation>
+        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -2992,8 +2997,8 @@ A naplók ide lesznek írva: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
-        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2&lt;/p&gt;</source>
-        <translation>&lt;h1&gt;Hibás felhasználó&lt;/h1&gt;&lt;p&gt;A(z) &lt;em&gt;%1&lt;/em&gt; fiókkal jelentkezett be, de a(z) &lt;em&gt;%2&lt;/em&gt; fiókkal kell belépnie.&lt;br&gt;Jelentkezzen ki ebből egy másik lapon: %3, majd &lt;a href=&apos;%4&apos;&gt;kattintson ide&lt;/a&gt;, és jelentkezzen be, mint %2&lt;/p&gt;</translation>
+        <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
