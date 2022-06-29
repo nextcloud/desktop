@@ -604,11 +604,6 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             folder->setRootPinState(PinState::AlwaysLocal);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
-            // Prevent issues with missing local files
-            folder->slotNextSyncFullLocalDiscovery();
-
-            FolderMan::instance()->scheduleFolder(folder);
-
             ui->_folderList->doItemsLayout();
         };
 

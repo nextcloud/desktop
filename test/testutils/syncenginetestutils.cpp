@@ -959,9 +959,8 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
     _journalDb.reset(new OCC::SyncJournalDb(localPath() + QStringLiteral(".sync_test.db")));
     // TODO: davUrl
 
-    const OCC::SyncOptions opt(QSharedPointer<OCC::Vfs>(OCC::createVfsFromPlugin(_vfsMode).release()));
-
-    _syncEngine.reset(new OCC::SyncEngine(_account, opt, _account->davUrl(), localPath(), QString(), _journalDb.get()));
+    _syncEngine.reset(new OCC::SyncEngine(_account, _account->davUrl(), localPath(), QString(), _journalDb.get()));
+    _syncEngine->setSyncOptions(OCC::SyncOptions { QSharedPointer<OCC::Vfs>(OCC::createVfsFromPlugin(_vfsMode).release()) });
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 

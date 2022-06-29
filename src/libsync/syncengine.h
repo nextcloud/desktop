@@ -24,7 +24,6 @@
 #include <QMap>
 #include <QStringList>
 #include <QSharedPointer>
-#include <set>
 
 #include "csync/csync_exclude.h"
 
@@ -35,6 +34,9 @@
 #include "accountfwd.h"
 #include "discoveryphase.h"
 #include "common/checksums.h"
+
+#include <optional>
+#include <set>
 
 class QProcess;
 
@@ -59,7 +61,7 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    SyncEngine(AccountPtr account, const SyncOptions &syncOptions, const QUrl &baseUrl, const QString &localPath,
+    SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &localPath,
         const QString &remotePath, SyncJournalDb *journal);
     ~SyncEngine() override;
 
@@ -71,7 +73,11 @@ public:
 
     bool isSyncRunning() const { return _syncRunning; }
 
-    const SyncOptions &syncOptions() const { return _syncOptions; }
+    const SyncOptions &syncOptions() const
+    {
+        Q_ASSERT(_syncOptions);
+        return *_syncOptions;
+    }
     void setSyncOptions(const SyncOptions &options)
     {
         _syncOptions = options;
@@ -276,7 +282,7 @@ private:
     int _uploadLimit;
     int _downloadLimit;
 
-    SyncOptions _syncOptions;
+    std::optional<SyncOptions> _syncOptions;
 
     AnotherSyncNeeded _anotherSyncNeeded;
 

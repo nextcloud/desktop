@@ -78,10 +78,9 @@ static const std::chrono::milliseconds s_touchedFilesMaxAgeMs(3 * 1000);
 // doc in header
 std::chrono::milliseconds SyncEngine::minimumFileAgeForUpload(2000);
 
-SyncEngine::SyncEngine(AccountPtr account, const SyncOptions &syncOptions, const QUrl &baseUrl, const QString &localPath,
+SyncEngine::SyncEngine(AccountPtr account, const QUrl &baseUrl, const QString &localPath,
     const QString &remotePath, OCC::SyncJournalDb *journal)
     : _account(account)
-    , _syncOptions(syncOptions)
     , _baseUrl(baseUrl)
     , _needsUpdate(false)
     , _syncRunning(false)
@@ -435,7 +434,7 @@ void SyncEngine::startSync()
 
     _lastLocalDiscoveryStyle = _localDiscoveryStyle;
 
-    if (_syncOptions._vfs->mode() == Vfs::WithSuffix && _syncOptions._vfs->fileSuffix().isEmpty()) {
+    if (syncOptions()._vfs->mode() == Vfs::WithSuffix && syncOptions()._vfs->fileSuffix().isEmpty()) {
         Q_EMIT syncError(tr("Using virtual files with suffix, but suffix is not set"));
         finalize(false);
         return;
@@ -465,7 +464,7 @@ void SyncEngine::startSync()
 
     // TODO: add a constructor to DiscoveryPhase
     // pass a syncEngine object rather than copying everyhting to another object
-    _discoveryPhase.reset(new DiscoveryPhase(_account, _syncOptions, _baseUrl));
+    _discoveryPhase.reset(new DiscoveryPhase(_account, syncOptions(), _baseUrl));
     _discoveryPhase->_excludes = _excludedFiles.data();
     _discoveryPhase->_statedb = _journal;
     _discoveryPhase->_localDir = _localPath;
@@ -651,7 +650,7 @@ void SyncEngine::slotDiscoveryFinished()
         // do a database commit
         _journal->commit(QStringLiteral("post treewalk"));
 
-        _propagator = QSharedPointer<OwncloudPropagator>::create(_account, _syncOptions, _baseUrl, _localPath, _remotePath, _journal);
+        _propagator = QSharedPointer<OwncloudPropagator>::create(_account, syncOptions(), _baseUrl, _localPath, _remotePath, _journal);
         connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
             this, &SyncEngine::slotItemCompleted);
         connect(_propagator.data(), &OwncloudPropagator::progress,

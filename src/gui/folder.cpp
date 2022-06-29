@@ -105,7 +105,7 @@ Folder::Folder(const FolderDefinition &definition,
     if (checkLocalPath()) {
         // those errors should not persist over sessions
         _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
-        _engine.reset(new SyncEngine(_accountState->account(), loadSyncOptions(), webDavUrl(), path(), remotePath(), &_journal));
+        _engine.reset(new SyncEngine(_accountState->account(), webDavUrl(), path(), remotePath(), &_journal));
         // pass the setting if hidden files are to be ignored, will be read in csync_update
         _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
@@ -586,6 +586,7 @@ void Folder::startVfs()
         QString stateDbFile = _journal.databaseFilePath();
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-wal"), SyncFileStatus::StatusExcluded);
         _vfs->fileStatusChanged(stateDbFile + QStringLiteral("-shm"), SyncFileStatus::StatusExcluded);
+        _engine->setSyncOptions(loadSyncOptions());
         _vfsIsReady = true;
         slotScheduleThisFolder();
     });
@@ -759,12 +760,14 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         disconnect(_vfs.data(), nullptr, this, nullptr);
         disconnect(&_engine->syncFileStatusTracker(), nullptr, _vfs.data(), nullptr);
 
+        _vfsIsReady = false;
         _vfs.reset(createVfsFromPlugin(newMode).release());
 
         _definition.virtualFilesMode = newMode;
         startVfs();
-        if (newMode != Vfs::Off)
+        if (newMode != Vfs::Off) {
             _saveInFoldersWithPlaceholders = true;
+        }
         saveToSettings();
     }
 }
