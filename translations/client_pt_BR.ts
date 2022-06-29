@@ -24,7 +24,7 @@
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation><numerusform>%n Filtro(s):</numerusform><numerusform>%n Filtro(s)</numerusform></translation>
+        <translation><numerusform>%n Filtro(s):</numerusform><numerusform>%n Filtro(s)</numerusform><numerusform>%n Filtro(s)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -181,7 +181,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="169"/>
         <source>TextLabel</source>
-        <translation>TextLabel</translation>
+        <translation>RótuloTexto</translation>
     </message>
 </context>
 <context>
@@ -710,12 +710,12 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="300"/>
         <source>%n notifications(s) for %1.</source>
-        <translation><numerusform>%n notificação(ões) for %1.</numerusform><numerusform>%n notificação(ões) for %1.</numerusform></translation>
+        <translation><numerusform>%n notificação(ões) for %1.</numerusform><numerusform>%n notificação(ões) for %1.</numerusform><numerusform>%n notificação(ões) for %1.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/activitywidget.cpp" line="306"/>
         <source>%n notifications(s) for %1 and %2.</source>
-        <translation><numerusform>%n notificação(ões) para %1 e %2.</numerusform><numerusform>%n notificação(ões) para %1 e %2.</numerusform></translation>
+        <translation><numerusform>%n notificação(ões) para %1 e %2.</numerusform><numerusform>%n notificação(ões) para %1 e %2.</numerusform><numerusform>%n notificação(ões) para %1 e %2.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="308"/>
@@ -1017,7 +1017,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation><numerusform>%1 e %n outro arquivo foi removido.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo foi removido.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform><numerusform>%1 e %n outros arquivos foram removidos.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="195"/>
@@ -1032,7 +1032,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation><numerusform>%1 e %n outros arquivo(s) foram adicionados.</numerusform><numerusform>%1 e %n outros arquivo(s) foram adicionados.</numerusform></translation>
+        <translation><numerusform>%1 e %n outros arquivo(s) foram adicionados.</numerusform><numerusform>%1 e %n outros arquivo(s) foram adicionados.</numerusform><numerusform>%1 e %n outros arquivo(s) foram adicionados.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="478"/>
@@ -1043,22 +1043,22 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation><numerusform>%1 e %n outro arquivo foi atualizado.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo foi atualizado.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform><numerusform>%1 e %n outros arquivos foram atualizados.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="490"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation><numerusform>%1 foi renomeado para %2 e %n outro arquivo foi renomeado.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform></translation>
+        <translation><numerusform>%1 foi renomeado para %2 e %n outro arquivo foi renomeado.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform><numerusform>%1 foi renomeado para %2 e %n outros arquivos foram renomeados.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="497"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation><numerusform>%1 foi movido para %2 e %n outro arquivo foi movido.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform></translation>
+        <translation><numerusform>%1 foi movido para %2 e %n outro arquivo foi movido.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform><numerusform>%1 foi movido para %2 e %n outros arquivos foram movidos.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="504"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 tem e %n outro arquivo tem conflito na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos teem conflito na sincronização.</numerusform></translation>
+        <translation><numerusform>%1 tem e %n outro arquivo tem conflito na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos teem conflito na sincronização.</numerusform><numerusform>%1 tem e %n outros arquivos teem conflito na sincronização.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="506"/>
@@ -1068,7 +1068,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="511"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 e %n outro arquivo não pode ser sincronizado devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivo(s) não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform></translation>
+        <translation><numerusform>%1 e %n outro arquivo não pode ser sincronizado devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivo(s) não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform><numerusform>%1 e %n outros arquivo(s) não puderam ser sincronizados devido a erros. Veja o log para detalhes.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="513"/>
@@ -1448,7 +1448,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1079"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation><numerusform>Esperando por %n outra pasta...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform></translation>
+        <translation><numerusform>Esperando por %n outra pasta...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform><numerusform>Esperando por %n outras pastas...</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1085"/>
@@ -4529,12 +4529,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="454"/>
         <source>%n day(s) ago</source>
-        <translation><numerusform>%n dia(s) atrás</numerusform><numerusform>%n dia(s) atrás</numerusform></translation>
+        <translation><numerusform>%n dia(s) atrás</numerusform><numerusform>%n dia(s) atrás</numerusform><numerusform>%n dia(s) atrás</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="462"/>
         <source>%n hour(s) ago</source>
-        <translation><numerusform>%n hora(s) atrás</numerusform><numerusform>%n hora(s) atrás</numerusform></translation>
+        <translation><numerusform>%n hora(s) atrás</numerusform><numerusform>%n hora(s) atrás</numerusform><numerusform>%n hora(s) atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="467"/>
@@ -4549,7 +4549,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="472"/>
         <source>%n minute(s) ago</source>
-        <translation><numerusform>%n minuto(s) atrás</numerusform><numerusform>%n minuto(s) atrás</numerusform></translation>
+        <translation><numerusform>%n minuto(s) atrás</numerusform><numerusform>%n minuto(s) atrás</numerusform><numerusform>%n minuto(s) atrás</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="475"/>
@@ -4647,32 +4647,32 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="324"/>
         <source>%n year(s)</source>
-        <translation><numerusform>%n ano</numerusform><numerusform>%n ano(s)</numerusform></translation>
+        <translation><numerusform>%n ano</numerusform><numerusform>%n ano(s)</numerusform><numerusform>%n ano(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="325"/>
         <source>%n month(s)</source>
-        <translation><numerusform>%n mês</numerusform><numerusform>%n mês(es)</numerusform></translation>
+        <translation><numerusform>%n mês</numerusform><numerusform>%n mês(es)</numerusform><numerusform>%n mês(es)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="326"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n day</numerusform><numerusform>%n dia(s)</numerusform></translation>
+        <translation><numerusform>%n day</numerusform><numerusform>%n dia(s)</numerusform><numerusform>%n dia(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="327"/>
         <source>%n hour(s)</source>
-        <translation><numerusform>%n hora</numerusform><numerusform>%n hora(s)</numerusform></translation>
+        <translation><numerusform>%n hora</numerusform><numerusform>%n hora(s)</numerusform><numerusform>%n hora(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="328"/>
         <source>%n minute(s)</source>
-        <translation><numerusform>%n minuto</numerusform><numerusform>%n minuto(s)</numerusform></translation>
+        <translation><numerusform>%n minuto</numerusform><numerusform>%n minuto(s)</numerusform><numerusform>%n minuto(s)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="329"/>
         <source>%n second(s)</source>
-        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundo(s)</numerusform></translation>
+        <translation><numerusform>%n segundo</numerusform><numerusform>%n segundo(s)</numerusform><numerusform>%n segundo(s)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="353"/>

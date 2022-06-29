@@ -1,0 +1,5 @@
+Bugfix: Compare usernames case insensitive
+
+We fixed a bug where the user name was compared with the name provided by the server in a case sensitive way.
+
+https://github.com/owncloud/enterprise/issues/5174

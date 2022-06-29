@@ -3370,7 +3370,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="114"/>
         <source>Recipients can view or download contents.</source>
-        <translation type="unfinished"/>
+        <translation>받는 사람은 컨텐츠를 열람하거나 다운로드할  있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="99"/>
@@ -3380,7 +3380,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="137"/>
         <source>Recipients can view, download, edit, delete and upload contents.</source>
-        <translation type="unfinished"/>
+        <translation>받는 사람은 컨텐츠를 열람, 다운로드, 편집, 삭제, 업로드할 수 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
