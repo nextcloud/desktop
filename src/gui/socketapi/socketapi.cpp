@@ -938,11 +938,9 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
         }
     }
 
-    listener->sendMessage(QStringLiteral("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy private link to clipboard"));
-
-    // Disabled: only providing email option for private links would look odd,
-    // and the copy option is more general.
-    //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email..."));
+    if (capabilities.privateLinkPropertyAvailable()) {
+        listener->sendMessage(QStringLiteral("MENU_ITEM:COPY_PRIVATE_LINK") + flagString + tr("Copy private link to clipboard"));
+    }
 }
 
 SocketApi::FileData SocketApi::FileData::get(const QString &localFile)
@@ -1022,10 +1020,12 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
         if (fileData.folder && fileData.folder->accountState()->isConnected()) {
             sendSharingContextMenuOptions(fileData, listener);
-            listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
 
-            // Add link to versions pane if possible
             auto &capabilities = folder->accountState()->account()->capabilities();
+            if (capabilities.privateLinkPropertyAvailable()) {
+                listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+            }
+            // Add link to versions pane if possible
             if (capabilities.versioningEnabled()
                 && capabilities.privateLinkDetailsParamAvailable()
                 && isOnTheServer

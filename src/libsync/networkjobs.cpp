@@ -32,8 +32,8 @@
 #include <QPainterPath>
 #endif
 
-#include "networkjobs.h"
 #include "account.h"
+#include "networkjobs.h"
 #include "owncloudpropagator.h"
 
 #include "creds/abstractcredentials.h"
@@ -607,17 +607,19 @@ void SimpleNetworkJob::newReplyHook(QNetworkReply *reply)
 void fetchPrivateLinkUrl(AccountPtr account, const QUrl &baseUrl, const QString &remotePath, QObject *target,
     std::function<void(const QString &url)> targetFun)
 {
-    // Retrieve the new link by PROPFIND
-    PropfindJob *job = new PropfindJob(account, baseUrl, remotePath, target);
-    job->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
-    job->setTimeout(10s);
-    QObject::connect(job, &PropfindJob::result, target, [=](const QMap<QString, QString> &result) {
-        auto privateLinkUrl = result[QStringLiteral("privatelink")];
-        if (!privateLinkUrl.isEmpty()) {
-            targetFun(privateLinkUrl);
-        }
-    });
-    job->start();
+    if (account->capabilities().privateLinkPropertyAvailable()) {
+        // Retrieve the new link by PROPFIND
+        PropfindJob *job = new PropfindJob(account, baseUrl, remotePath, target);
+        job->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
+        job->setTimeout(10s);
+        QObject::connect(job, &PropfindJob::result, target, [=](const QMap<QString, QString> &result) {
+            auto privateLinkUrl = result[QStringLiteral("privatelink")];
+            if (!privateLinkUrl.isEmpty()) {
+                targetFun(privateLinkUrl);
+            }
+        });
+        job->start();
+    }
 }
 
 } // namespace OCC

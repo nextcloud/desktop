@@ -1,0 +1,3 @@
+Enhancement: Don't query private links if disabled on the server
+
+https://github.com/owncloud/client/issues/8998
