@@ -120,7 +120,7 @@ Systray::Systray()
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, [this]{ emit showWindow(); });
+        this, [this]{ showWindow(); });
 #else
     // Since the positioning of the QSystemTrayIcon is borked on non-Windows and non-macOS desktop environments,
     // we hardcode the position of the tray to be in the center when we add a new account from somewhere like
@@ -128,7 +128,7 @@ Systray::Systray()
     // is placed
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, [this]{ emit showWindow(WindowPosition::Center); });
+        this, [this]{ showWindow(WindowPosition::Center); });
 #endif
 }
 
@@ -138,7 +138,9 @@ void Systray::create()
         if (!AccountManager::instance()->accounts().isEmpty()) {
             _trayEngine->rootContext()->setContextProperty("activityModel", UserModel::instance()->currentActivityModel());
         }
-        _trayEngine->load(QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
+
+        QQmlComponent trayWindowComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
+        _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -150,6 +152,36 @@ void Systray::create()
             break;
         }
     }
+}
+
+void Systray::showWindow(WindowPosition position)
+{
+    if(isOpen() || !_trayWindow) {
+        return;
+    }
+
+    if(position == WindowPosition::Center) {
+        positionWindowAtScreenCenter(_trayWindow.data());
+    } else {
+        positionWindowAtTray(_trayWindow.data());
+    }
+    _trayWindow->show();
+    _trayWindow->raise();
+    _trayWindow->requestActivate();
+
+    setIsOpen(true);
+
+    UserModel::instance()->fetchCurrentActivityModel();
+}
+
+void Systray::hideWindow()
+{
+    if(!isOpen() || !_trayWindow) {
+        return;
+    }
+
+    _trayWindow->hide();
+    setIsOpen(false);
 }
 
 void Systray::setupContextMenu()
@@ -169,7 +201,7 @@ void Systray::setupContextMenu()
     if (AccountManager::instance()->accounts().isEmpty()) {
         _contextMenu->addAction(tr("Add account"), this, &Systray::openAccountWizard);
     } else {
-        _contextMenu->addAction(tr("Open main dialog"), this, &Systray::openMainDialog);
+        _contextMenu->addAction(tr("Open main dialog"), this, [this]{ showWindow(); });
     }
 
     auto pauseAction = _contextMenu->addAction(tr("Pause sync"), this, &Systray::slotPauseAllFolders);

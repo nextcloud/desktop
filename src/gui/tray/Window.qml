@@ -79,9 +79,10 @@ Window {
     Connections {
         target: Systray
 
-        function onShowWindow(position) {
-            if(trayWindow.visible) {
-                return;
+        function onIsOpenChanged() {
+            if(Systray.isOpen) {
+                accountMenu.close();
+                appsMenu.close();
             }
 
             accountMenu.close();

@@ -73,7 +73,7 @@ public:
 
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);
-    
+
     enum class NotificationPosition { Default, TopLeft, TopRight, BottomLeft, BottomRight };
     Q_ENUM(NotificationPosition);
 
@@ -100,14 +100,9 @@ public:
 signals:
     void currentUserChanged();
     void openAccountWizard();
-    void openMainDialog();
     void openSettings();
     void openHelp();
     void shutdown();
-
-    // These window signals are listened to in Window.qml
-    void hideWindow();
-    void showWindow(WindowPosition position = WindowPosition::Default);
 
     void openShareDialog(const QString &sharePath, const QString &localPath);
     void showFileActivityDialog(const QString &objectName, const int objectId);
@@ -116,8 +111,14 @@ signals:
 
 public slots:
     void slotNewUserSelected();
+
+    void forceWindowInit(QQuickWindow *window) const;
     void positionWindowAtTray(QQuickWindow *window) const;
     void positionWindowAtScreenCenter(QQuickWindow *window) const;
+    void positionNotificationWindow(QQuickWindow *window) const;
+
+    void showWindow(WindowPosition position = WindowPosition::Default);
+    void hideWindow();
 
 private slots:
     void slotUnpauseAllFolders();
@@ -146,6 +147,7 @@ private:
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
+    QSharedPointer<QQuickWindow> _trayWindow;
 
     AccessManagerFactory _accessManagerFactory;
 
