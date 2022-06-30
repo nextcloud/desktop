@@ -95,6 +95,7 @@ public slots:
     void appendToConfigurationLog(const QString &msg, LogType type = LogParagraph);
     void slotCurrentPageChanged(int);
     void successfulStep();
+    void slotCustomButtonClicked(const int which);
 
 signals:
     void clearPendingRequests();
