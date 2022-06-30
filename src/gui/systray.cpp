@@ -280,11 +280,6 @@ void Systray::setPauseOnAllFoldersHelper(bool pause)
     }
 }
 
-bool Systray::isOpen()
-{
-    return _isOpen;
-}
-
 QString Systray::windowTitle() const
 {
     return Theme::instance()->appNameGUI();
@@ -300,14 +295,15 @@ bool Systray::useNormalWindow() const
     return cfg.showMainDialogAsNormalWindow();
 }
 
-Q_INVOKABLE void Systray::setOpened()
+bool Systray::isOpen() const
 {
-    _isOpen = true;
+    return _isOpen;
 }
 
-Q_INVOKABLE void Systray::setClosed()
+void Systray::setIsOpen(const bool isOpen)
 {
-    _isOpen = false;
+    _isOpen = isOpen;
+    Q_EMIT isOpenChanged();
 }
 
 void Systray::showMessage(const QString &title, const QString &message, MessageIcon icon)
@@ -347,19 +343,18 @@ void Systray::setToolTip(const QString &tip)
     QSystemTrayIcon::setToolTip(tr("%1: %2").arg(Theme::instance()->appNameGUI(), tip));
 }
 
-bool Systray::syncIsPaused()
+bool Systray::syncIsPaused() const
 {
     return _syncIsPaused;
 }
 
-void Systray::pauseResumeSync()
+void Systray::setSyncIsPaused(const bool syncIsPaused)
 {
+    _syncIsPaused = syncIsPaused;
     if (_syncIsPaused) {
-        _syncIsPaused = false;
-        slotUnpauseAllFolders();
-    } else {
-        _syncIsPaused = true;
         slotPauseAllFolders();
+    } else {
+        slotUnpauseAllFolders();
     }
 }
 
