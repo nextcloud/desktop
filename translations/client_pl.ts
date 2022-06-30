@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Pamięciowe szyfrowanie end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -1054,7 +1054,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Wprowadź hasło szyfrowania end-to-end:&lt;br&gt;&lt;br&gt;Nazwa użytkownika: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -2997,7 +2997,7 @@ Dzienniki zostaną zapisane w %1</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Niewłaściwe konto&lt;/h1&gt;&lt;p&gt; Zalogowałeś się na konto &lt;em&gt;%1&lt;/em&gt;, a powinieneś zalogować się na konto &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Wyloguj się z %3 na innej karcie, a następnie &lt;a href=&apos;%4&apos;&gt;kliknij tutaj&lt;/a&gt; i zaloguj się za pomocą %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6376,12 +6376,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="32"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
         <translation>Odpowiedź na…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="69"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
         <source>Send reply to chat message</source>
         <translation>Wyślij odpowiedź w wiadomości na czacie</translation>
     </message>

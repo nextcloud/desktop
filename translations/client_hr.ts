@@ -6376,12 +6376,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="32"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="69"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
         <source>Send reply to chat message</source>
         <translation type="unfinished"/>
     </message>

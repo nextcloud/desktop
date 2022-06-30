@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -1054,7 +1054,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı adı: %2&lt;br&gt;Hesap: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -2997,7 +2997,7 @@ Günlükler %1 üzerine yazılacak</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Hesap yanlış&lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; hesabıyla oturum açtınız. Ancak &lt;em&gt;%2&lt;/em&gt; hesabıyla oturum açmalıydınız.&lt;br&gt;Lütfen başka bir sekmde %3 oturumunu kapatın ve &lt;a href=&apos;%4&apos;&gt;buraya tıklayarak&lt;/a&gt; %2 ile oturum açın.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -6376,12 +6376,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="32"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
         <translation>Şuraya yanıtla…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="69"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
         <source>Send reply to chat message</source>
         <translation>Bir görüşme iletisini yanıtla</translation>
     </message>
