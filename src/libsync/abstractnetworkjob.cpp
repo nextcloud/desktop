@@ -170,6 +170,7 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb, const QUrl &url,
     _verb = verb;
     _request = req;
     _request.setUrl(url);
+    _request.setPriority(_priority);
     _requestBody = requestBody;
     if (!isAuthenticationJob() && _account->jobQueue()->enqueue(this)) {
         return;
@@ -440,6 +441,16 @@ void AbstractNetworkJob::abort()
     } else {
         deleteLater();
     }
+}
+
+void AbstractNetworkJob::setPriority(QNetworkRequest::Priority priority)
+{
+    _priority = priority;
+}
+
+QNetworkRequest::Priority AbstractNetworkJob::priority() const
+{
+    return _priority;
 }
 
 } // namespace OCC

@@ -79,6 +79,8 @@ GETFileJob::GETFileJob(AccountPtr account, const QString &path, QIODevice *devic
     , _resumeStart(resumeStart)
     , _hasEmittedFinishedSignal(false)
 {
+    // Long downloads must not block non-propagation jobs.
+    setPriority(QNetworkRequest::LowPriority);
 }
 
 GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
@@ -94,6 +96,8 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, QIODevice *device,
     , _directDownloadUrl(url)
     , _hasEmittedFinishedSignal(false)
 {
+    // Long downloads must not block non-propagation jobs.
+    setPriority(QNetworkRequest::LowPriority);
 }
 
 void GETFileJob::start()
@@ -108,8 +112,6 @@ void GETFileJob::start()
     for (auto it = _headers.cbegin(); it != _headers.cend(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
-
-    req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
 
     if (_directDownloadUrl.isEmpty()) {
         sendRequest("GET", makeDavUrl(path()), req);
