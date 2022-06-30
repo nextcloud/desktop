@@ -424,7 +424,7 @@ void OAuth::refreshAuthentication(const QString &refreshToken)
 void OAuth::finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QString &userName, const QString &displayName, const QUrl &messageUrl)
 {
     // dav user names are case insensetive, we might compare a user input with the string provided by the server
-    if (!_account->davUser().isEmpty() && user.compare(_account->davUser(), Qt::CaseInsensitive) != 0) {
+    if (!_davUser.isEmpty() && userName.compare(_davUser, Qt::CaseInsensitive) != 0) {
         // Connected with the wrong user
         qCWarning(lcOauth) << "We expected the user" << _davUser << "but the server answered with user" << userName;
         const QString message = tr("<h1>Wrong user</h1>"
