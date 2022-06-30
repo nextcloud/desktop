@@ -86,16 +86,16 @@ OwncloudWizard::OwncloudWizard(QWidget *parent)
 #endif // WITH_WEBENGINE
     connect(_advancedSetupPage, &OwncloudAdvancedSetupPage::createLocalAndRemoteFolders,
         this, &OwncloudWizard::createLocalAndRemoteFolders);
-    connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::skipFolderConfiguration);
+    connect(this, &QWizard::customButtonClicked, this, &OwncloudWizard::slotCustomButtonClicked);
 
 
     Theme *theme = Theme::instance();
     setWindowTitle(tr("Add %1 account").arg(theme->appNameGUI()));
     setWizardStyle(QWizard::ModernStyle);
     setOption(QWizard::NoBackButtonOnStartPage);
-    setOption(QWizard::NoBackButtonOnLastPage);
     setOption(QWizard::NoCancelButton);
     setButtonText(QWizard::CustomButton1, tr("Skip folders configuration"));
+    setButtonText(QWizard::CustomButton2, tr("Cancel"));
 
     // Change the next buttons size policy since we hide it on the
     // welcome page but want it to fill it's space that we don't get
@@ -252,6 +252,17 @@ void OwncloudWizard::successfulStep()
     }
 }
 
+void OwncloudWizard::slotCustomButtonClicked(const int which)
+{
+    if (which == WizardButton::CustomButton1) {
+        // This is the 'Skip folders configuration' button
+        Q_EMIT skipFolderConfiguration();
+    } else if (which == WizardButton::CustomButton2) {
+        // Because QWizard doesn't have a way of directly going to a specific page (!!!)
+        restart();
+    }
+}
+
 void OwncloudWizard::setAuthType(DetermineAuthTypeJob::AuthType type)
 {
     _setupPage->setAuthType(type);
@@ -292,12 +303,12 @@ void OwncloudWizard::slotCurrentPageChanged(int id)
         id == WizardCommon::Page_WebView ||
 #endif // WITH_WEBENGINE
         id == WizardCommon::Page_Flow2AuthCreds) {
-        setButtonLayout({ QWizard::Stretch, QWizard::BackButton });
+        setButtonLayout({ QWizard::BackButton, QWizard::Stretch });
     } else if (id == WizardCommon::Page_AdvancedSetup) {
-        setButtonLayout({ QWizard::Stretch, QWizard::CustomButton1, QWizard::BackButton, QWizard::FinishButton });
+        setButtonLayout({ QWizard::CustomButton2, QWizard::Stretch, QWizard::CustomButton1, QWizard::FinishButton });
         setNextButtonAsDefault();
     } else {
-        setButtonLayout({ QWizard::Stretch, QWizard::BackButton, QWizard::NextButton });
+        setButtonLayout({ QWizard::BackButton, QWizard::Stretch, QWizard::NextButton });
         setNextButtonAsDefault();
     }
 
