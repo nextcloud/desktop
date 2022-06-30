@@ -81,6 +81,9 @@ public:
     bool timedOut() const { return _timedout; }
     bool aborted() const { return _aborted; }
 
+    void setPriority(QNetworkRequest::Priority priority);
+    QNetworkRequest::Priority priority() const;
+
     /** Returns an error message, if any. */
     QString errorString() const;
 
@@ -201,6 +204,8 @@ private:
 
     bool _isAuthenticationJob = false;
     int _retryCount = 0;
+
+    QNetworkRequest::Priority _priority = QNetworkRequest::NormalPriority;
 
     friend QDebug(::operator<<)(QDebug debug, const AbstractNetworkJob *job);
 };

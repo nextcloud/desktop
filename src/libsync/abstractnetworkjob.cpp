@@ -154,6 +154,7 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     Q_ASSERT(_request.url().isEmpty() || _request.url() == url());
     Q_ASSERT(_request.transferTimeout() == 0 || _request.transferTimeout() == duration_cast<milliseconds>(_timeout).count());
     _request.setUrl(url());
+    _request.setPriority(_priority);
     _request.setTransferTimeout(duration_cast<milliseconds>(_timeout).count());
     if (!isAuthenticationJob() && _account->jobQueue()->enqueue(this)) {
         return;
@@ -371,6 +372,16 @@ void AbstractNetworkJob::abort()
     } else {
         deleteLater();
     }
+}
+
+void AbstractNetworkJob::setPriority(QNetworkRequest::Priority priority)
+{
+    _priority = priority;
+}
+
+QNetworkRequest::Priority AbstractNetworkJob::priority() const
+{
+    return _priority;
 }
 
 } // namespace OCC

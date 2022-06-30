@@ -70,6 +70,8 @@ PUTFileJob::PUTFileJob(AccountPtr account, const QUrl &url, const QString &path,
     , _chunk(chunk)
 {
     _device->setParent(this);
+    // Long uploads must not block non-propagation jobs.
+    setPriority(QNetworkRequest::LowPriority);
 }
 
 PUTFileJob::~PUTFileJob()
@@ -82,9 +84,6 @@ void PUTFileJob::start()
     for (auto it = _headers.cbegin(); it != _headers.cend(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
-
-    req.setPriority(QNetworkRequest::LowPriority); // Long uploads must not block non-propagation jobs.
-
     sendRequest("PUT", req, _device);
     _requestTimer.start();
     AbstractNetworkJob::start();

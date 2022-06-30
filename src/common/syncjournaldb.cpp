@@ -250,6 +250,10 @@ bool SyncJournalDb::sqlFail(const QString &log, const SqlQuery &query)
 
 bool SyncJournalDb::checkConnect()
 {
+    if (_closed) {
+        qCWarning(lcDb) << Q_FUNC_INFO << "after the db was closed";
+        return false;
+    }
     if (autotestFailCounter >= 0) {
         if (!autotestFailCounter--) {
             qCInfo(lcDb) << "Error Simulated";
@@ -625,8 +629,14 @@ void SyncJournalDb::close()
     _db.close();
     clearEtagStorageFilter();
     _metadataTableIsEmpty = false;
+    _closed = true;
 }
 
+void SyncJournalDb::allowReopen()
+{
+    Q_ASSERT(_closed);
+    _closed = false;
+}
 
 bool SyncJournalDb::updateDatabaseStructure()
 {

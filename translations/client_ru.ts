@@ -2261,12 +2261,12 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;Ошибка входа&lt;/h1&gt;&lt;p&gt;Не удалось извлечь информацию о пользователе&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="553"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="554"/>
         <source>Oauth2 Error</source>
         <translation>Ошибка Oauth2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="554"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="555"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>Для аутентификации по Oauth2 требуется безопасное соединение.</translation>
     </message>
@@ -2276,7 +2276,7 @@ Note that using any logging command line options will override the settings.</so
         <translation>&lt;h1&gt;Ошибка входа&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="387"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="388"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in as user %2&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Неверный пользователь&lt;/h1&gt;&lt;p&gt;Вы вошли, как пользователь &lt;em&gt;%1&lt;/em&gt;, но нужно войти под пользователем &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Пожалуйста, выйдите из %3 в другой вкладке, а затем &lt;a href=&apos;%4&apos;&gt;кликните здесь&lt;/a&gt; и войдите, как пользователь %2&lt;/p&gt;</translation>
     </message>

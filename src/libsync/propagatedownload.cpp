@@ -84,6 +84,8 @@ GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, const QString &path,
     , _resumeStart(resumeStart)
     , _hasEmittedFinishedSignal(false)
 {
+    // Long downloads must not block non-propagation jobs.
+    setPriority(QNetworkRequest::LowPriority);
 }
 
 void GETFileJob::start()
@@ -98,8 +100,6 @@ void GETFileJob::start()
     for (auto it = _headers.cbegin(); it != _headers.cend(); ++it) {
         req.setRawHeader(it.key(), it.value());
     }
-
-    req.setPriority(QNetworkRequest::LowPriority); // Long downloads must not block non-propagation jobs.
 
     sendRequest("GET", req);
 
