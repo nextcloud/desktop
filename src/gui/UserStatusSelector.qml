@@ -257,7 +257,7 @@ ColumnLayout {
             internalSpacing: Style.standardSpacing + fieldButton.padding + userStatusMessageTextField.padding
 
             emoji: userStatusSelectorModel.predefinedStatus(index).icon
-            text: "<b>" + userStatusSelectorModel.predefinedStatus(index).message + "</b> - " + userStatusSelectorModel.predefinedStatusClearAt(index)
+            text: "<b>" + userStatusSelectorModel.predefinedStatus(index).message + "</b> – " + userStatusSelectorModel.predefinedStatusClearAt(index)
             onClicked: userStatusSelectorModel.setPredefinedStatus(index)
         }
     }
