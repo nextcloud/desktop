@@ -6376,12 +6376,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>TalkReplyTextField</name>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="32"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
         <translation>Répondre à...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="69"/>
+        <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
         <source>Send reply to chat message</source>
         <translation>Envoyer la réponse dans la discussion</translation>
     </message>
