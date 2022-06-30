@@ -16,6 +16,7 @@ Summary
 * Bugfix - Crash when interacting with a folder in an error state: [#9600](https://github.com/owncloud/client/issues/9600)
 * Bugfix - Deadlock in folder context menu in a folder selection dialog: [#9681](https://github.com/owncloud/client/issues/9681)
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
+* Bugfix - Database was recreated after its removal: [#9791](https://github.com/owncloud/client/issues/9791)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -30,6 +31,7 @@ Summary
 * Enhancement - Set Windows VFS placeholders readonly if needed: [#9598](https://github.com/owncloud/client/issues/9598)
 * Enhancement - Create continuous log files: [#9731](https://github.com/owncloud/client/issues/9731)
 * Enhancement - Display a correct error when the wrong user was authenticated: [#9772](https://github.com/owncloud/client/issues/9772)
+* Enhancement - Run vfs downloads with a high priority: [#9832](https://github.com/owncloud/client/issues/9832)
 
 Details
 -------
@@ -86,6 +88,12 @@ Details
    again for all Gtk+ 3 compatible file browsers, including Thunar, Nautilus, Nemo, Caja, etc.
 
    https://github.com/owncloud/client/pull/9752
+
+* Bugfix - Database was recreated after its removal: [#9791](https://github.com/owncloud/client/issues/9791)
+
+   We fixed a bug whre the database was recreated during the removal of a sync folder connection.
+
+   https://github.com/owncloud/client/issues/9791
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
@@ -200,6 +208,13 @@ Details
 
    https://github.com/owncloud/client/issues/9772
    https://github.com/owncloud/client/pull/9813
+
+* Enhancement - Run vfs downloads with a high priority: [#9832](https://github.com/owncloud/client/issues/9832)
+
+   This should reduce the occurance of timeouts when downloading vfs files in the Windows
+   explorer.
+
+   https://github.com/owncloud/client/issues/9832
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
