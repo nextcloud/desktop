@@ -105,12 +105,16 @@ AccountState::AccountState(AccountPtr account)
         _state = State::SignedOut;
     });
 
-    FolderMan::instance()->socketApi()->registerAccount(account);
+    if (FolderMan::instance()) {
+        FolderMan::instance()->socketApi()->registerAccount(account);
+    }
 }
 
 AccountState::~AccountState()
 {
-    FolderMan::instance()->socketApi()->unregisterAccount(account());
+    if (FolderMan::instance()) {
+        FolderMan::instance()->socketApi()->unregisterAccount(account());
+    }
 }
 
 AccountStatePtr AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)

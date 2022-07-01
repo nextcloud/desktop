@@ -88,6 +88,12 @@ public:
     static bool prepareFolder(const QString &folder);
 
     ~FolderMan() override;
+
+    /**
+     * Helper to access the FolderMan instance
+     * Warning: may be null in unit tests
+     */
+    // TODO: use acces throug ocApp and remove that instance pointer
     static FolderMan *instance();
 
     int setupFolders();
