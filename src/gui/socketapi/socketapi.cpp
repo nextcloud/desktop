@@ -77,6 +77,11 @@
 
 namespace {
 
+const QString unregisterpathMessageC()
+{
+    return QStringLiteral("UNREGISTER_PATH");
+}
+
 const QLatin1Char RecordSeparator()
 {
     return QLatin1Char('\x1e');
@@ -159,25 +164,16 @@ QObject *findWidget(const QString &queryString, const QList<QWidget *> &widgets 
 }
 #endif
 
-static inline QString removeTrailingSlash(QString path)
-{
-    Q_ASSERT(path.endsWith(QLatin1Char('/')));
-    path.truncate(path.length() - 1);
-    return path;
-}
-
 static QString buildMessage(const QString &verb, const QString &path, const QString &status = QString())
 {
     QString msg(verb);
 
     if (!status.isEmpty()) {
-        msg.append(QLatin1Char(':'));
-        msg.append(status);
+        msg += QLatin1Char(':') + status;
     }
     if (!path.isEmpty()) {
-        msg.append(QLatin1Char(':'));
-        QFileInfo fi(path);
-        msg.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
+        const QFileInfo fi(path);
+        msg += QLatin1Char(':') + QDir::toNativeSeparators(fi.absoluteFilePath());
     }
     return msg;
 }
@@ -288,9 +284,14 @@ void SocketApi::slotNewConnection()
 
     auto listener = QSharedPointer<SocketListener>::create(socket);
     _listeners.insert(socket, listener);
+    for (auto a : _registeredAccounts) {
+        if (a->hasDefaultSyncRoot()) {
+            broadcastMessage(buildRegisterPathMessage(Utility::stripTrailingSlash(a->defaultSyncRoot())));
+        }
+    }
     for (Folder *f : FolderMan::instance()->folders()) {
         if (f->canSync()) {
-            QString message = buildRegisterPathMessage(removeTrailingSlash(f->path()));
+            QString message = buildRegisterPathMessage(Utility::stripTrailingSlash(f->path()));
             listener->sendMessage(message);
         }
     }
@@ -390,13 +391,39 @@ void SocketApi::slotReadSocket()
     }
 }
 
+
+void SocketApi::registerAccount(const AccountPtr &a)
+{
+    // Make sure not to register twice to each connected client
+    if (_registeredAccounts.contains(a)) {
+        return;
+    }
+
+    if (a->hasDefaultSyncRoot()) {
+        broadcastMessage(buildRegisterPathMessage(Utility::stripTrailingSlash(a->defaultSyncRoot())));
+    }
+    _registeredAccounts.insert(a);
+}
+
+void SocketApi::unregisterAccount(const AccountPtr &a)
+{
+    if (!_registeredAccounts.contains(a)) {
+        return;
+    }
+
+    if (a->hasDefaultSyncRoot()) {
+        broadcastMessage(buildMessage(unregisterpathMessageC(), Utility::stripTrailingSlash(a->defaultSyncRoot())));
+    }
+    _registeredAccounts.remove(a);
+}
+
 void SocketApi::slotRegisterPath(Folder *folder)
 {
     // Make sure not to register twice to each connected client
     if (_registeredFolders.contains(folder))
         return;
 
-    broadcastMessage(buildRegisterPathMessage(removeTrailingSlash(folder->path())));
+    broadcastMessage(buildRegisterPathMessage(Utility::stripTrailingSlash(folder->path())));
     _registeredFolders.insert(folder);
 }
 
@@ -405,7 +432,7 @@ void SocketApi::slotUnregisterPath(Folder *folder)
     if (!_registeredFolders.contains(folder))
         return;
 
-    broadcastMessage(buildMessage(QLatin1String("UNREGISTER_PATH"), removeTrailingSlash(folder->path()), QString()), true);
+    broadcastMessage(buildMessage(unregisterpathMessageC(), Utility::stripTrailingSlash(folder->path()), QString()), true);
     _registeredFolders.remove(folder);
 }
 
@@ -429,7 +456,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
         case SyncResult::Error:
             Q_FALLTHROUGH();
         case SyncResult::SetupError: {
-            const QString rootPath = removeTrailingSlash(f->path());
+            const QString rootPath = Utility::stripTrailingSlash(f->path());
             broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
             broadcastMessage(buildMessage(QStringLiteral("UPDATE_VIEW"), rootPath));

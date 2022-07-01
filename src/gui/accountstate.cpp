@@ -23,6 +23,7 @@
 #include "gui/tlserrordialog.h"
 #include "logger.h"
 #include "settingsdialog.h"
+#include "socketapi/socketapi.h"
 #include "theme.h"
 
 #include <QFontMetrics>
@@ -103,10 +104,13 @@ AccountState::AccountState(AccountPtr account)
     connect(account->credentials(), &AbstractCredentials::requestLogout, this, [this] {
         _state = State::SignedOut;
     });
+
+    FolderMan::instance()->socketApi()->registerAccount(account);
 }
 
 AccountState::~AccountState()
 {
+    FolderMan::instance()->socketApi()->unregisterAccount(account());
 }
 
 AccountStatePtr AccountState::loadFromSettings(AccountPtr account, const QSettings &settings)

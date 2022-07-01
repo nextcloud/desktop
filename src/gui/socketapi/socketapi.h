@@ -57,6 +57,8 @@ public:
     ~SocketApi() override;
 
 public slots:
+    void registerAccount(const AccountPtr &a);
+    void unregisterAccount(const AccountPtr &a);
     void slotUpdateFolderView(Folder *f);
     void slotUnregisterPath(Folder *f);
     void slotRegisterPath(Folder *f);
@@ -165,6 +167,7 @@ private:
     QString buildRegisterPathMessage(const QString &path);
 
     QSet<Folder *> _registeredFolders;
+    QSet<AccountPtr> _registeredAccounts;
     QMap<SocketApiSocket *, QSharedPointer<SocketListener>> _listeners;
     SocketApiServer _localServer;
 };
