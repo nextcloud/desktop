@@ -1,0 +1,6 @@
+Bugfix: The condition for the read only files menu was inverted
+
+We fixed a bug where we displayed solutions to fix issues with
+read only fils for readable files and vise versa.
+
+https://github.com/owncloud/client/issues/9574

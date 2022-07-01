@@ -1040,9 +1040,9 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                 const QFileInfo fileInfo(fileData.localPath);
                 const auto parentDir = fileData.parentFolder();
                 const auto parentRecord = parentDir.journalRecord();
-                const bool canAddToDir = parentRecord._remotePerm.isNull()
-                    || (fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
-                    || (fileInfo.isDir() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories));
+                const bool canAddToDir = !parentRecord._remotePerm.isNull()
+                    && ((fileInfo.isFile() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+                        || (fileInfo.isDir() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)));
                 const bool canChangeFile =
                     !isOnTheServer
                     || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
