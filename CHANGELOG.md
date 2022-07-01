@@ -17,6 +17,7 @@ Summary
 * Bugfix - Deadlock in folder context menu in a folder selection dialog: [#9681](https://github.com/owncloud/client/issues/9681)
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 * Bugfix - Database was recreated after its removal: [#9791](https://github.com/owncloud/client/issues/9791)
+* Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -95,6 +96,12 @@ Details
    We fixed a bug whre the database was recreated during the removal of a sync folder connection.
 
    https://github.com/owncloud/client/issues/9791
+
+* Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
+
+   If the server did not provide the activity endpoint we always displayed a progress spinenr.
+
+   https://github.com/owncloud/client/issues/9798
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
