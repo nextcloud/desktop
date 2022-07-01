@@ -37,7 +37,7 @@ void CallStateChecker::setup()
     _notificationTimer.setInterval(60 * 1000);
     connect(&_notificationTimer, &QTimer::timeout, this, &CallStateChecker::slotNotificationTimerElapsed);
 
-    _statusCheckTimer.setInterval(2 * 1000);
+    _statusCheckTimer.setInterval(5 * 1000);
     connect(&_statusCheckTimer, &QTimer::timeout, this, &CallStateChecker::slotStatusCheckTimerElapsed);
 }
 
