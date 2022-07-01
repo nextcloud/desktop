@@ -1013,15 +1013,15 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
     // Some options only show for single files
     if (files.size() == 1) {
-        FileData fileData = FileData::get(files.first());
-        auto record = fileData.journalRecord();
-        bool isOnTheServer = record.isValid();
-        auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+        const FileData fileData = FileData::get(files.first());
+        const auto record = fileData.journalRecord();
+        const bool isOnTheServer = record.isValid();
+        const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
 
         if (fileData.folder && fileData.folder->accountState()->isConnected()) {
             sendSharingContextMenuOptions(fileData, listener);
 
-            auto &capabilities = folder->accountState()->account()->capabilities();
+            const auto &capabilities = folder->accountState()->account()->capabilities();
             if (capabilities.privateLinkPropertyAvailable()) {
                 listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
             }
@@ -1034,16 +1034,16 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             }
 
             // Conflict files get conflict resolution actions
-            bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
+            const bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
             if (isConflict || !isOnTheServer) {
                 // Check whether this new file is in a read-only directory
-                QFileInfo fileInfo(fileData.localPath);
-                auto parentDir = fileData.parentFolder();
-                auto parentRecord = parentDir.journalRecord();
-                bool canAddToDir = parentRecord._remotePerm.isNull()
+                const QFileInfo fileInfo(fileData.localPath);
+                const auto parentDir = fileData.parentFolder();
+                const auto parentRecord = parentDir.journalRecord();
+                const bool canAddToDir = parentRecord._remotePerm.isNull()
                     || (fileInfo.isFile() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
                     || (fileInfo.isDir() && !parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories));
-                bool canChangeFile =
+                const bool canChangeFile =
                     !isOnTheServer
                     || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
                         && record._remotePerm.hasPermission(RemotePermissions::CanMove)
