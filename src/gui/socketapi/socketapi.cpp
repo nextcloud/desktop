@@ -970,6 +970,11 @@ QString SocketApi::FileData::folderRelativePathNoVfsSuffix() const
     return folderRelativePath;
 }
 
+bool OCC::SocketApi::FileData::isSyncFolder() const
+{
+    return folderRelativePath.isEmpty();
+}
+
 SyncFileStatus SocketApi::FileData::syncFileStatus() const
 {
     if (!folder)
@@ -1014,71 +1019,77 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     // Some options only show for single files
     if (files.size() == 1) {
         const FileData fileData = FileData::get(files.first());
-        const auto record = fileData.journalRecord();
-        const bool isOnTheServer = record.isValid();
-        const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+        if (!fileData.isSyncFolder()) {
+            const auto record = fileData.journalRecord();
+            const bool isOnTheServer = record.isValid();
+            const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
 
-        if (fileData.folder && fileData.folder->accountState()->isConnected()) {
-            sendSharingContextMenuOptions(fileData, listener);
+            if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+                sendSharingContextMenuOptions(fileData, listener);
 
-            const auto &capabilities = folder->accountState()->account()->capabilities();
-            if (capabilities.privateLinkPropertyAvailable()) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
-            }
-            // Add link to versions pane if possible
-            if (capabilities.versioningEnabled()
-                && capabilities.privateLinkDetailsParamAvailable()
-                && isOnTheServer
-                && !record.isDirectory()) {
-                listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
-            }
-
-            // Conflict files get conflict resolution actions
-            const bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
-            if (isConflict || !isOnTheServer) {
-                // Check whether this new file is in a read-only directory
-                const QFileInfo fileInfo(fileData.localPath);
-                const auto parentDir = fileData.parentFolder();
-                const auto parentRecord = parentDir.journalRecord();
-                const bool canAddToDir = !parentRecord._remotePerm.isNull()
-                    && ((fileInfo.isFile() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
-                        || (fileInfo.isDir() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)));
-                const bool canChangeFile =
-                    !isOnTheServer
-                    || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
-                        && record._remotePerm.hasPermission(RemotePermissions::CanMove)
-                        && record._remotePerm.hasPermission(RemotePermissions::CanRename));
-
-                if (isConflict && canChangeFile) {
-                    if (canAddToDir) {
-                        if (isOnTheServer) {
-                            // Conflict file that is already uploaded
-                            listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Rename..."));
-                        } else {
-                            // Local-only conflict file
-                            listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Rename and upload..."));
-                        }
-                    } else {
-                        if (isOnTheServer) {
-                            // Uploaded conflict file in read-only directory
-                            listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and rename..."));
-                        } else {
-                            // Local-only conflict file in a read-only dir
-                            listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move, rename and upload..."));
-                        }
-                    }
-                    listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete local changes"));
+                const auto &capabilities = fileData.folder->accountState()->account()->capabilities();
+                if (capabilities.privateLinkPropertyAvailable()) {
+                    listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
+                }
+                // Add link to versions pane if possible
+                if (capabilities.versioningEnabled()
+                    && capabilities.privateLinkDetailsParamAvailable()
+                    && isOnTheServer
+                    && !record.isDirectory()) {
+                    listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK_VERSIONS") + flagString + tr("Show file versions in browser"));
                 }
 
-                // File in a read-only directory?
-                if (!isConflict && !isOnTheServer && !canAddToDir) {
-                    listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and upload..."));
-                    listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete"));
+                // Conflict files get conflict resolution actions
+                const bool isConflict = Utility::isConflictFile(fileData.folderRelativePath);
+                if (isConflict || !isOnTheServer) {
+                    // Check whether this new file is in a read-only directory
+                    const QFileInfo fileInfo(fileData.localPath);
+                    const auto parentDir = fileData.parentFolder();
+                    const auto parentRecord = parentDir.journalRecord();
+                    const bool canAddToDir = !parentRecord._remotePerm.isNull()
+                        && ((fileInfo.isFile() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddFile))
+                            || (fileInfo.isDir() && parentRecord._remotePerm.hasPermission(RemotePermissions::CanAddSubDirectories)));
+                    const bool canChangeFile =
+                        !isOnTheServer
+                        || (record._remotePerm.hasPermission(RemotePermissions::CanDelete)
+                            && record._remotePerm.hasPermission(RemotePermissions::CanMove)
+                            && record._remotePerm.hasPermission(RemotePermissions::CanRename));
+
+                    if (isConflict && canChangeFile) {
+                        if (canAddToDir) {
+                            if (isOnTheServer) {
+                                // Conflict file that is already uploaded
+                                listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Rename..."));
+                            } else {
+                                // Local-only conflict file
+                                listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Rename and upload..."));
+                            }
+                        } else {
+                            if (isOnTheServer) {
+                                // Uploaded conflict file in read-only directory
+                                listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and rename..."));
+                            } else {
+                                if (isOnTheServer) {
+                                    // Uploaded conflict file in read-only directory
+                                    listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and rename..."));
+                                } else {
+                                    // Local-only conflict file in a read-only dir
+                                    listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move, rename and upload..."));
+                                }
+                            }
+                            listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete local changes"));
+                        }
+
+                        // File in a read-only directory?
+                        if (!isConflict && !isOnTheServer && !canAddToDir) {
+                            listener->sendMessage(QLatin1String("MENU_ITEM:MOVE_ITEM::") + tr("Move and upload..."));
+                            listener->sendMessage(QLatin1String("MENU_ITEM:DELETE_ITEM::") + tr("Delete"));
+                        }
+                    }
                 }
             }
         }
     }
-
     // File availability actions
     if (folder
         && folder->isReady()

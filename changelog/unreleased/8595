@@ -1,0 +1,4 @@
+Bugfix: Don't display a conext menu on the root folder
+
+
+https://github.com/owncloud/client/issues/8595
