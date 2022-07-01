@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>端到端加密助記碼</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -1054,7 +1054,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>請輸入您的端到端加密通關密語：&lt;br&gt;&lt;br&gt;使用者名稱：%2&lt;br&gt;帳號：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -2997,7 +2997,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;錯誤的帳號&lt;/h1&gt;&lt;p&gt;您已使用 &lt;em&gt;%1&lt;/em&gt; 帳號登入，但必須使用帳號 &lt;em&gt;%2&lt;/em&gt;。&lt;br&gt;請在另一個分頁中登出 %3，然後&lt;a href=&apos;%4&apos;&gt;點擊此處&lt;/a&gt;並使用 %2 登入。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>

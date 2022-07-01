@@ -825,7 +825,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation>Získávání aktivit</translation>
+        <translation>Získávání aktivit…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="559"/>
@@ -6377,7 +6377,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
-        <translation>Odpovědět na</translation>
+        <translation>Odpovědět na…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
@@ -6390,7 +6390,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="27"/>
         <source>Search files, messages, events …</source>
-        <translation>Hledat soubory, zprávy, události</translation>
+        <translation>Hledat soubory, zprávy, události…</translation>
     </message>
 </context>
 <context>
