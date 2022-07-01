@@ -21,6 +21,7 @@ import urllib.request
 import os
 import builtins
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
+from datetime import datetime
 
 
 @OnScenarioStart
@@ -50,6 +51,18 @@ def hook(context):
         'clientRootSyncPath': '/tmp/client-bdd/',
         'tempFolderPath': gettempdir(),
     }
+
+    # log tests scenario title on serverlog file
+    guiTestReportDir = os.environ.get("GUI_TEST_REPORT_DIR")
+    f = open(guiTestReportDir + "/serverlog.log", "a")
+    f.write(
+        str((datetime.now()).strftime("%H:%M:%S:%f"))
+        + "\tBDD Scenario: "
+        + context._data["title"]
+        + "\n"
+    )
+    f.close()
+
     # read configs from environment variables
     context.userData = {}
     for key, value in CONFIG_ENV_MAP.items():
