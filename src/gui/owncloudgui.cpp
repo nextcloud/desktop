@@ -1049,12 +1049,11 @@ void ownCloudGui::runNewAccountWizard()
 
                                     const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
-                                    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && useVfs)) {
+                                    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !useVfs)) {
                                         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
                                         // The user already accepted the selective sync dialog. everything is in the white list
-                                        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                                            QStringList() << QLatin1String("/"));
+                                        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, { QLatin1String("/") });
                                     }
 
                                     folderMan->setSyncEnabled(true);
