@@ -100,7 +100,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
         }
     });
 
-    connect(_model, &QAbstractItemModel::modelReset, this, &ActivityWidget::dataChanged);
+    connect(_model, &ActivityListModel::activityJobStatusCode, this, &ActivityWidget::dataChanged);
     connect(_ui->_activityList, &QListView::customContextMenuRequested, this, &ActivityWidget::slotItemContextMenu);
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QListView::customContextMenuRequested, header, [header, this] {

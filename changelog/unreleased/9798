@@ -1,0 +1,5 @@
+Bugfix: Stop the activity spinner when the request failed
+
+If the server did not provide the activity endpoint we always displayed a progress spinenr.
+
+https://github.com/owncloud/client/issues/9798
