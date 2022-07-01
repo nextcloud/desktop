@@ -135,7 +135,7 @@ void User::slotBuildIncomingCallDialogs(const ActivityList &list)
 
     if(systray && cfg.showCallNotifications()) {
         for(const auto &activity : list) {
-            systray->createCallDialog(activity);
+            systray->createCallDialog(activity, _account);
         }
     }
 }
