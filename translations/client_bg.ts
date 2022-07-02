@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>Open %1 locally</source>
-        <translation>Отворяне %1 локално</translation>
+        <translation>Отвaряне %1 локално</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="47"/>
@@ -69,30 +69,30 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Изчистване на менюто за съобщения на състояние</translation>
     </message>
 </context>
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="172"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Аватар на приложението за разговори Talk при известие за повикване</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="238"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Отговор на Talk известие за повикване</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Отказ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="262"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Отказ на известие за повикване от Talk</translation>
     </message>
 </context>
 <context>
@@ -337,19 +337,19 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="876"/>
+        <location filename="../src/libsync/account.cpp" line="871"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>Файл %1, вече е заключен от %2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="878"/>
+        <location filename="../src/libsync/account.cpp" line="873"/>
         <source>Lock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Операцията за заключване на %1 е неуспешна с грешка %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="880"/>
+        <location filename="../src/libsync/account.cpp" line="875"/>
         <source>Unlock operation on %1 failed with error %2</source>
-        <translation type="unfinished"/>
+        <translation>Операцията за отключване на %1 е неуспешна с грешка %2</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Мнемонично криптиране от край до край</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -820,12 +820,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>Извличане на активности ...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>Извличане на активности...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="559"/>
@@ -926,7 +926,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="335"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че файлът е достъпен от вашият системен профил.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="338"/>
@@ -954,7 +954,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Потребителско име:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1054,7 +1054,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Моля, въведете паролата си за шифроване от край до край:&lt;br&gt;&lt;br&gt; Потребител:% 2&lt;br&gt;Профил:% 3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1721,7 +1721,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Неопределено състояние.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -1766,17 +1766,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Последното синхронизиране беше успешно.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при настройката.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Заявката за синхронизиране беше отказана.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -2224,7 +2224,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Показване на известия за обаждания</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2318,7 +2318,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="151"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Показване на диалогови прозорци на известия за обаждане.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="165"/>
@@ -2397,7 +2397,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
         <source>Please enter %1 password:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Моля въведете %1 парола:&lt;br&gt;&lt;br&gt;Потребител: %2&lt;br&gt;Профил: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="97"/>
@@ -2573,7 +2573,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Файлът %1, не можа да бъде синхронизиран, защото съдържа знаци, които не са разрешени в тази система.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
@@ -2583,17 +2583,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="89"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
+        <translation>Следните знаци не са разрешени в системата: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; водещи/ крайни интервали</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Проверка на права за преименуване ...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions...</source>
-        <translation type="unfinished"/>
+        <translation>Проверка на права за преименуване...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
@@ -2603,27 +2603,27 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно извличане на права с грешка %1</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Името на файла съдържа начални и крайни интервали.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Името на файла съдържа начални интервали.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Името на файла съдържа крайни интервали.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Използване на невалидно име</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="208"/>
@@ -2643,7 +2643,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Локалният файл не можа да бъде преименуван. %1</translation>
     </message>
 </context>
 <context>
@@ -2998,7 +2998,7 @@ Logs will be written to %1</source>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Грешен профил&lt;/h1&gt;&lt;p&gt;Вписахте се с профил &lt;em&gt;%1&lt;/em&gt;, но трябва да се впишете, като профил &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Моля, да се отпишете от %3, в друг раздел, след което &lt;a href=&apos;%4&apos;&gt;кликнете тук&lt;/a&gt; и се впишете, като %2.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3642,12 +3642,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="311"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Името на файла съдържа начални интервали.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Името на файла съдържа начални и крайни интервали.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="319"/>
@@ -4356,13 +4356,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharedialog.cpp" line="105"/>
         <source>Locked by %1 - Expire in %2 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Ще изтече след %2 минути</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/sharedialog.cpp" line="106"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="126"/>
@@ -4751,29 +4751,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Заключване на файл</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Отключване на файл</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Заключено от %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Изтича след %1 минута/и</numerusform><numerusform>Изтича след %1 минута/и</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ще изтече след %1 минута/и</numerusform><numerusform>Ще изтече след %1 минута/и</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -5387,59 +5387,59 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="105"/>
+        <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Изтегляне</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="155"/>
+        <location filename="../src/gui/systray.cpp" line="157"/>
         <source>Add account</source>
         <translation>Добавяне на регистрация</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="157"/>
+        <location filename="../src/gui/systray.cpp" line="159"/>
         <source>Open main dialog</source>
         <translation>Отваряне на основния диалогов прозорец</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="160"/>
-        <location filename="../src/gui/systray.cpp" line="171"/>
+        <location filename="../src/gui/systray.cpp" line="162"/>
+        <location filename="../src/gui/systray.cpp" line="173"/>
         <source>Pause sync</source>
         <translation>Пауза в синхронизирането</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="161"/>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="163"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Resume sync</source>
         <translation>Възобновяване на синхронизирането</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="162"/>
+        <location filename="../src/gui/systray.cpp" line="164"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="163"/>
+        <location filename="../src/gui/systray.cpp" line="165"/>
         <source>Help</source>
         <translation>Помощ</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="164"/>
+        <location filename="../src/gui/systray.cpp" line="166"/>
         <source>Exit %1</source>
         <translation>Изход % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="171"/>
+        <location filename="../src/gui/systray.cpp" line="173"/>
         <source>Pause sync for all</source>
         <translation>Пауза в синхронизирането за всички</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Resume sync for all</source>
         <translation>Възобновяване на синхронизирането за всички</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="332"/>
+        <location filename="../src/gui/systray.cpp" line="335"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5563,7 +5563,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
         <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се извлече статус. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5573,7 +5573,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
         <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
+        <translation>Функцията за състояние не се поддържа. Няма да можете да зададете състоянието си.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5583,7 +5583,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
         <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Функцията за емотикони не се поддържа. Някои функции за състоянието може да не работят.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5593,7 +5593,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се зададе статус. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
@@ -5603,7 +5603,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Съобщението за състоянието не можа да бъде изчистено. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -5736,17 +5736,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Излязохте от вашият профил % 1 в % 2. Моля да влезте отново.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the user: %1</source>
-        <translation>Моля, влезте с потребител: % 1</translation>
+        <translation>Моля, влезте с /като/ потребител: % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Моля, влезте с профил: % 1</translation>
     </message>
 </context>
 <context>
@@ -5759,7 +5759,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Вписване</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -5770,7 +5770,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>Абониране при доставчик</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -6068,7 +6068,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Потребител</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6083,7 +6083,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Изберете друга папка</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -6434,12 +6434,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текущият статус на профил е: на линия</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текущият статус на профил е: не безпокойте</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="90"/>
@@ -6519,7 +6519,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Заглушаване на всички известия</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
@@ -6529,7 +6529,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Показване като офлайн</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6562,7 +6562,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
         <source>Set account status</source>
-        <translation type="unfinished"/>
+        <translation>Задаване на състояние на профил</translation>
     </message>
 </context>
 <context>
@@ -6723,17 +6723,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="401"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Текущ аватар на профил</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текущият статус на профил е: на линия</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="440"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текущият статус на профил е: не безпокойте</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="489"/>

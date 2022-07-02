@@ -75,22 +75,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="147"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="172"/>
         <source>Talk notification caller avatar</source>
         <translation>Awatar rozmówcy w powiadomieniu Talka</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="213"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="238"/>
         <source>Answer Talk call notification</source>
         <translation>Powiadomienie o odpowiedzi w połączeniu Talka</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="221"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline</source>
         <translation>Odrzucenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="237"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="262"/>
         <source>Decline Talk call notification</source>
         <translation>Powiadomienie o odrzuceniu połączenia Talka</translation>
     </message>
@@ -337,17 +337,17 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="876"/>
+        <location filename="../src/libsync/account.cpp" line="871"/>
         <source>File %1 is already locked by %2.</source>
         <translation>Plik %1 jest już zablokowany przez %2.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="878"/>
+        <location filename="../src/libsync/account.cpp" line="873"/>
         <source>Lock operation on %1 failed with error %2</source>
         <translation>Operacja blokady %1 nie powiodła się z powodu błędu %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/account.cpp" line="880"/>
+        <location filename="../src/libsync/account.cpp" line="875"/>
         <source>Unlock operation on %1 failed with error %2</source>
         <translation>Operacja odblokowania na %1 nie powiodła się z powodu błędu %2</translation>
     </message>
@@ -5386,59 +5386,59 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
 <context>
     <name>OCC::Systray</name>
     <message>
-        <location filename="../src/gui/systray.cpp" line="105"/>
+        <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Download</source>
         <translation>Pobierz</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="155"/>
+        <location filename="../src/gui/systray.cpp" line="157"/>
         <source>Add account</source>
         <translation>Dodaj konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="157"/>
+        <location filename="../src/gui/systray.cpp" line="159"/>
         <source>Open main dialog</source>
         <translation>Otwórz główne okno dialogowe</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="160"/>
-        <location filename="../src/gui/systray.cpp" line="171"/>
+        <location filename="../src/gui/systray.cpp" line="162"/>
+        <location filename="../src/gui/systray.cpp" line="173"/>
         <source>Pause sync</source>
         <translation>Wstrzymaj synchronizację</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="161"/>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="163"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Resume sync</source>
         <translation>Wznów synchronizację</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="162"/>
+        <location filename="../src/gui/systray.cpp" line="164"/>
         <source>Settings</source>
         <translation>Ustawienia</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="163"/>
+        <location filename="../src/gui/systray.cpp" line="165"/>
         <source>Help</source>
         <translation>Pomoc</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="164"/>
+        <location filename="../src/gui/systray.cpp" line="166"/>
         <source>Exit %1</source>
         <translation>Wyjdź z %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="171"/>
+        <location filename="../src/gui/systray.cpp" line="173"/>
         <source>Pause sync for all</source>
         <translation>Wstrzymaj wszystkie synchronizacje</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Resume sync for all</source>
         <translation>Wznów wszystkie synchronizacje</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="332"/>
+        <location filename="../src/gui/systray.cpp" line="335"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
