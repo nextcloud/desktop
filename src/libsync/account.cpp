@@ -850,6 +850,18 @@ PushNotifications *Account::pushNotifications() const
     return _pushNotifications;
 }
 
+bool Account::pushNotificationNotificationsReady() const
+{
+    const auto pushNotificationsAvailable = capabilities().availablePushNotifications() & PushNotificationType::Notifications;
+    return _pushNotifications && _pushNotifications->isReady() && pushNotificationsAvailable;
+}
+
+bool Account::pushNotificationActivitiesReady() const
+{
+    const auto pushActivitiesAvailable = capabilities().availablePushNotifications() & PushNotificationType::Activities;
+    return _pushNotifications && _pushNotifications->isReady() && pushActivitiesAvailable;
+}
+
 std::shared_ptr<UserStatusConnector> Account::userStatusConnector() const
 {
     return _userStatusConnector;

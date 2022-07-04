@@ -216,20 +216,17 @@ void User::connectPushNotifications() const
 
 bool User::checkPushNotificationsAreReady() const
 {
-    const auto pushNotifications = _account->account()->pushNotifications();
+    const auto pushActivitiesReady = _account->account()->pushNotificationActivitiesReady();
+    const auto pushNotificationsReady = _account->account()->pushNotificationNotificationsReady();
+    const auto bothNotificationTypesReady = pushActivitiesReady && pushNotificationsReady;
 
-    const auto pushActivitiesAvailable = _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Activities;
-    const auto pushNotificationsAvailable = _account->account()->capabilities().availablePushNotifications() & PushNotificationType::Notifications;
-
-    const auto pushActivitiesAndNotificationsAvailable = pushActivitiesAvailable && pushNotificationsAvailable;
-
-    if (pushActivitiesAndNotificationsAvailable && pushNotifications && pushNotifications->isReady()) {
+    if (bothNotificationTypesReady) {
         connectPushNotifications();
-        return true;
     } else {
         connect(_account->account().data(), &Account::pushNotificationsReady, this, &User::slotPushNotificationsReady, Qt::UniqueConnection);
-        return false;
     }
+
+    return bothNotificationTypesReady;
 }
 
 void User::slotRefreshImmediately() {
