@@ -4,33 +4,33 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Abrir %1 localmente</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="47"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>En %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="197"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar máis accións</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Ver actividade</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Abrir</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="172"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Compartir %1</translation>
     </message>
 </context>
 <context>
@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="84"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="95"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar máis accións</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Lista de actividades</translation>
     </message>
 </context>
 <context>
@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Limpar o menú de mensaxes de estado</translation>
     </message>
 </context>
 <context>
@@ -195,7 +195,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel mover «%1» para «%2»</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -211,7 +211,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao retirar «%1»: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
@@ -221,7 +221,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel retirar o cartafol «%1»</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -339,7 +339,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="871"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro %1 xa está bloqueado por %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="873"/>
@@ -428,12 +428,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Non cifrar cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Cifrar cartafol</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -502,12 +502,12 @@ Agarde a nova sincronización e logo cífreo.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Fallou o cifrado</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel cifrar o cartafol porque o cartafol xa non existe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -679,7 +679,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1115"/>
         <source>%1 as %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 como %2</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1122"/>
@@ -820,12 +820,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities …</source>
-        <translation type="unfinished"/>
+        <translation>A obter actividades...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>A obter actividades...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="559"/>
@@ -853,7 +853,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Certificado e chave (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -926,7 +926,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/application.cpp" line="335"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao acceder ao ficheiro de configuración en %1. Comprobe que é posíbel acceder ao ficheiro coa súa conta do sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="338"/>
@@ -944,7 +944,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Introduza o nome de usuario e o contrasinal de «%1» en %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
@@ -954,7 +954,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>Nome de &amp;usuario:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -972,12 +972,12 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="122"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel enviar o ficheiro %1 porque existe outro ficheiro co mesmo nome que só se diferenzan polas maiúsuclas</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="169"/>
         <source>File %1 has invalid modified time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro %1 ten unha data de modificación incorrecta. Non o envíe ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="294"/>
@@ -987,53 +987,53 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="305"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro %1 ten unha data de modificación incorrecta. Non o envíe ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="313"/>
         <source>Local file changed during syncing. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro local cambiou durante a sincronización. Retómase.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="327"/>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="646"/>
         <source>Local file changed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro local cambiou durante a sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro na rede: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro na rede: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao actualizar os metadatos: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="468"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro %1 está en uso neste momento</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="629"/>
         <source>The local file was removed during sync.</source>
-        <translation type="unfinished"/>
+        <translation>O ficheiro local foi retirado durante a sincronización.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un fallo na restauración: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
         <source>; Restoration Failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un fallo na restauración: %1</translation>
     </message>
 </context>
 <context>
@@ -1054,7 +1054,7 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Introduza a súa frase de paso de cifrado de extremo a extremo: &lt;br&gt;&lt;br&gt;Usuario: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1227,22 +1227,22 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un ficheiro ao cancelar a eliminación dun ficheiro</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="189"/>
         <source>Error while canceling delete of a file</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un ficheiro ao cancelar a eliminación dun ficheiro</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un ficheiro ao cancelar a eliminación de %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling delete of %1</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un ficheiro ao cancelar a eliminación de %1</translation>
     </message>
 </context>
 <context>
@@ -1302,7 +1302,7 @@ Isto pode ser un problema coas súas bibliotecas OpenSSL.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>O URL solicitado non comeza por HTTPS a pesar de que o URL de acceso indicado comeza por HTTPS. Non é posíbel acceder porque isto podería implicar un fallo de seguranza. Consulte coa administración do sito.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -1715,7 +1715,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Estado sen definir.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -1755,22 +1755,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1514"/>
         <source>Sync finished with unresolved conflicts.</source>
-        <translation type="unfinished"/>
+        <translation>A sincronización rematou con conflitos sen resolver.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>A última sincronización fíxose correctamente.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro de configuración.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1525"/>
         <source>Sync request was cancelled.</source>
-        <translation type="unfinished"/>
+        <translation>Cancelouse a solicitude de sincronización.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1528"/>
@@ -1903,12 +1903,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Comprobando os cambios no cartafol remoto «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Comprobando os cambios no cartafol local «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
@@ -2068,7 +2068,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="211"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
-        <translation type="unfinished"/>
+        <translation>Introduza o nome do novo cartafol que se creará a seguir «%1»:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="240"/>
@@ -2519,12 +2519,12 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Ligazón interna</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
         <source>Only works for users with access to this folder</source>
-        <translation type="unfinished"/>
+        <translation>Só funciona para usuarios con acceso a este cartafol</translation>
     </message>
 </context>
 <context>
@@ -2532,32 +2532,32 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Nome de cartafol incorrecto</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it contains characters which are not allowed on this system.</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posíbel sincronizar o ficheiro porque contén caracters que non están permitidos neste sistema.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Introduza un nome novo para o ficheiro:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Novo nome de ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Renomear o ficheiro</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="87"/>
@@ -2656,7 +2656,7 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -3167,7 +3167,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="268"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar o cartafol «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
@@ -3425,7 +3425,7 @@ Recomendámoslle que non o use.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>Aceptar</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
@@ -3691,7 +3691,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/libsync/discovery.cpp" line="490"/>
         <source>permission</source>
-        <translation type="unfinished"/>
+        <translation>permiso</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="494"/>
@@ -6261,22 +6261,22 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="552"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Vostede eliminou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="554"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Vostede creou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="556"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Vostede cambiou %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizou %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6337,27 +6337,27 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/userstatus.cpp" line="53"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Ausente</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Non molestar</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="58"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Sen conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Conectado/a</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Marcar como lido</translation>
     </message>
 </context>
 <context>
@@ -6373,7 +6373,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Respostar a...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
@@ -6498,57 +6498,57 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="51"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Conectado/a</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Ausente</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Non molestar</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Silenciar todas as notificacións</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Invisíbel</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Aparecer como sen conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Mensaxe de estado</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="133"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Cal é o seu estado?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="161"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Limpar a mensaxe de estado após</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Limpar a mensaxe de estado</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="184"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Establecer a mensaxe de estado</translation>
     </message>
 </context>
 <context>
@@ -6803,7 +6803,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/tray/Window.qml" line="824"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 - Actividade de ficheiros</translation>
     </message>
 </context>
 <context>
@@ -7195,22 +7195,22 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
     <message>
         <location filename="../src/gui/userstatus.cpp" line="55"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Ausente</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="57"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Non molestar</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="60"/>
         <source>Offline</source>
-        <translation type="unfinished"/>
+        <translation>Sen conexión</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatus.cpp" line="62"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Conectado/a</translation>
     </message>
 </context>
 <context>
