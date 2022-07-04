@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Muturrerako enkriptazio-mnemoteknia </translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -1054,7 +1054,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez, idatzi zure muturreko enkriptazio pasaesaldia: &lt;br&gt;&lt;br&gt;Erabiltzaile-izena: &lt;br&gt; %2Kontua:&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -2997,7 +2997,7 @@ Erregistroak %1(e)an idatziko dira.</translation>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Kontua ez da zuzena&lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1 &lt;/em&gt;kontuarekin sartu zara, baina &lt;em&gt;%2 &lt;/em&gt;kontuarekin sartu behar zara. &lt;br&gt;Itxi saioa %3-tik beste fitxa batean, ondoren &lt;a href=&apos;%4&apos;&gt;egin klik hemen &lt;/a&gt;eta sartu %2 gisa.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
