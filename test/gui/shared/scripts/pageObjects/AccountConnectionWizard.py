@@ -97,6 +97,11 @@ class AccountConnectionWizard:
         "type": "QLineEdit",
         "visible": 1,
     }
+    VIRTUAL_File_RADIO_BUTTON = names.syncModeGroupBox_useVfsRadioButton_QRadioButton
+    ENABLE_EXPERIMENTAL_FEATURE_BUTTON = (
+        names.contentWidget_Enable_experimental_placeholder_mode_QPushButton
+    )
+    STAY_SAFE_BUTTON = names.contentWidget_Stay_safe_QPushButton
 
     def __init__(self):
         pass
@@ -158,10 +163,13 @@ class AccountConnectionWizard:
         )
 
     def addAccount(self, context):
+        self.addAccountCredential(context)
+        self.finishSetup()
+
+    def addAccountCredential(self, context):
         self.addServer(context)
         self.addUserCreds(context)
         self.selectSyncFolder(context)
-        self.finishSetup()
 
     def openSyncDialog(self):
         squish.clickButton(squish.waitForObject(self.CHOOSE_WHAT_TO_SYNC_BUTTON))

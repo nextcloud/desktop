@@ -126,7 +126,7 @@ def step(context):
     startClient(context)
 
 
-@When(r'the user adds (the first|another) account with', regexp=True)
+@When(r'^the user adds (the first|another) account with$', regexp=True)
 def step(context, accountType):
     newAccount = AccountConnectionWizard()
     if accountType == 'another':
@@ -139,9 +139,7 @@ def step(context, accountType):
 @Given('the user has added the following account information:')
 def step(context):
     newAccount = AccountConnectionWizard()
-    newAccount.addServer(context)
-    newAccount.addUserCreds(context)
-    newAccount.selectSyncFolder(context)
+    newAccount.addAccountCredential(context)
 
 
 # Using socket API to check file sync status
@@ -1465,13 +1463,6 @@ def step(context):
     waitForObject(AccountConnectionWizard.CREDENTIAL_PAGE)
 
 
-@When("the user selects configure_synchronization_manually option in advanced section")
-def step(context):
-    newAccount = AccountConnectionWizard()
-    clickButton(waitForObject(newAccount.CONF_SYNC_MANUALLY_RADIO_BUTTON))
-    clickButton(waitForObject(newAccount.NEXT_BUTTON))
-
-
 @When('the user "|any|" clicks on the next button in sync connection wizard')
 def step(context, userName):
     newAccount = AccountConnectionWizard()
@@ -1487,3 +1478,45 @@ def step(context, folderName):
     waitForObject(newAccount.SELECT_REMOTE_DESTINATION_FOLDER_WIZARD)
     newAccount.selectARootSyncDirectory(folderName)
     clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+
+
+@When(
+    r'^the user adds (the first|another) account with advanced configuration$',
+    regexp=True,
+)
+def step(context, accountType):
+    newAccount = AccountConnectionWizard()
+    if accountType == 'another':
+        toolbar = Toolbar()
+        toolbar.clickAddAccount()
+
+    newAccount.addAccountCredential(context)
+
+
+@When(
+    r'^the user selects (virtual_files|configure_synchronization_manually) option in advanced section$',
+    regexp=True,
+)
+def step(context, advancedConfigOption):
+    newAccount = AccountConnectionWizard()
+    if advancedConfigOption == 'configure_synchronization_manually':
+        clickButton(waitForObject(newAccount.CONF_SYNC_MANUALLY_RADIO_BUTTON))
+        clickButton(waitForObject(newAccount.NEXT_BUTTON))
+    else:
+        clickButton(waitForObject(newAccount.VIRTUAL_File_RADIO_BUTTON))
+
+
+@When(
+    "the user selects enable_experimental_placeholder_mode option in enable experimental feature dialogue box"
+)
+def step(context):
+    newAccount = AccountConnectionWizard()
+    clickButton(waitForObject(newAccount.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
+    clickButton(waitForObject(newAccount.NEXT_BUTTON))
+
+
+@When("the user selects stay_safe option in enable experimental feature dialogue box")
+def step(context):
+    newAccount = AccountConnectionWizard()
+    clickButton(waitForObject(newAccount.STAY_SAFE_BUTTON))
+    clickButton(waitForObject(newAccount.NEXT_BUTTON))
