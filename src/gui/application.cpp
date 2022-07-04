@@ -35,6 +35,7 @@
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
 #include "pushnotifications.h"
+#include "shellextensionsserver.h"
 
 #if defined(BUILD_UPDATER)
 #include "updater/ocupdater.h"
@@ -319,6 +320,9 @@ Application::Application(int &argc, char **argv)
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     _folderManager.reset(new FolderMan);
+#ifdef Q_OS_WIN
+    _shellExtensionsServer.reset(new ShellExtensionsServer);
+#endif
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
