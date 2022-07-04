@@ -14,6 +14,8 @@ set_target_properties(owncloudResources PROPERTIES
     OUTPUT_NAME "${APPLICATION_EXECUTABLE}Resources"
     AUTOUIC ON
     AUTORCC ON
+    VERSION ${MIRALL_VERSION}
+    SOVERSION ${MIRALL_SOVERSION}
 )
 
 generate_export_header(owncloudResources
