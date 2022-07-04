@@ -24,8 +24,10 @@
 #include "filesystem.h"
 #include "lockwatcher.h"
 #include "common/asserts.h"
+#include "common/cfapishellextensionsipcconstants.h"
 #include <pushnotifications.h>
 #include <syncengine.h>
+#include "config.h"
 
 #ifdef Q_OS_MAC
 #include <CoreServices/CoreServices.h>
@@ -36,6 +38,7 @@
 #include <QMutableSetIterator>
 #include <QSet>
 #include <QNetworkProxy>
+#include <QLocalSocket>
 
 static const char versionC[] = "version";
 static const int maxFoldersVersion = 1;
@@ -55,6 +58,9 @@ FolderMan::FolderMan(QObject *parent)
     _instance = this;
 
     _socketApi.reset(new SocketApi);
+
+    _shellExtensionsServer.listen(CfApiShellExtensions::ThumbnailProviderMainServerName);
+    connect(&_shellExtensionsServer, &QLocalServer::newConnection, this, &FolderMan::slotNewShellExtensionConnection);
 
     ConfigFile cfg;
     std::chrono::milliseconds polltime = cfg.remotePollInterval();
@@ -108,6 +114,8 @@ void FolderMan::unloadFolder(Folder *f)
     }
 
     _socketApi->slotUnregisterPath(f->alias());
+
+    f->stopShellExtensionServer();
 
     _folderMap.remove(f->alias());
 
@@ -1751,6 +1759,64 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
     if (pushNotificationsFilesReady(account)) {
         qCInfo(lcFolderMan) << "Push notifications ready";
         connect(pushNotifications, &PushNotifications::filesChanged, this, &FolderMan::slotProcessFilesPushNotification, Qt::UniqueConnection);
+    }
+}
+
+void FolderMan::slotNewShellExtensionConnection()
+{
+    auto newConnection = _shellExtensionsServer.nextPendingConnection();
+
+    if (newConnection->open(QIODevice::ReadWrite)) {
+        newConnection->waitForReadyRead();
+        const auto receivedMessage = QJsonDocument::fromJson(newConnection->readAll()).toVariant().toMap();
+
+        if (!receivedMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey)) {
+            connect(newConnection, &QLocalSocket::disconnected, this, [=] {
+                newConnection->close();
+                newConnection->deleteLater();
+            });
+            newConnection->disconnectFromServer();
+            return;
+        }
+
+        const auto thumbnailRequestMessage =
+            receivedMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey).toMap();
+
+        if (!thumbnailRequestMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey)) {
+            connect(newConnection, &QLocalSocket::disconnected, this, [=] {
+                newConnection->close();
+                newConnection->deleteLater();
+            });
+            newConnection->disconnectFromServer();
+            return;
+        }
+
+        const auto thumbnailFilePath =
+            thumbnailRequestMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey).toString();
+
+        Folder *folderFound = nullptr;
+        for (const auto folder : map()) {
+            if (thumbnailFilePath.startsWith(QDir::toNativeSeparators(folder->path()))) {
+                folderFound = folder;
+            }
+        }
+
+        if (folderFound) {
+            const QString serverName = CfApiShellExtensions::ThumbnailProviderMainServerName + QStringLiteral(":")
+                + folderFound->navigationPaneClsid().toString();
+            folderFound->startShellExtensionServer(serverName);
+
+            const auto sentMessage = QJsonDocument::fromVariant(QVariantMap{
+                {CfApiShellExtensions::Protocol::ThumbnailProviderServerNameKey, serverName}}).toJson(QJsonDocument::Compact);
+
+            newConnection->write(sentMessage);
+            newConnection->waitForBytesWritten();
+
+            connect(newConnection, &QLocalSocket::disconnected, this, [=] {
+                newConnection->close();
+                newConnection->deleteLater();
+            });
+        }
     }
 }
 

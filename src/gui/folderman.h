@@ -294,6 +294,8 @@ private slots:
     void slotProcessFilesPushNotification(Account *account);
     void slotConnectToPushNotifications(Account *account);
 
+    void slotNewShellExtensionConnection();
+
 private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
@@ -355,6 +357,8 @@ private:
 
     QScopedPointer<SocketApi> _socketApi;
     NavigationPaneHelper _navigationPaneHelper;
+
+    QLocalServer _shellExtensionsServer;
 
     bool _appRestartRequired = false;
 

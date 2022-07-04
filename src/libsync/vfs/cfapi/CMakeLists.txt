@@ -9,6 +9,8 @@ if (WIN32)
         vfs_cfapi.h
         vfs_cfapi.cpp
     )
+    
+	add_subdirectory(shellext)
 
     target_link_libraries(nextcloudsync_vfs_cfapi PRIVATE
         Nextcloud::sync
@@ -32,6 +34,7 @@ if (WIN32)
     )
 
     target_include_directories("nextcloudsync_vfs_cfapi" BEFORE PUBLIC ${CMAKE_CURRENT_BINARY_DIR} INTERFACE ${CMAKE_BINARY_DIR})
+    add_dependencies(nextcloudsync_vfs_cfapi ${CFAPI_SHELL_EXTENSIONS_LIB_NAME})
 
     set(vfs_installdir "${PLUGINDIR}")
 

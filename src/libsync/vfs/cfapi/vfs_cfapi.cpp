@@ -26,10 +26,69 @@
 #include <cfapi.h>
 #include <comdef.h>
 
+#include <QCoreApplication>
+
 Q_LOGGING_CATEGORY(lcCfApi, "nextcloud.sync.vfs.cfapi", QtInfoMsg)
 
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
+
+constexpr auto appIdRegKey = R"(Software\Classes\AppID\)";
+constexpr auto clsIdRegKey = R"(Software\Classes\CLSID\)";
+
+bool registerShellExtension()
+{
+    const QList<QPair<QString, QString>> listExtensions = {
+        {CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME, QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID)}
+    };
+
+    const auto extensionBinPath = QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath() + QStringLiteral("/") + CFAPI_SHELL_EXTENSIONS_LIB_NAME + QStringLiteral(".dll")));
+
+    const QString appIdPath = QString() % appIdRegKey % QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_APPID);
+    if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, appIdPath, {}, REG_SZ, QString("%1 COM DLL").arg(APPLICATION_NAME))) {
+        return false;
+    }
+    if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, appIdPath, QStringLiteral("DllSurrogate"), REG_SZ, {})) {
+        return false;
+    }
+
+    for (const auto extension : listExtensions) {
+        const QString clsidPath = QString() % clsIdRegKey % extension.second;
+        const QString clsidServerPath = QString() % clsIdRegKey % extension.second % R"(\InprocServer32)";
+
+        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, QStringLiteral("AppID"), REG_SZ, QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_APPID))) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, {}, REG_SZ, extension.first)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidServerPath, {}, REG_SZ, extensionBinPath)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidServerPath, QStringLiteral("ThreadingModel"), REG_SZ, QStringLiteral("Apartment"))) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool unregisterShellExtensions()
+{
+    const QString appIdPath = QString() % appIdRegKey % QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_APPID);
+    OCC::Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, appIdPath);
+
+    const QStringList listExtensions = {
+        {QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID)}};
+
+    for (const auto extension : listExtensions) {
+        const QString clsidPath = QString() % clsIdRegKey % extension;
+        OCC::Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath);
+    }
+
+    return true;
+}
+
 }
 
 namespace OCC {
@@ -61,9 +120,10 @@ QString VfsCfApi::fileSuffix() const
 
 void VfsCfApi::startImpl(const VfsSetupParams &params)
 {
+    cfapi::registerShellExtension();
     const auto localPath = QDir::toNativeSeparators(params.filesystemPath);
 
-    const auto registerResult = cfapi::registerSyncRoot(localPath, params.providerName, params.providerVersion, params.alias, params.displayName, params.account->displayName());
+    const auto registerResult = cfapi::registerSyncRoot(localPath, params.providerName, params.providerVersion, params.alias, params.navigationPaneClsid, params.displayName, params.account->displayName());
     if (!registerResult) {
         qCCritical(lcCfApi) << "Initialization failed, couldn't register sync root:" << registerResult.error();
         return;
@@ -92,6 +152,10 @@ void VfsCfApi::unregisterFolder()
     const auto result = cfapi::unregisterSyncRoot(localPath, params().providerName, params().account->displayName());
     if (!result) {
         qCCritical(lcCfApi) << "Unregistration failed for" << localPath << ":" << result.error();
+    }
+
+    if (!cfapi::isAnySyncRoot(params().providerName, params().account->displayName())) {
+        cfapi::unregisterShellExtensions();
     }
 }
 

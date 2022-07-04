@@ -189,3 +189,5 @@ convert.exe
 *-w10startmenu.png
 *state-*.png
 theme.qrc
+
+src/libsync/vfs/cfapi/shellext/Generated
