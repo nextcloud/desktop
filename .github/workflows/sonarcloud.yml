@@ -9,7 +9,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-4
+    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-7
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
@@ -28,8 +28,8 @@ jobs:
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc-10 -DCMAKE_CXX_COMPILER=g++-10 -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DBUILD_COVERAGE=ON
-          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} make -j 2
+          cmake .. -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DBUILD_COVERAGE=ON
+          build-wrapper-linux-x86-64 --out-dir ${{ env.BUILD_WRAPPER_OUT_DIR }} ninja
       - name: Run tests
         run: |
           cd build
