@@ -1327,17 +1327,17 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
     if (FolderMan::instance()->folderForPath(parentFolder)) {
         // Any path with that parent is going to be unacceptable,
         // so just keep it as-is.
-        return basePath;
+        return canonicalPath(basePath);
     }
     // Count attempts and give up eventually
     for (int attempt = 2; attempt < 100; ++attempt) {
         if (!QFileInfo::exists(folder)
             && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty()) {
-            return folder;
+            return canonicalPath(folder);
         }
         folder = basePath + QString::number(attempt);
     }
-    return basePath;
+    return canonicalPath(basePath);
 }
 
 bool FolderMan::ignoreHiddenFiles() const
