@@ -201,7 +201,7 @@ public:
 
     /** @return color for the setup wizard */
     virtual QColor wizardHeaderTitleColor() const;
-    virtual QColor wizardHeaderSubTitleColor() const;
+    [[deprecated]] virtual QColor wizardHeaderSubTitleColor() const;
 
     /** @return color for the setup wizard. */
     virtual QColor wizardHeaderBackgroundColor() const;
@@ -216,7 +216,7 @@ public:
      *
      * @return banner for the setup wizard.
      */
-    virtual QPixmap wizardHeaderBanner(const QSize &size) const;
+    [[deprecated]] virtual QPixmap wizardHeaderBanner(const QSize &size) const;
 #endif
 
     /**
@@ -266,12 +266,12 @@ public:
      * Hide the checkbox that says "Ask for confirmation before synchronizing folders larger than X MB"
      * in the account wizard
      */
-    virtual bool wizardHideFolderSizeLimitCheckbox() const;
+    [[deprecated]] virtual bool wizardHideFolderSizeLimitCheckbox() const;
     /**
      * Hide the checkbox that says "Ask for confirmation before synchronizing external storages"
      * in the account wizard
      */
-    virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
+    [[deprecated]] virtual bool wizardHideExternalStorageConfirmationCheckbox() const;
 
     /**
      * Skip the advanced page and create a sync with the default settings
