@@ -6720,17 +6720,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erabiltzailea &apos;ez molestatu&apos; egoeran dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation>Uneko kontuaren avatarra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation>Uneko kontua linean dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation>Uneko kontua ez molestatu egoeran dago</translation>
     </message>

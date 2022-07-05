@@ -6720,17 +6720,17 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Aktualny status użytkownika to &quot;Nie przeszkadzać&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation>Aktualny awatar konta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation>Aktualny status konta to &quot;Online&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation>Aktualny status konta to &quot;Nie przeszkadzać&quot;</translation>
     </message>
