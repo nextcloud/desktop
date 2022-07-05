@@ -47,7 +47,7 @@ if (${CMAKE_C_COMPILER_ID} MATCHES "(GNU|Clang)")
 
     if (CMAKE_BUILD_TYPE)
         string(TOLOWER "${CMAKE_BUILD_TYPE}" CMAKE_BUILD_TYPE_LOWER)
-        if (CMAKE_BUILD_TYPE_LOWER MATCHES "(release|relwithdebinfo|minsizerel)")
+        if (CMAKE_BUILD_TYPE_LOWER MATCHES "(release|relwithdebinfo|minsizerel)" AND (NOT ${CMAKE_C_FLAGS} MATCHES "FORTIFY_SOURCE=[3-9]"))
             check_c_compiler_flag("-Wp,-D_FORTIFY_SOURCE=2" WITH_FORTIFY_SOURCE)
             if (WITH_FORTIFY_SOURCE)
                 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wp,-D_FORTIFY_SOURCE=2")
