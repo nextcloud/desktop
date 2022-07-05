@@ -1,0 +1,6 @@
+Enhancement: Run vfs downloads with a high priority
+
+This should reduce the probability for timeouts when downloading vfs files in the Windows explorer.
+
+https://github.com/owncloud/client/pull/9836
+https://github.com/owncloud/client/issues/9832

@@ -136,7 +136,7 @@ public slots:
     void resetFolders();
     void slotSyncAllPendingBigFolders();
     void slotSyncNoPendingBigFolders();
-    void slotSetProgress(const ProgressInfo &progress);
+    void slotSetProgress(const ProgressInfo &progress, Folder *f);
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
@@ -155,8 +155,12 @@ private slots:
 private:
     QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
+
+    void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
+
     const AccountState *_accountState;
     bool _dirty; // If the selective sync checkboxes were changed
+    std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
 
     /**
      * Keeps track of items that are fetching data from the server.
