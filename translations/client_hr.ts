@@ -6720,17 +6720,17 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Trenutni status korisnika je „ne ometaj“</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>

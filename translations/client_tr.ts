@@ -6720,17 +6720,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Kullanıcının geçerli durumu: Rahatsız etmeyin</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation>Geçerli hesap avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
     </message>

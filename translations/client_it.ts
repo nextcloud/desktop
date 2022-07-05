@@ -69,7 +69,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Cancella il messaggio di stato</translation>
     </message>
 </context>
 <context>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Codice mnemonico per cifratura end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -6710,17 +6710,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Lo stato attuale dell&apos;utente è non disturbare</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>

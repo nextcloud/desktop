@@ -6720,17 +6720,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>目前的使用者狀態為請勿打擾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation>目前的帳號大頭照</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation>目前的帳號狀態為在線上</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation>目前的帳號狀態為請勿打擾</translation>
     </message>

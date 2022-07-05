@@ -6719,17 +6719,17 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Stávající stav uživatele je nerušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="401"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current account avatar</source>
         <translation>Stávající zástupný obrázek uživatele</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is online</source>
         <translation>Stávající stav účtu je online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="440"/>
+        <location filename="../src/gui/tray/Window.qml" line="451"/>
         <source>Current account status is do not disturb</source>
         <translation>Stávající stav účtu je nerušit</translation>
     </message>
