@@ -15,23 +15,25 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
+    <widget class="QLabel" name="label">
+     <property name="text">
       <string>Pick a local folder on your computer to sync</string>
      </property>
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLineEdit" name="localFolderLineEdit"/>
-      </item>
-      <item>
-       <widget class="QPushButton" name="localFolderChooseBtn">
-        <property name="text">
-         <string>&amp;Choose...</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
     </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLineEdit" name="localFolderLineEdit"/>
+     </item>
+     <item>
+      <widget class="QPushButton" name="localFolderChooseBtn">
+       <property name="text">
+        <string>&amp;Choose...</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <widget class="QLabel" name="warnLabel">
