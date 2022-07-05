@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Compare usernames case insensitive: [#5174](https://github.com/owncloud/enterprise/issues/5174)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
+* Bugfix - Don't display a conext menu on the root folder: [#8595](https://github.com/owncloud/client/issues/8595)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 * Bugfix - Fix status of files uploaded with TUS: [#9472](https://github.com/owncloud/client/pull/9472)
 * Bugfix - Use UTF-8 for .owncloudsync.log: [#9571](https://github.com/owncloud/client/pull/9571)
@@ -52,6 +53,10 @@ Details
    useful as a result.
 
    https://github.com/owncloud/client/issues/7348
+
+* Bugfix - Don't display a conext menu on the root folder: [#8595](https://github.com/owncloud/client/issues/8595)
+
+   https://github.com/owncloud/client/issues/8595
 
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
 
