@@ -1414,7 +1414,9 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
 
 Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
 {
-    FolderMan::prepareFolder(localFolder);
+    if (!FolderMan::prepareFolder(localFolder)) {
+        return {};
+    }
 
     qCInfo(lcFolderMan) << "Adding folder definition for" << localFolder << remotePath;
     auto folderDefinition = FolderDefinition::createNewFolderDefinition(webDavUrl, displayName);

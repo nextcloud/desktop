@@ -85,7 +85,7 @@ class FolderMan : public QObject
     Q_OBJECT
 public:
     static QString suggestSyncFolder(const QUrl &server, const QString &displayName);
-    static bool prepareFolder(const QString &folder);
+    [[nodiscard]] static bool prepareFolder(const QString &folder);
 
     ~FolderMan() override;
 
