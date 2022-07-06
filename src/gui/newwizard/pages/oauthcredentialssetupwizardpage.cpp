@@ -46,12 +46,6 @@ OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &ser
     _ui->pleaseLogIntoLabel->setText(tr("Please use your browser to log in to %1").arg(Theme::instance()->appNameGUI()));
 }
 
-void OAuthCredentialsSetupWizardPage::disableButtons()
-{
-    _ui->openBrowserButton->setEnabled(false);
-    _ui->copyUrlToClipboardButton->setEnabled(false);
-}
-
 OAuthCredentialsSetupWizardPage::~OAuthCredentialsSetupWizardPage()
 {
     delete _ui;

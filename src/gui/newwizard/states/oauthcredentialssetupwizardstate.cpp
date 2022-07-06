@@ -31,7 +31,7 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
 
     connect(oAuth, &OAuth::result, this, [this, oAuthCredentialsPage](OAuth::Result result, const QString &userName, const QString &token, const QString &refreshToken, const QString &displayName) {
         // the button may not be clicked anymore, since the server has been shut down right before this signal was emitted by the OAuth instance
-        oAuthCredentialsPage->disableButtons();
+        oAuthCredentialsPage->setButtonsEnabled(false);
 
         _context->window()->slotStartTransition();
 

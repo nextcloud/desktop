@@ -28,7 +28,6 @@ class OAuthCredentialsSetupWizardPage : public AbstractSetupWizardPage
 
 public:
     explicit OAuthCredentialsSetupWizardPage(const QUrl &serverUrl);
-    void disableButtons();
     ~OAuthCredentialsSetupWizardPage() noexcept override;
 
     bool validateInput() override;
