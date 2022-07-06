@@ -29,7 +29,7 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
     // username might not be set yet, shouldn't matter, though
     auto oAuth = new OAuth(_context->accountBuilder().serverUrl(), QString(), _context->accessManager(), {}, this);
 
-    connect(oAuth, &OAuth::result, this, [this, oAuthCredentialsPage](OAuth::Result result, const QString &userName, const QString &token, const QString &displayName, const QString &refreshToken) {
+    connect(oAuth, &OAuth::result, this, [this, oAuthCredentialsPage](OAuth::Result result, const QString &userName, const QString &token, const QString &refreshToken, const QString &displayName) {
         // the button may not be clicked anymore, since the server has been shut down right before this signal was emitted by the OAuth instance
         oAuthCredentialsPage->disableButtons();
 
