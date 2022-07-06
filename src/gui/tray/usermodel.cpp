@@ -116,11 +116,36 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
     _activityModel->clearNotifications();
 
-    foreach (auto activity, list) {
+    const auto multipleAccounts = AccountManager::instance()->accounts().count() > 1;
+    ActivityList toNotifyList;
+
+    std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) {
+
         if (_blacklistedNotifications.contains(activity)) {
             qCInfo(lcActivity) << "Activity in blacklist, skip";
-            continue;
+            return false;
+        } else if(_notifiedNotifications.contains(activity._id)) {
+            qCInfo(lcActivity) << "Activity already notified, skip";
+            return false;
         }
+
+        return true;
+    });
+
+    if(toNotifyList.count() > 2) {
+        const auto subject = QStringLiteral("%1 notifications").arg(toNotifyList.count());
+        const auto message = multipleAccounts ? toNotifyList.constFirst()._accName : QString();
+        showDesktopNotification(subject, message, -static_cast<int>(qHash(subject)));
+
+        // Set these activities as notified here, rather than in showDesktopNotification
+        for(const auto &activity : toNotifyList) {
+            _notifiedNotifications.insert(activity._id);
+        }
+
+        return;
+    }
+
+    for(const auto &activity : toNotifyList) {
         const auto message = activity._objectType == QStringLiteral("chat")
             ? activity._message : AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
         showDesktopNotification(activity._subject, message, activity._id); // We assigned the notif. id to the activity id
