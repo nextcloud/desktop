@@ -233,17 +233,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="297"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="298"/>
         <source>Connection timed out</source>
         <translation>Lidhjes i mbaroi koha</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="299"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="300"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Gabim i panjohur: përgjigja e rrjetit qe fshirë</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="421"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="422"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Shërbyesi u përgjigj &quot;%1 %2&quot; për &quot;%3 %4&quot;</translation>
     </message>
@@ -1607,22 +1607,22 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>S’u mor E-Tag prej shërbyesit, kontrolloni Ndërmjetësin/Kanalin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Morëm një tjetër E-Tag për rimarrje të procesit. Do të provohet herës tjetër.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="198"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="200"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>Morëm një Content-Length shkarkimi të papritur.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="225"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="227"/>
         <source>Server returned wrong content-range</source>
         <translation>Shërbyesi u përgjigj me content-range të gabuar</translation>
     </message>
@@ -1630,7 +1630,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
 <context>
     <name>OCC::GETJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="334"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="336"/>
         <source>Connection Timeout</source>
         <translation>Lidhjes i Mbaroi Koha</translation>
     </message>
@@ -2726,67 +2726,67 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="371"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>S’u arrit të lirohet hapësirë, kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>Kartela %1 s’mund shkarkohet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Shkarkimi mund të ulë nën kufi sasinë e hapësirës së lirë në disk</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="526"/>
         <source>Free space on disk is less than %1</source>
         <translation>Hapësira e lirë në disk është nën %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="649"/>
         <source>File was deleted from server</source>
         <translation>Kartela është fshirë te shërbyesi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="707"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>Shërbyes i dëmtuar u përgjigj me gjatësi lënde të zbrazët për kartelë jo të zbrazët, gjatë rimarrjeje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Kartela s’u shkarkua plotësisht.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="723"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Kartela e shkarkuar është e zbrazët, edhe pse shërbyesi njoftoi se duhej të ishte %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="903"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>Kartela %1 s’mund të ruhet, për shkak të një përplasjeje emrash kartele vendore me %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="961"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1026"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="472"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="927"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="963"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="366"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="955"/>
         <source>File has changed since discovery</source>
         <translation>Kartela ka ndryshuar, qëkurse u zbulua</translation>
     </message>
@@ -2954,33 +2954,33 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="133"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="134"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Kartela %1 s’mund të ngarkohet, ngaqë ka një tjetër kartelë me të njëjtin emër, me ndryshim vetëm në shkronjë të madhe-shkronjë të vogël</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="240"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="241"/>
         <source>File Removed</source>
         <translation>Kartela u Hoq</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="255"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="256"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation>Kartela vendore ndryshoi gjatë njëkohësimit. Do të rimerret.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="581"/>
         <source>Error updating metadata: %1</source>
         <translation>Gabim në përditësim tejtëdhënash: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="584"/>
         <source>The file %1 is currently in use</source>
         <translation>Kartela %1 është aktualisht në përdorim</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="144"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="475"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="145"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="476"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>Ngarkimi i %1 i tejkalon kuotat për dosjen</translation>
     </message>
@@ -4070,7 +4070,7 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="931"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="941"/>
         <source>Failed to connect database.</source>
         <translation>S’u arrit të lidhej baza e të dhënave.</translation>
     </message>

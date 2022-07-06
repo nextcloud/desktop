@@ -233,17 +233,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="297"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="298"/>
         <source>Connection timed out</source>
         <translation>连接超时</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="299"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="300"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>未知错误：网络相应被删除</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="421"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="422"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>服务器返回&quot;%1 %2&quot; to &quot;%3 %4&quot; </translation>
     </message>
@@ -1607,22 +1607,22 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::GETFileJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="180"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>未能收到来自服务器的 E-Tag，请检查代理/网关</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="187"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="189"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>我们收到了不同的恢复 E-Tag，将在下次尝试。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="198"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="200"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>我们收到了一个意外的下载Content-Length</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="225"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="227"/>
         <source>Server returned wrong content-range</source>
         <translation>服务器返回了错误的内容长度</translation>
     </message>
@@ -1630,7 +1630,7 @@ Please consider removing this folder from the account and adding it again.</sour
 <context>
     <name>OCC::GETJob</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="334"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="336"/>
         <source>Connection Timeout</source>
         <translation>连接超时</translation>
     </message>
@@ -2725,67 +2725,67 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="371"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>未能释放空间，文件 %1 当前正在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="384"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>由于本地文件名与 %2 冲突，无法下载文件 %1！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="520"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>在当前限制下,下载将会减少本地磁盘的剩余空间.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="524"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="526"/>
         <source>Free space on disk is less than %1</source>
         <translation>空闲磁盘空间少于 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="647"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="649"/>
         <source>File was deleted from server</source>
         <translation>已从服务器删除文件</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="707"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>损坏的网络服务器在简历上返回了非空文件的空内容长度</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="714"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
         <source>The file could not be downloaded completely.</source>
         <translation>文件无法完整下载。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="721"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="723"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>虽然服务器宣称已完成 %1，但实际下载文件为空。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="901"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="903"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>由于本地文件名与 %2 冲突，无法保存文件 %1！</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1023"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元数据时出错: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="470"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="925"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="961"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1026"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="472"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="927"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="963"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
         <source>The file %1 is currently in use</source>
         <translation>文件 %1 当前正在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="364"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="366"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="955"/>
         <source>File has changed since discovery</source>
         <translation>自从发现文件以来，它已经被改变了</translation>
     </message>
@@ -2953,33 +2953,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="133"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="134"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>文件 %1 无法上传，因为存在同名文件，文件名仅有大小写不同。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="240"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="241"/>
         <source>File Removed</source>
         <translation>已移除文件</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="255"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="256"/>
         <source>Local file changed during sync. It will be resumed.</source>
         <translation>本地文件在同步时已修改，完成后会再次同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="580"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="581"/>
         <source>Error updating metadata: %1</source>
         <translation>更新元数据时出错: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="584"/>
         <source>The file %1 is currently in use</source>
         <translation>文件 %1 当前正在使用中</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="144"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="475"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="145"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="476"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>上传 %1 超出了此文件夹的限额</translation>
     </message>
@@ -4069,7 +4069,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="931"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="941"/>
         <source>Failed to connect database.</source>
         <translation>连接数据库失败。</translation>
     </message>

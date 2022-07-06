@@ -1,5 +1,7 @@
-Enhancement: Run vfs downloads with a high priority
+Enhancement: Throttle the UI updates during sync
 
-This should reduce the occurance of timeouts when downloading vfs files in the Windows explorer.
+We reduced the number of UI updates during the sync,
+especially with Windows vfs files this should improve the performance by a lot.
 
 https://github.com/owncloud/client/issues/9832
+https://github.com/owncloud/client/pull/9863

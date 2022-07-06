@@ -1,0 +1,3 @@
+Bugfix: We fixed a potential crash
+
+https://github.com/owncloud/client/issues/9864

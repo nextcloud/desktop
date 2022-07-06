@@ -453,8 +453,6 @@ void SyncEngine::startSync()
     }
 
     _stopWatch.start();
-    _progressInfo->_status = ProgressInfo::Starting;
-    emit transmissionProgress(*_progressInfo);
 
     qCInfo(lcEngine) << "#### Discovery start ####################################################";
     qCInfo(lcEngine) << "Server" << account()->capabilities().status().versionString()

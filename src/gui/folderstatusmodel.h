@@ -15,7 +15,8 @@
 #ifndef FOLDERSTATUSMODEL_H
 #define FOLDERSTATUSMODEL_H
 
-#include <accountfwd.h>
+#include "accountfwd.h"
+
 #include <QAbstractItemModel>
 #include <QLoggingCategory>
 #include <QVector>
@@ -111,9 +112,10 @@ public:
             int _overallPercent;
         };
         Progress _progress;
+
+        std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
     };
 
-    QVector<SubFolderInfo> _folders;
 
     enum ItemType { RootFolder,
         SubFolder,
@@ -137,7 +139,7 @@ public slots:
     void resetFolders();
     void slotSyncAllPendingBigFolders();
     void slotSyncNoPendingBigFolders();
-    void slotSetProgress(const ProgressInfo &progress);
+    void slotSetProgress(const ProgressInfo &progress, Folder *f);
 
 private slots:
     void slotUpdateDirectories(const QStringList &);
@@ -156,8 +158,12 @@ private slots:
 private:
     QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
+    void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
+    int indexOf(Folder *f) const;
+
     AccountStatePtr _accountState;
     bool _dirty; // If the selective sync checkboxes were changed
+    QVector<SubFolderInfo> _folders;
 
     /**
      * Keeps track of items that are fetching data from the server.
