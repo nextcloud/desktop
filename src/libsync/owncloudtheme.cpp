@@ -44,11 +44,6 @@ QColor ownCloudTheme::wizardHeaderTitleColor() const
     return Qt::white;
 }
 
-QColor ownCloudTheme::wizardHeaderSubTitleColor() const
-{
-    return QColor(78, 133, 200);
-}
-
 QIcon ownCloudTheme::wizardHeaderLogo() const
 {
     return themeUniversalIcon(QStringLiteral("wizard_logo"));

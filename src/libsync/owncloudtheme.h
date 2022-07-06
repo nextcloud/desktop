@@ -31,7 +31,6 @@ public:
 #ifndef TOKEN_AUTH_ONLY
     QColor wizardHeaderBackgroundColor() const override;
     QColor wizardHeaderTitleColor() const override;
-    QColor wizardHeaderSubTitleColor() const override;
     QIcon wizardHeaderLogo() const override;
     QIcon aboutIcon() const override;
 #endif
