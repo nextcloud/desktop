@@ -28,7 +28,7 @@ AskForOAuthLoginDialog::AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *p
 {
     _ui->setupUi(this);
 
-    _ui->label->setText(tr("The account %1 has been logged out by the server.\n\nPlease use your browser to log into %2.").arg(accountPtr->displayName(), Theme::instance()->appNameGUI()));
+    _ui->label->setText(tr("The account %1 has been logged out by the server.\n\nPlease use your browser to log in to %2.").arg(accountPtr->displayName(), Theme::instance()->appNameGUI()));
     _ui->iconLabel->setPixmap(Theme::instance()->applicationIcon().pixmap(64, 64));
 
     setModal(true);

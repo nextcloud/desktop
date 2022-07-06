@@ -46,7 +46,7 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
             break;
         }
         case OAuth::Result::Error: {
-            Q_EMIT evaluationFailed(tr("Error while trying to log into OAuth2-enabled server."));
+            Q_EMIT evaluationFailed(tr("Error while trying to log in to OAuth2-enabled server."));
             break;
         }
         case OAuth::Result::NotSupported: {
