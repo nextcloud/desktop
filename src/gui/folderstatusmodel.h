@@ -115,7 +115,6 @@ public:
         std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
     };
 
-    QVector<SubFolderInfo> _folders;
 
     enum ItemType { RootFolder,
         SubFolder,
@@ -160,9 +159,11 @@ private:
         const QStringList &oldBlackList) const;
 
     void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
+    int indexOf(Folder *f) const;
 
     const AccountState *_accountState;
     bool _dirty; // If the selective sync checkboxes were changed
+    QVector<SubFolderInfo> _folders;
 
     /**
      * Keeps track of items that are fetching data from the server.

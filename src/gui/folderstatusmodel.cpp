@@ -880,16 +880,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
         return; // for https://github.com/owncloud/client/issues/2648#issuecomment-71377909
     }
 
-    const int folderIndex = [f, this] {
-        int folderIndex = -1;
-        for (int i = 0; i < _folders.count(); ++i) {
-            if (_folders.at(i)._folder == f) {
-                folderIndex = i;
-                break;
-            }
-        }
-        return folderIndex;
-    }();
+    const int folderIndex = indexOf(f);
     if (folderIndex < 0) {
         return;
     }
@@ -918,8 +909,6 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
     case ProgressInfo::Propagation:
         Q_FALLTHROUGH();
     case ProgressInfo::Done:
-        // Status is Propagation or Done
-
         if (!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {
             pi->_warningCount++;
@@ -1057,19 +1046,24 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
     pi->_overallPercent = qBound(0, overallPercent, 100);
 }
 
+int FolderStatusModel::indexOf(Folder *f) const
+{
+    const auto it = std::find_if(_folders.cbegin(), _folders.cend(), [f](auto &it) {
+        return it._folder == f;
+    });
+    if (it == _folders.cend()) {
+        return -1;
+    }
+    return std::distance(_folders.cbegin(), it);
+}
+
 void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
 {
     if (!f) {
         return;
     }
 
-    int folderIndex = -1;
-    for (int i = 0; i < _folders.count(); ++i) {
-        if (_folders.at(i)._folder == f) {
-            folderIndex = i;
-            break;
-        }
-    }
+    const int folderIndex = indexOf(f);
     if (folderIndex < 0) {
         return;
     }
@@ -1207,13 +1201,7 @@ void FolderStatusModel::slotNewBigFolder()
     auto f = qobject_cast<Folder *>(sender());
     OC_ASSERT(f);
 
-    int folderIndex = -1;
-    for (int i = 0; i < _folders.count(); ++i) {
-        if (_folders.at(i)._folder == f) {
-            folderIndex = i;
-            break;
-        }
-    }
+    const int folderIndex = indexOf(f);
     if (folderIndex < 0) {
         return;
     }
