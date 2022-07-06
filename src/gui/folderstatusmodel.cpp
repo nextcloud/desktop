@@ -13,15 +13,16 @@
  */
 
 #include "folderstatusmodel.h"
-#include "folderman.h"
+#include "account.h"
 #include "accountstate.h"
 #include "common/asserts.h"
-#include <theme.h>
-#include <account.h>
+#include "folderman.h"
 #include "folderstatusdelegate.h"
+#include "theme.h"
 
 #include <QFileIconProvider>
 #include <QVarLengthArray>
+
 #include <set>
 
 using namespace std::chrono_literals;
@@ -892,8 +893,9 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
     if (folderIndex < 0) {
         return;
     }
+    auto &folder = _folders[folderIndex];
 
-    auto *pi = &_folders[folderIndex]._progress;
+    auto *pi = &folder._progress;
 
     const QVector<int> roles = { FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount, Qt::ToolTipRole };
 
@@ -909,7 +911,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
         pi->_overallSyncString = tr("Reconciling changes");
         emit dataChanged(index(folderIndex), index(folderIndex), roles);
     } else {
-        // Status is Starting, Propagation or Done
+        // Status is Propagation or Done
 
         if (!progress._lastCompletedItem.isEmpty()
             && Progress::isWarningKind(progress._lastCompletedItem._status)) {
@@ -917,9 +919,9 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
         }
 
         // progress updates are expensive, throtle them
-        if (std::chrono::steady_clock::now() - _lastProgressUpdated > progressUpdateTimeOutC) {
+        if (std::chrono::steady_clock::now() - folder._lastProgressUpdated > progressUpdateTimeOutC) {
             computeProgress(progress, pi);
-            _lastProgressUpdated = std::chrono::steady_clock::now();
+            folder._lastProgressUpdated = std::chrono::steady_clock::now();
             emit dataChanged(index(folderIndex), index(folderIndex), roles);
         }
     }

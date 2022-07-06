@@ -15,7 +15,8 @@
 #ifndef FOLDERSTATUSMODEL_H
 #define FOLDERSTATUSMODEL_H
 
-#include <accountfwd.h>
+#include "accountfwd.h"
+
 #include <QAbstractItemModel>
 #include <QLoggingCategory>
 #include <QVector>
@@ -110,6 +111,8 @@ public:
             int _overallPercent;
         };
         Progress _progress;
+
+        std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
     };
 
     QVector<SubFolderInfo> _folders;
@@ -160,7 +163,6 @@ private:
 
     const AccountState *_accountState;
     bool _dirty; // If the selective sync checkboxes were changed
-    std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
 
     /**
      * Keeps track of items that are fetching data from the server.
