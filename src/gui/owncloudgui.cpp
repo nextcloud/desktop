@@ -814,7 +814,7 @@ void ownCloudGui::setupActions()
 {
     _actionStatus = new QAction(tr("Unknown status"), this);
     _actionStatus->setEnabled(false);
-    _actionSettings = new QAction(tr("Settings..."), this);
+    _actionSettings = new QAction(tr("Show %1").arg(Theme::instance()->appNameGUI()), this);
     _actionNewAccountWizard = new QAction(tr("New account..."), this);
     _actionRecent = new QAction(tr("Details..."), this);
     _actionRecent->setEnabled(true);

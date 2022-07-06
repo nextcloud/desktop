@@ -1,0 +1,5 @@
+Enhancement: Display `Show ownCloud` instead of `Settings` in systray
+
+We changed the menu entry to align its name with is function.
+
+https://github.com/owncloud/client/issues/8234
