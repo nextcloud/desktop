@@ -66,6 +66,8 @@ class Systray
 
     Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
+    Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
+    Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
 
 public:
     static Systray *instance();
@@ -85,17 +87,13 @@ public:
     void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
     void setToolTip(const QString &tip);
-    bool isOpen();
-    QString windowTitle() const;
-    bool useNormalWindow() const;
     void createCallDialog(const Activity &callNotification, const AccountStatePtr accountState);
 
-    Q_INVOKABLE void pauseResumeSync();
-    Q_INVOKABLE bool syncIsPaused();
-    Q_INVOKABLE void setOpened();
-    Q_INVOKABLE void setClosed();
-    Q_INVOKABLE void forceWindowInit(QQuickWindow *window) const;
-    Q_INVOKABLE void positionNotificationWindow(QQuickWindow *window) const;
+    Q_REQUIRED_RESULT QString windowTitle() const;
+    Q_REQUIRED_RESULT bool useNormalWindow() const;
+
+    Q_REQUIRED_RESULT bool syncIsPaused() const;
+    Q_REQUIRED_RESULT bool isOpen() const;
 
 signals:
     void currentUserChanged();
@@ -114,10 +112,19 @@ signals:
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
     void showErrorMessageDialog(const QString &error);
 
+    void syncIsPausedChanged();
+    void isOpenChanged();
+
 public slots:
     void slotNewUserSelected();
     void positionWindowAtTray(QQuickWindow *window) const;
     void positionWindowAtScreenCenter(QQuickWindow *window) const;
+
+    void setSyncIsPaused(const bool syncIsPaused);
+    void setIsOpen(const bool isOpen);
+
+    void forceWindowInit(QQuickWindow *window) const;
+    void positionNotificationWindow(QQuickWindow *window) const;
 
 private slots:
     void slotUnpauseAllFolders();
