@@ -899,7 +899,10 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
 
     const QVector<int> roles = { FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount, Qt::ToolTipRole };
 
-    if (progress.status() == ProgressInfo::Discovery) {
+    switch (progress.status()) {
+    case ProgressInfo::None:
+        Q_UNREACHABLE();
+    case ProgressInfo::Discovery:
         if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
             pi->_overallSyncString = tr("Checking for changes in remote '%1'").arg(progress._currentDiscoveredRemoteFolder);
             emit dataChanged(index(folderIndex), index(folderIndex), roles);
@@ -907,10 +910,14 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
             pi->_overallSyncString = tr("Checking for changes in local '%1'").arg(progress._currentDiscoveredLocalFolder);
             emit dataChanged(index(folderIndex), index(folderIndex), roles);
         }
-    } else if (progress.status() == ProgressInfo::Reconcile) {
+        break;
+    case ProgressInfo::Reconcile:
         pi->_overallSyncString = tr("Reconciling changes");
         emit dataChanged(index(folderIndex), index(folderIndex), roles);
-    } else {
+        break;
+    case ProgressInfo::Propagation:
+        Q_FALLTHROUGH();
+    case ProgressInfo::Done:
         // Status is Propagation or Done
 
         if (!progress._lastCompletedItem.isEmpty()
