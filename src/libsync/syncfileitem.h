@@ -42,14 +42,14 @@ class OWNCLOUDSYNC_EXPORT SyncFileItem
 {
     Q_GADGET
 public:
-    enum Direction {
+    enum Direction : uint8_t {
         None = 0,
         Up,
         Down
     };
     Q_ENUM(Direction)
 
-    enum Status { // stored in 4 bits
+    enum Status : uint8_t { // stored in 4 bits
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop
@@ -240,19 +240,19 @@ public:
      */
     QString _originalFile;
 
-    ItemType _type BITFIELD(3);
-    Direction _direction BITFIELD(3);
-    bool _serverHasIgnoredFiles BITFIELD(1);
+    ItemType _type;
+    Direction _direction;
+    bool _serverHasIgnoredFiles;
 
     /// Whether there's an entry in the blacklist table.
     /// Note: that entry may have retries left, so this can be true
     /// without the status being FileIgnored.
-    bool _hasBlacklistEntry BITFIELD(1);
+    bool _hasBlacklistEntry;
 
     // Variables useful to report to the user
-    Status _status BITFIELD(4);
-    bool _isRestoration BITFIELD(1); // The original operation was forbidden, and this is a restoration
-    bool _isSelectiveSync BITFIELD(1); // The file is removed or ignored because it is in the selective sync list
+    Status _status;
+    bool _isRestoration; // The original operation was forbidden, and this is a restoration
+    bool _isSelectiveSync; // The file is removed or ignored because it is in the selective sync list
     quint16 _httpErrorCode;
     RemotePermissions _remotePerm;
     QString _errorString; // Contains a string only in case of error

@@ -49,54 +49,44 @@ namespace OCC {
 class SyncJournalFileRecord;
 }
 
-#if defined(Q_CC_GNU) && !defined(Q_CC_INTEL) && !defined(Q_CC_CLANG) && (__GNUC__ * 100 + __GNUC_MINOR__ < 408)
-// openSuse 12.3 didn't like enum bitfields.
-#define BITFIELD(size)
-#elif defined(Q_CC_MSVC)
-// MSVC stores enum and bool as signed, so we need to add a bit for the sign
-#define BITFIELD(size) :(size+1)
-#else
-#define BITFIELD(size) :size
-#endif
-
 namespace CSyncEnums {
 OCSYNC_EXPORT Q_NAMESPACE
 
-enum csync_status_codes_e {
-  CSYNC_STATUS_OK         = 0,
+    enum csync_status_codes_e : uint16_t {
+        CSYNC_STATUS_OK = 0,
 
-  CSYNC_STATUS_ERROR      = 1024, /* don't use this code,
-                                     */
-  CSYNC_STATUS_UNSUCCESSFUL,       /* Unspecific problem happend */
-  CSYNC_STATUS_STATEDB_LOAD_ERROR, /* Statedb can not be loaded. */
-  CSYNC_STATUS_UPDATE_ERROR,       /* general update or discovery error */
-  CSYNC_STATUS_TIMEOUT,            /* UNUSED */
-  CSYNC_STATUS_HTTP_ERROR,         /* UNUSED */
-  CSYNC_STATUS_PERMISSION_DENIED,  /*  */
-  CSYNC_STATUS_NOT_FOUND,
-  CSYNC_STATUS_FILE_EXISTS,
-  CSYNC_STATUS_OUT_OF_SPACE,
-  CSYNC_STATUS_SERVICE_UNAVAILABLE,
-  CSYNC_STATUS_STORAGE_UNAVAILABLE,
-  CSYNC_STATUS_FILE_SIZE_ERROR,
-  CSYNC_STATUS_OPENDIR_ERROR,
-  CSYNC_STATUS_READDIR_ERROR,
-  CSYNC_STATUS_OPEN_ERROR,
-  CSYNC_STATUS_ABORTED,
-    /* Codes for file individual status: */
-    CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK,
-    CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
-    CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
-    CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE,
-    CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
-    CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN,
-    CSYNC_STATUS_INVALID_CHARACTERS,
-    CSYNC_STATUS_INDIVIDUAL_STAT_FAILED,
-    CSYNC_STATUS_FORBIDDEN,
-    CSYNC_STATUS_INDIVIDUAL_TOO_DEEP,
-    CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE,
-    CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE
-};
+        CSYNC_STATUS_ERROR = 1024, /* don't use this code,
+                                    */
+        CSYNC_STATUS_UNSUCCESSFUL, /* Unspecific problem happend */
+        CSYNC_STATUS_STATEDB_LOAD_ERROR, /* Statedb can not be loaded. */
+        CSYNC_STATUS_UPDATE_ERROR, /* general update or discovery error */
+        CSYNC_STATUS_TIMEOUT, /* UNUSED */
+        CSYNC_STATUS_HTTP_ERROR, /* UNUSED */
+        CSYNC_STATUS_PERMISSION_DENIED, /*  */
+        CSYNC_STATUS_NOT_FOUND,
+        CSYNC_STATUS_FILE_EXISTS,
+        CSYNC_STATUS_OUT_OF_SPACE,
+        CSYNC_STATUS_SERVICE_UNAVAILABLE,
+        CSYNC_STATUS_STORAGE_UNAVAILABLE,
+        CSYNC_STATUS_FILE_SIZE_ERROR,
+        CSYNC_STATUS_OPENDIR_ERROR,
+        CSYNC_STATUS_READDIR_ERROR,
+        CSYNC_STATUS_OPEN_ERROR,
+        CSYNC_STATUS_ABORTED,
+        /* Codes for file individual status: */
+        CSYNC_STATUS_INDIVIDUAL_IS_SYMLINK,
+        CSYNC_STATUS_INDIVIDUAL_IGNORE_LIST,
+        CSYNC_STATUS_INDIVIDUAL_IS_INVALID_CHARS,
+        CSYNC_STATUS_INDIVIDUAL_TRAILING_SPACE,
+        CSYNC_STATUS_INDIVIDUAL_EXCLUDE_LONG_FILENAME,
+        CSYNC_STATUS_INDIVIDUAL_EXCLUDE_HIDDEN,
+        CSYNC_STATUS_INVALID_CHARACTERS,
+        CSYNC_STATUS_INDIVIDUAL_STAT_FAILED,
+        CSYNC_STATUS_FORBIDDEN,
+        CSYNC_STATUS_INDIVIDUAL_TOO_DEEP,
+        CSYNC_STATUS_INDIVIDUAL_IS_CONFLICT_FILE,
+        CSYNC_STATUS_INDIVIDUAL_CANNOT_ENCODE
+    };
 Q_ENUM_NS(csync_status_codes_e)
 
 /**
@@ -104,7 +94,7 @@ Q_ENUM_NS(csync_status_codes_e)
   * the csync state of a file.
   */
 // clang-format off
-enum SyncInstruction {
+enum SyncInstruction : uint16_t {
     CSYNC_INSTRUCTION_NONE            = 0,       /* Nothing to do (UPDATE|RECONCILE) */
     CSYNC_INSTRUCTION_REMOVE          = 1 << 1,  /* The file need to be removed (RECONCILE) */
     CSYNC_INSTRUCTION_RENAME          = 1 << 2,  /* The file need to be renamed (RECONCILE) */
@@ -131,7 +121,7 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(SyncInstructions)
 
 // This enum is used with BITFIELD(3) and BITFIELD(4) in several places.
 // Also, this value is stored in the database, so beware of value changes.
-enum ItemType : unsigned {
+enum ItemType : uint8_t {
     ItemTypeFile = 0,
     ItemTypeSoftLink = 1,
     ItemTypeDirectory = 2,
@@ -178,10 +168,10 @@ struct OCSYNC_EXPORT csync_file_stat_s {
   uint64_t inode;
 
   OCC::RemotePermissions remotePerm;
-  ItemType type BITFIELD(4);
-  bool child_modified BITFIELD(1);
-  bool has_ignored_files BITFIELD(1); // Specify that a directory, or child directory contains ignored files.
-  bool is_hidden BITFIELD(1); // Not saved in the DB, only used during discovery for local files.
+  ItemType type;
+  bool child_modified;
+  bool has_ignored_files; // Specify that a directory, or child directory contains ignored files.
+  bool is_hidden; // Not saved in the DB, only used during discovery for local files.
 
   QByteArray path;
   QByteArray rename_path;

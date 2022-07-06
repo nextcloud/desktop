@@ -52,8 +52,8 @@ private:
     Folder *_folder;
     QDateTime _timestamp;
     qint64 _size;
-    SyncFileItem::Status _status BITFIELD(4);
-    SyncFileItem::Direction _direction BITFIELD(3);
+    SyncFileItem::Status _status;
+    SyncFileItem::Direction _direction;
 
     QString _message;
     bool _sizeIsRelevant;

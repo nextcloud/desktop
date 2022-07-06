@@ -156,15 +156,15 @@ class PropagateUploadFileCommon : public PropagateItemJob
 
 protected:
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
-    bool _finished BITFIELD(1); /// Tells that all the jobs have been finished
-    bool _deleteExisting BITFIELD(1);
+    bool _finished; /// Tells that all the jobs have been finished
+    bool _deleteExisting;
 
     /** Whether an abort is currently ongoing.
      *
      * Important to avoid duplicate aborts since each finishing PUTFileJob might
      * trigger an abort on error.
      */
-    bool _aborting BITFIELD(1);
+    bool _aborting;
 
     QByteArray _transmissionChecksumHeader;
 
