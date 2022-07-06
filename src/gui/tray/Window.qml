@@ -39,13 +39,11 @@ Window {
     onActiveChanged: {
         if (!Systray.useNormalWindow && !active) {
             hide();
-            Systray.setClosed();
+            Systray.isOpen = false;
         }
    }
 
-    onClosing: {
-        Systray.setClosed()
-    }
+    onClosing: Systray.isOpen = false
 
     onVisibleChanged: {
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -97,13 +95,13 @@ Window {
             trayWindow.raise();
             trayWindow.requestActivate();
 
-            Systray.setOpened();
+            Systray.isOpen = true;
             UserModel.fetchCurrentActivityModel();
         }
 
         function onHideWindow() {
             trayWindow.hide();
-            Systray.setClosed();
+            Systray.isOpen = false;
         }
 
         function onShowFileActivityDialog(objectName, objectId) {
@@ -178,7 +176,7 @@ Window {
                     // We call open() instead of popup() because we want to position it
                     // exactly below the dropdown button, not the mouse
                     onClicked: {
-                        syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                        syncPauseButton.text = Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                         if (accountMenu.visible) {
                             accountMenu.close()
                         } else {
@@ -322,7 +320,7 @@ Window {
                             font.pixelSize: Style.topLinePixelSize
                             palette.windowText: Style.ncTextColor
                             hoverEnabled: true
-                            onClicked: Systray.pauseResumeSync()
+                            onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
 
                             background: Item {
                                 height: parent.height
@@ -335,7 +333,7 @@ Window {
                             }
 
                             Accessible.role: Accessible.MenuItem
-                            Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                            Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
                         }
 
