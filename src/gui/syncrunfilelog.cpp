@@ -129,6 +129,8 @@ void SyncRunFileLog::finish()
                                << endl;
     }
     *_out << tmp;
+    _out->flush();
+    _out->reset();
     _file->close();
 }
 }
