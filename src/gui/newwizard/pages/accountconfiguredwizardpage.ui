@@ -116,24 +116,34 @@
          <item>
           <widget class="QGroupBox" name="syncModeGroupBox">
            <property name="title">
-            <string>Configure files download</string>
+            <string/>
+           </property>
+           <property name="flat">
+            <bool>true</bool>
            </property>
            <layout class="QVBoxLayout" name="syncModeGroupBoxLayout">
             <property name="spacing">
              <number>3</number>
             </property>
             <property name="leftMargin">
-             <number>3</number>
+             <number>0</number>
             </property>
             <property name="topMargin">
-             <number>3</number>
+             <number>0</number>
             </property>
             <property name="rightMargin">
-             <number>3</number>
+             <number>0</number>
             </property>
             <property name="bottomMargin">
-             <number>3</number>
+             <number>0</number>
             </property>
+            <item>
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Configure files download:</string>
+              </property>
+             </widget>
+            </item>
             <item>
              <widget class="QRadioButton" name="syncEverythingRadioButton">
               <property name="text">
@@ -226,8 +236,6 @@
    </item>
   </layout>
  </widget>
- <resources>
-  <include location="../../../../client.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

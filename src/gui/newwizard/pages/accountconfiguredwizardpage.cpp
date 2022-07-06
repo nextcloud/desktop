@@ -53,7 +53,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
 
         // move up top
         _ui->syncModeGroupBoxLayout->removeWidget(_ui->useVfsRadioButton);
-        _ui->syncModeGroupBoxLayout->insertWidget(0, _ui->useVfsRadioButton);
+        _ui->syncModeGroupBoxLayout->insertWidget(1, _ui->useVfsRadioButton);
     } else {
         setRecommendedOption(_ui->syncEverythingRadioButton);
     }
