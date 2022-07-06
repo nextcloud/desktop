@@ -934,7 +934,7 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
     qint64 biggerItemSize = 0;
     quint64 estimatedUpBw = 0;
     quint64 estimatedDownBw = 0;
-    QString allFilenames;
+    QStringList allFilenames;
     for (const auto &citm : progress._currentItems) {
         if (curItemProgress == -1 || (ProgressInfo::isSizeDependent(citm._item)
                                          && biggerItemSize < citm._item._size)) {
@@ -960,13 +960,11 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
         curItemProgress = curItem._size;
     }
 
-    QString itemFileName = curItem._file;
-    QString kindString = Progress::asActionString(curItem);
+    const QString itemFileName = curItem._file;
+    const QString kindString = Progress::asActionString(curItem);
 
     QString fileProgressString;
     if (ProgressInfo::isSizeDependent(curItem)) {
-        QString s1 = Utility::octetsToString(curItemProgress);
-        QString s2 = Utility::octetsToString(curItem._size);
         //quint64 estimatedBw = progress.fileProgress(curItem).estimatedBandwidth;
         if (estimatedUpBw || estimatedDownBw) {
             /*
@@ -977,7 +975,7 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
                     Utility::octetsToString(estimatedBw) );
             */
             //: Example text: "Syncing 'foo.txt', 'bar.txt'"
-            fileProgressString = tr("Syncing %1").arg(allFilenames);
+            fileProgressString = tr("Syncing %1").arg(allFilenames.join(QChar()));
             if (estimatedDownBw > 0) {
                 fileProgressString.append(tr(", "));
 // ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
@@ -1001,7 +999,7 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
             }
         } else {
             //: Example text: "uploading foobar.png (2MB of 2MB)"
-            fileProgressString = tr("%1 %2 (%3 of %4)").arg(kindString, itemFileName, s1, s2);
+            fileProgressString = tr("%1 %2 (%3 of %4)").arg(kindString, itemFileName, Utility::octetsToString(curItemProgress), Utility::octetsToString(curItem._size));
         }
     } else if (!kindString.isEmpty()) {
         //: Example text: "uploading foobar.png"
@@ -1017,8 +1015,8 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
     qint64 totalFileCount = qMax(currentFile, progress.totalFiles());
     QString overallSyncString;
     if (totalSize > 0) {
-        QString s1 = Utility::octetsToString(completedSize);
-        QString s2 = Utility::octetsToString(totalSize);
+        const QString s1 = Utility::octetsToString(completedSize);
+        const QString s2 = Utility::octetsToString(totalSize);
 
         if (progress.trustEta()) {
             //: Example text: "5 minutes left, 12 MB of 345 MB, file 6 of 7"
