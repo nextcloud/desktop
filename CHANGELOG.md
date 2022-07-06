@@ -20,6 +20,7 @@ Summary
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 * Bugfix - Database was recreated after its removal: [#9791](https://github.com/owncloud/client/issues/9791)
 * Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
+* Bugfix - We fixed a potential crash: [#9864](https://github.com/owncloud/client/issues/9864)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -36,7 +37,8 @@ Summary
 * Enhancement - Set Windows VFS placeholders readonly if needed: [#9598](https://github.com/owncloud/client/issues/9598)
 * Enhancement - Create continuous log files: [#9731](https://github.com/owncloud/client/issues/9731)
 * Enhancement - Display a correct error when the wrong user was authenticated: [#9772](https://github.com/owncloud/client/issues/9772)
-* Enhancement - Run vfs downloads with a high priority: [#9832](https://github.com/owncloud/client/issues/9832)
+* Enhancement - Throttle the UI updates during sync: [#9832](https://github.com/owncloud/client/issues/9832)
+* Enhancement - Run vfs downloads with a high priority: [#9836](https://github.com/owncloud/client/pull/9836)
 
 Details
 -------
@@ -116,6 +118,10 @@ Details
    If the server did not provide the activity endpoint we always displayed a progress spinenr.
 
    https://github.com/owncloud/client/issues/9798
+
+* Bugfix - We fixed a potential crash: [#9864](https://github.com/owncloud/client/issues/9864)
+
+   https://github.com/owncloud/client/issues/9864
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
@@ -241,12 +247,21 @@ Details
    https://github.com/owncloud/client/issues/9772
    https://github.com/owncloud/client/pull/9813
 
-* Enhancement - Run vfs downloads with a high priority: [#9832](https://github.com/owncloud/client/issues/9832)
+* Enhancement - Throttle the UI updates during sync: [#9832](https://github.com/owncloud/client/issues/9832)
 
-   This should reduce the occurance of timeouts when downloading vfs files in the Windows
+   We reduced the number of UI updates during the sync, especially with Windows vfs files this
+   should improve the performance by a lot.
+
+   https://github.com/owncloud/client/issues/9832
+   https://github.com/owncloud/client/pull/9863
+
+* Enhancement - Run vfs downloads with a high priority: [#9836](https://github.com/owncloud/client/pull/9836)
+
+   This should reduce the probability for timeouts when downloading vfs files in the Windows
    explorer.
 
    https://github.com/owncloud/client/issues/9832
+   https://github.com/owncloud/client/pull/9836
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
