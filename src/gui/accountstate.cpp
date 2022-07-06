@@ -450,8 +450,8 @@ void AccountState::slotInvalidCredentials()
         }
         qCInfo(lcAccountState) << "asking user";
         account()->credentials()->askFromUser();
+        setState(AskingCredentials);
     }
-    setState(AskingCredentials);
 }
 
 void AccountState::slotCredentialsFetched(AbstractCredentials *)
