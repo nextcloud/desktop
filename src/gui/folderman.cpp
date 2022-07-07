@@ -28,10 +28,6 @@
 #include "theme.h"
 #include <syncengine.h>
 
-#ifdef Q_OS_MAC
-#include <CoreServices/CoreServices.h>
-#endif
-
 #include <QMessageBox>
 #include <QtCore>
 #include <QMutableSetIterator>
