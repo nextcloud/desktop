@@ -115,6 +115,13 @@ public:
 
     QString displayName() const;
 
+    /**
+     * The folder is deployed by an admin
+     * We will hide the remove option and the disable/enable vfs option.
+     */
+    bool isDeployed() const;
+
+
 private:
     FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &displayName);
 
@@ -127,6 +134,7 @@ private:
     /// path on remote (usually no trailing /, exception "/")
     QString _targetPath;
 
+    bool _deployed;
     friend class FolderMan;
 };
 
@@ -348,6 +356,12 @@ public:
      * With the legacy behaviour we only have one dir which we will register with Windows
      */
     bool groupInSidebar() const;
+
+    /**
+     * The folder is deployed by an admin
+     * We will hide the remove option and the disable/enable vfs option.
+     */
+    bool isDeployed() const;
 
 signals:
     void syncStateChange();

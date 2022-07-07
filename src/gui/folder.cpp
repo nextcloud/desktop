@@ -71,6 +71,11 @@ auto displayNameC()
     return QLatin1String("displayString");
 }
 
+auto deployedC()
+{
+    return QStringLiteral("deployed");
+}
+
 constexpr int SettingsVersionC = 5;
 }
 
@@ -786,6 +791,11 @@ bool Folder::supportsSelectiveSync() const
     return !virtualFilesEnabled() && !isVfsOnOffSwitchPending();
 }
 
+bool Folder::isDeployed() const
+{
+    return _definition.isDeployed();
+}
+
 void Folder::saveToSettings() const
 {
     // Remove first to make sure we don't get duplicates
@@ -1366,6 +1376,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(displayNameC(), folder.displayName());
     settings.setValue(QLatin1String("paused"), folder.paused);
     settings.setValue(QLatin1String("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
+    settings.setValue(deployedC(), folder.isDeployed());
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
@@ -1388,6 +1399,7 @@ FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &i
     folder.paused = settings.value(QLatin1String("paused")).toBool();
     folder.ignoreHiddenFiles = settings.value(QLatin1String("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder.navigationPaneClsid = settings.value(QLatin1String("navigationPaneClsid")).toUuid();
+    folder._deployed = settings.value(deployedC(), false).toBool();
 
     folder.virtualFilesMode = Vfs::Off;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();
@@ -1465,5 +1477,10 @@ bool Folder::groupInSidebar() const
         return QFileInfo(parentDir) != QFileInfo(QDir::homePath()) && FileSystem::isChildPathOf(parentDir, _accountState->account()->defaultSyncRoot());
     }
     return false;
+}
+
+bool FolderDefinition::isDeployed() const
+{
+    return _deployed;
 }
 } // namespace OCC
