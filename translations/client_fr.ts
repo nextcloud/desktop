@@ -3542,6 +3542,11 @@ Il est déconseillé de l&apos;utiliser.</translation>
         <translation>Ignorer la configuration des dossiers</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="406"/>
         <source>Enable experimental feature?</source>
         <translation>Activer la fonction expérimentale ?</translation>
@@ -6720,17 +6725,17 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le statut actuel de l&apos;utilisateur est ne pas déranger</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <location filename="../src/gui/tray/Window.qml" line="410"/>
         <source>Current account avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
