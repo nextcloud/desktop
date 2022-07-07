@@ -360,7 +360,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         if (Theme::instance()->showVirtualFilesOption()
             && !folder->virtualFilesEnabled() && FolderMan::instance()->checkVfsAvailability(folder->path())) {
             const auto mode = bestAvailableVfsMode();
-            if (mode == Vfs::WindowsCfApi || Theme::instance()->enableExperimentalFeatures()) {
+            if (mode == Vfs::WindowsCfApi || (Theme::instance()->enableExperimentalFeatures() && mode != Vfs::Off)) {
                 ac = menu->addAction(tr("Enable virtual file support%1...").arg(mode == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
                 connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableVfsCurrentFolder);
             }
