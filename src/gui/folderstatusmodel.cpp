@@ -287,6 +287,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+Folder *FolderStatusModel::folder(const QModelIndex &index) const
+{
+    Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid));
+    return _folders.at(index.row())._folder;
+}
+
 bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (role == Qt::CheckStateRole) {

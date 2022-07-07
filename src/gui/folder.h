@@ -102,6 +102,15 @@ public:
 
     /// journalPath relative to localPath.
     QString absoluteJournalPath() const;
+
+    /**
+     * The folder is deployed by an admin
+     * We will hide the remove option and the disable/enable vfs option.
+     */
+    bool isDeployed() const;
+
+private:
+    bool _deployed;
 };
 
 /**
@@ -311,6 +320,12 @@ public:
 
     /** Whether this folder should show selective sync ui */
     bool supportsSelectiveSync() const;
+
+    /**
+     * The folder is deployed by an admin
+     * We will hide the remove option and the disable/enable vfs option.
+     */
+    bool isDeployed() const;
 
 signals:
     void syncStateChange();
