@@ -227,7 +227,7 @@ void AbstractNetworkJob::slotFinished()
 
 QByteArray AbstractNetworkJob::responseTimestamp()
 {
-    OC_ASSERT(!_responseTimestamp.isEmpty());
+    OC_ASSERT(!_responseTimestamp.isEmpty() || _aborted);
     return _responseTimestamp;
 }
 
