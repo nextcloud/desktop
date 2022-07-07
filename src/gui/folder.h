@@ -84,8 +84,9 @@ public:
      *            (version remains readable by 2.5.1)
      * Version 3: introduction of new windows vfs mode in 2.6.0
      * Version 4: until 2.9.1 windows vfs tried to unregister folders with a different id from windows.
+     * Version 5: 3.0.0 Introduced spaces, the profiles are not downwards compatible
      */
-    static int maxSettingsVersion() { return 4; }
+    static int maxSettingsVersion();
 
     /// Ensure / as separator and trailing /.
     void setLocalPath(const QString &path);

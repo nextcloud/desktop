@@ -70,8 +70,8 @@ auto displayNameC()
 {
     return QLatin1String("displayString");
 }
-constexpr int WinVfsSettingsVersion = 4;
-constexpr int SettingsVersion = 2;
+
+constexpr int SettingsVersionC = 5;
 }
 
 namespace OCC {
@@ -1369,10 +1369,8 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
-    // Ensure new vfs modes won't be attempted by older clients
-    const int version = folder.virtualFilesMode == Vfs::WindowsCfApi ? WinVfsSettingsVersion : SettingsVersion;
-    Q_ASSERT(version <= maxSettingsVersion());
-    settings.setValue(versionC(), version);
+    // Prevent loading of profiles in old clients
+    settings.setValue(versionC(), maxSettingsVersion());
 
     // Happens only on Windows when the explorer integration is enabled.
     if (!folder.navigationPaneClsid.isNull())
@@ -1406,6 +1404,11 @@ FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &i
         }
     }
     return folder;
+}
+
+int FolderDefinition::maxSettingsVersion()
+{
+    return SettingsVersionC;
 }
 
 void FolderDefinition::setLocalPath(const QString &path)
