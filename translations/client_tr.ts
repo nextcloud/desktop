@@ -3543,6 +3543,11 @@ Kullanmanız önerilmez.</translation>
         <translation>Klasör yapılandırmasını atla</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="406"/>
         <source>Enable experimental feature?</source>
         <translation>Deneysel özellikler etkinleştirilsin mi?</translation>
@@ -6720,17 +6725,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Kullanıcının geçerli durumu: Rahatsız etmeyin</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <location filename="../src/gui/tray/Window.qml" line="410"/>
         <source>Current account avatar</source>
         <translation>Geçerli hesap avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is online</source>
         <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is do not disturb</source>
         <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
     </message>

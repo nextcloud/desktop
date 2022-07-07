@@ -3543,6 +3543,11 @@ Ez da gomendagarria erabiltzea.</translation>
         <translation>Saltatu karpeten ezarpenak</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="406"/>
         <source>Enable experimental feature?</source>
         <translation>Ezaugarri esperimentala gaitu?</translation>
@@ -6720,17 +6725,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erabiltzailea &apos;ez molestatu&apos; egoeran dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <location filename="../src/gui/tray/Window.qml" line="410"/>
         <source>Current account avatar</source>
         <translation>Uneko kontuaren avatarra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is online</source>
         <translation>Uneko kontua linean dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is do not disturb</source>
         <translation>Uneko kontua ez molestatu egoeran dago</translation>
     </message>

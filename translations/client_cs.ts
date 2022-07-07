@@ -3542,6 +3542,11 @@ Nedoporučuje se jí používat.</translation>
         <translation>Přeskočit nastavení složek</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="406"/>
         <source>Enable experimental feature?</source>
         <translation>Zapnout experimentální funkci?</translation>
@@ -6719,17 +6724,17 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Stávající stav uživatele je nerušit</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <location filename="../src/gui/tray/Window.qml" line="410"/>
         <source>Current account avatar</source>
         <translation>Stávající zástupný obrázek uživatele</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is online</source>
         <translation>Stávající stav účtu je online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is do not disturb</source>
         <translation>Stávající stav účtu je nerušit</translation>
     </message>

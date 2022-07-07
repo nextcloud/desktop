@@ -3531,6 +3531,11 @@ It is not advisable to use it.</source>
         <translation>跳过文件夹设置</translation>
     </message>
     <message>
+        <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="406"/>
         <source>Enable experimental feature?</source>
         <translation>启用实验性功能？</translation>
@@ -6702,17 +6707,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>当前用户状态为“请勿打扰” </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <location filename="../src/gui/tray/Window.qml" line="410"/>
         <source>Current account avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="451"/>
+        <location filename="../src/gui/tray/Window.qml" line="449"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
