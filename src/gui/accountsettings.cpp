@@ -360,6 +360,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
             }
         }
         menu->popup(QCursor::pos());
+    } else {
+        menu->deleteLater();
     }
 }
 
