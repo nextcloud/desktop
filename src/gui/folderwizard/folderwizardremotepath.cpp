@@ -91,7 +91,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     fullPath += QLatin1Char('/') + folder;
 
     // TODO: legacy
-    MkColJob *job = new MkColJob(_account, static_cast<FolderWizard *>(wizard())->davUrl(), fullPath, {}, this);
+    MkColJob *job = new MkColJob(_account, static_cast<FolderWizard *>(wizard())->d_func()->davUrl(), fullPath, {}, this);
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, &MkColJob::finishedWithoutError,
         this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
@@ -204,9 +204,14 @@ bool FolderWizardRemotePath::selectByPath(QString path)
     return true;
 }
 
+const QString &FolderWizardRemotePath::targetPath() const
+{
+    return _targetPath;
+}
+
 void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 {
-    QString webdavFolder = static_cast<FolderWizard *>(wizard())->davUrl().path();
+    QString webdavFolder = static_cast<FolderWizard *>(wizard())->d_func()->davUrl().path();
 
     QTreeWidgetItem *root = _ui->folderTreeWidget->topLevelItem(0);
     if (!root) {
@@ -290,7 +295,7 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
-    LsColJob *job = new LsColJob(_account, static_cast<FolderWizard *>(wizard())->davUrl(), path, this);
+    LsColJob *job = new LsColJob(_account, static_cast<FolderWizard *>(wizard())->d_func()->davUrl(), path, this);
     job->setProperties(QList<QByteArray>() << "resourcetype");
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
@@ -316,8 +321,7 @@ bool FolderWizardRemotePath::isComplete() const
     if (!dir.startsWith(QLatin1Char('/'))) {
         dir.prepend(QLatin1Char('/'));
     }
-    wizard()->setProperty("targetPath", dir);
-
+    const_cast<FolderWizardRemotePath *>(this)->_targetPath = dir;
 
     bool ok = true;
 
@@ -340,7 +344,7 @@ bool FolderWizardRemotePath::isComplete() const
         }
     }
 
-    showWarn(FolderWiardPrivate::formatWarnings(warnStrings, !ok));
+    showWarn(FolderWizardPrivate::formatWarnings(warnStrings, !ok));
     return ok;
 }
 

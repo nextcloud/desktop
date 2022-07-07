@@ -39,7 +39,8 @@ public:
 
     bool isComplete() const override;
     void initializePage() override;
-    void cleanupPage() override;
+
+    QString localPath() const;
 protected slots:
     void slotChooseLocalFolder();
 

@@ -18,6 +18,9 @@
  */
 #include "folderwizardselectivesync.h"
 
+#include "folderwizard.h"
+#include "folderwizard_p.h"
+
 #include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "gui/selectivesyncdialog.h"
 
@@ -59,7 +62,7 @@ FolderWizardSelectiveSync::~FolderWizardSelectiveSync()
 
 void FolderWizardSelectiveSync::initializePage()
 {
-    QString targetPath = wizard()->property("targetPath").toString();
+    QString targetPath = static_cast<FolderWizard *>(wizard())->d_func()->initialLocalPath();
     QString alias = QFileInfo(targetPath).fileName();
     if (alias.isEmpty())
         alias = Theme::instance()->appName();
@@ -69,23 +72,15 @@ void FolderWizardSelectiveSync::initializePage()
 
 bool FolderWizardSelectiveSync::validatePage()
 {
-    wizard()->setProperty("selectiveSyncBlackList", useVirtualFiles() ? QVariant() : QVariant(_selectiveSync->createBlackList()));
+    if (!useVirtualFiles()) {
+        _selectiveSyncBlackList = _selectiveSync->createBlackList();
+    }
     return true;
 }
 
 bool FolderWizardSelectiveSync::useVirtualFiles() const
 {
     return _virtualFilesCheckBox && _virtualFilesCheckBox->isChecked();
-}
-
-void FolderWizardSelectiveSync::cleanupPage()
-{
-    QString targetPath = wizard()->property("targetPath").toString();
-    QString alias = QFileInfo(targetPath).fileName();
-    if (alias.isEmpty())
-        alias = Theme::instance()->appName();
-    _selectiveSync->setFolderInfo(targetPath, alias);
-    QWizardPage::cleanupPage();
 }
 
 void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
@@ -107,4 +102,9 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
             messageBox->show();
         }
     }
+}
+
+const QStringList &FolderWizardSelectiveSync::selectiveSyncBlackList() const
+{
+    return _selectiveSyncBlackList;
 }

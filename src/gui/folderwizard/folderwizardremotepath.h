@@ -47,6 +47,8 @@ public:
     void initializePage() override;
     void cleanupPage() override;
 
+    const QString &targetPath() const;
+
 protected slots:
 
     void showWarn(const QString & = QString()) const;
@@ -71,6 +73,8 @@ private:
     bool _warnWasVisible;
     AccountPtr _account;
     QTimer _lscolTimer;
+
+    QString _targetPath;
 };
 
 }

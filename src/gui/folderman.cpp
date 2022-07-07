@@ -1456,6 +1456,11 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
     return newFolder;
 }
 
+Folder *FolderMan::addFolderFromWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config)
+{
+    return addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl.toString(), config.displayName, config.useVirtualFiles);
+}
+
 QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)
 {
     return FolderMan::instance()->findGoodPathForNewSyncFolder(

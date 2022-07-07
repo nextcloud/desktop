@@ -433,23 +433,15 @@ void AccountSettings::slotFolderWizardAccepted()
     FolderWizard *folderWizard = qobject_cast<FolderWizard *>(sender());
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
-    const bool useVfs = folderWizard->useVirtualFiles();
+    const auto config = folderWizard->result();
 
-    auto folder = FolderMan::instance()->addFolderFromWizard(_accountState,
-        folderWizard->field(QLatin1String("sourceFolder")).toString(),
-        folderWizard->property("targetPath").toString(),
-        folderWizard->davUrl(),
-        folderWizard->displayName(),
-        useVfs);
+    auto folder = FolderMan::instance()->addFolderFromWizardResult(_accountState, config);
 
-
-    const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
-    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !useVfs)) {
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+    if (!config.selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !config.useVirtualFiles)) {
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list
-        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-            QStringList() << QLatin1String("/"));
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, { QLatin1String("/") });
         emit folderChanged();
     }
     FolderMan::instance()->setSyncEnabled(true);

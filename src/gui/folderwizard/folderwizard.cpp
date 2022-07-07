@@ -48,7 +48,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderWizard, "gui.folderwizard", QtInfoMsg)
 
-QString FolderWiardPrivate::formatWarnings(const QStringList &warnings, bool isError)
+QString FolderWizardPrivate::formatWarnings(const QStringList &warnings, bool isError)
 {
     QString ret;
     if (warnings.count() == 1) {
@@ -65,42 +65,50 @@ QString FolderWiardPrivate::formatWarnings(const QStringList &warnings, bool isE
     return ret;
 }
 
-FolderWizard::FolderWizard(AccountPtr account, QWidget *parent, Qt::WindowFlags flags)
-    : QWizard(parent, flags)
+QString FolderWizardPrivate::defaultSyncRoot() const
+{
+    if (!_account->hasDefaultSyncRoot()) {
+        return FolderMan::suggestSyncFolder(_account->url(), _account->davDisplayName());
+    } else {
+        return _account->defaultSyncRoot();
+    }
+}
+
+FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountPtr &account)
+    : q_ptr(q)
     , _account(account)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     if (account->capabilities().spacesSupport().enabled) {
-        _spacesPage = new SpacesPage(account, this);
-        setPage(Page_Space, _spacesPage);
-        _spacesPage->installEventFilter(this);
+        _spacesPage = new SpacesPage(account, q);
+        q->setPage(FolderWizard::Page_Space, _spacesPage);
+        _spacesPage->installEventFilter(q);
     }
-    setPage(Page_Source, _folderWizardSourcePage);
-    _folderWizardSourcePage->installEventFilter(this);
+    q->setPage(FolderWizard::Page_Source, _folderWizardSourcePage);
+    _folderWizardSourcePage->installEventFilter(q);
     // for now spaces are meant to be synced as a whole
     if (!account->capabilities().spacesSupport().enabled && !Theme::instance()->singleSyncFolder()) {
         _folderWizardTargetPage = new FolderWizardRemotePath(account);
-        setPage(Page_Target, _folderWizardTargetPage);
-        _folderWizardTargetPage->installEventFilter(this);
+        q->setPage(FolderWizard::Page_Target, _folderWizardTargetPage);
+        _folderWizardTargetPage->installEventFilter(q);
     }
     if (!account->capabilities().spacesSupport().enabled) {
         // TODO: add spaces support to selective sync
-        setPage(Page_SelectiveSync, _folderWizardSelectiveSyncPage);
+        q->setPage(FolderWizard::Page_SelectiveSync, _folderWizardSelectiveSyncPage);
     }
-
-    setWindowTitle(tr("Add Folder Sync Connection"));
-    setOptions(QWizard::CancelButtonOnLeft);
-    setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));
-    setWizardStyle(QWizard::ModernStyle);
 }
 
-FolderWizard::~FolderWizard()
+QString FolderWizardPrivate::initialLocalPath() const
 {
+    QString defaultPath = defaultSyncRoot();
+    if (_account->capabilities().spacesSupport().enabled) {
+        defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
+    };
+    return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }
 
-QUrl FolderWizard::davUrl() const
+QUrl FolderWizardPrivate::davUrl() const
 {
     if (_account->capabilities().spacesSupport().enabled) {
         auto url = _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
@@ -112,20 +120,7 @@ QUrl FolderWizard::davUrl() const
     return _account->davUrl();
 }
 
-QString FolderWizard::destination() const
-{
-    if (!_account->hasDefaultSyncRoot()) {
-        _account->setDefaultSyncRoot(FolderMan::suggestSyncFolder(_account->url(), _account->davDisplayName()));
-    }
-    QString defaultPath = _account->defaultSyncRoot();
-    if (_account->capabilities().spacesSupport().enabled) {
-        defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
-    };
-    return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
-}
-
-
-QString FolderWizard::displayName() const
+QString FolderWizardPrivate::displayName() const
 {
     if (_account->capabilities().spacesSupport().enabled) {
         return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
@@ -133,20 +128,35 @@ QString FolderWizard::displayName() const
     return QString();
 }
 
-bool FolderWizard::useVirtualFiles() const
+bool FolderWizardPrivate::useVirtualFiles() const
 {
     const auto mode = bestAvailableVfsMode();
     const bool useVirtualFiles = (Theme::instance()->forceVirtualFilesOption() && mode == Vfs::WindowsCfApi) || (_folderWizardSelectiveSyncPage->useVirtualFiles());
     if (useVirtualFiles) {
-        const auto availability = Vfs::checkAvailability(destination(), mode);
+        const auto availability = Vfs::checkAvailability(initialLocalPath(), mode);
         if (!availability) {
-            auto msg = new QMessageBox(QMessageBox::Warning, tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, ocApp()->gui()->settingsDialog());
+            auto msg = new QMessageBox(QMessageBox::Warning, FolderWizard::tr("Virtual files are not available for the selected folder"), availability.error(), QMessageBox::Ok, ocApp()->gui()->settingsDialog());
             msg->setAttribute(Qt::WA_DeleteOnClose);
             msg->open();
             return false;
         }
     }
     return useVirtualFiles;
+}
+
+FolderWizard::FolderWizard(const AccountPtr &account, QWidget *parent, Qt::WindowFlags flags)
+    : QWizard(parent, flags)
+    , d_ptr(new FolderWizardPrivate(this, account))
+{
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowTitle(tr("Add Folder Sync Connection"));
+    setOptions(QWizard::CancelButtonOnLeft);
+    setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));
+    setWizardStyle(QWizard::ModernStyle);
+}
+
+FolderWizard::~FolderWizard()
+{
 }
 
 bool FolderWizard::eventFilter(QObject *watched, QEvent *event)
@@ -170,6 +180,26 @@ void FolderWizard::resizeEvent(QResizeEvent *event)
             setTitleFormat(titleFormat()); // And another workaround for QTBUG-3396
         }
     }
+}
+
+FolderWizard::Result FolderWizard::result()
+{
+    Q_D(FolderWizard);
+
+    const QString localPath = d->_folderWizardSourcePage->localPath();
+    if (!d->_account->hasDefaultSyncRoot()) {
+        if (FileSystem::isChildPathOf(localPath, d->defaultSyncRoot())) {
+            d->_account->setDefaultSyncRoot(d->defaultSyncRoot());
+        }
+    }
+    return {
+        d->davUrl(),
+        localPath,
+        d->_folderWizardTargetPage ? d->_folderWizardTargetPage->targetPath() : QString(),
+        d->displayName(),
+        d->useVirtualFiles(),
+        d->_folderWizardSelectiveSyncPage ? d->_folderWizardSelectiveSyncPage->selectiveSyncBlackList() : QStringList()
+    };
 }
 
 } // end namespace

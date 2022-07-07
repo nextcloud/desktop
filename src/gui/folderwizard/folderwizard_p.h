@@ -18,14 +18,38 @@
 
 #pragma once
 
+#include "folderwizard.h"
+
+#include "libsync/accountfwd.h"
+
 #include <QCoreApplication>
 #include <QStringList>
 
 namespace OCC {
 Q_DECLARE_LOGGING_CATEGORY(lcFolderWizard);
 
-namespace FolderWiardPrivate {
-    QString formatWarnings(const QStringList &warnings, bool isError = false);
-}
+class FolderWizardPrivate
+{
+public:
+    FolderWizardPrivate(FolderWizard *q, const AccountPtr &account);
+    static QString formatWarnings(const QStringList &warnings, bool isError = false);
 
+    QString initialLocalPath() const;
+
+    QString defaultSyncRoot() const;
+
+    QUrl davUrl() const;
+    bool useVirtualFiles() const;
+    QString displayName() const;
+
+private:
+    Q_DECLARE_PUBLIC(FolderWizard);
+    FolderWizard *q_ptr;
+
+    AccountPtr _account;
+    class SpacesPage *_spacesPage;
+    class FolderWizardLocalPath *_folderWizardSourcePage = nullptr;
+    class FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
+    class FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage = nullptr;
+};
 }

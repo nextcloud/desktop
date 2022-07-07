@@ -1037,20 +1037,12 @@ void ownCloudGui::runNewAccountWizard()
                                     FolderMan *folderMan = FolderMan::instance();
 
                                     qCInfo(lcApplication) << "Folder wizard completed";
+                                    const auto config = folderWizard->result();
 
-                                    const bool useVfs = folderWizard->useVirtualFiles();
+                                    auto folder = folderMan->addFolderFromWizardResult(accountStatePtr, config);
 
-                                    auto folder = folderMan->addFolderFromWizard(accountStatePtr,
-                                        folderWizard->field(QLatin1String("sourceFolder")).toString(),
-                                        folderWizard->property("targetPath").toString(),
-                                        folderWizard->davUrl(),
-                                        folderWizard->displayName(),
-                                        useVfs);
-
-                                    const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
-
-                                    if (!selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !useVfs)) {
-                                        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+                                    if (!config.selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !config.useVirtualFiles)) {
+                                        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);
 
                                         // The user already accepted the selective sync dialog. everything is in the white list
                                         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, { QLatin1String("/") });

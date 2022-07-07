@@ -29,10 +29,7 @@ class Ui_FolderWizardTargetPage;
 
 namespace OCC {
 
-
-class FolderWizardLocalPath;
-class FolderWizardRemotePath;
-class FolderWizardSelectiveSync;
+class FolderWizardPrivate;
 
 /**
  * @brief The FolderWizard class
@@ -49,38 +46,47 @@ public:
         Page_SelectiveSync
     };
 
-    explicit FolderWizard(AccountPtr account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
+    struct Result
+    {
+        /***
+         * The webdav url for the sync connection.
+         */
+        QUrl davUrl;
+        /***
+         * The local folder used for the sync.
+         */
+        QString localPath;
+
+        /***
+         * The relative remote path
+         */
+        QString remotePath;
+
+        /***
+         * The Space name to display in the list of folders or an empty string.
+         */
+        QString displayName;
+
+        /***
+         * Wether to use virtual files.
+         */
+        bool useVirtualFiles;
+
+        QStringList selectiveSyncBlackList;
+    };
+
+    explicit FolderWizard(const AccountPtr &account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
     ~FolderWizard() override;
 
-    /***
-     * The webdav url for the sync connection.
-     */
-    QUrl davUrl() const;
-
-    /***
-     * The local folder used for the sync.
-     */
-    QString destination() const;
-
-    /***
-     * The Space name to display in the list of folders or an empty string.
-     */
-    QString displayName() const;
-
-    /***
-     * Wether to use virtual files.
-     */
-    bool useVirtualFiles() const;
+    Result result();
 
     bool eventFilter(QObject *watched, QEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
+    Q_DECLARE_PRIVATE(FolderWizard);
+
 private:
-    AccountPtr _account;
-    class SpacesPage *_spacesPage;
-    FolderWizardLocalPath *_folderWizardSourcePage = nullptr;
-    FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
-    FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage = nullptr;
+    QScopedPointer<FolderWizardPrivate> d_ptr;
 };
 
 

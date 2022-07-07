@@ -54,19 +54,17 @@ FolderWizardLocalPath::~FolderWizardLocalPath()
 void FolderWizardLocalPath::initializePage()
 {
     _ui->warnLabel->hide();
-    _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(static_cast<FolderWizard *>(wizard())->destination()));
+    _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(static_cast<FolderWizard *>(wizard())->d_func()->initialLocalPath()));
 }
 
-void FolderWizardLocalPath::cleanupPage()
+QString FolderWizardLocalPath::localPath() const
 {
-    _ui->warnLabel->hide();
+    return QDir::fromNativeSeparators(_ui->localFolderLineEdit->text());
 }
 
 bool FolderWizardLocalPath::isComplete() const
 {
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui->localFolderLineEdit->text()));
-
+    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(localPath());
 
     bool isOk = errorStr.isEmpty();
     QStringList warnStrings;
@@ -80,7 +78,7 @@ bool FolderWizardLocalPath::isComplete() const
         _ui->warnLabel->clear();
     } else {
         _ui->warnLabel->show();
-        QString warnings = FolderWiardPrivate::formatWarnings(warnStrings);
+        QString warnings = FolderWizardPrivate::formatWarnings(warnStrings);
         _ui->warnLabel->setText(warnings);
     }
     return isOk;
