@@ -53,10 +53,10 @@ class AccountConnectionWizard:
         "window": names.owncloudWizard_OCC_OwncloudWizard,
     }
     CHOOSE_LOCAL_SYNC_FOLDER = {
-        "container": names.add_Folder_Sync_Connection_groupBox_QGroupBox,
         "name": "localFolderLineEdit",
         "type": "QLineEdit",
         "visible": 1,
+        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
     SELECTIVE_SYNC_DIALOG = names.choose_What_to_Sync_OCC_SelectiveSyncDialog
     SELECT_REMOTE_DESTINATION_FOLDER_WIZARD = (
