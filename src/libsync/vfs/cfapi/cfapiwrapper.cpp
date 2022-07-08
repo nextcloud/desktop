@@ -805,7 +805,7 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     Q_UNUSED(size);
 
     Q_ASSERT(handle);
-    qCInfo(lcCfApiWrapper()) << "convertToPlaceholder" << "use of handle" << handle.get();
+    qCInfo(lcCfApiWrapper()) << "convertToPlaceholder" << "use of handle" << handle.get() << modtime << size << fileId << replacesPath;
 
     const auto fileIdentity = QString::fromUtf8(fileId).toStdWString();
     const auto fileIdentitySize = (fileIdentity.length() + 1) * sizeof(wchar_t);
@@ -816,15 +816,15 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::co
     }
 
     const auto originalHandle = handleForPath(replacesPath);
-    const auto originalInfo = originalHandle ? findPlaceholderInfo(originalHandle) : PlaceHolderInfo(nullptr, deletePlaceholderInfo);
-    if (!originalInfo) {
-        const auto stateResult = setPinState(handle, PinState::Inherited, NoRecurse);
-        Q_ASSERT(stateResult);
-        return stateResult;
-    } else {
-        const auto state = cfPinStateToPinState(originalInfo->PinState);
-        const auto stateResult = setPinState(handle, state, NoRecurse);
-        Q_ASSERT(stateResult);
-        return stateResult;
+    if (originalHandle) {
+        const auto originalInfo = originalHandle ? findPlaceholderInfo(originalHandle) : PlaceHolderInfo(nullptr, deletePlaceholderInfo);
+        if (originalInfo) {
+            const auto state = cfPinStateToPinState(originalInfo->PinState);
+            const auto stateResult = setPinState(handle, state, NoRecurse);
+            Q_ASSERT(stateResult);
+            return stateResult;
+        }
     }
+
+    return OCC::Vfs::ConvertToPlaceholderResult::Ok;
 }

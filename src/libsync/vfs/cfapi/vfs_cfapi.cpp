@@ -152,14 +152,25 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(
     const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
-    const auto handle = cfapi::handleForPath(localPath);
-    if (!handle) {
-        return { "Invalid handle for path " + localPath };
+    {
+        const auto handle = cfapi::handleForPath(localPath);
+        if (!handle) {
+            return { QStringLiteral("Invalid handle for path ") + localPath };
+        }
+        if (cfapi::findPlaceholderInfo(handle)) {
+            return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
+        } else {
+            auto result = cfapi::convertToPlaceholder(handle, item._modtime, item._size, item._fileId, replacesPath);
+            if (!result) {
+                return result;
+            }
+        }
     }
-    if (cfapi::findPlaceholderInfo(handle)) {
-        return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
-    } else {
-        return cfapi::convertToPlaceholder(handle, item._modtime, item._size, item._fileId, replacesPath);
+    {
+        const auto handle = cfapi::handleForPath(localPath);
+        const auto stateResult = cfapi::setPinState(handle, PinState::Inherited, CfApiWrapper::NoRecurse);
+        Q_ASSERT(stateResult);
+        return stateResult;
     }
 }
 
