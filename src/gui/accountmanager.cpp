@@ -296,15 +296,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     auto acc = createAccount();
 
-    QString overrideUrl = Theme::instance()->overrideServerUrlV2();
-    QString forceAuth = Theme::instance()->forceConfigAuthType();
-    if (!forceAuth.isEmpty() && !overrideUrl.isEmpty()) {
-        // If forceAuth is set, this might also mean the overrideURL has changed.
-        // See enterprise issues #1126
-        acc->setUrl(overrideUrl);
-    } else {
-        acc->setUrl(urlConfig.toUrl());
-    }
+    acc->setUrl(urlConfig.toUrl());
 
     acc->_davUser = settings.value(davUserC()).toString();
     acc->_displayName = settings.value(davUserDisplyNameC()).toString();

@@ -178,7 +178,7 @@ public:
      * with a different auth type in that case You should then specify "http" or "shibboleth".
      * Normaly this should be left empty.
      */
-    virtual QString forceConfigAuthType() const;
+    [[deprecated]] virtual QString forceConfigAuthType() const;
 
     /**
      * The default folder name without path on the server at setup time.
