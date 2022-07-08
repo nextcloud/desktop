@@ -147,8 +147,8 @@ private:
 class UserModel : public QAbstractListModel
 {
     Q_OBJECT
-    Q_PROPERTY(User* currentUser READ currentUser NOTIFY newUserSelected)
-    Q_PROPERTY(int currentUserId READ currentUserId NOTIFY newUserSelected)
+    Q_PROPERTY(User* currentUser READ currentUser NOTIFY currentUserChanged)
+    Q_PROPERTY(int currentUserId READ currentUserId WRITE setCurrentUserId NOTIFY currentUserChanged)
 public:
     static UserModel *instance();
     ~UserModel() override = default;
@@ -157,7 +157,6 @@ public:
     int currentUserIndex();
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     QImage avatarById(const int id);
@@ -166,18 +165,11 @@ public:
 
     int findUserIdForAccount(AccountState *account) const;
 
-    Q_INVOKABLE void fetchCurrentActivityModel();
-    Q_INVOKABLE void openCurrentAccountLocalFolder();
-    Q_INVOKABLE void openCurrentAccountTalk();
-    Q_INVOKABLE void openCurrentAccountServer();
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();
     int currentUserId() const;
+
     Q_INVOKABLE bool isUserConnected(const int id);
-    Q_INVOKABLE void switchCurrentUser(const int id);
-    Q_INVOKABLE void login(const int id);
-    Q_INVOKABLE void logout(const int id);
-    Q_INVOKABLE void removeAccount(const int id);
 
     Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
 
@@ -200,8 +192,18 @@ public:
     AccountAppList appList() const;
 
 signals:
-    Q_INVOKABLE void addAccount();
-    Q_INVOKABLE void newUserSelected();
+    void addAccount();
+    void currentUserChanged();
+
+public slots:
+    void fetchCurrentActivityModel();
+    void openCurrentAccountLocalFolder();
+    void openCurrentAccountTalk();
+    void openCurrentAccountServer();
+    void setCurrentUserId(const int id);
+    void login(const int id);
+    void logout(const int id);
+    void removeAccount(const int id);
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
