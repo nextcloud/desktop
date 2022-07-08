@@ -29,7 +29,7 @@ const QByteArray XRequestId(){
 
 bool isTextBody(const QString &s)
 {
-    static const QRegularExpression regexp(QStringLiteral("^(text/.*|(application/(xml|.*json|x-www-form-urlencoded)(;|$)))"));
+    static const QRegularExpression regexp(QStringLiteral("^(text/.*?|(application/(xml|.*?json|x-www-form-urlencoded)(;|$)))"));
     return regexp.match(s).hasMatch();
 }
 
