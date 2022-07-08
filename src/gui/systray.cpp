@@ -113,8 +113,8 @@ Systray::Systray()
     setupContextMenu();
 #endif
 
-    connect(UserModel::instance(), &UserModel::newUserSelected,
-        this, &Systray::slotNewUserSelected);
+    connect(UserModel::instance(), &UserModel::currentUserChanged,
+        this, &Systray::slotCurrentUserChanged);
     connect(UserModel::instance(), &UserModel::addAccount,
             this, &Systray::openAccountWizard);
 
@@ -266,7 +266,7 @@ void Systray::createCallDialog(const Activity &callNotification, const AccountSt
     }
 }
 
-void Systray::slotNewUserSelected()
+void Systray::slotCurrentUserChanged()
 {
     if (_trayEngine) {
         // Change ActivityModel

@@ -226,7 +226,7 @@ void SettingsDialog::showIssuesList(AccountState *account)
 {
     const auto userModel = UserModel::instance();
     const auto id = userModel->findUserIdForAccount(account);
-    UserModel::instance()->switchCurrentUser(id);
+    UserModel::instance()->setCurrentUserId(id);
     emit Systray::instance()->showWindow();
 }
 

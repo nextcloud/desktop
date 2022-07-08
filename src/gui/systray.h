@@ -111,7 +111,7 @@ signals:
     void isOpenChanged();
 
 public slots:
-    void slotNewUserSelected();
+    void slotCurrentUserChanged();
 
     void forceWindowInit(QQuickWindow *window) const;
     void positionWindowAtTray(QQuickWindow *window) const;
