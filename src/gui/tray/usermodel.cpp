@@ -872,7 +872,7 @@ Q_INVOKABLE int UserModel::currentUserId() const
     return _currentUserId;
 }
 
-Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
+Q_INVOKABLE bool UserModel::isUserConnected(const int id)
 {
     if (id < 0 || id >= _users.size())
         return false;
@@ -880,7 +880,7 @@ Q_INVOKABLE bool UserModel::isUserConnected(const int &id)
     return _users[id]->isConnected();
 }
 
-QImage UserModel::avatarById(const int &id)
+QImage UserModel::avatarById(const int id)
 {
     if (id < 0 || id >= _users.size())
         return {};
@@ -981,7 +981,7 @@ Q_INVOKABLE void UserModel::openCurrentAccountServer()
     QDesktopServices::openUrl(url);
 }
 
-Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
+Q_INVOKABLE void UserModel::switchCurrentUser(const int id)
 {
     if (_currentUserId < 0 || _currentUserId >= _users.size())
         return;
@@ -992,7 +992,7 @@ Q_INVOKABLE void UserModel::switchCurrentUser(const int &id)
     emit newUserSelected();
 }
 
-Q_INVOKABLE void UserModel::login(const int &id)
+Q_INVOKABLE void UserModel::login(const int id)
 {
     if (id < 0 || id >= _users.size())
         return;
@@ -1000,7 +1000,7 @@ Q_INVOKABLE void UserModel::login(const int &id)
     _users[id]->login();
 }
 
-Q_INVOKABLE void UserModel::logout(const int &id)
+Q_INVOKABLE void UserModel::logout(const int id)
 {
     if (id < 0 || id >= _users.size())
         return;
@@ -1008,7 +1008,7 @@ Q_INVOKABLE void UserModel::logout(const int &id)
     _users[id]->logout();
 }
 
-Q_INVOKABLE void UserModel::removeAccount(const int &id)
+Q_INVOKABLE void UserModel::removeAccount(const int id)
 {
     if (id < 0 || id >= _users.size())
         return;
