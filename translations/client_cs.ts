@@ -3544,7 +3544,7 @@ Nedoporučuje se jí používat.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Storno</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="406"/>
