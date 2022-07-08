@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="47"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>Dins %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="84"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="95"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar mai d’accions</translation>
     </message>
 </context>
 <context>
@@ -48,7 +48,7 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="187"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
