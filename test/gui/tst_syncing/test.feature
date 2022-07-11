@@ -70,7 +70,7 @@ Feature: Syncing files
         And the user selects "ownCloud" as a remote destination folder
         Then the sync all checkbox should be checked
 
-    @skip @issue-9733
+
     Scenario: Sync only one folder from the server
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -79,10 +79,12 @@ Feature: Syncing files
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        When the user selects the following folders to sync:
+        When the user selects configure_synchronization_manually option in advanced section
+        And the user "Alice" clicks on the next button in sync connection wizard
+        And the user selects "ownCloud" as a remote destination folder
+        And the user selects the following folders to sync:
             | folder        |
             | simple-folder |
-        And the user connects the account
         Then the folder "simple-folder" should exist on the file system
         But the folder "large-folder" should not exist on the file system
 
