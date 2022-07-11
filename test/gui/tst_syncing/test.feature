@@ -89,22 +89,6 @@ Feature: Syncing files
         But the folder "large-folder" should not exist on the file system
 
     @skip @issue-9733
-    Scenario: Connect account with manual sync folder option
-        Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has created folder "large-folder" on the server
-        And user "Alice" has uploaded file on the server with content "test content" to "lorem.txt"
-        And the user has started the client
-        And the user has added the following account information:
-            | server   | %local_server% |
-            | user     | Alice          |
-            | password | 1234           |
-        When the user selects manual sync folder option
-        And the user connects the account
-        Then the folder "simple-folder" should not exist on the file system
-        But the folder "large-folder" should not exist on the file system
-        And the file "lorem.txt" should not exist on the file system
-
-    @skip @issue-9733
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" on the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
