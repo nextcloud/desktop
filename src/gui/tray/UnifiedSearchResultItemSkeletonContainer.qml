@@ -5,22 +5,14 @@ import Style 1.0
 Column {
     id: unifiedSearchResultsListViewSkeletonColumn
 
+    property int animationRectangleWidth: Style.trayWindowWidth
+
     Repeater {
-        model: 10
+        model: Math.ceil(unifiedSearchResultsListViewSkeletonColumn.height / Style.trayWindowHeaderHeight)
         UnifiedSearchResultItemSkeleton {
             width: unifiedSearchResultsListViewSkeletonColumn.width
-        }
-    }
-
-    OpacityAnimator {
-        target: unifiedSearchResultsListViewSkeletonColumn
-        from: 0.5
-        to: 1
-        duration: 800
-        running: unifiedSearchResultsListViewSkeletonColumn.visible
-        loops: Animation.Infinite
-        easing {
-            type: Easing.InOutBounce
+            height: Style.trayWindowHeaderHeight
+            animationRectangleWidth: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
         }
     }
 }

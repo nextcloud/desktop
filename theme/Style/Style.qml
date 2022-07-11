@@ -6,6 +6,7 @@ import com.nextcloud.desktopclient 1.0
 
 QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
+    readonly property bool darkMode: Theme.darkMode
 
     // Colors
     readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
