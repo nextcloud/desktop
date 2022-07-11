@@ -15,13 +15,13 @@ RowLayout {
     property bool isRounded: false
 
 
-    property int textLeftMargin: 18
-    property int textRightMargin: 16
-    property int iconWidth: 24
-    property int iconLeftMargin: 12
+    property int textLeftMargin: Style.unifiedSearchResultTextLeftMargin
+    property int textRightMargin: Style.unifiedSearchResultTextRightMargin
+    property int iconWidth: Style.unifiedSearchResultIconWidth
+    property int iconLeftMargin: Style.unifiedSearchResultIconLeftMargin
 
-    property int titleFontSize: Style.topLinePixelSize
-    property int sublineFontSize: Style.subLinePixelSize
+    property int titleFontSize: Style.unifiedSearchResultTitleFontSize
+    property int sublineFontSize: Style.unifiedSearchResultSublineFontSize
 
     property color titleColor: Style.ncTextColor
     property color sublineColor: Style.ncSecondaryTextColor
