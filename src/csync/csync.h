@@ -160,48 +160,36 @@ Q_ENUM_NS(ItemType)
 
 using namespace CSyncEnums;
 using CSYNC_STATUS = CSyncEnums::csync_status_codes_e;
-typedef struct csync_file_stat_s csync_file_stat_t;
 
-struct OCSYNC_EXPORT csync_file_stat_s {
-  time_t modtime;
-  int64_t size;
-  uint64_t inode;
+struct OCSYNC_EXPORT csync_file_stat_t
+{
+    time_t modtime = 0;
+    int64_t size = 0;
+    uint64_t inode = 0;
 
-  OCC::RemotePermissions remotePerm;
-  ItemType type;
-  bool child_modified;
-  bool has_ignored_files; // Specify that a directory, or child directory contains ignored files.
-  bool is_hidden; // Not saved in the DB, only used during discovery for local files.
+    OCC::RemotePermissions remotePerm;
+    ItemType type = ItemTypeSkip;
+    bool child_modified = false;
+    bool has_ignored_files = false; // Specify that a directory, or child directory contains ignored files.
+    bool is_hidden = false; // Not saved in the DB, only used during discovery for local files.
 
-  QByteArray path;
-  QByteArray rename_path;
-  QByteArray etag;
-  QByteArray file_id;
-  QByteArray directDownloadUrl;
-  QByteArray directDownloadCookies;
-  QByteArray original_path; // only set if locale conversion fails
+    QByteArray path;
+    QByteArray rename_path;
+    QByteArray etag;
+    QByteArray file_id;
+    QByteArray directDownloadUrl;
+    QByteArray directDownloadCookies;
+    QByteArray original_path; // only set if locale conversion fails
 
-  // In the local tree, this can hold a checksum and its type if it is
-  //   computed during discovery for some reason.
-  // In the remote tree, this will have the server checksum, if available.
-  // In both cases, the format is "SHA1:baff".
-  QByteArray checksumHeader;
+    // In the local tree, this can hold a checksum and its type if it is
+    //   computed during discovery for some reason.
+    // In the remote tree, this will have the server checksum, if available.
+    // In both cases, the format is "SHA1:baff".
+    QByteArray checksumHeader;
 
-  CSYNC_STATUS error_status;
+    CSYNC_STATUS error_status = CSYNC_STATUS_OK;
 
-  SyncInstructions instruction; /* u32 */
-
-  csync_file_stat_s()
-    : modtime(0)
-    , size(0)
-    , inode(0)
-    , type(ItemTypeSkip)
-    , child_modified(false)
-    , has_ignored_files(false)
-    , is_hidden(false)
-    , error_status(CSYNC_STATUS_OK)
-    , instruction(CSYNC_INSTRUCTION_NONE)
-  { }
+    SyncInstructions instruction = CSYNC_INSTRUCTION_NONE;
 };
 
 OCSYNC_EXPORT QDebug operator<<(QDebug debug, const SyncInstructions &job);

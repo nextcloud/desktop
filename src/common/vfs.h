@@ -14,6 +14,7 @@
 #pragma once
 
 #include "assert.h"
+#include "csync/csync.h"
 #include "ocsynclib.h"
 #include "pinstate.h"
 #include "result.h"
@@ -26,8 +27,6 @@
 #include <QVersionNumber>
 
 #include <memory>
-
-typedef struct csync_file_stat_s csync_file_stat_t;
 
 namespace OCC {
 
