@@ -305,9 +305,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
-        <location filename="../src/gui/accountsettings.cpp" line="612"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1050"/>
+        <location filename="../src/gui/accountsettings.cpp" line="521"/>
+        <location filename="../src/gui/accountsettings.cpp" line="615"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -332,57 +332,57 @@
         <translation>Account</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="334"/>
+        <location filename="../src/gui/accountsettings.cpp" line="336"/>
         <source>Choose what to sync</source>
         <translation>Selectieve synchronisatie</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="340"/>
+        <location filename="../src/gui/accountsettings.cpp" line="342"/>
         <source>Force sync now</source>
         <translation>Forceer sync nu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="344"/>
         <source>Restart sync</source>
         <translation>Herstarten sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="245"/>
+        <location filename="../src/gui/accountsettings.cpp" line="253"/>
         <source>Remove folder sync connection</source>
         <translation>Verwijder map-synchronisatie verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="354"/>
+        <location filename="../src/gui/accountsettings.cpp" line="357"/>
         <source>Disable virtual file support...</source>
         <translation>Schakel virtuele bestanden ondersteuning uit...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="451"/>
+        <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>Folder creation failed</source>
         <translation>Maken map mislukt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="452"/>
+        <location filename="../src/gui/accountsettings.cpp" line="455"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Kon lokale map &lt;i&gt;%1&lt;/i&gt; niet maken.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="512"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Bevestig verwijderen map-synchronisatie verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="520"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Verwijder map-synchronisatie verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <source>Disable virtual file support?</source>
         <translation>Ondersteuning voor virtuele bestanden uitschakelen?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="604"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -395,158 +395,158 @@ Het enige voordeel van het uitschakelen van virtuele bestanden ondersteuning is 
 Deze actie annuleert alle huidig lopende synchronisatie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="611"/>
+        <location filename="../src/gui/accountsettings.cpp" line="614"/>
         <source>Disable support</source>
         <translation>Ondersteuning uitschakelen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="713"/>
+        <location filename="../src/gui/accountsettings.cpp" line="716"/>
         <source>Sync Running</source>
         <translation>Bezig met synchroniseren</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="714"/>
+        <location filename="../src/gui/accountsettings.cpp" line="717"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Bezig met synchroniseren.&lt;br/&gt;Wilt u stoppen met synchroniseren?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="811"/>
+        <location filename="../src/gui/accountsettings.cpp" line="814"/>
         <source>%1 in use</source>
         <translation>%1 in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="838"/>
+        <location filename="../src/gui/accountsettings.cpp" line="841"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 als &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="850"/>
         <source>Connected to %1.</source>
         <translation>Verbonden met %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="855"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Server %1 is tijdelijk niet beschikbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="858"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Server %1 is momenteel in onderhoudsmodus.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="861"/>
         <source>Signed out from %1.</source>
         <translation>Uitgelogd van %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="868"/>
+        <location filename="../src/gui/accountsettings.cpp" line="871"/>
         <source>Connecting to %1...</source>
         <translation>Verbinden met %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="873"/>
+        <location filename="../src/gui/accountsettings.cpp" line="876"/>
         <source>No connection to %1 at %2.</source>
         <translation>Geen verbinding met %1 op %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="912"/>
+        <location filename="../src/gui/accountsettings.cpp" line="915"/>
         <source>Log in</source>
         <translation>Meld u aan</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1007"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Er zijn mappen die niet gesynchroniseerd werden, omdat ze te groot zijn:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Er zijn mappen die niet gesynchroniseerd werden, omdat ze op externe opslag staan:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1013"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Er zijn mappen die niet gesynchroniseerd werden, omdat ze te groot zijn of op externe opslag staan:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1043"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>Confirm Account Removal</source>
         <translation>Bevestig verwijderen account</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1044"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wilt u echt de verbinding met het account &lt;i&gt;%1&lt;/i&gt; verbreken?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Hierdoor verwijdert u &lt;b&gt;geen&lt;/b&gt; bestanden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1049"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
         <source>Remove connection</source>
         <translation>Verwijderen verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="914"/>
+        <location filename="../src/gui/accountsettings.cpp" line="917"/>
         <source>Log out</source>
         <translation>Afmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="348"/>
+        <location filename="../src/gui/accountsettings.cpp" line="350"/>
         <source>Resume sync</source>
         <translation>Hervatten sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="348"/>
+        <location filename="../src/gui/accountsettings.cpp" line="350"/>
         <source>Pause sync</source>
         <translation>Pauzeren sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="361"/>
+        <location filename="../src/gui/accountsettings.cpp" line="364"/>
         <source>Enable virtual file support%1...</source>
         <translation>Inschakelen virtueel bestandsoverdracht%1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="361"/>
+        <location filename="../src/gui/accountsettings.cpp" line="364"/>
         <source> (experimental)</source>
         <translation> (experimenteel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="513"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Weet u zeker dat u de synchronisatie van map &lt;i&gt;%1&lt;/i&gt; wilt stoppen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Opmerking:&lt;/b&gt; Dit zal &lt;b&gt;geen&lt;/b&gt; bestanden verwijderen.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="798"/>
+        <location filename="../src/gui/accountsettings.cpp" line="801"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) van %2 in gebruik. Sommige mappen, inclusief netwerkmappen en gedeelde mappen, kunnen andere limieten hebben.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="802"/>
         <source>%1 of %2 in use</source>
         <translation>%1 van %2 in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="808"/>
+        <location filename="../src/gui/accountsettings.cpp" line="811"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Er is nu geen informatie over het gebruik van de opslagruimte beschikbaar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="845"/>
+        <location filename="../src/gui/accountsettings.cpp" line="848"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>De server versie %1 is niet ondersteund! Ga door op eigen risico.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="865"/>
+        <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>Verkrijgen van autorisatie van de browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="878"/>
+        <location filename="../src/gui/accountsettings.cpp" line="881"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Serverconfiguratiefout: %1 op %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="889"/>
+        <location filename="../src/gui/accountsettings.cpp" line="892"/>
         <source>No %1 connection configured.</source>
         <translation>Geen %1 connectie geconfigureerd.</translation>
     </message>
@@ -976,145 +976,145 @@ File synchronization desktop utility.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="200"/>
+        <location filename="../src/gui/folder.cpp" line="205"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Lokale map %1 bestaat niet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="202"/>
+        <location filename="../src/gui/folder.cpp" line="207"/>
         <source>%1 should be a folder but is not.</source>
         <translation>%1 zou een map moeten zijn, maar is dat niet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="204"/>
+        <location filename="../src/gui/folder.cpp" line="209"/>
         <source>%1 is not readable.</source>
         <translation>%1 is niet leesbaar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="471"/>
+        <location filename="../src/gui/folder.cpp" line="476"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 is verwijderd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="485"/>
+        <location filename="../src/gui/folder.cpp" line="490"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 is bijgewerkt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="492"/>
+        <location filename="../src/gui/folder.cpp" line="497"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 is hernoemd naar %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="499"/>
+        <location filename="../src/gui/folder.cpp" line="504"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 is verplaatst naar %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="469"/>
+        <location filename="../src/gui/folder.cpp" line="474"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 en %n ander bestand(en) zijn verwijderd.</numerusform><numerusform>%1 en %n andere bestand(en) zijn verwijderd.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="195"/>
+        <location filename="../src/gui/folder.cpp" line="200"/>
         <source>%1 failed to open the database.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="206"/>
+        <location filename="../src/gui/folder.cpp" line="211"/>
         <source>%1 is not writable.</source>
         <translation>%1 is niet schrijfbaar.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="476"/>
+        <location filename="../src/gui/folder.cpp" line="481"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 en %n ander bestand is toegevoegd.</numerusform><numerusform>%1 en %n ander(e) bestand(en) was / waren toegevoegd.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="478"/>
+        <location filename="../src/gui/folder.cpp" line="483"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 is toegevoegd.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="483"/>
+        <location filename="../src/gui/folder.cpp" line="488"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 en %n ander bestand(en) zijn bijgewerkt.</numerusform><numerusform>%1 en %n andere bestand(en) zijn bijgewerkt.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="490"/>
+        <location filename="../src/gui/folder.cpp" line="495"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 is hernoemd naar %2 en %n ander bestand(en) is hernoemd.</numerusform><numerusform>%1 is hernoemd naar %2 en %n andere bestand(en) zijn hernoemd.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="497"/>
+        <location filename="../src/gui/folder.cpp" line="502"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 is verplaatst naar %2 en %n ander bestand(en) is verplaatst.</numerusform><numerusform>%1 is verplaatst naar %2 en %n andere bestand(en) zijn verplaatst.</numerusform></translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="504"/>
+        <location filename="../src/gui/folder.cpp" line="509"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 en %n ander bestand(en) hebben een sync conflict.</numerusform><numerusform>%1 en %n andere bestand(en) hebben sync conflicten.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="506"/>
+        <location filename="../src/gui/folder.cpp" line="511"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 heeft een sync conflict. Controleer het conflict bestand!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="511"/>
+        <location filename="../src/gui/folder.cpp" line="516"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 en %n ander bestand(en) konden niet worden gesynchroniseerd wegens fouten. Bekijk het log voor details.</numerusform><numerusform>%1 en %n andere bestand(en) konden niet worden gesynchroniseerd wegens fouten. Bekijk het log voor details.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="513"/>
+        <location filename="../src/gui/folder.cpp" line="518"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 kon niet worden gesynchroniseerd door een fout. Bekijk het log voor details.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="519"/>
+        <location filename="../src/gui/folder.cpp" line="524"/>
         <source>Sync Activity</source>
         <translation>Synchronisatie-activiteit</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="908"/>
+        <location filename="../src/gui/folder.cpp" line="918"/>
         <source>Could not read system exclude file</source>
         <translation>Kon het systeem-uitsluitingsbestand niet lezen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1154"/>
+        <location filename="../src/gui/folder.cpp" line="1164"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Er is een nieuwe map groter dan %1 MB toegevoegd: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1157"/>
+        <location filename="../src/gui/folder.cpp" line="1167"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Er is een map op externe opslag toegevoegd.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1158"/>
+        <location filename="../src/gui/folder.cpp" line="1168"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Ga naar de instellingen om het te selecteren als u deze wilt downloaden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1217"/>
+        <location filename="../src/gui/folder.cpp" line="1227"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>De map %1 werd aangemaakt maar eerder ook uitgesloten van synchronisatie. Data erin zullen niet worden gesynchroniseerd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1220"/>
+        <location filename="../src/gui/folder.cpp" line="1230"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Het bestand %1 is aangemaakt maar was eerder uitgesloten van synchronisatie. Dit bestand zal niet gesynchroniseerd worden.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1231"/>
+        <location filename="../src/gui/folder.cpp" line="1241"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1127,7 +1127,7 @@ Dit betekent dat de synchronisatie-applicatie lokale wijzigingen mogelijk niet d
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1308"/>
+        <location filename="../src/gui/folder.cpp" line="1318"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1138,7 +1138,7 @@ Als u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de serv
 Als u de bestanden wilt verwijderen, worden ze niet beschikbaar, tenzij u de eigenaar bent.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1313"/>
+        <location filename="../src/gui/folder.cpp" line="1323"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1146,17 +1146,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw gesynchroniseerd met de server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1317"/>
+        <location filename="../src/gui/folder.cpp" line="1327"/>
         <source>Remove All Files?</source>
         <translation>Verwijder alle bestanden?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1321"/>
+        <location filename="../src/gui/folder.cpp" line="1331"/>
         <source>Remove all files</source>
         <translation>Verwijder alle bestanden</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1322"/>
+        <location filename="../src/gui/folder.cpp" line="1332"/>
         <source>Keep files</source>
         <translation>Bewaar bestanden</translation>
     </message>
@@ -1345,62 +1345,62 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Er zijn onopgeloste conflicten. Klik voor details.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="898"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Aan het controleren op wijzigingen in afstandelijke locatie &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="901"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Aan het controleren op veranderingen in lokale &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
         <source>Reconciling changes</source>
         <translation>Wijzigingen doorvoeren</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="951"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="954"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="976"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Synchroniseren %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="978"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>download %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>upload %1/s</translation>
@@ -1411,46 +1411,46 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Lokale map: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 van %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1021"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1027"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 over, %1 van %2, bestand %3 van %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1029"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 van %2, bestand %3 van %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1036"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
         <source>file %1 of %2</source>
         <translation>bestand %1 van %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1086"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1092"/>
         <source>Waiting...</source>
         <translation>Aan het wachten...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1088"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Wacht op %n andere map...</numerusform><numerusform>Wacht op %n andere mappen...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
         <source>Preparing to sync...</source>
         <translation>Voorbereiden op sync...</translation>
     </message>

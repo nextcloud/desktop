@@ -133,8 +133,8 @@ private:
     QString _localPath;
     /// path on remote (usually no trailing /, exception "/")
     QString _targetPath;
+    bool _deployed = false;
 
-    bool _deployed;
     friend class FolderMan;
 };
 
