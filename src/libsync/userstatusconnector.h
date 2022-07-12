@@ -76,6 +76,8 @@ public:
     Q_REQUIRED_RESULT OnlineStatus state() const;
     Q_REQUIRED_RESULT Optional<ClearAt> clearAt() const;
 
+    QString clearAtDisplayString() const;
+
     void setId(const QString &id);
     void setMessage(const QString &message);
     void setState(OnlineStatus state);
@@ -127,7 +129,7 @@ public:
 
 signals:
     void userStatusFetched(const UserStatus &userStatus);
-    void predefinedStatusesFetched(const std::vector<UserStatus> &statuses);
+    void predefinedStatusesFetched(const QVector<UserStatus> &statuses);
     void userStatusSet();
     void serverUserStatusChanged();
     void messageCleared();

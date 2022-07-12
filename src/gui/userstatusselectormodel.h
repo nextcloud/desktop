@@ -17,6 +17,7 @@
 #include "common/result.h"
 
 #include <userstatusconnector.h>
+#include <ocsuserstatusconnector.h>
 #include <datetimeprovider.h>
 
 #include <QObject>
@@ -33,12 +34,12 @@ class UserStatusSelectorModel : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString userStatusMessage READ userStatusMessage NOTIFY userStatusChanged)
+    Q_PROPERTY(QString userStatusMessage READ userStatusMessage WRITE setUserStatusMessage NOTIFY userStatusChanged)
     Q_PROPERTY(QString userStatusEmoji READ userStatusEmoji WRITE setUserStatusEmoji NOTIFY userStatusChanged)
     Q_PROPERTY(OCC::UserStatus::OnlineStatus onlineStatus READ onlineStatus WRITE setOnlineStatus NOTIFY onlineStatusChanged)
-    Q_PROPERTY(int predefinedStatusesCount READ predefinedStatusesCount NOTIFY predefinedStatusesChanged)
-    Q_PROPERTY(QStringList clearAtValues READ clearAtValues CONSTANT)
-    Q_PROPERTY(QString clearAt READ clearAt NOTIFY clearAtChanged)
+    Q_PROPERTY(QVector<OCC::UserStatus> predefinedStatuses READ predefinedStatuses NOTIFY predefinedStatusesChanged)
+    Q_PROPERTY(QVariantList clearStageTypes READ clearStageTypes CONSTANT)
+    Q_PROPERTY(QString clearAtDisplayString READ clearAtDisplayString NOTIFY clearAtDisplayStringChanged)
     Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
     Q_PROPERTY(QUrl onlineIcon READ onlineIcon CONSTANT)
     Q_PROPERTY(QUrl awayIcon READ awayIcon CONSTANT)
@@ -46,6 +47,16 @@ class UserStatusSelectorModel : public QObject
     Q_PROPERTY(QUrl invisibleIcon READ invisibleIcon CONSTANT)
 
 public:
+    enum class ClearStageType {
+        DontClear,
+        HalfHour,
+        OneHour,
+        FourHour,
+        Today,
+        Week,
+    };
+    Q_ENUM(ClearStageType);
+
     explicit UserStatusSelectorModel(QObject *parent = nullptr);
 
     explicit UserStatusSelectorModel(std::shared_ptr<UserStatusConnector> userStatusConnector,
@@ -62,10 +73,8 @@ public:
     explicit UserStatusSelectorModel(const UserStatus &userStatus,
         QObject *parent = nullptr);
 
-    Q_INVOKABLE void load(int id);
-
     Q_REQUIRED_RESULT UserStatus::OnlineStatus onlineStatus() const;
-    Q_INVOKABLE void setOnlineStatus(OCC::UserStatus::OnlineStatus status);
+    void setOnlineStatus(UserStatus::OnlineStatus status);
 
     Q_REQUIRED_RESULT QUrl onlineIcon() const;
     Q_REQUIRED_RESULT QUrl awayIcon() const;
@@ -73,59 +82,51 @@ public:
     Q_REQUIRED_RESULT QUrl invisibleIcon() const;
 
     Q_REQUIRED_RESULT QString userStatusMessage() const;
-    Q_INVOKABLE void setUserStatusMessage(const QString &message);
-    void setUserStatusEmoji(const QString &emoji);
+    void setUserStatusMessage(const QString &message);
     Q_REQUIRED_RESULT QString userStatusEmoji() const;
+    void setUserStatusEmoji(const QString &emoji);
 
-    Q_INVOKABLE void setUserStatus();
-    Q_INVOKABLE void clearUserStatus();
+    QVector<UserStatus> predefinedStatuses() const;
 
-    Q_REQUIRED_RESULT int predefinedStatusesCount() const;
-    Q_INVOKABLE UserStatus predefinedStatus(int index) const;
-    Q_INVOKABLE QString predefinedStatusClearAt(int index) const;
-    Q_INVOKABLE void setPredefinedStatus(int index);
-
-    Q_REQUIRED_RESULT QStringList clearAtValues() const;
-    Q_REQUIRED_RESULT QString clearAt() const;
-    Q_INVOKABLE void setClearAt(int index);
+    Q_REQUIRED_RESULT QVariantList clearStageTypes() const;
+    Q_REQUIRED_RESULT QString clearAtDisplayString() const;
+    Q_INVOKABLE QString clearAtReadable(const UserStatus &status) const;
 
     Q_REQUIRED_RESULT QString errorMessage() const;
+
+public slots:
+    void load(int id);
+    void setUserStatus();
+    void clearUserStatus();
+    void setClearAt(const ClearStageType clearStageType);
+    void setPredefinedStatus(const UserStatus &predefinedStatus);
 
 signals:
     void errorMessageChanged();
     void userStatusChanged();
     void onlineStatusChanged();
-    void clearAtChanged();
+    void clearAtDisplayStringChanged();
     void predefinedStatusesChanged();
     void finished();
 
 private:
-    enum class ClearStageType {
-        DontClear,
-        HalfHour,
-        OneHour,
-        FourHour,
-        Today,
-        Week
-    };
-
     void init();
     void reset();
     void onUserStatusFetched(const UserStatus &userStatus);
-    void onPredefinedStatusesFetched(const std::vector<UserStatus> &statuses);
+    void onPredefinedStatusesFetched(const QVector<UserStatus> &statuses);
     void onUserStatusSet();
     void onMessageCleared();
     void onError(UserStatusConnector::Error error);
 
-    Q_REQUIRED_RESULT QString clearAtStageToString(ClearStageType stage) const;
     Q_REQUIRED_RESULT QString clearAtReadable(const Optional<ClearAt> &clearAt) const;
+    Q_REQUIRED_RESULT QString clearAtStageToString(ClearStageType stage) const;
     Q_REQUIRED_RESULT QString timeDifferenceToString(int differenceSecs) const;
     Q_REQUIRED_RESULT Optional<ClearAt> clearStageTypeToDateTime(ClearStageType type) const;
     void setError(const QString &reason);
     void clearError();
 
     std::shared_ptr<UserStatusConnector> _userStatusConnector {};
-    std::vector<UserStatus> _predefinedStatuses;
+    QVector<UserStatus> _predefinedStatuses;
     UserStatus _userStatus;
     std::unique_ptr<DateTimeProvider> _dateTimeProvider;
 
