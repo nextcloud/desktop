@@ -330,7 +330,7 @@ Feature: Syncing files
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
 
 
-    Scenario Outline: File with long name (>228 characters) is blacklisted
+    Scenario Outline: File with long name (233 characters) is blacklisted
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "<filename>" with the following content inside the sync folder
             """
@@ -340,8 +340,8 @@ Feature: Syncing files
         And the user selects "Not Synced" tab in the activity
         Then the file "<filename>" should be blacklisted
         Examples:
-            | filename                                                                                                                                                                                                                              |
-            | aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBro.txt |
+            | filename                                                                                                                                                                                                                                  |
+            | aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFoxJumpsOverAVeryLazyDog-aQuickBrownFo.txt |
 
 
     Scenario: Syncing file of 1 GB size
