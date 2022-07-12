@@ -42,10 +42,8 @@ Q_LOGGING_CATEGORY(lcCSyncVIOLocal, "sync.csync.vio_local", QtInfoMsg)
 
 struct csync_vio_handle_t {
   DIR *dh;
-  QByteArray path;
+  QString path;
 };
-
-static int _csync_vio_local_stat_mb(const char *wuri, csync_file_stat_t *buf);
 
 csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
     QScopedPointer<csync_vio_handle_t> handle(new csync_vio_handle_t{});
@@ -57,7 +55,7 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
         return nullptr;
     }
 
-    handle->path = dirname;
+    handle->path = name;
     return handle.take();
 }
 
@@ -80,7 +78,6 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
   file_stat.reset(new csync_file_stat_t);
   file_stat->path = QFile::decodeName(dirent->d_name);
-  QByteArray fullPath = handle->path % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
 
   /* Check for availability of d_type, see manpage. */
 #if defined(_DIRENT_HAVE_D_TYPE) || defined(__APPLE__)
@@ -103,10 +100,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   }
 #endif
 
-  if (file_stat->path.isNull())
-      return file_stat;
-
-  if (_csync_vio_local_stat_mb(fullPath.constData(), file_stat.get()) < 0) {
+  if (csync_vio_local_stat(handle->path + QLatin1Char('/') + file_stat->path, file_stat.get()) < 0) {
       // Will get excluded by _csync_detect_update.
       file_stat->type = ItemTypeSkip;
   }
@@ -124,14 +118,9 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
 int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
 {
-    return _csync_vio_local_stat_mb(QFile::encodeName(uri).constData(), buf);
-}
-
-static int _csync_vio_local_stat_mb(const char *wuri, csync_file_stat_t *buf)
-{
     struct stat sb;
 
-    if (stat(wuri, &sb) < 0) {
+    if (stat(QFile::encodeName(uri).constData(), &sb) < 0) {
         return -1;
     }
 
