@@ -84,10 +84,6 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   file_stat.reset(new csync_file_stat_t);
   file_stat->path = QFile::decodeName(dirent->d_name).toUtf8();
   QByteArray fullPath = handle->path % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
-  if (file_stat->path.isNull()) {
-      file_stat->original_path = fullPath;
-      qCWarning(lcCSyncVIOLocal) << "Invalid characters in file/directory name, please rename:" << dirent->d_name << handle->path;
-  }
 
   /* Check for availability of d_type, see manpage. */
 #if defined(_DIRENT_HAVE_D_TYPE) || defined(__APPLE__)

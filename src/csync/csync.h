@@ -167,29 +167,10 @@ struct OCSYNC_EXPORT csync_file_stat_t
     int64_t size = 0;
     uint64_t inode = 0;
 
-    OCC::RemotePermissions remotePerm;
     ItemType type = ItemTypeSkip;
-    bool child_modified = false;
-    bool has_ignored_files = false; // Specify that a directory, or child directory contains ignored files.
     bool is_hidden = false; // Not saved in the DB, only used during discovery for local files.
 
     QByteArray path;
-    QByteArray rename_path;
-    QByteArray etag;
-    QByteArray file_id;
-    QByteArray directDownloadUrl;
-    QByteArray directDownloadCookies;
-    QByteArray original_path; // only set if locale conversion fails
-
-    // In the local tree, this can hold a checksum and its type if it is
-    //   computed during discovery for some reason.
-    // In the remote tree, this will have the server checksum, if available.
-    // In both cases, the format is "SHA1:baff".
-    QByteArray checksumHeader;
-
-    CSYNC_STATUS error_status = CSYNC_STATUS_OK;
-
-    SyncInstructions instruction = CSYNC_INSTRUCTION_NONE;
 };
 
 OCSYNC_EXPORT QDebug operator<<(QDebug debug, const SyncInstructions &job);
