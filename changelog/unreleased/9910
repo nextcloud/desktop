@@ -1,0 +1,3 @@
+Enhancement: We improved the performance for local filesystem actions
+
+https://github.com/owncloud/client/pull/9910
