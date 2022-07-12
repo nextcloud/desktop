@@ -170,7 +170,7 @@ struct OCSYNC_EXPORT csync_file_stat_t
     ItemType type = ItemTypeSkip;
     bool is_hidden = false; // Not saved in the DB, only used during discovery for local files.
 
-    QByteArray path;
+    QString path;
 };
 
 OCSYNC_EXPORT QDebug operator<<(QDebug debug, const SyncInstructions &job);

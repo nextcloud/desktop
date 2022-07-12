@@ -133,16 +133,16 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
           return nullptr;
       }
   }
-  auto path = QString::fromWCharArray(handle->ffd.cFileName);
+  const QString path = QString::fromWCharArray(handle->ffd.cFileName);
   if (path == QLatin1String(".") || path == QLatin1String(".."))
       return csync_vio_local_readdir(handle, vfs);
 
   file_stat.reset(new csync_file_stat_t);
-  file_stat->path = path.toUtf8();
+  file_stat->path = path;
 
-    if (vfs && vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
+  if (vfs && vfs->statTypeVirtualFile(file_stat.get(), &handle->ffd)) {
       // all good
-    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
+  } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT) {
       // Detect symlinks, and treat junctions as symlinks too.
       if (handle->ffd.dwReserved0 == IO_REPARSE_TAG_SYMLINK
           || handle->ffd.dwReserved0 == IO_REPARSE_TAG_MOUNT_POINT) {
@@ -153,15 +153,14 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
           // but will also treat them normally for now.
           file_stat->type = ItemTypeFile;
       }
-    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
-                || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE
-              ) {
-        file_stat->type = ItemTypeSkip;
-    } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-        file_stat->type = ItemTypeDirectory;
-    } else {
-        file_stat->type = ItemTypeFile;
-    }
+  } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DEVICE
+      || handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_OFFLINE) {
+      file_stat->type = ItemTypeSkip;
+  } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+      file_stat->type = ItemTypeDirectory;
+  } else {
+      file_stat->type = ItemTypeFile;
+  }
 
     /* Check for the hidden flag */
     if( handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN ) {
@@ -173,7 +172,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
 
     // path always ends with '\', by construction
 
-    if (csync_vio_local_stat(handle->path + QString::fromWCharArray(handle->ffd.cFileName), file_stat.get()) < 0) {
+    if (csync_vio_local_stat(handle->path + path, file_stat.get()) < 0) {
         // Will get excluded by _csync_detect_update.
         file_stat->type = ItemTypeSkip;
     }

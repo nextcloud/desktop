@@ -82,7 +82,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
   } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
   file_stat.reset(new csync_file_stat_t);
-  file_stat->path = QFile::decodeName(dirent->d_name).toUtf8();
+  file_stat->path = QFile::decodeName(dirent->d_name);
   QByteArray fullPath = handle->path % '/' % QByteArray() % const_cast<const char *>(dirent->d_name);
 
   /* Check for availability of d_type, see manpage. */

@@ -290,22 +290,7 @@ void DiscoverySingleLocalDirectoryJob::run() {
         if (dirent->type == ItemTypeSkip)
             continue;
         LocalInfo i;
-        static QTextCodec *codec = QTextCodec::codecForName("UTF-8");
-        OC_ASSERT(codec);
-        QTextCodec::ConverterState state;
-        i.name = codec->toUnicode(dirent->path.constData(), dirent->path.size(), &state);
-        if (state.invalidChars > 0 || state.remainingChars > 0) {
-            emit childIgnored(true);
-            auto item = SyncFileItemPtr::create();
-            //item->_file = _currentFolder._target + i.name;
-            // FIXME ^^ do we really need to use _target or is local fine?
-            item->_file = _localPath + i.name;
-            item->_instruction = CSYNC_INSTRUCTION_IGNORE;
-            item->_status = SyncFileItem::NormalError;
-            item->_errorString = tr("Filename encoding is not valid");
-            emit itemDiscovered(item);
-            continue;
-        }
+        i.name = dirent->path;
         i.modtime = dirent->modtime;
         i.size = dirent->size;
         i.inode = dirent->inode;

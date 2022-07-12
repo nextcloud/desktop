@@ -45,8 +45,8 @@ int oc_mkdir(const QString &path)
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
 typedef struct {
-    QByteArray result;
-    QByteArray ignored_dir;
+    QString result;
+    QString ignored_dir;
 } statevar;
 
 /* remove the complete test dir */
@@ -152,8 +152,8 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
     csync_vio_handle_t *dh;
     std::unique_ptr<csync_file_stat_t> dirent;
     statevar *sv = (statevar*) *state;
-    QByteArray subdir;
-    QByteArray subdir_out;
+    QString subdir;
+    QString subdir_out;
     int rc;
     int is_dir;
 
@@ -172,8 +172,8 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
 
         is_dir = (dirent->type == ItemTypeDirectory) ? 1:0;
 
-        subdir = dir.toUtf8() + "/" + dirent->path;
-        subdir_out = (is_dir ? "<DIR> ":"      ") + subdir;
+        subdir = dir + QLatin1Char('/') + dirent->path;
+        subdir_out = (is_dir ? QStringLiteral("<DIR> ") : QStringLiteral("      ")) + subdir;
 
         if( is_dir ) {
             if( sv->result.isNull() ) {
@@ -184,9 +184,9 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
         } else {
             *cnt = *cnt +1;
         }
-        output(subdir_out.constData());
+        output(subdir_out.toUtf8().constData());
         if( is_dir ) {
-            traverse_dir(state, QString::fromUtf8(subdir), cnt);
+            traverse_dir(state, subdir, cnt);
         }
     }
 
