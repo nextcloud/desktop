@@ -5,10 +5,16 @@
  *
  */
 
-#include <QtTest>
+
+#include "owncloudpropagator.h"
+#include "syncengine.h"
 #include "testutils/syncenginetestutils.h"
-#include <syncengine.h>
-#include <owncloudpropagator.h>
+
+#include <QtTest>
+
+#ifndef Q_OS_WIN
+#include <unistd.h>
+#endif
 
 using namespace std::chrono_literals;
 using namespace OCC;

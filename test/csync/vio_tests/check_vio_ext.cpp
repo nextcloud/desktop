@@ -29,6 +29,52 @@
 
 #include <QDir>
 
+
+#if defined _WIN32
+typedef wchar_t mbchar_t;
+#define _topen _wopen
+#define _tdirent _wdirent
+#define _topendir _wopendir
+#define _tclosedir _wclosedir
+#define _treaddir _wreaddir
+#define _trewinddir _wrewinddir
+#define _ttelldir _wtelldir
+#define _tseekdir _wseekdir
+#define _tcreat _wcreat
+#define _tstat _wstat64
+#define _tfstat _fstat64
+#define _tunlink _wunlink
+#define _tmkdir(X, Y) _wmkdir(X)
+#define _trmdir _wrmdir
+#define _tchmod _wchmod
+#define _trewinddir _wrewinddir
+#define _tchown(X, Y, Z) 0 /* no chown on Win32 */
+#define _tchdir _wchdir
+#define _tgetcwd _wgetcwd
+#else
+#include <unistd.h>
+typedef char mbchar_t;
+#define _tdirent dirent
+#define _topen open
+#define _topendir opendir
+#define _tclosedir closedir
+#define _treaddir readdir
+#define _trewinddir rewinddir
+#define _ttelldir telldir
+#define _tseekdir seekdir
+#define _tcreat creat
+#define _tstat lstat
+#define _tfstat fstat
+#define _tunlink unlink
+#define _tmkdir(X, Y) mkdir(X, Y)
+#define _trmdir rmdir
+#define _tchmod chmod
+#define _trewinddir rewinddir
+#define _tchown(X, Y, Z) chown(X, Y, Z)
+#define _tchdir chdir
+#define _tgetcwd getcwd
+#endif
+
 static const auto CSYNC_TEST_DIR = []{ return QStringLiteral("%1/csync_test").arg(QDir::tempPath());}();
 
 #include "torture.h"

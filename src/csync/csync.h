@@ -32,7 +32,6 @@
 #ifndef _CSYNC_H
 #define _CSYNC_H
 
-#include "std/c_private.h"
 #include "ocsynclib.h"
 
 #include <sys/stat.h>

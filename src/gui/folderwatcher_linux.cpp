@@ -16,6 +16,7 @@
 
 #include <cerrno>
 #include <sys/inotify.h>
+#include <unistd.h>
 
 #include "folder.h"
 #include "folderwatcher_linux.h"

@@ -24,10 +24,6 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
-
-#include "c_lib.h"
-#include "c_private.h"
-
 #include "csync_exclude.h"
 
 #include "common/filesystembase.h"

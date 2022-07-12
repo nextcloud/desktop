@@ -17,6 +17,10 @@
 
 #include "testutils/testutils.h"
 
+#ifndef Q_OS_WIN
+#include <unistd.h>
+#endif
+
 using namespace OCC;
 
 

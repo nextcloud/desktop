@@ -26,8 +26,6 @@
 #include <dirent.h>
 #include <stdio.h>
 
-#include "c_private.h"
-#include "c_lib.h"
 #include "csync.h"
 
 #include "vio/csync_vio_local.h"
@@ -47,14 +45,14 @@ struct csync_vio_handle_t {
   QByteArray path;
 };
 
-static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf);
+static int _csync_vio_local_stat_mb(const char *wuri, csync_file_stat_t *buf);
 
 csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
     QScopedPointer<csync_vio_handle_t> handle(new csync_vio_handle_t{});
 
     auto dirname = QFile::encodeName(name);
 
-    handle->dh = _topendir(dirname.constData());
+    handle->dh = opendir(dirname.constData());
     if (!handle->dh) {
         return nullptr;
     }
@@ -65,21 +63,20 @@ csync_vio_handle_t *csync_vio_local_opendir(const QString &name) {
 
 int csync_vio_local_closedir(csync_vio_handle_t *dhandle) {
     Q_ASSERT(dhandle);
-    auto rc = _tclosedir(dhandle->dh);
+    auto rc = closedir(dhandle->dh);
     delete dhandle;
     return rc;
 }
 
 std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *handle, OCC::Vfs *vfs) {
+    struct dirent *dirent = nullptr;
+    std::unique_ptr<csync_file_stat_t> file_stat;
 
-  struct _tdirent *dirent = nullptr;
-  std::unique_ptr<csync_file_stat_t> file_stat;
-
-  do {
-      dirent = _treaddir(handle->dh);
-      if (dirent == nullptr)
-          return {};
-  } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
+    do {
+        dirent = readdir(handle->dh);
+        if (dirent == nullptr)
+            return {};
+    } while (qstrcmp(dirent->d_name, ".") == 0 || qstrcmp(dirent->d_name, "..") == 0);
 
   file_stat.reset(new csync_file_stat_t);
   file_stat->path = QFile::decodeName(dirent->d_name);
@@ -130,11 +127,11 @@ int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
     return _csync_vio_local_stat_mb(QFile::encodeName(uri).constData(), buf);
 }
 
-static int _csync_vio_local_stat_mb(const mbchar_t *wuri, csync_file_stat_t *buf)
+static int _csync_vio_local_stat_mb(const char *wuri, csync_file_stat_t *buf)
 {
-    csync_stat_t sb;
+    struct stat sb;
 
-    if (_tstat(wuri, &sb) < 0) {
+    if (stat(wuri, &sb) < 0) {
         return -1;
     }
 
