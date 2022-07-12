@@ -118,8 +118,18 @@ Systray::Systray()
     connect(UserModel::instance(), &UserModel::addAccount,
             this, &Systray::openAccountWizard);
 
+#if defined(Q_OS_MACOS) || defined(Q_OS_WIN)
     connect(AccountManager::instance(), &AccountManager::accountAdded,
-        this, &Systray::showWindow);
+        this, [this]{ emit showWindow(); });
+#else
+    // Since the positioning of the QSystemTrayIcon is borked on non-Windows and non-macOS desktop environments,
+    // we hardcode the position of the tray to be in the center when we add a new account from somewhere like
+    // the wizard. Otherwise with the conventional method we end up with the tray appearing wherever the cursor
+    // is placed
+
+    connect(AccountManager::instance(), &AccountManager::accountAdded,
+        this, [this]{ emit showWindow(WindowPosition::Center); });
+#endif
 }
 
 void Systray::create()
@@ -355,11 +365,21 @@ void Systray::pauseResumeSync()
 /* Helper functions for cross-platform tray icon position and taskbar orientation detection */
 /********************************************************************************************/
 
-void Systray::positionWindow(QQuickWindow *window) const
+void Systray::positionWindowAtTray(QQuickWindow *window) const
 {
     if (!useNormalWindow()) {
         window->setScreen(currentScreen());
         const auto position = computeWindowPosition(window->width(), window->height());
+        window->setPosition(position);
+    }
+}
+
+void Systray::positionWindowAtScreenCenter(QQuickWindow *window) const
+{
+    if(!useNormalWindow()) {
+        window->setScreen(currentScreen());
+        const QPoint windowAdjustment(window->geometry().width() / 2, window->geometry().height() / 2);
+        const auto position = currentScreen()->virtualGeometry().center() - windowAdjustment;
         window->setPosition(position);
     }
 }
@@ -397,9 +417,7 @@ void Systray::positionNotificationWindow(QQuickWindow *window) const
             window->setPosition(position);
         } else {
             // For other DEs we play it safe and place the notification in the centre of the screen
-            const QPoint windowAdjustment(window->geometry().width() / 2, window->geometry().height() / 2);
-            const auto position = currentScreen()->geometry().center();// - windowAdjustment;
-            window->setPosition(position);
+            positionWindowAtScreenCenter(window);
         }
         // TODO: Get actual notification positions for the DEs
     }
