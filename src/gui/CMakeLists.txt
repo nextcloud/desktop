@@ -426,7 +426,7 @@ set(STATE_ICONS_COLORS colored black white)
 foreach(state_icons_color ${STATE_ICONS_COLORS})
     set(STATE_ICONS_PATH "${theme_dir}/${state_icons_color}/")
 
-    message("Generating state icons from SVG in path: "${STATE_ICONS_PATH})
+    message("Generating state icons from SVG in path: ${STATE_ICONS_PATH}")
 
     file(GLOB_RECURSE STATE_ICONS_SVG "${STATE_ICONS_PATH}/state-*.svg")
 
