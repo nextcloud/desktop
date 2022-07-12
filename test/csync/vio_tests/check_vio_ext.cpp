@@ -85,9 +85,9 @@ static int setup_testenv(void **state) {
     return 0;
 }
 
-static void output( const char *text )
+static void output(const QString &text)
 {
-    printf("%s\n", text);
+    printf("%s\n", qPrintable(text));
 }
 
 static int teardown(void **state) {
@@ -184,7 +184,7 @@ static void traverse_dir(void **state, const QString &dir, int *cnt)
         } else {
             *cnt = *cnt +1;
         }
-        output(subdir_out.toUtf8().constData());
+        output(subdir_out);
         if( is_dir ) {
             traverse_dir(state, subdir, cnt);
         }
@@ -212,15 +212,14 @@ static void check_readdir_shorttree(void **state)
     
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
-    assert_string_equal(sv->result.constData(),
-        QString::fromUtf8("<DIR> %1/alibaba"
-                          "<DIR> %1/alibaba/und"
-                          "<DIR> %1/alibaba/und/die"
-                          "<DIR> %1/alibaba/und/die/vierzig"
-                          "<DIR> %1/alibaba/und/die/vierzig/räuber")
+    assert_string_equal(sv->result.utf16(),
+        QStringLiteral("<DIR> %1/alibaba"
+                       "<DIR> %1/alibaba/und"
+                       "<DIR> %1/alibaba/und/die"
+                       "<DIR> %1/alibaba/und/die/vierzig"
+                       "<DIR> %1/alibaba/und/die/vierzig/räuber")
             .arg(CSYNC_TEST_DIR)
-            .toUtf8()
-            .constData());
+            .utf16());
     assert_int_equal(files_cnt, 0);
 }
 
@@ -238,14 +237,13 @@ static void check_readdir_with_content(void **state)
 
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
 
-    assert_string_equal(sv->result.constData(),
-        QString::fromUtf8("<DIR> %1/warum"
-                          "<DIR> %1/warum/nur"
-                          "<DIR> %1/warum/nur/40"
-                          "<DIR> %1/warum/nur/40/Räuber")
+    assert_string_equal(sv->result.utf16(),
+        QStringLiteral("<DIR> %1/warum"
+                       "<DIR> %1/warum/nur"
+                       "<DIR> %1/warum/nur/40"
+                       "<DIR> %1/warum/nur/40/Räuber")
             .arg(CSYNC_TEST_DIR)
-            .toUtf8()
-            .constData());
+            .utf16());
     /*                   "      %1/warum/nur/40/Räuber/Räuber Max.txt"
                          "      %1/warum/nur/40/Räuber/пя́тница.txt"; */
     assert_int_equal(files_cnt, 2); /* Two files in the sub dir */
@@ -312,12 +310,12 @@ static void check_readdir_longtree(void **state)
 "<DIR> %1/vierzig/mann/auf/des/toten/Mann/kiste/ooooooooooooooooooooooh/and/ne/bottle/voll/rum/und/so/singen/wir/VIERZIG/MANN/AUF/DES/TOTEN/MANNS/KISTE/OOOOOOOOH/AND/NE/BOTTLE/VOLL/RUM/undnochmalallezusammen/VierZig/MannaufDesTotenManns/KISTE/ooooooooooooooooooooooooooohhhhhh/und/BESSER/ZWEI/Butteln/VOLL RUM").arg(CSYNC_TEST_DIR);
 
     /* assemble the result string ... */
-    const auto result = (r1 + r2 + r3).toUtf8();
+    const QString result = r1 + r2 + r3;
     int files_cnt = 0;
     traverse_dir(state, CSYNC_TEST_DIR, &files_cnt);
     assert_int_equal(files_cnt, 0);
     /* and compare. */
-    assert_string_equal(sv->result.constData(), result.constData());
+    assert_string_equal(sv->result.utf16(), result.utf16());
 }
 
 // https://github.com/owncloud/client/issues/3128 https://github.com/owncloud/client/issues/2777
@@ -344,7 +342,7 @@ static void check_readdir_bigunicode(void **state)
     const auto expected_result = QStringLiteral("<DIR> %1/goodone"
                                                 "<DIR> %1/goodone/ugly\xEF\xBB\xBF\x32.txt")
                                      .arg(CSYNC_TEST_DIR);
-    assert_string_equal(sv->result.constData(), expected_result.toUtf8().constData());
+    assert_string_equal(sv->result.utf16(), expected_result.utf16());
 
     assert_int_equal(files_cnt, 0);
 }
