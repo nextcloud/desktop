@@ -1225,14 +1225,14 @@ void Folder::slotHydrationDone()
 
 void Folder::slotNewShellExtensionConnection()
 {
-    auto newConnection = _shellExtensionsServer.nextPendingConnection();
+    const auto newConnection = _shellExtensionsServer.nextPendingConnection();
 
     connect(newConnection, &QLocalSocket::errorOccurred, this, [newConnection](QLocalSocket::LocalSocketError socketError) {
         qCCritical(lcFolder) << "Shell extension socket error: " << socketError << " : " << newConnection->errorString();
     });
 
     const auto disconnectAndCloseSocket = [newConnection, this]() {
-        connect(newConnection, &QLocalSocket::disconnected, this, [=] {
+        connect(newConnection, &QLocalSocket::disconnected, this, [newConnection] {
             newConnection->close();
             newConnection->deleteLater();
         });
@@ -1276,7 +1276,7 @@ void Folder::slotNewShellExtensionConnection()
     queryItems.addQueryItem("x", thumbnailFileSize.value("x").toString());
     queryItems.addQueryItem("y", thumbnailFileSize.value("y").toString());
     const QUrl jobUrl = Utility::concatUrlPath(accountState()->account()->url(), "core/preview", queryItems);
-    auto *job = new SimpleNetworkJob(accountState()->account());
+    const auto job = new SimpleNetworkJob(accountState()->account());
     job->startRequest("GET", jobUrl);
     connect(job, &SimpleNetworkJob::finishedSignal, this, [newConnection, disconnectAndCloseSocket, sendEmptyData](QNetworkReply *reply) {
         const auto contentType = reply->header(QNetworkRequest::ContentTypeHeader).toByteArray();

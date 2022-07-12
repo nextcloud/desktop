@@ -9,5 +9,5 @@ namespace Protocol {
     static constexpr auto ThumbnailProviderRequestFilePathKey = "filePath";
     static constexpr auto ThumbnailProviderRequestFileSizeKey = "size";
     static constexpr auto ThumbnailProviderServerNameKey = "serverName";
-};
+}
 }

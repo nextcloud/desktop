@@ -1764,59 +1764,62 @@ void FolderMan::slotConnectToPushNotifications(Account *account)
 
 void FolderMan::slotNewShellExtensionConnection()
 {
-    auto newConnection = _shellExtensionsServer.nextPendingConnection();
+    const auto newConnection = _shellExtensionsServer.nextPendingConnection();
 
-    if (newConnection->open(QIODevice::ReadWrite)) {
-        newConnection->waitForReadyRead();
-        const auto receivedMessage = QJsonDocument::fromJson(newConnection->readAll()).toVariant().toMap();
+    if (!newConnection) {
+        return;
+    }
 
-        if (!receivedMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey)) {
-            connect(newConnection, &QLocalSocket::disconnected, this, [=] {
-                newConnection->close();
-                newConnection->deleteLater();
-            });
-            newConnection->disconnectFromServer();
-            return;
+    const auto disconnectAndClose = [newConnection, this]() {
+        connect(newConnection, &QLocalSocket::disconnected, this, [newConnection] {
+            newConnection->close();
+            newConnection->deleteLater();
+        });
+        newConnection->disconnectFromServer();
+    };
+
+    newConnection->waitForReadyRead();
+    const auto receivedMessage = QJsonDocument::fromJson(newConnection->readAll()).toVariant().toMap();
+
+    if (!receivedMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey)) {
+        disconnectAndClose();
+        return;
+    }
+
+    const auto thumbnailRequestMessage =
+        receivedMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey).toMap();
+
+    if (!thumbnailRequestMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey)) {
+        disconnectAndClose();
+        return;
+    }
+
+    const auto thumbnailFilePath =
+        thumbnailRequestMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey).toString();
+
+    Folder *folderFound = nullptr;
+    for (const auto folder : map()) {
+        if (thumbnailFilePath.startsWith(QDir::toNativeSeparators(folder->path()))) {
+            folderFound = folder;
         }
+    }
 
-        const auto thumbnailRequestMessage =
-            receivedMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey).toMap();
+    if (folderFound) {
+        const QString serverName = CfApiShellExtensions::ThumbnailProviderMainServerName + QStringLiteral(":")
+            + folderFound->navigationPaneClsid().toString();
+        folderFound->startShellExtensionServer(serverName);
 
-        if (!thumbnailRequestMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey)) {
-            connect(newConnection, &QLocalSocket::disconnected, this, [=] {
-                newConnection->close();
-                newConnection->deleteLater();
-            });
-            newConnection->disconnectFromServer();
-            return;
-        }
+        const auto sentMessage = QJsonDocument::fromVariant(
+            QVariantMap{{CfApiShellExtensions::Protocol::ThumbnailProviderServerNameKey,
+                serverName}}).toJson(QJsonDocument::Compact);
 
-        const auto thumbnailFilePath =
-            thumbnailRequestMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey).toString();
+        newConnection->write(sentMessage);
+        newConnection->waitForBytesWritten();
 
-        Folder *folderFound = nullptr;
-        for (const auto folder : map()) {
-            if (thumbnailFilePath.startsWith(QDir::toNativeSeparators(folder->path()))) {
-                folderFound = folder;
-            }
-        }
-
-        if (folderFound) {
-            const QString serverName = CfApiShellExtensions::ThumbnailProviderMainServerName + QStringLiteral(":")
-                + folderFound->navigationPaneClsid().toString();
-            folderFound->startShellExtensionServer(serverName);
-
-            const auto sentMessage = QJsonDocument::fromVariant(QVariantMap{
-                {CfApiShellExtensions::Protocol::ThumbnailProviderServerNameKey, serverName}}).toJson(QJsonDocument::Compact);
-
-            newConnection->write(sentMessage);
-            newConnection->waitForBytesWritten();
-
-            connect(newConnection, &QLocalSocket::disconnected, this, [=] {
-                newConnection->close();
-                newConnection->deleteLater();
-            });
-        }
+        connect(newConnection, &QLocalSocket::disconnected, this, [newConnection] {
+            newConnection->close();
+            newConnection->deleteLater();
+        });
     }
 }
 
