@@ -191,15 +191,15 @@ OCC::UserStatus jsonToUserStatus(QJsonObject jsonObject)
     return userStatus;
 }
 
-std::vector<OCC::UserStatus> jsonToPredefinedStatuses(QJsonArray jsonDataArray)
+QVector<OCC::UserStatus> jsonToPredefinedStatuses(QJsonArray jsonDataArray)
 {
-    std::vector<OCC::UserStatus> statuses;
+    QVector<OCC::UserStatus> statuses;
     for (const auto &jsonEntry : jsonDataArray) {
         Q_ASSERT(jsonEntry.isObject());
         if (!jsonEntry.isObject()) {
             continue;
         }
-        statuses.push_back(jsonToUserStatus(jsonEntry.toObject()));
+        statuses.append(jsonToUserStatus(jsonEntry.toObject()));
     }
 
     return statuses;

@@ -82,9 +82,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::openAccountWizard,
         this, &ownCloudGui::slotNewAccountWizard);
 
-    connect(_tray.data(), &Systray::openMainDialog,
-        this, &ownCloudGui::slotOpenMainDialog);
-
     connect(_tray.data(), &Systray::openSettings,
         this, &ownCloudGui::slotShowSettings);
 
@@ -157,9 +154,7 @@ void ownCloudGui::slotOpenSettingsDialog()
 
 void ownCloudGui::slotOpenMainDialog()
 {
-    if (!_tray->isOpen()) {
-        _tray->showWindow();
-    }
+    _tray->showWindow();
 }
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
