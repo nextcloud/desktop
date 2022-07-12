@@ -110,7 +110,7 @@ public:
     bool isDeployed() const;
 
 private:
-    bool _deployed;
+    bool _deployed = false;
 };
 
 /**
