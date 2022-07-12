@@ -291,7 +291,7 @@ void Logger::rotateLog()
         }
         // rename previous log file if size != 0
         const auto info = QFileInfo(logName);
-        if (info.exists(logName) && !info.size() == 0) {
+        if (info.exists(logName) && info.size() != 0) {
             previousLog = dir.filePath(QStringLiteral("%1-%2.log").arg(qApp->applicationName(), info.created().toString(QStringLiteral("MMdd_hh.mm.ss.zzz"))));
             if (!QFile(logName).rename(previousLog)) {
                 std::cerr << "Failed to rename: " << qPrintable(logName) << " to " << qPrintable(previousLog) << std::endl;
