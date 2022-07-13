@@ -185,6 +185,14 @@
     </message>
 </context>
 <context>
+    <name>EmojiPicker</name>
+    <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <source>No recent emojis</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileSystem</name>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
@@ -5396,54 +5404,54 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>İndir</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="157"/>
+        <location filename="../src/gui/systray.cpp" line="170"/>
         <source>Add account</source>
         <translation>Hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="159"/>
+        <location filename="../src/gui/systray.cpp" line="172"/>
         <source>Open main dialog</source>
         <translation>Ana pencereyi aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="162"/>
-        <location filename="../src/gui/systray.cpp" line="173"/>
+        <location filename="../src/gui/systray.cpp" line="175"/>
+        <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Pause sync</source>
         <translation>Eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="163"/>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="176"/>
+        <location filename="../src/gui/systray.cpp" line="191"/>
         <source>Resume sync</source>
         <translation>Eşitlemeyi sürdür</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="164"/>
+        <location filename="../src/gui/systray.cpp" line="177"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="165"/>
+        <location filename="../src/gui/systray.cpp" line="178"/>
         <source>Help</source>
         <translation>Yardım</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="166"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Exit %1</source>
         <translation>%1 uygulamasından çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="173"/>
+        <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Pause sync for all</source>
         <translation>Tümü için eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="191"/>
         <source>Resume sync for all</source>
         <translation>Tümü için eşitlemeyi sürdür</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="335"/>
+        <location filename="../src/gui/systray.cpp" line="347"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5560,14 +5568,19 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Hazır durumlar alınamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation>Durum alınamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>Kullanıcı durumu alınamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Durum alınamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation>Durum özelliği desteklenmiyor. Kullanıcı durumu ayarlanamayabilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5575,9 +5588,9 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Kullanıcı durumu özelliği desteklenmiyor. Kullanıcı durumu ayarlanamayabilir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>Durum özelliği desteklenmiyor. Kullanıcı durumu ayarlanamayabilir.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation>Emojiler desteklenmiyor. Bazı durum işlevleri çalışmayabilir.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5585,9 +5598,9 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Emoji özelliği desteklenmiyor. Bazı kullanıcı durumu işlevleri çalışmayabilir.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Emojiler desteklenmiyor. Bazı durum işlevleri çalışmayabilir.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation>Durum ayarlanamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5595,19 +5608,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Kullanıcı durumu ayarlanamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Durum ayarlanamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation>Durum iletisi kaldırılamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>Kullanıcı durumu iletisi kaldırılamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Durum iletisi kaldırılamadı. Sunucuya bağlı olduğunuzdan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6663,126 +6671,111 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="137"/>
+        <location filename="../src/gui/tray/Window.qml" line="148"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud masaüstü ana penceresi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="164"/>
+        <location filename="../src/gui/tray/Window.qml" line="175"/>
         <source>Current account</source>
         <translation>Geçerli hesap</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="170"/>
-        <location filename="../src/gui/tray/Window.qml" line="310"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="321"/>
         <source>Resume sync for all</source>
         <translation>Tümünü eşitlemeyi sürdür</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="170"/>
-        <location filename="../src/gui/tray/Window.qml" line="310"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="321"/>
         <source>Pause sync for all</source>
         <translation>Tümünü eşitlemeyi duraklat</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="230"/>
+        <location filename="../src/gui/tray/Window.qml" line="241"/>
         <source>Set user status</source>
         <translation>Kullanıcı durumunu ayarla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="268"/>
+        <location filename="../src/gui/tray/Window.qml" line="279"/>
         <source>Add account</source>
         <translation>Hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="281"/>
+        <location filename="../src/gui/tray/Window.qml" line="292"/>
         <source>Add new account</source>
         <translation>Hesap ekle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="316"/>
+        <location filename="../src/gui/tray/Window.qml" line="327"/>
         <source>Settings</source>
         <translation>Ayarlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="339"/>
+        <location filename="../src/gui/tray/Window.qml" line="350"/>
         <source>Exit</source>
         <translation>Çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="384"/>
+        <location filename="../src/gui/tray/Window.qml" line="395"/>
         <source>Current user avatar</source>
         <translation>Geçerli kullanıcı avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="423"/>
+        <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Current user status is online</source>
         <translation>Kullanıcının geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="423"/>
+        <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Current user status is do not disturb</source>
         <translation>Kullanıcının geçerli durumu: Rahatsız etmeyin</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="410"/>
+        <location filename="../src/gui/tray/Window.qml" line="390"/>
         <source>Current account avatar</source>
         <translation>Geçerli hesap avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="449"/>
+        <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is online</source>
         <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="449"/>
+        <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is do not disturb</source>
         <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
+        <location filename="../src/gui/tray/Window.qml" line="500"/>
         <source>Account switcher and settings menu</source>
         <translation>Hesap değiştirici ve ayarlar menüsü</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="508"/>
+        <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Open local folder of current account</source>
         <translation>Geçerli hesabın yerel klasörünü aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Connected</source>
         <translation>Bağlantı kuruldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Disconnected</source>
         <translation>Bağlantı kesildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Paylaşma penceresini aç</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="567"/>
+        <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Web tarayıcıda Nextcloud Talk uygulamasını aç</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="587"/>
-        <source>More apps</source>
-        <translation>Diğer uygulamalar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Uygulamalar menüsü</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="628"/>
-        <source>Open %1 in browser</source>
-        <translation>%1 ögesini tarayıcıda aç</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6795,13 +6788,28 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 ögesini yerel olarak aç</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Paylaşma penceresini aç</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="598"/>
+        <source>More apps</source>
+        <translation>Diğer uygulamalar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="639"/>
+        <source>Open %1 in browser</source>
+        <translation>%1 ögesini tarayıcıda aç</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Daha fazla işlem görüntüle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="752"/>
+        <location filename="../src/gui/tray/Window.qml" line="763"/>
         <source>Unified search results list</source>
         <translation>Birleşik arama sonuçları listesi</translation>
     </message>
@@ -6811,7 +6819,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 ögesini paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="824"/>
+        <location filename="../src/gui/tray/Window.qml" line="835"/>
         <source>%1 - File activity</source>
         <translation>%1 - Dosya işlemi</translation>
     </message>
