@@ -349,6 +349,7 @@ public:
         params.addQueryItem(QLatin1String("limit"), QString::number(50));
         job->addQueryParams(params);
 
+        setAndRefreshCurrentlyFetching(true);
         job->start();
     }
 
@@ -379,6 +380,7 @@ public slots:
             setFinalList(finalListCopy);
         }
         _numRowsPrev = rowCount();
+        setAndRefreshCurrentlyFetching(false);
         emit activitiesProcessed();
     }
 signals:
@@ -394,7 +396,8 @@ class TestActivityListModel : public QObject
 
 public:
     TestActivityListModel() = default;
-    ~TestActivityListModel() override {
+    ~TestActivityListModel() override
+    {
         OCC::AccountManager::instance()->deleteAccount(accountState.data());
     }
 
@@ -403,8 +406,30 @@ public:
     QScopedPointer<OCC::AccountState> accountState;
 
     OCC::Activity testNotificationActivity;
+    OCC::Activity testSyncResultErrorActivity;
+    OCC::Activity testSyncFileItemActivity;
+    OCC::Activity testFileIgnoredActivity;
 
     static constexpr int searchResultsReplyDelay = 100;
+
+    QSharedPointer<TestingALM> testingALM() {
+        QSharedPointer<TestingALM> model(new TestingALM);
+        model->setAccountState(accountState.data());
+        QAbstractItemModelTester modelTester(model.data());
+
+        return model;
+    }
+
+    void testActivityAdd(void(OCC::ActivityListModel::*addingMethod)(const OCC::Activity&), OCC::Activity &activity) {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        (model.data()->*addingMethod)(activity);
+        QCOMPARE(model->rowCount(), 1);
+
+        const auto index = model->index(0, 0);
+        QVERIFY(index.isValid());
+    }
 
 private slots:
     void initTestCase()
@@ -452,164 +477,166 @@ private slots:
         testNotificationActivity._id = 1;
         testNotificationActivity._type = OCC::Activity::NotificationType;
         testNotificationActivity._dateTime = QDateTime::currentDateTime();
+        testNotificationActivity._subject = QStringLiteral("Sample notification text");
+
+        testSyncResultErrorActivity._id = 2;
+        testSyncResultErrorActivity._type = OCC::Activity::SyncResultType;
+        testSyncResultErrorActivity._status = OCC::SyncResult::Error;
+        testSyncResultErrorActivity._dateTime = QDateTime::currentDateTime();
+        testSyncResultErrorActivity._subject = QStringLiteral("Sample failed sync text");
+        testSyncResultErrorActivity._message = QStringLiteral("/path/to/thingy");
+        testSyncResultErrorActivity._link = QStringLiteral("/path/to/thingy");
+        testSyncResultErrorActivity._accName = accountState->account()->displayName();
+
+        testSyncFileItemActivity._id = 3;
+        testSyncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
+        testSyncFileItemActivity._status = OCC::SyncFileItem::Success;
+        testSyncFileItemActivity._dateTime = QDateTime::currentDateTime();
+        testSyncFileItemActivity._message = QStringLiteral("Sample file successfully synced text");
+        testSyncFileItemActivity._link = accountState->account()->url();
+        testSyncFileItemActivity._accName = accountState->account()->displayName();
+        testSyncFileItemActivity._file = QStringLiteral("xyz.pdf");
+
+        testFileIgnoredActivity._id = 4;
+        testFileIgnoredActivity._type = OCC::Activity::SyncFileItemType;
+        testFileIgnoredActivity._status = OCC::SyncFileItem::FileIgnored;
+        testFileIgnoredActivity._dateTime = QDateTime::currentDateTime();
+        testFileIgnoredActivity._subject = QStringLiteral("Sample ignored file sync text");
+        testFileIgnoredActivity._link = accountState->account()->url();
+        testFileIgnoredActivity._accName = accountState->account()->displayName();
+        testFileIgnoredActivity._folder = QStringLiteral("thingy");
+        testFileIgnoredActivity._file = QStringLiteral("test.txt");
     };
 
     // Test receiving activity from server
     void testFetchingRemoteActivity() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
-
-        model.setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
-        model.startFetchJob();
-        QSignalSpy activitiesJob(&model, &TestingALM::activitiesProcessed);
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        model->startFetchJob();
+        QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
         QVERIFY(activitiesJob.wait(3000));
-        QCOMPARE(model.rowCount(), 50);
+        QCOMPARE(model->rowCount(), 50);
     };
 
     // Test receiving activity from local user action
     void testLocalSyncFileAction() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        OCC::Activity activity;
-
-        model.addSyncFileItemToActivityList(activity);
-        QCOMPARE(model.rowCount(), 1);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
     };
 
     void testAddNotification() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 1);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addNotificationToActivityList, testNotificationActivity);
     };
 
     void testAddError() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        OCC::Activity activity;
-
-        model.addErrorToActivityList(activity);
-        QCOMPARE(model.rowCount(), 1);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
     };
 
     void testAddIgnoredFile() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        OCC::Activity activity;
-        activity._folder = QStringLiteral("thingy");
-        activity._file = QStringLiteral("test.txt");
-
-        model.addIgnoredFileToList(activity);
-        // We need to add another activity to the model for the combineActivityLists method to be called
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 2);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     };
 
     // Test removing activity from list
     void testRemoveActivityWithRow() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 1);
 
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 1);
-
-        model.removeActivityFromActivityList(0);
-        QCOMPARE(model.rowCount(), 0);
+        model->removeActivityFromActivityList(0);
+        QCOMPARE(model->rowCount(), 0);
     }
 
     void testRemoveActivityWithActivity() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 1);
 
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 1);
+        model->removeActivityFromActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 0);
+    }
 
-        model.removeActivityFromActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 0);
+    void testDummyFetchingActivitiesActivity() {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        model->startFetchJob();
+
+        // Check for the dummy before activities have arrived
+        QCOMPARE(model->rowCount(), 1);
+
+        QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
+        QVERIFY(activitiesJob.wait(3000));
+        // Test the dummy was removed
+        QCOMPARE(model->rowCount(), 50);
     }
 
     // Test getting the data from the model
     void testData() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
-
-        model.setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
-        model.startFetchJob();
-        QSignalSpy activitiesJob(&model, &TestingALM::activitiesProcessed);
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        model->startFetchJob();
+        QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
         QVERIFY(activitiesJob.wait(3000));
-        QCOMPARE(model.rowCount(), 50);
+        QCOMPARE(model->rowCount(), 50);
 
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 51);
+        model->addSyncFileItemToActivityList(testSyncFileItemActivity);
+        QCOMPARE(model->rowCount(), 51);
 
-        OCC::Activity syncResultActivity;
-        syncResultActivity._id = 2;
-        syncResultActivity._type = OCC::Activity::SyncResultType;
-        syncResultActivity._status = OCC::SyncResult::Error;
-        syncResultActivity._dateTime = QDateTime::currentDateTime();
-        syncResultActivity._subject = QStringLiteral("Sample failed sync text");
-        syncResultActivity._message = QStringLiteral("/path/to/thingy");
-        syncResultActivity._link = QStringLiteral("/path/to/thingy");
-        syncResultActivity._accName = accountState->account()->displayName();
-        model.addSyncFileItemToActivityList(syncResultActivity);
-        QCOMPARE(model.rowCount(), 52);
+        model->addErrorToActivityList(testSyncResultErrorActivity);
+        QCOMPARE(model->rowCount(), 52);
 
-        OCC::Activity syncFileItemActivity;
-        syncFileItemActivity._id = 3;
-        syncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
-        syncFileItemActivity._status = OCC::SyncFileItem::Success;
-        syncFileItemActivity._dateTime = QDateTime::currentDateTime();
-        syncFileItemActivity._message = QStringLiteral("You created xyz.pdf");
-        syncFileItemActivity._link = accountState->account()->url();
-        syncFileItemActivity._accName = accountState->account()->displayName();
-        syncFileItemActivity._file = QStringLiteral("xyz.pdf");
-        syncFileItemActivity._fileAction = "";
-        model.addSyncFileItemToActivityList(syncFileItemActivity);
-        QCOMPARE(model.rowCount(), 53);
+        model->addIgnoredFileToList(testFileIgnoredActivity);
+        QCOMPARE(model->rowCount(), 53);
+
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 54);
+
+        const auto desiredOrder = QVector<OCC::ActivityListModel::ActivityEntryType>{
+                OCC::ActivityListModel::ActivityEntryType::ErrorType,
+                OCC::ActivityListModel::ActivityEntryType::IgnoredFileType,
+                OCC::ActivityListModel::ActivityEntryType::NotificationType,
+                OCC::ActivityListModel::ActivityEntryType::SyncFileItemType,
+                OCC::ActivityListModel::ActivityEntryType::ActivityType};
 
         // Test all rows for things in common
-        for (int i = 0; i < model.rowCount(); i++) {
-            const auto index = model.index(i, 0);
+        for (int i = 0; i < model->rowCount(); i++) {
+            const auto index = model->index(i, 0);
+
+            int expectedEntryType = qMin(i, desiredOrder.count() - 1);
+            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
+
+            // Make sure the model has sorted our activities in the right order
+            switch(desiredOrder[expectedEntryType]) {
+            case OCC::ActivityListModel::ActivityEntryType::DummyFetchingActivityType:
+                break;
+            case OCC::ActivityListModel::ActivityEntryType::ErrorType:
+                QCOMPARE(activity._type, OCC::Activity::SyncResultType);
+                QCOMPARE(activity._status, OCC::SyncResult::Error);
+                break;
+            case OCC::ActivityListModel::ActivityEntryType::IgnoredFileType:
+                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
+                QCOMPARE(activity._status, OCC::SyncFileItem::FileIgnored);
+                break;
+            case OCC::ActivityListModel::ActivityEntryType::NotificationType:
+                QCOMPARE(activity._type, OCC::Activity::NotificationType);
+                break;
+            case OCC::ActivityListModel::ActivityEntryType::SyncFileItemType:
+                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
+                QCOMPARE(activity._status, OCC::SyncFileItem::Success);
+                break;
+            case OCC::ActivityListModel::ActivityEntryType::ActivityType:
+                QCOMPARE(activity._type, OCC::Activity::ActivityType);
+            case OCC::ActivityListModel::ActivityEntryType::MoreActivitiesAvailableType:
+                break;
+            }
 
             auto text = index.data(OCC::ActivityListModel::ActionTextRole).toString();
 
@@ -642,26 +669,23 @@ private slots:
         }
     };
 
-    void tesActivityActionstData()
+    void testActivityActionsData()
     {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
 
-        QCOMPARE(model.rowCount(), 0);
-        model.setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
-
-        int prevModelRowCount = model.rowCount();
+        int prevModelRowCount = model->rowCount();
 
         do {
-            prevModelRowCount = model.rowCount();
-            model.startFetchJob();
-            QSignalSpy activitiesJob(&model, &TestingALM::activitiesProcessed);
+            prevModelRowCount = model->rowCount();
+            model->startFetchJob();
+            QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
             QVERIFY(activitiesJob.wait(3000));
 
 
-            for (int i = prevModelRowCount; i < model.rowCount(); i++) {
-                const auto index = model.index(i, 0);
+            for (int i = prevModelRowCount; i < model->rowCount(); i++) {
+                const auto index = model->index(i, 0);
 
                 const auto actionsLinks = index.data(OCC::ActivityListModel::ActionsLinksRole).toList();
                 if (!actionsLinks.isEmpty()) {
@@ -720,7 +744,7 @@ private slots:
                 }
             }
 
-        } while (prevModelRowCount < model.rowCount());
+        } while (prevModelRowCount < model->rowCount());
     };
 
 };

@@ -25,9 +25,19 @@ bool operator<(const Activity &rhs, const Activity &lhs)
     return rhs._dateTime > lhs._dateTime;
 }
 
+bool operator>(const Activity &rhs, const Activity &lhs)
+{
+    return rhs._dateTime < lhs._dateTime;
+}
+
 bool operator==(const Activity &rhs, const Activity &lhs)
 {
     return (rhs._type == lhs._type && rhs._id == lhs._id && rhs._accName == lhs._accName);
+}
+
+bool operator!=(const Activity &rhs, const Activity &lhs)
+{
+    return !(rhs == lhs);
 }
 
 Activity::Identifier Activity::ident() const

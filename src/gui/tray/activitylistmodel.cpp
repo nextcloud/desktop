@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (C) by Klaas Freitag <freitag@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -82,6 +82,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationMessageIdRole] = "messageId";
     roles[TalkNotificationMessageSentRole] = "messageSent";
     roles[TalkNotificationUserAvatarRole] = "userAvatar";
+    roles[ActivityRole] = "activity";
 
     return roles;
 }
@@ -276,7 +277,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActionsLinksContextMenuRole: {
         return ActivityListModel::convertLinksToMenuEntries(a);
     }
-    
+
     case ActionsLinksForActionButtonsRole: {
         return ActivityListModel::convertLinksToActionButtons(a);
     }
@@ -354,9 +355,10 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return replyMessageSent(a);
     case TalkNotificationUserAvatarRole:
         return a._talkNotificationData.userAvatar;
-    default:
-        return QVariant();
+    case ActivityRole:
+        return QVariant::fromValue(a);
     }
+
     return QVariant();
 }
 
@@ -429,11 +431,15 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
 
         auto a = Activity::fromActivityJson(json, _accountState->account());
 
+        if(_presentedActivities.contains(a._id)) {
+            continue;
+        }
+
         list.append(a);
+        _presentedActivities.insert(a._id);
         _currentItem = list.last()._id;
 
-        _totalActivitiesFetched++;
-        if (_totalActivitiesFetched == _maxActivities
+        if (_presentedActivities.count() >= _maxActivities
             || (_hideOldActivities && a._dateTime < oldestDate)) {
             _showMoreActivitiesAvailableEntry = true;
             _doneFetching = true;
@@ -441,15 +447,10 @@ void ActivityListModel::ingestActivities(const QJsonArray &activities)
         }
     }
 
-    _activityLists.append(list);
-
     if (list.size() > 0) {
-        std::sort(list.begin(), list.end());
-        beginInsertRows({}, _finalList.size(), _finalList.size() + list.size() - 1);
-        _finalList.append(list);
-        endInsertRows();
-
+        addEntriesToActivityList(list, ActivityEntryType::ActivityType);
         appendMoreActivitiesAvailableEntry();
+        _activityLists.append(list);
     }
 }
 
@@ -458,6 +459,7 @@ void ActivityListModel::appendMoreActivitiesAvailableEntry()
     const QString moreActivitiesEntryObjectType = QLatin1String("activity_fetch_more_activities");
     if (_showMoreActivitiesAvailableEntry && !_finalList.isEmpty()
         && _finalList.last()._objectType != moreActivitiesEntryObjectType) {
+
         Activity a;
         a._type = Activity::ActivityType;
         a._accName = _accountState->account()->displayName();
@@ -470,9 +472,7 @@ void ActivityListModel::appendMoreActivitiesAvailableEntry()
             a._link = app->url();
         }
 
-        beginInsertRows({}, _finalList.size(), _finalList.size());
-        _finalList.append(a);
-        endInsertRows();
+        addEntriesToActivityList({a}, ActivityEntryType::MoreActivitiesAvailableType);
     }
 }
 
@@ -489,37 +489,18 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
         a._dateTime = QDateTime::currentDateTime();
         a._icon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
 
-        beginInsertRows({}, 0, 0);
-        _finalList.prepend(a);
-        endInsertRows();
+    if (_currentlyFetching && _finalList.isEmpty()) {
+        _dummyFetchingActivities._type = Activity::ActivityType;
+        _dummyFetchingActivities._accName = _accountState->account()->displayName();
+        _dummyFetchingActivities._id = -2;
+        _dummyFetchingActivities._objectType = dummyFetchingActivityObjectType;
+        _dummyFetchingActivities._subject = tr("Fetching activities …");
+        _dummyFetchingActivities._dateTime = QDateTime::currentDateTime();
+        _dummyFetchingActivities._icon = QLatin1String("qrc:///client/theme/colored/change-bordered.svg");
+
+        addEntriesToActivityList({_dummyFetchingActivities}, ActivityEntryType::DummyFetchingActivityType);
     } else if (!_finalList.isEmpty() && _finalList.first()._objectType == dummyFetchingActivityObjectType) {
-        beginRemoveRows({}, 0, 0);
-        _finalList.removeAt(0);
-        endRemoveRows();
-    }
-}
-
-void ActivityListModel::clearActivities()
-{
-    _activityLists.clear();
-    if (!_finalList.isEmpty()) {
-        const auto firstActivityIt = std::find_if(std::begin(_finalList), std::end(_finalList),
-            [&](const Activity &activity) { return activity._type == Activity::ActivityType; });
-
-        if (firstActivityIt != std::end(_finalList)) {
-            const auto lastActivityItReverse = std::find_if(std::rbegin(_finalList), std::rend(_finalList),
-                    [&](const Activity &activity) { return activity._type == Activity::ActivityType; });
-
-            const auto lastActivityIt = (lastActivityItReverse + 1).base();
-
-            if (lastActivityIt != std::end(_finalList)) {
-                const int beginRemoveIndex = std::distance(std::begin(_finalList), firstActivityIt);
-                const int endRemoveIndex = std::distance(std::begin(_finalList), lastActivityIt);
-                beginRemoveRows({}, beginRemoveIndex, endRemoveIndex);
-                _finalList.erase(firstActivityIt, std::end(_finalList));
-                endRemoveRows();
-            }
-        }
+        removeActivityFromActivityList(_dummyFetchingActivities);
     }
 }
 
@@ -542,14 +523,161 @@ void ActivityListModel::activitiesReceived(const QJsonDocument &json, int status
     emit activityJobStatusCode(statusCode);
 }
 
-void ActivityListModel::addErrorToActivityList(Activity activity)
+std::pair<int, int> ActivityListModel::rowRangeForEntryType(const ActivityEntryType type) const
 {
-    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._subject;
-    _notificationErrorsLists.prepend(activity);
-    combineActivityLists();
+    // We want to present activities in a certain order, and we want to ensure entry types are grouped together.
+    // We therefore need to find the range of rows in the finalList that represent an entry type group.
+    int startRow = 0;
+
+    // We start from the type that we want to push down the furthest. Cascade through switch cases.
+    // Each time we fall through we add the count of elements in each of the sections that go above.
+    // So, items at the top of the activity list have a startRow of 1. The next section gets the count of that first
+    // section's elements added to startRow. Section 3 gets the count of Section 1 and Section 2 added to startRow.
+    // This goes on and on, with the last section getting startRow as the count of ALL section's element counts.
+
+    switch(type) {
+    case ActivityEntryType::MoreActivitiesAvailableType: // Always needs to be at the bottom
+        startRow = _finalList.count();
+        break;
+    case ActivityEntryType::ActivityType:
+        startRow += _syncFileItemLists.count();
+        Q_FALLTHROUGH();
+    case ActivityEntryType::SyncFileItemType:
+        startRow += _notificationLists.count();
+        Q_FALLTHROUGH();
+    case ActivityEntryType::NotificationType:
+        // We only show one activity for ignored files
+        if(_listOfIgnoredFiles.count() > 0) {
+            startRow += 1;
+        }
+        Q_FALLTHROUGH();
+    case ActivityEntryType::IgnoredFileType:
+        startRow += _notificationErrorsLists.count();
+        Q_FALLTHROUGH();
+    // Remaining types should go at top
+    case ActivityEntryType::ErrorType:
+    case ActivityEntryType::DummyFetchingActivityType:
+        break;
+    }
+
+    // To calculate the end row of the section, we just get the number of entries in the relevant section and then
+    // add it to the startRow.
+
+    int entryRowCount = -1;
+
+    switch(type) {
+    case ActivityEntryType::ActivityType:
+        entryRowCount = _activityLists.count();
+        break;
+    case ActivityEntryType::SyncFileItemType:
+        entryRowCount = _syncFileItemLists.count();
+        break;
+    case ActivityEntryType::NotificationType:
+        entryRowCount = _notificationLists.count();
+        break;
+    case ActivityEntryType::ErrorType:
+        entryRowCount = _notificationErrorsLists.count();
+        break;
+
+    // Single activity sections
+    case ActivityEntryType::IgnoredFileType:
+        if(_listOfIgnoredFiles.count() == 0) {
+            break;
+        }
+        Q_FALLTHROUGH();
+    case ActivityEntryType::MoreActivitiesAvailableType:
+        if(!_showMoreActivitiesAvailableEntry) {
+            break;
+        }
+        Q_FALLTHROUGH();
+    case ActivityEntryType::DummyFetchingActivityType:
+        if(_finalList.count() > 0 && _finalList.first() != _dummyFetchingActivities) {
+            break;
+        }
+
+        // All cascade down to here
+        entryRowCount = 1;
+        break;
+    }
+
+    // Even though we always return a startRow even if the section does not exist,
+    // we return -1 as endRow if the section does not exist.
+    // If we have a -1 we also know that the startRow is "theoretical", where the section
+    // "should" begin, not necessarily where it "does" begin
+    const auto endRow = entryRowCount > 0 ? startRow + entryRowCount - 1 : -1;
+
+    return {startRow, endRow};
 }
 
-void ActivityListModel::addIgnoredFileToList(Activity newActivity)
+// Make sure to add activities to their specific entry type lists AFTER adding them to the main list
+void ActivityListModel::addEntriesToActivityList(const ActivityList &activityList, const ActivityEntryType type)
+{
+    if(activityList.isEmpty()) {
+        return;
+    }
+
+    const auto entryTypeSectionRowRange = rowRangeForEntryType(type);
+
+    auto sortedList = activityList;
+    std::sort(sortedList.begin(), sortedList.end());
+
+    if(_finalList.count() == 0 || entryTypeSectionRowRange.second == -1) {
+        // If the finalList is empty or there are no entries belonging to the entry type section, we don't
+        // need to bother with inserting in a correct order and can more quickly just insert all activities.
+        const auto startRow = entryTypeSectionRowRange.first;
+        const auto endRow = startRow + sortedList.count() - 1;
+
+        beginInsertRows({}, startRow, endRow);
+        int i = startRow;
+        for(const auto &activity : sortedList) {
+            _finalList.insert(i, activity);
+            ++i;
+        }
+        endInsertRows();
+        return;
+    }
+
+    // If the finalList is not empty and the entry type's section actually exists (i.e. there is at least
+    // one entry belonging to this entry in the finalList) then we are going to add them granularly.
+    // We make sure to insert the item in a specific place so as to preserve the sort order.
+    int sectionRowEnd = entryTypeSectionRowRange.second;
+
+    const auto insertRow = [&](const int row, const Activity &activity) {
+        beginInsertRows({}, row, row);
+        _finalList.insert(row, activity);
+        endInsertRows();
+        ++sectionRowEnd;
+    };
+
+    for(const auto &activity : sortedList) {
+        auto currentRow = entryTypeSectionRowRange.first;
+
+        while(currentRow <= sectionRowEnd) {
+            if(currentRow == sectionRowEnd) {
+                insertRow(currentRow + 1, activity);
+                break;
+            }
+
+            if(activity < _finalList[currentRow]) {
+                insertRow(currentRow, activity);
+                break;
+            }
+
+            ++currentRow;
+        }
+    }
+
+    return;
+}
+
+void ActivityListModel::addErrorToActivityList(const Activity &activity)
+{
+    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._subject;
+    addEntriesToActivityList({activity}, ActivityEntryType::ErrorType);
+    _notificationErrorsLists.prepend(activity);
+}
+
+void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
 {
     qCInfo(lcActivity) << "First checking for duplicates then add file to the notification list of ignored files: " << newActivity._file;
 
@@ -557,6 +685,7 @@ void ActivityListModel::addIgnoredFileToList(Activity newActivity)
     if (_listOfIgnoredFiles.size() == 0) {
         _notificationIgnoredFiles = newActivity;
         _notificationIgnoredFiles._subject = tr("Files from the ignore list as well as symbolic links are not synced.");
+        addEntriesToActivityList({_notificationIgnoredFiles}, ActivityEntryType::IgnoredFileType);
         _listOfIgnoredFiles.append(newActivity);
         return;
     }
@@ -573,65 +702,54 @@ void ActivityListModel::addIgnoredFileToList(Activity newActivity)
     }
 }
 
-void ActivityListModel::addNotificationToActivityList(Activity activity)
+void ActivityListModel::addNotificationToActivityList(const Activity &activity)
 {
     qCInfo(lcActivity) << "Notification successfully added to the notification list: " << activity._subject;
+    addEntriesToActivityList({activity}, ActivityEntryType::NotificationType);
     _notificationLists.prepend(activity);
-    combineActivityLists();
 }
 
-void ActivityListModel::clearNotifications()
+void ActivityListModel::addSyncFileItemToActivityList(const Activity &activity)
 {
-    qCInfo(lcActivity) << "Clear the notifications";
-    _notificationLists.clear();
-    combineActivityLists();
+    qCInfo(lcActivity) << "Successfully added to the activity list: " << activity._subject;
+    addEntriesToActivityList({activity}, ActivityEntryType::SyncFileItemType);
+    _syncFileItemLists.prepend(activity);
 }
 
 void ActivityListModel::removeActivityFromActivityList(int row)
 {
     Activity activity = _finalList.at(row);
     removeActivityFromActivityList(activity);
-    combineActivityLists();
 }
 
-void ActivityListModel::addSyncFileItemToActivityList(Activity activity)
-{
-    qCInfo(lcActivity) << "Successfully added to the activity list: " << activity._subject;
-    _syncFileItemLists.prepend(activity);
-    combineActivityLists();
-}
-
-void ActivityListModel::removeActivityFromActivityList(Activity activity)
+void ActivityListModel::removeActivityFromActivityList(const Activity &activity)
 {
     qCInfo(lcActivity) << "Activity/Notification/Error successfully dismissed: " << activity._subject;
     qCInfo(lcActivity) << "Trying to remove Activity/Notification/Error from view... ";
 
-    int index = -1;
-    if (activity._type == Activity::ActivityType) {
-        index = _activityLists.indexOf(activity);
-        if (index != -1) {
-            _activityLists.removeAt(index);
-            const auto indexInFinalList = _finalList.indexOf(activity);
-            if (indexInFinalList != -1) {
-                beginRemoveRows({}, indexInFinalList, indexInFinalList);
-                _finalList.removeAt(indexInFinalList);
-                endRemoveRows();
-            }
-        }
-    } else if (activity._type == Activity::NotificationType) {
-        index = _notificationLists.indexOf(activity);
-        if (index != -1)
-            _notificationLists.removeAt(index);
-    } else {
-        index = _notificationErrorsLists.indexOf(activity);
-        if (index != -1)
-            _notificationErrorsLists.removeAt(index);
-    }
-
+    const auto index = _finalList.indexOf(activity);
     if (index != -1) {
         qCInfo(lcActivity) << "Activity/Notification/Error successfully removed from the list.";
         qCInfo(lcActivity) << "Updating Activity/Notification/Error view.";
-        combineActivityLists();
+
+        beginRemoveRows({}, index, index);
+        _finalList.removeAt(index);
+        endRemoveRows();
+    }
+
+    if (activity._type == Activity::ActivityType) {
+        const auto activityListIndex = _activityLists.indexOf(activity);
+        if (activityListIndex != -1) {
+            _activityLists.removeAt(activityListIndex);
+        }
+    } else if (activity._type == Activity::NotificationType) {
+        const auto notificationListIndex = _notificationLists.indexOf(activity);
+        if (notificationListIndex != -1)
+            _notificationLists.removeAt(notificationListIndex);
+    } else {
+        const auto notificationErrorsListIndex = _notificationErrorsLists.indexOf(activity);
+        if (notificationErrorsListIndex != -1)
+            _notificationErrorsLists.removeAt(notificationErrorsListIndex);
     }
 }
 
@@ -825,47 +943,6 @@ QVariantList ActivityListModel::convertLinksToMenuEntries(const Activity &activi
     return customList;
 }
 
-void ActivityListModel::combineActivityLists()
-{
-    ActivityList resultList;
-
-    if (_notificationErrorsLists.count() > 0) {
-        std::sort(_notificationErrorsLists.begin(), _notificationErrorsLists.end());
-        resultList.append(_notificationErrorsLists);
-    }
-    if (_listOfIgnoredFiles.size() > 0)
-        resultList.append(_notificationIgnoredFiles);
-
-    if (_notificationLists.count() > 0) {
-        std::sort(_notificationLists.begin(), _notificationLists.end());
-        resultList.append(_notificationLists);
-    }
-
-    if (_syncFileItemLists.count() > 0) {
-        std::sort(_syncFileItemLists.begin(), _syncFileItemLists.end());
-        resultList.append(_syncFileItemLists);
-    }
-
-    if (_activityLists.count() > 0) {
-        std::sort(_activityLists.begin(), _activityLists.end());
-        resultList.append(_activityLists);
-    }
-
-    if (_finalList.isEmpty() && !resultList.isEmpty()) {
-        beginInsertRows({}, 0, resultList.size() - 1);
-        _finalList = resultList;
-        endInsertRows();
-    } else if (!_finalList.isEmpty()) {
-        beginResetModel();
-        _finalList = resultList;
-        endResetModel();
-    }
-
-    if (_activityLists.size() > 0) {
-        appendMoreActivitiesAvailableEntry();
-    }
-}
-
 bool ActivityListModel::canFetchActivities() const
 {
     return _accountState->isConnected() && _accountState->account()->capabilities().hasActivities();
@@ -880,17 +957,14 @@ void ActivityListModel::fetchMore(const QModelIndex &)
 
 void ActivityListModel::slotRefreshActivity()
 {
-    clearActivities();
     _doneFetching = false;
     _currentItem = 0;
-    _totalActivitiesFetched = 0;
     _showMoreActivitiesAvailableEntry = false;
 
     if (canFetchActivities()) {
         startFetchJob();
     } else {
         _doneFetching = true;
-        combineActivityLists();
     }
 }
 
@@ -905,10 +979,10 @@ void ActivityListModel::slotRemoveAccount()
 {
     _finalList.clear();
     _activityLists.clear();
+    _presentedActivities.clear();
     setAndRefreshCurrentlyFetching(false);
     _doneFetching = false;
     _currentItem = 0;
-    _totalActivitiesFetched = 0;
     _showMoreActivitiesAvailableEntry = false;
 }
 
