@@ -185,6 +185,14 @@
     </message>
 </context>
 <context>
+    <name>EmojiPicker</name>
+    <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <source>No recent emojis</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileSystem</name>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
@@ -5394,54 +5402,54 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Baixar</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="157"/>
+        <location filename="../src/gui/systray.cpp" line="170"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="159"/>
+        <location filename="../src/gui/systray.cpp" line="172"/>
         <source>Open main dialog</source>
         <translation>Abrir a caixa de diálogo principal</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="162"/>
-        <location filename="../src/gui/systray.cpp" line="173"/>
+        <location filename="../src/gui/systray.cpp" line="175"/>
+        <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Pause sync</source>
         <translation>Pausar sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="163"/>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="176"/>
+        <location filename="../src/gui/systray.cpp" line="191"/>
         <source>Resume sync</source>
         <translation>Continuar a sincronização</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="164"/>
+        <location filename="../src/gui/systray.cpp" line="177"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="165"/>
+        <location filename="../src/gui/systray.cpp" line="178"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="166"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Exit %1</source>
         <translation>Sair do %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="173"/>
+        <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Pause sync for all</source>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="191"/>
         <source>Resume sync for all</source>
         <translation>Continuar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="335"/>
+        <location filename="../src/gui/systray.cpp" line="347"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5558,14 +5566,19 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Não foi possível buscar status predefinidos. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation>Não foi possível verificar o status. Verifique se você está conectado ao servidor.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>Não foi possível buscar o status do usuário. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Não foi possível verificar o status. Verifique se você está conectado ao servidor.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation>O recurso de status não é suportado. Você não poderá definir seu status.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5573,9 +5586,9 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O recurso de status do usuário não é compatível. Você não poderá definir seu status de usuário.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>O recurso de status não é suportado. Você não poderá definir seu status.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation>Emojis não são suportados. Algumas funcionalidades de status podem não funcionar.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
@@ -5583,9 +5596,9 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O recurso emojis não é compatível. Algumas funcionalidades de status do usuário podem não funcionar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Emojis não são suportados. Algumas funcionalidades de status podem não funcionar.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation>Não foi possível definir o status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5593,19 +5606,14 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Não foi possível definir o status do usuário. Certifique-se de estar conectado ao servidor.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Não foi possível definir o status. Verifique se você está conectado ao servidor.</translation>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation>Não foi possível limpar a mensagem de status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>Não foi possível limpar a mensagem de status do usuário. Certifique-se de estar conectado ao servidor.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Não foi possível limpar a mensagem de status. Verifique se você está conectado ao servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6661,126 +6669,111 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="137"/>
+        <location filename="../src/gui/tray/Window.qml" line="148"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Diálogo principal do Nextcloud Desktop</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="164"/>
+        <location filename="../src/gui/tray/Window.qml" line="175"/>
         <source>Current account</source>
         <translation>Conta atual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="170"/>
-        <location filename="../src/gui/tray/Window.qml" line="310"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="321"/>
         <source>Resume sync for all</source>
         <translation>Retomar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="170"/>
-        <location filename="../src/gui/tray/Window.qml" line="310"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="321"/>
         <source>Pause sync for all</source>
         <translation>Pausar a sincronização para todos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="230"/>
+        <location filename="../src/gui/tray/Window.qml" line="241"/>
         <source>Set user status</source>
         <translation>Definir o status do usuário</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="268"/>
+        <location filename="../src/gui/tray/Window.qml" line="279"/>
         <source>Add account</source>
         <translation>Adicionar conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="281"/>
+        <location filename="../src/gui/tray/Window.qml" line="292"/>
         <source>Add new account</source>
         <translation>Adicionar nova conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="316"/>
+        <location filename="../src/gui/tray/Window.qml" line="327"/>
         <source>Settings</source>
         <translation>Configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="339"/>
+        <location filename="../src/gui/tray/Window.qml" line="350"/>
         <source>Exit</source>
         <translation>Sair</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="384"/>
+        <location filename="../src/gui/tray/Window.qml" line="395"/>
         <source>Current user avatar</source>
         <translation>Avatar do usuário atual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="423"/>
+        <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Current user status is online</source>
         <translation>Online é o status atual do usuário</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="423"/>
+        <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Current user status is do not disturb</source>
         <translation>Não Perturbe é o status atual do usuário</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="410"/>
+        <location filename="../src/gui/tray/Window.qml" line="390"/>
         <source>Current account avatar</source>
         <translation>Avatar da conta atual</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="449"/>
+        <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is online</source>
         <translation>O status da conta atual é online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="449"/>
+        <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is do not disturb</source>
         <translation>O status da conta atual é não perturbe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
+        <location filename="../src/gui/tray/Window.qml" line="500"/>
         <source>Account switcher and settings menu</source>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="508"/>
+        <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Open local folder of current account</source>
         <translation>Abrir pasta local da conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Abrir janela de compartilhamento</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="567"/>
+        <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir o Nextcloud Talk no navegador</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="587"/>
-        <source>More apps</source>
-        <translation>Mais aplicativos</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Menu de aplicativos</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="628"/>
-        <source>Open %1 in browser</source>
-        <translation>Abrir %1 no navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6793,13 +6786,28 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Abrir %1 localmente</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Abrir janela de compartilhamento</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="598"/>
+        <source>More apps</source>
+        <translation>Mais aplicativos</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="639"/>
+        <source>Open %1 in browser</source>
+        <translation>Abrir %1 no navegador</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Mostrar mais ações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="752"/>
+        <location filename="../src/gui/tray/Window.qml" line="763"/>
         <source>Unified search results list</source>
         <translation>Lista unificada de resultados de pesquisa </translation>
     </message>
@@ -6809,7 +6817,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Compartilhar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="824"/>
+        <location filename="../src/gui/tray/Window.qml" line="835"/>
         <source>%1 - File activity</source>
         <translation>%1 - Atividade de arquivo</translation>
     </message>
