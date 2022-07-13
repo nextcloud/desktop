@@ -185,6 +185,14 @@
     </message>
 </context>
 <context>
+    <name>EmojiPicker</name>
+    <message>
+        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <source>No recent emojis</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileSystem</name>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
@@ -5394,54 +5402,54 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="157"/>
+        <location filename="../src/gui/systray.cpp" line="170"/>
         <source>Add account</source>
         <translation>Dodaj račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="159"/>
+        <location filename="../src/gui/systray.cpp" line="172"/>
         <source>Open main dialog</source>
         <translation>Odpri glavno pogovorno okno</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="162"/>
-        <location filename="../src/gui/systray.cpp" line="173"/>
+        <location filename="../src/gui/systray.cpp" line="175"/>
+        <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Pause sync</source>
         <translation>Ustavi usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="163"/>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="176"/>
+        <location filename="../src/gui/systray.cpp" line="191"/>
         <source>Resume sync</source>
         <translation>Nadaljuj z usklajevanjem</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="164"/>
+        <location filename="../src/gui/systray.cpp" line="177"/>
         <source>Settings</source>
         <translation>Nastavitve</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="165"/>
+        <location filename="../src/gui/systray.cpp" line="178"/>
         <source>Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="166"/>
+        <location filename="../src/gui/systray.cpp" line="179"/>
         <source>Exit %1</source>
         <translation>Končaj %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="173"/>
+        <location filename="../src/gui/systray.cpp" line="185"/>
         <source>Pause sync for all</source>
         <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="191"/>
         <source>Resume sync for all</source>
         <translation>Nadaljuj z usklajevanjem za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="335"/>
+        <location filename="../src/gui/systray.cpp" line="347"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5558,13 +5566,18 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Ni mogoče pridobiti določenih stanj. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>Ni mogoče pridobiti stanja uporabnika. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="145"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5573,8 +5586,8 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Možnost prikaza stanja uporabnika ni podprta. Uporabniškega statusa ne bo mogoče nastaviti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="149"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5583,8 +5596,8 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Možnost uporabe izraznih ikon ni podprta. Nekatere možnosti stanja uporabnika morda ne bodo na voljo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="153"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5593,19 +5606,14 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Stanja uporabnika ni mogoče nastaviti. Prepričajte se, da ste povezani s strežnikom.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="157"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>Sporočila o stanju uporabnika ni bilo mogoče izbrisati. Prepričajte se, da ste povezani s strežnikom.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="161"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6661,126 +6669,111 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="137"/>
+        <location filename="../src/gui/tray/Window.qml" line="148"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Glavni vmesnik namizja Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="164"/>
+        <location filename="../src/gui/tray/Window.qml" line="175"/>
         <source>Current account</source>
         <translation>Trenutni račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="170"/>
-        <location filename="../src/gui/tray/Window.qml" line="310"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="321"/>
         <source>Resume sync for all</source>
         <translation>Nadaljuj z usklajevanjem za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="170"/>
-        <location filename="../src/gui/tray/Window.qml" line="310"/>
+        <location filename="../src/gui/tray/Window.qml" line="181"/>
+        <location filename="../src/gui/tray/Window.qml" line="321"/>
         <source>Pause sync for all</source>
         <translation>Ustavi usklajevanje za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="230"/>
+        <location filename="../src/gui/tray/Window.qml" line="241"/>
         <source>Set user status</source>
         <translation>Nastavi stanje uporabnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="268"/>
+        <location filename="../src/gui/tray/Window.qml" line="279"/>
         <source>Add account</source>
         <translation>Dodaj račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="281"/>
+        <location filename="../src/gui/tray/Window.qml" line="292"/>
         <source>Add new account</source>
         <translation>Dodaj račun</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="316"/>
+        <location filename="../src/gui/tray/Window.qml" line="327"/>
         <source>Settings</source>
         <translation>Nastavitve</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="339"/>
+        <location filename="../src/gui/tray/Window.qml" line="350"/>
         <source>Exit</source>
         <translation>Končaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="384"/>
+        <location filename="../src/gui/tray/Window.qml" line="395"/>
         <source>Current user avatar</source>
         <translation>Trenutna podoba uporabnika</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="423"/>
+        <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Current user status is online</source>
         <translation>Trenutno je uporabnik povezan</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="423"/>
+        <location filename="../src/gui/tray/Window.qml" line="434"/>
         <source>Current user status is do not disturb</source>
         <translation>Trenutno uporabnik ne želi motenj</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="410"/>
+        <location filename="../src/gui/tray/Window.qml" line="390"/>
         <source>Current account avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="449"/>
+        <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="449"/>
+        <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="489"/>
+        <location filename="../src/gui/tray/Window.qml" line="500"/>
         <source>Account switcher and settings menu</source>
         <translation>Preklopnik računov in meni nastavitev</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="508"/>
+        <location filename="../src/gui/tray/Window.qml" line="519"/>
         <source>Open local folder of current account</source>
         <translation>Odpri krajevno mapo v trenutnem računu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Connected</source>
         <translation>Povezano</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="531"/>
+        <location filename="../src/gui/tray/Window.qml" line="542"/>
         <source>Disconnected</source>
         <translation>Brez povezave</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Odpri pogovorno okno souporabe</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="567"/>
+        <location filename="../src/gui/tray/Window.qml" line="578"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Odpri Nextcloud Talk v brskalniku</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="587"/>
-        <source>More apps</source>
-        <translation>Več programov</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Meni programov</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="628"/>
-        <source>Open %1 in browser</source>
-        <translation>Odpri %1 v brskalniku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6793,13 +6786,28 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Odpri datoteko %1 krajevno</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Odpri pogovorno okno souporabe</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="598"/>
+        <source>More apps</source>
+        <translation>Več programov</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="639"/>
+        <source>Open %1 in browser</source>
+        <translation>Odpri %1 v brskalniku</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
         <location filename="../src/gui/tray/Window.qml" line="723"/>
         <source>Show more actions</source>
         <translation>Pokaži več možnosti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="752"/>
+        <location filename="../src/gui/tray/Window.qml" line="763"/>
         <source>Unified search results list</source>
         <translation>Poenoten seznam zadetkov iskanja</translation>
     </message>
@@ -6809,7 +6817,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Souporaba %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="824"/>
+        <location filename="../src/gui/tray/Window.qml" line="835"/>
         <source>%1 - File activity</source>
         <translation>%1 – Dejavnost datoteke</translation>
     </message>
