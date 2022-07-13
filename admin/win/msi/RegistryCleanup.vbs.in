@@ -1,6 +1,7 @@
 On Error goto 0
 
 Const HKEY_LOCAL_MACHINE = &H80000002
+Const HKEY_CURRENT_USER = &H80000001
 
 Const strObjRegistry = "winmgmts:\\.\root\default:StdRegProv"
 
@@ -49,6 +50,25 @@ Function RegistryCleanupSyncRootManager()
   End If
 End Function
 
+Function RegistryCleanupCfApiShellExtensions()
+  Set objRegistry = GetObject(strObjRegistry)
+
+  strShellExtThumbnailHandlerAppId = "Software\Classes\AppID\{@CFAPI_SHELLEXT_APPID@}"
+  strShellExtThumbnailHandlerClsId = "Software\Classes\CLSID\{@CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID@}"
+
+  rootKey = HKEY_CURRENT_USER
+
+  If objRegistry.EnumKey(rootKey, strShellExtThumbnailHandlerAppId, arrSubKeys) = 0 Then
+    RegistryDeleteKeyRecursive rootKey, strShellExtThumbnailHandlerAppId
+  End If
+
+  If objRegistry.EnumKey(rootKey, strShellExtThumbnailHandlerClsId, arrSubKeys) = 0 Then
+    RegistryDeleteKeyRecursive rootKey, strShellExtThumbnailHandlerClsId
+  End If
+
+End Function
+
 Function RegistryCleanup()
   RegistryCleanupSyncRootManager()
+  RegistryCleanupCfApiShellExtensions()
 End Function
