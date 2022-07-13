@@ -29,7 +29,7 @@ public:
 public slots:
     void load(AccountState *accountState, const int objectId);
 
-protected:
+protected slots:
     void startFetchJob() override;
 
 private:
