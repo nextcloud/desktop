@@ -895,38 +895,36 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
 
     auto *pi = &folder._progress;
 
-    const QVector<int> roles = { FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount, Qt::ToolTipRole };
+    if (progress.status() == ProgressInfo::Done && !progress._lastCompletedItem.isEmpty()
+        && Progress::isWarningKind(progress._lastCompletedItem._status)) {
+        pi->_warningCount++;
+    }
+    // depending on the use of virtual files or small files this slot might be called very often.
+    // throttle the model updates to prevent an needlessly high cpu usage used on ui updates.
+    if (std::chrono::steady_clock::now() - folder._lastProgressUpdated > progressUpdateTimeOutC) {
+        const QVector<int> roles = { FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount, Qt::ToolTipRole };
 
-    switch (progress.status()) {
-    case ProgressInfo::None:
-        Q_UNREACHABLE();
-    case ProgressInfo::Discovery:
-        if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
-            pi->_overallSyncString = tr("Checking for changes in remote '%1'").arg(progress._currentDiscoveredRemoteFolder);
-            emit dataChanged(index(folderIndex), index(folderIndex), roles);
-        } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
-            pi->_overallSyncString = tr("Checking for changes in local '%1'").arg(progress._currentDiscoveredLocalFolder);
-            emit dataChanged(index(folderIndex), index(folderIndex), roles);
-        }
-        break;
-    case ProgressInfo::Reconcile:
-        pi->_overallSyncString = tr("Reconciling changes");
-        emit dataChanged(index(folderIndex), index(folderIndex), roles);
-        break;
-    case ProgressInfo::Propagation:
-        Q_FALLTHROUGH();
-    case ProgressInfo::Done:
-        if (!progress._lastCompletedItem.isEmpty()
-            && Progress::isWarningKind(progress._lastCompletedItem._status)) {
-            pi->_warningCount++;
-        }
-
-        // progress updates are expensive, throtle them
-        if (std::chrono::steady_clock::now() - folder._lastProgressUpdated > progressUpdateTimeOutC) {
+        switch (progress.status()) {
+        case ProgressInfo::None:
+            Q_UNREACHABLE();
+            break;
+        case ProgressInfo::Discovery:
+            if (!progress._currentDiscoveredRemoteFolder.isEmpty()) {
+                pi->_overallSyncString = tr("Checking for changes in remote '%1'").arg(progress._currentDiscoveredRemoteFolder);
+            } else if (!progress._currentDiscoveredLocalFolder.isEmpty()) {
+                pi->_overallSyncString = tr("Checking for changes in local '%1'").arg(progress._currentDiscoveredLocalFolder);
+            }
+            break;
+        case ProgressInfo::Reconcile:
+            pi->_overallSyncString = tr("Reconciling changes");
+            break;
+        case ProgressInfo::Propagation:
+            Q_FALLTHROUGH();
+        case ProgressInfo::Done:
             computeProgress(progress, pi);
-            folder._lastProgressUpdated = std::chrono::steady_clock::now();
-            emit dataChanged(index(folderIndex), index(folderIndex), roles);
         }
+        emit dataChanged(index(folderIndex), index(folderIndex), roles);
+        folder._lastProgressUpdated = std::chrono::steady_clock::now();
     }
 }
 
