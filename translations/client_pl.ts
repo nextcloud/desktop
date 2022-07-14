@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="132"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>Brak najnowszych emoji</translation>
     </message>
 </context>
 <context>
