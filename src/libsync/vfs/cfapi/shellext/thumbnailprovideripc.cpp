@@ -19,7 +19,6 @@
 #include <QtNetwork/QLocalSocket>
 #include <QJsonDocument>
 #include <QObject>
-#include <Windows.h>
 namespace {
 // we don't want to block the Explorer for too long (default is 30K, so we'd keep it at 10K, except QLocalSocket::waitForDisconnected())
 constexpr auto socketTimeoutMs = 10000;
@@ -29,9 +28,7 @@ namespace CfApiShellExtensions {
 
 ThumbnailProviderIpc::ThumbnailProviderIpc()
 {
-    MessageBox(NULL, L"TEST", L"TEST", MB_OK);
     _localSocket = new QLocalSocket();
-    auto isOpen = _localSocket->isOpen();
 }
 ThumbnailProviderIpc::~ThumbnailProviderIpc()
 {
