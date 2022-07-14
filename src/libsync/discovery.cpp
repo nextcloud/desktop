@@ -957,7 +957,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else {
             // Signal to future checkPermissions() to forbid the REMOVE and set to restore instead
             qCInfo(lcDisco) << "Preventing future remove on source" << originalPath;
-            _discoveryData->_forbiddenDeletes[originalPath + QLatin1Char('/')] = true;
+            _discoveryData->_forbiddenDeletes.insert(originalPath + QLatin1Char('/'));
         }
         return;
     }
@@ -1234,11 +1234,12 @@ bool ProcessDirectoryJob::checkPermissions(const OCC::SyncFileItemPtr &item)
     }
     case CSYNC_INSTRUCTION_REMOVE: {
         QString fileSlash = item->_file + QLatin1Char('/');
-        auto forbiddenIt = _discoveryData->_forbiddenDeletes.upperBound(fileSlash);
-        if (forbiddenIt != _discoveryData->_forbiddenDeletes.begin())
-            forbiddenIt -= 1;
-        if (forbiddenIt != _discoveryData->_forbiddenDeletes.end()
-            && fileSlash.startsWith(forbiddenIt.key())) {
+        auto forbiddenIt = _discoveryData->_forbiddenDeletes.upper_bound(fileSlash);
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.cbegin()) {
+            forbiddenIt--;
+        }
+        if (forbiddenIt != _discoveryData->_forbiddenDeletes.cend()
+            && fileSlash.startsWith(*forbiddenIt)) {
             item->_instruction = CSYNC_INSTRUCTION_NEW;
             item->_direction = SyncFileItem::Down;
             item->_isRestoration = true;

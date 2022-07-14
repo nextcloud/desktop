@@ -192,8 +192,8 @@ class DiscoveryPhase : public QObject
     // All entries should have a trailing slash (even files), so lookup with
     // lowerBound() is reliable.
     //
-    // The value of this map doesn't matter.
-    QMap<QString, bool> _forbiddenDeletes;
+    // needs to be sorted
+    std::set<QString> _forbiddenDeletes;
 
     /** Returns whether the db-path has been renamed locally or on the remote.
      *
