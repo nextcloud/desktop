@@ -438,13 +438,13 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     if (!_ignoredFirst) {
         // The first entry is for the folder itself, we should process it differently.
         _ignoredFirst = true;
-        if (map.contains(QStringLiteral("permissions"))) {
-            auto perm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
+        if (auto it = Utility::optionalFind(map, QStringLiteral("permissions"))) {
+            auto perm = RemotePermissions::fromServerString(it->value());
             emit firstDirectoryPermissions(perm);
             _isExternalStorage = perm.hasPermission(RemotePermissions::IsMounted);
         }
-        if (map.contains(QStringLiteral("data-fingerprint"))) {
-            _dataFingerprint = map.value(QStringLiteral("data-fingerprint")).toUtf8();
+        if (auto it = Utility::optionalFind(map, QStringLiteral("data-fingerprint"))) {
+            _dataFingerprint = it->value().toUtf8();
             if (_dataFingerprint.isEmpty()) {
                 // Placeholder that means that the server supports the feature even if it did not set one.
                 _dataFingerprint = "[empty]";
@@ -471,9 +471,9 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     }
 
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
-    if (map.contains(QStringLiteral("getetag"))) {
-        if (_firstEtag.isEmpty()) {
-            _firstEtag = parseEtag(map.value(QStringLiteral("getetag")).toUtf8()); // for directory itself
+    if (_firstEtag.isEmpty()) {
+        if (auto it = Utility::optionalFind(map, QStringLiteral("getetag"))) {
+            _firstEtag = parseEtag(it->value().toUtf8()); // for directory itself
         }
     }
 }
