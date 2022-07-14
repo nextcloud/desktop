@@ -387,39 +387,38 @@ void DiscoverySingleDirectoryJob::abort()
 
 static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInfo &result)
 {
-    for (auto it = map.constBegin(); it != map.constEnd(); ++it) {
-        QString property = it.key();
-        QString value = it.value();
-        if (property == QLatin1String("resourcetype")) {
-            result.isDirectory = value.contains(QLatin1String("collection"));
-        } else if (property == QLatin1String("getlastmodified")) {
-            const auto date = QDateTime::fromString(value, Qt::RFC2822Date);
-            Q_ASSERT(date.isValid());
-            result.modtime = date.toTime_t();
-        } else if (property == QLatin1String("getcontentlength")) {
-            // See #4573, sometimes negative size values are returned
-            bool ok = false;
-            qlonglong ll = value.toLongLong(&ok);
-            if (ok && ll >= 0) {
-                result.size = ll;
-            } else {
-                result.size = 0;
-            }
-        } else if (property == QLatin1String("getetag")) {
-            result.etag = Utility::normalizeEtag(value.toUtf8());
-        } else if (property == QLatin1String("id")) {
-            result.fileId = value.toUtf8();
-        } else if (property == QLatin1String("downloadURL")) {
-            result.directDownloadUrl = value;
-        } else if (property == QLatin1String("dDC")) {
-            result.directDownloadCookies = value;
-        } else if (property == QLatin1String("permissions")) {
-            result.remotePerm = RemotePermissions::fromServerString(value);
-        } else if (property == QLatin1String("checksums")) {
-            result.checksumHeader = findBestChecksum(value.toUtf8());
-        } else if (property == QLatin1String("share-types") && !value.isEmpty()) {
-            // Since QMap is sorted, "share-types" is always after "permissions".
-            if (result.remotePerm.isNull()) {
+    result.directDownloadUrl = map.value(QStringLiteral("downloadURL"));
+    result.directDownloadCookies = map.value(QStringLiteral("dDC"));
+
+    if (auto it = Utility::optionalFind(map, QStringLiteral("resourcetype"))
+    {
+        result.isDirectory = it->value().contains(QStringLiteral("collection"));
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("getlastmodified"))) {
+        const auto date = QDateTime::fromString(**it, Qt::RFC2822Date);
+        Q_ASSERT(date.isValid());
+        result.modtime = date.toTime_t();
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("getcontentlength"))) {
+        // See #4573, sometimes negative size values are returned
+        result.size = std::max<int64_t>(0, it->value().toLongLong());
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("getetag"))) {
+        result.etag = Utility::normalizeEtag(it->value().toUtf8());
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("id"))) {
+        result.fileId = it->value().toUtf8();
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("checksums"))) {
+        result.checksumHeader = findBestChecksum(it->value().toUtf8());
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("permissions"))) {
+        result.remotePerm = RemotePermissions::fromServerString(it->value());
+    }
+    if (auto it = Utility::optionalFind(map, QStringLiteral("share-types"))) {
+        const QString &value = it->value();
+        if (!value.isEmpty()) {
+            if (!map.contains(QStringLiteral("permissions"))) {
                 qWarning() << "Server returned a share type, but no permissions?";
                 // Empty permissions will cause a sync failure
             } else {
