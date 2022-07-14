@@ -1,4 +1,4 @@
-add_library(${CFAPI_SHELL_EXTENSIONS_LIB_NAME} SHARED
+add_library(${CFAPI_SHELL_EXTENSIONS_LIB_NAME} MODULE
     dllmain.cpp
     cfapishellintegrationclassfactory.cpp
     thumbnailprovider.cpp
