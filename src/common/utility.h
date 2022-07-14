@@ -34,6 +34,7 @@
 
 #include <functional>
 #include <memory>
+#include <optional>
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -362,6 +363,19 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
      * Replace all occurances of @{} values in template with the values from values
      */
     OCSYNC_EXPORT QString renderTemplate(QString templ, const QMap<QString, QString> &values);
+
+    /**
+     * Perform a const find on a Qt container and returns an std::optional<const_iterator>
+     * This allows performant access to the container with in a simple if condition.
+     * if (auto it = optionalFind("key"))
+     */
+    template <typename T>
+    auto optionalFind(const T &container, const QString &key)
+    {
+        auto it = container.constFind(key);
+        return it == container.cend() ? std::nullopt : std::make_optional(it);
+    }
+
 
 #ifdef Q_OS_LINUX
     OCSYNC_EXPORT QString appImageLocation();
