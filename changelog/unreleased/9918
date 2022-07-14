@@ -1,0 +1,9 @@
+Enhancement: We improved the performance of db access
+
+We removed a check for the existence of the db that was executed before every access to the db.
+
+The check was introduced in #6049 to prevent crashes if the db does not exist or is removed during runtime.
+We nowadays gracefully handle missing dbs on startup, removing the db at runtime is too much of a corner case
+to sacrifice that much performance however.
+
+https://github.com/owncloud/client/pull/9918
