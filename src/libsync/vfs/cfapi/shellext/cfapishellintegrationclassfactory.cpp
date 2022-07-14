@@ -17,11 +17,15 @@
 
 extern long dllReferenceCount;
 
-HRESULT CfApiShellIntegrationClassFactory::CreateInstance(REFCLSID clsid, const ClassObjectInit *classObjectInits, size_t classObjectInitsCount, REFIID riid, void **ppv)
+namespace CfApiShellExtensions {
+
+HRESULT CfApiShellIntegrationClassFactory::CreateInstance(
+    REFCLSID clsid, const ClassObjectInit *classObjectInits, size_t classObjectInitsCount, REFIID riid, void **ppv)
 {
     for (size_t i = 0; i < classObjectInitsCount; ++i) {
         if (clsid == *classObjectInits[i].clsid) {
-            IClassFactory *classFactory = new (std::nothrow) CfApiShellIntegrationClassFactory(classObjectInits[i].pfnCreate);
+            IClassFactory *classFactory =
+                new (std::nothrow) CfApiShellIntegrationClassFactory(classObjectInits[i].pfnCreate);
             if (!classFactory) {
                 return E_OUTOFMEMORY;
             }
@@ -89,4 +93,5 @@ CfApiShellIntegrationClassFactory::CfApiShellIntegrationClassFactory(PFNCREATEIN
 CfApiShellIntegrationClassFactory::~CfApiShellIntegrationClassFactory()
 {
     InterlockedDecrement(&dllReferenceCount);
+}
 }

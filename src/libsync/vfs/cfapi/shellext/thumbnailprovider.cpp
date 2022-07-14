@@ -44,14 +44,49 @@
 #undef byte
 
 #include "thumbnailprovider.h"
-#include "common/cfapishellextensionsipcconstants.h"
 #include <shlwapi.h>
-#include <QJsonDocument>
-#include <QObject>
+#include <QSize>
 
-namespace {
-// we don't want to block the Explorer for too long (default is 30K, so we'd keep it at 10K, except QLocalSocket::waitForDisconnected())
-constexpr auto socketTimeoutMs = 10000;
+namespace CfApiShellExtensions {
+
+std::pair<HBITMAP, WTS_ALPHATYPE> hBitmapAndAlphaTypeFromData(const QByteArray &thumbnailData)
+{
+    if (thumbnailData.isEmpty()) {
+        return {NULL, WTSAT_UNKNOWN};
+    }
+
+    Gdiplus::Bitmap *gdiPlusBitmap = nullptr;
+    ULONG_PTR gdiPlusToken;
+    Gdiplus::GdiplusStartupInput gdiPlusStartupInput;
+    if (Gdiplus::GdiplusStartup(&gdiPlusToken, &gdiPlusStartupInput, nullptr) != Gdiplus::Status::Ok) {
+        return {NULL, WTSAT_UNKNOWN};
+    }
+
+    const auto handleFailure = [gdiPlusToken]() -> std::pair<HBITMAP, WTS_ALPHATYPE> {
+        Gdiplus::GdiplusShutdown(gdiPlusToken);
+        return {NULL, WTSAT_UNKNOWN};
+    };
+
+    const std::vector<unsigned char> bitmapData(thumbnailData.begin(), thumbnailData.end());
+    auto const stream{::SHCreateMemStream(&bitmapData[0], static_cast<UINT>(bitmapData.size()))};
+
+    if (!stream) {
+        return handleFailure();
+    }
+    gdiPlusBitmap = Gdiplus::Bitmap::FromStream(stream);
+
+    auto hasAlpha = false;
+    HBITMAP hBitmap = NULL;
+    if (gdiPlusBitmap) {
+        hasAlpha = Gdiplus::IsAlphaPixelFormat(gdiPlusBitmap->GetPixelFormat());
+        if (gdiPlusBitmap->GetHBITMAP(Gdiplus::Color(0, 0, 0), &hBitmap) != Gdiplus::Status::Ok) {
+            return handleFailure();
+        }
+    }
+
+    Gdiplus::GdiplusShutdown(gdiPlusToken);
+
+    return {hBitmap, hasAlpha ? WTSAT_ARGB : WTSAT_RGB};
 }
 
 ThumbnailProvider::ThumbnailProvider()
@@ -101,113 +136,12 @@ IFACEMETHODIMP ThumbnailProvider::Initialize(_In_ IShellItem *item, _In_ DWORD m
     return S_OK;
 }
 
-std::pair<HBITMAP, WTS_ALPHATYPE> hBitmapAndAlphaTypeFromData(const QByteArray &thumbnailData)
-{
-    if (thumbnailData.isEmpty()) {
-        return {NULL, WTSAT_UNKNOWN};
-    }
-
-    Gdiplus::Bitmap *gdiPlusBitmap = nullptr;
-    ULONG_PTR gdiPlusToken;
-    Gdiplus::GdiplusStartupInput gdiPlusStartupInput;
-    if (Gdiplus::GdiplusStartup(&gdiPlusToken, &gdiPlusStartupInput, nullptr) != Gdiplus::Status::Ok) {
-        return {NULL, WTSAT_UNKNOWN};
-    }
-
-    const auto handleFailure = [gdiPlusToken]() -> std::pair<HBITMAP, WTS_ALPHATYPE> {
-        Gdiplus::GdiplusShutdown(gdiPlusToken);
-        return {NULL, WTSAT_UNKNOWN};
-    };
-
-    const std::vector<unsigned char> bitmapData(thumbnailData.begin(), thumbnailData.end());
-    auto const stream{::SHCreateMemStream(&bitmapData[0], static_cast<UINT>(bitmapData.size()))};
-
-    if (!stream) {
-        return handleFailure();
-    }
-    gdiPlusBitmap = Gdiplus::Bitmap::FromStream(stream);
-
-    auto hasAlpha = false;
-    HBITMAP hBitmap = NULL;
-    if (gdiPlusBitmap) {
-        hasAlpha = Gdiplus::IsAlphaPixelFormat(gdiPlusBitmap->GetPixelFormat());
-        if (gdiPlusBitmap->GetHBITMAP(Gdiplus::Color(0, 0, 0), &hBitmap) != Gdiplus::Status::Ok) {
-            return handleFailure();
-        }
-    }
-    
-    Gdiplus::GdiplusShutdown(gdiPlusToken);
-
-    return {hBitmap, hasAlpha ? WTSAT_ARGB : WTSAT_RGB};
-}
-
 IFACEMETHODIMP ThumbnailProvider::GetThumbnail(_In_ UINT cx, _Out_ HBITMAP *bitmap, _Out_ WTS_ALPHATYPE *alphaType)
 {
     *bitmap = nullptr;
     *alphaType = WTSAT_UNKNOWN;
 
-    const auto disconnectSocketFromServer = [this]() {
-        const auto isConnectedOrConnecting = _localSocket.state() == QLocalSocket::ConnectedState || _localSocket.state() == QLocalSocket::ConnectingState;
-        if (isConnectedOrConnecting) {
-            _localSocket.disconnectFromServer();
-            const auto isNotConnected = _localSocket.state() == QLocalSocket::UnconnectedState || _localSocket.state() == QLocalSocket::ClosingState;
-            return isNotConnected || _localSocket.waitForDisconnected();
-        }
-        return true;
-    };
-
-    const auto connectSocketToServer = [this, &disconnectSocketFromServer](const QString &serverName) {
-        if (!disconnectSocketFromServer()) {
-            return false;
-        }
-        _localSocket.setServerName(serverName);
-        _localSocket.connectToServer();
-        return _localSocket.state() == QLocalSocket::ConnectedState || _localSocket.waitForConnected(socketTimeoutMs);
-    };
-
-    const auto sendMessageAndReadyRead = [this](const QByteArray &message) {
-        _localSocket.write(message);
-        return _localSocket.waitForBytesWritten(socketTimeoutMs) && _localSocket.waitForReadyRead(socketTimeoutMs);
-    };
-
-    // #1 Connect to the main server and send a request for a thumbnail
-    if (!connectSocketToServer(CfApiShellExtensions::ThumbnailProviderMainServerName)) {
-        return E_FAIL;
-    }
-
-    // send the file path so the main server will decide which sync root we are working with
-    const auto messageRequestThumbnailForFile = QJsonDocument::fromVariant(
-        QVariantMap{{CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey,
-            QVariantMap{{CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey, _shellItemPath},
-                {CfApiShellExtensions::Protocol::ThumbnailProviderRequestFileSizeKey,
-                    QVariantMap{{"x", cx}, {"y", cx}}}}}}).toJson(QJsonDocument::Compact);
-
-    if (!sendMessageAndReadyRead(messageRequestThumbnailForFile)) {
-        return E_FAIL;
-    }
-    
-    // #2 Get the name of a server for the current syncroot
-    const auto receivedSyncrootServerNameMessage = QJsonDocument::fromJson(_localSocket.readAll()).toVariant().toMap();
-    const auto serverNameReceived = receivedSyncrootServerNameMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderServerNameKey).toString();
-
-    if (serverNameReceived.isEmpty()) {
-        disconnectSocketFromServer();
-        return E_FAIL;
-    }
-
-    // #3 Connect to the current syncroot folder's server
-    if (!connectSocketToServer(serverNameReceived)) {
-        return E_FAIL;
-    }
-
-    // #4 Request a thumbnail of size (x, y) for a file _shellItemPath
-    if (!sendMessageAndReadyRead(messageRequestThumbnailForFile)) {
-        return E_FAIL;
-    }
-
-    // #5 Read the thumbnail data from the current syncroot folder's server (read all as the thumbnail size is usually less than 1MB)
-    const auto thumbnailDataReceived = _localSocket.readAll();
-    disconnectSocketFromServer();
+    const auto thumbnailDataReceived = _thumbnailProviderIpc.fetchThumbnailForFile(_shellItemPath, QSize(cx, cx));
 
     if (thumbnailDataReceived.isEmpty()) {
         return E_FAIL;
@@ -219,6 +153,7 @@ IFACEMETHODIMP ThumbnailProvider::GetThumbnail(_In_ UINT cx, _Out_ HBITMAP *bitm
     }
     *bitmap = bitmapAndAlphaType.first;
     *alphaType = bitmapAndAlphaType.second;
-    
+
     return S_OK;
+}
 }

@@ -1,7 +1,8 @@
-add_library(${CFAPI_SHELL_EXTENSIONS_LIB_NAME} MODULE
+add_library(${CFAPI_SHELL_EXTENSIONS_LIB_NAME} SHARED
     dllmain.cpp
     cfapishellintegrationclassfactory.cpp
     thumbnailprovider.cpp
+	thumbnailprovideripc.cpp
     CfApiShellIntegration.def
 )
 

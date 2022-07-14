@@ -22,8 +22,8 @@ HINSTANCE instanceHandle = NULL;
 
 HRESULT ThumbnailProvider_CreateInstance(REFIID riid, void **ppv);
 
-const ClassObjectInit listClassesSupported[] = {
-    {&__uuidof(ThumbnailProvider), ThumbnailProvider_CreateInstance}
+const CfApiShellExtensions::ClassObjectInit listClassesSupported[] = {
+    {&__uuidof(CfApiShellExtensions::ThumbnailProvider), ThumbnailProvider_CreateInstance}
 };
 
 STDAPI_(BOOL) DllMain(HINSTANCE hInstance, DWORD dwReason, void *)
@@ -43,12 +43,12 @@ STDAPI DllCanUnloadNow()
 
 STDAPI DllGetClassObject(REFCLSID clsid, REFIID riid, void **ppv)
 {
-    return CfApiShellIntegrationClassFactory::CreateInstance(clsid, listClassesSupported, ARRAYSIZE(listClassesSupported), riid, ppv);
+    return CfApiShellExtensions::CfApiShellIntegrationClassFactory::CreateInstance(clsid, listClassesSupported, ARRAYSIZE(listClassesSupported), riid, ppv);
 }
 
 HRESULT ThumbnailProvider_CreateInstance(REFIID riid, void **ppv)
 {
-    auto *thumbnailProvider = new (std::nothrow) ThumbnailProvider();
+    auto *thumbnailProvider = new (std::nothrow) CfApiShellExtensions::ThumbnailProvider();
     if (!thumbnailProvider) {
         return E_OUTOFMEMORY;
     }
