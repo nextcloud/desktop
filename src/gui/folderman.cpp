@@ -1778,10 +1778,16 @@ void FolderMan::slotNewShellExtensionConnection()
         newConnection->disconnectFromServer();
     };
 
+    const auto sendEmptyData = [newConnection]() {
+        newConnection->write({});
+        newConnection->waitForBytesWritten();
+    };
+
     newConnection->waitForReadyRead();
     const auto receivedMessage = QJsonDocument::fromJson(newConnection->readAll()).toVariant().toMap();
 
     if (!receivedMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey)) {
+        sendEmptyData();
         disconnectAndClose();
         return;
     }
@@ -1790,37 +1796,38 @@ void FolderMan::slotNewShellExtensionConnection()
         receivedMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestKey).toMap();
 
     if (!thumbnailRequestMessage.contains(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey)) {
+        sendEmptyData();
         disconnectAndClose();
         return;
     }
 
-    const auto thumbnailFilePath =
-        thumbnailRequestMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey).toString();
+    const auto thumbnailFilePath = QDir::fromNativeSeparators(thumbnailRequestMessage.value(CfApiShellExtensions::Protocol::ThumbnailProviderRequestFilePathKey).toString());
 
     Folder *folderFound = nullptr;
     for (const auto folder : map()) {
-        if (thumbnailFilePath.startsWith(QDir::toNativeSeparators(folder->path()))) {
+        if (thumbnailFilePath.startsWith(folder->path())) {
             folderFound = folder;
         }
     }
 
-    if (folderFound) {
-        const QString serverName = CfApiShellExtensions::ThumbnailProviderMainServerName + QStringLiteral(":")
-            + folderFound->navigationPaneClsid().toString();
-        folderFound->startShellExtensionServer(serverName);
-
-        const auto sentMessage = QJsonDocument::fromVariant(
-            QVariantMap{{CfApiShellExtensions::Protocol::ThumbnailProviderServerNameKey,
-                serverName}}).toJson(QJsonDocument::Compact);
-
-        newConnection->write(sentMessage);
-        newConnection->waitForBytesWritten();
-
-        connect(newConnection, &QLocalSocket::disconnected, this, [newConnection] {
-            newConnection->close();
-            newConnection->deleteLater();
-        });
+    if (!folderFound) {
+        sendEmptyData();
+        disconnectAndClose();
+        return;
     }
+
+    const QString serverName = CfApiShellExtensions::ThumbnailProviderMainServerName + QStringLiteral(":")
+        + folderFound->navigationPaneClsid().toString();
+    folderFound->startShellExtensionServer(serverName);
+
+    const auto sentMessage = QJsonDocument::fromVariant(
+        QVariantMap{{CfApiShellExtensions::Protocol::ThumbnailProviderServerNameKey,
+            serverName}}).toJson(QJsonDocument::Compact);
+
+    newConnection->write(sentMessage);
+    newConnection->waitForBytesWritten();
+
+    disconnectAndClose();
 }
 
 } // namespace OCC

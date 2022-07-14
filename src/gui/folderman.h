@@ -26,6 +26,7 @@
 #include "syncfileitem.h"
 
 class TestFolderMan;
+class TestCfApiShellExtensionsIPC;
 
 namespace OCC {
 
@@ -366,6 +367,7 @@ private:
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
     friend class ::TestFolderMan;
+    friend class ::TestCfApiShellExtensionsIPC;
 };
 
 } // namespace OCC

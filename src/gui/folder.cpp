@@ -1240,7 +1240,7 @@ void Folder::slotNewShellExtensionConnection()
     };
 
     const auto sendEmptyData = [newConnection]() {
-        newConnection->write(QByteArrayLiteral("{}"));
+        newConnection->write({});
         newConnection->waitForBytesWritten();
     };
 
