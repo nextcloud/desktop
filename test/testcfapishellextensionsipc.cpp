@@ -10,10 +10,8 @@
 #include <QPainter>
 #include "syncenginetestutils.h"
 #include "common/vfs.h"
-#include "common/cfapishellextensionsipcconstants.h"
 #include "config.h"
 #include <syncengine.h>
-#include <thumbcache.h>
 
 #include "folderman.h"
 #include "account.h"
@@ -111,7 +109,7 @@ private slots:
             });
     };
 
-    void testShellExtensionIsAvailable()
+    void testRequestThumbnails()
     {
         FolderMan *folderman = FolderMan::instance();
         QVERIFY(folderman);
@@ -120,35 +118,6 @@ private slots:
 
         folder->setVirtualFilesEnabled(true);
 
-        const auto hresult = CoInitialize(NULL);
-
-        QVERIFY(hresult == S_OK || hresult == S_FALSE);
-
-        CLSID clsid;
-        {
-            const QString thumbnailHandlerClassId(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG);
-            CLSIDFromString(thumbnailHandlerClassId.toStdWString().c_str(), &clsid);
-        }
-
-        IUnknown *iUnkown = nullptr;
-        QVERIFY(!FAILED(CoCreateInstance(clsid, 0, CLSCTX_INPROC_SERVER, IID_IUnknown, (void **)&iUnkown)));
-        QVERIFY(iUnkown);
-
-        IThumbnailProvider *thumbnailProvider = nullptr;
-        QVERIFY(!FAILED(iUnkown->QueryInterface(IID_IThumbnailProvider, (void **)&thumbnailProvider)));
-
-        IInitializeWithItem *initializeWithItem = nullptr;
-        QVERIFY(!FAILED(iUnkown->QueryInterface(IID_IInitializeWithItem, (void **)&initializeWithItem)));
-
-        initializeWithItem->Release();
-        thumbnailProvider->Release();
-        iUnkown->Release();
-
-        CoUninitialize();
-    }
-
-    void testRequestThumbnails()
-    {
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
 
