@@ -49,7 +49,7 @@ struct OCSYNC_EXPORT VfsSetupParams
     // Folder alias
     QString alias;
 
-    // Folder alias
+    // Folder registry navigation Pane CLSID
     QString navigationPaneClsid;
 
     /** The path to the synced folder on the account

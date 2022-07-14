@@ -53,8 +53,8 @@ End Function
 Function RegistryCleanupCfApiShellExtensions()
   Set objRegistry = GetObject(strObjRegistry)
 
-  strShellExtThumbnailHandlerAppId = "Software\Classes\AppID\{@CFAPI_SHELLEXT_APPID@}"
-  strShellExtThumbnailHandlerClsId = "Software\Classes\CLSID\{@CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID@}"
+  strShellExtThumbnailHandlerAppId = "Software\Classes\AppID\@CFAPI_SHELLEXT_APPID_REG@"
+  strShellExtThumbnailHandlerClsId = "Software\Classes\CLSID\@CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG@"
 
   rootKey = HKEY_CURRENT_USER
 

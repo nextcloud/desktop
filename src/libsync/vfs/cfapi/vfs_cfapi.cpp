@@ -22,6 +22,7 @@
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
+#include "config.h"
 
 #include <cfapi.h>
 #include <comdef.h>
@@ -35,58 +36,57 @@ using namespace OCC::CfApiWrapper;
 
 constexpr auto appIdRegKey = R"(Software\Classes\AppID\)";
 constexpr auto clsIdRegKey = R"(Software\Classes\CLSID\)";
+const auto rootKey = HKEY_CURRENT_USER;
 
 bool registerShellExtension()
 {
-    const QList<QPair<QString, QString>> listExtensions = {
-        {CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME, QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID)}
-    };
-
-    const auto extensionBinPath = QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath() + QStringLiteral("/") + CFAPI_SHELL_EXTENSIONS_LIB_NAME + QStringLiteral(".dll")));
-
-    const QString appIdPath = QString() % appIdRegKey % QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_APPID);
-    if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, appIdPath, {}, REG_SZ, QString("%1 COM DLL").arg(APPLICATION_NAME))) {
-        return false;
-    }
-    if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, appIdPath, QStringLiteral("DllSurrogate"), REG_SZ, {})) {
+    // assume CFAPI_SHELL_EXTENSIONS_LIB_NAME is always in the same folder as the main executable
+    const auto shellExtensionDllPath = QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath() + QStringLiteral("/") + CFAPI_SHELL_EXTENSIONS_LIB_NAME + QStringLiteral(".dll")));
+    if (!QFileInfo::exists(shellExtensionDllPath)) {
+        Q_ASSERT(false);
+        qCWarning(lcCfApi) << "Register CfAPI shell extensions failed. Dll does not exist in "
+                           << QCoreApplication::applicationDirPath();
         return false;
     }
 
-    for (const auto extension : listExtensions) {
-        const QString clsidPath = QString() % clsIdRegKey % extension.second;
-        const QString clsidServerPath = QString() % clsIdRegKey % extension.second % R"(\InprocServer32)";
+    const QString appIdPath = QString() % appIdRegKey % CFAPI_SHELLEXT_APPID_REG;
+    if (!OCC::Utility::registrySetKeyValue(rootKey, appIdPath, {}, REG_SZ, CFAPI_SHELLEXT_APPID_DISPLAY_NAME)) {
+        return false;
+    }
+    if (!OCC::Utility::registrySetKeyValue(rootKey, appIdPath, QStringLiteral("DllSurrogate"), REG_SZ, {})) {
+        return false;
+    }
 
-        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, QStringLiteral("AppID"), REG_SZ, QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_APPID))) {
-            return false;
-        }
-        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidPath, {}, REG_SZ, extension.first)) {
-            return false;
-        }
-        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidServerPath, {}, REG_SZ, extensionBinPath)) {
-            return false;
-        }
-        if (!OCC::Utility::registrySetKeyValue(HKEY_CURRENT_USER, clsidServerPath, QStringLiteral("ThreadingModel"), REG_SZ, QStringLiteral("Apartment"))) {
-            return false;
-        }
+    const QString clsidPath = QString() % clsIdRegKey % CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG;
+    const QString clsidServerPath = clsidPath % R"(\InprocServer32)";
+
+    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, QStringLiteral("AppID"), REG_SZ, CFAPI_SHELLEXT_APPID_REG)) {
+        return false;
+    }
+    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, {}, REG_SZ, CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME)) {
+        return false;
+    }
+    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, {}, REG_SZ, shellExtensionDllPath)) {
+        return false;
+    }
+    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, QStringLiteral("ThreadingModel"), REG_SZ, QStringLiteral("Apartment"))) {
+        return false;
     }
 
     return true;
 }
 
-bool unregisterShellExtensions()
+void unregisterShellExtensions()
 {
-    const QString appIdPath = QString() % appIdRegKey % QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_APPID);
-    OCC::Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, appIdPath);
-
-    const QStringList listExtensions = {
-        {QStringLiteral("{%1}").arg(CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID)}};
-
-    for (const auto extension : listExtensions) {
-        const QString clsidPath = QString() % clsIdRegKey % extension;
-        OCC::Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath);
+    const QString appIdPath = QString() % appIdRegKey % CFAPI_SHELLEXT_APPID_REG;
+    if (OCC::Utility::registryKeyExists(rootKey, appIdPath)) {
+        OCC::Utility::registryDeleteKeyTree(rootKey, appIdPath);
     }
 
-    return true;
+    const QString clsidPath = QString() % clsIdRegKey % CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG;
+    if (OCC::Utility::registryKeyExists(rootKey, clsidPath)) {
+        OCC::Utility::registryDeleteKeyTree(rootKey, clsidPath);
+    }
 }
 
 }

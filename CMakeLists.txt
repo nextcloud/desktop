@@ -4,8 +4,6 @@ cmake_policy(SET CMP0071 NEW) # Enable use of QtQuick compiler/generated code
 
 project(client)
 
-set(CFAPI_SHELL_EXTENSIONS_LIB_NAME CfApiShellExtensions)
-
 include(FeatureSummary)
 
 set(BIN_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")

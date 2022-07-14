@@ -1240,7 +1240,7 @@ void Folder::slotNewShellExtensionConnection()
     };
 
     const auto sendEmptyData = [newConnection]() {
-        newConnection->write(QJsonDocument::fromVariant({}).toJson(QJsonDocument::Compact));
+        newConnection->write(QByteArrayLiteral("{}"));
         newConnection->waitForBytesWritten();
     };
 
