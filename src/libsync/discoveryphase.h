@@ -166,7 +166,7 @@ class DiscoveryPhase : public QObject
      * can be changed. See findAndCancelDeletedJob(). Note that
      * itemDiscovered() will already have been emitted for the item.
      */
-    QMap<QString, SyncFileItemPtr> _deletedItem;
+    QHash<QString, SyncFileItemPtr> _deletedItem;
 
     /** Maps the db-path of a deleted folder to its queued job.
      *
@@ -178,11 +178,12 @@ class DiscoveryPhase : public QObject
      *
      * See findAndCancelDeletedJob().
      */
+    // needs to be ordered
     QMap<QString, ProcessDirectoryJob *> _queuedDeletedDirectories;
 
     // map source (original path) -> destinations (current server or local path)
-    QMap<QString, QString> _renamedItemsRemote;
-    QMap<QString, QString> _renamedItemsLocal;
+    QHash<QString, QString> _renamedItemsRemote;
+    QHash<QString, QString> _renamedItemsLocal;
 
     // set of paths that should not be removed even though they are removed locally:
     // there was a move to an invalid destination and now the source should be restored
@@ -283,5 +284,5 @@ signals:
 };
 
 /// Implementation of DiscoveryPhase::adjustRenamedPath
-QString adjustRenamedPath(const QMap<QString, QString> &renamedItems, const QString &original);
+QString adjustRenamedPath(const QHash<QString, QString> &renamedItems, const QString &original);
 }

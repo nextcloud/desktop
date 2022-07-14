@@ -140,7 +140,7 @@ QString DiscoveryPhase::adjustRenamedPath(const QString &original, SyncFileItem:
     return OCC::adjustRenamedPath(d == SyncFileItem::Down ? _renamedItemsRemote : _renamedItemsLocal, original);
 }
 
-QString adjustRenamedPath(const QMap<QString, QString> &renamedItems, const QString &original)
+QString adjustRenamedPath(const QHash<QString, QString> &renamedItems, const QString &original)
 {
     int slashPos = original.size();
     while ((slashPos = original.lastIndexOf(QLatin1Char('/'), slashPos - 1)) > 0) {
@@ -156,8 +156,8 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
 {
     bool result = false;
     QByteArray oldEtag;
-    auto it = _deletedItem.find(originalPath);
-    if (it != _deletedItem.end()) {
+    auto it = _deletedItem.constFind(originalPath);
+    if (it != _deletedItem.cend()) {
         const auto &item = *it;
         const SyncInstructions instruction = item->_instruction;
         if (instruction == CSYNC_INSTRUCTION_IGNORE && item->_type == ItemTypeVirtualFile) {

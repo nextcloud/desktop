@@ -503,7 +503,8 @@ public:
         PropagatorCompositeJob *composite, QString *error);
 
     // Map original path (as in the DB) to target final path
-    QMap<QString, QString> _renamedDirectories;
+    // TODO: no public members...
+    QHash<QString, QString> _renamedDirectories;
     QString adjustRenamedPath(const QString &original) const;
 
     /** Update the database for an item.
