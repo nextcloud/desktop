@@ -92,7 +92,7 @@ void PropagateUploadFileV1::startNextChunk()
     if (propagator()->_abortRequested)
         return;
 
-    if (!_jobs.isEmpty() && _currentChunk + _startChunk >= _chunkCount - 1) {
+    if (!childJobs().empty() && _currentChunk + _startChunk >= _chunkCount - 1) {
         // Don't do parallel upload of chunk if this might be the last chunk because the server cannot handle that
         // https://github.com/owncloud/core/issues/11106
         // We return now and when the _jobs are finished we will proceed with the last chunk
@@ -152,11 +152,10 @@ void PropagateUploadFileV1::startNextChunk()
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
     PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(path), std::move(device), headers, _currentChunk, this);
-    _jobs.append(job);
+    addChildJob(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileV1::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress, this, &PropagateUploadFileV1::slotUploadProgress);
     connect(job, &PUTFileJob::uploadProgress, devicePtr, &UploadDevice::slotJobUploadProgress);
-    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     if (isFinalChunk)
         adjustLastJobTimeout(job, fileSize);
     job->start();
@@ -198,9 +197,7 @@ void PropagateUploadFileV1::startNextChunk()
 void PropagateUploadFileV1::slotPutFinished()
 {
     PUTFileJob *job = qobject_cast<PUTFileJob *>(sender());
-    OC_ASSERT(job);
-
-    slotJobDestroyed(job); // remove it from the _jobs list
+    Q_ASSERT(job);
 
     propagator()->_activeJobList.removeOne(this);
 
@@ -258,7 +255,7 @@ void PropagateUploadFileV1::slotPutFinished()
     if (!_finished) {
         // Proceed to next chunk.
         if (_currentChunk >= _chunkCount) {
-            if (!_jobs.empty()) {
+            if (!childJobs().empty()) {
                 // just wait for the other job to finish.
                 return;
             }
@@ -275,7 +272,7 @@ void PropagateUploadFileV1::slotPutFinished()
         SyncJournalDb::UploadInfo pi;
         pi._valid = true;
         auto currentChunk = job->_chunk;
-        for (auto *job : qAsConst(_jobs)) {
+        for (auto *job : childJobs()) {
             // Take the minimum finished one
             if (auto putJob = qobject_cast<PUTFileJob *>(job)) {
                 currentChunk = qMin(currentChunk, putJob->_chunk - 1);
@@ -337,9 +334,9 @@ void PropagateUploadFileV1::slotUploadProgress(qint64 sent, qint64 total)
     qint64 amount = progressChunk * chunkSize();
 
     sender()->setProperty("byteWritten", sent);
-    if (_jobs.count() > 1) {
-        amount -= (_jobs.count() - 1) * chunkSize();
-        for (auto *j : qAsConst(_jobs)) {
+    if (childJobs().size() > 1) {
+        amount -= (childJobs().size() - 1) * chunkSize();
+        for (auto *j : childJobs()) {
             amount += j->property("byteWritten").toULongLong();
         }
     } else {

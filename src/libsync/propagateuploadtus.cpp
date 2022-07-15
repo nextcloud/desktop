@@ -146,9 +146,8 @@ void PropagateUploadFileTUS::startNextChunk()
     qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / (_item->_size + 1) * 100
                                   << "Chunk:" << chunkSize << chunkSize / (_item->_size + 1) * 100;
 
-    _jobs.append(job);
+    addChildJob(job);
     connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
-    connect(job, &SimpleNetworkJob::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->addNewReplyHook([device, this](QNetworkReply *reply) {
         connect(reply, &QNetworkReply::uploadProgress, device, &UploadDevice::slotJobUploadProgress);
         connect(reply, &QNetworkReply::uploadProgress, this, [this](qint64 bytesSent, qint64) {
@@ -162,7 +161,6 @@ void PropagateUploadFileTUS::slotChunkFinished()
 {
     SimpleNetworkJob *job = qobject_cast<SimpleNetworkJob *>(sender());
     OC_ASSERT(job);
-    slotJobDestroyed(job); // remove it from the _jobs list
     qCDebug(lcPropagateUploadTUS) << propagator()->fullRemotePath(_item->_file) << HttpLogger::requestVerb(*job->reply());
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -178,9 +176,8 @@ void PropagateUploadFileTUS::slotChunkFinished()
             QNetworkRequest req;
             setTusVersionHeader(req);
             auto updateJob = new SimpleNetworkJob(propagator()->account(), propagator()->webDavUrl(), _location.path(), "HEAD", {}, req, this);
-            _jobs.append(updateJob);
+            addChildJob(updateJob);
             connect(updateJob, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
-            connect(updateJob, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
             updateJob->start();
             return;
 
@@ -238,15 +235,13 @@ void PropagateUploadFileTUS::slotChunkFinished()
         // Either the ETag or the remote Permissions were not in the headers of the reply.
         // Start a PROPFIND to fetch these data from the server.
         auto check = new PropfindJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file));
-        _jobs.append(check);
+        addChildJob(check);
         check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
         connect(check, &PropfindJob::result, this, [this, check](const QMap<QString, QString> &map) {
             _finished = true;
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             finalize(Utility::normalizeEtag(map.value(QStringLiteral("getetag")).toUtf8()), map.value(QStringLiteral("fileid")).toUtf8());
-            slotJobDestroyed(check);
         });
-        connect(check, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
         check->start();
         return;
     }

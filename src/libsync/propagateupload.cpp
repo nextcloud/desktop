@@ -150,9 +150,8 @@ void PropagateUploadFileCommon::start()
     auto job = new DeleteJob(propagator()->account(), propagator()->webDavUrl(),
         propagator()->fullRemotePath(_item->_file),
         this);
-    _jobs.append(job);
+    addChildJob(job);
     connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileCommon::slotComputeContentChecksum);
-    connect(job, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
     job->start();
 }
 
@@ -485,11 +484,6 @@ void PropagateUploadFileCommon::adjustLastJobTimeout(AbstractNetworkJob *job, qi
         30min));
 }
 
-void PropagateUploadFileCommon::slotJobDestroyed(QObject *job)
-{
-    _jobs.erase(std::remove(_jobs.begin(), _jobs.end(), job), _jobs.end());
-}
-
 // This function is used whenever there is an error occuring and jobs might be in progress
 void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, const QString &error)
 {
@@ -498,6 +492,16 @@ void PropagateUploadFileCommon::abortWithError(SyncFileItem::Status status, cons
         abort(AbortType::Synchronous);
         done(status, error);
     }
+}
+
+void PropagateUploadFileCommon::addChildJob(AbstractNetworkJob *job)
+{
+    _childJobs.insert(job);
+    connect(
+        job, &AbstractNetworkJob::abstractJobFinished, this, [job, this] {
+            _childJobs.erase(job);
+        },
+        Qt::DirectConnection);
 }
 
 QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
@@ -559,14 +563,12 @@ void PropagateUploadFileCommon::finalize()
     if (_item->_remotePerm.isNull()) {
         qCWarning(lcPropagateUpload) << "PropagateUploadFileCommon::finalize: Missing permissions for" << propagator()->fullRemotePath(_item->_file);
         auto permCheck = new PropfindJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file));
-        _jobs.append(permCheck);
+        addChildJob(permCheck);
         permCheck->setProperties({ "http://owncloud.org/ns:permissions" });
-        connect(permCheck, &PropfindJob::result, this, [this, permCheck](const QMap<QString, QString> &map) {
+        connect(permCheck, &PropfindJob::result, this, [permCheck, this](const QMap<QString, QString> &map) {
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             finalize();
-            slotJobDestroyed(permCheck);
         });
-        connect(permCheck, &QObject::destroyed, this, &PropagateUploadFileCommon::slotJobDestroyed);
         permCheck->start();
         return;
     }
@@ -622,7 +624,7 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     };
 
     // Abort all running jobs, except for explicitly excluded ones
-    for (auto *job : qAsConst(_jobs)) {
+    for (auto *job : _childJobs) {
         auto reply = job->reply();
         if (!reply || !reply->isRunning())
             continue;

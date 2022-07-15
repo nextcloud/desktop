@@ -133,6 +133,11 @@ signals:
      */
     void networkError(QNetworkReply *reply);
 
+    /**
+     * Use complex name to prevent clash with other implementations of a finish signal...
+     */
+    void abstractJobFinished();
+
 protected:
     /** Initiate a network request, returning a QNetworkReply.
      *

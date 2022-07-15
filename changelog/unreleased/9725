@@ -1,0 +1,6 @@
+Bugfix: Fix never ending sync
+
+Under certain conditions an upload could enter a state were it would never finish.
+The client would wait for that upload so only a restart of the client or a manual abort of the sync could resolve the issue.
+
+https://github.com/owncloud/client/issues/9725

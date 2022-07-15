@@ -20,6 +20,8 @@
 #include <QFile>
 #include <QElapsedTimer>
 
+#include <unordered_set>
+
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcPutJob)
@@ -157,7 +159,6 @@ class PropagateUploadFileCommon : public PropagateItemJob
 protected:
     static const QString fileChangedMessage();
 
-
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
     bool _finished; /// Tells that all the jobs have been finished
     bool _deleteExisting;
@@ -205,8 +206,18 @@ public:
     void finalize();
     void abortWithError(SyncFileItem::Status status, const QString &error);
 
-public slots:
-    void slotJobDestroyed(QObject *job);
+    /***
+     * Add job to the list of children
+     * The job is automatically removed from the children once its done.
+     * It is important that this function is called before any connects.
+     */
+    void addChildJob(AbstractNetworkJob *job);
+
+    const auto &childJobs() const
+    {
+        return _childJobs;
+    }
+
 
 protected:
     void done(SyncFileItem::Status status, const QString &errorString = QString()) override;
@@ -251,6 +262,8 @@ protected:
 
 private:
     bool _quotaUpdated = false;
+
+    std::unordered_set<AbstractNetworkJob *> _childJobs; /// network jobs that are currently in transit
 };
 
 /**

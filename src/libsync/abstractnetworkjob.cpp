@@ -221,6 +221,7 @@ void AbstractNetworkJob::slotFinished()
 
     bool discard = finished();
     if (discard) {
+        Q_EMIT abstractJobFinished();
         qCDebug(lcNetworkJob) << "Network job finished" << this;
         deleteLater();
     }
