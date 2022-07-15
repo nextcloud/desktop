@@ -390,8 +390,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
     result.directDownloadUrl = map.value(QStringLiteral("downloadURL"));
     result.directDownloadCookies = map.value(QStringLiteral("dDC"));
 
-    if (auto it = Utility::optionalFind(map, QStringLiteral("resourcetype"))
-    {
+    if (auto it = Utility::optionalFind(map, QStringLiteral("resourcetype"))) {
         result.isDirectory = it->value().contains(QStringLiteral("collection"));
     }
     if (auto it = Utility::optionalFind(map, QStringLiteral("getlastmodified"))) {
