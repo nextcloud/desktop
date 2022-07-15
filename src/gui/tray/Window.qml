@@ -77,31 +77,11 @@ Window {
     Connections {
         target: Systray
 
-        function onShowWindow(position) {
-            if(trayWindow.visible) {
-                return;
+        function onIsOpenChanged() {
+            if(Systray.isOpen) {
+                accountMenu.close();
+                appsMenu.close();
             }
-
-            accountMenu.close();
-            appsMenu.close();
-
-            if(position === Systray.WindowPosition.Center) {
-                Systray.positionWindowAtScreenCenter(trayWindow);
-            } else {
-                Systray.positionWindowAtTray(trayWindow);
-            }
-
-            trayWindow.show();
-            trayWindow.raise();
-            trayWindow.requestActivate();
-
-            Systray.isOpen = true;
-            UserModel.fetchCurrentActivityModel();
-        }
-
-        function onHideWindow() {
-            trayWindow.hide();
-            Systray.isOpen = false;
         }
 
         function onShowFileActivityDialog(objectName, objectId) {
