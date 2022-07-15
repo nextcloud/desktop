@@ -23,6 +23,10 @@ import builtins
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from datetime import datetime
 
+# this will reset in every test suite
+previousFailResultCount = 0
+previousErrorResultCount = 0
+
 
 @OnScenarioStart
 def hook(context):
@@ -115,8 +119,18 @@ def hook(context):
 
 @OnScenarioEnd
 def hook(context):
-    # capture screenshot if there is error in the scenario execution, and if the test is being run in CI
-    if test.resultCount("errors") > 0 and os.getenv('CI'):
+    # Currently, this workaround is needed because we cannot find out a way to determine the pass/fail status of currently running test scenario.
+    # And, resultCount("errors")  and resultCount("fails") return the total number of error/failed test scenarios of a test suite.
+    global previousFailResultCount
+    global previousErrorResultCount
+
+    # capture a screenshot if there is error or test failure in the current scenario execution
+    if (
+        (test.resultCount("fails") - previousFailResultCount) > 0
+        or (test.resultCount("errors") - previousErrorResultCount) > 0
+        and os.getenv('CI')
+    ):
+
         import gi
 
         gi.require_version('Gtk', '3.0')
@@ -125,7 +139,11 @@ def hook(context):
         window = Gdk.get_default_root_window()
         pb = Gdk.pixbuf_get_from_window(window, *window.get_geometry())
 
-        filename = context._data["title"].replace(" ", "_") + ".png"
+        # scenario name can have "/" which is invalid filename
+        filename = (
+            context._data["title"].replace(" ", "_").replace("/", "_").strip(".")
+            + ".png"
+        )
         directory = os.environ["GUI_TEST_REPORT_DIR"] + "/screenshots"
 
         if not os.path.exists(directory):
@@ -175,3 +193,6 @@ def hook(context):
         raise Exception(
             "Step execution through test middleware failed. Error: " + e.read().decode()
         )
+
+    previousFailResultCount = test.resultCount("fails")
+    previousErrorResultCount = test.resultCount("errors")
