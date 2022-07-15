@@ -160,7 +160,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    QImage avatarById(const int &id);
+    QImage avatarById(const int id);
 
     User *currentUser() const;
 
@@ -173,11 +173,11 @@ public:
     Q_INVOKABLE int numUsers();
     Q_INVOKABLE QString currentUserServer();
     int currentUserId() const;
-    Q_INVOKABLE bool isUserConnected(const int &id);
-    Q_INVOKABLE void switchCurrentUser(const int &id);
-    Q_INVOKABLE void login(const int &id);
-    Q_INVOKABLE void logout(const int &id);
-    Q_INVOKABLE void removeAccount(const int &id);
+    Q_INVOKABLE bool isUserConnected(const int id);
+    Q_INVOKABLE void switchCurrentUser(const int id);
+    Q_INVOKABLE void login(const int id);
+    Q_INVOKABLE void logout(const int id);
+    Q_INVOKABLE void removeAccount(const int id);
 
     Q_INVOKABLE std::shared_ptr<OCC::UserStatusConnector> userStatusConnector(int id);
 
