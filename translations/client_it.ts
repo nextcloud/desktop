@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation type="unfinished"/>
+        <translation>gestore file</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
@@ -2317,7 +2317,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="169"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo %1 disponibile. Utilizzare lo strumento di aggiornamento di sistema per installarlo.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
@@ -2661,7 +2661,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Il server non ha riportato alcun %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1245"/>
@@ -2904,7 +2904,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="135"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rinominare %1 in %2, errore: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="182"/>
