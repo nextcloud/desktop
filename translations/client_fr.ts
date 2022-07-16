@@ -5404,54 +5404,54 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="170"/>
+        <location filename="../src/gui/systray.cpp" line="202"/>
         <source>Add account</source>
         <translation>Ajouter un compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="172"/>
+        <location filename="../src/gui/systray.cpp" line="204"/>
         <source>Open main dialog</source>
         <translation>Ouvrir la fenêtre principale</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="175"/>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="207"/>
+        <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync</source>
         <translation>Suspendre la synchro</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="176"/>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="208"/>
+        <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync</source>
         <translation>Relancer la synchro</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="209"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="178"/>
+        <location filename="../src/gui/systray.cpp" line="210"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="211"/>
         <source>Exit %1</source>
         <translation>Quitter %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync for all</source>
         <translation>Suspendre toutes les synchros</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync for all</source>
         <translation>Relancer toutes les synchros</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="347"/>
+        <location filename="../src/gui/systray.cpp" line="375"/>
         <source>%1: %2</source>
         <translation>%1 : %2</translation>
     </message>
@@ -5818,7 +5818,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="230"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>Unsupported Server Version</source>
         <translation>Version du Serveur non prise en charge</translation>
     </message>
@@ -5828,83 +5828,83 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le serveur sur le compte %1 fonctionne avec une version ancienne et non-supportée %2. Utiliser ce client avec des versions non-supportées du serveur n&apos;est pas testé et est potentiellement dangereux. Procédez à vos risques et périls.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="231"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="226"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Le serveur sur le compte %1 fonctionne avec une version non-supportée %2. Utiliser ce client avec des versions non-supportées du serveur n&apos;est pas testé et est potentiellement dangereux. Procédez à vos risques et périls.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="269"/>
         <source>Disconnected from some accounts</source>
         <translation>Déconnecté de certains comptes</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from %1</source>
         <translation>Déconnecté de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>Disconnected from accounts:</source>
         <translation>Déconnecté des comptes :</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="287"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
         <source>Account %1: %2</source>
         <translation>Compte %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Please sign in</source>
         <translation>Veuillez vous connecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
         <source>Signed out</source>
         <translation>Session fermée</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Account synchronization is disabled</source>
         <translation>La synchronisation est en pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="355"/>
         <source>Synchronization is paused</source>
         <translation>La synchronisation est en pause</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Folder %1: %2</source>
         <translation>Dossier %1 : %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="355"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="350"/>
         <source>Unresolved conflicts</source>
         <translation>Conflits non résolus</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Up to date</source>
         <translation>À jour</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>Error during synchronization</source>
         <translation>Erreur durant la synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>There are no sync folders configured.</source>
         <translation>Aucun dossier à synchroniser n&apos;est configuré</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>No sync folders configured</source>
         <translation>Aucun dossier de synchronisation configuré</translation>
     </message>
@@ -5949,37 +5949,37 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Se déconnecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="431"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Vérification des modifications dans &quot;%1&quot; distant</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Vérification des modifications dans &quot;%1&quot; local</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Synchronisation de %1 sur %2 (%3 restants)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
         <source>Syncing %1 of %2</source>
         <translation>Synchronisation %1 sur %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="464"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Synchronisation de %1 (%2 restants)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>Syncing %1</source>
         <translation>Synchronisation de %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="472"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6444,22 +6444,22 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Utiliser ce compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is online</source>
         <translation>Le statut actuel de l&apos;utilisateur est en ligne</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is do not disturb</source>
         <translation>Le statut actuel de l&apos;utilisateur est ne pas déranger</translation>
     </message>
@@ -6474,7 +6474,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Compte non connecté</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="152"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="151"/>
         <source>Account actions</source>
         <translation>Actions du compte</translation>
     </message>
@@ -6484,24 +6484,24 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Supprimer le compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="183"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation>Définir le statut</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="204"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="203"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log out</source>
         <translation>Se déconnecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="204"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="203"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>Se connecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="238"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="237"/>
         <source>Remove account</source>
         <translation>Supprimer le compte</translation>
     </message>
@@ -6671,64 +6671,64 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="148"/>
+        <location filename="../src/gui/tray/Window.qml" line="126"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Boîte de dialogue principale du bureau Nextcloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="175"/>
+        <location filename="../src/gui/tray/Window.qml" line="153"/>
         <source>Current account</source>
         <translation>Compte actuel</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
-        <location filename="../src/gui/tray/Window.qml" line="321"/>
+        <location filename="../src/gui/tray/Window.qml" line="159"/>
+        <location filename="../src/gui/tray/Window.qml" line="299"/>
         <source>Resume sync for all</source>
         <translation>Relancer toutes les synchronisations</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
-        <location filename="../src/gui/tray/Window.qml" line="321"/>
+        <location filename="../src/gui/tray/Window.qml" line="159"/>
+        <location filename="../src/gui/tray/Window.qml" line="299"/>
         <source>Pause sync for all</source>
         <translation>Suspendre toutes les synchronisations</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="241"/>
+        <location filename="../src/gui/tray/Window.qml" line="219"/>
         <source>Set user status</source>
         <translation>Définir le statut de l&apos;utilisateur</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="279"/>
+        <location filename="../src/gui/tray/Window.qml" line="257"/>
         <source>Add account</source>
         <translation>Ajouter un compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="292"/>
+        <location filename="../src/gui/tray/Window.qml" line="270"/>
         <source>Add new account</source>
         <translation>Ajouter un nouveau compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="327"/>
+        <location filename="../src/gui/tray/Window.qml" line="305"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="350"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Exit</source>
         <translation>Quitter</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="395"/>
+        <location filename="../src/gui/tray/Window.qml" line="373"/>
         <source>Current user avatar</source>
         <translation>Avatar de l&apos;utilisateur courant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation>Le statut actuel de l&apos;utilisateur est en ligne</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is do not disturb</source>
         <translation>Le statut actuel de l&apos;utilisateur est ne pas déranger</translation>
     </message>
@@ -6748,27 +6748,27 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="500"/>
+        <location filename="../src/gui/tray/Window.qml" line="478"/>
         <source>Account switcher and settings menu</source>
         <translation>Sélecteur de compte et menu des paramètres</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <location filename="../src/gui/tray/Window.qml" line="497"/>
         <source>Open local folder of current account</source>
         <translation>Ouvrir le dossier local de l&apos;utilisateur courant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="520"/>
         <source>Connected</source>
         <translation>Connecté</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="520"/>
         <source>Disconnected</source>
         <translation>Déconnecté</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="578"/>
+        <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Ouvrez Nextcloud Talk dans le navigateur</translation>
     </message>
@@ -6793,12 +6793,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Ouvrir la fenêtre de partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="598"/>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
         <source>More apps</source>
         <translation>Plus d&apos;applications</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="639"/>
+        <location filename="../src/gui/tray/Window.qml" line="617"/>
         <source>Open %1 in browser</source>
         <translation>Ouvrir %1 dans le navigateur</translation>
     </message>
@@ -6809,7 +6809,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Afficher plus d&apos;actions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="763"/>
+        <location filename="../src/gui/tray/Window.qml" line="741"/>
         <source>Unified search results list</source>
         <translation>Liste de résultats de recherche unifiée</translation>
     </message>
@@ -6819,7 +6819,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Partager %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="835"/>
+        <location filename="../src/gui/tray/Window.qml" line="813"/>
         <source>%1 - File activity</source>
         <translation>%1 - Activité de fichier</translation>
     </message>
