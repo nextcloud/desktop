@@ -5386,54 +5386,54 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="170"/>
+        <location filename="../src/gui/systray.cpp" line="202"/>
         <source>Add account</source>
         <translation>添加账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="172"/>
+        <location filename="../src/gui/systray.cpp" line="204"/>
         <source>Open main dialog</source>
         <translation>打开主对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="175"/>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="207"/>
+        <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync</source>
         <translation>暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="176"/>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="208"/>
+        <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync</source>
         <translation>恢复同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="209"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="178"/>
+        <location filename="../src/gui/systray.cpp" line="210"/>
         <source>Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="211"/>
         <source>Exit %1</source>
         <translation>退出 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync for all</source>
         <translation>全部暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync for all</source>
         <translation>全部恢复同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="347"/>
+        <location filename="../src/gui/systray.cpp" line="375"/>
         <source>%1: %2</source>
         <translation>%1：%2</translation>
     </message>
@@ -5800,7 +5800,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="230"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>Unsupported Server Version</source>
         <translation>不支持的服务器版本</translation>
     </message>
@@ -5810,83 +5810,83 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>账号 %1 的服务器运行着一个古老而不受支持的版本 %2。使用该客户端未支持的服务器版本未经测试并且可能存在潜在危险。继续操作需要自行承担风险。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="231"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="226"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>帐户 %1 上的服务器运行不支持的版本 %2。将此客户端与不支持的服务器版本一起使用是未经测试的，并且有潜在的危险。继续进行，风险自担。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Disconnected</source>
         <translation>连接已断开</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="269"/>
         <source>Disconnected from some accounts</source>
         <translation>已从某些账号断开</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from %1</source>
         <translation>已从服务器断开 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>Disconnected from accounts:</source>
         <translation>已断开账号：</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="287"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
         <source>Account %1: %2</source>
         <translation>账号 %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Please sign in</source>
         <translation>请登录</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
         <source>Signed out</source>
         <translation>已退出</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Account synchronization is disabled</source>
         <translation>账号同步已禁用</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="355"/>
         <source>Synchronization is paused</source>
         <translation>同步已暂停</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Folder %1: %2</source>
         <translation>文件夹 %1：%2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="355"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="350"/>
         <source>Unresolved conflicts</source>
         <translation>未解决的冲突</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Up to date</source>
         <translation>更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>Error during synchronization</source>
         <translation>同步过程中发生错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>There are no sync folders configured.</source>
         <translation>没有已配置的同步文件夹。</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>No sync folders configured</source>
         <translation>没有配置同步目录</translation>
     </message>
@@ -5931,37 +5931,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="431"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>正检查远程 &quot;%1&quot; 中的更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>正检查本地 &quot;%1&quot; 的更改</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>正在同步 ％2 的 ％1（剩余 ％3）</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
         <source>Syncing %1 of %2</source>
         <translation>正在同步 %1，共 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="464"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>同步 %1（剩余 %2）</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>Syncing %1</source>
         <translation>正在同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="472"/>
         <source>%1 (%2, %3)</source>
         <translation>%1（%2, %3）</translation>
     </message>
@@ -6426,22 +6426,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>切换到账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is online</source>
         <translation>当前用户状态为“在线”</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is do not disturb</source>
         <translation>当前用户状态为“请勿打扰”</translation>
     </message>
@@ -6456,7 +6456,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>账号未连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="152"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="151"/>
         <source>Account actions</source>
         <translation>账号操作</translation>
     </message>
@@ -6466,24 +6466,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>移除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="183"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation>设置状态</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="204"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="203"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log out</source>
         <translation>登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="204"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="203"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="238"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="237"/>
         <source>Remove account</source>
         <translation>移除账号</translation>
     </message>
@@ -6653,64 +6653,64 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="148"/>
+        <location filename="../src/gui/tray/Window.qml" line="126"/>
         <source>Nextcloud desktop main dialog</source>
         <translation>Nextcloud 桌面主对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="175"/>
+        <location filename="../src/gui/tray/Window.qml" line="153"/>
         <source>Current account</source>
         <translation>当前账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
-        <location filename="../src/gui/tray/Window.qml" line="321"/>
+        <location filename="../src/gui/tray/Window.qml" line="159"/>
+        <location filename="../src/gui/tray/Window.qml" line="299"/>
         <source>Resume sync for all</source>
         <translation>全部恢复同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
-        <location filename="../src/gui/tray/Window.qml" line="321"/>
+        <location filename="../src/gui/tray/Window.qml" line="159"/>
+        <location filename="../src/gui/tray/Window.qml" line="299"/>
         <source>Pause sync for all</source>
         <translation>全部暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="241"/>
+        <location filename="../src/gui/tray/Window.qml" line="219"/>
         <source>Set user status</source>
         <translation>设定用户状态</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="279"/>
+        <location filename="../src/gui/tray/Window.qml" line="257"/>
         <source>Add account</source>
         <translation>添加账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="292"/>
+        <location filename="../src/gui/tray/Window.qml" line="270"/>
         <source>Add new account</source>
         <translation>添加新账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="327"/>
+        <location filename="../src/gui/tray/Window.qml" line="305"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="350"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Exit</source>
         <translation>退出</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="395"/>
+        <location filename="../src/gui/tray/Window.qml" line="373"/>
         <source>Current user avatar</source>
         <translation>当前用户头像</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation>当前用户状态为“在线” </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is do not disturb</source>
         <translation>当前用户状态为“请勿打扰” </translation>
     </message>
@@ -6730,27 +6730,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="500"/>
+        <location filename="../src/gui/tray/Window.qml" line="478"/>
         <source>Account switcher and settings menu</source>
         <translation>账号切换器和设置菜单</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <location filename="../src/gui/tray/Window.qml" line="497"/>
         <source>Open local folder of current account</source>
         <translation>打开当前账号的本地文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="520"/>
         <source>Connected</source>
         <translation>已连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="520"/>
         <source>Disconnected</source>
         <translation>连接已断开</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="578"/>
+        <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在浏览器中打开 Nextcloud Talk </translation>
     </message>
@@ -6775,12 +6775,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>打开共享对话框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="598"/>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
         <source>More apps</source>
         <translation>更多的应用程序</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="639"/>
+        <location filename="../src/gui/tray/Window.qml" line="617"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器中打开%1</translation>
     </message>
@@ -6791,7 +6791,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>显示更多操作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="763"/>
+        <location filename="../src/gui/tray/Window.qml" line="741"/>
         <source>Unified search results list</source>
         <translation>统一的搜索结果列表</translation>
     </message>
@@ -6801,7 +6801,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>共享 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="835"/>
+        <location filename="../src/gui/tray/Window.qml" line="813"/>
         <source>%1 - File activity</source>
         <translation>%1 - 文件动态</translation>
     </message>
