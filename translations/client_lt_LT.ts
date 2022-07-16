@@ -5379,54 +5379,54 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="170"/>
+        <location filename="../src/gui/systray.cpp" line="202"/>
         <source>Add account</source>
         <translation>Pridėti paskyrą</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="172"/>
+        <location filename="../src/gui/systray.cpp" line="204"/>
         <source>Open main dialog</source>
         <translation>Atverti pagrindinį dialogą</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="175"/>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="207"/>
+        <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync</source>
         <translation>Pristabdyti sinchronizavimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="176"/>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="208"/>
+        <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync</source>
         <translation>Pratęsti sinchronizavimą</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="177"/>
+        <location filename="../src/gui/systray.cpp" line="209"/>
         <source>Settings</source>
         <translation>Nustatymai</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="178"/>
+        <location filename="../src/gui/systray.cpp" line="210"/>
         <source>Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="179"/>
+        <location filename="../src/gui/systray.cpp" line="211"/>
         <source>Exit %1</source>
         <translation>Išeiti iš %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="185"/>
+        <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="191"/>
+        <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="347"/>
+        <location filename="../src/gui/systray.cpp" line="375"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5793,7 +5793,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="230"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="225"/>
         <source>Unsupported Server Version</source>
         <translation>Nepalaikoma serverio versija</translation>
     </message>
@@ -5803,83 +5803,83 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Serverio paskyra %1 naudoja seną arba nepalaikomą versiją %2. Kliento su nepalaikoma serverio versija naudojimas yra neištestuotas ir galimai žalingas. Tęskite savo pačių rizika.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="231"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="226"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="272"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="267"/>
         <source>Disconnected</source>
         <translation>Atjungta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="269"/>
         <source>Disconnected from some accounts</source>
         <translation>Atjungta nuo kelių paskyrų</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="277"/>
         <source>Disconnected from %1</source>
         <translation>Atsijungta nuo %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="285"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>Disconnected from accounts:</source>
         <translation>Atsijungta nuo paskyrų:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="287"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
         <source>Account %1: %2</source>
         <translation>Paskyra %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="296"/>
         <source>Please sign in</source>
         <translation>Prisijunkite</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="297"/>
         <source>Signed out</source>
         <translation>Atsijungta</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="306"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Account synchronization is disabled</source>
         <translation>Paskyros sinchronizavimas išjungtas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="302"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="355"/>
         <source>Synchronization is paused</source>
         <translation>Sinchronizavimas pristabdytas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="347"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
         <source>Folder %1: %2</source>
         <translation>Aplankas %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="355"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="350"/>
         <source>Unresolved conflicts</source>
         <translation>Neišspręsti konfliktai</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Up to date</source>
         <translation>Naujausi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>Error during synchronization</source>
         <translation>Klaida sinchronizuojant</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="365"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>There are no sync folders configured.</source>
         <translation>Sinchronizuojamų aplankų nėra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="366"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>No sync folders configured</source>
         <translation>Sinchronizuojamų aplankų nėra</translation>
     </message>
@@ -5924,37 +5924,37 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Atsijungti</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="431"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="426"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="434"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="429"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Syncing %1 of %2 (%3 left)</source>
         <translation>Sinchronizuojama %1 iš %2 (liko %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="455"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="450"/>
         <source>Syncing %1 of %2</source>
         <translation>Sinchronizuojama %1 iš %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="464"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="459"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sinchronizuojama %1 (liko %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="467"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="462"/>
         <source>Syncing %1</source>
         <translation>Sinchronizuojama %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="477"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="472"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -6419,22 +6419,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Prisijungti prie paskyros</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="90"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current user status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
@@ -6449,7 +6449,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Paskyra neprijungta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="152"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="151"/>
         <source>Account actions</source>
         <translation>Veiksmai su paskyra</translation>
     </message>
@@ -6459,24 +6459,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Šalinti paskyrą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="183"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="204"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="203"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log out</source>
         <translation>Atsijungti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="204"/>
-        <location filename="../src/gui/tray/UserLine.qml" line="224"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="203"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>Prisijungti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="238"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="237"/>
         <source>Remove account</source>
         <translation>Šalinti paskyrą</translation>
     </message>
@@ -6646,64 +6646,64 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>Window</name>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="148"/>
+        <location filename="../src/gui/tray/Window.qml" line="126"/>
         <source>Nextcloud desktop main dialog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="175"/>
+        <location filename="../src/gui/tray/Window.qml" line="153"/>
         <source>Current account</source>
         <translation>Dabartinė paskyra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
-        <location filename="../src/gui/tray/Window.qml" line="321"/>
+        <location filename="../src/gui/tray/Window.qml" line="159"/>
+        <location filename="../src/gui/tray/Window.qml" line="299"/>
         <source>Resume sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="181"/>
-        <location filename="../src/gui/tray/Window.qml" line="321"/>
+        <location filename="../src/gui/tray/Window.qml" line="159"/>
+        <location filename="../src/gui/tray/Window.qml" line="299"/>
         <source>Pause sync for all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="241"/>
+        <location filename="../src/gui/tray/Window.qml" line="219"/>
         <source>Set user status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="279"/>
+        <location filename="../src/gui/tray/Window.qml" line="257"/>
         <source>Add account</source>
         <translation>Pridėti paskyrą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="292"/>
+        <location filename="../src/gui/tray/Window.qml" line="270"/>
         <source>Add new account</source>
         <translation>Pridėti naują paskyrą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="327"/>
+        <location filename="../src/gui/tray/Window.qml" line="305"/>
         <source>Settings</source>
         <translation>Nustatymai</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="350"/>
+        <location filename="../src/gui/tray/Window.qml" line="328"/>
         <source>Exit</source>
         <translation>Išeiti</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="395"/>
+        <location filename="../src/gui/tray/Window.qml" line="373"/>
         <source>Current user avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="434"/>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is do not disturb</source>
         <translation type="unfinished"/>
     </message>
@@ -6723,27 +6723,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="500"/>
+        <location filename="../src/gui/tray/Window.qml" line="478"/>
         <source>Account switcher and settings menu</source>
         <translation>Paskyrų perjungiklis ir nustatymų meniu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="519"/>
+        <location filename="../src/gui/tray/Window.qml" line="497"/>
         <source>Open local folder of current account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="520"/>
         <source>Connected</source>
         <translation>Prijungta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="542"/>
+        <location filename="../src/gui/tray/Window.qml" line="520"/>
         <source>Disconnected</source>
         <translation>Atjungta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="578"/>
+        <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation type="unfinished"/>
     </message>
@@ -6768,12 +6768,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Atverti bendrinimo dialogą</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="598"/>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
         <source>More apps</source>
         <translation>Daugiau programėlių</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="639"/>
+        <location filename="../src/gui/tray/Window.qml" line="617"/>
         <source>Open %1 in browser</source>
         <translation>Atverti %1 naršyklėje</translation>
     </message>
@@ -6784,7 +6784,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Rodyti daugiau veiksmų</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="763"/>
+        <location filename="../src/gui/tray/Window.qml" line="741"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6794,7 +6794,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Bendrinti %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="835"/>
+        <location filename="../src/gui/tray/Window.qml" line="813"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>
