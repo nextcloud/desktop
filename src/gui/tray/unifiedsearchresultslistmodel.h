@@ -38,6 +38,7 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
             currentFetchMoreInProgressProviderIdChanged)
     Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
     Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
+    Q_PROPERTY(bool waitingForSearchTermEditEnd READ waitingForSearchTermEditEnd NOTIFY waitingForSearchTermEditEndChanged)
 
     struct UnifiedSearchProvider
     {
@@ -77,6 +78,7 @@ public:
     QString currentFetchMoreInProgressProviderId() const;
     QString searchTerm() const;
     QString errorString() const;
+    bool waitingForSearchTermEditEnd() const;
 
     Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
@@ -106,6 +108,7 @@ signals:
     void isSearchInProgressChanged();
     void errorStringChanged();
     void searchTermChanged();
+    void waitingForSearchTermEditEndChanged();
 
 public slots:
     void setSearchTerm(const QString &term);
@@ -121,6 +124,7 @@ private:
 
     QString _searchTerm;
     QString _errorString;
+    bool _waitingForSearchTermEditEnd;
 
     QString _currentFetchMoreInProgressProviderId;
 
