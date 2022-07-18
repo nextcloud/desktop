@@ -706,7 +706,7 @@ ApplicationWindow {
 
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
-            visible: false
+
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
@@ -715,28 +715,11 @@ ApplicationWindow {
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
 
             property bool isSearchRunning: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+            property bool waitingForSearchTermEditEnd: UserModel.currentUser.unifiedSearchResultsListModel.waitingForSearchTermEditEnd
             property bool isSearchResultsEmpty: unifiedSearchResultsListView.count === 0
             property bool nothingFound: text && isSearchResultsEmpty && !UserModel.currentUser.unifiedSearchResultsListModel.errorString
 
-            onIsSearchRunningChanged: {
-                if (unifiedSearchResultNothingFound.isSearchRunning) {
-                    visible = false;
-                } else {
-                    if (nothingFound) {
-                        visible = true;
-                    }
-                }
-            }
-
-            onTextChanged: {
-                visible = false;
-            }
-
-            onIsSearchResultsEmptyChanged: {
-                if (!unifiedSearchResultNothingFound.isSearchResultsEmpty) {
-                    visible = false;
-                }
-            }
+            visible: !isSearchRunning && !waitingForSearchTermEditEnd && nothingFound
         }
 
         Loader {
