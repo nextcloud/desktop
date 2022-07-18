@@ -20,7 +20,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Показати активність</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
@@ -48,7 +48,7 @@
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="187"/>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Відхилити</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Відхилити</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="262"/>
@@ -189,7 +189,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="132"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>Немає останніх емодзі</translation>
     </message>
 </context>
 <context>
@@ -242,17 +242,17 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>Авторизація у бравзері</translation>
+        <translation>Авторизація у браузері</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="32"/>
         <source>Please switch to your browser to proceed.</source>
-        <translation>Будь ласка, перейдіть до вашого бравзера для подальших дій.</translation>
+        <translation>Будь ласка, перейдіть до вашого браузера для подальших дій.</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="52"/>
         <source>Re-open Browser</source>
-        <translation>Повторно запустити бравзер</translation>
+        <translation>Повторно запустити браузер</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
@@ -436,12 +436,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Не шифрувати теку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Шифрувати теку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -510,7 +510,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Невдале шифрування</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
@@ -633,7 +633,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>Disable support</source>
-        <translation type="unfinished"/>
+        <translation>Вимкнути підтримку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
@@ -1141,17 +1141,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Зберегти обидві версії</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Зберегти локальну версію</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Зберегти серверну версію</translation>
     </message>
 </context>
 <context>
@@ -1201,7 +1201,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
         <source>Timeout</source>
-        <translation type="unfinished"/>
+        <translation>Час вичерпано</translation>
     </message>
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
@@ -1427,7 +1427,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/folder.cpp" line="437"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
-        <translation type="unfinished"/>
+        <translation>%1 додано.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="442"/>
@@ -1642,27 +1642,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Створити нову теку</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Введіть назву теки</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
         <source>Folder already exists</source>
-        <translation type="unfinished"/>
+        <translation>Тека вже існує</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Помилка</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.cpp" line="76"/>
         <source>Could not create a folder! Check your write permissions.</source>
-        <translation type="unfinished"/>
+        <translation>Неможливо створити теку! Перевірте права на запис.</translation>
     </message>
 </context>
 <context>
@@ -1745,7 +1745,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Остання синхронізація завершилась успішно.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
@@ -1775,7 +1775,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1554"/>
         <source>The selected path does not exist!</source>
-        <translation type="unfinished"/>
+        <translation>Вибраний шлях не існує!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1558"/>
@@ -1873,7 +1873,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Синхронізація з локальною текою</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
@@ -1916,7 +1916,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
-        <translation>Синхронізую %1</translation>
+        <translation>Синхронізація %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
@@ -1939,7 +1939,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
-        <translation>відвантаження %1/с</translation>
+        <translation>вивантаження %1/с</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
@@ -2083,7 +2083,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="494"/>
         <source>This folder is already being synced.</source>
-        <translation>Тека вже синхронізується.</translation>
+        <translation>Тека вже синхронізована.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="496"/>
@@ -2108,7 +2108,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderwizard.cpp" line="537"/>
         <location filename="../src/gui/folderwizard.cpp" line="574"/>
         <source>(experimental)</source>
-        <translation type="unfinished"/>
+        <translation>(експериментальна функція)</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="570"/>
@@ -2218,19 +2218,19 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Канал</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
         <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>stable</source>
-        <translation type="unfinished"/>
+        <translation>Стабільний</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
         <location filename="../src/gui/generalsettings.cpp" line="322"/>
         <source>beta</source>
-        <translation type="unfinished"/>
+        <translation>Бета-версія</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
@@ -2250,7 +2250,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Створити архів відлагодження</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
