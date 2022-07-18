@@ -81,16 +81,21 @@ RowLayout {
             width: model.thumbnail !== undefined ? parent.width * 0.4 : thumbnailItem.imageWidth
             height: model.thumbnail !== undefined ? width : width * 0.9
 
+            // Prevent bad access into unloaded item properties
+            readonly property int thumbnailPaintedWidth: thumbnailImageLoader.item ? thumbnailImageLoader.item.paintedWidth : 0
+            readonly property int thumbnailPaintedHeight: thumbnailImageLoader.item ? thumbnailImageLoader.item.paintedHeight : 0
+
             readonly property int negativeLeftMargin: -((width / 2) +
                                                         ((width - paintedWidth) / 2) +
                                                         ((thumbnailImageLoader.width - thumbnailItem.imageWidth) / 2) +
-                                                        ((thumbnailImageLoader.width - thumbnailImageLoader.item.paintedWidth) / 2) +
+                                                        ((thumbnailImageLoader.width - thumbnailPaintedWidth) / 2) +
                                                         (thumbnailItem.thumbnailRadius / 4))
             readonly property int negativeTopMargin: -((height / 2) +
                                                        ((height - paintedHeight) / 2) +
                                                        ((thumbnailImageLoader.height - thumbnailItem.imageHeight) / 4) +
-                                                       ((thumbnailImageLoader.height - thumbnailImageLoader.item.paintedHeight) / 4) +
+                                                       ((thumbnailImageLoader.height - thumbnailPaintedHeight) / 4) +
                                                        (thumbnailItem.thumbnailRadius / 4))
+
             anchors.verticalCenter: if(model.thumbnail === undefined) parent.verticalCenter
             anchors.left: model.thumbnail === undefined ? parent.left : thumbnailImageLoader.right
             anchors.leftMargin: if(model.thumbnail !== undefined) negativeLeftMargin
