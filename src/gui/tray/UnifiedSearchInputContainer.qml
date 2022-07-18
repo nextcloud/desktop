@@ -58,10 +58,9 @@ TextField {
         sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
     }
 
-    BusyIndicator {
-        id: trayWindowUnifiedSearchTextFieldIconInProgress
-        running: visible
-        visible: trayWindowUnifiedSearchTextField.isSearchInProgress
+    NCBusyIndicator {
+        id: busyIndicator
+
         anchors {
             left: trayWindowUnifiedSearchTextField.left
             bottom: trayWindowUnifiedSearchTextField.bottom
@@ -70,7 +69,11 @@ TextField {
             bottomMargin: 4
             verticalCenter: trayWindowUnifiedSearchTextField.verticalCenter
         }
+
         width: height
+        color: trayWindowUnifiedSearchTextField.textFieldIconsColor
+        visible: trayWindowUnifiedSearchTextField.isSearchInProgress
+        running: visible
     }
 
     Image {
