@@ -14,6 +14,8 @@
 
 #include "cfapishellintegrationclassfactory.h"
 #include "thumbnailprovider.h"
+#include "vfsexplorercommandhanler.h"
+#include "customstateprovider.h"
 #include <comdef.h>
 
 long dllReferenceCount = 0;
@@ -21,10 +23,13 @@ long dllReferenceCount = 0;
 HINSTANCE instanceHandle = NULL;
 
 HRESULT ThumbnailProvider_CreateInstance(REFIID riid, void **ppv);
+HRESULT CustomStateProvider_CreateInstance(REFIID riid, void **ppv);
+HRESULT TestExplorerCommandHandler_CreateInstance(REFIID riid, void **ppv);
 
 const CfApiShellExtensions::ClassObjectInit listClassesSupported[] = {
-    {&__uuidof(CfApiShellExtensions::ThumbnailProvider), ThumbnailProvider_CreateInstance}
-};
+    {&__uuidof(CfApiShellExtensions::ThumbnailProvider), ThumbnailProvider_CreateInstance},
+    {&__uuidof(winrt::CfApiShellExtensions::implementation::CustomStateProvider), CustomStateProvider_CreateInstance},
+    {&__uuidof(VfsExplorerCommandHandler), TestExplorerCommandHandler_CreateInstance}};
 
 STDAPI_(BOOL) DllMain(HINSTANCE hInstance, DWORD dwReason, void *)
 {
@@ -54,5 +59,28 @@ HRESULT ThumbnailProvider_CreateInstance(REFIID riid, void **ppv)
     }
     const auto hresult = thumbnailProvider->QueryInterface(riid, ppv);
     thumbnailProvider->Release();
+    return hresult;
+}
+
+HRESULT CustomStateProvider_CreateInstance(REFIID riid, void **ppv)
+{
+    DWORD cookie;
+    try {
+        auto customStateProviderInstance =
+            winrt::make_self<winrt::CfApiShellExtensions::implementation::CustomStateProvider>();
+        return customStateProviderInstance->QueryInterface(riid, ppv);
+    } catch (_com_error exc) {
+        return exc.Error();
+    }
+}
+
+HRESULT TestExplorerCommandHandler_CreateInstance(REFIID riid, void **ppv)
+{
+    auto *testExplorerCommandHandler = new (std::nothrow) VfsExplorerCommandHandler();
+    if (!testExplorerCommandHandler) {
+        return E_OUTOFMEMORY;
+    }
+    const auto hresult = testExplorerCommandHandler->QueryInterface(riid, ppv);
+    testExplorerCommandHandler->Release();
     return hresult;
 }
