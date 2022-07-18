@@ -798,9 +798,7 @@ Window {
 
             activeFocusOnTab: true
             model: activityModel
-            onShowFileActivity: {
-                openFileActivityDialog(objectName, objectId)
-            }
+            onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {
                 model.slotTriggerDefaultAction(index)
             }
