@@ -373,14 +373,13 @@ public:
         , _finishedEmited(false)
         , _bandwidthManager(this)
         , _anotherSyncNeeded(false)
-        , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
+        , _chunkSize(options._initialChunkSize)
         , _account(account)
         , _syncOptions(options)
         , _localDir((localDir.endsWith(QLatin1Char('/'))) ? localDir : localDir + QLatin1Char('/'))
         , _remoteFolder((remoteFolder.endsWith(QLatin1Char('/'))) ? remoteFolder : remoteFolder + QLatin1Char('/'))
         , _webDavUrl(baseUrl)
     {
-        _chunkSize = _syncOptions._initialChunkSize;
         qRegisterMetaType<PropagatorJob::AbortType>("PropagatorJob::AbortType");
     }
 
