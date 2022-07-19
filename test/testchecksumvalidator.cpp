@@ -23,7 +23,7 @@ using namespace OCC::Utility;
     {
         Q_OBJECT
     private:
-        QTemporaryDir _root;
+        const QTemporaryDir _root = TestUtils::createTempDir();
         QString _testfile;
         QString _expectedError;
         QByteArray     _expected;

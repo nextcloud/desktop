@@ -20,6 +20,7 @@
 #include "common/filesystembase.h"
 #include "csync/csync.h"
 #include "csync/vio/csync_vio_local.h"
+#include "testutils/testutils.h"
 
 #include <QTemporaryFile>
 #include <QTest>
@@ -116,7 +117,7 @@ private Q_SLOTS:
 
     void testLongPathStat()
     {
-        QTemporaryDir tmp;
+        auto tmp = OCC::TestUtils::createTempDir();
         QFETCH(QString, name);
         const QFileInfo longPath(tmp.path() + name);
 

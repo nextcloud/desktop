@@ -17,6 +17,7 @@
 #include "folder.h"
 #include "logger.h"
 #include "syncengine.h"
+#include "testutils.h"
 #include <cstring>
 
 #include <QDir>
@@ -528,7 +529,7 @@ private:
 
 class FakeFolder
 {
-    QTemporaryDir _tempDir;
+    const QTemporaryDir _tempDir = OCC::TestUtils::createTempDir();
     DiskFileModifier _localModifier;
     // FIXME: Clarify ownership, double delete
     FakeAM *_fakeAm;

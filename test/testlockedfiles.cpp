@@ -5,11 +5,13 @@
  *
  */
 
-#include <QtTest>
-#include "testutils/syncenginetestutils.h"
+#include "localdiscoverytracker.h"
 #include "lockwatcher.h"
-#include <syncengine.h>
-#include <localdiscoverytracker.h>
+#include "syncengine.h"
+#include "testutils.h"
+#include "testutils/syncenginetestutils.h"
+
+#include <QtTest>
 
 using namespace std::chrono_literals;
 using namespace OCC;
@@ -41,7 +43,7 @@ class TestLockedFiles : public QObject
 private slots:
     void testBasicLockFileWatcher()
     {
-        QTemporaryDir tmp;
+        auto tmp = TestUtils::createTempDir();
         int count = 0;
         QString file;
 

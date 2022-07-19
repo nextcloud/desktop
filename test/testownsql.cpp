@@ -4,18 +4,19 @@
  *          any purpose.
  *          */
 
+#include "common/ownsql.h"
+#include "testutils.h"
+
 #include <QtTest>
 
 #include <sqlite3.h>
-
-#include "common/ownsql.h"
 
 using namespace OCC;
 
 class TestOwnSql : public QObject
 {
     Q_OBJECT
-    QTemporaryDir _tempDir;
+    const QTemporaryDir _tempDir = TestUtils::createTempDir();
 
 private slots:
     void testOpenDb() {

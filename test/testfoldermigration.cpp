@@ -11,6 +11,7 @@
 #include "common/utility.h"
 #include "configfile.h"
 #include "folderman.h"
+#include "testutils/testutils.h"
 
 using namespace OCC;
 
@@ -72,7 +73,7 @@ private slots:
     {
         QFETCH(QStringList, journalPaths);
         QFETCH(QString, url);
-        QTemporaryDir tmp;
+        auto tmp = OCC::TestUtils::createTempDir();
         const auto settings = writeSettings(tmp, Settings_2_4());
         settings->setValue("0/url", url);
         settings->remove("0/Folders/1/journalPath");

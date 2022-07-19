@@ -47,6 +47,11 @@ namespace TestUtils {
         return d;
     }
 
+    QTemporaryDir createTempDir()
+    {
+        return QTemporaryDir { QStringLiteral("%1/ownCloud-unit-test-%2-XXXXXX").arg(QDir::tempPath(), qApp->applicationName()) };
+    }
+
     FolderMan *folderMan()
     {
         static QPointer<FolderMan> man;

@@ -75,7 +75,7 @@ class TestFolderWatcher : public QObject
 {
     Q_OBJECT
 
-    QTemporaryDir _root;
+    const QTemporaryDir _root = TestUtils::createTempDir();
     QString _rootPath;
     QScopedPointer<FolderWatcher> _watcher;
     QScopedPointer<QSignalSpy> _pathChangedSpy;

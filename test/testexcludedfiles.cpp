@@ -9,6 +9,7 @@
 #include <QTemporaryDir>
 
 #include "csync_exclude.h"
+#include "testutils.h"
 
 using namespace OCC;
 
@@ -70,7 +71,7 @@ private slots:
         bool keepHidden = false;
 
         auto check_isExcluded = [&](const QString &a, bool keepHidden, bool create = true) {
-            QTemporaryDir tmp;
+            auto tmp = OCC::TestUtils::createTempDir();
             Q_ASSERT(tmp.isValid());
 
             auto createTree = [&](const QString &path) {

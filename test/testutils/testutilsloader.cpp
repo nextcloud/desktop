@@ -1,6 +1,7 @@
 #include "configfile.h"
 #include "logger.h"
 #include "resources/loadresources.h"
+#include "testutils.h"
 
 #include <QCoreApplication>
 #include <QTemporaryDir>
@@ -11,7 +12,7 @@ void setupLogger()
     // load the resources
     static const OCC::ResourcesLoader resources;
 
-    static QTemporaryDir dir;
+    static auto dir = OCC::TestUtils::createTempDir();
     OCC::ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
 
     OCC::Logger::instance()->setLogFile(QStringLiteral("-"));

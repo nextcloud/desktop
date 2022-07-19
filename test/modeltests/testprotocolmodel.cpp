@@ -30,7 +30,7 @@ private Q_SLOTS:
 
         new QAbstractItemModelTester(model, this);
 
-        QTemporaryDir dir;
+        auto dir = TestUtils::createTempDir();
 
         auto account = TestUtils::createDummyAccount();
 
