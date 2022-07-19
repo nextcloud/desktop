@@ -13,6 +13,7 @@
  */
 #include "spacesmodel.h"
 
+#include "common/utility.h"
 #include "networkjobs.h"
 
 #include <QPixmap>
@@ -103,19 +104,16 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     case Qt::DecorationRole:
         switch (column) {
         case Columns::Image: {
-            auto it = _images.constFind(item.getId());
-            if (it != _images.cend()) {
-                return QVariant::fromValue(*it);
+            if (auto it = Utility::optionalFind(_images, item.getId())) {
+                return QVariant::fromValue(it->value());
             }
-            const auto imgUrl = data(index, Qt::DisplayRole);
-            if (!imgUrl.isValid()) {
+            const auto imgUrl = data(index, Qt::DisplayRole).toUrl();
+            if (imgUrl.isEmpty()) {
                 return {};
             }
             // TODO: placeholder
             _images[item.getId()] = QPixmap();
-            auto davUrl = QUrl(item.getRoot().getWebDavUrl());
-            auto path = imgUrl.toString().remove(item.getRoot().getWebDavUrl());
-            auto job = new OCC::SimpleNetworkJob(_acc, davUrl, path, "GET", {}, {}, nullptr);
+            auto job = new OCC::SimpleNetworkJob(_acc, imgUrl, {}, "GET", {}, {}, nullptr);
             connect(job, &OCC::SimpleNetworkJob::finishedSignal, this, [job, id = item.getId(), index, this] {
                 QPixmap img;
                 qDebug() << img.loadFromData(job->reply()->readAll());

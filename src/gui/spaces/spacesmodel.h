@@ -49,7 +49,7 @@ public:
 private:
     QList<OpenAPI::OAIDrive> _data;
 
-    mutable QMap<QString, QPixmap> _images;
+    mutable QHash<QString, QPixmap> _images;
     OCC::AccountPtr _acc;
 };
 }
