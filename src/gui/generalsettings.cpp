@@ -114,7 +114,9 @@ void createDebugArchive(const QString &filename)
 {
     const auto entries = createFileList();
 
+    // TODO: Port away from this private API (best to port to KArchive)
     QZipWriter zip(filename);
+    zip.setCreationPermissions(zip.creationPermissions() | QFile::ReadOther);
     for (const auto &entry : entries) {
         if (entry.localFilename.isEmpty()) {
             zip.addDirectory(entry.zipFilename);
