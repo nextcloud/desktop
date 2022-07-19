@@ -72,6 +72,8 @@ public:
 
     ownCloudGui *gui() const;
 
+    bool event(QEvent *event) override;
+
 public slots:
     // TODO: this should not be public
     void slotownCloudWizardDone(int);
@@ -85,11 +87,12 @@ public slots:
     /// Attempt to show() the tray icon again. Used if no systray was available initially.
     void tryTrayAgain();
 
+    void handleEditLocally(const QUrl &url) const;
+
 protected:
     void parseOptions(const QStringList &);
     void setupTranslations();
     void setupLogging();
-    bool event(QEvent *event) override;
 
 signals:
     void folderRemoved();
@@ -108,6 +111,8 @@ protected slots:
 
 private:
     void setHelp();
+
+    void handleEditLocallyFromOptions();
 
     /**
      * Maybe a newer version of the client was used with this config file:
@@ -135,6 +140,7 @@ private:
     bool _userTriggeredConnect;
     bool _debugMode;
     bool _backgroundMode;
+    QUrl _editFileLocallyUrl;
 
     ClientProxy _proxy;
 

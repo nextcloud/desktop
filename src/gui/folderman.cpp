@@ -36,6 +36,8 @@
 #include <QMutableSetIterator>
 #include <QSet>
 #include <QNetworkProxy>
+#include <QDesktopServices>
+#include <QtConcurrent>
 
 static const char versionC[] = "version";
 static const int maxFoldersVersion = 1;
@@ -163,6 +165,8 @@ void FolderMan::registerFolderWithSocketApi(Folder *folder)
 
 int FolderMan::setupFolders()
 {
+    Utility::registerUriHandlerForLocalEditing();
+
     unloadAndDeleteAllFolders();
 
     QStringList skipSettingsKeys;
@@ -1400,6 +1404,64 @@ void FolderMan::setDirtyNetworkLimits()
             f->setDirtyNetworkLimits();
         }
     }
+}
+
+void FolderMan::editFileLocally(const QString &accountDisplayName, const QString &relPath)
+{
+    const auto showError = [this](const OCC::AccountStatePtr accountState, const QString &errorMessage, const QString &subject) {
+        if (accountState && accountState->account()) {
+            const auto foundFolder = std::find_if(std::cbegin(map()), std::cend(map()), [accountState](const auto &folder) {
+                return accountState->account()->davUrl() == folder->remoteUrl();
+            });
+
+            if (foundFolder != std::cend(map())) {
+                (*foundFolder)->syncEngine().addErrorToGui(SyncFileItem::SoftError, errorMessage, subject);
+            }
+        }
+
+        // to make sure the error is not missed, show a message box in addition
+        const auto messageBox = new QMessageBox;
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
+        messageBox->setText(errorMessage);
+        messageBox->setInformativeText(subject);
+        messageBox->setIcon(QMessageBox::Warning);
+        messageBox->addButton(QMessageBox::StandardButton::Ok);
+        messageBox->show();
+        messageBox->activateWindow();
+        messageBox->raise();
+    };
+
+    const auto accountFound = AccountManager::instance()->account(accountDisplayName);
+
+    if (!accountFound) {
+        qCWarning(lcFolderMan) << "Could not find an account " << accountDisplayName << " to edit file " << relPath << " locally.";
+        showError(accountFound, tr("Could not find an account for local editing"), accountDisplayName);
+        return;
+    }
+
+    const auto foundFiles = findFileInLocalFolders(relPath, accountFound->account());
+
+    if (foundFiles.isEmpty()) {
+        for (const auto &folder : map()) {
+            bool result = false;
+            const auto excludedThroughSelectiveSync = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &result);
+            for (const auto &excludedPath : excludedThroughSelectiveSync) {
+                if (relPath.startsWith(excludedPath)) {
+                    showError(accountFound, tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), relPath);
+                    return;
+                }
+            }
+        }
+
+        showError(accountFound, tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), relPath);
+        return;
+    }
+
+    // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl from a separate thread, or, there will be a freeze.
+    // To avoid searching for a specific folder and checking if the VFS is enabled - we just always call it from a separate thread.
+    QtConcurrent::run([foundFiles] {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(foundFiles.first()));
+    });
 }
 
 void FolderMan::trayOverallStatus(const QList<Folder *> &folders,
