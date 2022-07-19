@@ -5,6 +5,7 @@ set( APPLICATION_DOMAIN     "nextcloud.com" )
 set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE STRING "URL for updater" )
 set( APPLICATION_HELP_URL   "" CACHE STRING "URL for the help menu" )
+set( APPLICATION_URI_HANDLER_SCHEME "nc")
 
 if(APPLE AND APPLICATION_NAME STREQUAL "Nextcloud" AND EXISTS "${CMAKE_SOURCE_DIR}/theme/colored/Nextcloud-macOS-icon.svg")
     set( APPLICATION_ICON_NAME "Nextcloud-macOS" )
