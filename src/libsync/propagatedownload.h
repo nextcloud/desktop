@@ -21,48 +21,11 @@
 
 namespace OCC {
 
-class OWNCLOUDSYNC_EXPORT GETJob : public AbstractNetworkJob
-{
-    Q_OBJECT
-protected:
-    QByteArray _etag;
-    time_t _lastModified = 0;
-    QString _errorString;
-    SyncFileItem::Status _errorStatus = SyncFileItem::NoStatus;
-    bool _bandwidthLimited = false; // if _bandwidthQuota will be used
-    bool _bandwidthChoked = false; // if download is paused (won't read on readyRead())
-    qint64 _bandwidthQuota = 0;
-    QPointer<BandwidthManager> _bandwidthManager = nullptr;
-
-public:
-    GETJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent = nullptr);
-
-    ~GETJob() override;
-
-    virtual qint64 currentDownloadPosition() = 0;
-    virtual qint64 resumeStart() { return 0; }
-
-    QByteArray &etag() { return _etag; }
-    time_t lastModified() { return _lastModified; }
-
-    void setErrorString(const QString &s) { _errorString = s; }
-    QString errorString() const;
-    SyncFileItem::Status errorStatus() { return _errorStatus; }
-    void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
-    void setBandwidthManager(BandwidthManager *bwm);
-    void setChoked(bool c);
-    void setBandwidthLimited(bool b);
-    void giveBandwidthQuota(qint64 q);
-
-signals:
-    void finishedSignal();
-};
-
 /**
  * @brief Downloads the remote file via GET
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT GETFileJob : public GETJob
+class OWNCLOUDSYNC_EXPORT GETFileJob : public AbstractNetworkJob
 {
     Q_OBJECT
     QIODevice *_device;
@@ -71,10 +34,6 @@ class OWNCLOUDSYNC_EXPORT GETFileJob : public GETJob
     qint64 _expectedContentLength;
     qint64 _contentLength;
     qint64 _resumeStart;
-    bool _hasEmittedFinishedSignal;
-
-    /// Will be set to true once we've seen a 2xx response header
-    bool _saveBodyToFile = false;
 
 public:
     // DOES NOT take ownership of the device.
@@ -82,26 +41,16 @@ public:
     explicit GETFileJob(AccountPtr account, const QUrl &url, const QString &path, QIODevice *device,
         const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
         qint64 resumeStart, QObject *parent = nullptr);
+    virtual ~GETFileJob();
 
-    qint64 currentDownloadPosition() override;
+    qint64 currentDownloadPosition();
 
     void start() override;
-    bool finished() override
-    {
-        if (_saveBodyToFile && reply()->bytesAvailable()) {
-            return false;
-        } else {
-            if (!_hasEmittedFinishedSignal) {
-                emit finishedSignal();
-            }
-            _hasEmittedFinishedSignal = true;
-            return true; // discard
-        }
-    }
+    void finished() override;
 
     void newReplyHook(QNetworkReply *reply) override;
 
-    qint64 resumeStart() override
+    qint64 resumeStart()
     {
         return _resumeStart;
     }
@@ -110,12 +59,38 @@ public:
     qint64 expectedContentLength() const { return _expectedContentLength; }
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
+    void setChoked(bool c);
+    void setBandwidthLimited(bool b);
+    void giveBandwidthQuota(qint64 q);
+    void setBandwidthManager(BandwidthManager *bwm);
+
+    QByteArray &etag() { return _etag; }
+    time_t lastModified() { return _lastModified; }
+
+    void setErrorString(const QString &s) { _errorString = s; }
+    QString errorString() const;
+    SyncFileItem::Status errorStatus() { return _errorStatus; }
+    void setErrorStatus(const SyncFileItem::Status &s) { _errorStatus = s; }
+
 private slots:
     void slotReadyRead();
     void slotMetaDataChanged();
 
 signals:
     void downloadProgress(qint64, qint64);
+
+protected:
+    bool restartDevice();
+
+    QByteArray _etag;
+    time_t _lastModified = 0;
+    QString _errorString;
+    SyncFileItem::Status _errorStatus = SyncFileItem::NoStatus;
+    bool _bandwidthLimited = false; // if _bandwidthQuota will be used
+    bool _bandwidthChoked = false; // if download is paused (won't read on readyRead())
+    qint64 _bandwidthQuota = 0;
+    bool _httpOk = false;
+    QPointer<BandwidthManager> _bandwidthManager = nullptr;
 };
 
 /**
@@ -217,7 +192,7 @@ private:
 
     qint64 _resumeStart;
     qint64 _downloadProgress;
-    QPointer<GETJob> _job;
+    QPointer<GETFileJob> _job;
     QFile _tmpFile;
     bool _deleteExisting;
     ConflictRecord _conflictRecord;

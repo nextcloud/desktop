@@ -120,10 +120,12 @@ void BandwidthManager::unregisterUploadDevice(QObject *o)
     }
 }
 
-void BandwidthManager::registerDownloadJob(GETJob *j)
+void BandwidthManager::registerDownloadJob(GETFileJob *j)
 {
     _downloadJobList.push_back(j);
-    QObject::connect(j, &QObject::destroyed, this, &BandwidthManager::unregisterDownloadJob);
+    connect(j, &GETFileJob::aboutToFinishSignal, this, [j, this] {
+        unregisterDownloadJob(j);
+    });
 
     if (usingAbsoluteDownloadLimit()) {
         j->setBandwidthLimited(true);
@@ -137,9 +139,10 @@ void BandwidthManager::registerDownloadJob(GETJob *j)
     }
 }
 
-void BandwidthManager::unregisterDownloadJob(QObject *o)
+void BandwidthManager::unregisterDownloadJob(GETFileJob *j)
 {
-    GETJob *j = reinterpret_cast<GETJob *>(o); // note, we might already be in the ~QObject
+    j->setChoked(false);
+    j->setBandwidthLimited(false);
     _downloadJobList.remove(j);
     if (_relativeLimitCurrentMeasuredJob == j) {
         _relativeLimitCurrentMeasuredJob = nullptr;

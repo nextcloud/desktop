@@ -28,7 +28,7 @@ JsonJob::~JsonJob()
 {
 }
 
-bool JsonJob::finished()
+void JsonJob::finished()
 {
     qCInfo(lcJsonApiJob) << "JsonJob of" << reply()->request().url() << "FINISHED WITH STATUS"
                          << replyStatusString();
@@ -38,7 +38,7 @@ bool JsonJob::finished()
     } else {
         parse(reply()->readAll());
     }
-    return SimpleNetworkJob::finished();
+    SimpleNetworkJob::finished();
 }
 
 void JsonJob::parse(const QByteArray &data)

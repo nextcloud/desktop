@@ -33,10 +33,7 @@ public:
         HeaderMap _extraHeaders, QObject *parent = nullptr);
 
     void start() override;
-    bool finished() override;
-
-signals:
-    void finishedSignal();
+    void finished() override;
 };
 
 /**

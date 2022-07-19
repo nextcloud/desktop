@@ -95,7 +95,7 @@ void RequestEtagJob::start()
     AbstractNetworkJob::start();
 }
 
-bool RequestEtagJob::finished()
+void RequestEtagJob::finished()
 {
     qCInfo(lcEtagJob) << "Request Etag of" << reply()->request().url() << "FINISHED WITH STATUS"
                       <<  replyStatusString();
@@ -126,7 +126,6 @@ bool RequestEtagJob::finished()
     } else {
         emit finishedWithResult(HttpError{ httpCode, errorString() });
     }
-    return true;
 }
 
 /*********************************************************************************************/
@@ -152,7 +151,7 @@ void MkColJob::start()
     AbstractNetworkJob::start();
 }
 
-bool MkColJob::finished()
+void MkColJob::finished()
 {
     qCInfo(lcMkColJob) << "MKCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
@@ -162,7 +161,6 @@ bool MkColJob::finished()
     } else {
         Q_EMIT finishedWithoutError();
     }
-    return true;
 }
 
 /*********************************************************************************************/
@@ -326,7 +324,7 @@ void LsColJob::start()
 // TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
 // would allow us to be more asynchronous in processing while data is coming from the network,
 // not all in one big blob at the end.
-bool LsColJob::finished()
+void LsColJob::finished()
 {
     qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
@@ -356,8 +354,6 @@ bool LsColJob::finished()
         // wrong HTTP code or any other network error
         emit finishedWithError(reply());
     }
-
-    return true;
 }
 
 void LsColJob::startImpl(const QNetworkRequest &req)
@@ -449,7 +445,7 @@ QPixmap AvatarJob::makeCircularAvatar(const QPixmap &baseAvatar)
     return avatar;
 }
 
-bool AvatarJob::finished()
+void AvatarJob::finished()
 {
     int http_result_code = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
@@ -464,7 +460,6 @@ bool AvatarJob::finished()
         }
     }
     emit avatarPixmap(avImage);
-    return true;
 }
 #endif
 
@@ -481,10 +476,9 @@ void EntityExistsJob::start()
     AbstractNetworkJob::start();
 }
 
-bool EntityExistsJob::finished()
+void EntityExistsJob::finished()
 {
     emit exists(reply());
-    return true;
 }
 
 /*********************************************************************************************/
@@ -510,7 +504,7 @@ void DetermineAuthTypeJob::start()
     AbstractNetworkJob::start();
 }
 
-bool DetermineAuthTypeJob::finished()
+void DetermineAuthTypeJob::finished()
 {
     auto authChallenge = reply()->rawHeader("WWW-Authenticate").toLower();
     auto result = AuthType::Basic;
@@ -521,7 +515,6 @@ bool DetermineAuthTypeJob::finished()
     }
     qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << _account->davUrl() << "is" << result;
     emit this->authType(result);
-    return true;
 }
 
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const QNetworkRequest &req, QObject *parent)
@@ -588,13 +581,11 @@ void SimpleNetworkJob::addNewReplyHook(std::function<void(QNetworkReply *)> &&ho
     _replyHooks.push_back(hook);
 }
 
-bool SimpleNetworkJob::finished()
+void SimpleNetworkJob::finished()
 {
     if (_device) {
         _device->close();
     }
-    emit finishedSignal();
-    return true;
 }
 
 void SimpleNetworkJob::newReplyHook(QNetworkReply *reply)

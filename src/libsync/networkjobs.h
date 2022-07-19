@@ -53,7 +53,7 @@ signals:
     void exists(QNetworkReply *);
 
 private slots:
-    bool finished() override;
+    void finished() override;
 };
 
 /**
@@ -102,7 +102,7 @@ signals:
     void finishedWithoutError();
 
 private slots:
-    bool finished() override;
+    void finished() override;
 
 protected:
     void startImpl(const QNetworkRequest &req);
@@ -167,7 +167,7 @@ signals:
     void avatarPixmap(const QPixmap &);
 
 private slots:
-    bool finished() override;
+    void finished() override;
 };
 #endif
 
@@ -190,7 +190,7 @@ signals:
     void finishedWithoutError();
 
 private:
-    bool finished() override;
+    void finished() override;
 };
 
 /**
@@ -208,7 +208,7 @@ signals:
     void finishedWithResult(const HttpResult<QByteArray> &etag);
 
 private slots:
-    bool finished() override;
+    void finished() override;
 };
 
 /**
@@ -232,7 +232,7 @@ signals:
     void authType(AuthType);
 
 protected Q_SLOTS:
-    bool finished() override;
+    void finished() override;
 };
 
 /**
@@ -259,11 +259,8 @@ public:
 
     void addNewReplyHook(std::function<void(QNetworkReply *)> &&hook);
 
-signals:
-    void finishedSignal();
-
 protected:
-    bool finished() override;
+    void finished() override;
     void newReplyHook(QNetworkReply *) override;
 
     QNetworkRequest _request;

@@ -35,13 +35,10 @@ void DeleteJob::start()
     AbstractNetworkJob::start();
 }
 
-bool DeleteJob::finished()
+void DeleteJob::finished()
 {
     qCInfo(lcDeleteJob) << "DELETE of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
-
-    emit finishedSignal();
-    return true;
 }
 
 void PropagateRemoteDelete::start()

@@ -134,9 +134,10 @@ signals:
     void networkError(QNetworkReply *reply);
 
     /**
-     * Use complex name to prevent clash with other implementations of a finish signal...
+     * The job is done
      */
-    void abstractJobFinished();
+    void aboutToFinishSignal(QPrivateSignal);
+    void finishedSignal(QPrivateSignal);
 
 protected:
     /** Initiate a network request, returning a QNetworkReply.
@@ -158,10 +159,8 @@ protected:
     virtual void newReplyHook(QNetworkReply *) {}
 
     /** Called at the end of QNetworkReply::finished processing.
-     *
-     * Returning true triggers a deleteLater() of this job.
      */
-    virtual bool finished() = 0;
+    virtual void finished() = 0;
 
     QByteArray _responseTimestamp;
 

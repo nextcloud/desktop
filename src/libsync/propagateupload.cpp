@@ -89,7 +89,7 @@ void PUTFileJob::start()
     AbstractNetworkJob::start();
 }
 
-bool PUTFileJob::finished()
+void PUTFileJob::finished()
 {
     _device->close();
 
@@ -97,9 +97,6 @@ bool PUTFileJob::finished()
                      << replyStatusString()
                      << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt()
                      << reply()->attribute(QNetworkRequest::HttpReasonPhraseAttribute);
-
-    emit finishedSignal();
-    return true;
 }
 
 void PUTFileJob::newReplyHook(QNetworkReply *reply)
@@ -498,7 +495,7 @@ void PropagateUploadFileCommon::addChildJob(AbstractNetworkJob *job)
 {
     _childJobs.insert(job);
     connect(
-        job, &AbstractNetworkJob::abstractJobFinished, this, [job, this] {
+        job, &AbstractNetworkJob::aboutToFinishSignal, this, [job, this] {
             _childJobs.erase(job);
         },
         Qt::DirectConnection);
@@ -624,7 +621,9 @@ void PropagateUploadFileCommon::abortNetworkJobs(
     };
 
     // Abort all running jobs, except for explicitly excluded ones
-    for (auto *job : _childJobs) {
+    // perform actions on a copy as aborted jobs will be removed from _childJobs
+    const auto children = _childJobs;
+    for (auto *job : children) {
         auto reply = job->reply();
         if (!reply || !reply->isRunning())
             continue;

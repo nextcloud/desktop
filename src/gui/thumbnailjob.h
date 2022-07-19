@@ -44,7 +44,7 @@ signals:
      */
     void jobFinished(int statusCode, QPixmap reply);
 private slots:
-    bool finished() override;
+    void finished() override;
 };
 }
 

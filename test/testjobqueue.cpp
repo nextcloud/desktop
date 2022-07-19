@@ -45,9 +45,8 @@ public:
     }
 
 protected:
-    bool finished() override
+    void finished() override
     {
-        return true;
     }
 };
 

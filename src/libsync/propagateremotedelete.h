@@ -29,10 +29,7 @@ public:
     explicit DeleteJob(AccountPtr account, const QUrl &url, const QString &path, QObject *parent = nullptr);
 
     void start() override;
-    bool finished() override;
-
-signals:
-    void finishedSignal();
+    void finished() override;
 };
 
 /**

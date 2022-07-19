@@ -106,7 +106,7 @@ public:
 
     void start() override;
 
-    bool finished() override;
+    void finished() override;
 
     QIODevice *device()
     {
@@ -127,7 +127,6 @@ protected:
     void newReplyHook(QNetworkReply *reply) override;
 
 signals:
-    void finishedSignal();
     void uploadProgress(qint64, qint64);
 
 };

@@ -48,13 +48,10 @@ void MoveJob::start()
 }
 
 
-bool MoveJob::finished()
+void MoveJob::finished()
 {
     qCInfo(lcMoveJob) << "MOVE of" << reply()->request().url() << "FINISHED WITH STATUS"
                       << replyStatusString();
-
-    emit finishedSignal();
-    return true;
 }
 
 void PropagateRemoteMove::start()

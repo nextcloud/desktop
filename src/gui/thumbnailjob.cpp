@@ -31,7 +31,7 @@ void ThumbnailJob::start()
     AbstractNetworkJob::start();
 }
 
-bool ThumbnailJob::finished()
+void ThumbnailJob::finished()
 {
     const auto result = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     QPixmap p;
@@ -42,6 +42,5 @@ bool ThumbnailJob::finished()
         }
     }
     emit jobFinished(result, p);
-    return true;
 }
 }

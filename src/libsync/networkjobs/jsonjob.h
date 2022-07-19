@@ -33,7 +33,7 @@ public:
     const QJsonParseError &parseError() const;
 
 protected:
-    bool finished() override;
+    void finished() override;
 
     virtual void parse(const QByteArray &data);
 

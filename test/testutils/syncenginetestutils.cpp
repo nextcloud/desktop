@@ -1011,7 +1011,7 @@ QString FakeFolder::localPath() const
 void FakeFolder::scheduleSync()
 {
     // Have to be done async, else, an error before exec() does not terminate the event loop.
-    QMetaObject::invokeMethod(_syncEngine.get(), "startSync", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(_syncEngine.get(), &OCC::SyncEngine::startSync, Qt::QueuedConnection);
 }
 
 void FakeFolder::execUntilBeforePropagation()

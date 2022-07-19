@@ -218,13 +218,11 @@ void AbstractNetworkJob::slotFinished()
             qCWarning(lcNetworkJob) << "Don't retry:" << _reply->url();
         }
     }
-
-    bool discard = finished();
-    if (discard) {
-        Q_EMIT abstractJobFinished();
-        qCDebug(lcNetworkJob) << "Network job finished" << this;
-        deleteLater();
-    }
+    Q_EMIT aboutToFinishSignal(AbstractNetworkJob::QPrivateSignal());
+    finished();
+    Q_EMIT finishedSignal(AbstractNetworkJob::QPrivateSignal());
+    qCDebug(lcNetworkJob) << "Network job finished" << this;
+    deleteLater();
 }
 
 QByteArray AbstractNetworkJob::responseTimestamp()

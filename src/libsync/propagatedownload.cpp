@@ -75,15 +75,22 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, const QString &path, QIODevice *device,
     const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
-    : GETJob(account, url, path, parent)
+    : AbstractNetworkJob(account, url, path, parent)
     , _device(device)
     , _headers(headers)
     , _expectedEtagForResume(expectedEtagForResume)
     , _expectedContentLength(-1)
     , _contentLength(-1)
     , _resumeStart(resumeStart)
-    , _hasEmittedFinishedSignal(false)
 {
+    connect(this, &GETFileJob::networkError, this, [this] {
+        if (timedOut()) {
+            qCWarning(lcGetJob) << this << "timeout";
+            _errorString = tr("Connection Timeout");
+            _errorStatus = SyncFileItem::FatalError;
+        }
+    });
+
     // Long downloads must not block non-propagation jobs.
     setPriority(QNetworkRequest::LowPriority);
 }
@@ -110,12 +117,23 @@ void GETFileJob::start()
     AbstractNetworkJob::start();
 }
 
+void GETFileJob::finished()
+{
+    if (_bandwidthManager) {
+        _bandwidthManager->unregisterDownloadJob(this);
+    }
+    if (reply()->bytesAvailable() && _httpOk) {
+        // we were throttled, write out the remaining data
+        slotReadyRead();
+        Q_ASSERT(!reply()->bytesAvailable());
+    }
+}
+
 void GETFileJob::newReplyHook(QNetworkReply *reply)
 {
     reply->setReadBufferSize(16 * 1024); // keep low so we can easier limit the bandwidth
 
     connect(reply, &QNetworkReply::metaDataChanged, this, &GETFileJob::slotMetaDataChanged);
-    connect(reply, &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
     connect(reply, &QNetworkReply::finished, this, &GETFileJob::slotReadyRead);
     connect(reply, &QNetworkReply::downloadProgress, this, &GETFileJob::downloadProgress);
 }
@@ -179,11 +197,12 @@ void GETFileJob::slotMetaDataChanged()
     }
 
     qint64 start = 0;
-    QString ranges = QString::fromUtf8(reply()->rawHeader("Content-Range"));
+    const QString ranges = QString::fromUtf8(reply()->rawHeader("Content-Range"));
     if (!ranges.isEmpty()) {
-        QRegExp rx(QStringLiteral("bytes (\\d+)-"));
-        if (rx.indexIn(ranges) >= 0) {
-            start = rx.cap(1).toLongLong();
+        static QRegularExpression rx(QStringLiteral("bytes (\\d+)-"));
+        const auto match = rx.match(ranges);
+        if (match.hasMatch()) {
+            start = match.captured(1).toLongLong();
         }
     }
     if (start != _resumeStart) {
@@ -210,32 +229,32 @@ void GETFileJob::slotMetaDataChanged()
     if (!lastModified.isNull()) {
         _lastModified = Utility::qDateTimeToTime_t(lastModified.toDateTime());
     }
-
-    _saveBodyToFile = true;
+    _httpOk = true;
+    connect(reply(), &QIODevice::readyRead, this, &GETFileJob::slotReadyRead);
 }
 
-void GETJob::setBandwidthManager(BandwidthManager *bwm)
+void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
 {
     _bandwidthManager = bwm;
 }
 
-void GETJob::setChoked(bool c)
+void GETFileJob::setChoked(bool c)
 {
     _bandwidthChoked = c;
-    QMetaObject::invokeMethod(this, "slotReadyRead", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
 }
 
-void GETJob::setBandwidthLimited(bool b)
+void GETFileJob::setBandwidthLimited(bool b)
 {
     _bandwidthLimited = b;
-    QMetaObject::invokeMethod(this, "slotReadyRead", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
 }
 
-void GETJob::giveBandwidthQuota(qint64 q)
+void GETFileJob::giveBandwidthQuota(qint64 q)
 {
     _bandwidthQuota = q;
     qCDebug(lcGetJob) << "Got" << q << "bytes";
-    QMetaObject::invokeMethod(this, "slotReadyRead", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
 }
 
 qint64 GETFileJob::currentDownloadPosition()
@@ -248,28 +267,31 @@ qint64 GETFileJob::currentDownloadPosition()
 
 void GETFileJob::slotReadyRead()
 {
-    if (!reply())
+    Q_ASSERT(reply());
+    if (!_httpOk) {
         return;
-    int bufferSize = qMin(1024 * 8ll, reply()->bytesAvailable());
+    }
+
+    const qint64 bufferSize = std::min<qint64>(1024 * 8, reply()->bytesAvailable());
     QByteArray buffer(bufferSize, Qt::Uninitialized);
 
-    while (reply()->bytesAvailable() > 0 && _saveBodyToFile) {
+    while (reply()->bytesAvailable() > 0) {
         if (_bandwidthChoked) {
             qCWarning(lcGetJob) << "Download choked";
             break;
         }
         qint64 toRead = bufferSize;
         if (_bandwidthLimited) {
-            toRead = qMin(qint64(bufferSize), _bandwidthQuota);
+            toRead = std::min<qint64>(bufferSize, _bandwidthQuota);
             if (toRead == 0) {
-                qCWarning(lcGetJob) << "Out of quota";
+                qCWarning(lcGetJob) << "Out of badnwidth quota";
                 break;
             }
             _bandwidthQuota -= toRead;
         }
 
-        qint64 r = reply()->read(buffer.data(), toRead);
-        if (r < 0) {
+        const qint64 read = reply()->read(buffer.data(), toRead);
+        if (read < 0) {
             _errorString = networkReplyErrorString(*reply());
             _errorStatus = SyncFileItem::NormalError;
             qCWarning(lcGetJob) << "Error while reading from device: " << _errorString;
@@ -277,52 +299,26 @@ void GETFileJob::slotReadyRead()
             return;
         }
 
-        qint64 w = _device->write(buffer.constData(), r);
-        if (w != r) {
+        const qint64 written = _device->write(buffer.constData(), read);
+        if (written != read) {
             _errorString = _device->errorString();
             _errorStatus = SyncFileItem::NormalError;
-            qCWarning(lcGetJob) << "Error while writing to file" << w << r << _errorString;
+            qCWarning(lcGetJob) << "Error while writing to file" << written << read << _errorString;
             reply()->abort();
             return;
         }
     }
-
-    if (reply()->isFinished() && (reply()->bytesAvailable() == 0 || !_saveBodyToFile)) {
-        qCDebug(lcGetJob) << "Actually finished!";
-        if (_bandwidthManager) {
-            _bandwidthManager->unregisterDownloadJob(this);
-        }
-        if (!_hasEmittedFinishedSignal) {
-            qCInfo(lcGetJob) << "GET of" << reply()->request().url().toString() << "FINISHED WITH STATUS"
-                             << replyStatusString()
-                             << reply()->rawHeader("Content-Range") << reply()->rawHeader("Content-Length");
-
-            emit finishedSignal();
-        }
-        _hasEmittedFinishedSignal = true;
-        deleteLater();
-    }
 }
 
-GETJob::GETJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, rootUrl, path, parent)
-{
-    connect(this, &GETJob::networkError, this, [this] {
-        if (timedOut()) {
-            qCWarning(lcGetJob) << this << "timeout";
-            _errorString = tr("Connection Timeout");
-            _errorStatus = SyncFileItem::FatalError;
-        }
-    });
-}
-GETJob::~GETJob()
+
+GETFileJob::~GETFileJob()
 {
     if (_bandwidthManager) {
         _bandwidthManager->unregisterDownloadJob(this);
     }
 }
 
-QString GETJob::errorString() const
+QString GETFileJob::errorString() const
 {
     if (!_errorString.isEmpty()) {
         return _errorString;
@@ -553,7 +549,7 @@ void PropagateDownloadFile::startFullDownload()
             &_tmpFile, headers, _expectedEtagForResume, _resumeStart, this);
     }
     _job->setBandwidthManager(&propagator()->_bandwidthManager);
-    connect(_job.data(), &GETJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
+    connect(_job.data(), &GETFileJob::finishedSignal, this, &PropagateDownloadFile::slotGetFinished);
     connect(qobject_cast<GETFileJob *>(_job.data()), &GETFileJob::downloadProgress,
         this, &PropagateDownloadFile::slotDownloadProgress);
     propagator()->_activeJobList.append(this);
@@ -578,7 +574,7 @@ void PropagateDownloadFile::slotGetFinished()
 {
     propagator()->_activeJobList.removeOne(this);
 
-    GETJob *job = _job;
+    GETFileJob *job = _job;
     OC_ASSERT(job);
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -694,8 +690,8 @@ void PropagateDownloadFile::slotGetFinished()
         return;
     }
 
-    if (bodySize > 0 && bodySize != _tmpFile.size() - job->resumeStart()) {
-        qCDebug(lcPropagateDownload) << bodySize << _tmpFile.size() << job->resumeStart();
+    if (bodySize > 0 && (bodySize != (_tmpFile.size() - job->resumeStart()))) {
+        qCDebug(lcPropagateDownload) << bodySize << "!=" << (_tmpFile.size() - job->resumeStart()) << _tmpFile.size() << job->resumeStart();
         propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, tr("The file could not be downloaded completely."));
         return;

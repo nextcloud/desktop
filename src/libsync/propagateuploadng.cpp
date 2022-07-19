@@ -27,13 +27,12 @@
 #include "propagateremotedelete.h"
 #include "common/asserts.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QFileInfo>
 #include <QNetworkAccessManager>
 #include <QRandomGenerator>
 
-#include <cmath>
-#include <cstring>
 #include <memory>
 
 namespace OCC {
@@ -221,6 +220,7 @@ void PropagateUploadFileNG::slotPropfindFinished()
         for (auto it = _serverChunks.begin(); it != _serverChunks.end(); ++it) {
             auto job = new DeleteJob(propagator()->account(), propagator()->account()->url(), chunkPath() + QLatin1Char('/') + it->originalName, this);
             addChildJob(job);
+            connect(job, &DeleteJob::finishedSignal, this, &PropagateUploadFileNG::slotDeleteJobFinished);
             job->start();
         }
         _serverChunks.clear();
@@ -336,8 +336,7 @@ void PropagateUploadFileNG::doFinalMove()
     // Still not finished all ranges.
     if (!_rangesToUpload.isEmpty())
         return;
-
-    Q_ASSERT(childJobs().empty(), "MOVE for upload even though jobs are still running");
+    Q_ASSERT_X(childJobs().empty(), Q_FUNC_INFO, "MOVE for upload even though jobs are still running");
 
     _finished = true;
 
