@@ -247,6 +247,11 @@ namespace Utility {
      */
     OCSYNC_EXPORT QString getCurrentUserName();
 
+    /**
+     * @brief Registers the desktop app as a handler for a custom URI to enable local editing
+     */
+    OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
+
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
