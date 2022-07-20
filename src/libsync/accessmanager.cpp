@@ -89,6 +89,9 @@ QNetworkReply *AccessManager::createRequest(QNetworkAccessManager::Operation op,
         newRequest.setAttribute(QNetworkRequest::Http2AllowedAttribute, http2EnabledEnv);
     }
 
+    // allow http pipelining
+    newRequest.setAttribute(QNetworkRequest::HttpPipeliningAllowedAttribute, true);
+
     auto sslConfiguration = newRequest.sslConfiguration();
 
     sslConfiguration.setSslOption(QSsl::SslOptionDisableSessionTickets, false);
