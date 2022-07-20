@@ -1,0 +1,5 @@
+Bugfix: Changes during upload of a file could still trigger the ignore list
+
+We fixed another issue where changes during an upload could cause the file to be ignored for an increasing amount of time.
+
+https://github.com/owncloud/client/issues/9924

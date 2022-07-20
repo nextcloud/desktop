@@ -510,7 +510,7 @@ void PropagateUploadFileNG::slotPutFinished()
     if (FileSystem::fileChanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!_finished) {
-            abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
+            abortWithError(SyncFileItem::Message, fileChangedMessage());
             return;
         }
     }

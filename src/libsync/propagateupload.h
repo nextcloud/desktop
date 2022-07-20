@@ -155,6 +155,9 @@ class PropagateUploadFileCommon : public PropagateItemJob
     Q_OBJECT
 
 protected:
+    static const QString &fileChangedMessage();
+
+
     QVector<AbstractNetworkJob *> _jobs; /// network jobs that are currently in transit
     bool _finished; /// Tells that all the jobs have been finished
     bool _deleteExisting;

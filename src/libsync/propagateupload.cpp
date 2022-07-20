@@ -107,6 +107,11 @@ void PUTFileJob::newReplyHook(QNetworkReply *reply)
     connect(reply, &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
 }
 
+const QString &PropagateUploadFileCommon::fileChangedMessage()
+{
+    return tr("Local file changed during sync. It will be resumed.");
+}
+
 void PropagateUploadFileCommon::setDeleteExisting(bool enabled)
 {
     _deleteExisting = enabled;
@@ -243,7 +248,7 @@ void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionCh
     _item->_modtime = FileSystem::getModTime(fullFilePath);
     if (prevModtime != _item->_modtime || fileIsStillChanging(*_item)) {
         propagator()->_anotherSyncNeeded = true;
-        done(SyncFileItem::Message, tr("Local file changed during sync. It will be resumed."));
+        done(SyncFileItem::Message, fileChangedMessage());
         return;
     }
 

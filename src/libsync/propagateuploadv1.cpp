@@ -250,9 +250,7 @@ void PropagateUploadFileV1::slotPutFinished()
     if (FileSystem::fileChanged(fullFilePath, _item->_size, _item->_modtime)) {
         propagator()->_anotherSyncNeeded = true;
         if (!_finished) {
-            abortWithError(SyncFileItem::SoftError, tr("Local file changed during sync."));
-            // FIXME:  the legacy code was retrying for a few seconds.
-            //         and also checking that after the last chunk, and removed the file in case of INSTRUCTION_NEW
+            abortWithError(SyncFileItem::Message, fileChangedMessage());
             return;
         }
     }
