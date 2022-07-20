@@ -47,7 +47,7 @@
         <string notr="true">The account has been logged out [...] &lt;placeholder&gt;</string>
        </property>
        <property name="alignment">
-        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+        <set>Qt::AlignHCenter|Qt::AlignTop</set>
        </property>
        <property name="wordWrap">
         <bool>true</bool>
