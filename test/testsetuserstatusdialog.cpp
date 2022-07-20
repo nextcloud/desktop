@@ -252,23 +252,23 @@ private slots:
             OCC::UserStatus::OnlineStatus::Offline, false, {} });
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
 
-        QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Online);
+        QCOMPARE(model.onlineStatus(), OCC::UserStatus::OnlineStatus::Offline);
         QCOMPARE(model.userStatusMessage(), "");
         QCOMPARE(model.userStatusEmoji(), "😀");
         QCOMPARE(model.clearAtDisplayString(), tr("Don't clear"));
     }
 
-    void testSetOnlineStatus_emitOnlineStatusChanged()
+    void testSetOnlineStatus_emiUserStatusChanged()
     {
         const OCC::UserStatus::OnlineStatus onlineStatus(OCC::UserStatus::OnlineStatus::Invisible);
         auto fakeUserStatusJob = std::make_shared<FakeUserStatusConnector>();
         OCC::UserStatusSelectorModel model(fakeUserStatusJob);
-        QSignalSpy onlineStatusChangedSpy(&model,
-            &OCC::UserStatusSelectorModel::onlineStatusChanged);
+        QSignalSpy userStatusChangedSpy(&model,
+            &OCC::UserStatusSelectorModel::userStatusChanged);
 
         model.setOnlineStatus(onlineStatus);
 
-        QCOMPARE(onlineStatusChangedSpy.count(), 1);
+        QCOMPARE(userStatusChangedSpy.count(), 1);
     }
 
     void testSetUserStatus_setCustomMessage_userStatusSetCorrect()

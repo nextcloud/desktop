@@ -18,7 +18,7 @@ MenuItem {
     property variant comp;
     activeFocusOnTab: false
 
-    signal showUserStatusSelectorDialog(int id)
+    signal showUserStatusSelector(int id)
 
     RowLayout {
         id: userLineLayout
@@ -183,7 +183,7 @@ MenuItem {
                     font.pixelSize: Style.topLinePixelSize
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true
-                    onClicked: showUserStatusSelectorDialog(index)
+                    onClicked: showUserStatusSelector(index)
 
                     background: Item {
                         height: parent.height
