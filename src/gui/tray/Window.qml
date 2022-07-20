@@ -1,5 +1,3 @@
-import QtQml 2.12
-import QtQml.Models 2.1
 import QtQuick 2.15
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.3
@@ -13,7 +11,7 @@ import Style 1.0
 
 import com.nextcloud.desktopclient 1.0
 
-Window {
+ApplicationWindow {
     id:         trayWindow
 
     title:      Systray.windowTitle
@@ -53,6 +51,13 @@ Window {
         syncStatus.model.load();
     }
 
+    background: Rectangle {
+        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+        border.width: Style.trayWindowBorderWidth
+        border.color: Style.menuBorder
+        color: Style.backgroundColor
+    }
+
     Connections {
         target: UserModel
         function onCurrentUserChanged() {
@@ -78,6 +83,8 @@ Window {
         target: Systray
 
         function onIsOpenChanged() {
+            userStatusDrawer.close()
+
             if(Systray.isOpen) {
                 accountMenu.close();
                 appsMenu.close();
@@ -98,18 +105,54 @@ Window {
     OpacityMask {
         anchors.fill: parent
         source: ShaderEffectSource {
-            sourceItem: trayWindowBackground
+            sourceItem: trayWindowMainItem
             hideSource: true
         }
         maskSource: Rectangle {
-            width: trayWindowBackground.width
-            height: trayWindowBackground.height
+            width: trayWindow.width
+            height: trayWindow.height
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         }
     }
 
-    Rectangle {
-        id: trayWindowBackground
+    Drawer {
+        id: userStatusDrawer
+        width: parent.width
+        height: parent.height
+        padding: 0
+        edge: Qt.BottomEdge
+        modal: false
+        visible: false
+
+        background: Rectangle {
+            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+            border.width: Style.trayWindowBorderWidth
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
+
+        property int userIndex: 0
+
+        function openUserStatusDrawer(index) {
+            console.log(`About to show dialog for user with index ${index}`);
+            userIndex = index;
+            open();
+        }
+
+        Loader {
+            id: userStatusContents
+            anchors.fill: parent
+            active: userStatusDrawer.visible
+            sourceComponent: UserStatusSelectorPage {
+                anchors.fill: parent
+                userIndex: userStatusDrawer.userIndex
+                onFinished: userStatusDrawer.close()
+            }
+        }
+    }
+
+    Item {
+        id: trayWindowMainItem
 
         property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeletonLoader.active
                                              || unifiedSearchResultNothingFound.visible
@@ -117,10 +160,7 @@ Window {
                                              || unifiedSearchResultsListView.visible
 
         anchors.fill:   parent
-        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.menuBorder
-        color: Style.backgroundColor
+        clip: true
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -128,9 +168,9 @@ Window {
         Rectangle {
             id: trayWindowHeaderBackground
 
-            anchors.left:   trayWindowBackground.left
-            anchors.right:  trayWindowBackground.right
-            anchors.top:    trayWindowBackground.top
+            anchors.left:   trayWindowMainItem.left
+            anchors.right:  trayWindowMainItem.right
+            anchors.top:    trayWindowMainItem.top
             height:         Style.trayWindowHeaderHeight
             color:          UserModel.currentUser.headerColor
 
@@ -206,35 +246,12 @@ Window {
                             userLineInstantiator.active = true;
                         }
 
-                        Loader {
-                            id: userStatusSelectorDialogLoader
-
-                            property int userIndex
-
-                            function openDialog(newUserIndex) {
-                                console.log(`About to show dialog for user with index ${newUserIndex}`);
-                                userIndex = newUserIndex;
-                                active = true;
-                                item.show();
-                            }
-
-                            active: false
-                            sourceComponent: UserStatusSelectorDialog {
-                                userIndex: userStatusSelectorDialogLoader.userIndex
-                            }
-
-                            onLoaded: {
-                                item.model.load(userIndex);
-                                item.show();
-                            }
-                        }
-
                         Instantiator {
                             id: userLineInstantiator
                             model: UserModel
                             delegate: UserLine {
-                                onShowUserStatusSelectorDialog: {
-                                    userStatusSelectorDialogLoader.openDialog(model.index);
+                                onShowUserStatusSelector: {
+                                    userStatusDrawer.openUserStatusDrawer(model.index);
                                     accountMenu.close();
                                 }
                             }
@@ -661,8 +678,8 @@ Window {
 
             anchors {
                 top: trayWindowHeaderBackground.bottom
-                left: trayWindowBackground.left
-                right: trayWindowBackground.right
+                left: trayWindowMainItem.left
+                right: trayWindowMainItem.right
 
                 topMargin: Style.trayHorizontalMargin + controlRoot.padding
                 leftMargin: Style.trayHorizontalMargin + controlRoot.padding
@@ -681,8 +698,8 @@ Window {
             visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
             anchors.margins: Style.trayHorizontalMargin
         }
 
@@ -690,8 +707,8 @@ Window {
             id: unifiedSearchResultNothingFound
             visible: false
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
@@ -724,9 +741,9 @@ Window {
         Loader {
             id: unifiedSearchResultsListViewSkeletonLoader
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
 
             active: !unifiedSearchResultNothingFound.visible &&
                     !unifiedSearchResultsListView.visible &&
@@ -752,9 +769,9 @@ Window {
             visible: unifiedSearchResultsListView.count > 0
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
 
             ListView {
                 id: unifiedSearchResultsListView
@@ -791,19 +808,19 @@ Window {
         SyncStatus {
             id: syncStatus
 
-            visible: !trayWindowBackground.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
         }
 
         ActivityList {
-            visible: !trayWindowBackground.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive
             anchors.top: syncStatus.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
 
             activeFocusOnTab: true
             model: activityModel
@@ -833,5 +850,5 @@ Window {
 
             onLoaded: refresh()
         }
-    } // Rectangle trayWindowBackground
+    } // Item trayWindowMainItem
 }
