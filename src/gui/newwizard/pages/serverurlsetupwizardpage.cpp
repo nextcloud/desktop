@@ -40,7 +40,7 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
 
 QString ServerUrlSetupWizardPage::userProvidedUrl() const
 {
-    QString url = _ui->urlLineEdit->text();
+    QString url = _ui->urlLineEdit->text().simplified();
 
     if (!Theme::instance()->wizardUrlPostfix().isEmpty()) {
         url += Theme::instance()->wizardUrlPostfix();
