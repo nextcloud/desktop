@@ -849,13 +849,13 @@ void AccountSettings::slotAccountStateChanged()
             break;
         }
         case AccountState::NetworkError:
-            showConnectionLabel(tr("No connection to %1 at %2.")
-                                    .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
+            showConnectionLabel(tr("No connection to %1.")
+                                    .arg(server),
                 _accountState->connectionErrors());
             break;
         case AccountState::ConfigurationError:
-            showConnectionLabel(tr("Server configuration error: %1 at %2.")
-                                    .arg(Utility::escape(Theme::instance()->appNameGUI()), server),
+            showConnectionLabel(tr("Server configuration error: %1.")
+                                    .arg(server),
                 _accountState->connectionErrors());
             break;
         case AccountState::Disconnected:
@@ -865,8 +865,7 @@ void AccountSettings::slotAccountStateChanged()
         }
     } else {
         // ownCloud is not yet configured.
-        showConnectionLabel(tr("No %1 connection configured.")
-                                .arg(Utility::escape(Theme::instance()->appNameGUI())));
+        showConnectionLabel(tr("No connection configured."));
     }
 
     /* Allow to expand the item if the account is connected. */

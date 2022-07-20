@@ -1,0 +1,6 @@
+Enhancement: Remove app name from connection error message
+
+We removed the app name from some connection messages.
+`No connection to ownCloud at http://..` was misleading as the server could have any other branding.
+
+https://github.com/owncloud/client/issues/9923
