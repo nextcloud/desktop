@@ -45,7 +45,7 @@
 #include <QScopedValueRollback>
 #include <QMessageBox>
 
-#include <private/qzipwriter_p.h>
+#include <KZip>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
 
@@ -81,7 +81,7 @@ ZipEntry syncFolderToZipEntry(OCC::Folder *f)
     return fileInfoToZipEntry(journalInfo);
 }
 
-QVector<ZipEntry> createFileList()
+QVector<ZipEntry> createDebugArchiveFileList()
 {
     auto list = QVector<ZipEntry>();
     OCC::ConfigFile cfg;
@@ -91,8 +91,6 @@ QVector<ZipEntry> createFileList()
     const auto logger = OCC::Logger::instance();
 
     if (!logger->logDir().isEmpty()) {
-        list.append({QString(), QStringLiteral("logs")});
-
         QDir dir(logger->logDir());
         const auto infoList = dir.entryInfoList(QDir::Files);
         std::transform(std::cbegin(infoList), std::cend(infoList),
@@ -112,27 +110,24 @@ QVector<ZipEntry> createFileList()
 
 void createDebugArchive(const QString &filename)
 {
-    const auto entries = createFileList();
+    const auto entries = createDebugArchiveFileList();
 
-    // TODO: Port away from this private API (best to port to KArchive)
-    QZipWriter zip(filename);
-    zip.setCreationPermissions(zip.creationPermissions() | QFile::ReadOther);
+    KZip zip(filename);
+    zip.open(QIODevice::WriteOnly);
+
     for (const auto &entry : entries) {
-        if (entry.localFilename.isEmpty()) {
-            zip.addDirectory(entry.zipFilename);
-        } else {
-            QFile file(entry.localFilename);
-            if (!file.open(QFile::ReadOnly)) {
-                continue;
-            }
-            zip.addFile(entry.zipFilename, &file);
-        }
+        zip.addLocalFile(entry.localFilename, entry.zipFilename);
     }
 
-    zip.addFile("__nextcloud_client_parameters.txt", QCoreApplication::arguments().join(' ').toUtf8());
+    const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
+    zip.prepareWriting("__nextcloud_client_parameters.txt", {}, {}, clientParameters.size());
+    zip.writeData(clientParameters, clientParameters.size());
+    zip.finishWriting(clientParameters.size());
 
-    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails());
-    zip.addFile("__nextcloud_client_buildinfo.txt", buildInfo.toUtf8());
+    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
+    zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
+    zip.writeData(buildInfo, buildInfo.size());
+    zip.finishWriting(buildInfo.size());
 }
 }
 
