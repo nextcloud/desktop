@@ -93,8 +93,10 @@ void FolderStatusModel::setAccountState(AccountStatePtr accountState)
         info._checked = Qt::PartiallyChecked;
         _folders << info;
 
-        connect(f, &Folder::progressInfo, this, [f, this](const ProgressInfo &info) {
-            slotSetProgress(info, f);
+        connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo, this, [f, this](Folder *folder, const ProgressInfo &progress) {
+            if (folder == f) {
+                slotSetProgress(progress, f);
+            }
         });
 
         connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);

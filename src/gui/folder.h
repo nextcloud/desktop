@@ -367,7 +367,6 @@ signals:
     void syncStateChange();
     void syncStarted();
     void syncFinished(const SyncResult &result);
-    void progressInfo(const ProgressInfo &progress);
     void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
     void syncPausedChanged(Folder *, bool paused);
     void canSyncChanged();
@@ -448,7 +447,6 @@ private slots:
      */
     void slotSyncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
 
-    void slotTransmissionProgress(const ProgressInfo &pi);
     void slotItemCompleted(const SyncFileItemPtr &);
 
     void etagRetreived(const QByteArray &, const QDateTime &tp);

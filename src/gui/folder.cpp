@@ -127,7 +127,9 @@ Folder::Folder(const FolderDefinition &definition,
 
         connect(_engine.data(), &SyncEngine::aboutToRemoveAllFiles,
             this, &Folder::slotAboutToRemoveAllFiles);
-        connect(_engine.data(), &SyncEngine::transmissionProgress, this, &Folder::slotTransmissionProgress);
+        connect(_engine.data(), &SyncEngine::transmissionProgress, this, [this](const ProgressInfo &pi) {
+            emit ProgressDispatcher::instance()->progressInfo(this, pi);
+        });
         connect(_engine.data(), &SyncEngine::itemCompleted,
             this, &Folder::slotItemCompleted);
         connect(_engine.data(), &SyncEngine::newBigFolder,
@@ -1123,14 +1125,6 @@ void Folder::slotEmitFinishedDelayed()
                || _syncResult.firstNewConflictItem())) {
         slotRunEtagJob();
     }
-}
-
-// the progress comes without a folder and the valid path set. Add that here
-// and hand the result over to the progress dispatcher.
-void Folder::slotTransmissionProgress(const ProgressInfo &pi)
-{
-    emit progressInfo(pi);
-    emit ProgressDispatcher::instance()->progressInfo(this, pi);
 }
 
 // a item is completed: count the errors and forward to the ProgressDispatcher
