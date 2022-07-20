@@ -17,21 +17,12 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
 
     _ui->urlLineEdit->setText(serverUrl.toString());
 
-    // first, we declare this object as an event filter
-    // this then allows us to make the controller the event filter of the current page
-    _ui->urlLineEdit->installEventFilter(this);
-
     connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
         _ui->urlLineEdit->setFocus();
     });
 
     _ui->logoLabel->setText(QString());
     _ui->logoLabel->setPixmap(Theme::instance()->wizardHeaderLogo().pixmap(200, 200));
-
-    // we already use a placeholder, but it may be overwritten by the theme
-    if (!Theme::instance()->wizardUrlHint().isEmpty()) {
-        _ui->urlLineEdit->setPlaceholderText(Theme::instance()->wizardUrlHint());
-    }
 
     if (!Theme::instance()->wizardUrlPostfix().isEmpty()) {
         _ui->urlLineEdit->setPostfix(Theme::instance()->wizardUrlPostfix());

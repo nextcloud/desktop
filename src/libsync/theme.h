@@ -349,7 +349,7 @@ public:
      *
      * @return An empty string, unless reimplemented
      */
-    virtual QString wizardUrlHint() const;
+    [[deprecated]] virtual QString wizardUrlHint() const;
 
     /**
      * @brief the server folder that should be queried for the quota information
