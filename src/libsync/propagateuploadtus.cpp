@@ -123,7 +123,7 @@ void PropagateUploadFileTUS::startNextChunk()
     const quint64 chunkSize = [&] {
         auto chunkSize = _item->_size - _currentOffset;
         if (propagator()->account()->capabilities().tusSupport().max_chunk_size) {
-            chunkSize = qMin(chunkSize - _currentOffset, propagator()->account()->capabilities().tusSupport().max_chunk_size);
+            chunkSize = std::min<qint64>(chunkSize, propagator()->account()->capabilities().tusSupport().max_chunk_size);
         }
         return chunkSize;
     }();
