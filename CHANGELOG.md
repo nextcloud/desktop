@@ -41,6 +41,7 @@ Summary
 * Enhancement - Throttle the UI updates during sync: [#9832](https://github.com/owncloud/client/issues/9832)
 * Enhancement - Run vfs downloads with a high priority: [#9836](https://github.com/owncloud/client/pull/9836)
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
+* Enhancement - Remove app name from connection error message: [#9923](https://github.com/owncloud/client/issues/9923)
 * Enhancement - Allow HTTP/1.1 pipelining: [#9930](https://github.com/owncloud/client/pull/9930/)
 
 Details
@@ -276,6 +277,13 @@ Details
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
 
    https://github.com/owncloud/client/pull/9919
+
+* Enhancement - Remove app name from connection error message: [#9923](https://github.com/owncloud/client/issues/9923)
+
+   We removed the app name from some connection messages. `No connection to ownCloud at
+   http://..` was misleading as the server could have any other branding.
+
+   https://github.com/owncloud/client/issues/9923
 
 * Enhancement - Allow HTTP/1.1 pipelining: [#9930](https://github.com/owncloud/client/pull/9930/)
 
