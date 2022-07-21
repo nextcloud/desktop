@@ -137,7 +137,7 @@ void PropagateUploadFileTUS::startNextChunk()
     SimpleNetworkJob *job;
     if (_currentOffset != 0) {
         qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << propagator()->fullRemotePath(_item->_file);
-        job = new SimpleNetworkJob(propagator()->account(), propagator()->webDavUrl(), _location.path(), "PATCH", device, req, this);
+        job = new SimpleNetworkJob(propagator()->account(), _location, {}, "PATCH", device, req, this);
     } else {
         OC_ASSERT(_location.isEmpty());
         qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << propagator()->fullRemotePath(_item->_file);
