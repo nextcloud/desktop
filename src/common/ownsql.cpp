@@ -323,7 +323,7 @@ bool SqlQuery::exec()
         for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
             qCDebug(lcSql) << "SQL exec" << _sql << "Try:" << n;
             rc = sqlite3_step(_stmt);
-            if (rc != SQLITE_DONE || rc != SQLITE_ROW) {
+            if (rc != SQLITE_DONE && rc != SQLITE_ROW) {
                 qCWarning(lcSql) << "SQL exec failed" << _sql << QString::fromUtf8(sqlite3_errmsg(_db));
                 if (rc == SQLITE_LOCKED || rc == SQLITE_BUSY) {
                     std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
