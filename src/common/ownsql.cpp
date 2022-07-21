@@ -329,8 +329,8 @@ bool SqlQuery::exec()
                     std::this_thread::sleep_for(SQLITE_SLEEP_TIME);
                     continue;
                 }
-                break;
             }
+            break;
         }
         _errId = rc;
 
