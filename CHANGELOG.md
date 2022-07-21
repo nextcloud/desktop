@@ -21,6 +21,7 @@ Summary
 * Bugfix - Database was recreated after its removal: [#9791](https://github.com/owncloud/client/issues/9791)
 * Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
 * Bugfix - We fixed a potential crash: [#9864](https://github.com/owncloud/client/issues/9864)
+* Bugfix - Changes during upload of a file could still trigger the ignore list: [#9924](https://github.com/owncloud/client/issues/9924)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -123,6 +124,13 @@ Details
 * Bugfix - We fixed a potential crash: [#9864](https://github.com/owncloud/client/issues/9864)
 
    https://github.com/owncloud/client/issues/9864
+
+* Bugfix - Changes during upload of a file could still trigger the ignore list: [#9924](https://github.com/owncloud/client/issues/9924)
+
+   We fixed another issue where changes during an upload could cause the file to be ignored for an
+   increasing amount of time.
+
+   https://github.com/owncloud/client/issues/9924
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
