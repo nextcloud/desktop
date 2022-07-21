@@ -114,8 +114,6 @@ void User::showDesktopNotification(const QString &title, const QString &message,
 
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    _activityModel->clearNotifications();
-
     const auto multipleAccounts = AccountManager::instance()->accounts().count() > 1;
     ActivityList toNotifyList;
 
