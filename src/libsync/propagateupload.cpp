@@ -107,7 +107,7 @@ void PUTFileJob::newReplyHook(QNetworkReply *reply)
     connect(reply, &QNetworkReply::uploadProgress, this, &PUTFileJob::uploadProgress);
 }
 
-const QString &PropagateUploadFileCommon::fileChangedMessage()
+const QString PropagateUploadFileCommon::fileChangedMessage()
 {
     return tr("Local file changed during sync. It will be resumed.");
 }
