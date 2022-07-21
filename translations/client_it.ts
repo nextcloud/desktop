@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation type="unfinished"/>
+        <translation>gestore file</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
         <source>Show in %1</source>
-        <translation type="unfinished"/>
+        <translation>Mostra in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
@@ -37,7 +37,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="104"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="213"/>
@@ -47,17 +47,17 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="257"/>
         <source>Send this report</source>
-        <translation type="unfinished"/>
+        <translation>Invia questo rapporto</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="264"/>
         <source>Don&apos;t send</source>
-        <translation type="unfinished"/>
+        <translation>Non inviare</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
         <source>You can disable sending crash reports in the configuration dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Puoi disabilitare l&apos;invio di rapporti di crash nella finestra di configurazione.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="112"/>
@@ -88,7 +88,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
         <source>Uploaded %L1 of %L2 KB.</source>
-        <translation type="unfinished"/>
+        <translation>Caricati %L1 di %L2 KB.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
@@ -98,7 +98,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
         <source>Failed to send crash info.</source>
-        <translation type="unfinished"/>
+        <translation>Invio delle informazioni di crash fallito</translation>
     </message>
 </context>
 <context>
@@ -109,7 +109,7 @@
         <location filename="../src/common/filesystembase.cpp" line="208"/>
         <location filename="../src/common/filesystembase.cpp" line="213"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rinominare %1, il file è al momento in uso</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
@@ -130,7 +130,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere la cartella</translation>
     </message>
 </context>
 <context>
@@ -571,7 +571,7 @@ Questa azione interromperà qualsiasi sincronizzazione in corso.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="78"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Rifiuta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="216"/>
@@ -644,7 +644,7 @@ Questa azione interromperà qualsiasi sincronizzazione in corso.</translation>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="120"/>
         <source>Local path</source>
-        <translation type="unfinished"/>
+        <translation>Percorso locale</translation>
     </message>
 </context>
 <context>
@@ -785,7 +785,7 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/application.cpp" line="585"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
-        <translation type="unfinished"/>
+        <translation>Per informazioni aggiuntive, vedi %1</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -831,7 +831,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="608"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>Usa la cartella di configurazione data</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="609"/>
@@ -861,7 +861,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="663"/>
         <source>Available translations: %1</source>
-        <translation type="unfinished"/>
+        <translation>traduzioni disponibili: %1</translation>
     </message>
 </context>
 <context>
@@ -925,7 +925,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="204"/>
         <source>Failed to parse credentials %1</source>
-        <translation type="unfinished"/>
+        <translation>Elaborazione delle credenziali %1 fallita</translation>
     </message>
 </context>
 <context>
@@ -970,7 +970,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="78"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Reimposta dimensioni colonne</translation>
     </message>
 </context>
 <context>
@@ -1026,7 +1026,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/folder.cpp" line="211"/>
         <source>%1 is not writable.</source>
-        <translation type="unfinished"/>
+        <translation>%1 non è scrivibile</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="481"/>
@@ -1243,7 +1243,7 @@ Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzat
     <message>
         <location filename="../src/gui/folderman.cpp" line="1398"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>La cartella %1 è utilizzata in una sincronizzazione!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1405"/>
@@ -1278,14 +1278,16 @@ Se è stato un errore e decidi di mantenere i tuoi file, verranno risincronizzat
     <message>
         <location filename="../src/gui/folderman.cpp" line="1467"/>
         <source>%1 Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>%1 Sceglierne un altro!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Più profili stanno condividendo la cartella %1.
+Questa configurazione porta a perdite di dati e non è più supportata.
+Considera di rimuovere questa cartella dal profilo e riaggiungerla.</translation>
     </message>
 </context>
 <context>
@@ -1409,7 +1411,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="283"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Cartella locale: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
@@ -1548,7 +1550,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="438"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile sincronizzare questa cartella. Selezionarne un&apos;altra.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="441"/>
@@ -1589,17 +1591,17 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="50"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Errore:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Errore:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Attenzione:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -1769,7 +1771,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="74"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Le modifiche della lingua richiedono un riavvio dell&apos;applicazione per essere effettuate.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -1921,12 +1923,12 @@ Gli elementi per i quali è consentita l&apos;eliminazione, saranno eliminati se
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è stato ignorato in quanto il suo nome è riservato da %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Reimposta dimensioni colonne</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="223"/>
@@ -2007,7 +2009,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/models/models.cpp" line="93"/>
         <source>%1 Filter:</source>
-        <translation type="unfinished"/>
+        <translation>%1 Filtro:</translation>
     </message>
     <message>
         <location filename="../src/gui/models/models.cpp" line="114"/>
@@ -2017,7 +2019,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="258"/>
         <source>Reset Filters</source>
-        <translation type="unfinished"/>
+        <translation>Reimposta filtri</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="349"/>
@@ -2312,12 +2314,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo %1 disponibile. Clicca &lt;a href=&apos;%2&apos;&gt;qui&lt;/a&gt; per scaricare manualmente il nuovo AppImage.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="169"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>Nuovo %1 disponibile. Utilizzare lo strumento di aggiornamento di sistema per installarlo.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
@@ -2370,7 +2372,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="167"/>
         <source>&lt;p&gt;&lt;strong&gt;Warning:&lt;/strong&gt; The local folder is not empty. Pick a resolution!&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;&lt;strong&gt;Avviso:&lt;/strong&gt; la cartella locale non è vuota. Scegli una soluzione.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="163"/>
@@ -2440,7 +2442,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="703"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
 </context>
 <context>
@@ -2661,7 +2663,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>Il server non ha riportato alcun %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1245"/>
@@ -2714,7 +2716,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1047"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 la cartella è al momento in uso</translation>
     </message>
 </context>
 <context>
@@ -2763,7 +2765,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="903"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile salvare il file %1 per un conflitto di nome del file locale %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1025"/>
@@ -2776,7 +2778,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
         <location filename="../src/libsync/propagatedownload.cpp" line="963"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1028"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="366"/>
@@ -2813,7 +2815,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
@@ -2831,13 +2833,13 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rimuovere %1 per un conflitto di nome del file locale %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 il file è al momento in uso</translation>
     </message>
 </context>
 <context>
@@ -2850,7 +2852,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rinominare %1 in %2, il file è al momento in uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
@@ -2860,12 +2862,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rinominare il file</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
@@ -2904,7 +2906,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="135"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile rinominare %1 in %2, errore: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="182"/>
@@ -2919,7 +2921,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="223"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="235"/>
@@ -2937,12 +2939,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1200"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>Impossibile aggiornare il file : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1203"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
 </context>
 <context>
@@ -2960,7 +2962,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="256"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>File locale modificato durante la sincronizzazione. Sarà ripreso.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="581"/>
@@ -2970,7 +2972,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="584"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Il file %1 è al momento utilizzato</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="145"/>
@@ -2985,7 +2987,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
         <location filename="../src/libsync/propagateuploadng.cpp" line="93"/>
         <location filename="../src/libsync/propagateuploadng.cpp" line="369"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 il file è al momento in uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
@@ -3023,7 +3025,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="67"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 il file è al momento in uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="212"/>
@@ -3041,7 +3043,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="47"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 il file è al momento in uso</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="223"/>
@@ -3084,7 +3086,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Issues</source>
-        <translation type="unfinished"/>
+        <translation>Problemi</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
@@ -3686,7 +3688,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="970"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Crea e copia un link pubblico negli appunti</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="972"/>
@@ -3779,7 +3781,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="147"/>
         <source>Failed to create backup: %1</source>
-        <translation type="unfinished"/>
+        <translation>Creazione del backup fallita: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketuploadjob.cpp" line="177"/>
@@ -4402,7 +4404,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>S&amp;ynchronize everything from server</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sincronizza tutto dal server</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="182"/>
@@ -4565,7 +4567,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="83"/>
         <source>Undefined</source>
-        <translation type="unfinished"/>
+        <translation>Indefinito</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="85"/>
@@ -4596,12 +4598,12 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="95"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>File ignorato</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="97"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>Riprisrinato</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="101"/>
@@ -4611,7 +4613,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="103"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>Escluso</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="105"/>
@@ -4754,7 +4756,7 @@ Si tratta di una nuova modalità sperimentale. Se decidi di usarla, ti preghiamo
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 spostato in %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
