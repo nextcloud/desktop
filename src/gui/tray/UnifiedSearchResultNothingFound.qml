@@ -9,9 +9,9 @@ ColumnLayout {
 
     required property string text
 
-    spacing: 8
-    anchors.leftMargin: 10
-    anchors.rightMargin: 10
+    spacing: Style.standardSpacing
+    anchors.leftMargin: Style.unifiedSearchResultNothingFoundHorizontalMargin
+    anchors.rightMargin: Style.unifiedSearchResultNothingFoundHorizontalMargin
 
     Image {
         id: unifiedSearchResultsNoResultsLabelIcon

@@ -7,17 +7,6 @@ import com.nextcloud.desktopclient 1.0
 MouseArea {
     id: unifiedSearchResultMouseArea
 
-    property int textLeftMargin: 18
-    property int textRightMargin: 16
-    property int iconWidth: 24
-    property int iconLeftMargin: 12
-
-    property int titleFontSize: Style.topLinePixelSize
-    property int sublineFontSize: Style.subLinePixelSize
-
-    property color titleColor: Style.ncTextColor
-    property color sublineColor: Style.ncSecondaryTextColor
-
     property string currentFetchMoreInProgressProviderId: ""
 
     readonly property bool isFetchMoreTrigger: model.typeAsString === "FetchMoreTrigger"
@@ -32,6 +21,8 @@ MouseArea {
 
     enabled: !isFetchMoreTrigger || !isSearchInProgress
     hoverEnabled: enabled
+
+    height: Style.unifiedSearchItemHeight
 
     ToolTip {
         id: unifiedSearchResultMouseAreaTooltip
@@ -64,14 +55,6 @@ MouseArea {
             icons: Theme.darkMode ? model.darkIcons : model.lightIcons
             iconPlaceholder: Theme.darkMode ? model.darkImagePlaceholder : model.lightImagePlaceholder
             isRounded: model.isRounded
-            textLeftMargin: unifiedSearchResultMouseArea.textLeftMargin
-            textRightMargin: unifiedSearchResultMouseArea.textRightMargin
-            iconWidth: unifiedSearchResultMouseArea.iconWidth
-            iconLeftMargin: unifiedSearchResultMouseArea.iconLeftMargin
-            titleFontSize: unifiedSearchResultMouseArea.titleFontSize
-            sublineFontSize: unifiedSearchResultMouseArea.sublineFontSize
-            titleColor: unifiedSearchResultMouseArea.titleColor
-            sublineColor: unifiedSearchResultMouseArea.sublineColor
         }
     }
 
@@ -81,9 +64,7 @@ MouseArea {
             isFetchMoreInProgress: unifiedSearchResultMouseArea.isFetchMoreInProgress
             width: unifiedSearchResultMouseArea.width
             height: unifiedSearchResultMouseArea.height
-            isWihinViewPort: !unifiedSearchResultMouseArea.isPooled
-            fontSize: unifiedSearchResultMouseArea.titleFontSize
-            textColor: unifiedSearchResultMouseArea.sublineColor
+            isWithinViewPort: !unifiedSearchResultMouseArea.isPooled
         }
     }
 

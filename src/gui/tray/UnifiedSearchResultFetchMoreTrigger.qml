@@ -9,9 +9,9 @@ ColumnLayout {
 
     property bool isFetchMoreInProgress: false
 
-    property bool isWihinViewPort: false
+    property bool isWithinViewPort: false
 
-    property int fontSize: Style.topLinePixelSize
+    property int fontSize: Style.unifiedSearchResultTitleFontSize
 
     property string textColor: Style.ncSecondaryTextColor
 
@@ -34,7 +34,7 @@ ColumnLayout {
     BusyIndicator {
         id: unifiedSearchResultItemFetchMoreIconInProgress
         running: visible
-        visible: unifiedSearchResultItemFetchMore.isFetchMoreInProgress && unifiedSearchResultItemFetchMore.isWihinViewPort
+        visible: unifiedSearchResultItemFetchMore.isFetchMoreInProgress && unifiedSearchResultItemFetchMore.isWithinViewPort
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
         Layout.preferredWidth: parent.height * 0.70
         Layout.preferredHeight: parent.height * 0.70
