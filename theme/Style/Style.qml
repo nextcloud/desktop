@@ -93,10 +93,13 @@ QtObject {
     readonly property int unifiedSearchItemHeight: trayWindowHeaderHeight
     readonly property int unifiedSearchResultTextLeftMargin: 18
     readonly property int unifiedSearchResultTextRightMargin: 16
-    readonly property int unifiedSearchResulIconWidth: 24
-    readonly property int unifiedSearchResulIconLeftMargin: 12
-    readonly property int unifiedSearchResulTitleFontSize: topLinePixelSize
-    readonly property int unifiedSearchResulSublineFontSize: subLinePixelSize
+    readonly property int unifiedSearchResultIconWidth: 24
+    readonly property int unifiedSearchResultIconLeftMargin: 12
+    readonly property int unifiedSearchResultTitleFontSize: topLinePixelSize
+    readonly property int unifiedSearchResultSublineFontSize: subLinePixelSize
+    readonly property int unifiedSearchResultSectionItemLeftPadding: 16
+    readonly property int unifiedSearchResultSectionItemVerticalPadding: 8
+    readonly property int unifiedSearchResultNothingFoundHorizontalMargin: 10
 
     readonly property var fontMetrics: FontMetrics {}
 

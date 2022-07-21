@@ -648,9 +648,6 @@ Window {
             id: unifiedSearchResultsErrorLabel
             visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
-            color: Style.errorBoxBackgroundColor
-            backgroundColor: Style.errorBoxTextColor
-            borderColor: "transparent"
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
@@ -699,16 +696,6 @@ Window {
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
-            textLeftMargin: trayWindowBackground.Style.unifiedSearchResultTextLeftMargin
-            textRightMargin: trayWindowBackground.Style.unifiedSearchResultTextRightMargin
-            iconWidth: trayWindowBackground.Style.unifiedSearchResulIconWidth
-            iconLeftMargin: trayWindowBackground.Style.unifiedSearchResulIconLeftMargin
-            itemHeight: trayWindowBackground.Style.unifiedSearchItemHeight
-            titleFontSize: trayWindowBackground.Style.unifiedSearchResulTitleFontSize
-            sublineFontSize: trayWindowBackground.Style.unifiedSearchResulSublineFontSize
-            titleColor: Style.ncTextColor
-            sublineColor: Style.ncSecondaryTextColor
-            iconColor: "#afafaf"
         }
 
         ScrollView {
@@ -744,16 +731,7 @@ Window {
 
                 delegate: UnifiedSearchResultListItem {
                     width: unifiedSearchResultsListView.width
-                    height: Style.unifiedSearchItemHeight
                     isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
-                    textLeftMargin: Style.unifiedSearchResultTextLeftMargin
-                    textRightMargin: Style.unifiedSearchResultTextRightMargin
-                    iconWidth: Style.unifiedSearchResulIconWidth
-                    iconLeftMargin: Style.unifiedSearchResulIconLeftMargin
-                    titleFontSize: Style.unifiedSearchResulTitleFontSize
-                    sublineFontSize: Style.unifiedSearchResulSublineFontSize
-                    titleColor: Style.ncTextColor
-                    sublineColor: Style.ncSecondaryTextColor
                     currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
                     fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
                     resultClicked: unifiedSearchResultsListView.model.resultClicked
