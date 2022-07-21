@@ -1,6 +1,7 @@
 #pragma once
 
 #include "account.h"
+#include "common/checksumalgorithms.h"
 #include "folder.h"
 #include "folderman.h"
 
@@ -16,6 +17,6 @@ namespace TestUtils {
     bool writeRandomFile(const QString &fname, int size = -1);
 
 
-    const QVariantMap testCapabilities();
+    const QVariantMap testCapabilities(CheckSums::Algorithm algo = CheckSums::Algorithm::ADLER32);
 }
 }

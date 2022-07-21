@@ -5,8 +5,9 @@
  *
  */
 
-#include <QtTest>
 #include "testutils/syncenginetestutils.h"
+#include "testutils/testutils.h"
+#include <QtTest>
 #include <syncengine.h>
 
 using namespace OCC;
@@ -169,6 +170,7 @@ private slots:
     void testLocalMoveDetection()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        fakeFolder.account()->setCapabilities(TestUtils::testCapabilities(CheckSums::Algorithm::ADLER32));
 
         int nPUT = 0;
         int nDELETE = 0;

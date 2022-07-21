@@ -18,12 +18,13 @@
 
 #pragma once
 
+#include "checksumalgorithms.h"
 #include "ocsynclib.h"
-#include "config.h"
 
-#include <QObject>
 #include <QByteArray>
+#include <QCryptographicHash>
 #include <QFutureWatcher>
+#include <QObject>
 
 #include <memory>
 
@@ -35,11 +36,6 @@ namespace OCC {
  * Tags for checksum headers values.
  * They are here for being shared between Upload- and Download Job
  */
-static const char checkSumMD5C[] = "MD5";
-static const char checkSumSHA1C[] = "SHA1";
-static const char checkSumSHA2C[] = "SHA256";
-static const char checkSumSHA3C[] = "SHA3-256";
-static const char checkSumAdlerC[] = "Adler32";
 
 class SyncJournalDb;
 
@@ -66,8 +62,6 @@ OCSYNC_EXPORT QByteArray parseChecksumHeaderType(const QByteArray &header);
 OCSYNC_EXPORT bool uploadChecksumEnabled();
 
 // Exported functions for the tests.
-QByteArray OCSYNC_EXPORT calcMd5(QIODevice *device);
-QByteArray OCSYNC_EXPORT calcSha1(QIODevice *device);
 QByteArray OCSYNC_EXPORT calcAdler32(QIODevice *device);
 
 /**

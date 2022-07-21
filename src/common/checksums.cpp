@@ -88,26 +88,6 @@ Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
 
 #define BUFSIZE qint64(500 * 1024) // 500 KiB
 
-static QByteArray calcCryptoHash(QIODevice *device, QCryptographicHash::Algorithm algo)
-{
-     QByteArray arr;
-     QCryptographicHash crypto( algo );
-
-     if (crypto.addData(device)) {
-         arr = crypto.result().toHex();
-     }
-     return arr;
- }
-
-QByteArray calcMd5(QIODevice *device)
-{
-    return calcCryptoHash(device, QCryptographicHash::Md5);
-}
-
-QByteArray calcSha1(QIODevice *device)
-{
-    return calcCryptoHash(device, QCryptographicHash::Sha1);
-}
 
 QByteArray calcAdler32(QIODevice *device)
 {
@@ -143,14 +123,19 @@ QByteArray findBestChecksum(const QByteArray &_checksums)
     if (_checksums.isEmpty()) {
         return {};
     }
-    const auto checksums = QString::fromUtf8(_checksums);
-    int i = 0;
+
     // The order of the searches here defines the preference ordering.
-    if (-1 != (i = checksums.indexOf(QLatin1String("SHA3-256:"), 0, Qt::CaseInsensitive))
-        || -1 != (i = checksums.indexOf(QLatin1String("SHA256:"), 0, Qt::CaseInsensitive))
-        || -1 != (i = checksums.indexOf(QLatin1String("SHA1:"), 0, Qt::CaseInsensitive))
-        || -1 != (i = checksums.indexOf(QLatin1String("MD5:"), 0, Qt::CaseInsensitive))
-        || -1 != (i = checksums.indexOf(QLatin1String("ADLER32:"), 0, Qt::CaseInsensitive))) {
+    // usually not a good idea to use toUpper on a byte array but we only care for the id which has no special chars
+    const int i = [checksums = _checksums.toUpper()] {
+        for (const auto &algo : CheckSums::All) {
+            auto i = checksums.indexOf(algo.second.data());
+            if (i != -1) {
+                return i;
+            }
+        }
+        return -1;
+    }();
+    if (i != -1) {
         // Now i is the start of the best checksum
         // Grab it until the next space or end of xml or end of string.
         int end = _checksums.indexOf(' ', i);
@@ -284,24 +269,26 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
         qCWarning(lcChecksums) << "Checksum computation disabled by environment variable";
         return QByteArray();
     }
-
-    if (checksumType == checkSumMD5C) {
-        return calcMd5(device);
-    } else if (checksumType == checkSumSHA1C) {
-        return calcSha1(device);
-    } else if (checksumType == checkSumSHA2C) {
-        return calcCryptoHash(device, QCryptographicHash::Sha256);
-    } else if (checksumType == checkSumSHA3C) {
-        return calcCryptoHash(device, QCryptographicHash::Sha3_256);
+    if (checksumType.isEmpty()) {
+        return {};
     }
-    else if (checksumType == checkSumAdlerC) {
+    const auto algorithm = CheckSums::fromName(checksumType.toUpper().constData());
+    switch (algorithm) {
+    case CheckSums::Algorithm::SHA3_256:
+        [[fallthrough]];
+    case CheckSums::Algorithm::SHA256:
+        [[fallthrough]];
+    case CheckSums::Algorithm::SHA1:
+        [[fallthrough]];
+    case CheckSums::Algorithm::MD5:
+        return CheckSums::calcCryptoHash(device, static_cast<QCryptographicHash::Algorithm>(algorithm));
+    case CheckSums::Algorithm::ADLER32:
         return calcAdler32(device);
-    }
-    // for an unknown checksum or no checksum, we're done right now
-    if (!checksumType.isEmpty()) {
+    case CheckSums::Algorithm::Error:
         qCWarning(lcChecksums) << "Unknown checksum type:" << checksumType;
+        return {};
     }
-    return QByteArray();
+    Q_UNREACHABLE();
 }
 
 void ComputeChecksum::slotCalculationDone()

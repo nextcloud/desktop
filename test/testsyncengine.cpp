@@ -106,6 +106,8 @@ private slots:
 
     void testEmlLocalChecksum() {
         FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.account()->setCapabilities(TestUtils::testCapabilities(CheckSums::Algorithm::SHA1));
+
         fakeFolder.localModifier().insert("a1.eml", 64, 'A');
         fakeFolder.localModifier().insert("a2.eml", 64, 'A');
         fakeFolder.localModifier().insert("a3.eml", 64, 'A');

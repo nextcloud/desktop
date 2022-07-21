@@ -81,7 +81,7 @@ using namespace OCC::Utility;
 
         QFile fileDevice(file);
         fileDevice.open(QIODevice::ReadOnly);
-        QByteArray sum = calcMd5(&fileDevice);
+        QByteArray sum = CheckSums::calcCryptoHash(&fileDevice, QCryptographicHash::Md5);
         fileDevice.close();
 
         QByteArray sSum = shellSum("md5sum", file);
@@ -101,7 +101,7 @@ using namespace OCC::Utility;
 
         QFile fileDevice(file);
         fileDevice.open(QIODevice::ReadOnly);
-        QByteArray sum = calcSha1(&fileDevice);
+        QByteArray sum = OCC::CheckSums::calcCryptoHash(&fileDevice, QCryptographicHash::Sha1);
         fileDevice.close();
 
         QByteArray sSum = shellSum("sha1sum", file);
@@ -135,13 +135,13 @@ using namespace OCC::Utility;
     void testUploadChecksummingMd5() {
 
         ComputeChecksum *vali = new ComputeChecksum(this);
-        _expectedType = OCC::checkSumMD5C;
+        _expectedType = OCC::CheckSums::toString(OCC::CheckSums::Algorithm::MD5).data();
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);
-        _expected = calcMd5(file);
+        _expected = CheckSums::calcCryptoHash(file, QCryptographicHash::Md5);
         vali->start(_testfile);
 
         QEventLoop loop;
@@ -153,13 +153,13 @@ using namespace OCC::Utility;
 
     void testUploadChecksummingSha1() {
         ComputeChecksum *vali = new ComputeChecksum(this);
-        _expectedType = OCC::checkSumSHA1C;
+        _expectedType = OCC::CheckSums::toString(OCC::CheckSums::Algorithm::SHA1).data();
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
         auto file = new QFile(_testfile, vali);
         file->open(QIODevice::ReadOnly);
-        _expected = calcSha1(file);
+        _expected = CheckSums::calcCryptoHash(file, QCryptographicHash::Sha1);
 
         vali->start(_testfile);
 
@@ -179,7 +179,7 @@ using namespace OCC::Utility;
         file->open(QIODevice::ReadOnly);
         _expected = calcAdler32(file);
 
-        QByteArray adler = checkSumAdlerC;
+        QByteArray adler = OCC::CheckSums::toString(OCC::CheckSums::Algorithm::ADLER32).data();
         adler.append(":");
         adler.append(_expected);
 

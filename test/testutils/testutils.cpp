@@ -1,7 +1,8 @@
 #include "testutils.h"
 
-#include "creds/httpcredentials.h"
+#include "common/checksums.h"
 #include "gui/accountmanager.h"
+#include "libsync/creds/httpcredentials.h"
 
 #include <QCoreApplication>
 #include <QRandomGenerator>
@@ -83,13 +84,20 @@ namespace TestUtils {
         return false;
     }
 
-    const QVariantMap testCapabilities()
+    const QVariantMap testCapabilities(CheckSums::Algorithm algo)
     {
+        static const auto algorithmNames = [] {
+            QVariantList out;
+            for (const auto &a : CheckSums::All) {
+                out.append(CheckSums::toQString(a.first));
+            }
+            return out;
+        }();
         return {
             { "core", QVariantMap { { "status", QVariantMap { { "installed", "1" }, { "maintenance", "0" }, { "needsDbUpgrade", "0" }, { "version", "10.11.0.0" }, { "versionstring", "10.11.0" }, { "edition", "Community" }, { "productname", "Infinite Scale" }, { "product", "Infinite Scale" }, { "productversion", "2.0.0-beta1+7c2e3201b" } } } } },
             { "files", QVariantList {} },
             { "dav", QVariantMap { { "chunking", "1.0" } } },
-            { "checksums", QVariantMap { { "preferredUploadType", "SHA1" }, { "supportedTypes", QVariantList { "SHA1", "MD5" } } } }
+            { "checksums", QVariantMap { { "preferredUploadType", CheckSums::toQString(algo) }, { "supportedTypes", algorithmNames } } }
         };
     }
 }
