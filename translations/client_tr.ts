@@ -2250,13 +2250,13 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="320"/>
+        <location filename="../src/gui/generalsettings.cpp" line="322"/>
         <source>stable</source>
         <translation>kararlı</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="324"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -2313,32 +2313,32 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Create Debug Archive</source>
         <translation>Hata ayıklama arşivi oluştur</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="147"/>
+        <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
         <translation>İlgilenmeniz gereken sunucu bildirimleri.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="153"/>
         <source>Show call notification dialogs.</source>
         <translation>Çağrı bildirimi pencerelerini görüntüler.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="165"/>
+        <location filename="../src/gui/generalsettings.cpp" line="167"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Otomatik başlatma sistem genelinde etkinleştirilmiş olduğundan, otomatik başlatma devre dışı bırakılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="356"/>
         <source>Change update channel?</source>
         <translation>Güncelleme kanalı değiştirilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="357"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2347,27 +2347,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. Güncelleme sonrası önceki sürüme geri dönülemeyeceğini unutmayın. Bu nedenle, genellikle beta kanalından kararlı kanala geri dönmek için kurulu olan beta sürümünden daha yeni bir kararlı sürümün yayınlanmasını beklemeniz gerekeceğinden bu işlem hemen gerçekleşmez.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="368"/>
+        <location filename="../src/gui/generalsettings.cpp" line="370"/>
         <source>Change update channel</source>
         <translation>Güncelleme kanalını değiştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="369"/>
+        <location filename="../src/gui/generalsettings.cpp" line="371"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Zip Archives</source>
         <translation>Zip arşivleri</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="479"/>
+        <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug Archive Created</source>
         <translation>Hata ayıklama arşivi oluşturuldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="479"/>
+        <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug archive is created at %1</source>
         <translation>%1 üzerinde hata ayıklama arşivi oluşturuldu</translation>
     </message>
@@ -5507,7 +5507,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="500"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="498"/>
         <source>Retry all uploads</source>
         <translation>Tüm yüklemeleri yinele</translation>
     </message>
@@ -5540,22 +5540,22 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1042"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1040"/>
         <source>Confirm Account Removal</source>
         <translation>Hesap silmeyi onaylayın</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1041"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını silmeyi istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
         <source>Remove connection</source>
         <translation>Bağlantıyı sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1049"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1047"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
@@ -6272,27 +6272,27 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Yeni klasör</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>You renamed %1</source>
         <translation>%1 ögesini yeniden adlandırdınız</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You deleted %1</source>
         <translation>%1 ögesini sildiniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You created %1</source>
         <translation>%1 ögesini eklediniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="581"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You changed %1</source>
         <translation>%1 ögesini değiştirdiniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
         <source>Synced %1</source>
         <translation>%1 ögesi eşitlendi</translation>
     </message>
@@ -6426,7 +6426,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="39"/>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="30"/>
         <source>Load more results</source>
         <translation>Diğer sonuçları yükle</translation>
     </message>
@@ -6809,7 +6809,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Daha fazla işlem görüntüle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="741"/>
+        <location filename="../src/gui/tray/Window.qml" line="728"/>
         <source>Unified search results list</source>
         <translation>Birleşik arama sonuçları listesi</translation>
     </message>
@@ -6819,7 +6819,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 ögesini paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="813"/>
+        <location filename="../src/gui/tray/Window.qml" line="791"/>
         <source>%1 - File activity</source>
         <translation>%1 - Dosya işlemi</translation>
     </message>
