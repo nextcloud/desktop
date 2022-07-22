@@ -476,7 +476,9 @@ private slots:
                 }
         });
 
-        QVERIFY(!fakeFolder.syncOnce());
+        // we will get  OCC::SyncFileItem::Message and error: "Local file changed during sync. It will be resumed."
+        // so a message but we report a successful sync
+        QVERIFY(fakeFolder.syncOnce());
 
         // There should be a followup sync
         QCOMPARE(fakeFolder.syncEngine().isAnotherSyncNeeded(), ImmediateFollowUp);
