@@ -1,4 +1,4 @@
-$env:SONAR_SCANNER_VERSION = "4.4.0.2170"
+$env:SONAR_SCANNER_VERSION = "4.7.0.2747"
 $env:SONAR_DIRECTORY = [System.IO.Path]::Combine($(get-location).Path,".sonar")
 $env:SONAR_SCANNER_HOME = "$env:SONAR_DIRECTORY/sonar-scanner-$env:SONAR_SCANNER_VERSION-windows"
 rm $env:SONAR_SCANNER_HOME -Force -Recurse -ErrorAction SilentlyContinue
