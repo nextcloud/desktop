@@ -17,6 +17,6 @@ namespace TestUtils {
     bool writeRandomFile(const QString &fname, int size = -1);
 
 
-    const QVariantMap testCapabilities(CheckSums::Algorithm algo = CheckSums::Algorithm::ADLER32);
+    const QVariantMap testCapabilities(CheckSums::Algorithm algo = CheckSums::Algorithm::DUMMY_FOR_TESTS);
 }
 }

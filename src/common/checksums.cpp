@@ -125,7 +125,7 @@ QByteArray findBestChecksum(const QByteArray &_checksums)
     }
 
     // The order of the searches here defines the preference ordering.
-    // usually not a good idea to use toUpper on a byte array but we only care for the id which has no special chars
+    // we assume _checksums to be utf-8 so toUpper is valid here
     const int i = [checksums = _checksums.toUpper()] {
         for (const auto &algo : CheckSums::All) {
             auto i = checksums.indexOf(algo.second.data());
@@ -284,6 +284,8 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
         return CheckSums::calcCryptoHash(device, static_cast<QCryptographicHash::Algorithm>(algorithm));
     case CheckSums::Algorithm::ADLER32:
         return calcAdler32(device);
+    case CheckSums::Algorithm::DUMMY_FOR_TESTS:
+        return QByteArrayLiteral("0x1");
     case CheckSums::Algorithm::Error:
         qCWarning(lcChecksums) << "Unknown checksum type:" << checksumType;
         return {};
