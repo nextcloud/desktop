@@ -17,6 +17,7 @@ Summary
 * Bugfix - The condition for the read only files menu was inverted: [#9574](https://github.com/owncloud/client/issues/9574)
 * Bugfix - Crash when interacting with a folder in an error state: [#9600](https://github.com/owncloud/client/issues/9600)
 * Bugfix - Deadlock in folder context menu in a folder selection dialog: [#9681](https://github.com/owncloud/client/issues/9681)
+* Bugfix - Fix never ending sync: [#9725](https://github.com/owncloud/client/issues/9725)
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 * Bugfix - Database was recreated after its removal: [#9791](https://github.com/owncloud/client/issues/9791)
 * Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
@@ -102,6 +103,14 @@ Details
    We fixed a deadlock when a user requested a context menu in a folder slection dialog on Windows.
 
    https://github.com/owncloud/client/issues/9681
+
+* Bugfix - Fix never ending sync: [#9725](https://github.com/owncloud/client/issues/9725)
+
+   Under certain conditions an upload could enter a state were it would never finish. The client
+   would wait for that upload so only a restart of the client or a manual abort of the sync could
+   resolve the issue.
+
+   https://github.com/owncloud/client/issues/9725
 
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 
