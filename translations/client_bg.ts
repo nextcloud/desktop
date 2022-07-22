@@ -2251,13 +2251,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="320"/>
+        <location filename="../src/gui/generalsettings.cpp" line="322"/>
         <source>stable</source>
         <translation>стабилен</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="324"/>
         <source>beta</source>
         <translation> бета</translation>
     </message>
@@ -2314,32 +2314,32 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Create Debug Archive</source>
         <translation>Създаване на Архив за Отстраняване на грешки </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="147"/>
+        <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
         <translation>Известия от сървъра, които изискват внимание.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="153"/>
         <source>Show call notification dialogs.</source>
         <translation>Показване на диалогови прозорци на известия за обаждане.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="165"/>
+        <location filename="../src/gui/generalsettings.cpp" line="167"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Не можете да деактивирате автоматичното стартиране, защото е активирано автоматично стартиране в цялата система.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="356"/>
         <source>Change update channel?</source>
         <translation>Промяна на канала за актуализация?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="357"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2348,27 +2348,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Обърнете внимание, че се избира само това от какво са взети надстройките на пула и че няма понижавания: Така че връщането от бета канала към стабилния канал обикновено не може да се направи веднага и означава изчакване на стабилна версия, която е по-нова от текущо инсталираната бета версия.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="368"/>
+        <location filename="../src/gui/generalsettings.cpp" line="370"/>
         <source>Change update channel</source>
         <translation>Промяна на канала за актуализация</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="369"/>
+        <location filename="../src/gui/generalsettings.cpp" line="371"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Zip Archives</source>
         <translation>Zip Архиви</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="479"/>
+        <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug Archive Created</source>
         <translation>Създаден е Архив за Отстраняване на грешки  </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="479"/>
+        <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug archive is created at %1</source>
         <translation>Архив за Отстраняване на грешки е създаден на  %1</translation>
     </message>
@@ -5508,7 +5508,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="500"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="498"/>
         <source>Retry all uploads</source>
         <translation>Нов опит на всички качвания</translation>
     </message>
@@ -5541,22 +5541,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1042"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1040"/>
         <source>Confirm Account Removal</source>
         <translation>Потвърждение за Премахване на Профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1041"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Наистина ли желаете да премахнете връзката към профила&lt;i&gt; %1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Бележка:&lt;/b&gt; Дейтствието &lt;b&gt;няма&lt;/b&gt; да предизвика изтриване на файлове.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
         <source>Remove connection</source>
         <translation>Премахване на връзката</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1049"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1047"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>
@@ -6273,27 +6273,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Нова папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>You renamed %1</source>
         <translation>Вие преименувахте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You deleted %1</source>
         <translation>Вие изтрихте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You created %1</source>
         <translation>Вие създадохте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="581"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You changed %1</source>
         <translation>Вие променихте %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
         <source>Synced %1</source>
         <translation>Синхронизиран %1</translation>
     </message>
@@ -6427,7 +6427,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="39"/>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="30"/>
         <source>Load more results</source>
         <translation>Зареждане на още резултати</translation>
     </message>
@@ -6810,7 +6810,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Показване на повече действия</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="741"/>
+        <location filename="../src/gui/tray/Window.qml" line="728"/>
         <source>Unified search results list</source>
         <translation>Обединен списък с резултати от търсенето</translation>
     </message>
@@ -6820,7 +6820,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Споделяне %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="813"/>
+        <location filename="../src/gui/tray/Window.qml" line="791"/>
         <source>%1 - File activity</source>
         <translation>%1 - Файлова активност</translation>
     </message>

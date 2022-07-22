@@ -2249,13 +2249,13 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="320"/>
+        <location filename="../src/gui/generalsettings.cpp" line="322"/>
         <source>stable</source>
         <translation>stable</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="324"/>
         <source>beta</source>
         <translation>bêta</translation>
     </message>
@@ -2312,32 +2312,32 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Create Debug Archive</source>
         <translation>Création de l&apos;archive de déboggage</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="147"/>
+        <location filename="../src/gui/generalsettings.cpp" line="149"/>
         <source>Server notifications that require attention.</source>
         <translation>Les notifications du serveur requérant votre attention.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="151"/>
+        <location filename="../src/gui/generalsettings.cpp" line="153"/>
         <source>Show call notification dialogs.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="165"/>
+        <location filename="../src/gui/generalsettings.cpp" line="167"/>
         <source>You cannot disable autostart because system-wide autostart is enabled.</source>
         <translation>Vous ne pouvez pas désactiver le démarrage automatique parce que le démarrage automatique à l&apos;échelle du système est activé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="354"/>
+        <location filename="../src/gui/generalsettings.cpp" line="356"/>
         <source>Change update channel?</source>
         <translation>Changer de canal de mise à jour ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="355"/>
+        <location filename="../src/gui/generalsettings.cpp" line="357"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2346,27 +2346,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Notez que cela ne permet seulement de sélectionner où sont récupérées les mises à jour et qu&apos;il n&apos;y a pas de possibilité de rétrograder : Ainsi, le retour du canal &quot;bêta&quot; au canal &quot;stable&quot; ne peut généralement pas être fait immédiatement et implique d&apos;attendre une version stable plus récente que la version bêta actuellement installée.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="368"/>
+        <location filename="../src/gui/generalsettings.cpp" line="370"/>
         <source>Change update channel</source>
         <translation>Changer de canal de mise à jour</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="369"/>
+        <location filename="../src/gui/generalsettings.cpp" line="371"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="473"/>
+        <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Zip Archives</source>
         <translation>Archives Zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="479"/>
+        <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug Archive Created</source>
         <translation>Archive de déboggage créée</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="479"/>
+        <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug archive is created at %1</source>
         <translation>Archive de déboggage créée à %1</translation>
     </message>
@@ -5507,7 +5507,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="500"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="498"/>
         <source>Retry all uploads</source>
         <translation>Relancer tous les envois</translation>
     </message>
@@ -5540,22 +5540,22 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1042"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1040"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmer la suppression du compte</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1041"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Êtes-vous certain de vouloir retirer la connexion au compte &lt;i&gt;%1&lt;/i&gt; ?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note :&lt;/b&gt; cette opération &lt;b&gt;ne supprimera aucun de vos fichiers&lt;/b&gt; et ne supprimera pas non plus votre compte du serveur.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
         <source>Remove connection</source>
         <translation>Supprimer la connexion</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1049"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1047"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
@@ -6272,27 +6272,27 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Nouveau dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>You renamed %1</source>
         <translation>Vous avez renommé %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You deleted %1</source>
         <translation>Vous avez supprimé %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You created %1</source>
         <translation>Vous avez créé %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="581"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You changed %1</source>
         <translation>Vous avez modifié %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
         <source>Synced %1</source>
         <translation>%1 a été synchronisé</translation>
     </message>
@@ -6426,7 +6426,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>UnifiedSearchResultListItem</name>
     <message>
-        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="39"/>
+        <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="30"/>
         <source>Load more results</source>
         <translation>Charger plus de résultats</translation>
     </message>
@@ -6809,7 +6809,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Afficher plus d&apos;actions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="741"/>
+        <location filename="../src/gui/tray/Window.qml" line="728"/>
         <source>Unified search results list</source>
         <translation>Liste de résultats de recherche unifiée</translation>
     </message>
@@ -6819,7 +6819,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Partager %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="813"/>
+        <location filename="../src/gui/tray/Window.qml" line="791"/>
         <source>%1 - File activity</source>
         <translation>%1 - Activité de fichier</translation>
     </message>
