@@ -32,11 +32,10 @@
 
 using namespace OCC;
 
-FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account, QWidget *parent)
-    : QWizardPage(parent)
+FolderWizardRemotePath::FolderWizardRemotePath(FolderWizardPrivate *parent)
+    : FolderWizardPage(parent)
     , _ui(new Ui_FolderWizardTargetPage)
     , _warnWasVisible(false)
-    , _account(account)
 
 {
     _ui->setupUi(this);
@@ -90,8 +89,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolder(const QString &folder)
     }
     fullPath += QLatin1Char('/') + folder;
 
-    // TODO: legacy
-    MkColJob *job = new MkColJob(_account, static_cast<FolderWizard *>(wizard())->d_func()->davUrl(), fullPath, {}, this);
+    MkColJob *job = new MkColJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), fullPath, {}, this);
     /* check the owncloud configuration file and query the ownCloud */
     connect(job, &MkColJob::finishedWithoutError,
         this, &FolderWizardRemotePath::slotCreateRemoteFolderFinished);
@@ -111,7 +109,7 @@ void FolderWizardRemotePath::slotCreateRemoteFolderFinished()
 void FolderWizardRemotePath::slotHandleMkdirNetworkError(QNetworkReply *reply)
 {
     qCWarning(lcFolderWizard) << "webdav mkdir request failed:" << reply->error();
-    if (!_account->credentials()->stillValid(reply)) {
+    if (!folderWizardPrivate()->accountState()->account()->credentials()->stillValid(reply)) {
         showWarn(tr("Authentication failed accessing %1").arg(Theme::instance()->appNameGUI()));
     } else {
         showWarn(tr("Failed to create the folder on %1. Please check manually.")
@@ -211,7 +209,7 @@ const QString &FolderWizardRemotePath::targetPath() const
 
 void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 {
-    QString webdavFolder = static_cast<FolderWizard *>(wizard())->d_func()->davUrl().path();
+    QString webdavFolder = folderWizardPrivate()->davUrl().path();
 
     QTreeWidgetItem *root = _ui->folderTreeWidget->topLevelItem(0);
     if (!root) {
@@ -295,8 +293,8 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 
 LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
 {
-    LsColJob *job = new LsColJob(_account, static_cast<FolderWizard *>(wizard())->d_func()->davUrl(), path, this);
-    job->setProperties(QList<QByteArray>() << "resourcetype");
+    LsColJob *job = new LsColJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), path, this);
+    job->setProperties({ QByteArrayLiteral("resourcetype") });
     connect(job, &LsColJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
     connect(job, &LsColJob::finishedWithError,
@@ -326,7 +324,7 @@ bool FolderWizardRemotePath::isComplete() const
     bool ok = true;
 
     for (auto *f : qAsConst(FolderMan::instance()->folders())) {
-        if (f->accountState()->account() != _account) {
+        if (f->accountState()->account() != folderWizardPrivate()->accountState()->account()) {
             continue;
         }
         QString curDir = f->remotePathTrailingSlash();

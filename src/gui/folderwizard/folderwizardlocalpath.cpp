@@ -30,10 +30,9 @@
 
 using namespace OCC;
 
-FolderWizardLocalPath::FolderWizardLocalPath(const AccountPtr &account, QWidget *parent)
-    : QWizardPage(parent)
+FolderWizardLocalPath::FolderWizardLocalPath(FolderWizardPrivate *parent)
+    : FolderWizardPage(parent)
     , _ui(new Ui_FolderWizardSourcePage)
-    , _account(account)
 {
     _ui->setupUi(this);
     registerField(QLatin1String("sourceFolder*"), _ui->localFolderLineEdit);
@@ -54,7 +53,7 @@ FolderWizardLocalPath::~FolderWizardLocalPath()
 void FolderWizardLocalPath::initializePage()
 {
     _ui->warnLabel->hide();
-    _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(static_cast<FolderWizard *>(wizard())->d_func()->initialLocalPath()));
+    _ui->localFolderLineEdit->setText(QDir::toNativeSeparators(folderWizardPrivate()->initialLocalPath()));
 }
 
 QString FolderWizardLocalPath::localPath() const

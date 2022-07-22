@@ -19,8 +19,7 @@
 #pragma once
 
 #include "gui/folder.h"
-
-#include <QWizardPage>
+#include "gui/folderwizard/folderwizard_p.h"
 
 class Ui_FolderWizardSourcePage;
 namespace OCC {
@@ -30,11 +29,11 @@ namespace OCC {
  * @brief Page to ask for the local source folder
  * @ingroup gui
  */
-class FolderWizardLocalPath : public QWizardPage
+class FolderWizardLocalPath : public FolderWizardPage
 {
     Q_OBJECT
 public:
-    explicit FolderWizardLocalPath(const AccountPtr &account, QWidget *parent = nullptr);
+    explicit FolderWizardLocalPath(FolderWizardPrivate *parent);
     ~FolderWizardLocalPath() override;
 
     bool isComplete() const override;
@@ -47,7 +46,6 @@ protected slots:
 private:
     Ui_FolderWizardSourcePage *_ui;
     QMap<QString, Folder *> _folderMap;
-    AccountPtr _account;
 };
 
 }

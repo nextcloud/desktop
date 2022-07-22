@@ -68,7 +68,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
         FolderMan::instance()->scheduleAllFolders();
     };
 
-    if (accountStatePtr->account()->capabilities().spacesSupport().enabled) {
+    if (accountStatePtr->supportsSpaces()) {
         auto *drive = new GraphApi::Drives(accountStatePtr->account());
 
         QObject::connect(drive, &GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
@@ -1027,7 +1027,7 @@ void ownCloudGui::runNewAccountWizard()
                             case Wizard::SyncMode::ConfigureUsingFolderWizard: {
                                 Q_ASSERT(!accountStatePtr->account()->hasDefaultSyncRoot());
 
-                                auto *folderWizard = new FolderWizard(accountStatePtr->account(), ocApp()->gui()->settingsDialog());
+                                auto *folderWizard = new FolderWizard(accountStatePtr, ocApp()->gui()->settingsDialog());
                                 folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
                                 folderWizard->setAttribute(Qt::WA_DeleteOnClose);
 

@@ -19,12 +19,8 @@
 
 #pragma once
 
+#include "gui/folderwizard/folderwizard_p.h"
 #include "libsync/accountfwd.h"
-
-#include <QWizard>
-
-
-class QCheckBox;
 
 namespace OCC {
 
@@ -34,11 +30,11 @@ class SelectiveSyncWidget;
  * @brief The FolderWizardSelectiveSync class
  * @ingroup gui
  */
-class FolderWizardSelectiveSync : public QWizardPage
+class FolderWizardSelectiveSync : public FolderWizardPage
 {
     Q_OBJECT
 public:
-    explicit FolderWizardSelectiveSync(const AccountPtr &account, QWidget *parent = nullptr);
+    explicit FolderWizardSelectiveSync(FolderWizardPrivate *parent);
     ~FolderWizardSelectiveSync() override;
 
     bool validatePage() override;

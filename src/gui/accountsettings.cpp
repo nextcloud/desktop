@@ -414,7 +414,7 @@ void AccountSettings::slotAddFolder()
 {
     FolderMan::instance()->setSyncEnabled(false); // do not start more syncs.
 
-    FolderWizard *folderWizard = new FolderWizard(_accountState->account(), ocApp()->gui()->settingsDialog());
+    FolderWizard *folderWizard = new FolderWizard(_accountState, ocApp()->gui()->settingsDialog());
     folderWizard->setAttribute(Qt::WA_DeleteOnClose);
     folderWizard->resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());
 

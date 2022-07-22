@@ -155,7 +155,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
     // independent of the index
     if (role == FolderStatusDelegate::IsUsingSpaces) {
-        return _accountState->account()->hasCapabilities() && _accountState->account()->capabilities().spacesSupport().enabled;
+        return _accountState->supportsSpaces();
     }
     switch (classify(index)) {
     case AddButton: {
@@ -165,7 +165,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             if (!_accountState->isConnected()) {
                 return tr("You need to be connected to add a folder");
             }
-            return _accountState->account()->capabilities().spacesSupport().enabled ? tr("Click this button to add a space.") : tr("Click this button to add a folder to synchronize.");
+            return _accountState->supportsSpaces() ? tr("Click this button to add a space.") : tr("Click this button to add a folder to synchronize.");
         }
         return QVariant();
     }

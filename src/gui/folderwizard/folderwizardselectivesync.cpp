@@ -34,11 +34,11 @@
 
 using namespace OCC;
 
-FolderWizardSelectiveSync::FolderWizardSelectiveSync(const AccountPtr &account, QWidget *parent)
-    : QWizardPage(parent)
+FolderWizardSelectiveSync::FolderWizardSelectiveSync(FolderWizardPrivate *parent)
+    : FolderWizardPage(parent)
 {
     QVBoxLayout *layout = new QVBoxLayout(this);
-    _selectiveSync = new SelectiveSyncWidget(account, this);
+    _selectiveSync = new SelectiveSyncWidget(folderWizardPrivate()->accountState()->account(), this);
     layout->addWidget(_selectiveSync);
 
     const auto vfsMode = bestAvailableVfsMode();

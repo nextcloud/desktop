@@ -20,6 +20,7 @@
 
 
 #include "gui/folder.h"
+#include "gui/folderwizard/folderwizard_p.h"
 
 #include <QWizardPage>
 
@@ -35,11 +36,11 @@ namespace OCC {
  * @ingroup gui
  */
 
-class FolderWizardRemotePath : public QWizardPage
+class FolderWizardRemotePath : public FolderWizardPage
 {
     Q_OBJECT
 public:
-    explicit FolderWizardRemotePath(const AccountPtr &account, QWidget *parent = nullptr);
+    explicit FolderWizardRemotePath(FolderWizardPrivate *parent);
     ~FolderWizardRemotePath() override;
 
     bool isComplete() const override;
@@ -71,7 +72,6 @@ private:
     bool selectByPath(QString path);
     Ui_FolderWizardTargetPage *_ui;
     bool _warnWasVisible;
-    AccountPtr _account;
     QTimer _lscolTimer;
 
     QString _targetPath;

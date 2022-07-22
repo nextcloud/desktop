@@ -125,6 +125,9 @@ public:
 
     bool isConnected() const;
 
+    // weather the account was created after spaces where implemented
+    bool supportsSpaces() const;
+
     /** Returns a new settings object for this account, already in the right groups. */
     std::unique_ptr<QSettings> settings();
 
@@ -171,6 +174,7 @@ private:
     QPointer<ConnectionValidator> _connectionValidator;
     QPointer<UpdateUrlDialog> _updateUrlDialog;
     QPointer<TlsErrorDialog> _tlsDialog;
+    bool _supportsSpaces = true;
 
     /**
      * Starts counting when the server starts being back up after 503 or

@@ -73,7 +73,7 @@ void QuotaInfo::slotRequestFailed()
 
 bool QuotaInfo::canGetQuota() const
 {
-    if (!_accountState || !_active || _accountState->account()->hasCapabilities() && _accountState->account()->capabilities().spacesSupport().enabled) {
+    if (!_accountState || !_active || _accountState->supportsSpaces()) {
         return false;
     }
     AccountPtr account = _accountState->account();

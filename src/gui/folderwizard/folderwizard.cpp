@@ -67,33 +67,33 @@ QString FolderWizardPrivate::formatWarnings(const QStringList &warnings, bool is
 
 QString FolderWizardPrivate::defaultSyncRoot() const
 {
-    if (!_account->hasDefaultSyncRoot()) {
-        return FolderMan::suggestSyncFolder(_account->url(), _account->davDisplayName());
+    if (!_account->account()->hasDefaultSyncRoot()) {
+        return FolderMan::suggestSyncFolder(_account->account()->url(), _account->account()->davDisplayName());
     } else {
-        return _account->defaultSyncRoot();
+        return _account->account()->defaultSyncRoot();
     }
 }
 
-FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountPtr &account)
+FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountStatePtr &account)
     : q_ptr(q)
     , _account(account)
-    , _folderWizardSourcePage(new FolderWizardLocalPath(account))
-    , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
+    , _folderWizardSourcePage(new FolderWizardLocalPath(this))
+    , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(this))
 {
-    if (account->capabilities().spacesSupport().enabled) {
-        _spacesPage = new SpacesPage(account, q);
+    if (account->supportsSpaces()) {
+        _spacesPage = new SpacesPage(account->account(), q);
         q->setPage(FolderWizard::Page_Space, _spacesPage);
         _spacesPage->installEventFilter(q);
     }
     q->setPage(FolderWizard::Page_Source, _folderWizardSourcePage);
     _folderWizardSourcePage->installEventFilter(q);
     // for now spaces are meant to be synced as a whole
-    if (!account->capabilities().spacesSupport().enabled && !Theme::instance()->singleSyncFolder()) {
-        _folderWizardTargetPage = new FolderWizardRemotePath(account);
+    if (!_account->supportsSpaces() && !Theme::instance()->singleSyncFolder()) {
+        _folderWizardTargetPage = new FolderWizardRemotePath(this);
         q->setPage(FolderWizard::Page_Target, _folderWizardTargetPage);
         _folderWizardTargetPage->installEventFilter(q);
     }
-    if (!account->capabilities().spacesSupport().enabled) {
+    if (!_account->supportsSpaces()) {
         // TODO: add spaces support to selective sync
         q->setPage(FolderWizard::Page_SelectiveSync, _folderWizardSelectiveSyncPage);
     }
@@ -102,7 +102,7 @@ FolderWizardPrivate::FolderWizardPrivate(FolderWizard *q, const AccountPtr &acco
 QString FolderWizardPrivate::initialLocalPath() const
 {
     QString defaultPath = defaultSyncRoot();
-    if (_account->capabilities().spacesSupport().enabled) {
+    if (_account->supportsSpaces()) {
         defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
     };
     return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
@@ -110,22 +110,27 @@ QString FolderWizardPrivate::initialLocalPath() const
 
 QUrl FolderWizardPrivate::davUrl() const
 {
-    if (_account->capabilities().spacesSupport().enabled) {
+    if (_account->supportsSpaces()) {
         auto url = _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
         if (!url.path().endsWith(QLatin1Char('/'))) {
             url.setPath(url.path() + QLatin1Char('/'));
         }
         return url;
     }
-    return _account->davUrl();
+    return _account->account()->davUrl();
 }
 
 QString FolderWizardPrivate::displayName() const
 {
-    if (_account->capabilities().spacesSupport().enabled) {
+    if (_account->supportsSpaces()) {
         return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
     };
     return QString();
+}
+
+const AccountStatePtr &FolderWizardPrivate::accountState()
+{
+    return _account;
 }
 
 bool FolderWizardPrivate::useVirtualFiles() const
@@ -144,7 +149,7 @@ bool FolderWizardPrivate::useVirtualFiles() const
     return useVirtualFiles;
 }
 
-FolderWizard::FolderWizard(const AccountPtr &account, QWidget *parent, Qt::WindowFlags flags)
+FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent, Qt::WindowFlags flags)
     : QWizard(parent, flags)
     , d_ptr(new FolderWizardPrivate(this, account))
 {
@@ -187,9 +192,9 @@ FolderWizard::Result FolderWizard::result()
     Q_D(FolderWizard);
 
     const QString localPath = d->_folderWizardSourcePage->localPath();
-    if (!d->_account->hasDefaultSyncRoot()) {
+    if (!d->_account->account()->hasDefaultSyncRoot()) {
         if (FileSystem::isChildPathOf(localPath, d->defaultSyncRoot())) {
-            d->_account->setDefaultSyncRoot(d->defaultSyncRoot());
+            d->_account->account()->setDefaultSyncRoot(d->defaultSyncRoot());
         }
     }
     return {

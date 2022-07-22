@@ -75,7 +75,7 @@ public:
         QStringList selectiveSyncBlackList;
     };
 
-    explicit FolderWizard(const AccountPtr &account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
+    explicit FolderWizard(const AccountStatePtr &account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
     ~FolderWizard() override;
 
     Result result();
@@ -88,6 +88,5 @@ public:
 private:
     QScopedPointer<FolderWizardPrivate> d_ptr;
 };
-
 
 } // namespace OCC
