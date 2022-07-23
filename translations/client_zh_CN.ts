@@ -958,7 +958,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>用户名 (&amp;U)</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1719,7 +1719,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>未知状态。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1503"/>
@@ -5383,7 +5383,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>下载</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="202"/>
@@ -5415,7 +5415,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="210"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>帮助</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="211"/>
@@ -5753,7 +5753,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>登录</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -5764,7 +5764,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>使用第三方注册</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -6062,7 +6062,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>用户名</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
@@ -6077,7 +6077,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>选择不同的文件夹</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
@@ -6256,27 +6256,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>你重命名了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>你删除了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>你创建了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>你修改了 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>已同步 %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6373,12 +6373,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="30"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>回复...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="67"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>回复聊天消息</translation>
     </message>
 </context>
 <context>
@@ -6428,12 +6428,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>当前账号状态为在线</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>当前账号状态为请勿打扰</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
@@ -6513,7 +6513,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>静音所有通知</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="82"/>
@@ -6523,7 +6523,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>显示为离线</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="95"/>
@@ -6556,7 +6556,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
         <source>Set account status</source>
-        <translation type="unfinished"/>
+        <translation>设定账号状态</translation>
     </message>
 </context>
 <context>
@@ -6717,17 +6717,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="390"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>当前账号头像</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>当前账号状态为在线</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="429"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>当前账号状态为请勿打扰</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="478"/>
