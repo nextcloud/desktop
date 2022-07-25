@@ -10,6 +10,8 @@ ItemDelegate {
 
     property Flickable flickable
 
+    property int iconSize: Style.trayListItemIconSize
+
     property bool isFileActivityList: false
 
     readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
@@ -45,9 +47,11 @@ ItemDelegate {
 
             showDismissButton: model.links.length > 0
 
+            iconSize: root.iconSize
+
             activityData: model
 
-            onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.path)
+            onShareButtonClicked: Systray.createShareDialog(model.openablePath)
 
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.activityIndex)
         }

@@ -17,7 +17,6 @@
 
 #include "syncfileitem.h"
 #include "common/syncfilestatus.h"
-#include "sharedialog.h" // for the ShareDialogStartPage
 #include "common/syncjournalfilerecord.h"
 
 #include "config.h"
@@ -63,8 +62,8 @@ public slots:
     void broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus);
 
 signals:
-    void shareCommandReceived(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage);
-    void fileActivityCommandReceived(const QString &objectName, const int objectId);
+    void shareCommandReceived(const QString &localPath);
+    void fileActivityCommandReceived(const QString &localPath);
 
 private slots:
     void slotNewConnection();
@@ -102,7 +101,7 @@ private:
     void broadcastMessage(const QString &msg, bool doWait = false);
 
     // opens share dialog, sends reply
-    void processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage);
+    void processShareRequest(const QString &localFile, SocketListener *listener);
     void processFileActivityRequest(const QString &localFile);
 
     Q_INVOKABLE void command_RETRIEVE_FOLDER_STATUS(const QString &argument, SocketListener *listener);

@@ -24,23 +24,46 @@ FileActivityListModel::FileActivityListModel(QObject *parent)
     : ActivityListModel(nullptr, parent)
 {
     setDisplayActions(false);
+    connect(this, &FileActivityListModel::accountStateChanged, this, &FileActivityListModel::load);
 }
 
-void FileActivityListModel::load(AccountState *accountState, const int objectId)
+QString FileActivityListModel::localPath() const
 {
-    Q_ASSERT(accountState);
-    if (!accountState || currentlyFetching()) {
+    return _localPath;
+}
+
+void FileActivityListModel::setLocalPath(const QString &localPath)
+{
+    _localPath = localPath;
+    Q_EMIT localPathChanged();
+
+    load();
+}
+
+void FileActivityListModel::load()
+{
+    if (!accountState() || _localPath.isEmpty() || currentlyFetching()) {
         return;
     }
-    setAccountState(accountState);
 
-    _objectId = objectId;
+    const auto folder = FolderMan::instance()->folderForPath(_localPath);
+
+    if (!folder) {
+        qCWarning(lcFileActivityListModel) << "Invalid folder for localPath:" << _localPath << "will not load activity list model.";
+        return;
+    }
+
+    const auto folderRelativePath = _localPath.mid(folder->cleanPath().length() + 1);
+    SyncJournalFileRecord record;
+    folder->journalDb()->getFileRecord(folderRelativePath, &record);
+
+    _objectId = record.numericFileId().toInt();
     slotRefreshActivity();
 }
 
 void FileActivityListModel::startFetchJob()
 {
-    if (!accountState()->isConnected()) {
+    if (!accountState()->isConnected() || _objectId == -1) {
         return;
     }
     setAndRefreshCurrentlyFetching(true);

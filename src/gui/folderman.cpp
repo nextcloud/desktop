@@ -24,6 +24,7 @@
 #include "filesystem.h"
 #include "lockwatcher.h"
 #include "common/asserts.h"
+#include "gui/systray.h"
 #include <pushnotifications.h>
 #include <syncengine.h>
 

@@ -22,17 +22,25 @@ namespace OCC {
 class FileActivityListModel : public ActivityListModel
 {
     Q_OBJECT
+    Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath NOTIFY localPathChanged)
 
 public:
     explicit FileActivityListModel(QObject *parent = nullptr);
 
+    QString localPath() const;
+
+signals:
+    void localPathChanged();
+
 public slots:
-    void load(AccountState *accountState, const int objectId);
+    void setLocalPath(const QString &localPath);
+    void load();
 
 protected slots:
     void startFetchJob() override;
 
 private:
-    int _objectId;
+    int _objectId = -1;
+    QString _localPath;
 };
 }

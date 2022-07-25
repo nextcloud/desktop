@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
 import Style 1.0
 
@@ -9,6 +10,7 @@ ScrollView {
     property alias model: sortedActivityList.activityListModel
 
     property bool isFileActivityList: false
+    property int iconSize: Style.trayListItemIconSize
 
     signal openFile(string filePath)
     signal activityItemClicked(int index)
@@ -55,6 +57,7 @@ ScrollView {
 
         delegate: ActivityItem {
             isFileActivityList: controlRoot.isFileActivityList
+            iconSize: controlRoot.iconSize
             width: activityList.contentWidth
             flickable: activityList
             onHoveredChanged: if (hovered) {

@@ -285,6 +285,91 @@ void Systray::destroyEditFileLocallyLoadingDialog()
     _editFileLocallyLoadingDialog = nullptr;
 }
 
+bool Systray::raiseDialogs()
+{
+    if(_dialogs.empty()) {
+        return false;
+    }
+
+    QVector<QSharedPointer<QQuickWindow>> liveDialogs;
+
+    for(const auto &dialog : _dialogs) {
+        if(dialog.isNull()) {
+            continue;
+        } else if(!dialog->isVisible()) {
+            destroyDialog(dialog.data());
+            continue;
+        }
+
+        liveDialogs.append(dialog);
+
+        dialog->show();
+        dialog->raise();
+        dialog->requestActivate();
+    }
+
+    _dialogs = liveDialogs;
+
+    // If it is empty then we have raised no dialogs, so return false (and viceversa)
+    return !liveDialogs.empty();
+}
+
+void Systray::createFileDetailsDialog(const QString &localPath)
+{
+    qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
+
+    if(!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(folder->accountState())},
+        {"localPath", localPath},
+    };
+
+    const auto fileDetailsDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
+
+    if (fileDetailsDialog && !fileDetailsDialog->isError()) {
+        const auto createdDialog = fileDetailsDialog->createWithInitialProperties(initialProperties);
+        const QSharedPointer<QQuickWindow> dialog(qobject_cast<QQuickWindow*>(createdDialog));
+
+        if(dialog.isNull()) {
+            qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
+            return;
+        }
+
+        _dialogs.append(dialog);
+
+        dialog->show();
+        dialog->raise();
+        dialog->requestActivate();
+
+    } else if (fileDetailsDialog) {
+        qCWarning(lcSystray) << fileDetailsDialog->errorString();
+    } else {
+        qCWarning(lcSystray) << "Unable to open share dialog for unknown reasons...";
+    }
+}
+
+void Systray::createShareDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Sharing);
+}
+
+void Systray::createFileActivityDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
+}
+
 void Systray::slotCurrentUserChanged()
 {
     if (_trayEngine) {

@@ -58,7 +58,7 @@ Share::Share(AccountPtr account,
     const ShareType shareType,
     bool isPasswordSet,
     const Permissions permissions,
-    const QSharedPointer<Sharee> shareWith)
+    const ShareePtr shareWith)
     : _account(account)
     , _id(id)
     , _uidowner(uidowner)
@@ -101,7 +101,7 @@ Share::ShareType Share::getShareType() const
     return _shareType;
 }
 
-QSharedPointer<Sharee> Share::getShareWith() const
+ShareePtr Share::getShareWith() const
 {
     return _shareWith;
 }
@@ -316,7 +316,7 @@ UserGroupShare::UserGroupShare(AccountPtr account,
     const ShareType shareType,
     bool isPasswordSet,
     const Permissions permissions,
-    const QSharedPointer<Sharee> shareWith,
+    const ShareePtr shareWith,
     const QDate &expireDate,
     const QString &note)
     : Share(account, id, owner, ownerDisplayName, path, shareType, isPasswordSet, permissions, shareWith)
@@ -461,7 +461,7 @@ void ShareManager::slotShareCreated(const QJsonDocument &reply)
 {
     //Parse share
     auto data = reply.object().value("ocs").toObject().value("data").toObject();
-    QSharedPointer<Share> share(parseShare(data));
+    SharePtr share(parseShare(data));
 
     emit shareCreated(share);
 
@@ -482,14 +482,14 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
     const QString versionString = _account->serverVersion();
     qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";
 
-    QList<QSharedPointer<Share>> shares;
+    QList<SharePtr> shares;
 
     foreach (const auto &share, tmpShares) {
         auto data = share.toObject();
 
         auto shareType = data.value("share_type").toInt();
 
-        QSharedPointer<Share> newShare;
+        SharePtr newShare;
 
         if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
@@ -499,7 +499,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
             newShare = parseShare(data);
         }
 
-        shares.append(QSharedPointer<Share>(newShare));
+        shares.append(SharePtr(newShare));
     }
 
     qCDebug(lcSharing) << "Sending " << shares.count() << "shares";
@@ -508,7 +508,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 
 QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObject &data)
 {
-    QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
+    ShareePtr sharee(new Sharee(data.value("share_with").toString(),
         data.value("share_with_displayname").toString(),
         static_cast<Sharee::Type>(data.value("share_type").toInt())));
 
@@ -577,13 +577,13 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
         data.value("label").toString()));
 }
 
-QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
+SharePtr ShareManager::parseShare(const QJsonObject &data) const
 {
-    QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
+    ShareePtr sharee(new Sharee(data.value("share_with").toString(),
         data.value("share_with_displayname").toString(),
         (Sharee::Type)data.value("share_type").toInt()));
 
-    return QSharedPointer<Share>(new Share(_account,
+    return SharePtr(new Share(_account,
         data.value("id").toVariant().toString(), // "id" used to be an integer, support both
         data.value("uid_owner").toVariant().toString(),
         data.value("displayname_owner").toVariant().toString(),

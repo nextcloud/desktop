@@ -82,11 +82,16 @@ public:
     enum class WindowPosition { Default, Center };
     Q_ENUM(WindowPosition);
 
+    enum class FileDetailsPage { Activity, Sharing };
+    Q_ENUM(FileDetailsPage);
+
     Q_REQUIRED_RESULT QString windowTitle() const;
     Q_REQUIRED_RESULT bool useNormalWindow() const;
 
     Q_REQUIRED_RESULT bool syncIsPaused() const;
     Q_REQUIRED_RESULT bool isOpen() const;
+
+    Q_REQUIRED_RESULT bool raiseDialogs();
 
 signals:
     void currentUserChanged();
@@ -95,8 +100,7 @@ signals:
     void openHelp();
     void shutdown();
 
-    void openShareDialog(const QString &sharePath, const QString &localPath);
-    void showFileActivityDialog(const QString &objectName, const int objectId);
+    void showFileDetailsPage(const QString &fileLocalPath, const FileDetailsPage page);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
     void showErrorMessageDialog(const QString &error);
 
@@ -132,6 +136,9 @@ public slots:
     void setSyncIsPaused(const bool syncIsPaused);
     void setIsOpen(const bool isOpen);
 
+    void createShareDialog(const QString &localPath);
+    void createFileActivityDialog(const QString &localPath);
+
 private slots:
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
@@ -143,6 +150,7 @@ private:
     Systray();
 
     void setupContextMenu();
+    void createFileDetailsDialog(const QString &localPath);
 
     [[nodiscard]] QScreen *currentScreen() const;
     [[nodiscard]] QRect currentScreenRect() const;
@@ -164,8 +172,8 @@ private:
     AccessManagerFactory _accessManagerFactory;
 
     QSet<qlonglong> _callsAlreadyNotified;
-
     QPointer<QObject> _editFileLocallyLoadingDialog;
+    QVector<QSharedPointer<QQuickWindow>> _dialogs;
 };
 
 } // namespace OCC

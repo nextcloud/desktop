@@ -39,9 +39,8 @@ class InvalidFilenameDialog;
 class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
-
     Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
-    Q_PROPERTY(AccountState *accountState READ accountState CONSTANT)
+    Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
 
 public:
     enum DataRole {
@@ -123,6 +122,8 @@ public slots:
     void setCurrentItem(const int currentItem);
 
 signals:
+    void accountStateChanged();
+
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
