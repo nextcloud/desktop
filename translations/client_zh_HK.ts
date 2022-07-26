@@ -5506,7 +5506,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="498"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="500"/>
         <source>Retry all uploads</source>
         <translation>重試所有上傳</translation>
     </message>
@@ -5539,22 +5539,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1040"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1042"/>
         <source>Confirm Account Removal</source>
         <translation>請確認移除賬戶</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1041"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您確定要移除&lt;i&gt;%1&lt;/i&gt;的連線嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;提示：&lt;/b&gt;這項操作不會刪除任何檔案&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
         <source>Remove connection</source>
         <translation>移除連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1047"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1049"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -6271,27 +6271,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>新資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You renamed %1</source>
         <translation>您已將 %1 重新命名</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You deleted %1</source>
         <translation>您刪除了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You created %1</source>
         <translation>您新增了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="581"/>
         <source>You changed %1</source>
         <translation>您改變了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
