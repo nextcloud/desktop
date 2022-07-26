@@ -5509,7 +5509,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="498"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="500"/>
         <source>Retry all uploads</source>
         <translation>Probeer alle uploads opnieuw</translation>
     </message>
@@ -5542,22 +5542,22 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1040"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1042"/>
         <source>Confirm Account Removal</source>
         <translation>Bevestig verwijderen account</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1041"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wilt je echt de verbinding met het account &lt;i&gt;%1&lt;/i&gt; verbreken?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Let op:&lt;/b&gt; Hierdoor verwijder je &lt;b&gt;geen&lt;/b&gt; bestanden.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
         <source>Remove connection</source>
         <translation>Verwijderen verbinding</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1047"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1049"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
@@ -6274,27 +6274,27 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Nieuwe map</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You renamed %1</source>
         <translation>Je hernoemde %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You deleted %1</source>
         <translation>Je verwijderde %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You created %1</source>
         <translation>Je creëerde %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="581"/>
         <source>You changed %1</source>
         <translation>Je wijzigde %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
         <source>Synced %1</source>
         <translation>Gesynchroniseerd %1</translation>
     </message>
