@@ -42,6 +42,7 @@ Summary
 * Enhancement - Throttle the UI updates during sync: [#9832](https://github.com/owncloud/client/issues/9832)
 * Enhancement - Run vfs downloads with a high priority: [#9836](https://github.com/owncloud/client/pull/9836)
 * Enhancement - We improved the performance for local filesystem actions: [#9910](https://github.com/owncloud/client/pull/9910)
+* Enhancement - We improved the performance of db access: [#9918](https://github.com/owncloud/client/pull/9918)
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
 * Enhancement - Remove app name from connection error message: [#9923](https://github.com/owncloud/client/issues/9923)
 * Enhancement - Allow HTTP/1.1 pipelining: [#9930](https://github.com/owncloud/client/pull/9930/)
@@ -287,6 +288,16 @@ Details
 * Enhancement - We improved the performance for local filesystem actions: [#9910](https://github.com/owncloud/client/pull/9910)
 
    https://github.com/owncloud/client/pull/9910
+
+* Enhancement - We improved the performance of db access: [#9918](https://github.com/owncloud/client/pull/9918)
+
+   We removed a check for the existence of the db that was executed before every access to the db.
+
+   The check was introduced in #6049 to prevent crashes if the db does not exist or is removed during
+   runtime. We nowadays gracefully handle missing dbs on startup, removing the db at runtime is
+   too much of a corner case to sacrifice that much performance however.
+
+   https://github.com/owncloud/client/pull/9918
 
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
 
