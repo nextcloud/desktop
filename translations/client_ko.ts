@@ -5511,7 +5511,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="498"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="500"/>
         <source>Retry all uploads</source>
         <translation>모든 업로드 다시 시도</translation>
     </message>
@@ -5544,22 +5544,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1040"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1042"/>
         <source>Confirm Account Removal</source>
         <translation>계정 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1041"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;계정 &lt;i&gt;%1&lt;/i&gt;와(과) 연결을 삭제합니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;참고:&lt;/b&gt;이는 어떠한 파일도 삭제하지 &lt;b&gt;않을&lt;/b&gt; 것입니다.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1046"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
         <source>Remove connection</source>
         <translation>연결 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1047"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1049"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -6276,27 +6276,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>새 폴더</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="573"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
         <source>You renamed %1</source>
         <translation>% 1의 이름을 변경했습니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="575"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
         <source>You deleted %1</source>
         <translation>% 1을 지웠습니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="577"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
         <source>You created %1</source>
         <translation>% 1을 생성했습니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="579"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="581"/>
         <source>You changed %1</source>
         <translation>%1을 변경했습니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="602"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
         <source>Synced %1</source>
         <translation>%1 동기화</translation>
     </message>
