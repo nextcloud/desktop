@@ -38,7 +38,6 @@ public:
     void unregisterFolder() override;
 
     bool socketApiPinStateActionsShown() const override { return true; }
-    bool isHydrating() const override;
 
 
     Result<void, QString> createPlaceholder(const SyncFileItem &item) override;
