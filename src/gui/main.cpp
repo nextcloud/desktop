@@ -94,6 +94,7 @@ int main(int argc, char **argv)
 
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps, true);
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
 #endif
