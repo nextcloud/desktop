@@ -27,10 +27,6 @@ ItemDelegate {
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
 
-    background: Rectangle {
-        color: root.hovered ? Style.lightHover : "transparent"
-    }
-
     NCToolTip {
         visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
         text: qsTr("In %1").arg(model.displayLocation)
