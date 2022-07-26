@@ -64,15 +64,21 @@ namespace CheckSums {
         return std::make_pair(a, toString(a));
     }
 
-    // Sorted by priority
-    constexpr auto All = {
-        pair(Algorithm::SHA3_256),
-        pair(Algorithm::SHA256),
-        pair(Algorithm::SHA1),
-        pair(Algorithm::MD5),
-        pair(Algorithm::ADLER32),
-        pair(Algorithm::DUMMY_FOR_TESTS)
-    };
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102921
+#if !defined(Q_CC_GNU) || Q_CC_GNU >= 1200
+    constexpr
+#else
+    inline
+#endif
+        auto All = {
+            // Sorted by priority
+            pair(Algorithm::SHA3_256),
+            pair(Algorithm::SHA256),
+            pair(Algorithm::SHA1),
+            pair(Algorithm::MD5),
+            pair(Algorithm::ADLER32),
+            pair(Algorithm::DUMMY_FOR_TESTS)
+        };
 
     inline Algorithm fromName(std::string_view s)
     {
