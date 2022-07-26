@@ -81,7 +81,7 @@ using namespace OCC::Utility;
 
         QFile fileDevice(file);
         fileDevice.open(QIODevice::ReadOnly);
-        QByteArray sum = CheckSums::calcCryptoHash(&fileDevice, QCryptographicHash::Md5);
+        QByteArray sum = ComputeChecksum::computeNow(&fileDevice, CheckSums::Algorithm::MD5);
         fileDevice.close();
 
         QByteArray sSum = shellSum("md5sum", file);
@@ -101,7 +101,7 @@ using namespace OCC::Utility;
 
         QFile fileDevice(file);
         fileDevice.open(QIODevice::ReadOnly);
-        QByteArray sum = OCC::CheckSums::calcCryptoHash(&fileDevice, QCryptographicHash::Sha1);
+        QByteArray sum = ComputeChecksum::computeNow(&fileDevice, CheckSums::Algorithm::SHA1);
         fileDevice.close();
 
         QByteArray sSum = shellSum("sha1sum", file);
@@ -119,9 +119,9 @@ using namespace OCC::Utility;
 
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = calcAdler32(file);
+        auto file = QFile(_testfile);
+        file.open(QIODevice::ReadOnly);
+        _expected = ComputeChecksum::computeNow(&file, CheckSums::Algorithm::ADLER32);
         qDebug() << "XX Expected Checksum: " << _expected;
         vali->start(_testfile);
 
@@ -139,9 +139,9 @@ using namespace OCC::Utility;
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = CheckSums::calcCryptoHash(file, QCryptographicHash::Md5);
+        auto file = QFile(_testfile);
+        file.open(QIODevice::ReadOnly);
+        _expected = ComputeChecksum::computeNow(&file, CheckSums::Algorithm::MD5);
         vali->start(_testfile);
 
         QEventLoop loop;
@@ -157,9 +157,9 @@ using namespace OCC::Utility;
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = CheckSums::calcCryptoHash(file, QCryptographicHash::Sha1);
+        auto file = QFile(_testfile);
+        file.open(QIODevice::ReadOnly);
+        _expected = ComputeChecksum::computeNow(&file, CheckSums::Algorithm::SHA1);
 
         vali->start(_testfile);
 
@@ -175,15 +175,15 @@ using namespace OCC::Utility;
         connect(vali, &ValidateChecksumHeader::validated, this, &TestChecksumValidator::slotDownValidated);
         connect(vali, &ValidateChecksumHeader::validationFailed, this, &TestChecksumValidator::slotDownError);
 
-        auto file = new QFile(_testfile, vali);
-        file->open(QIODevice::ReadOnly);
-        _expected = calcAdler32(file);
+        auto file = QFile(_testfile);
+        file.open(QIODevice::ReadOnly);
+        _expected = ComputeChecksum::computeNow(&file, CheckSums::Algorithm::ADLER32);
 
         QByteArray adler = OCC::CheckSums::toString(OCC::CheckSums::Algorithm::ADLER32).data();
         adler.append(":");
         adler.append(_expected);
 
-        file->seek(0);
+        file.seek(0);
         _successDown = false;
         vali->start(_testfile, adler);
 
@@ -191,13 +191,13 @@ using namespace OCC::Utility;
 
         _expectedError = QStringLiteral("The downloaded file does not match the checksum, it will be resumed. '543345' != '%1'").arg(QString::fromUtf8(_expected));
         _errorSeen = false;
-        file->seek(0);
+        file.seek(0);
         vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
         _expectedError = QLatin1String("The checksum header contained an unknown checksum type 'Klaas32'");
         _errorSeen = false;
-        file->seek(0);
+        file.seek(0);
         vali->start(_testfile, "Klaas32:543345");
         QTRY_VERIFY(_errorSeen);
 

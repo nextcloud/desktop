@@ -81,15 +81,5 @@ namespace CheckSums {
         });
         return it != All.end() ? it->first : Algorithm::Error;
     }
-
-    inline QByteArray calcCryptoHash(QIODevice *device, QCryptographicHash::Algorithm algo)
-    {
-        QCryptographicHash crypto(algo);
-        if (crypto.addData(device)) {
-            return crypto.result().toHex();
-        }
-        return {};
-    }
-
 }
 }

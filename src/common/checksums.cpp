@@ -82,17 +82,13 @@
  *
  */
 
-namespace OCC {
 
-Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
-
-#define BUFSIZE qint64(500 * 1024) // 500 KiB
-
+namespace {
 
 QByteArray calcAdler32(QIODevice *device)
 {
-    if (device->size() == 0)
-    {
+    const qint64 BUFSIZE(500 * 1024); // 500 KiB
+    if (device->size() == 0) {
         return QByteArray();
     }
     QByteArray buf(BUFSIZE, Qt::Uninitialized);
@@ -107,6 +103,11 @@ QByteArray calcAdler32(QIODevice *device)
 
     return QByteArray::number(adler, 16);
 }
+}
+
+namespace OCC {
+
+Q_LOGGING_CATEGORY(lcChecksums, "sync.checksums", QtInfoMsg)
 
 QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum)
 {
@@ -263,6 +264,33 @@ QByteArray ComputeChecksum::computeNowOnFile(const QString &filePath, const QByt
     return computeNow(&file, checksumType);
 }
 
+QByteArray ComputeChecksum::computeNow(QIODevice *device, CheckSums::Algorithm algorithm)
+{
+    switch (algorithm) {
+    case CheckSums::Algorithm::SHA3_256:
+        [[fallthrough]];
+    case CheckSums::Algorithm::SHA256:
+        [[fallthrough]];
+    case CheckSums::Algorithm::SHA1:
+        [[fallthrough]];
+    case CheckSums::Algorithm::MD5: {
+        QCryptographicHash crypto(static_cast<QCryptographicHash::Algorithm>(algorithm));
+        if (crypto.addData(device)) {
+            return crypto.result().toHex();
+        }
+        qCWarning(lcChecksums) << "Failed to compoute checksum" << CheckSums::toQString(algorithm);
+        return {};
+    }
+    case CheckSums::Algorithm::ADLER32:
+        return calcAdler32(device);
+    case CheckSums::Algorithm::DUMMY_FOR_TESTS:
+        return QByteArrayLiteral("0x1");
+    case CheckSums::Algorithm::Error:
+        break;
+    }
+    Q_UNREACHABLE();
+}
+
 QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &checksumType)
 {
     if (!checksumComputationEnabled()) {
@@ -272,25 +300,14 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, const QByteArray &chec
     if (checksumType.isEmpty()) {
         return {};
     }
+
     const auto algorithm = CheckSums::fromName(checksumType.toUpper().constData());
-    switch (algorithm) {
-    case CheckSums::Algorithm::SHA3_256:
-        [[fallthrough]];
-    case CheckSums::Algorithm::SHA256:
-        [[fallthrough]];
-    case CheckSums::Algorithm::SHA1:
-        [[fallthrough]];
-    case CheckSums::Algorithm::MD5:
-        return CheckSums::calcCryptoHash(device, static_cast<QCryptographicHash::Algorithm>(algorithm));
-    case CheckSums::Algorithm::ADLER32:
-        return calcAdler32(device);
-    case CheckSums::Algorithm::DUMMY_FOR_TESTS:
-        return QByteArrayLiteral("0x1");
-    case CheckSums::Algorithm::Error:
+
+    if (algorithm == CheckSums::Algorithm::Error) {
         qCWarning(lcChecksums) << "Unknown checksum type:" << checksumType;
         return {};
     }
-    Q_UNREACHABLE();
+    return computeNow(device, algorithm);
 }
 
 void ComputeChecksum::slotCalculationDone()

@@ -61,9 +61,6 @@ OCSYNC_EXPORT QByteArray parseChecksumHeaderType(const QByteArray &header);
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 OCSYNC_EXPORT bool uploadChecksumEnabled();
 
-// Exported functions for the tests.
-QByteArray OCSYNC_EXPORT calcAdler32(QIODevice *device);
-
 /**
  * Computes the checksum of a file.
  * \ingroup libsync
@@ -103,6 +100,11 @@ public:
      * Computes the checksum synchronously.
      */
     static QByteArray computeNow(QIODevice *device, const QByteArray &checksumType);
+
+    /**
+     * Computes the checksum synchronously.
+     */
+    static QByteArray computeNow(QIODevice *device, CheckSums::Algorithm algo);
 
     /**
      * Computes the checksum synchronously on file. Convenience wrapper for computeNow().
