@@ -15,7 +15,3 @@ set(TEST_TARGET_LIBRARIES torture Qt5::Core csync)
 # std
 
 add_cmocka_test(check_std_c_jhash std_tests/check_std_c_jhash.c ${TEST_TARGET_LIBRARIES})
-
-# vio
-add_cmocka_test(check_vio_ext vio_tests/check_vio_ext.cpp ${TEST_TARGET_LIBRARIES})
-
