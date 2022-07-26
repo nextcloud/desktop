@@ -41,6 +41,7 @@ Summary
 * Enhancement - Display a correct error when the wrong user was authenticated: [#9772](https://github.com/owncloud/client/issues/9772)
 * Enhancement - Throttle the UI updates during sync: [#9832](https://github.com/owncloud/client/issues/9832)
 * Enhancement - Run vfs downloads with a high priority: [#9836](https://github.com/owncloud/client/pull/9836)
+* Enhancement - We improved the performance for local filesystem actions: [#9910](https://github.com/owncloud/client/pull/9910)
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
 * Enhancement - Remove app name from connection error message: [#9923](https://github.com/owncloud/client/issues/9923)
 * Enhancement - Allow HTTP/1.1 pipelining: [#9930](https://github.com/owncloud/client/pull/9930/)
@@ -282,6 +283,10 @@ Details
 
    https://github.com/owncloud/client/issues/9832
    https://github.com/owncloud/client/pull/9836
+
+* Enhancement - We improved the performance for local filesystem actions: [#9910](https://github.com/owncloud/client/pull/9910)
+
+   https://github.com/owncloud/client/pull/9910
 
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
 
