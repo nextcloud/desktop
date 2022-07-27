@@ -49,7 +49,6 @@ endif(UNIX AND NOT APPLE)
 
 
 owncloud_add_test(LongPath)
-owncloud_add_benchmark(LargeSync)
 
 owncloud_add_test(FolderMan)
 
