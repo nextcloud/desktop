@@ -2,6 +2,8 @@ include(owncloud_add_test.cmake)
 
 add_subdirectory(testutils)
 
+owncloud_add_test(JHash)
+
 owncloud_add_test(OwncloudPropagator)
 owncloud_add_test(OwnSql)
 owncloud_add_test(SyncJournalDB)
@@ -57,11 +59,5 @@ configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYO
 
 
 owncloud_add_test(JobQueue)
-
-find_package(CMocka)
-if (CMOCKA_FOUND)
-    include(AddCMockaTest)
-    add_subdirectory(csync)
-endif (CMOCKA_FOUND)
 
 add_subdirectory(modeltests)
