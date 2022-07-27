@@ -563,7 +563,7 @@ Window {
                     icon.color: UserModel.currentUser.headerTextColor
 
                     onClicked: {
-                        if(appsMenu.count <= 0) {
+                        if(appsMenuListView.count <= 0) {
                             UserModel.openCurrentAccountServer()
                         } else if (appsMenu.visible) {
                             appsMenu.close()
@@ -576,10 +576,12 @@ Window {
                     Accessible.name: qsTr("More apps")
                     Accessible.onPressAction: trayWindowAppsButton.clicked()
 
-                    AutoSizingMenu {
+                    Menu {
                         id: appsMenu
+                        x: -2
                         y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                        readonly property Item listContentItem: contentItem.contentItem
+                        width: Style.trayWindowWidth * 0.35
+                        height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
@@ -588,34 +590,47 @@ Window {
                             radius: 2
                         }
 
-                        Instantiator {
-                            id: appsMenuInstantiator
-                            model: UserAppsModel
-                            onObjectAdded: appsMenu.insertItem(index, object)
-                            onObjectRemoved: appsMenu.removeItem(object)
-                            delegate: MenuItem {
-                                id: appEntry
-                                text: appName
-                                font.pixelSize: Style.topLinePixelSize
-                                palette.windowText: Style.ncTextColor
-                                icon.source: appIconUrl
-                                icon.color: Style.ncTextColor
-                                onTriggered: UserAppsModel.openAppUrl(appUrl)
-                                hoverEnabled: true
+                        contentItem: ScrollView {
+                            id: appsMenuScrollView
+                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-                                background: Item {
-                                    height: parent.height
-                                    width: parent.width
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                            data: WheelHandler {
+                                target: appMenuScrollView.contentItem
+                            }
+                            ListView {
+                                id: appsMenuListView
+                                implicitHeight: contentHeight
+                                model: UserAppsModel
+                                interactive: true
+                                clip: true
+                                currentIndex: appsMenu.currentIndex
+                                delegate: MenuItem {
+                                    id: appEntry
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+
+                                    text: model.appName
+                                    font.pixelSize: Style.topLinePixelSize
+                                    palette.windowText: Style.ncTextColor
+                                    icon.source: model.appIconUrl
+                                    icon.color: Style.ncTextColor
+                                    onTriggered: UserAppsModel.openAppUrl(appUrl)
+                                    hoverEnabled: true
+
+                                    background: Item {
+                                        height: parent.height
+                                        width: parent.width
+                                        Rectangle {
+                                            anchors.fill: parent
+                                            anchors.margins: 1
+                                            color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                        }
                                     }
-                                }
 
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open %1 in browser").arg(appName)
-                                Accessible.onPressAction: appEntry.triggered()
+                                    Accessible.role: Accessible.MenuItem
+                                    Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
+                                    Accessible.onPressAction: appEntry.triggered()
+                                }
                             }
                         }
                     }
