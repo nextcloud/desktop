@@ -20,6 +20,12 @@
 #include <QCryptographicHash>
 #include <QString>
 
+// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102921
+#if !defined(Q_CC_GNU) || Q_CC_GNU >= 1200
+#define constexpr_list constexpr
+#else
+#define constexpr_list inline
+#endif
 namespace OCC {
 namespace CheckSums {
     enum class Algorithm {
@@ -64,21 +70,28 @@ namespace CheckSums {
         return std::make_pair(a, toString(a));
     }
 
-// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102921
-#if !defined(Q_CC_GNU) || Q_CC_GNU >= 1200
-    constexpr
-#else
-    inline
-#endif
-        auto All = {
-            // Sorted by priority
-            pair(Algorithm::SHA3_256),
-            pair(Algorithm::SHA256),
-            pair(Algorithm::SHA1),
-            pair(Algorithm::MD5),
-            pair(Algorithm::ADLER32),
-            pair(Algorithm::DUMMY_FOR_TESTS)
-        };
+
+    constexpr_list auto All = {
+        // Sorted by priority
+        pair(Algorithm::SHA3_256),
+        pair(Algorithm::SHA256),
+        pair(Algorithm::SHA1),
+        pair(Algorithm::MD5),
+        pair(Algorithm::ADLER32),
+        pair(Algorithm::DUMMY_FOR_TESTS)
+    };
+
+    constexpr_list auto UnsafeAlgorithms = {
+        pair(Algorithm::ADLER32),
+        pair(Algorithm::DUMMY_FOR_TESTS)
+    };
+
+    constexpr_list auto SafeAlgorithms = {
+        pair(Algorithm::SHA3_256),
+        pair(Algorithm::SHA256),
+        pair(Algorithm::SHA1),
+        pair(Algorithm::MD5)
+    };
 
     inline Algorithm fromName(std::string_view s)
     {

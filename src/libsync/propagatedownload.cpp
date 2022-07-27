@@ -389,11 +389,17 @@ void PropagateDownloadFile::start()
     // If the hashes are collision safe and identical, we assume the content is too.
     // For weak checksums, we only do that if the mtimes are also identical.
 
-    const auto csync_is_collision_safe_hash = [](const QByteArray &checksum_header)
-    {
-        return checksum_header.startsWith("SHA")
-            || checksum_header.startsWith("MD5:");
+    const auto csync_is_collision_safe_hash = [](const QByteArray &checksum_header) {
+        const bool safe = std::any_of(CheckSums::SafeAlgorithms.begin(), CheckSums::SafeAlgorithms.end(), [checksum_header = checksum_header.toUpper()](auto &it) {
+            return checksum_header.startsWith(it.second.data());
+        });
+        if (!safe) {
+            qWarning(lcPropagateDownload) << checksum_header << "is considered unsave";
+            return false;
+        }
+        return true;
     };
+
     if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         && _item->_size == _item->_previousSize
         && !_item->_checksumHeader.isEmpty()
