@@ -298,16 +298,18 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     // Add an action to open the folder on the server in a webbrowser:
 
     if (auto info = _model->infoForIndex(index)) {
-        QString path = info->_folder->remotePathTrailingSlash();
-        if (classification == FolderStatusModel::SubFolder) {
-            // Only add the path of subfolders, because the remote path is the path of the root folder.
-            path += info->_path;
-        }
-        menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = info->_folder->webDavUrl(), this] {
-            fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QString &url) {
-                Utility::openBrowser(url, nullptr);
+        if (info->_folder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
+            QString path = info->_folder->remotePathTrailingSlash();
+            if (classification == FolderStatusModel::SubFolder) {
+                // Only add the path of subfolders, because the remote path is the path of the root folder.
+                path += info->_path;
+            }
+            menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = info->_folder->webDavUrl(), this] {
+                fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QString &url) {
+                    Utility::openBrowser(url, nullptr);
+                });
             });
-        });
+        }
     }
 
     // For sub-folders we're now done.
