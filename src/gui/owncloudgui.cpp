@@ -1039,7 +1039,7 @@ void ownCloudGui::runNewAccountWizard()
                                     qCInfo(lcApplication) << "Folder wizard completed";
                                     const auto config = folderWizard->result();
 
-                                    auto folder = folderMan->addFolderFromWizardResult(accountStatePtr, config);
+                                    auto folder = folderMan->addFolderFromFolderWizardResult(accountStatePtr, config);
 
                                     if (!config.selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !config.useVirtualFiles)) {
                                         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);

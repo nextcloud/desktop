@@ -435,7 +435,7 @@ void AccountSettings::slotFolderWizardAccepted()
 
     const auto config = folderWizard->result();
 
-    auto folder = FolderMan::instance()->addFolderFromWizardResult(_accountState, config);
+    auto folder = FolderMan::instance()->addFolderFromFolderWizardResult(_accountState, config);
 
     if (!config.selectiveSyncBlackList.isEmpty() && OC_ENSURE(folder && !config.useVirtualFiles)) {
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);

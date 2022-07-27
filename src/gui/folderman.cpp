@@ -1452,7 +1452,7 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
     return newFolder;
 }
 
-Folder *FolderMan::addFolderFromWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config)
+Folder *FolderMan::addFolderFromFolderWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config)
 {
     return addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl.toString(), config.displayName, config.useVirtualFiles);
 }

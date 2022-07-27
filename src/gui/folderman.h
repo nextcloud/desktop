@@ -131,7 +131,7 @@ public:
      * In case Wizard::SyncMode::SelectiveSync is used, nullptr is returned.
      */
     Folder *addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs);
-    Folder *addFolderFromWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config);
+    Folder *addFolderFromFolderWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config);
 
     /** Removes a folder */
     void removeFolder(Folder *);
