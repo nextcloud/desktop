@@ -8,7 +8,6 @@ Button {
 
     property string imageSource: ""
     property string imageSourceHover: ""
-    property Image iconItem: icon
 
     property string toolTipText: ""
 
@@ -21,11 +20,9 @@ Button {
 
     property real bgOpacity: 0.3
 
-    background: Rectangle {
+    background: NCButtonBackground {
         id: bgRectangle
-        color: "transparent"
-        opacity: parent.hovered ? 1.0 : bgOpacity
-        radius: width / 2
+        hovered: root.hovered
     }
 
     leftPadding: root.text === "" ? 5 : 10
@@ -36,32 +33,13 @@ Button {
         visible: root.toolTipText !== "" && root.hovered
     }
 
-    contentItem: RowLayout {
-        Image {
-            id: icon
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            source: root.hovered ? root.imageSourceHover : root.imageSource
-            fillMode: Image.PreserveAspectFit
-        }
-
-        Label {
-            Layout.maximumWidth: icon.width > 0 ? parent.width - icon.width - parent.spacing : parent.width
-            Layout.fillWidth: icon.status !== Image.Ready
-
-            text: root.text
-            textFormat: Text.PlainText
-            font.bold: root.bold
-
-            visible: root.text !== ""
-
-            color: root.hovered ? root.textColorHovered : root.textColor
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
-            elide: Text.ElideRight
-        }
+    contentItem: NCButtonContents {
+        hovered: root.hovered
+        imageSourceHover: root.imageSourceHover
+        imageSource: root.imageSource
+        text: root.text
+        textColor: root.textColor
+        textColorHovered: root.textColorHovered
+        bold: root.bold
     }
 }

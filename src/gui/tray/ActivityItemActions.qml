@@ -33,25 +33,22 @@ RowLayout {
         ActivityActionButton {
             id: activityActionButton
 
-            readonly property string verb: model.modelData.verb
-            readonly property bool primary: (model.index === 0 && verb !== "DELETE") || model.modelData.primary
-            readonly property bool isTalkReplyButton: verb === "REPLY"
+            Layout.minimumWidth: primaryButton ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
+            Layout.preferredHeight: parent.height
+            Layout.preferredWidth: primaryButton ? -1 : parent.height
 
-            Layout.minimumWidth: primary ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
-            Layout.preferredHeight: primary ? parent.height : parent.height * 0.3
-            Layout.preferredWidth: primary ? -1 : parent.height
+            verb: model.modelData.verb
+            primaryButton: (model.index === 0 && verb !== "DELETE") || model.modelData.primary
+            isTalkReplyButton: verb === "REPLY"
 
             text: model.modelData.label
+
+            adjustedHeaderColor: root.adjustedHeaderColor
 
             imageSource: model.modelData.imageSource ? model.modelData.imageSource + root.adjustedHeaderColor : ""
             imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
 
-            textColor: primary ? root.adjustedHeaderColor : Style.ncTextColor
-            textColorHovered: primary ? UserModel.currentUser.headerTextColor : Style.ncTextColor
-
-            primaryButton: primary
-
-            onClicked: !isTalkReplyButton ? root.triggerAction(model.index) : root.showReplyField()
+            onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
         }
     }
 
