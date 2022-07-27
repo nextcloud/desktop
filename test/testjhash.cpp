@@ -14,11 +14,6 @@
 #define MAXPAIR 80
 #define MAXLEN 70
 
-
-namespace {
-
-}
-
 class TestJHash : public QObject
 {
     Q_OBJECT
