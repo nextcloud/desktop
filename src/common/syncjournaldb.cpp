@@ -2110,9 +2110,10 @@ Optional<PinState> SyncJournalDb::PinStateInterface::effectiveForPath(const QByt
     auto next = query->next();
     if (!next.ok)
         return {};
-    // If the root path has no setting, assume AlwaysLocal
-    if (!next.hasData)
-        return PinState::AlwaysLocal;
+    // If the root path has no setting, assume Unspecified
+    if (!next.hasData) {
+        return PinState::Unspecified;
+    }
 
     return static_cast<PinState>(query->intValue(0));
 }

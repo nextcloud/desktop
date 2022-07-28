@@ -740,15 +740,6 @@ void Folder::setVirtualFilesEnabled(bool enabled)
     }
 }
 
-void Folder::setRootPinState(PinState state)
-{
-    _vfs->setPinState(QString(), state);
-
-    // We don't actually need discovery, but it's important to recurse
-    // into all folders, so the changes can be applied.
-    slotNextSyncFullLocalDiscovery();
-}
-
 bool Folder::supportsSelectiveSync() const
 {
     return !virtualFilesEnabled() && !isVfsOnOffSwitchPending();

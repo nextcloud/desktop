@@ -478,9 +478,6 @@ void AccountSettings::slotFolderWizardAccepted()
 
     Folder *f = folderMan->addFolder(_accountState, definition);
     if (f) {
-        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool())
-            f->setRootPinState(PinState::OnlineOnly);
-
         f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list
@@ -567,9 +564,6 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->setVirtualFilesEnabled(true);
             folder->setVfsOnOffSwitchPending(false);
 
-            // Setting to Unspecified retains existing data.
-            // Selective sync excluded folders become OnlineOnly.
-            folder->setRootPinState(PinState::Unspecified);
             for (const auto &entry : oldBlacklist) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(entry);
                 folder->vfs().setPinState(entry, PinState::OnlineOnly);
@@ -634,9 +628,6 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             // Also wipes virtual files, schedules remote discovery
             folder->setVirtualFilesEnabled(false);
             folder->setVfsOnOffSwitchPending(false);
-
-            // Wipe pin states and selective sync db
-            folder->setRootPinState(PinState::AlwaysLocal);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             // Prevent issues with missing local files
@@ -657,21 +648,6 @@ void AccountSettings::slotDisableVfsCurrentFolder()
         }
     });
     msgBox->open();
-}
-
-void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
-{
-    OC_ASSERT(state == PinState::OnlineOnly || state == PinState::AlwaysLocal);
-
-    FolderMan *folderMan = FolderMan::instance();
-    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || !folder)
-        return;
-
-    // similar to socket api: sets pin state recursively and sync
-    folder->setRootPinState(state);
-    folder->scheduleThisFolderSoon();
 }
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)

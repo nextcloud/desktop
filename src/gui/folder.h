@@ -312,8 +312,6 @@ public:
     bool virtualFilesEnabled() const;
     void setVirtualFilesEnabled(bool enabled);
 
-    void setRootPinState(PinState state);
-
     /** Whether user desires a switch that couldn't be executed yet, see member */
     bool isVfsOnOffSwitchPending() const { return _vfsOnOffPending; }
     void setVfsOnOffSwitchPending(bool pending) { _vfsOnOffPending = pending; }

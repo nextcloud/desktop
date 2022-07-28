@@ -364,13 +364,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
 
             Folder *f = addFolderInternal(std::move(folderDefinition), account.data(), std::move(vfs));
             if (f) {
-                // Migrate the old "usePlaceholders" setting to the root folder pin state
-                if (settings.value(versionC(), 1).toInt() == 1
-                    && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
-                    qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
-                    f->setRootPinState(PinState::OnlineOnly);
-                }
-
                 // Migration: Mark folders that shall be saved in a backwards-compatible way
                 if (backwardsCompatible)
                     f->setSaveBackwardsCompatible(true);

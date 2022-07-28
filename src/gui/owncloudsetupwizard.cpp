@@ -409,9 +409,6 @@ void OwncloudSetupWizard::slotAssistantFinished(int result)
 
             auto f = folderMan->addFolder(account, folderDefinition);
             if (f) {
-                if (folderDefinition.virtualFilesMode != Vfs::Off && _ocWizard->useVirtualFileSync())
-                    f->setRootPinState(PinState::OnlineOnly);
-
                 f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
                     _ocWizard->selectiveSyncBlacklist());
                 if (!_ocWizard->isConfirmBigFolderChecked()) {
