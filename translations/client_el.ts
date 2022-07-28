@@ -6778,7 +6778,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Περισσότερες εφαρμογές</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>Άνοιγμα %1 στον περιηγητή</translation>
     </message>
@@ -6789,7 +6789,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Εμφάνιση περισσότερων ενεργειών.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6799,7 +6799,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Κοινή χρήση %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>

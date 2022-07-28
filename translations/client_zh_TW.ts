@@ -6798,7 +6798,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>更多應用程式</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>在瀏覽器中開啟 %1</translation>
     </message>
@@ -6809,7 +6809,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>顯示更多動作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation>統一搜尋結果清單</translation>
     </message>
@@ -6819,7 +6819,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>分享 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - 檔案事件</translation>
     </message>
