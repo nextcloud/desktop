@@ -6800,7 +6800,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Meer apps</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>Open %1 in browser</translation>
     </message>
@@ -6811,7 +6811,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Toon meer acties</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation>Samengevoegde zoekresultaten lijst</translation>
     </message>
@@ -6821,7 +6821,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Deel %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - Bestandsactiviteit</translation>
     </message>

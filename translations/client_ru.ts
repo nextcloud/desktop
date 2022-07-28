@@ -6793,7 +6793,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ещё приложения</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>Открыть %1 в браузере</translation>
     </message>
@@ -6804,7 +6804,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Дополнительные действия</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation>Единый список результатов поиска</translation>
     </message>
@@ -6814,7 +6814,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Опубликовать «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - Файловая активность</translation>
     </message>
