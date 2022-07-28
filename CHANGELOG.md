@@ -23,6 +23,8 @@ Summary
 * Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
 * Bugfix - We fixed a potential crash: [#9864](https://github.com/owncloud/client/issues/9864)
 * Bugfix - Changes during upload of a file could still trigger the ignore list: [#9924](https://github.com/owncloud/client/issues/9924)
+* Bugfix - Windows VFS: Files in an existing folder are dehydrated: [#9966](https://github.com/owncloud/client/pull/9966)
+* Bugfix - Windows VFS: Keep file attributes and pin state: [#34](https://github.com/owncloud/client-desktop-vfs-win/pull/34)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -46,6 +48,7 @@ Summary
 * Enhancement - Reduce CPU load during discovery: [#9919](https://github.com/owncloud/client/pull/9919)
 * Enhancement - Remove app name from connection error message: [#9923](https://github.com/owncloud/client/issues/9923)
 * Enhancement - Allow HTTP/1.1 pipelining: [#9930](https://github.com/owncloud/client/pull/9930/)
+* Enhancement - Don't abort sync if a user requests a file: [#9956](https://github.com/owncloud/client/pull/9956)
 
 Details
 -------
@@ -144,6 +147,20 @@ Details
    increasing amount of time.
 
    https://github.com/owncloud/client/issues/9924
+
+* Bugfix - Windows VFS: Files in an existing folder are dehydrated: [#9966](https://github.com/owncloud/client/pull/9966)
+
+   We fixed a bug, when a user selects an existing folder as sync root we previously dehydrated all
+   existing files.
+
+   https://github.com/owncloud/client/pull/9966
+
+* Bugfix - Windows VFS: Keep file attributes and pin state: [#34](https://github.com/owncloud/client-desktop-vfs-win/pull/34)
+
+   When a user selected "Always keep on this device" on a cloud only file, we lost that information.
+   "Always keep on this device" only worked on already present files.
+
+   https://github.com/owncloud/client-desktop-vfs-win/pull/34
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
@@ -315,6 +332,15 @@ Details
    Under certain conditions, this change can result in a better network utilization.
 
    https://github.com/owncloud/client/pull/9930/
+
+* Enhancement - Don't abort sync if a user requests a file: [#9956](https://github.com/owncloud/client/pull/9956)
+
+   Previously we aborted any running sync if a user requested a file that was not yet available
+   locally. This was done to ensure the user does not need to wait for the current sync to finish.
+   However in todays code both actions the download and the sync can run in parallel.
+
+   https://github.com/owncloud/client/issues/9832
+   https://github.com/owncloud/client/pull/9956
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
