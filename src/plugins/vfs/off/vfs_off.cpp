@@ -45,11 +45,6 @@ bool VfsOff::socketApiPinStateActionsShown() const
     return false;
 }
 
-bool OCC::VfsOff::isHydrating() const
-{
-    return false;
-}
-
 Result<void, QString> VfsOff::createPlaceholder(const SyncFileItem &)
 {
     return {};

@@ -65,11 +65,6 @@ void VfsSuffix::unregisterFolder()
 {
 }
 
-bool VfsSuffix::isHydrating() const
-{
-    return false;
-}
-
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const SyncFileItem &item, const QString &filePath, const QString &)
 {
     if (item._type == ItemTypeVirtualFileDehydration) {

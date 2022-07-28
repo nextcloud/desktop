@@ -1,0 +1,8 @@
+Enhancement: Don't abort sync if a user requests a file
+
+Previously we aborted any running sync if a user requested a file that was not yet available locally.
+This was done to ensure the user does not need to wait for the current sync to finish.
+However in todays code both actions the download and the sync can run in parallel.
+
+https://github.com/owncloud/client/pull/9956
+https://github.com/owncloud/client/issues/9832

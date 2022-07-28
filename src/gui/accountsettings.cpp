@@ -520,9 +520,6 @@ void AccountSettings::slotEnableVfsCurrentFolder()
             folder->setVirtualFilesEnabled(true);
             folder->setVfsOnOffSwitchPending(false);
 
-            // Setting to Unspecified retains existing data.
-            // Selective sync excluded folders become OnlineOnly.
-            folder->setRootPinState(PinState::Unspecified);
             for (const auto &entry : oldBlacklist) {
                 folder->journalDb()->schedulePathForRemoteDiscovery(entry);
                 folder->vfs().setPinState(entry, PinState::OnlineOnly);
@@ -595,9 +592,6 @@ void AccountSettings::slotDisableVfsCurrentFolder()
             // Also wipes virtual files, schedules remote discovery
             folder->setVirtualFilesEnabled(false);
             folder->setVfsOnOffSwitchPending(false);
-
-            // Wipe pin states and selective sync db
-            folder->setRootPinState(PinState::AlwaysLocal);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
             ui->_folderList->doItemsLayout();
@@ -613,20 +607,6 @@ void AccountSettings::slotDisableVfsCurrentFolder()
         }
     });
     msgBox->open();
-}
-
-void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
-{
-    OC_ASSERT(state == PinState::OnlineOnly || state == PinState::AlwaysLocal);
-
-    QPointer<Folder> folder = selectedFolder();
-    QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || !folder)
-        return;
-
-    // similar to socket api: sets pin state recursively and sync
-    folder->setRootPinState(state);
-    folder->scheduleThisFolderSoon();
 }
 
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)

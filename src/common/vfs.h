@@ -179,12 +179,6 @@ public:
      */
     virtual bool socketApiPinStateActionsShown() const = 0;
 
-    /** Return true when download of a file's data is currently ongoing.
-     *
-     * See also the beginHydrating() and doneHydrating() signals.
-     */
-    virtual bool isHydrating() const = 0;
-
     /// Create a new dehydrated placeholder. Called from PropagateDownload.
     [[nodiscard]] virtual Result<void, QString> createPlaceholder(const SyncFileItem &item) = 0;
 
@@ -248,10 +242,6 @@ public slots:
     virtual void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) = 0;
 
 signals:
-    /// Emitted when a user-initiated hydration starts
-    void beginHydrating();
-    /// Emitted when the hydration ends
-    void doneHydrating();
     /// start complete
     void started();
 

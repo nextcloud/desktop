@@ -366,13 +366,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         }
 
         if (Folder *f = addFolderInternal(std::move(folderDefinition), account, std::move(vfs))) {
-            // Migrate the old "usePlaceholders" setting to the root folder pin state
-            if (settings.value(versionC(), 1).toInt() == 1
-                && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
-                qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
-                f->setRootPinState(PinState::OnlineOnly);
-            }
-
             // Migration: Mark folders that shall be saved in a backwards-compatible way
             if (backwardsCompatible)
                 f->setSaveBackwardsCompatible(true);
@@ -1437,9 +1430,6 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
                 folderDefinition.navigationPaneClsid = QUuid::createUuid();
 #endif
         }
-        if (folderDefinition.virtualFilesMode != Vfs::Off && useVfs)
-            newFolder->setRootPinState(PinState::OnlineOnly);
-
         if (!ConfigFile().newBigFolderSizeLimit().first) {
             // The user already accepted the selective sync dialog. everything is in the white list
             newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,

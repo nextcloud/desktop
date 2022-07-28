@@ -309,7 +309,7 @@ QString Folder::cleanPath() const
 
 bool Folder::isSyncRunning() const
 {
-    return !hasSetupError() && (_engine->isSyncRunning() || _vfs->isHydrating());
+    return !hasSetupError() && _engine->isSyncRunning();
 }
 
 QString Folder::remotePath() const
@@ -580,9 +580,6 @@ void Folder::startVfs()
     vfsParams.providerVersion = Version::version();
     vfsParams.multipleAccountsRegistered = AccountManager::instance()->accounts().size() > 1;
 
-    connect(_vfs.data(), &Vfs::beginHydrating, this, &Folder::slotHydrationStarts);
-    connect(_vfs.data(), &Vfs::doneHydrating, this, &Folder::slotHydrationDone);
-
     connect(&_engine->syncFileStatusTracker(), &SyncFileStatusTracker::fileStatusChanged,
         _vfs.data(), &Vfs::fileStatusChanged);
 
@@ -777,15 +774,6 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         }
         saveToSettings();
     }
-}
-
-void Folder::setRootPinState(PinState state)
-{
-    _vfs->setPinState(QString(), state);
-
-    // We don't actually need discovery, but it's important to recurse
-    // into all folders, so the changes can be applied.
-    slotNextSyncFullLocalDiscovery();
 }
 
 bool Folder::supportsSelectiveSync() const
@@ -1252,30 +1240,6 @@ void Folder::slotWatcherUnreliable(const QString &message)
            "\n"
            "%1").arg(message);
     ocApp()->gui()->slotShowGuiMessage(Theme::instance()->appNameGUI(), fullMessage);
-}
-
-void Folder::slotHydrationStarts()
-{
-    // Abort any running full sync run and reschedule
-    if (_engine->isSyncRunning()) {
-        slotTerminateSync();
-        scheduleThisFolderSoon();
-        // TODO: This sets the sync state to AbortRequested on done, we don't want that
-    }
-
-    // Let everyone know we're syncing
-    _syncResult.reset();
-    _syncResult.setStatus(SyncResult::SyncRunning);
-    emit syncStarted();
-    emit syncStateChange();
-}
-
-void Folder::slotHydrationDone()
-{
-    // emit signal to update ui and reschedule normal syncs if necessary
-    _syncResult.setStatus(SyncResult::Success);
-    emit syncFinished(_syncResult);
-    emit syncStateChange();
 }
 
 void Folder::scheduleThisFolderSoon()

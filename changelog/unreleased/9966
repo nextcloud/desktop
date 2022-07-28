@@ -1,0 +1,5 @@
+Bugfix: Windows VFS: Files in an existing folder are dehydrated
+
+We fixed a bug, when a user selects an existing folder as sync root we previously dehydrated all existing files.
+
+https://github.com/owncloud/client/pull/9966

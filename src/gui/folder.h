@@ -340,8 +340,6 @@ public:
     bool virtualFilesEnabled() const;
     void setVirtualFilesEnabled(bool enabled);
 
-    void setRootPinState(PinState state);
-
     /** Whether user desires a switch that couldn't be executed yet, see member */
     bool isVfsOnOffSwitchPending() const { return _vfsOnOffPending; }
     void setVfsOnOffSwitchPending(bool pending) { _vfsOnOffPending = pending; }
@@ -475,17 +473,6 @@ private slots:
 
     /** Warn users about an unreliable folder watcher */
     void slotWatcherUnreliable(const QString &message);
-
-    /** Aborts any running sync and blocks it until hydration is finished.
-     *
-     * Hydration circumvents the regular SyncEngine and both mustn't be running
-     * at the same time.
-     */
-    void slotHydrationStarts();
-
-    /** Unblocks normal sync operation */
-    void slotHydrationDone();
-
 private:
     void connectSyncRoot();
 
