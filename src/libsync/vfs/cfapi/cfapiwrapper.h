@@ -72,11 +72,13 @@ private:
     std::unique_ptr<CF_PLACEHOLDER_BASIC_INFO, Deleter> _data;
 };
 
-NEXTCLOUD_CFAPI_EXPORT Result<void, QString> registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &folderAlias, const QString &displayName, const QString &accountDisplayName);
+NEXTCLOUD_CFAPI_EXPORT Result<void, QString> registerSyncRoot(const QString &path, const QString &providerName, const QString &providerVersion, const QString &folderAlias, const QString &navigationPaneClsid, const QString &displayName, const QString &accountDisplayName);
+NEXTCLOUD_CFAPI_EXPORT void unregisterSyncRootShellExtensions(const QString &providerName, const QString &folderAlias, const QString &accountDisplayName);
 NEXTCLOUD_CFAPI_EXPORT Result<void, QString> unregisterSyncRoot(const QString &path, const QString &providerName, const QString &accountDisplayName);
 
 NEXTCLOUD_CFAPI_EXPORT Result<ConnectionKey, QString> connectSyncRoot(const QString &path, VfsCfApi *context);
 NEXTCLOUD_CFAPI_EXPORT Result<void, QString> disconnectSyncRoot(ConnectionKey &&key);
+NEXTCLOUD_CFAPI_EXPORT bool isAnySyncRoot(const QString &providerName, const QString &accountDisplayName);
 
 NEXTCLOUD_CFAPI_EXPORT bool isSparseFile(const QString &path);
 

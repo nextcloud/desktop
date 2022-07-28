@@ -352,6 +352,8 @@ public:
     qint64 bytesAvailable() const override;
     QByteArray _body;
 
+    QMap<QNetworkRequest::KnownHeaders, QByteArray> _additionalHeaders;
+
     static const int defaultDelay = 10;
 };
 

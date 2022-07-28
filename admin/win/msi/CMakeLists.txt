@@ -16,6 +16,7 @@ endif()
 
 set(MSI_INSTALLER_FILENAME "${APPLICATION_SHORTNAME}-${VERSION}${VERSION_SUFFIX}-${MSI_BUILD_ARCH}.msi")
 
+configure_file(RegistryCleanup.vbs.in ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs)
 configure_file(OEM.wxi.in ${CMAKE_CURRENT_BINARY_DIR}/OEM.wxi)
 configure_file(collect-transform.xsl.in ${CMAKE_CURRENT_BINARY_DIR}/collect-transform.xsl)
 configure_file(make-msi.bat.in ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat)
@@ -26,7 +27,7 @@ install(FILES
         ${CMAKE_CURRENT_BINARY_DIR}/make-msi.bat
         Platform.wxi
         Nextcloud.wxs
-        RegistryCleanup.vbs
+        ${CMAKE_CURRENT_BINARY_DIR}/RegistryCleanup.vbs
         RegistryCleanupCustomAction.wxs
         gui/banner.bmp
         gui/dialog.bmp

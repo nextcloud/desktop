@@ -841,6 +841,9 @@ void FakePayloadReply::respond()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
     setHeader(QNetworkRequest::ContentLengthHeader, _body.size());
+    for (auto it = _additionalHeaders.constKeyValueBegin(); it != _additionalHeaders.constKeyValueEnd(); ++it) {
+        setHeader(it->first, it->second);
+    }
     emit metaDataChanged();
     emit readyRead();
     setFinished(true);
