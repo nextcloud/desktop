@@ -6798,7 +6798,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Diğer uygulamalar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>%1 ögesini tarayıcıda aç</translation>
     </message>
@@ -6809,7 +6809,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Daha fazla işlem görüntüle</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation>Birleşik arama sonuçları listesi</translation>
     </message>
@@ -6819,7 +6819,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 ögesini paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - Dosya işlemi</translation>
     </message>

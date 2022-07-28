@@ -6793,7 +6793,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Máis aplicacións</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 nun navegador</translation>
     </message>
@@ -6804,7 +6804,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Amosar máis accións</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6814,7 +6814,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Compartir %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - Actividade de ficheiros</translation>
     </message>

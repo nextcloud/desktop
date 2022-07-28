@@ -6798,7 +6798,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Aplikazio gehiago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>Ireki %1 arakatzailean</translation>
     </message>
@@ -6809,7 +6809,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erakutsi ekintza gehiago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation>Bateratutako bilaketaren emaitzen zerrenda</translation>
     </message>
@@ -6819,7 +6819,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Partekatu %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - Fitxategiaren jarduera</translation>
     </message>
