@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.15
 import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
-MouseArea {
+ItemDelegate {
     id: root
 
     property Flickable flickable
@@ -21,37 +21,27 @@ MouseArea {
                                                        : Qt.darker(UserModel.currentUser.headerColor, 1.5)
 
     enabled: (model.path !== "" || model.link !== "" || model.isCurrentUserFileActivity === true)
-    hoverEnabled: true
-
-    // We center the children vertically in the middle of this MouseArea to create the padding.
-    height: contentLayout.implicitHeight + (Style.standardSpacing * 2)
+    padding: Style.standardSpacing
 
     Accessible.role: Accessible.ListItem
     Accessible.name: (model.path !== "" && model.displayPath !== "") ? qsTr("Open %1 locally").arg(model.displayPath) : model.message
     Accessible.onPressAction: root.clicked()
 
-    function toggleReplyOptions() {
-        isTalkReplyOptionVisible = !isTalkReplyOptionVisible
-    }
-
-    Rectangle {
-        id: activityHover
-        anchors.fill: parent
-        color: (parent.containsMouse ? Style.lightHover : "transparent")
+    background: Rectangle {
+        color: root.hovered ? Style.lightHover : "transparent"
     }
 
     NCToolTip {
-        visible: root.containsMouse && !activityContent.childHovered && model.displayLocation !== ""
+        visible: root.hovered && !activityContent.childHovered && model.displayLocation !== ""
         text: qsTr("In %1").arg(model.displayLocation)
     }
 
-    ColumnLayout {
+    contentItem: ColumnLayout {
         id: contentLayout
         anchors.left: root.left
         anchors.right: root.right
         anchors.rightMargin: Style.standardSpacing
         anchors.leftMargin: Style.standardSpacing
-        anchors.verticalCenter: parent.verticalCenter
 
         spacing: Style.activityContentSpace
 
@@ -111,7 +101,7 @@ MouseArea {
             adjustedHeaderColor: root.adjustedHeaderColor
 
             onTriggerAction: activityModel.slotTriggerAction(model.index, actionIndex)
-            onShowReplyField: root.toggleReplyOptions()
+            onShowReplyField: root.isTalkReplyOptionVisible = true
         }
     }
 }
