@@ -11,7 +11,7 @@ namespace OCC {
 class AskExperimentalVirtualFilesFeatureMessageBox : public QMessageBox
 {
 public:
-    explicit AskExperimentalVirtualFilesFeatureMessageBox(QWidget *parent = nullptr);
+    AskExperimentalVirtualFilesFeatureMessageBox(QWidget *parent = nullptr);
 };
 
 }

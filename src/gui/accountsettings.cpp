@@ -491,7 +491,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
     if (!selected.isValid() || !folder)
         return;
 
-    auto messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(this);
+    auto messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(ocApp()->gui()->settingsDialog());
 
     connect(messageBox, &AskExperimentalVirtualFilesFeatureMessageBox::accepted, this, [this, folder]() {
         if (!folder) {
@@ -548,6 +548,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         Q_EMIT messageBox->accepted();
     } else {
         messageBox->show();
+        ocApp()->gui()->raiseDialog(messageBox);
     }
 }
 
@@ -797,9 +798,9 @@ void AccountSettings::slotAccountStateChanged()
 
                 qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
 
-                _askForOAuthLoginDialog = new AskForOAuthLoginDialog(_accountState->account(), this);
+                _askForOAuthLoginDialog = new AskForOAuthLoginDialog(_accountState->account(), ocApp()->gui()->settingsDialog());
 
-                // make sure to clean up the memory and to null the QPointer once finished
+                // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
                 _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
 
                 connect(
@@ -815,6 +816,7 @@ void AccountSettings::slotAccountStateChanged()
                 showConnectionLabel(tr("Reauthorization required."));
 
                 _askForOAuthLoginDialog->show();
+                ocApp()->gui()->raiseDialog(_askForOAuthLoginDialog);
             } else {
                 showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
             }

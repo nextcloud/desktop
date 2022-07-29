@@ -21,12 +21,14 @@
 #include "folderwizard.h"
 #include "folderwizard_p.h"
 
+#include "gui/application.h"
 #include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "gui/selectivesyncdialog.h"
 
 #include "libsync/theme.h"
 
 #include "common/vfs.h"
+#include "gui/settingsdialog.h"
 
 #include <QCheckBox>
 #include <QVBoxLayout>
@@ -88,7 +90,9 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
     // The click has already had an effect on the box, so if it's
     // checked it was newly activated.
     if (_virtualFilesCheckBox->isChecked()) {
-        auto *messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(this);
+        auto *messageBox = new AskExperimentalVirtualFilesFeatureMessageBox(ocApp()->gui()->settingsDialog());
+
+        messageBox->setAttribute(Qt::WA_DeleteOnClose);
 
         connect(messageBox, &AskExperimentalVirtualFilesFeatureMessageBox::rejected, this, [this]() {
             _virtualFilesCheckBox->setChecked(false);
@@ -100,6 +104,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
             Q_EMIT messageBox->accepted();
         } else {
             messageBox->show();
+            ocApp()->gui()->raiseDialog(messageBox);
         }
     }
 }

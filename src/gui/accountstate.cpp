@@ -59,7 +59,7 @@ UpdateUrlDialog *AccountState::updateUrlDialog(const QUrl &newUrl)
         return nullptr;
     }
 
-    _updateUrlDialog = UpdateUrlDialog::fromAccount(_account, newUrl, ocApp()->activeWindow());
+    _updateUrlDialog = UpdateUrlDialog::fromAccount(_account, newUrl, ocApp()->gui()->settingsDialog());
 
     connect(_updateUrlDialog, &UpdateUrlDialog::accepted, this, [=]() {
         _account->setUrl(newUrl);
@@ -68,6 +68,7 @@ UpdateUrlDialog *AccountState::updateUrlDialog(const QUrl &newUrl)
     });
 
     _updateUrlDialog->show();
+    ocApp()->gui()->raiseDialog(_updateUrlDialog);
 
     return _updateUrlDialog;
 }
