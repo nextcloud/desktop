@@ -217,22 +217,22 @@ Usage: %3 [OPTION] <source_dir> <server_url>
 #endif
 
     QString source_dir = args.at(0);
-    QString target_url = args.at(1);
-    QString options_user = parser.value("user");
-    QString options_password = parser.value("password");
-    QString proxy = parser.value("httpproxy");
-    bool silent = parser.isSet("silent");
-    bool trustSSL = parser.isSet("trust");
-    bool useNetrc = parser.isSet("netrc");
-    bool interactive = !parser.isSet("non-interactive");
-    bool ignoreHiddenFiles = parser.isSet("ignore-hidden");
-    QString exclude = parser.value("exclude");
-    QString unsyncedfolders = parser.value("unsyncedfolders");
-    int restartTimes = parser.value("max-sync-retries").toInt();
-    int uplimit = parser.value("uplimit").toInt() * 1000;
-    int downlimit = parser.value("downlimit").toInt() * 1000;
-    bool logdebug = parser.isSet("logdebug");
-    QString remotePath = parser.value("path");
+    const QString target_url = args.at(1);
+    const QString options_user = parser.value("user");
+    const QString options_password = parser.value("password");
+    const QString proxy = parser.value("httpproxy");
+    const bool silent = parser.isSet("silent");
+    const bool trustSSL = parser.isSet("trust");
+    const bool useNetrc = parser.isSet("netrc");
+    const bool interactive = !parser.isSet("non-interactive");
+    const bool ignoreHiddenFiles = parser.isSet("ignore-hidden");
+    const QString exclude = parser.value("exclude");
+    const QString unsyncedfolders = parser.value("unsyncedfolders");
+    const int restartTimes = parser.value("max-sync-retries").toInt();
+    const int uplimit = parser.value("uplimit").toInt() * 1000;
+    const int downlimit = parser.value("downlimit").toInt() * 1000;
+    const bool logdebug = parser.isSet("logdebug");
+    const QString remotePath = parser.value("path");
 
     if (logdebug) {
         Logger::instance()->setLogFile("-");

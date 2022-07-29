@@ -533,9 +533,9 @@ void Application::slotownCloudWizardDone(int res)
 
 void Application::setupLogging()
 {
-    QString logDir = _parser.value("logdir");
-    QString logFile = _parser.value("logfile");
-    int logExpire = _parser.value("logexpire").toInt();
+    const QString logDir = _parser.value("logdir");
+    const QString logFile = _parser.value("logfile");
+    const int logExpire = _parser.value("logexpire").toInt();
 
     // might be called from second instance
     auto logger = Logger::instance();
