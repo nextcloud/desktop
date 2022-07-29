@@ -14,24 +14,35 @@ defaults:
 jobs:
 # ------------------------------------------------------------------------------------------------------------------------------------------
   build:
-    name: Build ownCloud
-    runs-on: ${{ matrix.os }}
     strategy:
         matrix:
             include:
-            - target: windows-msvc2017_64-cl
+            - name: Windows 64-bit cl
+              target: windows-msvc2017_64-cl
               os: windows-latest
               fetch-depth: 0
-            - target: macos-64-clang
+              container:
+            - name: macOS 64-bit clang
+              target: macos-64-clang
               os: macos-latest
               fetch-depth: 1
-            - target: linux-64-gcc
-              os: ubuntu-18.04
+              container:
+            - name: CentOS 7 64-bit gcc
+              target: linux-64-gcc
+              os: ubuntu-latest
+              container: owncloudci/appimage-build:centos7-amd64
               fetch-depth: 1
+
+    name: ${{ matrix.name }}
+
+    runs-on: ${{ matrix.os }}
+
     env:
       CRAFT_TARGET: ${{ matrix.target }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    container: ${{ matrix.container }}
 
     steps:
     - name: Check out source code
@@ -52,59 +63,59 @@ jobs:
     - name: Craft setup
       run: |
         New-Item -Path ~/cache -ItemType Directory -ErrorAction SilentlyContinue
-        ${{ github.workspace }}/.github/workflows/.craft.ps1 --setup
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" --setup
 
     - name: Craft unshelve
-      run:  ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --unshelve "${{ github.workspace }}/.craft.shelf"
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --unshelve "${env:GITHUB_WORKSPACE}/.craft.shelf"
 
     - name: Prepare
       run: |
         if ($IsWindows) {
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c dev-utils/nsis
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/nsis
         } elseif($IsLinux) {
-            sudo apt-get update -y
-            sudo apt-get install -y mesa-common-dev libglu1-mesa-dev libmtdev1 libgl1-mesa-dev libmtdev1 libinput-dev libxkbcommon0 libxcb-icccm4 libxcb-image0 libxcb-render-util0 libxcb-xkb1 libxkbcommon-x11-0 libxcb-keysyms1 libxcb-xinerama0 libsm6
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c dev-utils/linuxdeploy
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c dev-utils/linuxdeploy
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --set enableLibcloudproviders=true owncloud/owncloud-client
         }
 
     - name: Install dependencies
-      run: ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --install-deps owncloud/owncloud-client
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --install-deps owncloud/owncloud-client
 
     - name: Build
       run: |
         if ("${{ matrix.target }}" -eq "windows-msvc2017_64-cl") {
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --configure owncloud/owncloud-client
-            $env:BUILD_DIR = $(${{ github.workspace }}/.github/workflows/.craft.ps1 -c --get buildDir -q owncloud-client)
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --run pwsh "${{ github.workspace }}/.github/workflows/.sonar.ps1" --build
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --install --qmerge owncloud/owncloud-client
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --configure owncloud/owncloud-client
+            $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --build
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --install --qmerge owncloud/owncloud-client
         } else {
-            ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" owncloud/owncloud-client
+            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" owncloud/owncloud-client
         }
 
     - name: Run tests
-      run: ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --test owncloud/owncloud-client
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --test owncloud/owncloud-client
 
     - name: Sonarcloud
       if: ${{ matrix.target == 'windows-msvc2017_64-cl' }}
       run: |
-        $env:BUILD_DIR = $(${{ github.workspace }}/.github/workflows/.craft.ps1 -c --get buildDir -q owncloud-client)
-        ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --run pwsh "${{ github.workspace }}/.github/workflows/.sonar.ps1" --analyze
+        $env:BUILD_DIR = $(& "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --get buildDir -q owncloud-client)
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --run pwsh "${env:GITHUB_WORKSPACE}/.github/workflows/.sonar.ps1" --analyze
 
     - name: Package
-      run: ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --no-cache --src-dir "${{ github.workspace }}" --package owncloud/owncloud-client
+      run: |
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --package owncloud/owncloud-client
 
     - name: Prepare artifacts
       run: |
-        New-Item -ItemType Directory "${{ github.workspace }}/binaries/" -ErrorAction SilentlyContinue
-        Copy-Item "$env:HOME/craft/binaries/*" "${{ github.workspace }}/binaries/"
-        ${{ github.workspace }}/.github/workflows/.craft.ps1 -c --shelve "${{ github.workspace }}/.craft.shelf"
-        Copy-Item "${{ github.workspace }}/.craft.shelf" "${{ github.workspace }}/binaries/"
+        New-Item -ItemType Directory "${env:GITHUB_WORKSPACE}/binaries/" -ErrorAction SilentlyContinue
+        Copy-Item "$env:HOME/craft/binaries/*" "${env:GITHUB_WORKSPACE}/binaries/"
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --shelve "${env:GITHUB_WORKSPACE}/.craft.shelf"
+        Copy-Item "${env:GITHUB_WORKSPACE}/.craft.shelf" "${env:GITHUB_WORKSPACE}/binaries/"
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ matrix.os }} - ${{ matrix.target }}
+        name: ${{ matrix.name }}
         path: ${{ github.workspace }}/binaries/*
-
-
-
