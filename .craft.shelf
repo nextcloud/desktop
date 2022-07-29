@@ -2,102 +2,59 @@
 version = 2
 blueprintrepositories = https://github.com/owncloud/craft-blueprints-owncloud.git|master|;https://invent.kde.org/packaging/craft-blueprints-kde.git|master|
 
+[core/cacert]
+version = 2022-04-26
+
 [craft/craft-blueprints-kde]
 version = master
-revision = feca22a30f8d3a2122fd9b2097351fcb2da28543
+revision = f2c63ac8
 
 [craft/craft-blueprints-owncloud]
 version = master
-revision = a75f876009e18088bb5f0428c71c8814cb0d01ee
+revision = 22723e5
 
 [craft/craft-core]
 version = master
-revision = 2b9fa1995f8113aa437710bf2e473c4abaca3497
-
-[core/cacert]
-version = 2020-12-08
-
-[dev-utils/autoconf]
-version = 2.71
-
-[dev-utils/automake]
-version = 1.16.3
-
-[dev-utils/bison]
-version = 3.3.2
-
-[dev-utils/breakpad-tools]
-version = cmake
-revision = e2a857c4
-
-[dev-utils/ccache]
-version = 4.2.1
-
-[dev-utils/cmake]
-version = latest
+revision = c1ee8119f
 
 [dev-utils/cmake-base]
-version = 3.19.1
+version = 3.19.2
 
 [dev-utils/cmocka]
 version = 1.1.5
 
-[dev-utils/create-dmg]
-version = master
-
-[dev-utils/help2man]
-version = 1.47.6
-
-[dev-utils/icoutils]
-version = 0.32.3
+[dev-utils/jom]
+version = 1_1_3
 
 [dev-utils/kshimgen]
-version = 0.4.3
-
-[dev-utils/libtool]
-version = 2.4.6
-
-[dev-utils/m4]
-version = 1.4.18
-
-[dev-utils/nasm]
-version = 2.15.05
+version = 0.4.4
 
 [dev-utils/ninja]
-version = 1.10.2
+version = 1.11.0
 
 [dev-utils/perl]
-version = 5.28.1
+version = 5.36.0
 
-[dev-utils/pkg-config]
-version = 0.29.2
-
-[dev-utils/python2]
-version = 2
-
-[dev-utils/python3]
-version = 3
-
-[dev-utils/texinfo]
-version = 6.4
+[dev-utils/qtbinpatcher]
+version = 2.2.0
 
 [kde/frameworks/extra-cmake-modules]
-version = 5.82.0
+version = 5.96.0
 
 [libs/cairo]
 version = 1.16.0
 
-[libs/fontconfig]
-version = 2.13.1
+[libs/d3dcompiler]
+version = master
 
 [libs/freetype]
-version = 2.9.1
+version = 2.12.1
 
 [libs/gettext]
-version = 0.19.8.1
+version = 0.21
 
 [libs/glib]
-version = 2.66.4
+version = 2.68.4
 
 [libs/harfbuzz]
 version = 2.7.2
@@ -109,7 +66,7 @@ version = 1.0.6
 version = 3.3
 
 [libs/libjpeg-turbo]
-version = 2.0.6
+version = 2.1.2
 
 [libs/liblzma]
 version = 5.2.3
@@ -121,13 +78,13 @@ version = 1.6.37
 version = 2.9.7
 
 [libs/libzstd]
-version = 1.4.5
+version = 1.5.0
 
 [libs/openssl]
-version = 1.1.1k
+version = 1.1.1q
 
 [libs/pcre2]
-version = 10.35
+version = 10.37
 
 [libs/pixman]
 version = 0.40.0
@@ -138,7 +95,10 @@ version = 5.12.11
 [libs/qt5/qtdeclarative]
 version = 5.12.11
 
-[libs/qt5/qtmacextras]
+[libs/qt5/qtremoteobjects]
+version = 5.12.11
+
+[libs/qt5/qtscxml]
 version = 5.12.11
 
 [libs/qt5/qtsvg]
@@ -150,26 +110,32 @@ version = 5.12.11
 [libs/qt5/qttranslations]
 version = 5.12.11
 
+[libs/qt5/qtwinextras]
+version = 5.12.11
+
 [libs/qt5/qtxmlpatterns]
 version = 5.12.11
 
-[libs/sparkle]
-version = 1.24.0
-
 [libs/sqlite]
-version = 3.35.4
+version = 3.36.0
 
 [libs/zlib]
-version = 1.2.11
+version = 1.2.12
 
 [python-modules/meson]
+version = master
+
+[python-modules/pip]
+version = master
+
+[python-modules/pip-system]
 version = master
 
 [python-modules/virtualenv]
 version = master
 
 [qt-libs/qtkeychain]
-version = 0.12.0
+version = 0.13.1
 
 [virtual/base]
 version = 0.2
