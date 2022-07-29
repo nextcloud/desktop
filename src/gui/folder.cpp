@@ -344,7 +344,7 @@ bool Folder::syncPaused() const
 
 bool Folder::canSync() const
 {
-    return !syncPaused() && accountState()->isConnected() && isReady();
+    return !syncPaused() && accountState()->isConnected() && isReady() && _accountState->account()->hasCapabilities();
 }
 
 bool Folder::isReady() const

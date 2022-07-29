@@ -374,6 +374,16 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         return;
     }
 
+
+    if (status == ConnectionValidator::Connected && !_account->hasCapabilities()) {
+        // this code should only be needed when upgrading from a < 3.0 release where capabilities where not cached
+        // The last check was _waitingForNewCredentials = true so we only checked ValidateServer
+        // now check again and fetch capabilities
+        _connectionValidator.clear();
+        checkConnectivity();
+        return;
+    }
+
     // Come online gradually from 503 or maintenance mode
     if (status == ConnectionValidator::Connected
         && (_connectionStatus == ConnectionValidator::ServiceUnavailable

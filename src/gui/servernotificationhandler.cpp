@@ -40,12 +40,15 @@ void ServerNotificationHandler::slotFetchNotifications(AccountStatePtr ptr)
     }
     // check if the account has notifications enabled. If the capabilities are
     // not yet valid, its assumed that notifications are available.
-    if (ptr->account()->capabilities().isValid()) {
+    if (ptr->account()->hasCapabilities()) {
         if (!ptr->account()->capabilities().notificationsAvailable()) {
             qCInfo(lcServerNotification) << "Account" << ptr->account()->displayName() << "does not have notifications enabled.";
             deleteLater();
             return;
         }
+    } else {
+        deleteLater();
+        return;
     }
 
     // if the previous notification job has finished, start next.
