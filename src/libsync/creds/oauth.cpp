@@ -158,6 +158,7 @@ private:
         req.setUrl(_registrationEndpoint);
         req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
         req.setTransferTimeout(defaultTimeoutMs());
+        req.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/json"));
         auto reply = _networkAccessManager->post(req, QJsonDocument(json).toJson());
         connect(reply, &QNetworkReply::finished, this, [reply, this] {
             const auto data = reply->readAll();
