@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ur fazi a zo bet en ur tizhout ar restr arvenntennañ e %1. Grit sur eo posupl d&apos;an implijourienn tizhout ar restr.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

@@ -932,7 +932,7 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <translation>Ddoe at àpidu un&apos;errore intrende a s&apos;archìviu de cunfiguratzione su %1. Segura·ti chi a s&apos;archìviu si potzat intrare dae s&apos;utèntzia tua.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

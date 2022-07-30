@@ -927,7 +927,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Ocorreu um erro enquanto se acedia ao ficheiro de configuração em %1. Por favor tenha a certeza que o ficheiro pode ser acedido pelo seu utilizador.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

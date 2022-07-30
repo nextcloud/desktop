@@ -930,7 +930,7 @@ Vous prenez vos propres risques.</translation>
         <translation>Une erreur s&apos;est produite lors de l&apos;accès au fichier de configuration situé dans %1. Assurez-vous que le fichier est accessible par votre utilisateur.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

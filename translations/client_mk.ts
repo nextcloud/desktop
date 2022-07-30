@@ -927,7 +927,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Настана грешка при пристапувањето до конфигурациската датотека на %1. Бидете сигурни дека вашата сметка може да пристапи до конфигурациската датотека.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

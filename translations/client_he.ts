@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>איראה שגיאה בגישה לקובץ ההגדרות ב %1. אנא וודא כי הקובץ נגיש למשתמש שלך.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Υπήρξε σφάλμα κατά την πρόσβαση του αρχείου ρυθμίσεων στο %1. Παρακαλώ επαληθεύστε αν μπορείτε να προσπελάσετε το αρχείο.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
