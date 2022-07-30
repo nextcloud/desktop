@@ -932,7 +932,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че вашият потребител има достъп до файла.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че файлът е достъпен от вашият системен профил.</translation>
     </message>

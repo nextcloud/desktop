@@ -927,7 +927,7 @@ This action will abort any currently running synchronization.</source>
         <translation>S&apos;ha produït un error en accedir al fitxer de configuració a %1. Assegureu-vos que el vostre usuari pugui accedir a aquest fitxer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

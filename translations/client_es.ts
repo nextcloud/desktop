@@ -932,7 +932,7 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>Se ha producido un error al acceder al archivo de configuración en %1. Por favor asegúrese de que el archivo es accesible por su usuario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Se ha producido un error al acceder al archivo de configuración en %1. Por favor, asegúrese de que su cuenta del sistema puede acceder al archivo.</translation>
     </message>

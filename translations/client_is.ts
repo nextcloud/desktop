@@ -933,7 +933,7 @@ gagnageymslur: </translation>
         <translation>Það kom upp villa við að nálgast stillingaskrána á %1. Gakktu úr skugga um að notandinn hafi heimild til að vinna með skrána.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

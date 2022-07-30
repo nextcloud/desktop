@@ -932,7 +932,7 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Der opstod en fejl, kunne ikke tilgå konfigurations filen %1. Sørg for at filen kan tilgås af din bruger.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

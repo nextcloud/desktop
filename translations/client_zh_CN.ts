@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>访问配置文件 %1 时发生错误。请检查是否有访问权限。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

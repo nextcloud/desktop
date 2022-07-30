@@ -932,7 +932,7 @@ This action will abort any currently running synchronization.</source>
         <translation>存取位於 %1 的設定檔時發生錯誤。請確保您的使用者可以存取該檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取位於 %1 的設定檔時發生錯誤。請確保您的系統帳號可以存取該檔案。</translation>
     </message>

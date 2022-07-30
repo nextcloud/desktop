@@ -932,7 +932,7 @@ This action will abort any currently running synchronization.</source>
         <translation>설정 파일%1을 액세스하는 중 오류가 발생했습니다. 사용자가 파일에 액세스 할 수 있는지 확인하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>%1의 구성 파일에 액세스하는 동안 오류가 발생했습니다. 시스템 계정으로 파일에 액세스할 수 있는지 확인하십시오.</translation>
     </message>

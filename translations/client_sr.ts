@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Догодила се грешка приликом учитавања фајла са подешавањима са %1. Проверите да ли корисник има приступ овом фајлу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
