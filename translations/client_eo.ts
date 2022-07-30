@@ -927,7 +927,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Okazis eraro dum aliro al la agorda dosiero en %1. Bv. certigi, ke la dosiero estas alirebla de via uzanto.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>

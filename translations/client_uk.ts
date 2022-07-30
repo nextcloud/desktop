@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Помилка з доступом до файлу налаштувань %1. Будь ласка, перевірте чи файл буде доступний для вашого користувача.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
