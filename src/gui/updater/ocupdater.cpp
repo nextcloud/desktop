@@ -222,7 +222,7 @@ void OCUpdater::slotStartInstaller()
         };
 
         QString msiLogFile = cfg.configPath() + "msi.log";
-        QString command = QString("&{msiexec /promptrestart /passive /i '%1' DO_NOT_REBOOT_IN_SILENT=1 /L*V '%2'| Out-Null ; &'%3'}")
+        QString command = QString("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
              .arg(preparePathForPowershell(updateFile))
              .arg(preparePathForPowershell(msiLogFile))
              .arg(preparePathForPowershell(QCoreApplication::applicationFilePath()));
