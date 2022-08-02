@@ -9,7 +9,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-7
+    container: ghcr.io/nextcloud/continuous-integration-client:client-5.15-8
     env:
       SONAR_SERVER_URL: "https://sonarcloud.io"
       BUILD_WRAPPER_OUT_DIR: build_wrapper_output_directory # Directory where build-wrapper output will be placed
