@@ -288,11 +288,11 @@ Window {
                             Accessible.onPressAction: addAccountButton.clicked()
                         }
 
-                        MenuSeparator {
-                            contentItem: Rectangle {
-                                implicitHeight: 1
-                                color: Style.menuBorder
-                            }
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            implicitHeight: 1
+                            color: Style.menuBorder
                         }
 
                         MenuItem {
