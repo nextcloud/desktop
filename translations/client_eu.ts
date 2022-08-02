@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Muturrerako enkriptazio-mnemoteknia </translation>
+        <translation>Muturretik muturrerako enkriptatzearen gako mnemoteknikoa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -1062,7 +1062,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Mesedez, idatzi zure muturreko enkriptazio pasaesaldia: &lt;br&gt;&lt;br&gt;Erabiltzaile-izena: &lt;br&gt; %2Kontua:&lt;br&gt;</translation>
+        <translation>Mesedez, idatzi zure muturreko enkriptatze pasaesaldia: &lt;br&gt;&lt;br&gt;Erabiltzaile-izena: &lt;br&gt; %2Kontua:&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
