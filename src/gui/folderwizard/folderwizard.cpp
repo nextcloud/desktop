@@ -109,6 +109,11 @@ QString FolderWizardPrivate::initialLocalPath() const
     return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }
 
+QString FolderWizardPrivate::remotePath() const
+{
+    return _folderWizardTargetPage ? _folderWizardTargetPage->targetPath() : QString();
+}
+
 QUrl FolderWizardPrivate::davUrl() const
 {
     if (_account->supportsSpaces()) {
@@ -201,7 +206,7 @@ FolderWizard::Result FolderWizard::result()
     return {
         d->davUrl(),
         localPath,
-        d->_folderWizardTargetPage ? d->_folderWizardTargetPage->targetPath() : QString(),
+        d->remotePath(),
         d->displayName(),
         d->useVirtualFiles(),
         d->_folderWizardSelectiveSyncPage ? d->_folderWizardSelectiveSyncPage->selectiveSyncBlackList() : QStringList()

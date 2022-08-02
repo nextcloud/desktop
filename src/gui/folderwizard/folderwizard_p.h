@@ -36,6 +36,8 @@ public:
 
     QString initialLocalPath() const;
 
+    QString remotePath() const;
+
     QString defaultSyncRoot() const;
 
     QUrl davUrl() const;

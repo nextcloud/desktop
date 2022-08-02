@@ -235,9 +235,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     for (auto path : qAsConst(list)) {
         auto size = job ? job->sizes().value(path) : 0;
         path.remove(pathToRemove);
-        QStringList paths = path.split('/');
-        if (paths.last().isEmpty())
-            paths.removeLast();
+        const QStringList paths = path.split('/', Qt::SkipEmptyParts);
         if (paths.isEmpty())
             continue;
         if (!path.endsWith('/')) {
