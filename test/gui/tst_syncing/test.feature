@@ -56,7 +56,7 @@ Feature: Syncing files
             client content
             """
 
-
+    @skip @issue-9971
     Scenario: Sync all is selected by default
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -70,7 +70,7 @@ Feature: Syncing files
         And the user selects "ownCloud" as a remote destination folder
         Then the sync all checkbox should be checked
 
-
+    @skip @issue-9971
     Scenario: Sync only one folder from the server
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
