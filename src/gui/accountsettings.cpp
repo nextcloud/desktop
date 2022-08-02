@@ -113,7 +113,6 @@ AccountSettings::AccountSettings(AccountStatePtr accountState, QWidget *parent)
     , ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)
     , _accountState(accountState)
-    , _quotaInfo(accountState)
 {
     ui->setupUi(this);
 
@@ -177,17 +176,22 @@ AccountSettings::AccountSettings(AccountStatePtr accountState, QWidget *parent)
     connect(FolderMan::instance(), &FolderMan::folderListChanged, _model, &FolderStatusModel::resetFolders);
     connect(this, &AccountSettings::folderChanged, _model, &FolderStatusModel::resetFolders);
 
-
-    QColor color = palette().highlight().color();
-    ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
-
     ui->connectLabel->clear();
 
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
-    connect(&_quotaInfo, &QuotaInfo::quotaUpdated,
-        this, &AccountSettings::slotUpdateQuota);
+    if (_accountState->supportsSpaces()) {
+        ui->quotaProgressBar->setVisible(false);
+        ui->quotaInfoLabel->setVisible(false);
+    } else {
+        QColor color = palette().highlight().color();
+        ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
+
+        _quotaInfo = new QuotaInfo(_accountState, this);
+        connect(_quotaInfo, &QuotaInfo::quotaUpdated,
+            this, &AccountSettings::slotUpdateQuota);
+    }
 }
 
 
@@ -1016,7 +1020,9 @@ void AccountSettings::slotDeleteAccount()
 bool AccountSettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
-        _quotaInfo.setActive(isVisible());
+        if (_quotaInfo) {
+            _quotaInfo->setActive(isVisible());
+        }
     }
     if (e->type() == QEvent::Show) {
         // Expand the folder automatically only if there's only one, see #4283
