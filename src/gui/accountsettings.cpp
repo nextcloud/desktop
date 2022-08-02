@@ -181,7 +181,7 @@ AccountSettings::AccountSettings(AccountStatePtr accountState, QWidget *parent)
     QColor color = palette().highlight().color();
     ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
 
-    ui->connectLabel->setText(tr("No account configured."));
+    ui->connectLabel->clear();
 
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
