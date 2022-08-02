@@ -159,7 +159,9 @@ void ownCloudGui::slotOpenMainDialog()
 
 void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
 {
-    if (reason == QSystemTrayIcon::Trigger) {
+    if (reason == QSystemTrayIcon::DoubleClick && UserModel::instance()->currentUser()->hasLocalFolder()) {
+        UserModel::instance()->openCurrentAccountLocalFolder();
+    } else if (reason == QSystemTrayIcon::Trigger) {
         if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
             // brought wizard to front
         } else if (_shareDialogs.size() > 0) {
