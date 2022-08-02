@@ -928,7 +928,7 @@ This action will abort any currently running synchronization.</source>
         <translation>访问配置文件 %1 时发生错误。请检查是否有访问权限。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
@@ -6780,7 +6780,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>更多的应用程序</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>在浏览器中打开%1</translation>
     </message>
@@ -6791,7 +6791,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>显示更多操作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation>统一的搜索结果列表</translation>
     </message>
@@ -6801,7 +6801,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>共享 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation>%1 - 文件动态</translation>
     </message>

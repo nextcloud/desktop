@@ -102,6 +102,7 @@ public:
     static Activity fromActivityJson(const QJsonObject &json, const AccountPtr account);
 
     static QString relativeServerFileTypeIconPath(const QMimeType &mimeType);
+    static QString localFilePathForActivity(const Activity &activity, const AccountPtr account);
 
     struct RichSubjectParameter {
         QString type;    // Required
@@ -133,6 +134,7 @@ public:
     QString _folder;
     QString _file;
     QString _renamedFile;
+    bool _isMultiObjectActivity;
     QUrl _link;
     QDateTime _dateTime;
     qint64 _expireAtMsecs = -1;

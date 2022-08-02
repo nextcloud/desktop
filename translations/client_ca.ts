@@ -927,7 +927,7 @@ This action will abort any currently running synchronization.</source>
         <translation>S&apos;ha produït un error en accedir al fitxer de configuració a %1. Assegureu-vos que el vostre usuari pugui accedir a aquest fitxer.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="335"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
@@ -6759,7 +6759,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Més aplicacions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="617"/>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
         <source>Open %1 in browser</source>
         <translation>Obre %1 en el navegador</translation>
     </message>
@@ -6770,7 +6770,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Mostra més accions</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="728"/>
+        <location filename="../src/gui/tray/Window.qml" line="743"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6780,7 +6780,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Comparteix %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="791"/>
+        <location filename="../src/gui/tray/Window.qml" line="806"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>

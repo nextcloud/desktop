@@ -150,6 +150,7 @@ void WebFlowCredentials::askFromUser() {
 #ifdef WITH_WEBENGINE
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
 #else // WITH_WEBENGINE
+        Q_UNUSED(type)
         bool useFlow2 = true;
 #endif // WITH_WEBENGINE
 

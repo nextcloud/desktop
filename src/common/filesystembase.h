@@ -25,7 +25,7 @@
 #include <QFileInfo>
 #include <QLoggingCategory>
 
-#include <ocsynclib.h>
+#include <csync/ocsynclib.h>
 
 class QFile;
 

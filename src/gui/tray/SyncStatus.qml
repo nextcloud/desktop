@@ -17,7 +17,7 @@ RowLayout {
         id: syncStatus
     }
 
-    Image {
+    NCBusyIndicator {
         id: syncIcon
         property int size: Style.trayListItemIconSize * 0.6
         property int whiteSpace: (Style.trayListItemIconSize - size)
@@ -31,19 +31,10 @@ RowLayout {
         Layout.bottomMargin: 16
         Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
 
-        source: syncStatus.syncIcon
-        sourceSize.width: 64
-        sourceSize.height: 64
-        rotation: syncStatus.syncing ? 0 : 0
-    }
- 
-    RotationAnimator {
-        target: syncIcon
-        running:  syncStatus.syncing
-        from: 0
-        to: 360
-        loops: Animation.Infinite
-        duration: 3000
+        padding: 0
+
+        imageSource: syncStatus.syncIcon
+        running: syncStatus.syncing
     }
 
     ColumnLayout {
