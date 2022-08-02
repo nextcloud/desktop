@@ -53,7 +53,7 @@ SetupWizardWindow::SetupWizardWindow(QWidget *parent)
 
     connect(_ui->navigation, &Navigation::paginationEntryClicked, this, [this](SetupWizardState clickedState) {
         slotStartTransition();
-        Q_EMIT paginationEntryClicked(clickedState);
+        Q_EMIT navigationEntryClicked(clickedState);
     });
 
     resize(ocApp()->gui()->settingsDialog()->sizeHintForChild());

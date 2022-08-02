@@ -19,6 +19,36 @@
 
 using namespace std::chrono_literals;
 
+namespace {
+
+using namespace OCC;
+using namespace OCC::Wizard;
+
+/**
+ * Generate list of wizard states to put in the navigation.
+ * The actual wizard may be in states not within this list to perform tasks in the background without user interaction
+ * (e.g., to detect the authentication method the server uses).
+ */
+QList<SetupWizardState> getNavigationEntries()
+{
+    QList<SetupWizardState> states = {
+        SetupWizardState::ServerUrlState
+    };
+
+    if (Theme::instance()->wizardEnableWebfinger()) {
+        states.append(SetupWizardState::WebFingerState);
+    }
+
+    states.append({
+        SetupWizardState::CredentialsState,
+        SetupWizardState::AccountConfiguredState,
+    });
+
+    return states;
+}
+
+}
+
 namespace OCC::Wizard {
 
 Q_LOGGING_CATEGORY(lcSetupWizardController, "setupwizard.controller")
@@ -27,23 +57,10 @@ SetupWizardController::SetupWizardController(QWidget *parent)
     : QObject(parent)
     , _context(new SetupWizardContext(parent, this))
 {
-    // initialize pagination
-    if (Theme::instance()->wizardEnableWebfinger()) {
-        _context->window()->setNavigationEntries({
-            SetupWizardState::ServerUrlState,
-            SetupWizardState::WebFingerState,
-            SetupWizardState::CredentialsState,
-            SetupWizardState::AccountConfiguredState,
-        });
-    } else {
-        _context->window()->setNavigationEntries({
-            SetupWizardState::ServerUrlState,
-            SetupWizardState::CredentialsState,
-            SetupWizardState::AccountConfiguredState,
-        });
-    }
+    _context->window()->setNavigationEntries(getNavigationEntries());
 
-    // set up initial state
+    // we always switch to this state, even if the URL is overridden by the theme
+    // it will detect
     changeStateTo(SetupWizardState::FirstState);
 
     // allow settings dialog to clean up the wizard controller and all the objects it created
@@ -52,7 +69,7 @@ SetupWizardController::SetupWizardController(QWidget *parent)
         Q_EMIT finished(nullptr, SyncMode::Invalid);
     });
 
-    connect(_context->window(), &SetupWizardWindow::paginationEntryClicked, this, [this](SetupWizardState clickedState) {
+    connect(_context->window(), &SetupWizardWindow::navigationEntryClicked, this, [this](SetupWizardState clickedState) {
         qCDebug(lcSetupWizardController) << "pagination entry clicked: current state" << _currentState << "clicked state" << clickedState;
         changeStateTo(clickedState);
     });
@@ -92,7 +109,7 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
     QScopedPointer<AbstractSetupWizardState> page(_currentState);
 
     // validate initial state
-    Q_ASSERT(nextState == SetupWizardState::FirstState || _currentState != nullptr);
+    Q_ASSERT(nextState == SetupWizardState::ServerUrlState || _currentState != nullptr);
 
     if (_currentState != nullptr) {
         _currentState->deleteLater();

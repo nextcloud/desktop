@@ -14,6 +14,7 @@
 
 // just a stub so the MOC file can be included somewhere
 #include "moc_enums.cpp"
+#include "theme.h"
 
 #include <QApplication>
 
@@ -28,7 +29,11 @@ QString OCC::Utility::enumToDisplayName(SetupWizardState state)
 {
     switch (state) {
     case SetupWizardState::ServerUrlState:
-        return QApplication::translate(contextC, "Server URL");
+        if (Theme::instance()->overrideServerUrlV2().isEmpty()) {
+            return QApplication::translate(contextC, "Server URL");
+        } else {
+            return QApplication::translate(contextC, "Welcome");
+        }
     case SetupWizardState::WebFingerState:
         return QApplication::translate(contextC, "WebFinger");
     case SetupWizardState::CredentialsState:

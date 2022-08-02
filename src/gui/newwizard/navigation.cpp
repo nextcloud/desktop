@@ -70,7 +70,7 @@ void Navigation::setActiveState(SetupWizardState newState)
     _activeState = newState;
 
     for (const auto key : _entries.keys()) {
-        auto button = _entries.value(newState);
+        auto button = _entries.value(key);
         button->setChecked(key == _activeState);
     }
 

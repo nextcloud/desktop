@@ -65,7 +65,7 @@ protected:
     bool eventFilter(QObject *obj, QEvent *event) override;
 
 Q_SIGNALS:
-    void paginationEntryClicked(SetupWizardState clickedState);
+    void navigationEntryClicked(SetupWizardState clickedState);
     void nextButtonClicked();
     void backButtonClicked();
 

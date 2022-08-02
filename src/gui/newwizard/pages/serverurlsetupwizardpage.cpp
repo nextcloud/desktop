@@ -15,11 +15,20 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
 
     _ui->welcomeTextLabel->setText(tr("Welcome to %1").arg(Theme::instance()->appNameGUI()));
 
-    _ui->urlLineEdit->setText(serverUrl.toString());
+    // not the best style, but we hacked such branding into the pages elsewhere, too
+    if (!Theme::instance()->overrideServerUrlV2().isEmpty()) {
+        // note that the text should be set before the page is displayed, this way validateInput() will enable the next button
+        _ui->urlLineEdit->setText(Theme::instance()->overrideServerUrlV2());
 
-    connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
-        _ui->urlLineEdit->setFocus();
-    });
+        _ui->urlLineEdit->hide();
+        _ui->serverUrlLabel->hide();
+    } else {
+        _ui->urlLineEdit->setText(serverUrl.toString());
+
+        connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
+            _ui->urlLineEdit->setFocus();
+        });
+    }
 
     _ui->logoLabel->setText(QString());
     _ui->logoLabel->setPixmap(Theme::instance()->wizardHeaderLogo().pixmap(200, 200));
