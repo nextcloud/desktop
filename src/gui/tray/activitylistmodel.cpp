@@ -59,6 +59,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     auto roles = QAbstractListModel::roleNames();
     roles[DisplayPathRole] = "displayPath";
     roles[PathRole] = "path";
+    roles[OpenablePathRole] = "openablePath";
     roles[DisplayLocationRole] = "displayLocation";
     roles[LinkRole] = "link";
     roles[MessageRole] = "message";
@@ -76,6 +77,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[PointInTimeRole] = "dateTime";
     roles[DisplayActions] = "displayActions";
     roles[ShareableRole] = "isShareable";
+    roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[ThumbnailRole] = "thumbnail";
     roles[TalkNotificationConversationTokenRole] = "conversationToken";
@@ -263,6 +265,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return getDisplayPath();
     case PathRole:
         return QFileInfo(getFilePath()).path();
+    case OpenablePathRole:
+        return a._isMultiObjectActivity ? QFileInfo(getFilePath()).canonicalPath() : QFileInfo(getFilePath()).canonicalFilePath();
     case DisplayLocationRole:
         return displayLocation();
     case ActionsLinksRole: {
