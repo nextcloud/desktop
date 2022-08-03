@@ -59,24 +59,25 @@ public:
     static bool maybeMigrateDb(const QString &localPath, const QString &absoluteJournalPath);
 
     // To verify that the record could be found check with SyncJournalFileRecord::isValid()
-    bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
-    bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
-    bool getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec);
-    bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
-    bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
-    bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
-    bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
-    Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
+    [[nodiscard]] bool getFileRecord(const QString &filename, SyncJournalFileRecord *rec) { return getFileRecord(filename.toUtf8(), rec); }
+    [[nodiscard]] bool getFileRecord(const QByteArray &filename, SyncJournalFileRecord *rec);
+    [[nodiscard]] bool getFileRecordByE2eMangledName(const QString &mangledName, SyncJournalFileRecord *rec);
+    [[nodiscard]] bool getFileRecordByInode(quint64 inode, SyncJournalFileRecord *rec);
+    [[nodiscard]] bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
+    [[nodiscard]] bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    [[nodiscard]] bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    [[nodiscard]] Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
 
     void keyValueStoreSet(const QString &key, QVariant value);
-    qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
+    [[nodiscard]] qint64 keyValueStoreGetInt(const QString &key, qint64 defaultValue);
     void keyValueStoreDelete(const QString &key);
 
-    bool deleteFileRecord(const QString &filename, bool recursively = false);
-    bool updateFileRecordChecksum(const QString &filename,
+    [[nodiscard]] bool deleteFileRecord(const QString &filename, bool recursively = false);
+    [[nodiscard]] bool updateFileRecordChecksum(
+        const QString &filename,
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
-    bool updateLocalMetadata(const QString &filename,
+    [[nodiscard]] bool updateLocalMetadata(const QString &filename,
         qint64 modtime, qint64 size, quint64 inode);
 
     /// Return value for hasHydratedOrDehydratedFiles()
@@ -99,7 +100,7 @@ public:
     void setErrorBlacklistEntry(const SyncJournalErrorBlacklistRecord &item);
     void wipeErrorBlacklistEntry(const QString &file);
     void wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category category);
-    int wipeErrorBlacklist();
+    [[nodiscard]] int wipeErrorBlacklist();
     int errorBlackListEntryCount();
 
     struct DownloadInfo
@@ -145,7 +146,7 @@ public:
     QVector<uint> deleteStaleUploadInfos(const QSet<QString> &keep);
 
     SyncJournalErrorBlacklistRecord errorBlacklistEntry(const QString &);
-    bool deleteStaleErrorBlacklistEntries(const QSet<QString> &keep);
+    [[nodiscard]] bool deleteStaleErrorBlacklistEntries(const QSet<QString> &keep);
 
     /// Delete flags table entries that have no metadata correspondent
     void deleteStaleFlagsEntries();
@@ -372,9 +373,9 @@ public:
 
 private:
     int getFileRecordCount();
-    bool updateDatabaseStructure();
-    bool updateMetadataTableStructure();
-    bool updateErrorBlacklistTableStructure();
+    [[nodiscard]] bool updateDatabaseStructure();
+    [[nodiscard]] bool updateMetadataTableStructure();
+    [[nodiscard]] bool updateErrorBlacklistTableStructure();
     bool sqlFail(const QString &log, const SqlQuery &query);
     void commitInternal(const QString &context, bool startTrans = true);
     void startTransaction();
@@ -388,7 +389,7 @@ private:
     // Returns the integer id of the checksum type
     //
     // Returns 0 on failure and for empty checksum types.
-    int mapChecksumType(const QByteArray &checksumType);
+    [[nodiscard]] int mapChecksumType(const QByteArray &checksumType);
 
     SqlDatabase _db;
     QString _dbFile;
