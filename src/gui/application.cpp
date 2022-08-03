@@ -406,6 +406,8 @@ Application::Application(int &argc, char **argv)
     connect(_gui.data(), &ownCloudGui::isShowingSettingsDialog, this, &Application::slotGuiIsShowingSettings);
 
     _gui->createTray();
+
+    handleEditLocallyFromOptions();
 }
 
 Application::~Application()
@@ -572,6 +574,8 @@ void Application::slotParseMessage(const QString &msg, QObject *)
             qApp->quit();
         }
 
+        handleEditLocallyFromOptions();
+
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
@@ -647,7 +651,17 @@ void Application::parseOptions(const QStringList &options)
         } else if (option.endsWith(QStringLiteral(APPLICATION_DOTVIRTUALFILE_SUFFIX))) {
             // virtual file, open it after the Folder were created (if the app is not terminated)
             QTimer::singleShot(0, this, [this, option] { openVirtualFile(option); });
-        } else {
+        } else if (option.startsWith(QStringLiteral(APPLICATION_URI_HANDLER_SCHEME "://open"))) {
+            // see the section Local file editing of the Architecture page of the user documenation
+            _editFileLocallyUrl = QUrl::fromUserInput(option);
+            if (!_editFileLocallyUrl.isValid()) {
+                _editFileLocallyUrl.clear();
+                const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(option);
+                qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
+                showHint(errorParsingLocalFileEditingUrl.toStdString());
+            }
+        }
+        else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
     }
@@ -726,6 +740,32 @@ bool Application::backgroundMode() const
 void Application::setHelp()
 {
     _helpOnly = true;
+}
+
+void Application::handleEditLocallyFromOptions()
+{
+    if (!_editFileLocallyUrl.isValid()) {
+        return;
+    }
+
+    handleEditLocally(_editFileLocallyUrl);
+    _editFileLocallyUrl.clear();
+}
+
+void Application::handleEditLocally(const QUrl &url) const
+{
+    auto pathSplit = url.path().split('/', Qt::SkipEmptyParts);
+
+    if (pathSplit.size() < 2) {
+        qCWarning(lcApplication) << "Invalid URL for file local editing: " + pathSplit.join('/');
+        return;
+    }
+
+    // for a sample URL "nc://open/admin@nextcloud.lan:8080/Photos/lovely.jpg", QUrl::path would return "admin@nextcloud.lan:8080/Photos/lovely.jpg"
+    const auto accountDisplayName = pathSplit.takeFirst();
+    const auto fileRemotePath = pathSplit.join('/');
+
+    FolderMan::instance()->editFileLocally(accountDisplayName, fileRemotePath);
 }
 
 QString substLang(const QString &lang)
@@ -855,15 +895,26 @@ void Application::tryTrayAgain()
 
 bool Application::event(QEvent *event)
 {
-#ifdef Q_OS_MAC
     if (event->type() == QEvent::FileOpen) {
-        QFileOpenEvent *openEvent = static_cast<QFileOpenEvent *>(event);
-        qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
-        // virtual file, open it after the Folder were created (if the app is not terminated)
-        QString fn = openEvent->file();
-        QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
+        const auto openEvent = static_cast<QFileOpenEvent *>(event);
+        qCDebug(lcApplication) << "macOS: Received a QFileOpenEvent";
+
+        if(!openEvent->file().isEmpty()) {
+            qCDebug(lcApplication) << "QFileOpenEvent" << openEvent->file();
+            // virtual file, open it after the Folder were created (if the app is not terminated)
+            const auto fn = openEvent->file();
+            QTimer::singleShot(0, this, [this, fn] { openVirtualFile(fn); });
+        } else if (!openEvent->url().isEmpty() && openEvent->url().isValid()) {
+            // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
+            // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
+            qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
+            handleEditLocally(openEvent->url());
+        } else {
+            const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
+            qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
+            showHint(errorParsingLocalFileEditingUrl.toStdString());
+        }
     }
-#endif
     return SharedTools::QtSingleApplication::event(event);
 }
 
