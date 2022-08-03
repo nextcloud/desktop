@@ -2212,10 +2212,12 @@ QByteArray SyncJournalDb::conflictFileBaseName(const QByteArray &conflictName)
     auto conflict = conflictRecord(conflictName);
     QByteArray result;
     if (conflict.isValid()) {
-        getFileRecordsByFileId(conflict.baseFileId, [&result](const SyncJournalFileRecord &record) {
+        if (!getFileRecordsByFileId(conflict.baseFileId, [&result](const SyncJournalFileRecord &record) {
             if (!record._path.isEmpty())
                 result = record._path;
-        });
+        })) {
+            qCWarning(lcDb) << "conflictFileBaseName failed to getFileRecordsByFileId: " << conflictName;
+        }
     }
 
     if (result.isEmpty()) {
