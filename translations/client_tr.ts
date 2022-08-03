@@ -827,12 +827,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities …</source>
+        <source>Fetching activities…</source>
         <translation>İşlemler alınıyor…</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities…</source>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <source>Fetching activities …</source>
         <translation>İşlemler alınıyor…</translation>
     </message>
     <message>
@@ -4475,14 +4475,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Dosya bırakma (yalnızca yükleme)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Password Protect</source>
-        <translation>Parola koruması</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
         <source>Allow editing</source>
         <translation>Düzenlenebilsin</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
+        <source>Password Protect</source>
+        <translation>Parola koruması</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
@@ -4495,24 +4495,24 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Yüklenebilsin ve düzenlenebilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>Expiration Date</source>
-        <translation>Son kullanma tarihi</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
         <source>File drop (upload only)</source>
         <translation>Dosya bırakma (yalnızca yükleme)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
-        <source>Unshare</source>
-        <translation>Paylaşımdan kaldır</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
+        <source>Expiration Date</source>
+        <translation>Son kullanma tarihi</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation>Bağlantı adı</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
+        <source>Unshare</source>
+        <translation>Paylaşımdan kaldır</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
@@ -5746,7 +5746,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 üzerindeki %2 kullanıcısı oturumunu kapattınız. Lütfen yeniden oturum açın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation>%2 üzerindeki %1 hesabınızın oturumunu kapattınız. Lütfen yeniden oturum açın.</translation>
     </message>
@@ -5756,7 +5756,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Lütfen şu kullanıcı ile oturum açın: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
         <translation>Lütfen şu hesap ile oturum açın: %1</translation>
     </message>

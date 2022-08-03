@@ -827,12 +827,12 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities …</source>
+        <source>Fetching activities…</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities…</source>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <source>Fetching activities …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -4451,14 +4451,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Fil Drop (Kun Upload)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Password Protect</source>
-        <translation>Beskyt med Adgangskode</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
         <source>Allow editing</source>
         <translation>Tillad redigering</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
+        <source>Password Protect</source>
+        <translation>Beskyt med Adgangskode</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
@@ -4471,24 +4471,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Tillad upload og redigering</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>Expiration Date</source>
-        <translation>Udløbsdato</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
         <source>File drop (upload only)</source>
         <translation>Fil drop (kun upload)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
-        <source>Unshare</source>
-        <translation>Ophæv deling</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
+        <source>Expiration Date</source>
+        <translation>Udløbsdato</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
+        <source>Unshare</source>
+        <translation>Ophæv deling</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
@@ -5722,7 +5722,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Du er blevet logget ud som brugeren %2 på %1. Log venligst ind igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation type="unfinished"/>
     </message>
@@ -5732,7 +5732,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Log venligst ind med brugeren: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
         <translation type="unfinished"/>
     </message>

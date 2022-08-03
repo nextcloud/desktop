@@ -827,12 +827,12 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities …</source>
+        <source>Fetching activities…</source>
         <translation>アクティビティを取得中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
-        <source>Fetching activities…</source>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <source>Fetching activities …</source>
         <translation>アクティビティを取得中...</translation>
     </message>
     <message>
@@ -4471,14 +4471,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイルドロップ(アップロードのみ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Password Protect</source>
-        <translation>パスワード保護</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
         <source>Allow editing</source>
         <translation>編集を許可</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
+        <source>Password Protect</source>
+        <translation>パスワード保護</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
@@ -4491,24 +4491,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>アップロードと編集を許可</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>Expiration Date</source>
-        <translation>有効期限</translation>
-    </message>
-    <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
         <source>File drop (upload only)</source>
         <translation>ファイルドロップ(アップロードのみ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
-        <source>Unshare</source>
-        <translation>共有解除</translation>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
+        <source>Expiration Date</source>
+        <translation>有効期限</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
         <source>Link name</source>
         <translation>リンク名</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="220"/>
+        <source>Unshare</source>
+        <translation>共有解除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
@@ -5742,7 +5742,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ユーザー %2 として %1 からログアウトしました。もう一度ログインしてください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
         <translation type="unfinished"/>
     </message>
@@ -5752,7 +5752,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ユーザーと一緒にログインしてください：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
         <translation type="unfinished"/>
     </message>
