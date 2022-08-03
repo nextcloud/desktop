@@ -16,7 +16,12 @@
 
 #include "accessmanager.h"
 #include "setupwizardwindow.h"
+
 #include <QtGlobal>
+
+namespace OCC {
+class SettingsDialog;
+}
 
 namespace OCC::Wizard {
 
@@ -31,7 +36,7 @@ class SetupWizardContext : public QObject
     Q_DISABLE_COPY_MOVE(SetupWizardContext)
 
 public:
-    explicit SetupWizardContext(QWidget *windowParent, QObject *parent);
+    explicit SetupWizardContext(SettingsDialog *windowParent, QObject *parent);
     ~SetupWizardContext() override;
 
     /**

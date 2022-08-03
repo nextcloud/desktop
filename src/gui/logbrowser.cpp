@@ -39,11 +39,12 @@ namespace OCC {
 // ==============================================================================
 
 LogBrowser::LogBrowser(QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent, Qt::Sheet)
     , ui(new Ui::LogBrowser)
 {
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     ui->setupUi(this);
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->warningLabel->setPixmap(Utility::getCoreIcon(QStringLiteral("warning")).pixmap(ui->warningLabel->size()));
     ui->locationLabel->setText(Logger::instance()->temporaryFolderLogDirPath());

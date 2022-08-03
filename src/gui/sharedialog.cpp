@@ -46,7 +46,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     SharePermissions maxSharingPermissions,
     ShareDialogStartPage startPage,
     QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent, Qt::Sheet)
     , _ui(new Ui::ShareDialog)
     , _accountState(accountState)
     , _sharePath(sharePath)
@@ -58,7 +58,8 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     , _progressIndicator(nullptr)
     , _baseUrl(baseUrl)
 {
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("SharingDialog");
 

@@ -16,6 +16,7 @@
 
 #include "account.h"
 #include "enums.h"
+#include "gui/settingsdialog.h"
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
 #include "setupwizardcontext.h"
@@ -36,7 +37,7 @@ class SetupWizardController : public QObject
     Q_OBJECT
 
 public:
-    explicit SetupWizardController(QWidget *parent);
+    explicit SetupWizardController(SettingsDialog *parent);
     ~SetupWizardController() noexcept override;
 
     /**

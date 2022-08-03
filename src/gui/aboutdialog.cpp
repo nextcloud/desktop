@@ -20,10 +20,11 @@
 namespace OCC {
 
 AboutDialog::AboutDialog(QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent, Qt::Sheet)
     , ui(new Ui::AboutDialog)
 {
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     ui->setupUi(this);
     setWindowTitle(tr("About %1").arg(Theme::instance()->appNameGUI()));
     ui->aboutText->setText(Theme::instance()->about());

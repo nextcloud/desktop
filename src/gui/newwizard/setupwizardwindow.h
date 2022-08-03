@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "3rdparty/QProgressIndicator/QProgressIndicator.h"
+#include "gui/settingsdialog.h"
 #include "navigation.h"
 #include "pages/abstractsetupwizardpage.h"
 #include "setupwizardaccountbuilder.h"
@@ -41,7 +41,7 @@ class SetupWizardWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SetupWizardWindow(QWidget *parent);
+    explicit SetupWizardWindow(SettingsDialog *parent);
     ~SetupWizardWindow() noexcept override;
 
     /**

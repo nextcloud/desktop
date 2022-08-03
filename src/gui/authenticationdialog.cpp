@@ -23,10 +23,13 @@
 namespace OCC {
 
 AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent, Qt::Sheet)
     , _user(new QLineEdit)
     , _password(new QLineEdit)
 {
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+
     setWindowTitle(tr("Authentication Required"));
     QVBoxLayout *lay = new QVBoxLayout(this);
     QLabel *label = new QLabel(tr("Enter username and password for '%1' at %2.").arg(realm, domain));

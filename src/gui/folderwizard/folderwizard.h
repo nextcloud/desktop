@@ -75,7 +75,7 @@ public:
         QStringList selectiveSyncBlackList;
     };
 
-    explicit FolderWizard(const AccountStatePtr &account, QWidget *parent = nullptr, Qt::WindowFlags flags = {});
+    explicit FolderWizard(const AccountStatePtr &account, QWidget *parent = nullptr);
     ~FolderWizard() override;
 
     Result result();

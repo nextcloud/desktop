@@ -23,9 +23,11 @@
 namespace OCC {
 
 AskForOAuthLoginDialog::AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *parent)
-    : QDialog(parent)
+    : QDialog(parent, Qt::Sheet)
     , _ui(new ::Ui::AskForOAuthLoginDialog)
 {
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     _ui->setupUi(this);
 
     _ui->label->setText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(accountPtr->displayName()));

@@ -13,10 +13,11 @@
  */
 
 #include "setupwizardcontext.h"
+#include "gui/settingsdialog.h"
 
 namespace OCC::Wizard {
 
-SetupWizardContext::SetupWizardContext(QWidget *windowParent, QObject *parent)
+SetupWizardContext::SetupWizardContext(SettingsDialog *windowParent, QObject *parent)
     : QObject(parent)
     , _window(new SetupWizardWindow(windowParent))
 {

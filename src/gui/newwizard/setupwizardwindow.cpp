@@ -29,11 +29,12 @@ namespace OCC::Wizard {
 
 Q_LOGGING_CATEGORY(lcSetupWizardWindow, "setupwizard.window")
 
-SetupWizardWindow::SetupWizardWindow(QWidget *parent)
-    : QDialog(parent)
+SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
+    : QDialog(parent, Qt::Sheet)
     , _ui(new ::Ui::SetupWizardWindow)
 {
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     _ui->setupUi(this);
 

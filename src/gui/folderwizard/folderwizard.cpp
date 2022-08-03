@@ -149,11 +149,12 @@ bool FolderWizardPrivate::useVirtualFiles() const
     return useVirtualFiles;
 }
 
-FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent, Qt::WindowFlags flags)
-    : QWizard(parent, flags)
+FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent)
+    : QWizard(parent, Qt::Sheet)
     , d_ptr(new FolderWizardPrivate(this, account))
 {
-    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    setWindowModality(Qt::ApplicationModal);
+    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     setWindowTitle(tr("Add Folder Sync Connection"));
     setOptions(QWizard::CancelButtonOnLeft);
     setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));
