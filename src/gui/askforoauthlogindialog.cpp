@@ -54,6 +54,7 @@ AskForOAuthLoginDialog::AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *p
         auto link = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials())->authorisationLink().toString();
         ocApp()->clipboard()->setText(link);
     });
+    connect(_ui->logoutButton, &QPushButton::clicked, this, &QDialog::reject);
 }
 
 AskForOAuthLoginDialog::~AskForOAuthLoginDialog()

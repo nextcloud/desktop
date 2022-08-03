@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>435</width>
+    <width>445</width>
     <height>135</height>
    </rect>
   </property>
@@ -92,6 +92,13 @@
        <property name="icon">
         <iconset resource="../resources/client.qrc">
          <normaloff>:/client/resources/light/clipboard.svg</normaloff>:/client/resources/light/clipboard.svg</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="logoutButton">
+       <property name="text">
+        <string>Log out</string>
        </property>
       </widget>
      </item>
