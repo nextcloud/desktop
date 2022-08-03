@@ -1656,7 +1656,6 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
 
     QByteArray out(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
     int len = 0;
-    int total_len = 0;
 
     qCDebug(lcCse) << "Starting to encrypt the file" << input->fileName() << input->atEnd();
     while(!input->atEnd()) {
@@ -1673,7 +1672,6 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         }
 
         output->write(out, len);
-        total_len += len;
     }
 
     if(1 != EVP_EncryptFinal_ex(ctx, unsignedData(out), &len)) {
@@ -1681,7 +1679,6 @@ bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &i
         return false;
     }
     output->write(out, len);
-    total_len += len;
 
     /* Get the e2EeTag */
     QByteArray e2EeTag(OCC::Constants::e2EeTagSize, '\0');
@@ -1865,7 +1862,6 @@ QByteArray EncryptionHelper::StreamingDecryptor::chunkDecryption(const char *inp
         return QByteArray();
     }
 
-    qint64 bytesWritten = 0;
     qint64 inputPos = 0;
 
     QByteArray decryptedBlock(blockSize + OCC::Constants::e2EeTagSize - 1, '\0');
@@ -1893,8 +1889,6 @@ QByteArray EncryptionHelper::StreamingDecryptor::chunkDecryption(const char *inp
             qCritical(lcCse()) << "Failed to write decrypted data to device.";
             return QByteArray();
         }
-
-        bytesWritten += writtenToOutput;
 
         // advance input position for further read
         inputPos += encryptedBlock.size();
@@ -1933,8 +1927,6 @@ QByteArray EncryptionHelper::StreamingDecryptor::chunkDecryption(const char *inp
             qCritical(lcCse()) << "Failed to write decrypted data to device.";
             return QByteArray();
         }
-
-        bytesWritten += writtenToOutput;
 
         _decryptedSoFar += OCC::Constants::e2EeTagSize;
 

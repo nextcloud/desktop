@@ -84,8 +84,8 @@ cp ./usr/share/icons/hicolor/512x512/apps/*.png . # Workaround for linuxeployqt 
 # Because distros need to get their shit together
 cp -R /usr/lib/x86_64-linux-gnu/libssl.so* ./usr/lib/
 cp -R /usr/lib/x86_64-linux-gnu/libcrypto.so* ./usr/lib/
-cp -P /usr/local/lib/libssl.so* ./usr/lib/
-cp -P /usr/local/lib/libcrypto.so* ./usr/lib/
+cp -P /usr/local/lib*/libssl.so* ./usr/lib/
+cp -P /usr/local/lib*/libcrypto.so* ./usr/lib/
 
 # NSS fun
 cp -P -r /usr/lib/x86_64-linux-gnu/nss ./usr/lib/
