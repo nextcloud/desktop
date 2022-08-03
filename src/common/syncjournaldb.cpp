@@ -1721,7 +1721,9 @@ void SyncJournalDb::deleteStaleFlagsEntries()
         return;
 
     SqlQuery delQuery("DELETE FROM flags WHERE path != '' AND path NOT IN (SELECT path from metadata);", _db);
-    delQuery.exec();
+    if (!delQuery.exec()) {
+        sqlFail(QStringLiteral("deleteStaleFlagsEntries"), delQuery);
+    }
 }
 
 int SyncJournalDb::errorBlackListEntryCount()
@@ -1862,14 +1864,18 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo &info)
         qCDebug(lcDb) << "Deleting Poll job" << info._file;
         SqlQuery query("DELETE FROM async_poll WHERE path=?", _db);
         query.bindValue(1, info._file);
-        query.exec();
+        if (!query.exec()) {
+            sqlFail(QStringLiteral("setPollInfo DELETE FROM async_poll"), query);
+        }
     } else {
         SqlQuery query("INSERT OR REPLACE INTO async_poll (path, modtime, filesize, pollpath) VALUES( ? , ? , ? , ? )", _db);
         query.bindValue(1, info._file);
         query.bindValue(2, info._modtime);
         query.bindValue(3, info._fileSize);
         query.bindValue(4, info._url);
-        query.exec();
+        if (!query.exec()) {
+            sqlFail(QStringLiteral("setPollInfo INSERT OR REPLACE INTO async_poll"), query);
+        }
     }
 }
 
@@ -1955,7 +1961,10 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
     SqlQuery query(_db);
     query.prepare("UPDATE metadata SET fileid = '', inode = '0' WHERE " IS_PREFIX_PATH_OR_EQUAL("?1", "path"));
     query.bindValue(1, path);
-    query.exec();
+
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("avoidRenamesOnNextSync path: %1").arg(QString::fromUtf8(path)), query);
+    }
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
     // on the next sync
@@ -1980,7 +1989,10 @@ void SyncJournalDb::schedulePathForRemoteDiscovery(const QByteArray &fileName)
     // Note: CSYNC_FTW_TYPE_DIR == 2
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE " IS_PREFIX_PATH_OR_EQUAL("path", "?1") " AND type == 2;");
     query.bindValue(1, argument);
-    query.exec();
+
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("schedulePathForRemoteDiscovery path: %1").arg(QString::fromUtf8(fileName)), query);
+    }
 
     // Prevent future overwrite of the etags of this folder and all
     // parent folders for this sync
@@ -2009,7 +2021,10 @@ void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
     qCInfo(lcDb) << "Forcing remote re-discovery by deleting folder Etags";
     SqlQuery deleteRemoteFolderEtagsQuery(_db);
     deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
-    deleteRemoteFolderEtagsQuery.exec();
+
+    if (!deleteRemoteFolderEtagsQuery.exec()) {
+        sqlFail(QStringLiteral("forceRemoteDiscoveryNextSyncLocked"), deleteRemoteFolderEtagsQuery);
+    }
 }
 
 
@@ -2214,7 +2229,10 @@ void SyncJournalDb::clearFileTable()
     QMutexLocker lock(&_mutex);
     SqlQuery query(_db);
     query.prepare("DELETE FROM metadata;");
-    query.exec();
+
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("clearFileTable"), query);
+    }
 }
 
 void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path)
@@ -2228,7 +2246,10 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
                    "(" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '') "
                    "AND type=4;", _db);
     query.bindValue(1, path);
-    query.exec();
+
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET type=5 path: %1").arg(QString::fromUtf8(path)), query);
+    }
 
     // We also must make sure we do not read the files from the database (same logic as in schedulePathForRemoteDiscovery)
     // This includes all the parents up to the root, but also all the directory within the selected dir.
@@ -2236,7 +2257,10 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     query.prepare("UPDATE metadata SET md5='_invalid_' WHERE "
                   "(" IS_PREFIX_PATH_OF("?1", "path") " OR ?1 == '' OR " IS_PREFIX_PATH_OR_EQUAL("path", "?1") ") AND type == 2;");
     query.bindValue(1, path);
-    query.exec();
+
+    if (!query.exec()) {
+        sqlFail(QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET md5='_invalid_' path: %1").arg(QString::fromUtf8(path)), query);
+    }
 }
 
 Optional<PinState> SyncJournalDb::PinStateInterface::rawForPath(const QByteArray &path)
@@ -2366,7 +2390,12 @@ SyncJournalDb::PinStateInterface::rawList()
         return {};
 
     SqlQuery query("SELECT path, pinState FROM flags;", _db->_db);
-    query.exec();
+
+    if (!query.exec()) {
+        qCWarning(lcDb) << "SQL Error" << "PinStateInterface::rawList" << query.error();
+        _db->close();
+        ASSERT(false);
+    }
 
     QVector<QPair<QByteArray, PinState>> result;
     forever {
