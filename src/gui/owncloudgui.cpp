@@ -12,23 +12,31 @@
  * for more details.
  */
 
-#include "application.h"
 #include "owncloudgui.h"
-#include "theme.h"
-#include "folderman.h"
-#include "progressdispatcher.h"
-#include "owncloudsetupwizard.h"
-#include "sharedialog.h"
-#include "settingsdialog.h"
-#include "logger.h"
-#include "logbrowser.h"
+
 #include "account.h"
-#include "accountstate.h"
-#include "openfilemanager.h"
 #include "accountmanager.h"
+#include "accountstate.h"
+#include "application.h"
+#include "callstatechecker.h"
+#include "emojimodel.h"
+#include "fileactivitylistmodel.h"
+#include "folderman.h"
+#include "guiutility.h"
+#include "logbrowser.h"
+#include "logger.h"
+#include "openfilemanager.h"
+#include "owncloudsetupwizard.h"
+#include "progressdispatcher.h"
+#include "settingsdialog.h"
+#include "sharedialog.h"
+#include "theme.h"
+#include "wheelhandler.h"
 #include "common/syncjournalfilerecord.h"
 #include "creds/abstractcredentials.h"
-#include "guiutility.h"
+#include "tray/syncstatussummary.h"
+#include "tray/unifiedsearchresultslistmodel.h"
+
 #ifdef WITH_LIBCLOUDPROVIDERS
 #include "cloudproviders/cloudprovidermanager.h"
 #endif
@@ -107,6 +115,26 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowOptionalTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
+
+    qmlRegisterType<SyncStatusSummary>("com.nextcloud.desktopclient", 1, 0, "SyncStatusSummary");
+    qmlRegisterType<EmojiModel>("com.nextcloud.desktopclient", 1, 0, "EmojiModel");
+    qmlRegisterType<UserStatusSelectorModel>("com.nextcloud.desktopclient", 1, 0, "UserStatusSelectorModel");
+    qmlRegisterType<ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "ActivityListModel");
+    qmlRegisterType<ActivityListModel>("com.nextcloud.desktopclient", 1, 0, "FileActivityListModel");
+    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
+    qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
+
+    qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
+    qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
+
+    qRegisterMetaTypeStreamOperators<Emoji>();
+    qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
+    qRegisterMetaType<UserStatus>("UserStatus");
+
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Theme", Theme::instance());
+    qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "Systray", Systray::instance());
 }
 
 void ownCloudGui::createTray()
