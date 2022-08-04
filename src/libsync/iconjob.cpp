@@ -21,7 +21,7 @@ IconJob::IconJob(AccountPtr account, const QUrl &url, QObject *parent)
 {
     QNetworkRequest request(url);
 #if (QT_VERSION >= 0x050600)
-    request.setAttribute(QNetworkRequest::FollowRedirectsAttribute, true);
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, true);
 #endif
     const auto reply = account->sendRawRequest(QByteArrayLiteral("GET"), url, request);
     connect(reply, &QNetworkReply::finished, this, &IconJob::finished);
