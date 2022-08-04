@@ -430,7 +430,7 @@ private:
 
     void checkLocalPath();
 
-    void setSyncOptions();
+    SyncOptions initializeSyncOptions() const;
 
     enum LogStatus {
         LogStatusRemove,

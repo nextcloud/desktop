@@ -81,8 +81,11 @@ static const std::chrono::milliseconds s_touchedFilesMaxAgeMs(3 * 1000);
 // doc in header
 std::chrono::milliseconds SyncEngine::minimumFileAgeForUpload(2000);
 
-SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
-    const QString &remotePath, OCC::SyncJournalDb *journal)
+SyncEngine::SyncEngine(AccountPtr account,
+                       const QString &localPath,
+                       const SyncOptions &syncOptions,
+                       const QString &remotePath,
+                       OCC::SyncJournalDb *journal)
     : _account(account)
     , _needsUpdate(false)
     , _syncRunning(false)
@@ -94,6 +97,7 @@ SyncEngine::SyncEngine(AccountPtr account, const QString &localPath,
     , _hasRemoveFile(false)
     , _uploadLimit(0)
     , _downloadLimit(0)
+    , _syncOptions(syncOptions)
     , _anotherSyncNeeded(NoFollowUpSync)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
