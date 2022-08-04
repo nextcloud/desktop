@@ -177,7 +177,7 @@ private slots:
                 return waitAndChain(waitForeverCallback)(tc, request);
             })));
 
-        fakeFolder.syncJournal().wipeErrorBlacklist();
+        QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
 
         // This second sync will redo the files that had errors
         // But the waiting folder will not complete before it is aborted.

@@ -67,7 +67,7 @@ bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const Syn
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
 {
     SyncJournalFileRecord record;
-    folder.syncJournal().getFileRecord(path, &record);
+    [[maybe_unused]] const auto result = folder.syncJournal().getFileRecord(path, &record);
     return record;
 }
 
@@ -75,11 +75,11 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    journal.getFileRecord(path, &record);
-    if (!record.isValid())
+    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
         return;
+    }
     record._type = ItemTypeVirtualFileDownload;
-    journal.setFileRecord(record);
+    QVERIFY(journal.setFileRecord(record));
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -87,11 +87,11 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    journal.getFileRecord(path, &record);
-    if (!record.isValid())
+    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
         return;
+    }
     record._type = ItemTypeVirtualFileDehydration;
-    journal.setFileRecord(record);
+    QVERIFY(journal.setFileRecord(record));
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -237,8 +237,8 @@ private slots:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a3").size(), 33);
         cleanup();
 
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2");
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3");
+        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2"));
+        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3"));
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
@@ -456,7 +456,7 @@ private slots:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            fakeFolder.syncJournal().wipeErrorBlacklist();
+            QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
         };
         cleanup();
 
@@ -735,8 +735,7 @@ private slots:
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord rec;
-            fakeFolder.syncJournal().getFileRecord(path, &rec);
-            return rec.isValid() && rec._type == ItemTypeVirtualFile;
+            return fakeFolder.syncJournal().getFileRecord(path, &rec) && rec.isValid() && rec._type == ItemTypeVirtualFile;
         };
 
         QVERIFY(isDehydrated("A/a1"));
