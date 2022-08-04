@@ -17,8 +17,6 @@
 #include "socketapi.h"
 #include "socketapi_p.h"
 
-#include "socketapi/socketuploadjob.h"
-
 #include "account.h"
 #include "accountmanager.h"
 #include "accountstate.h"
@@ -851,12 +849,6 @@ void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &j
             { QStringLiteral("uuid"), acc->account()->uuid().toString(QUuid::WithoutBraces) } });
     }
     job->success({ { QStringLiteral("accounts"), out } });
-}
-
-void SocketApi::command_V2_UPLOAD_FILES_FROM(const QSharedPointer<SocketApiJobV2> &job) const
-{
-    auto uploadJob = new SocketUploadJob(job);
-    uploadJob->start();
 }
 
 void SocketApi::command_V2_GET_CLIENT_ICON(const QSharedPointer<SocketApiJobV2> &job) const

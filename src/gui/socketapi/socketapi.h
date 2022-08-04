@@ -127,7 +127,6 @@ private:
 
     // External sync
     Q_INVOKABLE void command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const;
-    Q_INVOKABLE void command_V2_UPLOAD_FILES_FROM(const QSharedPointer<SocketApiJobV2> &job) const;
 
     // Sends the id and the client icon as PNG image (base64 encoded) in Json key "png"
     // e.g. { "id" : "1", "arguments" : { "png" : "hswehs343dj8..." } } or an error message in key "error"
