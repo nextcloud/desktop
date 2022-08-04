@@ -45,12 +45,17 @@ void VfsSuffix::startImpl(const VfsSetupParams &params)
     // that are not marked as a virtual file. These could be real .owncloud
     // files that were synced before vfs was enabled.
     QByteArrayList toWipe;
-    params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
+    if (!params.journal->getFilesBelowPath("", [&toWipe](const SyncJournalFileRecord &rec) {
         if (!rec.isVirtualFile() && rec._path.endsWith(APPLICATION_DOTVIRTUALFILE_SUFFIX))
             toWipe.append(rec._path);
-    });
-    for (const auto &path : toWipe)
-        params.journal->deleteFileRecord(path);
+    })) {
+        qWarning() << "Could not get files below path \"\" from local DB";
+    }
+    for (const auto &path : toWipe) {
+        if (!params.journal->deleteFileRecord(path)) {
+            qWarning() << "Failed to delete file record from local DB" << path;
+        }
+    }
 }
 
 void VfsSuffix::stop()
