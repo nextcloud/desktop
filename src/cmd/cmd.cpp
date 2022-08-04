@@ -504,7 +504,7 @@ restart_sync:
     SyncOptions opt;
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
-    SyncEngine engine(account, options.source_dir, folder, &db);
+    SyncEngine engine(account, options.source_dir, opt, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
     QObject::connect(&engine, &SyncEngine::finished,
