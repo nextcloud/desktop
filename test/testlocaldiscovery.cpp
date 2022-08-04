@@ -153,7 +153,7 @@ private slots:
         QVERIFY(!trackerContains("A/spurious")); // removed due to full discovery
 
         fakeFolder.serverErrorPaths().clear();
-        fakeFolder.syncJournal().wipeErrorBlacklist();
+        QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
         tracker.addTouchedPath("A/newspurious"); // will be removed due to successful sync
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
