@@ -13,6 +13,8 @@
  */
 
 #include "guiutility.h"
+#include "application.h"
+#include "settingsdialog.h"
 
 #include <QClipboard>
 #include <QApplication>
@@ -207,4 +209,13 @@ QIcon Utility::getCoreIcon(const QString &icon_name)
     const QIcon icon(QStringLiteral(":/client/resources/%1/%2").arg(path, icon_name));
     Q_ASSERT(!icon.isNull());
     return icon;
+}
+
+
+void Utility::setModal(QWidget *w)
+{
+    w->setWindowModality(Qt::ApplicationModal);
+    w->setWindowFlags(Qt::Sheet);
+    w->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    w->setParent(ocApp()->gui()->settingsDialog());
 }

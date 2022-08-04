@@ -2,6 +2,7 @@
 #include "ui_setupwizardwindow.h"
 
 #include "gui/application.h"
+#include "gui/guiutility.h"
 #include "gui/owncloudgui.h"
 #include "gui/settingsdialog.h"
 #include "theme.h"
@@ -33,8 +34,7 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     : QDialog(parent, Qt::Sheet)
     , _ui(new ::Ui::SetupWizardWindow)
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
 
     _ui->setupUi(this);
 

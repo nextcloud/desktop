@@ -66,6 +66,9 @@ namespace Utility {
     void startShutdownWatcher();
 #endif
 
+    // applies window flags and modality
+    void setModal(QWidget *w);
+
 } // namespace Utility
 } // namespace OCC
 

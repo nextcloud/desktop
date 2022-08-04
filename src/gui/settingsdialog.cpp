@@ -235,9 +235,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
         auto box = new QMessageBox(QMessageBox::Question, tr("Quit %1").arg(appNameGui),
             tr("Are you sure you want to quit %1?").arg(appNameGui), QMessageBox::Yes | QMessageBox::No, this);
         box->setAttribute(Qt::WA_DeleteOnClose);
-        box->setWindowModality(Qt::ApplicationModal);
-        box->setWindowFlags(Qt::Sheet);
-        box->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+        Utility::setModal(box);
         connect(box, &QMessageBox::accepted, this, [] {
             qApp->quit();
         });

@@ -12,11 +12,12 @@
  * for more details.
  */
 
-#include "configfile.h"
-
 #include "ignorelisteditor.h"
-#include "folderman.h"
 #include "ui_ignorelisteditor.h"
+
+#include "configfile.h"
+#include "gui/folderman.h"
+#include "gui/guiutility.h"
 
 #include <QFile>
 #include <QDir>
@@ -36,8 +37,7 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
     : QDialog(parent, Qt::Sheet)
     , ui(new Ui::IgnoreListEditor)
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
     ui->setupUi(this);
 
     ConfigFile cfgFile;

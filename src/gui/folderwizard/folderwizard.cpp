@@ -27,6 +27,7 @@
 #include "creds/abstractcredentials.h"
 #include "gui/application.h"
 #include "gui/askexperimentalvirtualfilesfeaturemessagebox.h"
+#include "gui/guiutility.h"
 #include "gui/settingsdialog.h"
 #include "networkjobs.h"
 #include "theme.h"
@@ -153,8 +154,7 @@ FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent)
     : QWizard(parent, Qt::Sheet)
     , d_ptr(new FolderWizardPrivate(this, account))
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
     setWindowTitle(tr("Add Folder Sync Connection"));
     setOptions(QWizard::CancelButtonOnLeft);
     setButtonText(QWizard::FinishButton, tr("Add Sync Connection"));

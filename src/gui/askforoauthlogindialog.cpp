@@ -13,10 +13,12 @@
  */
 
 #include "askforoauthlogindialog.h"
-#include "application.h"
-#include "creds/httpcredentialsgui.h"
-#include "theme.h"
 #include "ui_askforoauthlogindialog.h"
+
+#include "creds/httpcredentialsgui.h"
+#include "gui/application.h"
+#include "gui/guiutility.h"
+#include "theme.h"
 
 #include <QClipboard>
 
@@ -26,8 +28,7 @@ AskForOAuthLoginDialog::AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *p
     : QDialog(parent, Qt::Sheet)
     , _ui(new ::Ui::AskForOAuthLoginDialog)
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
     _ui->setupUi(this);
 
     _ui->label->setText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(accountPtr->displayName()));

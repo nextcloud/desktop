@@ -12,7 +12,8 @@
  * for more details.
  */
 
-#include "authenticationdialog.h"
+#include "gui/authenticationdialog.h"
+#include "gui/guiutility.h"
 
 #include <QLabel>
 #include <QLineEdit>
@@ -27,8 +28,7 @@ AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &
     , _user(new QLineEdit)
     , _password(new QLineEdit)
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
 
     setWindowTitle(tr("Authentication Required"));
     QVBoxLayout *lay = new QVBoxLayout(this);

@@ -13,18 +13,20 @@
  */
 
 #include "sharedialog.h"
-#include "sharee.h"
-#include "sharelinkwidget.h"
-#include "shareusergroupwidget.h"
 #include "ui_sharedialog.h"
 
+#include "gui/accountstate.h"
+#include "gui/application.h"
+#include "gui/guiutility.h"
+#include "gui/settingsdialog.h"
+#include "gui/sharee.h"
+#include "gui/sharelinkwidget.h"
+#include "gui/shareusergroupwidget.h"
+#include "gui/thumbnailjob.h"
+
 #include "account.h"
-#include "accountstate.h"
-#include "application.h"
 #include "configfile.h"
-#include "settingsdialog.h"
 #include "theme.h"
-#include "thumbnailjob.h"
 
 #include <QFileInfo>
 #include <QFileIconProvider>
@@ -58,8 +60,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     , _progressIndicator(nullptr)
     , _baseUrl(baseUrl)
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
     setAttribute(Qt::WA_DeleteOnClose);
     setObjectName("SharingDialog");
 

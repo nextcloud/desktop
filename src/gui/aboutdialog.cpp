@@ -23,8 +23,7 @@ AboutDialog::AboutDialog(QWidget *parent)
     : QDialog(parent, Qt::Sheet)
     , ui(new Ui::AboutDialog)
 {
-    setWindowModality(Qt::ApplicationModal);
-    setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    Utility::setModal(this);
     ui->setupUi(this);
     setWindowTitle(tr("About %1").arg(Theme::instance()->appNameGUI()));
     ui->aboutText->setText(Theme::instance()->about());
