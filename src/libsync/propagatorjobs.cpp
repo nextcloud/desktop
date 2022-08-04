@@ -79,7 +79,9 @@ bool PropagateLocalRemove::removeRecursively(const QString &path)
             if (it.second) {
                 deletedDir = it.first;
             }
-            propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second);
+            if (!propagator()->_journal->deleteFileRecord(it.first.mid(propagator()->localPath().size()), it.second)) {
+                qCWarning(lcPropagateLocalRemove) << "Failed to delete file record from local DB" << it.first.mid(propagator()->localPath().size());
+            }
         }
 
         _error = errors.join(", ");
@@ -126,7 +128,11 @@ void PropagateLocalRemove::start()
         }
     }
     propagator()->reportProgress(*_item, 0);
-    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
+    if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
+        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
+        done(SyncFileItem::NormalError, tr("could not delete file %1 from local DB").arg(_item->_originalFile));
+        return;
+    }
     propagator()->_journal->commit("Local remove");
     done(SyncFileItem::Success);
 }
@@ -243,8 +249,15 @@ void PropagateLocalRename::start()
     }
 
     SyncJournalFileRecord oldRecord;
-    propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
-    propagator()->_journal->deleteFileRecord(_item->_originalFile);
+    if (!propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord)) {
+        qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << _item->_originalFile;
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(_item->_originalFile));
+        return;
+    }
+    if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
+        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
+        done(SyncFileItem::NormalError, tr("could not delete file %1 from local DB").arg(_item->_originalFile));
+    }
 
     auto &vfs = propagator()->syncOptions()._vfs;
     auto pinState = vfs->pinState(_item->_originalFile);
