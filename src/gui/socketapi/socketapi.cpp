@@ -1149,7 +1149,9 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
     SyncJournalFileRecord record;
     if (!folder)
         return record;
-    folder->journalDb()->getFileRecord(folderRelativePath, &record);
+    if (!folder->journalDb()->getFileRecord(folderRelativePath, &record)) {
+        qCWarning(lcSocketApi) << "Failed to get journal record for path" << folderRelativePath;
+    }
     return record;
 }
 
