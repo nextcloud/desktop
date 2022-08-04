@@ -74,33 +74,6 @@ void Systray::setTrayEngine(QQmlApplicationEngine *trayEngine)
 Systray::Systray()
     : QSystemTrayIcon(nullptr)
 {
-    qmlRegisterSingletonType<UserModel>("com.nextcloud.desktopclient", 1, 0, "UserModel",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return UserModel::instance();
-        }
-    );
-
-    qmlRegisterSingletonType<UserAppsModel>("com.nextcloud.desktopclient", 1, 0, "UserAppsModel",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return UserAppsModel::instance();
-        }
-    );
-
-    qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Theme",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return Theme::instance();
-        }
-    );
-
-    qmlRegisterSingletonType<Systray>("com.nextcloud.desktopclient", 1, 0, "Systray",
-        [](QQmlEngine *, QJSEngine *) -> QObject * {
-            return Systray::instance();
-        }
-    );
-
-    qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
-    qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
-
 #if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     setUserNotificationCenterDelegate();
     checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
