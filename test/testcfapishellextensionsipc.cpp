@@ -150,7 +150,7 @@ private slots:
         QVERIFY(realFolder);
         for (const auto &dummyImageName : dummmyImageNames) {
             if (fakeFolder.syncJournal().getFileRecord(dummyImageName, &record)) {
-                realFolder->journalDb()->setFileRecord(record);
+                QVERIFY(realFolder->journalDb()->setFileRecord(record));
             }
         }
 
