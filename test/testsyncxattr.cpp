@@ -53,11 +53,11 @@ void triggerDownload(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    journal.getFileRecord(path, &record);
-    if (!record.isValid())
+    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
         return;
+    }
     record._type = ItemTypeVirtualFileDownload;
-    journal.setFileRecord(record);
+    QVERIFY(journal.setFileRecord(record));
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -65,11 +65,11 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 {
     auto &journal = folder.syncJournal();
     SyncJournalFileRecord record;
-    journal.getFileRecord(path, &record);
-    if (!record.isValid())
+    if (!journal.getFileRecord(path, &record) || !record.isValid()) {
         return;
+    }
     record._type = ItemTypeVirtualFileDehydration;
-    journal.setFileRecord(record);
+    QVERIFY(journal.setFileRecord(record));
     journal.schedulePathForRemoteDiscovery(record._path);
 }
 
@@ -217,8 +217,8 @@ private slots:
         QCOMPARE(dbRecord(fakeFolder, "A/a3")._fileSize, 33);
         cleanup();
 
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2");
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3");
+        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2"));
+        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3"));
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
@@ -436,7 +436,7 @@ private slots:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            QVETIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
+            QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
         };
         cleanup();
 
