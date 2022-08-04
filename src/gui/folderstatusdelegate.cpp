@@ -400,7 +400,7 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     opt.rect.setSize(QSize(e,e));
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
 
-    int margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
+    int margin = QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
     QRect r(QPoint(within.right() - size.width() - margin,
                 within.top() + within.height() / 2 - size.height() / 2),
         size);
