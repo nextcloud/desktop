@@ -171,7 +171,10 @@ SyncJournalFileRecord LockFileJob::handleReply()
                 _userId != account()->davUser()) {
             FileSystem::setFileReadOnly(relativePath, true);
         }
-        _journal->setFileRecord(record);
+        const auto result = _journal->setFileRecord(record);
+        if (!result) {
+            qCWarning(lcLockFileJob) << "Error when setting the file record to the database" << record._path << result.error();
+        }
         _journal->commit("lock file job");
     }
 
