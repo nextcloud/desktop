@@ -116,7 +116,9 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinishe
         const auto nestedItem = _nestedItems.take(encryptedFileName);
 
         if (nestedItem.isValid()) {
-            _propagator->_journal->deleteFileRecord(nestedItem._path, nestedItem._type == ItemTypeDirectory);
+            if (!_propagator->_journal->deleteFileRecord(nestedItem._path, nestedItem._type == ItemTypeDirectory)) {
+                qCWarning(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Failed to delete file record from local DB" << nestedItem._path;
+            }
             _propagator->_journal->commit("Remote Remove");
         }
     }

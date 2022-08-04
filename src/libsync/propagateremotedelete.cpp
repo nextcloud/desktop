@@ -113,7 +113,12 @@ void PropagateRemoteDelete::slotDeleteJobFinished()
         return;
     }
 
-    propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory());
+    if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
+        qCWarning(lcPropagateRemoteDelete) << "could not delete file from local DB" << _item->_originalFile;
+        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
+        return;
+    }
+
     propagator()->_journal->commit("Remote Remove");
 
     done(SyncFileItem::Success);
