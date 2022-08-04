@@ -1722,7 +1722,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Неопределенное состояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <source>Could not find an account for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1562"/>
         <source>Undefined state.</source>
         <translation type="unfinished"/>
     </message>
@@ -1767,17 +1782,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Синхронизация завершена с неразрешенными конфликтами.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
+        <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
+        <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>Setup error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>Sync request was cancelled.</source>
         <translation type="unfinished"/>
     </message>
@@ -4470,7 +4485,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Хранилище (только приём файлов)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Allow editing</source>
         <translation>Разрешить редактирование</translation>
     </message>
@@ -4480,17 +4495,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Защитить паролем</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
         <translation>Только просмотр</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Allow upload and editing</source>
         <translation>Разрешить приём и редактирование</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
         <translation>Хранилище (только приём файлов)</translation>
     </message>
@@ -4500,7 +4515,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Срок действия</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
         <translation>Название ссылки</translation>
     </message>
@@ -4510,27 +4525,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Закрыть доступ</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
         <source>Note to recipient</source>
         <translation>Примечание для получателя</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="264"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
         <source>Password protect</source>
         <translation>Защитить паролем</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="283"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
         <source>Set expiration date</source>
         <translation>Установить срок действия</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
         <translation>Удалить ссылку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="310"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
         <source>Add another link</source>
         <translation>Добавить другую ссылку</translation>
     </message>
@@ -4540,27 +4555,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Удалить ссылку</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Подтверждение закрытия доступа по ссылке</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="507"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Действительно закрыть доступ по ссылке «&lt;i&gt;%1&lt;/i&gt;»?&lt;/p&gt;&lt;p&gt;Внимание: это действие будет невозможно отменить.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="513"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="514"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
         <source>Public link</source>
         <translation>Общедоступная ссылка</translation>
     </message>
@@ -5736,7 +5751,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Выполнен выход пользователя %2 из системы %1. Войдите заново</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
         <translation>Выполнен выход пользователя %2 из системы %1. Войдите заново</translation>
     </message>
@@ -5746,7 +5761,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the user: %1</source>
         <translation>Войдите в систему под именем %1</translation>
     </message>

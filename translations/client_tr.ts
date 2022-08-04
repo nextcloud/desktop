@@ -609,7 +609,7 @@ Eşitlemenin tamamlanmasını bekleyip klasörü şifreleyin</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="754"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; klasörünün eşitlemesini durdurmayı istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; klasörünün eşitlemesini durdurmak istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="761"/>
@@ -762,7 +762,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1357"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını kaldırmayı istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını kaldırmak istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1362"/>
@@ -1726,7 +1726,22 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <translation>Tanımlanmamış durum.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <source>Could not find an account for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1562"/>
         <source>Undefined state.</source>
         <translation>Tanımlanmamış durum.</translation>
     </message>
@@ -1771,17 +1786,17 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <translation>Eşitleme çözülememiş çakışmalar ile tamamlandı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
+        <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Last sync was successful.</source>
         <translation>Son eşitleme başarılıydı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
+        <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>Setup error.</source>
         <translation>Kurulum sorunu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>Sync request was cancelled.</source>
         <translation>Eşitleme isteği iptal edildi.</translation>
     </message>
@@ -4475,7 +4490,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Dosya bırakma (yalnızca yükleme)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Allow editing</source>
         <translation>Düzenlenebilsin</translation>
     </message>
@@ -4485,17 +4500,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Parola koruması</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
         <translation>Yalnızca görüntüleme</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Allow upload and editing</source>
         <translation>Yüklenebilsin ve düzenlenebilsin</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
         <translation>Dosya bırakma (yalnızca yükleme)</translation>
     </message>
@@ -4505,7 +4520,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Son kullanma tarihi</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
         <translation>Bağlantı adı</translation>
     </message>
@@ -4515,27 +4530,27 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Paylaşımdan kaldır</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
         <source>Note to recipient</source>
         <translation>Alıcıya not</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="264"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
         <source>Password protect</source>
         <translation>Parola koruması</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="283"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
         <source>Set expiration date</source>
         <translation>Son kullanma tarihini ayarla</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
         <translation>Bağlantıyı sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="310"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
         <source>Add another link</source>
         <translation>Başka bir bağlantı ekle</translation>
     </message>
@@ -4545,27 +4560,27 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Paylaşım bağlantısını sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Bağlantı paylaşımını silmeyi onayla</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="507"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; herkese açık bağlantısını silmek istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem geri alınamaz.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; herkese açık bağlantısını silmek istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem geri alınamaz.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="513"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
         <source>Delete</source>
         <translation>Sil</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="514"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
         <source>Public link</source>
         <translation>Herkese açık bağlantı</translation>
     </message>
@@ -5547,7 +5562,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1043"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Gerçekten &lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını silmeyi istiyor musunuz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;i&gt;%1&lt;/i&gt; hesabının bağlantısını silmek istediğinize emin misiniz?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Not:&lt;/b&gt; Bu işlem herhangi bir dosyayı &lt;b&gt;silmez&lt;/b&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1048"/>
@@ -5741,7 +5756,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%1 üzerindeki %2 kullanıcısı oturumunuzu kapattınız. Lütfen yeniden oturum açın</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
         <translation>%1 üzerindeki %2 kullanıcısı oturumunu kapattınız. Lütfen yeniden oturum açın.</translation>
     </message>
@@ -5751,7 +5766,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>%2 üzerindeki %1 hesabınızın oturumunu kapattınız. Lütfen yeniden oturum açın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the user: %1</source>
         <translation>Lütfen şu kullanıcı ile oturum açın: %1</translation>
     </message>
