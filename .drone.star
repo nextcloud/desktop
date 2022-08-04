@@ -70,7 +70,11 @@ def main(ctx):
             "Ninja",
             trigger = cron_trigger,
         )
-        gui_tests = gui_test_pipeline(ctx, trigger = cron_trigger)
+
+        # owncloudci/squish image is not working as expected
+        # Skipping GUI test pipeline until the following issue is resolved:
+        # https://github.com/owncloud-ci/squish/issues/34
+        gui_tests = []  # gui_test_pipeline(ctx, trigger = cron_trigger)
         notify = notification(
             name = "build",
             trigger = cron_trigger,
@@ -81,8 +85,11 @@ def main(ctx):
                     gui_tests_format(build_trigger) + \
                     check_starlark(build_trigger) + \
                     changelog(ctx, trigger = build_trigger) + \
-                    unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
-                    gui_test_pipeline(ctx, trigger = build_trigger, version = "latest")
+                    unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger)
+        # owncloudci/squish image is not working as expected
+        # Skipping GUI test pipeline until the following issue is resolved:
+        # https://github.com/owncloud-ci/squish/issues/34
+        # gui_test_pipeline(ctx, trigger = build_trigger, version = "latest")
 
     return pipelines
 
