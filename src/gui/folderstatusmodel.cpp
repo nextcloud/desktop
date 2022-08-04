@@ -743,7 +743,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._path = relativePath;
 
         SyncJournalFileRecord rec;
-        parentInfo->_folder->journalDb()->getFileRecordByE2eMangledName(removeTrailingSlash(relativePath), &rec);
+        if (!parentInfo->_folder->journalDb()->getFileRecordByE2eMangledName(removeTrailingSlash(relativePath), &rec)) {
+            qCWarning(lcFolderStatus) << "Could not get file record by E2E Mangled Name from local DB" << removeTrailingSlash(relativePath);
+        }
         if (rec.isValid()) {
             newInfo._name = removeTrailingSlash(rec._path).split('/').last();
             if (rec._isE2eEncrypted && !rec._e2eMangledName.isEmpty()) {
