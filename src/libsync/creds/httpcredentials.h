@@ -17,6 +17,7 @@
 #define MIRALL_CREDS_HTTP_CREDENTIALS_H
 
 #include "creds/abstractcredentials.h"
+#include "creds/oauth.h"
 #include "networkjobs.h"
 
 #include <QMap>
@@ -91,7 +92,7 @@ protected:
 
     QString _fetchErrorString;
     bool _ready = false;
-    QPointer<OAuth> _oAuthJob;
+    QPointer<AccountBasedOAuth> _oAuthJob;
     bool _retryOnKeyChainError = true; // true if we haven't done yet any reading from keychain
 
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;

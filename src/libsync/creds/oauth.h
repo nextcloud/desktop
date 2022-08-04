@@ -64,7 +64,6 @@ public:
     // TODO: consider deleting default copy/move constructors
 
     virtual void startAuthentication();
-    void refreshAuthentication(const QString &refreshToken);
     void openBrowser();
     QUrl authorisationLink() const;
 
@@ -80,9 +79,6 @@ Q_SIGNALS:
      */
     void authorisationLinkChanged();
 
-    void refreshError(QNetworkReply::NetworkError error, const QString &errorString);
-    void refreshFinished(const QString &accessToken, const QString &refreshToken);
-
     void fetchWellKnownFinished();
 
     void dynamicRegistrationDataReceived(const QVariantMap &dynamicRegistrationData);
@@ -94,25 +90,26 @@ protected:
     QNetworkAccessManager *_networkAccessManager;
     bool _isRefreshingToken = false;
 
+    QString _clientId;
+    QString _clientSecret;
+
+    QUrl _registrationEndpoint;
+
     virtual void fetchWellKnown();
+
+    QNetworkReply *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
 
 
 private:
     void finalize(const QPointer<QTcpSocket> &socket, const QString &accessToken, const QString &refreshToken, const QString &userName, const QString &displayName, const QUrl &messageUrl);
-
-    QNetworkReply *postTokenRequest(const QList<QPair<QString, QString>> &queryItems);
 
     QByteArray generateRandomString(size_t size) const;
 
     QTcpServer _server;
     bool _wellKnownFinished = false;
 
-    QString _clientId;
-    QString _clientSecret;
-
     QUrl _authEndpoint;
     QUrl _tokenEndpoint;
-    QUrl _registrationEndpoint;
     QString _redirectUrl;
     QByteArray _pkceCodeVerifier;
     QByteArray _state;
@@ -125,10 +122,18 @@ private:
  */
 class OWNCLOUDSYNC_EXPORT AccountBasedOAuth : public OAuth
 {
+    Q_OBJECT
+
 public:
     explicit AccountBasedOAuth(AccountPtr account, QObject *parent = nullptr);
 
     void startAuthentication() override;
+
+    void refreshAuthentication(const QString &refreshToken);
+
+Q_SIGNALS:
+    void refreshError(QNetworkReply::NetworkError error, const QString &errorString);
+    void refreshFinished(const QString &accessToken, const QString &refreshToken);
 
 protected:
     void fetchWellKnown() override;

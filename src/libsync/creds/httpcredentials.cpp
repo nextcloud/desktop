@@ -263,7 +263,7 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
 
     // parent with nam to ensure we reset when the nam is reset
     _oAuthJob = new AccountBasedOAuth(_account->sharedFromThis(), _account->accessManager());
-    connect(_oAuthJob, &OAuth::refreshError, this, [tokenRefreshRetriesCount, this](QNetworkReply::NetworkError error, const QString &) {
+    connect(_oAuthJob, &AccountBasedOAuth::refreshError, this, [tokenRefreshRetriesCount, this](QNetworkReply::NetworkError error, const QString &) {
         _oAuthJob->deleteLater();
         int nextTry = tokenRefreshRetriesCount + 1;
         std::chrono::seconds timeout = {};
@@ -294,7 +294,7 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
         Q_EMIT authenticationFailed();
     });
 
-    connect(_oAuthJob, &OAuth::refreshFinished, this, [this](const QString &accessToken, const QString &refreshToken) {
+    connect(_oAuthJob, &AccountBasedOAuth::refreshFinished, this, [this](const QString &accessToken, const QString &refreshToken) {
         _oAuthJob->deleteLater();
         if (refreshToken.isEmpty()) {
             // an error occured, log out
