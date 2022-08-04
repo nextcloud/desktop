@@ -220,7 +220,7 @@ private slots:
             if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/resendme") && resendActual < resendExpected) {
                 auto errorReply = new FakeErrorReply(op, request, this, 400, "ignore this body");
                 errorReply->setError(QNetworkReply::ContentReSendError, serverMessage);
-                errorReply->setAttribute(QNetworkRequest::HTTP2WasUsedAttribute, true);
+                errorReply->setAttribute(QNetworkRequest::Http2WasUsedAttribute, true);
                 errorReply->setAttribute(QNetworkRequest::HttpStatusCodeAttribute, QVariant());
                 resendActual += 1;
                 return errorReply;
