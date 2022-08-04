@@ -1726,7 +1726,22 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <translation>Ismeretlen állapot.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <source>Could not find an account for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1562"/>
         <source>Undefined state.</source>
         <translation>Nem definiált állapot.</translation>
     </message>
@@ -1771,17 +1786,17 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <translation>A szinkronizálás befejeződött, feloldatlan ütközések vannak.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
+        <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Last sync was successful.</source>
         <translation>A legutolsó szinkronizálás sikeres volt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
+        <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>Setup error.</source>
         <translation>Beállítási hiba.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>Sync request was cancelled.</source>
         <translation>Szinkronizálási kérés megszakítva.</translation>
     </message>
@@ -4475,7 +4490,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Fájl ledobás (Csak feltöltés)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Allow editing</source>
         <translation>Szerkesztés engedélyezése</translation>
     </message>
@@ -4485,17 +4500,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Jelszavas védelem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
         <translation>Csak megtekintés</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Allow upload and editing</source>
         <translation>Feltöltés és szerkesztés engedélyezése</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
         <translation>Fájl ejtés (csak feltöltés)</translation>
     </message>
@@ -4505,7 +4520,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Lejárati idő</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
         <translation>Hivatkozás neve</translation>
     </message>
@@ -4515,27 +4530,27 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Megosztás visszavonása</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
         <source>Note to recipient</source>
         <translation>Jegyzet a címzettnek</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="264"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
         <source>Password protect</source>
         <translation>Jelszavas védelem</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="283"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
         <source>Set expiration date</source>
         <translation>Lejárati idő beállítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
         <translation>Hivatkozás törlése</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="310"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
         <source>Add another link</source>
         <translation>Egyéb hivatkozás hozzáadása</translation>
     </message>
@@ -4545,27 +4560,27 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Megosztási hivatkozás törlése</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Megosztási hivatkozás törlésének megerősítése</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="507"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Tényleg törölni szeretné a(z) &lt;i&gt;%1&lt;/i&gt; nyilvános megosztási hivatkozást?&lt;/p&gt;&lt;p&gt;Megjegyzés: Ez nem vonható vissza.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="513"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
         <source>Delete</source>
         <translation>Törlés</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="514"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
         <source>Cancel</source>
         <translation>Mégse</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
         <source>Public link</source>
         <translation>Nyilvános hivatkozás</translation>
     </message>
@@ -5741,7 +5756,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Kijelentkezett a(z) %1 fiókjából, mint %2 felhasználó. Jelentkezzen be újra</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
         <translation>%2 felhasználóként kijelentkezett innen: %1. Jelentkezzen be újra.</translation>
     </message>
@@ -5751,7 +5766,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Kijelentkezett a(z) %1 fiókjából a(z) %2 oldalon. Jelentkezzen be újra.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the user: %1</source>
         <translation>Jelentkezzen be a következő felhasználóval: %1</translation>
     </message>

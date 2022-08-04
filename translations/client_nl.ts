@@ -1723,7 +1723,22 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
         <translation>Ongedefiniëerde staat</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <source>Could not find an account for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1562"/>
         <source>Undefined state.</source>
         <translation type="unfinished"/>
     </message>
@@ -1768,17 +1783,17 @@ Als dit een ongelukje was en je de bestanden wilt behouden, worden ze opnieuw ge
         <translation>Synchronisatie beëindigd met niet opgeloste conflicten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
+        <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
+        <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>Setup error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>Sync request was cancelled.</source>
         <translation type="unfinished"/>
     </message>
@@ -4477,7 +4492,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>File drop (alleen uploaden)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Allow editing</source>
         <translation>Bewerken toestaan</translation>
     </message>
@@ -4487,17 +4502,17 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Wachtwoord beveiligen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
         <translation>Alleen lezen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Allow upload and editing</source>
         <translation>Toestaan uploaden en bewerken</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
         <translation>Bestand droppen (alleen uploaden)</translation>
     </message>
@@ -4507,7 +4522,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Vervaldatum</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
         <translation>Linknaam</translation>
     </message>
@@ -4517,27 +4532,27 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Stop met delen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
         <source>Note to recipient</source>
         <translation>Notitie voor ontvanger</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="264"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
         <source>Password protect</source>
         <translation>Wachtwoord beveiligen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="283"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
         <source>Set expiration date</source>
         <translation>Stel vervaldatum in</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
         <translation>Verwijder link</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="310"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
         <source>Add another link</source>
         <translation>Toevoegen andere link</translation>
     </message>
@@ -4547,27 +4562,27 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Verwijder deellink</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Bevestig verwijderen deellink</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="507"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Wil je de openbare deellink &lt;i&gt;%1&lt;/i&gt; echt verwijderen?&lt;/p&gt;&lt;p&gt;let op: Dit kan niet ongedaan worden gemaakt.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="513"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
         <source>Delete</source>
         <translation>Verwijderen</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="514"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
         <source>Cancel</source>
         <translation>Annuleren</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
         <source>Public link</source>
         <translation>Openbare Link</translation>
     </message>
@@ -5743,7 +5758,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Je bent uitgelogd van %1 als gebruiker %2. Log opnieuw in</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
         <translation>Je bent als gebruiker %2 uitgelogd van %1. Log opnieuw in.</translation>
     </message>
@@ -5753,7 +5768,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the user: %1</source>
         <translation>Login met gebruiker: %1</translation>
     </message>

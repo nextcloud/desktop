@@ -1728,7 +1728,22 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <source>Could not find an account for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1562"/>
         <source>Undefined state.</source>
         <translation>Estado no definido.</translation>
     </message>
@@ -1773,17 +1788,17 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>La sincronización finalizó pero con conflictos sin resolver.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1516"/>
+        <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Last sync was successful.</source>
         <translation>La última sincronización se ha realizado con éxito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1522"/>
+        <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>Setup error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1525"/>
+        <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>Sync request was cancelled.</source>
         <translation>La solicitud de sincronización fue cancelada.</translation>
     </message>
@@ -4476,7 +4491,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Soltar archivo (solo subidas)</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="187"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
         <source>Allow editing</source>
         <translation>Permitir edición</translation>
     </message>
@@ -4486,17 +4501,17 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Protección con contraseña</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="193"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
         <source>View only</source>
         <translation>Solo lectura</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="199"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
         <source>Allow upload and editing</source>
         <translation>Permitir la subida y la edición</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="204"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
         <translation>Entrega de archivos (solo subida)</translation>
     </message>
@@ -4506,7 +4521,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Fecha de caducidad</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="222"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
         <translation>Nombre del enlace</translation>
     </message>
@@ -4516,27 +4531,27 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Dejar de compartir</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="254"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
         <source>Note to recipient</source>
         <translation>Nota para el destinatario</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="264"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
         <source>Password protect</source>
         <translation>Protegido por contraseña</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="283"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
         <source>Set expiration date</source>
         <translation>Fijar fecha de caducidad</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="305"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
         <translation>Borrar enlace</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="310"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
         <source>Add another link</source>
         <translation>Añadir otro enlace</translation>
     </message>
@@ -4546,27 +4561,27 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Eliminar enlace compartido</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="506"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Confirm Link Share Deletion</source>
         <translation>Confirmar eliminación de enlace de recurso compartido</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="507"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
         <translation>&lt;p&gt;¿Realmente desea borrar el enlace público compartido &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Nota: Esta acción no se puede deshacer&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="513"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
         <source>Delete</source>
         <translation>Eliminar</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="514"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="532"/>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
         <source>Public link</source>
         <translation>Enlace público</translation>
     </message>
@@ -5742,7 +5757,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Has sido desconectado de %1 como el usuario %2. Por favor, vuelve a entrar</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="165"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of %1 as user %2. Please login again.</source>
         <translation>Ha sido cerrada la sesión de %1 como usuario %2. Por favor, inicie sesión de nuevo.</translation>
     </message>
@@ -5752,7 +5767,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Ha sido cerrada la sesión de %1 como usuario %2. Por favor, inicie sesión de nuevo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/webflowcredentials.cpp" line="189"/>
+        <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the user: %1</source>
         <translation>Por favor, entra con el usuario: %1</translation>
     </message>
