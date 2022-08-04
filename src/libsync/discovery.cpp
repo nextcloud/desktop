@@ -899,7 +899,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         } else if (noServerEntry) {
             // Not locally, not on the server. The entry is stale!
             qCInfo(lcDisco) << "Stale DB entry";
-            _discoveryData->_statedb->deleteFileRecord(path._original, true);
+            if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
+                _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original));
+                qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
+            }
             return;
         } else if (dbEntry._type == ItemTypeVirtualFile && isVfsWithSuffix()) {
             // If the virtual file is removed, recreate it.
@@ -1245,7 +1248,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (wasDeletedOnClient.first) {
             // More complicated. The REMOVE is canceled. Restore will happen next sync.
             qCInfo(lcDisco) << "Undid remove instruction on source" << originalPath;
-            _discoveryData->_statedb->deleteFileRecord(originalPath, true);
+            if (!_discoveryData->_statedb->deleteFileRecord(originalPath, true)) {
+                qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << originalPath;
+            }
             _discoveryData->_statedb->schedulePathForRemoteDiscovery(originalPath);
             _discoveryData->_anotherSyncNeeded = true;
         } else {
@@ -1381,7 +1386,10 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
             rec._fileSize = serverEntry.size;
             rec._remotePerm = serverEntry.remotePerm;
             rec._checksumHeader = serverEntry.checksumHeader;
-            _discoveryData->_statedb->setFileRecord(rec);
+            const auto result = _discoveryData->_statedb->setFileRecord(rec);
+            if (!result) {
+                qCWarning(lcDisco) << "Error when setting the file record to the database" << result.error();
+            }
         }
         return;
     }
