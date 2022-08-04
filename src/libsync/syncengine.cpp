@@ -264,7 +264,9 @@ void SyncEngine::deleteStaleErrorBlacklistEntries(const SyncFileItemVector &sync
     }
 
     // Delete from journal.
-    _journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths);
+    if (!_journal->deleteStaleErrorBlacklistEntries(blacklist_file_paths)) {
+        qCWarning(lcEngine) << "Could not delete StaleErrorBlacklistEntries from DB";
+    }
 }
 
 #if (QT_VERSION < 0x050600)
@@ -374,13 +376,20 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             }
 
             // Updating the db happens on success
-            _journal->setFileRecord(rec);
+            if (!_journal->setFileRecord(rec)) {
+                item->_status = SyncFileItem::Status::NormalError;
+                item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                item->_errorString = tr("Could not set file record to local DB: %1").arg(rec.path());
+                qCWarning(lcEngine) << "Could not set file record to local DB" << rec.path();
+            }
 
             // This might have changed the shared flag, so we must notify SyncFileStatusTracker for example
             emit itemCompleted(item);
         } else {
             // Update only outdated data from the disk.
-            _journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode);
+            if (!_journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode)) {
+                qCWarning(lcEngine) << "Could not update local metadata for file" << item->_file;
+            }
         }
         _hasNoneFiles = true;
         return;
@@ -1010,12 +1019,14 @@ bool SyncEngine::shouldDiscoverLocally(const QString &path) const
 void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs)
 {
     qCInfo(lcEngine) << "Wiping virtual files inside" << localPath;
-    journal.getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
+    const auto resGetFilesBelowPath = journal.getFilesBelowPath(QByteArray(), [&](const SyncJournalFileRecord &rec) {
         if (rec._type != ItemTypeVirtualFile && rec._type != ItemTypeVirtualFileDownload)
             return;
 
         qCDebug(lcEngine) << "Removing db record for" << rec.path();
-        journal.deleteFileRecord(rec._path);
+        if (!journal.deleteFileRecord(rec._path)) {
+            qCWarning(lcEngine) << "Could not update delete file record" << rec._path;
+        }
 
         // If the local file is a dehydrated placeholder, wipe it too.
         // Otherwise leave it to allow the next sync to have a new-new conflict.
@@ -1026,6 +1037,10 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
         }
     });
 
+    if (!resGetFilesBelowPath) {
+        qCWarning(lcEngine) << "Faied to get files below path" << localPath;
+    }
+
     journal.forceRemoteDiscoveryNextSync();
 
     // Postcondition: No ItemTypeVirtualFile / ItemTypeVirtualFileDownload left in the db.
@@ -1035,7 +1050,7 @@ void SyncEngine::wipeVirtualFiles(const QString &localPath, SyncJournalDb &journ
 void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs)
 {
     qCInfo(lcEngine) << "Convert to virtual files inside" << localPath;
-    journal.getFilesBelowPath({}, [&](const SyncJournalFileRecord &rec) {
+    const auto res = journal.getFilesBelowPath({}, [&](const SyncJournalFileRecord &rec) {
         const auto path = rec.path();
         const auto fileName = QFileInfo(path).fileName();
         if (FileSystem::isExcludeFile(fileName)) {
@@ -1048,6 +1063,10 @@ void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &j
             qCWarning(lcEngine) << "Could not convert file to placeholder" << result.error();
         }
     });
+
+    if (!res) {
+        qCWarning(lcEngine) << "Faied to get files below path" << localPath;
+    }
 }
 
 void SyncEngine::abort()
