@@ -585,7 +585,9 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 
 
     SyncJournalFileRecord record;
-    _journal.getFileRecord(relativePathBytes, &record);
+    if (!_journal.getFileRecord(relativePathBytes, &record)) {
+        qCWarning(lcFolder) << "could not get file from local DB" << relativePathBytes;
+    }
     if (reason != ChangeReason::UnLock) {
         // Check that the mtime/size actually changed or there was
         // an attribute change (pin state) that caused the notification
@@ -621,7 +623,11 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
     // Set in the database that we should download the file
     SyncJournalFileRecord record;
-    _journal.getFileRecord(relativepath.toUtf8(), &record);
+    ;
+    if (!_journal.getFileRecord(relativepath.toUtf8(), &record)) {
+        qCWarning(lcFolder) << "could not get file from local DB" << relativepath;
+        return;
+    }
     if (!record.isValid()) {
         qCInfo(lcFolder) << "Did not find file in db";
         return;
@@ -630,8 +636,14 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
         qCInfo(lcFolder) << "The file is not virtual";
         return;
     }
+
     record._type = ItemTypeVirtualFileDownload;
-    _journal.setFileRecord(record);
+
+    const auto result = _journal.setFileRecord(record);
+    if (!result) {
+        qCWarning(lcFolder) << "Error when setting the file record to the database" << record._path << result.error();
+        return;
+    }
 
     // Change the file's pin state if it's contradictory to being hydrated
     // (suffix-virtual file's pin state is stored at the hydrated path)

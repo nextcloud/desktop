@@ -48,10 +48,18 @@ QString EncryptFolderJob::errorString() const
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 {
     SyncJournalFileRecord rec;
-    _journal->getFileRecord(_path, &rec);
-    if (rec.isValid()) {
-        rec._isE2eEncrypted = true;
-        _journal->setFileRecord(rec);
+    if (!_journal->getFileRecord(_path, &rec)) {
+        qCWarning(lcEncryptFolderJob) << "could not get file from local DB" << _path;
+    }
+
+    if (!rec.isValid()) {
+        qCWarning(lcEncryptFolderJob) << "No valid record found in local DB for fileId" << fileId;
+    }
+
+    rec._isE2eEncrypted = true;
+    const auto result = _journal->setFileRecord(rec);
+    if (!result) {
+        qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
     }
 
     auto lockJob = new LockEncryptFolderApiJob(_account, fileId, this);

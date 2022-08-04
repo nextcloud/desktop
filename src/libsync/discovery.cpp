@@ -1388,7 +1388,7 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
             rec._checksumHeader = serverEntry.checksumHeader;
             const auto result = _discoveryData->_statedb->setFileRecord(rec);
             if (!result) {
-                qCWarning(lcDisco) << "Error when setting the file record to the database" << result.error();
+                qCWarning(lcDisco) << "Error when setting the file record to the database" << rec._path << result.error();
             }
         }
         return;
