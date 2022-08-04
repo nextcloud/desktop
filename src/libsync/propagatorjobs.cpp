@@ -257,6 +257,7 @@ void PropagateLocalRename::start()
     if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
         qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
         done(SyncFileItem::NormalError, tr("could not delete file %1 from local DB").arg(_item->_originalFile));
+        return;
     }
 
     auto &vfs = propagator()->syncOptions()._vfs;
