@@ -45,7 +45,7 @@ bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const Syn
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
 {
     SyncJournalFileRecord record;
-    folder.syncJournal().getFileRecord(path, &record);
+    [[maybe_unused]] const auto result = folder.syncJournal().getFileRecord(path, &record);
     return record;
 }
 
@@ -436,7 +436,7 @@ private slots:
 
         auto cleanup = [&]() {
             completeSpy.clear();
-            fakeFolder.syncJournal().wipeErrorBlacklist();
+            QVETIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
         };
         cleanup();
 
@@ -708,8 +708,7 @@ private slots:
         };
         auto hasDehydratedDbEntries = [&](const QString &path) {
             SyncJournalFileRecord rec;
-            fakeFolder.syncJournal().getFileRecord(path, &rec);
-            return rec.isValid() && rec._type == ItemTypeVirtualFile;
+            return fakeFolder.syncJournal().getFileRecord(path, &rec) && rec.isValid() && rec._type == ItemTypeVirtualFile;
         };
 
         QVERIFY(isDehydrated("A/a1"));

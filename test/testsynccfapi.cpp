@@ -237,8 +237,8 @@ private slots:
         QCOMPARE(QFileInfo(fakeFolder.localPath() + "A/a3").size(), 33);
         cleanup();
 
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2");
-        fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3");
+        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a2"));
+        QVERIFY(fakeFolder.syncEngine().journal()->deleteFileRecord("A/a3"));
         fakeFolder.remoteModifier().remove("A/a3");
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());

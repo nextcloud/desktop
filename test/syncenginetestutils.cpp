@@ -1198,7 +1198,7 @@ static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
 FileInfo FakeFolder::dbState() const
 {
     FileInfo result;
-    _journalDb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
+    [[maybe_unused]] const auto journalDbResult =_journalDb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
         auto components = PathComponents(record.path());
         auto &parentDir = findOrCreateDirs(result, components.parentDirComponents());
         auto name = components.fileName();
