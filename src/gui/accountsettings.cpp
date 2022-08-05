@@ -251,7 +251,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 void AccountSettings::slotNewMnemonicGenerated()
 {
-    _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+    _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
 
     auto *mnemonic = new QAction(tr("Enable encryption"), this);
     connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
