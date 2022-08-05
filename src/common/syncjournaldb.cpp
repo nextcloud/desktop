@@ -1722,7 +1722,7 @@ void SyncJournalDb::deleteStaleFlagsEntries()
 
     SqlQuery delQuery("DELETE FROM flags WHERE path != '' AND path NOT IN (SELECT path from metadata);", _db);
     if (!delQuery.exec()) {
-        sqlFail(QStringLiteral("deleteStaleFlagsEntries"), delQuery);
+        qCWarning(lcDb) << QStringLiteral("deleteStaleFlagsEntries") << delQuery.error();
     }
 }
 
@@ -1865,7 +1865,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo &info)
         SqlQuery query("DELETE FROM async_poll WHERE path=?", _db);
         query.bindValue(1, info._file);
         if (!query.exec()) {
-            sqlFail(QStringLiteral("setPollInfo DELETE FROM async_poll"), query);
+            qCWarning(lcDb) << QStringLiteral("setPollInfo DELETE FROM async_poll") << query.error();
         }
     } else {
         SqlQuery query("INSERT OR REPLACE INTO async_poll (path, modtime, filesize, pollpath) VALUES( ? , ? , ? , ? )", _db);
@@ -1874,7 +1874,7 @@ void SyncJournalDb::setPollInfo(const SyncJournalDb::PollInfo &info)
         query.bindValue(3, info._fileSize);
         query.bindValue(4, info._url);
         if (!query.exec()) {
-            sqlFail(QStringLiteral("setPollInfo INSERT OR REPLACE INTO async_poll"), query);
+            qCWarning(lcDb) << QStringLiteral("setPollInfo INSERT OR REPLACE INTO async_poll") << query.error();
         }
     }
 }
@@ -1963,7 +1963,7 @@ void SyncJournalDb::avoidRenamesOnNextSync(const QByteArray &path)
     query.bindValue(1, path);
 
     if (!query.exec()) {
-        sqlFail(QStringLiteral("avoidRenamesOnNextSync path: %1").arg(QString::fromUtf8(path)), query);
+        qCWarning(lcDb) << QStringLiteral("avoidRenamesOnNextSync path: %1").arg(QString::fromUtf8(path)) << query.error();
     }
 
     // We also need to remove the ETags so the update phase refreshes the directory paths
@@ -1991,7 +1991,7 @@ void SyncJournalDb::schedulePathForRemoteDiscovery(const QByteArray &fileName)
     query.bindValue(1, argument);
 
     if (!query.exec()) {
-        sqlFail(QStringLiteral("schedulePathForRemoteDiscovery path: %1").arg(QString::fromUtf8(fileName)), query);
+        qCWarning(lcDb) << QStringLiteral("schedulePathForRemoteDiscovery path: %11").arg(QString::fromUtf8(fileName)) << query.error();
     }
 
     // Prevent future overwrite of the etags of this folder and all
@@ -2023,7 +2023,7 @@ void SyncJournalDb::forceRemoteDiscoveryNextSyncLocked()
     deleteRemoteFolderEtagsQuery.prepare("UPDATE metadata SET md5='_invalid_' WHERE type=2;");
 
     if (!deleteRemoteFolderEtagsQuery.exec()) {
-        sqlFail(QStringLiteral("forceRemoteDiscoveryNextSyncLocked"), deleteRemoteFolderEtagsQuery);
+        qCWarning(lcDb) << QStringLiteral("forceRemoteDiscoveryNextSyncLocked") << deleteRemoteFolderEtagsQuery.error();
     }
 }
 
@@ -2233,7 +2233,7 @@ void SyncJournalDb::clearFileTable()
     query.prepare("DELETE FROM metadata;");
 
     if (!query.exec()) {
-        sqlFail(QStringLiteral("clearFileTable"), query);
+        qCWarning(lcDb) << QStringLiteral("clearFileTable") << query.error();
     }
 }
 
@@ -2250,7 +2250,7 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     query.bindValue(1, path);
 
     if (!query.exec()) {
-        sqlFail(QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET type=5 path: %1").arg(QString::fromUtf8(path)), query);
+        qCWarning(lcDb) << QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET type=5 path: %1").arg(QString::fromUtf8(path)) << query.error();
     }
 
     // We also must make sure we do not read the files from the database (same logic as in schedulePathForRemoteDiscovery)
@@ -2261,7 +2261,7 @@ void SyncJournalDb::markVirtualFileForDownloadRecursively(const QByteArray &path
     query.bindValue(1, path);
 
     if (!query.exec()) {
-        sqlFail(QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET md5='_invalid_' path: %1").arg(QString::fromUtf8(path)), query);
+        qCWarning(lcDb) << QStringLiteral("markVirtualFileForDownloadRecursively UPDATE metadata SET md5='_invalid_' path: %1").arg(QString::fromUtf8(path)) << query.error();
     }
 }
 
@@ -2395,8 +2395,6 @@ SyncJournalDb::PinStateInterface::rawList()
 
     if (!query.exec()) {
         qCWarning(lcDb) << "SQL Error" << "PinStateInterface::rawList" << query.error();
-        _db->close();
-        ASSERT(false);
     }
 
     QVector<QPair<QByteArray, PinState>> result;

@@ -461,8 +461,6 @@ void PropagateDownloadFile::start()
     SyncJournalFileRecord parentRec;
     if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
         qCWarning(lcPropagateDownload) << "could not get file from local DB" << parentPath;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath));
-        return;
     }
 
     const auto account = propagator()->account();
@@ -509,8 +507,6 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
 
         if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
             qCWarning(lcPropagateDownload) << "could not delete file from local DB" << _item->_originalFile;
-            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
-            return;
         }
 
         updateMetadata(false);
@@ -1249,8 +1245,6 @@ void PropagateDownloadFile::downloadFinished()
 
             if (!propagator()->_journal->deleteFileRecord(virtualFile)) {
                 qCWarning(lcPropagateDownload) << "could not delete file from local DB" << virtualFile;
-                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(virtualFile));
-                return;
             }
 
             // Move the pin state to the new location

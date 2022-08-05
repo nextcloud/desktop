@@ -618,7 +618,6 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     ;
     if (!_journal.getFileRecord(relativepath.toUtf8(), &record)) {
         qCWarning(lcFolder) << "could not get file from local DB" << relativepath;
-        return;
     }
     if (!record.isValid()) {
         qCInfo(lcFolder) << "Did not find file in db";
@@ -634,7 +633,6 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
     const auto result = _journal.setFileRecord(record);
     if (!result) {
         qCWarning(lcFolder) << "Error when setting the file record to the database" << record._path << result.error();
-        return;
     }
 
     // Change the file's pin state if it's contradictory to being hydrated
