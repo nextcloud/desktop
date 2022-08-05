@@ -27,7 +27,11 @@ void Navigation::setEntries(const QList<SetupWizardState> &newEntries)
         layout()->addWidget(newButton);
 
         connect(newButton, &QRadioButton::clicked, this, [this, state]() {
-            emit paginationEntryClicked(state);
+            // clicks to the current state button should be ignored
+            // this used to be handled by disabling the button
+            if (state != _activeState) {
+                emit paginationEntryClicked(state);
+            }
         });
     }
 
@@ -52,15 +56,13 @@ void Navigation::enableOrDisableButtons()
 
         const auto enabled = [&state, this]() {
             if (_enabled) {
-                return state < _activeState;
+                return state <= _activeState;
             }
 
             return false;
         }();
 
-        // TODO: use custom QRadioButton which doesn't need to be disabled to not be clickable
-        // can only jump to pages we have visited before
-        // to avoid resetting the current page, we don't want to enable the active page either
+        // we just ignore clicks to the current page
         button->setEnabled(enabled);
     }
 }
