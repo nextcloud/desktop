@@ -127,8 +127,7 @@ MenuItem {
                     }
                     Label {
                         id: accountServer
-                        width: Style.currentAccountLabelWidth
-                        height: Style.topLinePixelSize
+                        width: parent.width
                         text: server
                         elide: Text.ElideRight
                         color: Style.ncTextColor
@@ -197,6 +196,9 @@ MenuItem {
                 }
 
                 MenuItem {
+                    visible: model.canLogout
+                    height: visible ? implicitHeight : 0
+                    width: parent.width
                     text: model.isConnected ? qsTr("Log out") : qsTr("Log in")
                     font.pixelSize: Style.topLinePixelSize
                     palette.windowText: Style.ncTextColor
@@ -231,7 +233,7 @@ MenuItem {
 
                 MenuItem {
                     id: removeAccountButton
-                    text: qsTr("Remove account")
+                    text: model.removeAccountText
                     font.pixelSize: Style.topLinePixelSize
                     palette.windowText: Style.ncTextColor
                     hoverEnabled: true

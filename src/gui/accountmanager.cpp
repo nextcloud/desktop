@@ -220,7 +220,11 @@ void AccountManager::saveAccountState(AccountState *a)
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
-    settings.setValue(QLatin1String(urlC), acc->_url.toString());
+    if (acc->isPublicShareLink()) {
+        settings.setValue(QLatin1String(urlC), acc->publicShareLinkUrl().toString());
+    } else {
+        settings.setValue(QLatin1String(urlC), acc->_url.toString());
+    }
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
     if (acc->_credentials) {

@@ -972,6 +972,9 @@ void DetermineAuthTypeJob::start()
         } else {
             _resultGet = LoginFlowV2;
         }
+        if (_account->isPublicShareLink()) {
+            _resultGet = Basic;
+        }
         _getDone = true;
         checkAllDone();
     });
@@ -985,6 +988,9 @@ void DetermineAuthTypeJob::start()
             } else {
                 qCWarning(lcDetermineAuthTypeJob) << "Unknown WWW-Authenticate reply to auth-test PROPFIND:" << authChallenge;
             }
+            _resultPropfind = Basic;
+        }
+        if (_account->isPublicShareLink()) {
             _resultPropfind = Basic;
         }
         _propfindDone = true;
@@ -1009,6 +1015,9 @@ void DetermineAuthTypeJob::start()
                 }
             }
         } else {
+            _resultOldFlow = Basic;
+        }
+        if (_account->isPublicShareLink()) {
             _resultOldFlow = Basic;
         }
         _oldFlowDone = true;

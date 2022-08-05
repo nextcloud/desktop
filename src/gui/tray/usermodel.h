@@ -37,6 +37,7 @@ class User : public QObject
     Q_PROPERTY(QString avatar READ avatarUrl NOTIFY avatarChanged)
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY accountStateChanged)
     Q_PROPERTY(UnifiedSearchResultsListModel* unifiedSearchResultsListModel READ getUnifiedSearchResultsListModel CONSTANT)
+    Q_PROPERTY(bool canLogout READ canLogout CONSTANT)
 
 public:
     User(AccountStatePtr &account, const bool &isCurrent = false, QObject *parent = nullptr);
@@ -73,6 +74,8 @@ public:
     QUrl statusIcon() const;
     QString statusEmoji() const;
     void processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr &item);
+    bool canLogout() const;
+    bool isPublicShareLink() const;
 
 signals:
     void nameChanged();
@@ -179,6 +182,8 @@ public:
         NameRole = Qt::UserRole + 1,
         ServerRole,
         ServerHasUserStatusRole,
+        CanLogoutRole,
+        RemoveAccountTextRole,
         StatusIconRole,
         StatusEmojiRole,
         StatusMessageRole,
@@ -186,7 +191,7 @@ public:
         AvatarRole,
         IsCurrentUserRole,
         IsConnectedRole,
-        IdRole
+        IdRole,
     };
 
     AccountAppList appList() const;

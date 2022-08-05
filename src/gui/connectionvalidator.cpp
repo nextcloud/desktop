@@ -246,6 +246,11 @@ void ConnectionValidator::slotCapabilitiesRecieved(const QJsonDocument &json)
     QString directEditingETag = caps["files"].toObject()["directEditing"].toObject()["etag"].toString();
     _account->fetchDirectEditors(directEditingURL, directEditingETag);
 
+    if (_account->isPublicShareLink()) {
+        slotUserFetched(nullptr);
+        return;
+    }
+
     fetchUser();
 }
 

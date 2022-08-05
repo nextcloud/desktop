@@ -96,7 +96,11 @@ Account::~Account() = default;
 
 QString Account::davPath() const
 {
-    return davPathBase() + QLatin1Char('/') + davUser() + QLatin1Char('/');
+    if (_isPublicLink) {
+        return QStringLiteral("/public.php/webdav");
+    } else {
+        return davPathBase() + QLatin1Char('/') + davUser() + QLatin1Char('/');
+    }
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)
@@ -468,8 +472,29 @@ void Account::setSslErrorHandler(AbstractSslErrorHandler *handler)
 
 void Account::setUrl(const QUrl &url)
 {
-    _url = url;
+    const QRegularExpression discoverPublicLinks(R"((http.://[^/]*).*/s/([^/]*))");
+    const auto isPublicLink = discoverPublicLinks.match(url.toString());
+    if (isPublicLink.hasMatch()) {
+        _url = QUrl::fromUserInput(isPublicLink.captured(1));
+        _url.setUserName(isPublicLink.captured(2));
+        setDavUser(isPublicLink.captured(2));
+        _isPublicLink = true;
+        _publicShareLinkUrl = url;
+    } else {
+        _url = url;
+    }
+
     _userVisibleUrl = url;
+}
+
+QUrl Account::url() const
+{
+    return _url;
+}
+
+QUrl Account::publicShareLinkUrl() const
+{
+    return _publicShareLinkUrl;
 }
 
 void Account::setUserVisibleHost(const QString &host)
