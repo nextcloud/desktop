@@ -1199,13 +1199,6 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         if (_item->_instruction == CSYNC_INSTRUCTION_RENAME && _item->_originalFile != _item->_renameTarget) {
             if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, true)) {
                 qCWarning(lcDirectory) << "could not delete file from local DB" << _item->_originalFile;
-                _state = Finished;
-                status = _item->_status = SyncFileItem::FatalError;
-                _item->_errorString = tr("could not delete file %1 from local DB").arg(_item->_originalFile);
-                qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished"
-                                     << "emit finished" << status;
-                emit finished(status);
-                return;
             }
         }
 

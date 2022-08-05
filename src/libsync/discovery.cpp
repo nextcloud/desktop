@@ -915,7 +915,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Not locally, not on the server. The entry is stale!
             qCInfo(lcDisco) << "Stale DB entry";
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
-                _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original));
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
             }
             return;

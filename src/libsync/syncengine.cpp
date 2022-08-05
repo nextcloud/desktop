@@ -381,9 +381,6 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
             // Updating the db happens on success
             if (!_journal->setFileRecord(rec)) {
-                item->_status = SyncFileItem::Status::NormalError;
-                item->_instruction = CSYNC_INSTRUCTION_ERROR;
-                item->_errorString = tr("Could not set file record to local DB: %1").arg(rec.path());
                 qCWarning(lcEngine) << "Could not set file record to local DB" << rec.path();
             }
 
