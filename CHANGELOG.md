@@ -50,6 +50,7 @@ Summary
 * Enhancement - Remove app name from connection error message: [#9923](https://github.com/owncloud/client/issues/9923)
 * Enhancement - Allow HTTP/1.1 pipelining: [#9930](https://github.com/owncloud/client/pull/9930/)
 * Enhancement - Don't abort sync if a user requests a file: [#9956](https://github.com/owncloud/client/pull/9956)
+* Enhancement - Improve look and feel of many dialogs on macOS: [#9995](https://github.com/owncloud/client/issues/9995)
 
 Details
 -------
@@ -346,6 +347,10 @@ Details
 
    https://github.com/owncloud/client/issues/9832
    https://github.com/owncloud/client/pull/9956
+
+* Enhancement - Improve look and feel of many dialogs on macOS: [#9995](https://github.com/owncloud/client/issues/9995)
+
+   https://github.com/owncloud/client/issues/9995
 
 Changelog for ownCloud Desktop Client [2.10.1] (2022-04-05)
 =======================================
