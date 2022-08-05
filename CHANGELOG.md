@@ -222,6 +222,8 @@ Details
 * Enhancement - Don't query private links if disabled on the server: [#8998](https://github.com/owncloud/client/issues/8998)
 
    https://github.com/owncloud/client/issues/8998
+   https://github.com/owncloud/client/pull/9840
+   https://github.com/owncloud/client/pull/9964
 
 * Enhancement - Add CMakeOption WITH_AUTO_UPDATER: [#9082](https://github.com/owncloud/client/issues/9082)
 
