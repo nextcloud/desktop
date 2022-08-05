@@ -111,7 +111,7 @@ Window {
     Rectangle {
         id: trayWindowBackground
 
-        property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeleton.visible
+        property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeletonLoader.active
                                              || unifiedSearchResultNothingFound.visible
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
@@ -721,13 +721,22 @@ Window {
             }
         }
 
-        UnifiedSearchResultItemSkeletonContainer {
-            id: unifiedSearchResultsListViewSkeleton
-            visible: !unifiedSearchResultNothingFound.visible && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.errorString &&  UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+        Loader {
+            id: unifiedSearchResultsListViewSkeletonLoader
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowBackground.left
             anchors.right: trayWindowBackground.right
             anchors.bottom: trayWindowBackground.bottom
+
+            active: !unifiedSearchResultNothingFound.visible &&
+                    !unifiedSearchResultsListView.visible &&
+                    !UserModel.currentUser.unifiedSearchResultsListModel.errorString &&
+                    UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+
+            sourceComponent: UnifiedSearchResultItemSkeletonContainer {
+                anchors.fill: parent
+                animationRectangleWidth: trayWindow.width
+            }
         }
 
         ScrollView {
