@@ -94,7 +94,7 @@ void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAcc
     messageBox->setIcon(QMessageBox::Warning);
     const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
     Q_ASSERT(dontEncryptButton);
-    dontEncryptButton->setText(AccountSettings::tr("Don't encrypt folder"));
+    dontEncryptButton->setText(AccountSettings::tr("Do not encrypt folder"));
     const auto encryptButton = messageBox->addButton(QMessageBox::StandardButton::Ok);
     Q_ASSERT(encryptButton);
     encryptButton->setText(AccountSettings::tr("Encrypt folder"));
@@ -230,7 +230,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     if (_accountState->account()->e2e()->newMnemonicGenerated()) {
         slotNewMnemonicGenerated();
     } else {
-        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+        _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
 
         auto *mnemonic = new QAction(tr("Display mnemonic"), this);
         connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
@@ -251,7 +251,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 void AccountSettings::slotNewMnemonicGenerated()
 {
-    _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+    _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
 
     auto *mnemonic = new QAction(tr("Enable encryption"), this);
     connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
