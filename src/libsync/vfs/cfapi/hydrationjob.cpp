@@ -291,6 +291,7 @@ void OCC::HydrationJob::finalize(OCC::VfsCfApi *vfs)
     SyncJournalFileRecord record;
     if (!_journal->getFileRecord(_folderPath, &record)) {
         qCWarning(lcHydration) << "could not get file from local DB" << _folderPath;
+        return;
     }
     Q_ASSERT(record.isValid());
     if (!record.isValid()) {
