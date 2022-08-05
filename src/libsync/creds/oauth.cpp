@@ -213,6 +213,12 @@ private:
     QUrl _registrationEndpoint;
 };
 
+void logCredentialsJobResult(CredentialJob *credentialsJob)
+{
+    if (!credentialsJob->data().isValid()) {
+        qCCritical(lcOauth) << "Failed to read client id" << credentialsJob->errorString();
+    }
+}
 }
 
 OAuth::OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent)
@@ -536,19 +542,12 @@ void AccountBasedOAuth::startAuthentication()
 {
     auto credentialsJob = _account->credentialManager()->get(dynamicRegistrationDataC());
 
-    connect(credentialsJob, &CredentialJob::finished, this, [=] {
+    connect(credentialsJob, &CredentialJob::finished, this, [this, credentialsJob] {
         credentialsJob->deleteLater();
 
-        const auto data = [credentialsJob]() -> QVariantMap {
-            if (credentialsJob->data().isValid()) {
-                return credentialsJob->data().value<QVariantMap>();
-            } else {
-                qCCritical(lcOauth) << "Failed to read client id" << credentialsJob->errorString();
-                return {};
-            }
-        }();
+        logCredentialsJobResult(credentialsJob);
 
-        _dynamicRegistrationData = data;
+        _dynamicRegistrationData = credentialsJob->data().value<QVariantMap>();
 
         OAuth::startAuthentication();
     });
@@ -573,7 +572,15 @@ void AccountBasedOAuth::fetchWellKnown()
 
 void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
 {
-    auto doRefresh = [=]() {
+    auto credentialsJob = _account->credentialManager()->get(dynamicRegistrationDataC());
+
+    connect(credentialsJob, &CredentialJob::finished, this, [=] {
+        credentialsJob->deleteLater();
+
+        logCredentialsJobResult(credentialsJob);
+
+        _dynamicRegistrationData = credentialsJob->data().value<QVariantMap>();
+
         _isRefreshingToken = true;
         auto refresh = [this, refreshToken] {
             auto reply = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
@@ -634,25 +641,6 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
             }
         });
         fetchWellKnown();
-    };
-
-    auto credentialsJob = _account->credentialManager()->get(dynamicRegistrationDataC());
-
-    connect(credentialsJob, &CredentialJob::finished, this, [=] {
-        credentialsJob->deleteLater();
-
-        const auto data = [credentialsJob]() -> QVariantMap {
-            if (credentialsJob->data().isValid()) {
-                return credentialsJob->data().value<QVariantMap>();
-            } else {
-                qCCritical(lcOauth) << "Failed to read client id" << credentialsJob->errorString();
-                return {};
-            }
-        }();
-
-        _dynamicRegistrationData = data;
-
-        doRefresh();
     });
 }
 
