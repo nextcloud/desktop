@@ -630,7 +630,7 @@ The only advantage of disabling virtual file support is that the selective sync 
 This action will abort any currently running synchronization.</source>
         <translation>Ta czynność wyłączy obsługę plików wirtualnych. W rezultacie pobrana zostanie zawartość katalogów, które są obecnie oznaczone jako &quot;dostępne tylko online&quot;.
 
-Jedyną zaletą wyłączenia obsługi plików wirtualnych jest to, że funkcja selektywnej synchronizacji będzie ponownie dostępna.
+Jedyną zaletą wyłączenia obsługi plików wirtualnych jest to, że funkcja synchronizacji selektywnej będzie ponownie dostępna.
 
 Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</translation>
     </message>
@@ -1728,17 +1728,17 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1438"/>
         <source>Could not find an account for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Nie można znaleźć konta do edycji lokalnej</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się znaleźć pliku do edycji lokalnej. Upewnij się, że nie jest wykluczony przez synchronizację selektywną.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się znaleźć pliku do edycji lokalnej. Upewnij się, że jego ścieżka jest prawidłowa i jest zsynchronizowana lokalnie.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1562"/>
@@ -3586,7 +3586,7 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>Gdy włączony jest tryb &quot;pliki wirtualne&quot;, żadne pliki nie będą początkowo pobierane. Zamiast tego dla każdego pliku istniejącego na serwerze zostanie utworzony mały plik &quot;%1&quot;. Zawartość można pobrać, uruchamiając te pliki lub korzystając z ich menu kontekstowego.
 
-Tryb plików wirtualnych wyklucza się wzajemnie z synchronizacją selektywną. Obecnie niezaznaczone katalogi zostaną przekształcone na katalogi dostępne tylko w trybie online, a ustawienia selektywnej synchronizacji zostaną zresetowane.
+Tryb plików wirtualnych wyklucza się wzajemnie z synchronizacją selektywną. Obecnie niezaznaczone katalogi zostaną przekształcone na katalogi dostępne tylko w trybie online, a ustawienia synchronizacji selektywnej zostaną zresetowane.
 
 Przełączenie do tego trybu spowoduje przerwanie aktualnie uruchomionej synchronizacji.
 

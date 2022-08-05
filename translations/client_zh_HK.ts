@@ -1727,17 +1727,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1438"/>
         <source>Could not find an account for local editing</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於近端編輯的賬戶</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於近端編輯的檔案。請確保它沒有被選擇性同步排除。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於近端編輯的檔案。請確保檔案的途徑有效並且在近端同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1562"/>

@@ -1727,17 +1727,17 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
     <message>
         <location filename="../src/gui/folderman.cpp" line="1438"/>
         <source>Could not find an account for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se nalézt účet pro lokální upravování</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že jeho popis umístění je platný a že je synchronizovaný lokálně.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1562"/>
