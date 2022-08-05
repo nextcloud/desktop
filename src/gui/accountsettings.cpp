@@ -230,7 +230,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     if (_accountState->account()->e2e()->newMnemonicGenerated()) {
         slotNewMnemonicGenerated();
     } else {
-        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+        _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
 
         auto *mnemonic = new QAction(tr("Display mnemonic"), this);
         connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
