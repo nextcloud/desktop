@@ -139,8 +139,6 @@ protected:
     void fetchWellKnown() override;
 
 private:
-    void updateCredentialsAndRun(std::function<void()> callback);
-
     AccountPtr _account;
 };
 
