@@ -94,7 +94,7 @@ void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAcc
     messageBox->setIcon(QMessageBox::Warning);
     const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
     Q_ASSERT(dontEncryptButton);
-    dontEncryptButton->setText(AccountSettings::tr("Don't encrypt folder"));
+    dontEncryptButton->setText(AccountSettings::tr("Do not encrypt folder"));
     const auto encryptButton = messageBox->addButton(QMessageBox::StandardButton::Ok);
     Q_ASSERT(encryptButton);
     encryptButton->setText(AccountSettings::tr("Encrypt folder"));
