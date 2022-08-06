@@ -369,8 +369,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-end encryption mnemonic</source>
-        <translation>Gedächtnisstütze für Ende-zu-Ende Verschlüsselung</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -435,8 +435,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Ordner nicht verschlüsseln</translation>
+        <source>Do not encrypt folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -446,13 +446,13 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Dieses Konto unterstützt Ende-zu-Ende-Verschlüsselung</translation>
+        <source>This account supports End-to-End encryption</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
         <source>Display mnemonic</source>
-        <translation>Mnemonik anzeigen</translation>
+        <translation>Gedächtnisstütze anzeigen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="241"/>
@@ -481,6 +481,12 @@
         <translation>Benutzerkonto</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Dieses Konto unterstützt Ende-zu-Ende-Verschlüsselung</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>Enable encryption</source>
         <translation>Verschlüsselung aktivieren</translation>
@@ -499,6 +505,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Sie scheinen die Funktion &quot;Virtuelle Dateien&quot; für diesen Ordner aktiviert zu haben. Im Moment ist es nicht möglich, virtuelle Dateien, die Ende-zu-Ende-verschlüsselt sind, implizit herunterzuladen. Um die beste Erfahrung mit virtuellen Dateien und Ende-zu-Ende-Verschlüsselung zu machen, stellen Sie sicher, dass der verschlüsselte Ordner mit &quot;Immer lokal verfügbar machen&quot; markiert ist.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
+        <source>Don&apos;t encrypt folder</source>
+        <translation>Ordner nicht verschlüsseln</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -1061,8 +1072,8 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Geben Sie Ihre Passphrase für Ende-zu-Ende-Verschlüsselung ein:&lt;br&gt;&lt;br&gt;Benutzername: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>

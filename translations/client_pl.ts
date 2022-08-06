@@ -369,8 +369,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-end encryption mnemonic</source>
-        <translation>Pamięciowe szyfrowanie end-to-end</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -435,8 +435,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Nie szyfruj katalogu</translation>
+        <source>Do not encrypt folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -446,8 +446,8 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>To konto obsługuje szyfrowanie typu end to end</translation>
+        <source>This account supports End-to-End encryption</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -481,6 +481,12 @@
         <translation>Konto</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>To konto obsługuje szyfrowanie End-to-End</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>Enable encryption</source>
         <translation>Włącz szyfrowanie</translation>
@@ -498,7 +504,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Wygląda na to, że funkcja Pliki wirtualne jest włączona w tym katalogu. W tej chwili nie jest możliwe bezpośrednie pobieranie plików wirtualnych, które są zaszyfrowane end-to-end. Aby uzyskać jak najlepsze korzystanie z Pliki wirtualne i Szyfrowanie End-to-End, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
+        <translation>Wygląda na to, że funkcja Pliki wirtualne jest włączona w tym katalogu. W tej chwili nie jest możliwe bezpośrednie pobieranie plików wirtualnych, które są zaszyfrowane End-to-End. Aby uzyskać jak najlepsze korzystanie z Pliki wirtualne i Szyfrowanie End-to-End, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
+        <source>Don&apos;t encrypt folder</source>
+        <translation>Nie szyfruj katalogu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -1061,8 +1072,8 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Wprowadź hasło szyfrowania end-to-end:&lt;br&gt;&lt;br&gt;Nazwa użytkownika: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -7251,12 +7262,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="333"/>
         <source>Download of end-to-end encrypted file failed</source>
-        <translation>Pobieranie pliku zaszyfrowanego end-to-end nie powiodło się</translation>
+        <translation>Pobieranie pliku zaszyfrowanego End-to-End nie powiodło się</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/cfapi/vfs_cfapi.cpp" line="334"/>
         <source>It seems that you are trying to download a virtual file that is end-to-end encrypted. Implicitly downloading such files is not supported at the moment. To workaround this issue, go to the settings and mark the encrypted folder with &quot;Make always available locally&quot;.</source>
-        <translation>Wygląda na to, że próbujesz pobrać plik wirtualny, który jest zaszyfrowany end-to-end. Bezpośrednie pobieranie takich plików nie jest obecnie obsługiwane. Aby rozwiązać ten problem, przejdź do ustawień i zaznacz zaszyfrowany katalog za pomocą opcji &quot;Dostępne zawsze lokalnie&quot;.</translation>
+        <translation>Wygląda na to, że próbujesz pobrać plik wirtualny, który jest zaszyfrowany End-to-End. Bezpośrednie pobieranie takich plików nie jest obecnie obsługiwane. Aby rozwiązać ten problem, przejdź do ustawień i zaznacz zaszyfrowany katalog za pomocą opcji &quot;Dostępne zawsze lokalnie&quot;.</translation>
     </message>
 </context>
 </TS>

@@ -369,8 +369,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-end encryption mnemonic</source>
-        <translation>Mnemotechnická fráze pro šifrování mezi koncovými body</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -435,8 +435,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Nešifrovat složku</translation>
+        <source>Do not encrypt folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -446,8 +446,8 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Tento účet podporuje šifrování mezi koncovými body</translation>
+        <source>This account supports End-to-End encryption</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -481,6 +481,12 @@
         <translation>Účet</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Tento účet podporuje šifrování mezi koncovými body</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>Enable encryption</source>
         <translation>Zapnout šifrování</translation>
@@ -499,6 +505,11 @@
         <location filename="../src/gui/accountsettings.cpp" line="89"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At  the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Zdá se, že pro tuto složku máte zapnutou funkci Virtuální soubory. V tuto chvíli není možné výslovně stahovat virtuální soubory, které jsou šifrovány mezi koncovými body. Pokud chcete, aby vám virtuální soubory a šifrování mezi koncovými body fungovalo co nejlépe, ověřte, že šifrovaná složka je označena jako „Vždy zpřístupnit lokálně“.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="97"/>
+        <source>Don&apos;t encrypt folder</source>
+        <translation>Nešifrovat složku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -1061,8 +1072,8 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
-        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatelské jméno: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
+        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
