@@ -53,7 +53,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="234"/>
         <source>Open share dialog</source>
-        <translation>Åpne dialog for deling</translation>
+        <translation>Åpne vindu for deling</translation>
     </message>
 </context>
 <context>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation>Kan ikke slette katalog &quot;%1&quot;</translation>
+        <translation>Kan ikke slette mappe &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -339,7 +339,7 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation>&quot;%1 feilet med å låse opp kryptert katalog %2&quot;.</translation>
+        <translation>&quot;%1 feilet med å låse opp kryptert mappe %2&quot;.</translation>
     </message>
 </context>
 <context>
@@ -441,7 +441,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation>Krypter katalog</translation>
+        <translation>Krypter mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -509,7 +509,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation>Ikke krypter katalog</translation>
+        <translation>Ikke krypter mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
@@ -549,7 +549,7 @@ Vent på den nye synkroniseringen, og krypter den deretter.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>Create new folder</source>
-        <translation>Ny katalog</translation>
+        <translation>Ny mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
@@ -610,7 +610,7 @@ Vent på den nye synkroniseringen, og krypter den deretter.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="698"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Kunne ikke opprette lokal katalog &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Kunne ikke opprette lokal mappe &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="753"/>
@@ -1293,7 +1293,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="281"/>
         <source>Directory not found: %1</source>
-        <translation>Katalog ikke funnet: %1</translation>
+        <translation>Mappe ikke funnet: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="312"/>
@@ -1303,7 +1303,7 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="331"/>
         <source>Error while reading directory %1</source>
-        <translation>Kunne ikke lese katalogen %1</translation>
+        <translation>Kunne ikke lese mappen %1</translation>
     </message>
 </context>
 <context>
@@ -1780,7 +1780,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Siste synkronisering var vellykket.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1584"/>
@@ -1908,7 +1908,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="301"/>
         <source>Synchronizing with local folder</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer med lokal mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
@@ -2238,7 +2238,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="96"/>
         <source>Show Call Notifications</source>
-        <translation type="unfinished"/>
+        <translation>Vis ringevarsler</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
@@ -2248,7 +2248,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="114"/>
         <source>&amp;Automatically check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sjekk automatisk for oppdateringer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
@@ -2285,7 +2285,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="312"/>
         <source>Create Debug Archive …</source>
-        <translation type="unfinished"/>
+        <translation>Opprett debugging-fil…</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
@@ -2322,7 +2322,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="319"/>
         <location filename="../src/gui/generalsettings.cpp" line="475"/>
         <source>Create Debug Archive</source>
-        <translation type="unfinished"/>
+        <translation>Opprett debugging-fil</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="149"/>
@@ -2332,7 +2332,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="153"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>Vis ringevarsler-logg</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="167"/>
@@ -2369,12 +2369,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug Archive Created</source>
-        <translation type="unfinished"/>
+        <translation>Debugging-fil opprettet</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="481"/>
         <source>Debug archive is created at %1</source>
-        <translation type="unfinished"/>
+        <translation>Debugging-fil er opprettet under %1</translation>
     </message>
 </context>
 <context>
@@ -5339,7 +5339,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Alt er synkronisert!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
@@ -5354,17 +5354,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisering er satt på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Noen filer kunne ikke synkroniseres!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
@@ -5384,7 +5384,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer fil %1 av %2</translation>
     </message>
 </context>
 <context>
@@ -5408,13 +5408,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/systray.cpp" line="207"/>
         <location filename="../src/gui/systray.cpp" line="217"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Sett synkronisering på pause</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="208"/>
         <location filename="../src/gui/systray.cpp" line="223"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Fortsett synkronisering</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="209"/>
@@ -5424,12 +5424,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="210"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Hjelp</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="211"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Avslutt %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="217"/>
@@ -5505,7 +5505,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="525"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisert %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="527"/>
@@ -5952,7 +5952,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="445"/>
         <source>Syncing %1 of %2 (%3 left)</source>
-        <translation type="unfinished"/>
+        <translation>Synkroniserer %1 av %2  (%3 gjenstår)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="450"/>
@@ -6285,7 +6285,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="604"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Synkronisert %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -6776,12 +6776,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Åpne %1 lokalt</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="812"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Åpne vindu for deling</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="576"/>
