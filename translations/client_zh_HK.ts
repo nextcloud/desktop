@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>端到端加密助記碼</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>不加密資料夾</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -448,7 +448,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>此賬戶支援端到端加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -1074,7 +1074,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>請輸入您的端到端加密密碼：&lt;br&gt;&lt;br&gt;用戶名：%2&lt;br&gt;帳戶：%3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
