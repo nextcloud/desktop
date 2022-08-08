@@ -23,6 +23,7 @@
         <file>src/gui/tray/UnifiedSearchResultItem.qml</file>
         <file>src/gui/tray/UnifiedSearchResultItemSkeleton.qml</file>
         <file>src/gui/tray/UnifiedSearchResultItemSkeletonContainer.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultItemSkeletonGradientRectangle.qml</file>
         <file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
         <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
         <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>

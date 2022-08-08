@@ -7,11 +7,7 @@ import Style 1.0
 RowLayout {
     id: unifiedSearchResultSkeletonItemDetails
 
-    property int textLeftMargin: Style.unifiedSearchResultTextLeftMargin
-    property int textRightMargin: Style.unifiedSearchResultTextRightMargin
     property int iconWidth: Style.unifiedSearchResultIconWidth
-    property int iconLeftMargin: Style.unifiedSearchResultIconLeftMargin
-
     property int titleFontSize: Style.unifiedSearchResultTitleFontSize
     property int sublineFontSize: Style.unifiedSearchResultSublineFontSize
 
@@ -19,6 +15,7 @@ RowLayout {
     Accessible.name: qsTr("Search result skeleton.").arg(model.index)
 
     height: Style.trayWindowHeaderHeight
+    spacing: Style.trayHorizontalMargin
 
     /*
     * An overview of what goes on here:
@@ -41,52 +38,16 @@ RowLayout {
     */
 
     property color baseGradientColor: Style.lightHover
-    property color progressGradientColor: Style.darkMode ? Qt.lighter(baseGradientColor, 1.2) : Qt.darker(baseGradientColor, 1.1)
-
     property int animationRectangleWidth: Style.trayWindowWidth
-    property int animationStartX: -animationRectangleWidth
-    property int animationEndX: animationRectangleWidth
-
-    Component {
-        id: gradientAnimationRectangle
-        Rectangle {
-            width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
-            height: parent.height
-            gradient: Gradient {
-                orientation: Gradient.Horizontal
-                GradientStop {
-                    position: 0
-                    color: "transparent"
-                }
-                GradientStop {
-                    position: 0.4
-                    color: unifiedSearchResultSkeletonItemDetails.progressGradientColor
-                }
-                GradientStop {
-                    position: 0.6
-                    color: unifiedSearchResultSkeletonItemDetails.progressGradientColor
-                }
-                GradientStop {
-                    position: 1.0
-                    color: "transparent"
-                }
-            }
-
-            NumberAnimation on x {
-                from: unifiedSearchResultSkeletonItemDetails.animationStartX
-                to: unifiedSearchResultSkeletonItemDetails.animationEndX
-                duration: 1000
-                loops: Animation.Infinite
-                running: true
-            }
-        }
-    }
 
     Item {
+        property int whiteSpace: (Style.trayListItemIconSize - unifiedSearchResultSkeletonItemDetails.iconWidth)
+
         Layout.preferredWidth: unifiedSearchResultSkeletonItemDetails.iconWidth
         Layout.preferredHeight: unifiedSearchResultSkeletonItemDetails.iconWidth
-        Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.iconLeftMargin
         Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+        Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
+        Layout.rightMargin: whiteSpace * (0.5 + Style.thumbnailImageSizeReduction)
 
         Rectangle {
             id: unifiedSearchResultSkeletonThumbnail
@@ -98,7 +59,10 @@ RowLayout {
             Loader {
                 x: mapFromItem(unifiedSearchResultSkeletonItemDetails, 0, 0).x
                 height: parent.height
-                sourceComponent: gradientAnimationRectangle
+                sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
+                    width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
+                    height: parent.height
+                }
             }
         }
 
@@ -121,9 +85,7 @@ RowLayout {
         id: unifiedSearchResultSkeletonTextContainer
 
         Layout.fillWidth: true
-        Layout.leftMargin: unifiedSearchResultSkeletonItemDetails.textLeftMargin
-        Layout.rightMargin: unifiedSearchResultSkeletonItemDetails.textRightMargin
-
+        Layout.rightMargin: Style.trayHorizontalMargin
         spacing: Style.standardSpacing
 
         Item {
@@ -140,7 +102,10 @@ RowLayout {
                 Loader {
                     x: mapFromItem(unifiedSearchResultSkeletonItemDetails, 0, 0).x
                     height: parent.height
-                    sourceComponent: gradientAnimationRectangle
+                    sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
+                        width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
+                        height: parent.height
+                    }
                 }
             }
 
@@ -173,7 +138,10 @@ RowLayout {
                 Loader {
                     x: mapFromItem(unifiedSearchResultSkeletonItemDetails, 0, 0).x
                     height: parent.height
-                    sourceComponent: gradientAnimationRectangle
+                    sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
+                        width: unifiedSearchResultSkeletonItemDetails.animationRectangleWidth
+                        height: parent.height
+                    }
                 }
             }
 

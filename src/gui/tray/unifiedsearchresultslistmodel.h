@@ -57,6 +57,8 @@ public:
         LightImagePlaceholderRole,
         DarkIconsRole,
         LightIconsRole,
+        DarkIconsIsThumbnailRole,
+        LightIconsIsThumbnailRole,
         TitleRole,
         SublineRole,
         ResourceUrlRole,

@@ -44,6 +44,8 @@ struct UnifiedSearchResult
     QUrl _resourceUrl;
     QString _darkIcons;
     QString _lightIcons;
+    bool _darkIconsIsThumbnail;
+    bool _lightIconsIsThumbnail;
     Type _type = Type::Default;
 };
 }

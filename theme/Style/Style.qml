@@ -88,7 +88,7 @@ QtObject {
 
     property int roundButtonBackgroundVerticalMargins: 10
     property int roundedButtonBackgroundVerticalMargins: 5
-    
+
     property int userStatusEmojiSize: 8
     property int userStatusSpacing: trayHorizontalMargin
     property int userStatusAnchorsMargin: 2
@@ -105,7 +105,8 @@ QtObject {
     readonly property int unifiedSearchItemHeight: trayWindowHeaderHeight
     readonly property int unifiedSearchResultTextLeftMargin: 18
     readonly property int unifiedSearchResultTextRightMargin: 16
-    readonly property int unifiedSearchResultIconWidth: 24
+    readonly property int unifiedSearchResultIconWidth: trayListItemIconSize * (1 - thumbnailImageSizeReduction)
+    readonly property int unifiedSearchResultSmallIconWidth: trayListItemIconSize * (1 - thumbnailImageSizeReduction * 2)
     readonly property int unifiedSearchResultIconLeftMargin: 12
     readonly property int unifiedSearchResultTitleFontSize: topLinePixelSize
     readonly property int unifiedSearchResultSublineFontSize: subLinePixelSize
@@ -118,6 +119,6 @@ QtObject {
     readonly property int activityContentSpace: 4
 
     function variableSize(size) {
-        return size * (1 + Math.min(pixelSize / 100, 1));       
+        return size * (1 + Math.min(pixelSize / 100, 1));
     }
 }
