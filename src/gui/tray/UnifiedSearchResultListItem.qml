@@ -36,24 +36,25 @@ MouseArea {
     }
 
     Loader {
+        anchors.fill: parent
         active: !isFetchMoreTrigger
         sourceComponent: UnifiedSearchResultItem {
-            width: unifiedSearchResultMouseArea.width
-            height: unifiedSearchResultMouseArea.height
+            anchors.fill: parent
             title: model.resultTitle
             subline: model.subline
             icons: Theme.darkMode ? model.darkIcons : model.lightIcons
+            iconsIsThumbnail: Theme.darkMode ? model.darkIconsIsThumbnail : model.lightIconsIsThumbnail
             iconPlaceholder: Theme.darkMode ? model.darkImagePlaceholder : model.lightImagePlaceholder
-            isRounded: model.isRounded
+            isRounded: model.isRounded && iconsIsThumbnail
         }
     }
 
     Loader {
+        anchors.fill: parent
         active: isFetchMoreTrigger
         sourceComponent: UnifiedSearchResultFetchMoreTrigger {
+            anchors.fill: parent
             isFetchMoreInProgress: unifiedSearchResultMouseArea.isFetchMoreInProgress
-            width: unifiedSearchResultMouseArea.width
-            height: unifiedSearchResultMouseArea.height
             isWithinViewPort: !unifiedSearchResultMouseArea.isPooled
         }
     }

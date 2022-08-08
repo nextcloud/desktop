@@ -8,7 +8,6 @@ ColumnLayout {
     id: unifiedSearchResultItemFetchMore
 
     property bool isFetchMoreInProgress: false
-
     property bool isWithinViewPort: false
 
     property int fontSize: Style.unifiedSearchResultTitleFontSize
@@ -21,22 +20,29 @@ ColumnLayout {
 
     Label {
         id: unifiedSearchResultItemFetchMoreText
-        text: qsTr("Load more results")
-        visible: !unifiedSearchResultItemFetchMore.isFetchMoreInProgress
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
+
         Layout.fillWidth: true
         Layout.fillHeight: true
+        Layout.leftMargin: Style.trayHorizontalMargin
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        text: qsTr("Load more results")
+        wrapMode: Text.Wrap
         font.pixelSize: unifiedSearchResultItemFetchMore.fontSize
         color: unifiedSearchResultItemFetchMore.textColor
+        visible: !unifiedSearchResultItemFetchMore.isFetchMoreInProgress
     }
 
     BusyIndicator {
         id: unifiedSearchResultItemFetchMoreIconInProgress
-        running: visible
-        visible: unifiedSearchResultItemFetchMore.isFetchMoreInProgress && unifiedSearchResultItemFetchMore.isWithinViewPort
-        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+
         Layout.preferredWidth: parent.height * 0.70
         Layout.preferredHeight: parent.height * 0.70
+        Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
+
+        running: visible
+        visible: unifiedSearchResultItemFetchMore.isFetchMoreInProgress && unifiedSearchResultItemFetchMore.isWithinViewPort
     }
 }
