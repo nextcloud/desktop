@@ -1484,12 +1484,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Sincronizacion impossibla de %1 e de %n autre(s) fichièr(s) a causa d’una error. Vejatz lo jornal per de detalhs.</numerusform><numerusform>Sincronizacion impossibla de %1 e de %n autre(s) fichièr(s) a causa d’una error. Vejatz lo jornal per de detalhs.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="472"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion impossibla de %1 a causa d’una error. Vejatz lo jornal per de detalhs.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="477"/>
