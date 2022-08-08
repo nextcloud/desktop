@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <QEventLoop>
 #include <QDir>
+#include <QDirIterator>
 #include <set>
 #include <QTextCodec>
 #include "vio/csync_vio_local.h"
@@ -886,10 +887,12 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
             // Not modified locally (ParentNotChanged)
             if (noServerEntry) {
-                // not on the server: Removed on the server, delete locally
-                qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
+                if (!checkIfLocalFileWasChanged(item, dbEntry)) {
+                    // not on the server: Removed on the server, delete locally
+                    qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
+                    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                    item->_direction = SyncFileItem::Down;
+                }
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration) {
                 // dehydration requested
                 item->_direction = SyncFileItem::Down;
@@ -930,8 +933,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         bool typeChange = localEntry.isDirectory != dbEntry.isDirectory();
         if (!typeChange && localEntry.isVirtualFile) {
             if (noServerEntry) {
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
+                if (!checkIfLocalFileWasChanged(item, dbEntry)) {
+                    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                    item->_direction = SyncFileItem::Down;
+                }
             } else if (!dbEntry.isVirtualFile() && isVfsWithSuffix()) {
                 // If we find what looks to be a spurious "abc.owncloud" the base file "abc"
                 // might have been renamed to that. Make sure that the base file is not
@@ -952,8 +957,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Local file unchanged.
             if (noServerEntry) {
                 qCInfo(lcDisco) << "File" << item->_file << "is not anymore on server. Going to delete it locally.";
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_direction = SyncFileItem::Down;
+                if (!checkIfLocalFileWasChanged(item, dbEntry)) {
+                    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                    item->_direction = SyncFileItem::Down;
+                }
             } else if (dbEntry._type == ItemTypeVirtualFileDehydration || localEntry.type == ItemTypeVirtualFileDehydration) {
                 item->_direction = SyncFileItem::Down;
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
@@ -1318,6 +1325,59 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     }
 
     finalize();
+}
+
+bool ProcessDirectoryJob::checkIfLocalFileWasChanged(const SyncFileItemPtr &item, const SyncJournalFileRecord &dbEntry)
+{
+    const auto fileInfoFromDisk = QFileInfo(_discoveryData->_localDir + item->_file);
+    const auto fileInfoMtime = static_cast<time_t>(fileInfoFromDisk.lastModified().toTime_t());
+    const auto fileInfoSize = fileInfoFromDisk.size();
+    const auto fileMtimeWasChanged = item->_type == ItemTypeFile && fileInfoMtime > item->_modtime;
+    const auto isAnyFileWasChangedLocally = [this, &item]() {
+
+        bool result = false;
+
+        QDirIterator iter(_discoveryData->_localDir + item->_file, QDir::Files | QDir::NoSymLinks, QDirIterator::Subdirectories);
+
+        while (iter.hasNext()) {
+            OCC::SyncJournalFileRecord rec;
+            const auto filePathSyncJournal = [&iter, this]() {
+                return iter.next().remove(_discoveryData->_localDir);
+            }();
+            const auto fileInfo = iter.fileInfo();
+            if (_discoveryData->_statedb->getFileRecord(filePathSyncJournal, &rec) && (rec.isValid() && !rec.isVirtualFile())) {
+                if (static_cast<time_t>(iter.fileInfo().lastModified().toTime_t()) > rec._modtime) {
+                    auto changedItem = SyncFileItem::fromSyncJournalFileRecord(rec);
+                    changedItem->_direction = SyncFileItem::Up;
+                    changedItem->_checksumHeader.clear();
+                    changedItem->_size = fileInfo.size();
+                    changedItem->_modtime = static_cast<time_t>(fileInfo.lastModified().toTime_t());
+                    changedItem->_etag.clear();
+                    _discoveryData->_statedb->deleteFileRecord(filePathSyncJournal, true);
+                    emit _discoveryData->itemDiscovered(changedItem);
+                    result = true;
+                }
+            }
+        }
+
+        return result;
+    }();
+
+    if (fileMtimeWasChanged) {
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Up;
+        item->_checksumHeader.clear();
+        item->_size = fileInfoFromDisk.size();
+        item->_modtime = fileInfoMtime;
+        _childModified = true;
+        return true;
+    } else if (isAnyFileWasChangedLocally) {
+        item->_instruction = CSYNC_INSTRUCTION_NEW;
+        item->_direction = SyncFileItem::Up;
+        _childModified = true;
+        return true;
+    }
+    return false;
 }
 
 void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, ProcessDirectoryJob::PathTuple path, const LocalInfo &localEntry, const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)

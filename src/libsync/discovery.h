@@ -177,6 +177,8 @@ private:
     /// processFile helper for reconciling local changes
     void processFileAnalyzeLocalInfo(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &, QueryMode recurseQueryServer);
 
+    bool checkIfLocalFileWasChanged(const SyncFileItemPtr &item, const SyncJournalFileRecord &dbEntry);
+
     /// processFile helper for local/remote conflicts
     void processFileConflict(const SyncFileItemPtr &item, PathTuple, const LocalInfo &, const RemoteInfo &, const SyncJournalFileRecord &);
 
