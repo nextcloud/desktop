@@ -21,6 +21,8 @@
 #include "configfile.h"
 #include "theme.h"
 
+#include "gui/settingsdialog.h"
+
 #ifdef WITH_AUTO_UPDATER
 #include "updater/updater.h"
 #include "updater/ocupdater.h"
@@ -296,12 +298,10 @@ void GeneralSettings::slotShowInExplorerNavigationPane(bool checked)
 void GeneralSettings::slotIgnoreFilesEditor()
 {
     if (_ignoreEditor.isNull()) {
-        _ignoreEditor = new IgnoreListEditor(this);
+        _ignoreEditor = new IgnoreListEditor(ocApp()->gui()->settingsDialog());
         _ignoreEditor->setAttribute(Qt::WA_DeleteOnClose, true);
-        _ignoreEditor->open();
-    } else {
-        ownCloudGui::raiseDialog(_ignoreEditor);
     }
+    ownCloudGui::raiseDialog(_ignoreEditor);
 }
 
 void GeneralSettings::reloadConfig()

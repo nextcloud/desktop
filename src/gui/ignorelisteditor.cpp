@@ -34,7 +34,7 @@ static const int skippedLinesRole = Qt::UserRole;
 static const int isGlobalRole = Qt::UserRole + 1;
 
 IgnoreListEditor::IgnoreListEditor(QWidget *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , ui(new Ui::IgnoreListEditor)
 {
     Utility::setModal(this);

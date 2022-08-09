@@ -222,5 +222,4 @@ void Utility::setModal(QWidget *w)
     w->setWindowModality(Qt::ApplicationModal);
 #endif
     w->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
-    w->setParent(ocApp()->gui()->settingsDialog());
 }
