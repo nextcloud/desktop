@@ -31,19 +31,9 @@ Button {
     leftPadding: root.text === "" ? 5 : 10
     rightPadding: root.text === "" ? 5 : 10
 
-    ToolTip {
-        id: customButtonTooltip
+    NCToolTip {
         text: root.toolTipText
-        delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
-        contentItem: Label {
-            text: customButtonTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
     }
 
     contentItem: RowLayout {

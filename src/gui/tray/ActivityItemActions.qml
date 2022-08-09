@@ -77,19 +77,9 @@ RowLayout {
                 radius: width / 2
             }
 
-            ToolTip {
-                id: moreActionsButtonTooltip
+            NCToolTip {
                 visible: parent.hovered
-                delay: Qt.styleHints.mousePressAndHoldInterval
                 text: qsTr("Show more actions")
-                contentItem: Label {
-                    text: moreActionsButtonTooltip.text
-                    color: Style.ncTextColor
-                }
-                background: Rectangle {
-                    border.color: Style.menuBorder
-                    color: Style.backgroundColor
-                }
             }
 
             Accessible.name: qsTr("Show more actions")
