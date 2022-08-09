@@ -5271,14 +5271,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Bu dosya adı bu dosya sisteminde ayırtılmış bir ad olduğundan kullanılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Yerel eşitleme klasörü açılamadı ya da oluşturulamadı. Eşitleme klasörüne yazma izniniz olduğundan emin olun.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Dosya adının başında boşluklar var.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Yerel eşitleme klasörü açılamadı ya da oluşturulamadı. Eşitleme klasörüne yazma izniniz olduğundan emin olun.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5306,14 +5306,14 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Sanal dosyalar son ek ile kullanılıyor. Ancak son ek ayarlanmamış</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Yerel veritabanından kara liste okunamadı</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Çakışma: Sunucu sürümü indirildi, yerel kopya yeniden adlandırıldı ve yüklenmedi.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Yerel veritabanından kara liste okunamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

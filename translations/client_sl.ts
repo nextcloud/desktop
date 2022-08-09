@@ -5269,14 +5269,14 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Ime datoteke je na tem sistemu zadržano za sistemsko datoteko.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Ni mogoče odpreti ali ustvariti krajevne usklajevalne podatkovne zbirke. Prepričajte se, da imate ustrezna dovoljenja za pisanje v usklajevani mapi.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Datoteka vsebuje pripete presledne znake</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Ni mogoče odpreti ali ustvariti krajevne usklajevalne podatkovne zbirke. Prepričajte se, da imate ustrezna dovoljenja za pisanje v usklajevani mapi.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5304,14 +5304,14 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>V uporabi so navidezne datoteke s pripono, a ta ni nastavljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Ni mogoče prebrati črnega seznama iz krajevne mape</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Spor: prejeta je strežniška različica, krajevna je preimenovana, a ne tudi poslana v oblak. </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Ni mogoče prebrati črnega seznama iz krajevne mape</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

@@ -5270,14 +5270,14 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Název souboru je na tomto souborovém systému rezervovaným názvem (nelze ho použít).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nedaří se otevřít nebo vytvořit místní synchronizační databázi. Ověřte, že máte přístup k zápisu do synchronizační složky.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Na konci názvu souboru se vyskytuje (přinejmenším) jedna mezera – odstraňte ji.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Nedaří se otevřít nebo vytvořit místní synchronizační databázi. Ověřte, že máte přístup k zápisu do synchronizační složky.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5305,14 +5305,14 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Používají se virtuální soubory s příponou, ale přípona není nastavena</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nedaří se z místní databáze načíst seznam vyloučených</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikt: Stažena verze ze serveru, místní kopie přejmenována a nenahrána.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nedaří se z místní databáze načíst seznam vyloučených</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

@@ -5275,14 +5275,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>해당 파일 이름은 이 파일 시스템에서 예약된 이름입니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>파일 이름 뒤에 공백이 있습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5310,14 +5310,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>가상 파일에 접미사를 사용 중이나, 접미사가 설정되지 않음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>충돌: 서버 버전이 다운로드되었으며 로컬 사본의 이름이 바뀌었고 업로드되지 않았습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

@@ -5246,14 +5246,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Šis failo pavadinimas šioje failų sistemoje yra rezervuotas.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nepavyko atverti ar sukurti sinchronizavimo duomenų bazės kompiuteryje. Įsitikinkite, kad į sinchronizavimo aplanką galite rašyti.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Failo pavadinime yra galiniai tarpai.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Nepavyko atverti ar sukurti sinchronizavimo duomenų bazės kompiuteryje. Įsitikinkite, kad į sinchronizavimo aplanką galite rašyti.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5281,14 +5281,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nepavyko perskaityti juodojo sąrašo iš duomenų bazės kompiuteryje</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konfliktas: atsisiųsta serverio versija, kompiuterio versija pervadinta ir neįkelta.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nepavyko perskaityti juodojo sąrašo iš duomenų bazės kompiuteryje</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

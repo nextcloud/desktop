@@ -5267,14 +5267,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ファイル名はこのファイルシステムで予約されている名前です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>ローカル同期データベースを開いたり作成できません。 同期フォルダーに書き込み権限があることを確認してください。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ファイル名末尾にスペースが含まれます。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>ローカル同期データベースを開いたり作成できません。 同期フォルダーに書き込み権限があることを確認してください。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5302,14 +5302,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>サフィックス付きの仮想ファイルを使用していますが、サフィックスが設定されていません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>ローカルデータベースからブラックリストを読み込みできません</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflict：サーバーのバージョンがダウンロードされ、ローカルコピーの名前が変更され、アップロードされませんでした。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>ローカルデータベースからブラックリストを読み込みできません</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
