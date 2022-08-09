@@ -527,9 +527,17 @@ void Application::setupLogging()
 {
     // might be called from second instance
     auto logger = Logger::instance();
-    logger->setLogFile(_logFile);
-    logger->setLogDir(_logDir);
+    // call setLogFlush first, other log settings might already imply flushing
+    // so setting it false in the end will have undesired results.
     logger->setLogFlush(_logFlush);
+
+    if (!_logDir.isEmpty()) {
+        logger->setLogDir(_logDir);
+    }
+    if (!_logFile.isEmpty()) {
+        Q_ASSERT(_logDir.isEmpty());
+        logger->setLogFile(_logFile);
+    }
     logger->setLogDebug(_logDebug);
 
     // Possibly configure logging from config file

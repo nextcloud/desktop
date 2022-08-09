@@ -1,0 +1,6 @@
+Bugfix: Don't unset implicit log flush
+
+Since https://github.com/owncloud/client/pull/9515 we flush the the log if the output is stdout.
+We fixed a bug which disabled it again.
+
+https://github.com/owncloud/client/pull/9515
