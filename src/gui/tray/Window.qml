@@ -41,7 +41,7 @@ Window {
             hide();
             Systray.isOpen = false;
         }
-   }
+    }
 
     onClosing: Systray.isOpen = false
 
@@ -55,7 +55,7 @@ Window {
 
     Connections {
         target: UserModel
-        function onNewUserSelected() {
+        function onCurrentUserChanged() {
             accountMenu.close();
             syncStatus.model.load();
         }
@@ -612,7 +612,7 @@ Window {
                             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
                             data: WheelHandler {
-                                target: appMenuScrollView.contentItem
+                                target: appsMenuScrollView.contentItem
                             }
                             ListView {
                                 id: appsMenuListView
