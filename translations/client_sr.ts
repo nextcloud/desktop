@@ -5249,14 +5249,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ово име фајла је резервисано на овом систему фајлова.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Не могу да отворим или креирам локалну базу за синхронизацију. Погледајте да ли имате право писања у синхронизационој фасцикли.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Име фајла се завршава са празнинама.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Не могу да отворим или креирам локалну базу за синхронизацију. Погледајте да ли имате право писања у синхронизационој фасцикли.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5284,14 +5284,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Не могу да читам листу ставки игнорисаних за синхронизацију из локалне базе</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Конфликт: преузета серверска верзија, локална копија преименована и није отпремљена.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Не могу да читам листу ставки игнорисаних за синхронизацију из локалне базе</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

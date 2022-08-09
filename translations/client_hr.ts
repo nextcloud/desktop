@@ -5271,14 +5271,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Naziv datoteke je rezervirani naziv u ovom datotečnom sustavu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nije moguće otvoriti ili stvoriti lokalnu sinkronizacijsku bazu podataka. Provjerite imate li pristup pisanju u mapi za sinkronizaciju.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Naziv datoteke sadrži završne praznine.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Nije moguće otvoriti ili stvoriti lokalnu sinkronizacijsku bazu podataka. Provjerite imate li pristup pisanju u mapi za sinkronizaciju.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5306,14 +5306,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Upotrebljavaju se virtualne datoteke sa sufiksom, ali sufiks nije određen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nije moguće pročitati crnu listu iz lokalne baze podataka</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Nepodudaranje: preuzeta inačica poslužitelja, lokalna kopija preimenovana i nije otpremljena.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nije moguće pročitati crnu listu iz lokalne baze podataka</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

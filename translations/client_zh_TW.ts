@@ -5271,14 +5271,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此檔案名稱為檔案系統的保留名稱。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>無法開啟或建立本機同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>檔案名的結尾為空白符。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>無法開啟或建立本機同步資料庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5306,14 +5306,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>正在使用有後綴的虛擬檔案，但未設定後綴</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>無法從本機資料庫讀取黑名單</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>衝突：已下載伺服器的版本，本機版本已更名但並未上傳。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>無法從本機資料庫讀取黑名單</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

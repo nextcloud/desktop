@@ -5230,14 +5230,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ชื่อไฟล์นี้เป็นชื่อที่ถูกสงวนไว้บนระบบไฟล์นี้</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>ไม่สามารถเปิดหรือสร้างฐานข้อมูลการซิงค์ในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ซิงค์</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>ชื่อไฟล์มีช่องว่างต่อท้าย</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>ไม่สามารถเปิดหรือสร้างฐานข้อมูลการซิงค์ในเครื่อง ตรวจสอบว่าคุณมีสิทธิ์การเขียนในโฟลเดอร์ซิงค์</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5265,14 +5265,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>ข้อขัดแย้ง: ดาวน์โหลดรุ่นที่อยู่บนเซิร์ฟเวอร์แล้ว สำเนาที่อยู่ในเครื่องถูกเปลี่ยนชื่อและไม่ได้ถูกอัปโหลด</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>ไม่สามารถอ่านบัญชีดำจากฐานข้อมูลต้นทาง</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
