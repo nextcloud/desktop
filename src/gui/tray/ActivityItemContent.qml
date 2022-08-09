@@ -185,19 +185,9 @@ RowLayout {
 
         Layout.margins: Style.roundButtonBackgroundVerticalMargins
 
-        ToolTip {
-            id: dismissActionButtonTooltip
+        NCToolTip {
             visible: parent.hovered
-            delay: Qt.styleHints.mousePressAndHoldInterval
             text: qsTr("Dismiss")
-            contentItem: Label {
-                text: dismissActionButtonTooltip.text
-                color: Style.ncTextColor
-            }
-            background: Rectangle {
-                border.color: Style.menuBorder
-                color: Style.backgroundColor
-            }
         }
 
         Accessible.name: qsTr("Dismiss")

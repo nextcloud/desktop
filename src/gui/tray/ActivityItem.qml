@@ -40,19 +40,9 @@ MouseArea {
         color: (parent.containsMouse ? Style.lightHover : "transparent")
     }
 
-    ToolTip {
-        id: activityMouseAreaTooltip
-        visible: containsMouse && !activityContent.childHovered && model.displayLocation !== ""
-        delay: Qt.styleHints.mousePressAndHoldInterval
+    NCToolTip {
+        visible: root.containsMouse && !activityContent.childHovered && model.displayLocation !== ""
         text: qsTr("In %1").arg(model.displayLocation)
-        contentItem: Label {
-            text: activityMouseAreaTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
     }
 
     ColumnLayout {

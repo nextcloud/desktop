@@ -24,19 +24,9 @@ MouseArea {
 
     height: Style.unifiedSearchItemHeight
 
-    ToolTip {
-        id: unifiedSearchResultMouseAreaTooltip
+    NCToolTip {
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
-        delay: Qt.styleHints.mousePressAndHoldInterval
-        contentItem: Label {
-            text: unifiedSearchResultMouseAreaTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
     }
 
     Rectangle {
