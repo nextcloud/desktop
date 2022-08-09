@@ -69,7 +69,7 @@ RowLayout {
             Layout.leftMargin: iconLeftMargin
             verticalAlignment: Qt.AlignCenter
             cache: true
-            source: iconPlaceholder
+            source: "image://tray-image-provider/" + iconPlaceholder
             visible: false
             sourceSize.height: unifiedSearchResultItemDetails.iconWidth
             sourceSize.width: unifiedSearchResultItemDetails.iconWidth
