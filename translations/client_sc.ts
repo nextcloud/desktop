@@ -5270,14 +5270,14 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation> Su nùmene de s&apos;archìviu est riservadu in custu archìviu de sistema.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Impossìbile a abèrrere o a creare sa base de datos locale de sincronizatzione. Segura·ti de àere atzessu de iscritura in sa cartella de sincronizatzione.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation> Su nùmene de s&apos;archìviu tenet tretos a sa fine.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Impossìbile a abèrrere o a creare sa base de datos locale de sincronizatzione. Segura·ti de àere atzessu de iscritura in sa cartella de sincronizatzione.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5305,14 +5305,14 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Impreu de is archìvios virtuales, ma su sufissu non est impostadu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation> Non at fatu a lèghere sa lista niedda de sa base de datos locale</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation> Cunflitu: versione de su serbidore iscarrigada, còpia locale torrada a numenare e non carrigada.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation> Non at fatu a lèghere sa lista niedda de sa base de datos locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

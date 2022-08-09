@@ -5270,14 +5270,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>此檔案名已被此檔案系統保留所用。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>無法開啟或新增近端同步數據庫。請確保您有寫入同步資料夾的權限。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>檔案名的結尾為空白符。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>無法開啟或新增近端同步數據庫。請確保您有寫入同步資料夾的權限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5305,14 +5305,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>使用帶後綴的虛擬文件，但未設置後綴</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>無法從近端數據庫讀取黑名單。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>抵觸：已下載伺服器版本，近端版本已改名但並未上傳。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>無法從近端數據庫讀取黑名單。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

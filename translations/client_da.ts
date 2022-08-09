@@ -5247,14 +5247,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Filnavnet er et reserveret navn på dette filsystem.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Ikke i stand til at oprette en lokal sync database. Verificer at du har skriveadgang til sync mappen.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Filnavnet slutter med mellemrum.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Ikke i stand til at oprette en lokal sync database. Verificer at du har skriveadgang til sync mappen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5282,14 +5282,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Kunne ikke læse blacklist fra den lokale database</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikt: Server version hentet, lokal kopi omdøbt og ikke sendt.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Kunne ikke læse blacklist fra den lokale database</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

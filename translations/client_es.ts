@@ -5272,14 +5272,14 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El nombre del archivo es una palabra reservada del sistema de archivos.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Imposible abrir o crear la BBDD local de sync. Asegurese de que tiene permisos de escritura en la carpeta de sync.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>El nombre del archivo contiene espacios finales.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Imposible abrir o crear la BBDD local de sync. Asegurese de que tiene permisos de escritura en la carpeta de sync.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5307,14 +5307,14 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>Usando archivos virtuales con sufijo, pero el sufijo no está establecido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>No se pudo leer la lista de bloqueo de la base de datos local</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflicto: Versión del servidor descargada, La copia local ha sido renombrada pero no se ha podido subir.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>No se pudo leer la lista de bloqueo de la base de datos local</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

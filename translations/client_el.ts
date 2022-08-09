@@ -5251,14 +5251,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Το όνομα αρχείου είναι ένα κατοχυρωμένο όνομα σε αυτό το σύστημα αρχείων.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Ανικανότητα στο άνοιγμα ή στη δημιουργία της τοπικής βάσης δεδομένων. Εξετάστε αν έχετε δικαιώματα εγγραφής στο φάκελο συγχρονισμού. </translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Το όνομα του αρχείου περιέχει συνεχόμενα κενά.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Ανικανότητα στο άνοιγμα ή στη δημιουργία της τοπικής βάσης δεδομένων. Εξετάστε αν έχετε δικαιώματα εγγραφής στο φάκελο συγχρονισμού. </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5286,14 +5286,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Χρήση εικονικών αρχείων με κατάληξη, αλλά η κατάληξη δεν έχει οριστεί.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Πρόβλημα: Η έκδοση του διακομιστή μεταφωρτώθηκε, το τοπικό αντίγραφο μετονομάστηκε αλλά δεν </translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Αδυναμία ανάγνωσης της μαύρης λίστας από την τοπική βάση δεδομένων</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

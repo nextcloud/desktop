@@ -5271,14 +5271,14 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>A fájlnév a rendszer számára fenntartott ezen a fájlrendszeren.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>A helyi szinkronizálási adatbázis nem nyitható meg, vagy nem hozható létre. Győződjön meg róla, hogy rendelkezik-e írási joggal a szinkronizálási mappán.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>A fájlnév záró szóközöket tartalmaz.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>A helyi szinkronizálási adatbázis nem nyitható meg, vagy nem hozható létre. Győződjön meg róla, hogy rendelkezik-e írási joggal a szinkronizálási mappán.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5306,14 +5306,14 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Virtuális fájlok használata utótaggal, de az utótag nincs beállítva</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nem lehet kiolvasni a tiltólistát a helyi adatbázisból</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Ütközés: Kiszolgálói verzió le lett töltve, a helyi másolat át lett nevezve, és nem lett feltöltve.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nem lehet kiolvasni a tiltólistát a helyi adatbázisból</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

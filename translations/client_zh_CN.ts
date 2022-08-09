@@ -5253,14 +5253,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>文件名为系统保留文件名。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>无法打开或创建本地同步数据库。请确保您在同步文件夹下有写入权限。</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>文件名尾部含有空格</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>无法打开或创建本地同步数据库。请确保您在同步文件夹下有写入权限。</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5288,14 +5288,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>使用带后缀的虚拟文件，但未设置后缀。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>无法从本地数据库读取黑名单</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>发生冲突：服务器版本的文件已经下载，本地版本的文件已经改名且没有上传。</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>无法从本地数据库读取黑名单</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

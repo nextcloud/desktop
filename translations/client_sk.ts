@@ -5270,14 +5270,14 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Názov súboru je na tomto súborovom systéme rezervovaným názvom (nie je možné ho použiť).</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nie je možné otvoriť alebo vytvoriť miestnu synchronizačnú databázu. Skontrolujte či máte právo na zápis do synchronizačného priečinku.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Názov súboru obsahuje medzery na konci.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Nie je možné otvoriť alebo vytvoriť miestnu synchronizačnú databázu. Skontrolujte či máte právo na zápis do synchronizačného priečinku.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5305,14 +5305,14 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Používate virtuálne súbory s príponou, ale prípona nie je nastavená</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nepodarilo sa načítať čiernu listinu z miestnej databázy</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Konflikt: Prevzatá verzia zo servera, lokálna kópia premenovaná a neodovzdaná.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nepodarilo sa načítať čiernu listinu z miestnej databázy</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

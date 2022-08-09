@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Muturretik muturrerako enkriptatzearen gako mnemoteknikoa</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Ez enkriptatu karpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -447,7 +447,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Kontu honek muturretik muturrerako zifratzea onartzen du</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -1073,7 +1073,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Mesedez, idatzi zure muturretik muturrerako zifratze pasahitza: &lt;br&gt;&lt;br&gt;Erabiltzaile-izena: %2&lt;br&gt;Kontua: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -5271,14 +5271,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Fitxategi-izena izen erreserbatua da fitxategi-sistema honetan.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Ezin izan da ireki edo sortu datu-base lokal sinkronizatua. Ziurtatu idazteko baimena daukazula karpeta sinkronizatu lokalean. </translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Fitxategi-izenak amaierako zuriunea dauka.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Ezin izan da ireki edo sortu datu-base lokal sinkronizatua. Ziurtatu idazteko baimena daukazula karpeta sinkronizatu lokalean. </translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5306,14 +5306,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Suffix erabiltzen da fitxategi birtualak kudeatzeko, baina suffix ez dago konfiguratuta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Ezin izan da zerrenda beltza irakurri datu-base lokaletik</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Gatazka: zerbitzari bertsioa deskargatu da, kopia lokala berrizendatua eta ez kargatuta.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Ezin izan da zerrenda beltza irakurri datu-base lokaletik</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

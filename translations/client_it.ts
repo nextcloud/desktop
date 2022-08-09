@@ -5261,14 +5261,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Il nome del file è un nome riservato su questo file system.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Impossibile aprire o creare il database locale di sincronizzazione. Assicurati di avere accesso in scrittura alla cartella di sincronizzazione.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Il nome del file contiene spazi alla fine.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Impossibile aprire o creare il database locale di sincronizzazione. Assicurati di avere accesso in scrittura alla cartella di sincronizzazione.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5296,14 +5296,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Utilizzo di file virtuali con suffisso, ma il suffisso non è impostato</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Impossibile leggere la lista nera dal database locale</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflitto: versione del server scaricata, copia locale rinominata e non caricata.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Impossibile leggere la lista nera dal database locale</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>

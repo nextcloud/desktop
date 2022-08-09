@@ -5232,14 +5232,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Aquest nom de fitxer és un nom reservat en aquest sistema de fitxers.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="507"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>No es pot obrir o crear la base de dades de sincronització local. Assegureu-vos que teniu accés d&apos;escriptura a la carpeta de sincronització.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="515"/>
         <source>Filename contains trailing spaces.</source>
         <translation>El nom del fitxer conté espais finals.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="507"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>No es pot obrir o crear la base de dades de sincronització local. Assegureu-vos que teniu accés d&apos;escriptura a la carpeta de sincronització.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
@@ -5267,14 +5267,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>S&apos;estan utilitzant fitxers virtuals amb sufix però no s&apos;ha definit el sufix</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="535"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>No s&apos;ha pogut llegir la llista negra de la base de dades local.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Conflicte: s&apos;ha baixat la versió del servidor, s&apos;ha canviat el nom de la còpia local i no s&apos;ha pujat.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="535"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>No s&apos;ha pogut llegir la llista negra de la base de dades local.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
