@@ -56,7 +56,9 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url)
                     return;
                 }
 
-                setJobError(job, tr("Failed to resolve the url %1, error: %2").arg(oldUrl.toDisplayString(), reply->errorString()), reply);
+                qCCritical(lcResolveUrl) << QStringLiteral("Failed to resolve URL %1, error: %2").arg(oldUrl.toDisplayString(), reply->errorString());
+
+                setJobError(job, tr("Could not detect compatible server at %1").arg(oldUrl.toDisplayString()), reply);
                 qCWarning(lcResolveUrl) << job->errorMessage();
                 return;
             }
