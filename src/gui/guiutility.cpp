@@ -214,8 +214,13 @@ QIcon Utility::getCoreIcon(const QString &icon_name)
 
 void Utility::setModal(QWidget *w)
 {
-    w->setWindowModality(Qt::ApplicationModal);
+    // setting both sheet and explicitly modal
+    // can cause window stacking issues
+#ifdef Q_OS_MAC
     w->setWindowFlags(Qt::Sheet);
+#else
+    w->setWindowModality(Qt::ApplicationModal);
+#endif
     w->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
     w->setParent(ocApp()->gui()->settingsDialog());
 }
