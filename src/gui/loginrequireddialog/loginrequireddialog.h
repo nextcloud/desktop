@@ -14,29 +14,26 @@
 
 #pragma once
 
+#include "abstractloginrequiredwidget.h"
 #include "account.h"
 #include <QDialog>
 
 namespace Ui {
-class AskForOAuthLoginDialog;
+class LoginRequiredDialog;
 }
 
 namespace OCC {
 
-class AskForOAuthLoginDialog : public QDialog
+class LoginRequiredDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *parent = nullptr);
-    ~AskForOAuthLoginDialog() override;
-
-Q_SIGNALS:
-    void openBrowserButtonClicked();
-    void copyUrlToClipboardButtonClicked();
+    explicit LoginRequiredDialog(AbstractLoginRequiredWidget *contentWidget, QWidget *parent = nullptr);
+    ~LoginRequiredDialog() override;
 
 private:
-    ::Ui::AskForOAuthLoginDialog *_ui;
+    ::Ui::LoginRequiredDialog *_ui;
 };
 
 } // OCC

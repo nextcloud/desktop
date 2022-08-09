@@ -24,7 +24,6 @@ set(client_UI_SRCS
     proxyauthdialog.ui
     notificationwidget.ui
     logbrowser.ui
-    askforoauthlogindialog.ui
 )
 
 set(client_SRCS
@@ -80,7 +79,6 @@ set(client_SRCS
     translations.cpp
     creds/httpcredentialsgui.cpp
     updateurldialog.cpp
-    askforoauthlogindialog.cpp
 
     models/activitylistmodel.cpp
     models/expandingheaderview.cpp
@@ -111,6 +109,7 @@ set( final_src
 
 add_subdirectory(newwizard)
 add_subdirectory(folderwizard)
+add_subdirectory(loginrequireddialog)
 
 add_library(owncloudCore STATIC ${final_src})
 set_target_properties(owncloudCore PROPERTIES AUTOUIC ON AUTORCC ON)
@@ -118,7 +117,7 @@ target_link_libraries(owncloudCore
     PUBLIC
         Qt5::Widgets Qt5::Network Qt5::Xml
         qt5keychain
-        newwizard folderwizard spaces
+        newwizard folderwizard spaces loginrequireddialog
         libsync)
 target_compile_definitions(owncloudCore
     PUBLIC QT_USE_QSTRINGBUILDER

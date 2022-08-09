@@ -56,7 +56,8 @@
 
 #include "account.h"
 #include "askexperimentalvirtualfilesfeaturemessagebox.h"
-#include "askforoauthlogindialog.h"
+#include "loginrequireddialog.h"
+#include "oauthloginrequiredwidget.h"
 
 namespace OCC {
 
@@ -804,7 +805,8 @@ void AccountSettings::slotAccountStateChanged()
 
                 qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
 
-                _askForOAuthLoginDialog = new AskForOAuthLoginDialog(_accountState->account(), ocApp()->gui()->settingsDialog());
+                auto *contentWidget = new OAuthLoginRequiredWidget(account);
+                _askForOAuthLoginDialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());
 
                 // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
                 _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
@@ -814,7 +816,7 @@ void AccountSettings::slotAccountStateChanged()
                     this, &AccountSettings::slotAccountStateChanged,
                     Qt::UniqueConnection);
 
-                connect(_askForOAuthLoginDialog, &AskForOAuthLoginDialog::rejected, this, [this]() {
+                connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, [this]() {
                     // if a user dismisses the dialog, we have no choice but signing them out
                     _accountState->signOutByUi();
                 });

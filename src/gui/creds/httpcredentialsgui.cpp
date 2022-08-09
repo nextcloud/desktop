@@ -13,18 +13,18 @@
  * for more details.
  */
 
-#include "application.h"
-#include "account.h"
-#include "common/asserts.h"
 #include "creds/httpcredentialsgui.h"
+#include "account.h"
+#include "application.h"
+#include "common/asserts.h"
+#include "httploginrequiredwidget.h"
+#include "loginrequireddialog.h"
 #include "networkjobs.h"
 #include "settingsdialog.h"
 #include "theme.h"
 
 #include <QBuffer>
 #include <QDesktopServices>
-#include <QInputDialog>
-#include <QLabel>
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QTimer>
@@ -113,39 +113,14 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
 
 void HttpCredentialsGui::showDialog()
 {
-    QString msg = tr("Please enter %1 password:<br>"
-                     "<br>"
-                     "User: %2<br>"
-                     "Account: %3<br>")
-                      .arg(Utility::escape(Theme::instance()->appNameGUI()),
-                          Utility::escape(_user),
-                          Utility::escape(_account->displayName()));
+    auto *contentWidget = new HttpLoginRequiredWidget(_account->sharedFromThis());
 
-    QString reqTxt = requestAppPasswordText(_account);
-    if (!reqTxt.isEmpty()) {
-        msg += QLatin1String("<br>") + reqTxt + QLatin1String("<br>");
-    }
-    if (!_fetchErrorString.isEmpty()) {
-        msg += QLatin1String("<br>")
-            + tr("Reading from keychain failed with error: '%1'")
-                  .arg(Utility::escape(_fetchErrorString))
-            + QLatin1String("<br>");
-    }
-
-    QInputDialog *dialog = new QInputDialog(ocApp()->gui()->settingsDialog());
+    auto *dialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
-    dialog->setWindowTitle(tr("Enter Password"));
-    dialog->setLabelText(msg);
-    dialog->setTextValue(_previousPassword);
-    dialog->setTextEchoMode(QLineEdit::Password);
-    if (QLabel *dialogLabel = dialog->findChild<QLabel *>()) {
-        dialogLabel->setOpenExternalLinks(true);
-        dialogLabel->setTextFormat(Qt::RichText);
-    }
 
-    connect(dialog, &QDialog::finished, this, [this, dialog](int result) {
+    connect(dialog, &LoginRequiredDialog::finished, ocApp()->gui()->settingsDialog(), [this, contentWidget](const int result) {
         if (result == QDialog::Accepted) {
-            _password = dialog->textValue();
+            _password = contentWidget->password();
             _refreshToken.clear();
             _ready = true;
             persist();
@@ -154,6 +129,7 @@ void HttpCredentialsGui::showDialog()
         }
         emit asked();
     });
+
     dialog->open();
     ownCloudGui::raiseDialog(dialog);
 }
