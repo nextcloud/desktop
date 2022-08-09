@@ -8,6 +8,9 @@ add_library(owncloudResources SHARED
 
 generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
 
+# make them available to the whole project
+set(OWNCLOUD_SIDEBAR_ICONS ${OWNCLOUD_SIDEBAR_ICONS} CACHE INTERNAL "Sidebar icons" FORCE)
+
 target_link_libraries(owncloudResources PUBLIC Qt5::Core)
 
 set_target_properties(owncloudResources PROPERTIES
