@@ -56,6 +56,9 @@ AskForOAuthLoginDialog::AskForOAuthLoginDialog(AccountPtr accountPtr, QWidget *p
         ocApp()->clipboard()->setText(link);
     });
     connect(_ui->logoutButton, &QPushButton::clicked, this, &QDialog::reject);
+
+    // depending on the theme we have to use a light or dark icon
+    _ui->copyUrlToClipboardButton->setIcon(Utility::getCoreIcon(QStringLiteral("clipboard")));
 }
 
 AskForOAuthLoginDialog::~AskForOAuthLoginDialog()

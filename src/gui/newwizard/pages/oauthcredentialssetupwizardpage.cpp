@@ -15,6 +15,7 @@
 #include "oauthcredentialssetupwizardpage.h"
 #include "ui_oauthcredentialssetupwizardpage.h"
 
+#include "gui/guiutility.h"
 #include "theme.h"
 
 namespace OCC::Wizard {
@@ -44,6 +45,9 @@ OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &ser
     });
 
     _ui->pleaseLogIntoLabel->setText(tr("Please use your browser to log in to %1").arg(Theme::instance()->appNameGUI()));
+
+    // depending on the theme we have to use a light or dark icon
+    _ui->copyUrlToClipboardButton->setIcon(Utility::getCoreIcon(QStringLiteral("clipboard")));
 }
 
 OAuthCredentialsSetupWizardPage::~OAuthCredentialsSetupWizardPage()

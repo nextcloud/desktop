@@ -1,6 +1,7 @@
 #include "accountconfiguredwizardpage.h"
 #include "ui_accountconfiguredwizardpage.h"
 
+#include "gui/guiutility.h"
 #include "theme.h"
 
 #include <QDir>
@@ -26,7 +27,7 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
 
     _ui->useVfsRadioButton->setText(tr("Use &virtual files instead of downloading content immediately"));
     if (vfsModeIsExperimental) {
-        _ui->useVfsRadioButton->setIcon(QIcon(QStringLiteral(":/client/resources/light/warning.svg")));
+        _ui->useVfsRadioButton->setIcon(Utility::getCoreIcon(QStringLiteral("warning")));
     }
 
     // just adjusting the visibility should be sufficient for these branding options
