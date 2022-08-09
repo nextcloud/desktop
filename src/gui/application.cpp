@@ -638,6 +638,10 @@ void Application::parseOptions(const QStringList &arguments)
         _logFile = parser.value(logFileOption);
     }
     if (parser.isSet(logDirOption)) {
+        if (parser.isSet(logFileOption)) {
+            displayHelpText(tr("--logfile and --logdir are mutually exclusive"));
+            std::exit(1);
+        }
         _logDir = parser.value(logDirOption);
     }
     if (parser.isSet(logFlushOption)) {
