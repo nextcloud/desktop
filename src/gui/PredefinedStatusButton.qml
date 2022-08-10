@@ -28,7 +28,8 @@ AbstractButton {
     leftPadding: Style.standardSpacing / 2
     rightPadding: Style.standardSpacing / 2
 
-    property real internalSpacing: Style.standardSpacing
+    property int emojiWidth: -1
+    property int internalSpacing: Style.standardSpacing
     property string emoji: ""
 
     background: Rectangle {
@@ -37,15 +38,19 @@ AbstractButton {
     }
 
     contentItem: Row {
-        spacing: internalSpacing
+        spacing: root.internalSpacing
 
         Label {
+            width: root.emojiWidth > 0 ? root.emojiWidth : implicitWidth
             text: emoji
+            horizontalAlignment: Image.AlignHCenter
+            verticalAlignment: Image.AlignVCenter
         }
 
         Label {
             text: root.text
             color: Style.ncTextColor
+            verticalAlignment: Text.AlignVCenter
         }
     }
 }
