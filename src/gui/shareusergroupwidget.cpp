@@ -84,11 +84,11 @@ bool AvatarEventFilter::eventFilter(QObject *obj, QEvent *event)
 }
 
 ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
-    const QString &sharePath,
-    const QString &localPath,
-    SharePermissions maxSharingPermissions,
-    const QString &privateLinkUrl,
-    QWidget *parent)
+                                           const QString &sharePath,
+                                           const QString &localPath,
+                                           SharePermissions maxSharingPermissions,
+                                           const QString &privateLinkUrl,
+                                           QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserGroupWidget)
     , _account(account)
@@ -108,8 +108,8 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
 
     _completer = new QCompleter(this);
     _completerModel = new ShareeModel(_account,
-        _isFile ? QLatin1String("file") : QLatin1String("folder"),
-        _completer);
+                                      _isFile ? QLatin1String("file") : QLatin1String("folder"),
+                                      _completer);
     connect(_completerModel, &ShareeModel::shareesReady, this, &ShareUserGroupWidget::slotShareesReady);
     connect(_completerModel, &ShareeModel::displayErrorMessage, this, &ShareUserGroupWidget::displayError);
 
@@ -139,13 +139,13 @@ ShareUserGroupWidget::ShareUserGroupWidget(AccountPtr account,
     // By making the next two QueuedConnections we can override
     // the strings the completer sets on the line edit.
     connect(_completer, SIGNAL(activated(QModelIndex)), SLOT(slotCompleterActivated(QModelIndex)),
-        Qt::QueuedConnection);
+            Qt::QueuedConnection);
     connect(_completer, SIGNAL(highlighted(QModelIndex)), SLOT(slotCompleterHighlighted(QModelIndex)),
-        Qt::QueuedConnection);
+            Qt::QueuedConnection);
 
     // Queued connection so this signal is recieved after textChanged
     connect(_ui->shareeLineEdit, &QLineEdit::textEdited,
-        this, &ShareUserGroupWidget::slotLineEditTextEdited, Qt::QueuedConnection);
+            this, &ShareUserGroupWidget::slotLineEditTextEdited, Qt::QueuedConnection);
     _ui->shareeLineEdit->installEventFilter(this);
     connect(&_completionTimer, &QTimer::timeout, this, [this]() {
         searchForSharees(ShareeModel::LocalSearch);
@@ -196,8 +196,8 @@ void ShareUserGroupWidget::slotLineEditReturn()
     for (int i = 0; i < _completerModel->rowCount(); ++i) {
         const auto sharee = _completerModel->getSharee(i);
         if (sharee->format() == text
-            || sharee->displayName() == text
-            || sharee->shareWith() == text) {
+                || sharee->displayName() == text
+                || sharee->shareWith() == text) {
             slotCompleterActivated(_completerModel->index(i));
             // make sure we do not send the same item twice (because return is called when we press
             // return to activate an item inthe completer)
@@ -253,7 +253,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
     QList<QString> linkOwners({});
 
     ShareUserLine *justCreatedShareThatNeedsPassword = nullptr;
-       
+
     while (QLayoutItem *shareUserLine = _shareUserGroup->takeAt(0)) {
         delete shareUserLine->widget();
         delete shareUserLine;
@@ -265,7 +265,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
             if(!share->getUidOwner().isEmpty() &&
                     share->getUidOwner() != share->account()->davUser()){
                 linkOwners.append(share->getOwnerDisplayName());
-             }
+            }
             continue;
         }
 
@@ -319,7 +319,7 @@ void ShareUserGroupWidget::slotPrivateLinkShare()
     // this icon is not handled by slotStyleChanged() -> customizeStyle but we can live with that
     menu->addAction(Theme::createColorAwareIcon(":/client/theme/copy.svg"),
                     tr("Copy link"),
-        this, SLOT(slotPrivateLinkCopy()));
+                    this, SLOT(slotPrivateLinkCopy()));
 
     menu->exec(QCursor::pos());
 }
@@ -363,12 +363,12 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
         
         do {
             password = QInputDialog::getText(
-                this,
-                tr("Password for share required"),
-                tr("Please enter a password for your email share:"),
-                QLineEdit::Password,
-                QString(),
-                &ok);
+                        this,
+                        tr("Password for share required"),
+                        tr("Please enter a password for your email share:"),
+                        QLineEdit::Password,
+                        QString(),
+                        &ok);
         } while (password.isEmpty() && ok);
         
         if (!ok) {
@@ -377,7 +377,7 @@ void ShareUserGroupWidget::slotCompleterActivated(const QModelIndex &index)
     }
     
     _manager->createShare(_sharePath, Share::ShareType(sharee->type()),
-        sharee->shareWith(), _maxSharingPermissions, password);
+                          sharee->shareWith(), _maxSharingPermissions, password);
 
     _ui->shareeLineEdit->setEnabled(false);
     _ui->shareeLineEdit->clear();
@@ -418,9 +418,9 @@ void ShareUserGroupWidget::slotPrivateLinkCopy()
 void ShareUserGroupWidget::slotPrivateLinkEmail()
 {
     Utility::openEmailComposer(
-        tr("I shared something with you"),
-        _privateLinkUrl,
-        this);
+                tr("I shared something with you"),
+                _privateLinkUrl,
+                this);
 }
 
 void ShareUserGroupWidget::slotStyleChanged()
@@ -451,7 +451,7 @@ void ShareUserGroupWidget::activateShareeLineEdit()
 }
 
 ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> share,
-    SharePermissions maxSharingPermissions, bool isFile, QWidget *parent)
+                             SharePermissions maxSharingPermissions, bool isFile, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::ShareUserLine)
     , _account(account)
@@ -469,9 +469,9 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     // can edit permission
     bool enabled = (maxSharingPermissions & SharePermissionUpdate);
     if(!_isFile) enabled = enabled && (maxSharingPermissions & SharePermissionCreate &&
-                                      maxSharingPermissions & SharePermissionDelete);
-    _ui->permissionsEdit->setEnabled(enabled);
-    connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
+                                       maxSharingPermissions & SharePermissionDelete);
+    //    _ui->permissionsEdit->setEnabled(enabled);
+    //    connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
 
@@ -484,11 +484,30 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
 
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
+
+    auto *permissionMenu = new QMenu(this);
+    //    QString  menuStyle("QMenu::item:checked{color: #e20074;}");
+    //    permissionMenu->setStyleSheet(menuStyle);
+
+
     _permissionReshare= new QAction(tr("Can reshare"), this);
     _permissionReshare->setCheckable(true);
     _permissionReshare->setEnabled(maxSharingPermissions & SharePermissionShare);
     menu->addAction(_permissionReshare);
     connect(_permissionReshare, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
+
+    _permissionRead = new QAction(tr("Read only"));
+    _permissionRead->setCheckable(true);
+    _permissionRead->setEnabled(maxSharingPermissions & SharePermissionRead);
+    menu->addAction(_permissionRead);
+
+    connect(_permissionRead, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
+
+    _permissionChange = new QAction(tr("Can Edit"), this);
+    _permissionChange->setCheckable(true);
+    _permissionChange->setEnabled(maxSharingPermissions & SharePermissionUpdate);
+    menu->addAction(_permissionChange);
+    connect(_permissionChange, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
     showNoteOptions(false);
 
@@ -524,9 +543,9 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
 
     menu->addSeparator();
 
-      // Adds action to delete share widget
-      QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/theme/delete.svg")));
-      _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
+    // Adds action to delete share widget
+    QIcon deleteicon = QIcon::fromTheme(QLatin1String("user-trash"),QIcon(QLatin1String(":/client/theme/delete.svg")));
+    _deleteShareButton= new QAction(deleteicon,tr("Unshare"), this);
 
     menu->addAction(_deleteShareButton);
     connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
@@ -535,24 +554,23 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
      * Files can't have create or delete permissions
      */
     if (!_isFile) {
-        _permissionCreate = new QAction(tr("Can create"), this);
-        _permissionCreate->setCheckable(true);
-        _permissionCreate->setEnabled(maxSharingPermissions & SharePermissionCreate);
-        menu->addAction(_permissionCreate);
-        connect(_permissionCreate, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
+        _permissionRead = new QAction(tr("Read only"));
+        _permissionRead->setCheckable(true);
+        _permissionRead->setEnabled(maxSharingPermissions & SharePermissionRead);
+        permissionMenu->addAction(_permissionRead);
+        connect(_permissionRead, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
 
-        _permissionChange = new QAction(tr("Can change"), this);
+
+        _permissionChange = new QAction(tr("Can Edit"), this);
         _permissionChange->setCheckable(true);
         _permissionChange->setEnabled(maxSharingPermissions & SharePermissionUpdate);
-        menu->addAction(_permissionChange);
+        permissionMenu->addAction(_permissionChange);
         connect(_permissionChange, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
-
-        _permissionDelete = new QAction(tr("Can delete"), this);
-        _permissionDelete->setCheckable(true);
-        _permissionDelete->setEnabled(maxSharingPermissions & SharePermissionDelete);
-        menu->addAction(_permissionDelete);
-        connect(_permissionDelete, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
     }
+
+    _ui->permissionMenu->setMenu(permissionMenu);
+    _ui->permissionMenu->setPopupMode(QToolButton::InstantPopup);
+    _ui->permissionMenu->setStyleSheet("QToolButton::menu-indicator { image: none; }");
 
     // Adds action to display password widget (check box)
     if (_share->getShareType() == Share::TypeEmail && (_share->isPasswordSet() || _account->capabilities().shareEmailPasswordEnabled())) {
@@ -589,7 +607,7 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
      * https://github.com/owncloud/client/issues/4996
      */
     if (share->getShareType() == Share::TypeRemote
-        && share->account()->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
+            && share->account()->serverVersionInt() < Account::makeServerVersion(9, 1, 0)) {
         _permissionReshare->setVisible(false);
         _ui->permissionToolButton->setVisible(false);
     }
@@ -703,30 +721,30 @@ void ShareUserLine::slotEditPermissionsChanged()
     // Can never manually be set to "partial".
     // This works because the state cycle for clicking is
     // unchecked -> partial -> checked -> unchecked.
-    if (_ui->permissionsEdit->checkState() == Qt::PartiallyChecked) {
-        _ui->permissionsEdit->setCheckState(Qt::Checked);
-    }
+    //    if (_ui->permissionsEdit->checkState() == Qt::PartiallyChecked) {
+    //        _ui->permissionsEdit->setCheckState(Qt::Checked);
+    //    }
 
     Share::Permissions permissions = SharePermissionRead;
 
     //  folders edit = CREATE, READ, UPDATE, DELETE
     //  files edit = READ + UPDATE
-    if (_ui->permissionsEdit->checkState() == Qt::Checked) {
+    //    if (_ui->permissionsEdit->checkState() == Qt::Checked) {
 
-        /*
+    /*
          * Files can't have create or delete permisisons
          */
-        if (!_isFile) {
-            if (_permissionChange->isEnabled())
-                permissions |= SharePermissionUpdate;
-            if (_permissionCreate->isEnabled())
-                permissions |= SharePermissionCreate;
-            if (_permissionDelete->isEnabled())
-                permissions |= SharePermissionDelete;
-        } else {
+    if (!_isFile) {
+        if (_permissionChange->isEnabled())
             permissions |= SharePermissionUpdate;
-        }
+        //            if (_permissionCreate->isEnabled())
+        //                permissions |= SharePermissionCreate;
+        //            if (_permissionDelete->isEnabled())
+        //                permissions |= SharePermissionDelete;
+    } else {
+        permissions |= SharePermissionUpdate;
     }
+    //    }
 
     if(_isFile && _permissionReshare->isEnabled() && _permissionReshare->isChecked())
         permissions |= SharePermissionShare;
@@ -739,20 +757,28 @@ void ShareUserLine::slotPermissionsChanged()
     setEnabled(false);
 
     Share::Permissions permissions = SharePermissionRead;
-
+    _ui->currentPermission->setElideMode(Qt::ElideRight);
     if (_permissionReshare->isChecked())
         permissions |= SharePermissionShare;
 
     if (!_isFile) {
-        if (_permissionChange->isChecked())
+        if (_permissionChange->isChecked()){
             permissions |= SharePermissionUpdate;
-        if (_permissionCreate->isChecked())
-            permissions |= SharePermissionCreate;
-        if (_permissionDelete->isChecked())
-            permissions |= SharePermissionDelete;
+            _ui->currentPermission->setText(_permissionChange->text());
+        }
+        if(_permissionRead->isChecked()){
+            permissions |= SharePermissionRead;
+            _ui->currentPermission->setText(_permissionRead->text());
+        }
+
+
+        //        if (_permissionCreate->isChecked())
+        //            permissions |= SharePermissionCreate;
+        //        if (_permissionDelete->isChecked())
+        //            permissions |= SharePermissionDelete;
     } else {
-        if (_ui->permissionsEdit->isChecked())
-            permissions |= SharePermissionUpdate;
+        //        if (_ui->permissionsEdit->isChecked())
+        //            permissions |= SharePermissionUpdate;
     }
 
     _share->setPermissions(permissions);
@@ -879,30 +905,30 @@ void ShareUserLine::displayPermissions()
 {
     auto perm = _share->getPermissions();
 
-//  folders edit = CREATE, READ, UPDATE, DELETE
-//  files edit = READ + UPDATE
+    //  folders edit = CREATE, READ, UPDATE, DELETE
+    //  files edit = READ + UPDATE
     if (perm & SharePermissionUpdate && (_isFile ||
                                          (perm & SharePermissionCreate && perm & SharePermissionDelete))) {
-        _ui->permissionsEdit->setCheckState(Qt::Checked);
+        //        _ui->permissionsEdit->setCheckState(Qt::Checked);
     } else if (!_isFile && perm & (SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete)) {
-        _ui->permissionsEdit->setCheckState(Qt::PartiallyChecked);
+        //        _ui->permissionsEdit->setCheckState(Qt::PartiallyChecked);
     } else if(perm & SharePermissionRead) {
-        _ui->permissionsEdit->setCheckState(Qt::Unchecked);
+        //        _ui->permissionsEdit->setCheckState(Qt::Unchecked);
     }
 
-//  edit is independent of reshare
+    //  edit is independent of reshare
     if (perm & SharePermissionShare)
         _permissionReshare->setChecked(true);
 
     if(!_isFile){
-        _permissionCreate->setChecked(perm & SharePermissionCreate);
+        //  _permissionCreate->setChecked(perm & SharePermissionCreate);
         _permissionChange->setChecked(perm & SharePermissionUpdate);
-        _permissionDelete->setChecked(perm & SharePermissionDelete);
+        //        _permissionDelete->setChecked(perm & SharePermissionDelete);
+         _ui->currentPermission->setText(tr("Can Edit"));
     }
 }
 
-void ShareUserLine::slotStyleChanged()
-{
+void ShareUserLine::slotStyleChanged(){
     customizeStyle();
 }
 
@@ -1078,7 +1104,7 @@ QDate ShareUserLine::maxExpirationDateForShare(const Share::ShareType type, cons
     if (type == Share::ShareType::TypeRemote) {
         daysToExpire = _account->capabilities().shareRemoteExpireDateDays();
     } else if (type == Share::ShareType::TypeEmail) {
-       daysToExpire = _account->capabilities().sharePublicLinkExpireDateDays();
+        daysToExpire = _account->capabilities().sharePublicLinkExpireDateDays();
     } else {
         daysToExpire = _account->capabilities().shareInternalExpireDateDays();
     }

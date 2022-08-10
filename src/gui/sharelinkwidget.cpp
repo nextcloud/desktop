@@ -175,6 +175,7 @@ void ShareLinkWidget::setupUiOptions()
 
     // Prepare sharing menu
     _linkContextMenu = new QMenu(this);
+     auto *permissionMenu = new QMenu(this);
 
     // radio button style
     permissionsGroup->setExclusive(true);
@@ -187,21 +188,28 @@ void ShareLinkWidget::setupUiOptions()
 
     } else {
         checked = (perm == SharePermissionRead);
-        _readOnlyLinkAction = permissionsGroup->addAction(tr("View only"));
+        _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
         _readOnlyLinkAction->setCheckable(true);
         _readOnlyLinkAction->setChecked(checked);
+        permissionMenu->addAction(_readOnlyLinkAction);
 
         checked = (perm & SharePermissionRead) && (perm & SharePermissionCreate)
             && (perm & SharePermissionUpdate) && (perm & SharePermissionDelete);
-        _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Allow upload and editing"));
+        _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Can Edit"));
         _allowUploadEditingLinkAction->setCheckable(true);
         _allowUploadEditingLinkAction->setChecked(checked);
+         permissionMenu->addAction(_allowUploadEditingLinkAction);
 
         checked = (perm == SharePermissionCreate);
         _allowUploadLinkAction = permissionsGroup->addAction(tr("File drop (upload only)"));
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
+        permissionMenu->addAction(_allowUploadLinkAction);
     }
+
+    _ui->permissionMenu->setMenu(permissionMenu);
+    _ui->permissionMenu->setPopupMode(QToolButton::InstantPopup);
+    _ui->permissionMenu->setStyleSheet("QToolButton::menu-indicator { image: none; }");
     
     _shareLinkElidedLabel = new OCC::ElidedLabel(this);
     _shareLinkElidedLabel->setElideMode(Qt::ElideRight);

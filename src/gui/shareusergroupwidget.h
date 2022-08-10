@@ -222,11 +222,13 @@ private:
   ProfilePageMenu _profilePageMenu;
 
   // _permissionEdit is a checkbox
+  QAction *_permissionRead;
+  QAction *_permissionEdit;
   QAction *_permissionReshare;
   QAction *_deleteShareButton;
-  QAction *_permissionCreate;
+//  QAction *_permissionCreate;
   QAction *_permissionChange;
-  QAction *_permissionDelete;
+//  QAction *_permissionDelete;
   QAction *_noteLinkAction;
   QAction *_expirationDateLinkAction;
   QAction *_passwordProtectLinkAction;
