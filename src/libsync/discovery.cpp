@@ -982,8 +982,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // This check leaks some details of VfsSuffix, particularly the size of placeholders.
             item->_direction = SyncFileItem::Down;
             if (noServerEntry) {
-                item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-                item->_type = ItemTypeFile;
+                if (!checkIfLocalFileWasChanged(item, dbEntry)) {
+                    item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+                    item->_type = ItemTypeFile;
+                }
             } else {
                 item->_instruction = CSYNC_INSTRUCTION_SYNC;
                 item->_type = ItemTypeVirtualFileDownload;
@@ -1076,7 +1078,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
 
-    auto postProcessLocalNew = [item, localEntry, path, this]() {
+    auto postProcessLocalNew = [item, localEntry, path, dbEntry, this]() {
         // TODO: We may want to execute the same logic for non-VFS mode, as, moving/renaming the same folder by 2 or more clients at the same time is not possible in Web UI.
         // Keeping it like this (for VFS files and folders only) just to fix a user issue.
 
@@ -1147,10 +1149,13 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
             emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local);
         }
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
-        // this flag needs to be unset, otherwise a folder would get marked as new in the processSubJobs
-        _childModified = false;
+
+        if (!checkIfLocalFileWasChanged(item, dbEntry)) {
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
+            // this flag needs to be unset, otherwise a folder would get marked as new in the processSubJobs
+            _childModified = false;
+        }
     };
 
     // Check if it is a move
@@ -1527,8 +1532,10 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
     item->_inode = localEntry.inode;
     item->_isSelectiveSync = true;
     if (dbEntry.isValid() && ((dbEntry._modtime == localEntry.modtime && dbEntry._fileSize == localEntry.size) || (localEntry.isDirectory && dbEntry.isDirectory()))) {
-        item->_instruction = CSYNC_INSTRUCTION_REMOVE;
-        item->_direction = SyncFileItem::Down;
+        if (!checkIfLocalFileWasChanged(item, dbEntry)) {
+            item->_instruction = CSYNC_INSTRUCTION_REMOVE;
+            item->_direction = SyncFileItem::Down;
+        }
     } else {
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         item->_status = SyncFileItem::FileIgnored;
