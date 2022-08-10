@@ -74,11 +74,26 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     _userStatus.setIcon("😀");
 }
 
-void UserStatusSelectorModel::load(int id)
+int UserStatusSelectorModel::userIndex() const
 {
+    return _userIndex;
+}
+
+void UserStatusSelectorModel::setUserIndex(const int userIndex)
+{
+    if(userIndex < 0) {
+        qCWarning(lcUserStatusDialogModel) << "Invalid user index: " << _userIndex;
+        return;
+    }
+
     reset();
-    qCDebug(lcUserStatusDialogModel) << "Loading user status connector for user with index: " << id;
-    _userStatusConnector = UserModel::instance()->userStatusConnector(id);
+
+    _userIndex = userIndex;
+    emit userIndexChanged();
+
+    qCDebug(lcUserStatusDialogModel) << "Loading user status connector for user with index: " << _userIndex;
+    _userStatusConnector = UserModel::instance()->userStatusConnector(_userIndex);
+
     init();
 }
 
@@ -102,6 +117,7 @@ void UserStatusSelectorModel::reset()
 void UserStatusSelectorModel::init()
 {
     if (!_userStatusConnector) {
+        qCWarning(lcUserStatusDialogModel) << "No user status conenctor set";
         return;
     }
 
@@ -182,7 +198,7 @@ void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 
     _userStatus.setState(status);
     _userStatusConnector->setUserStatus(_userStatus);
-    emit onlineStatusChanged();
+    emit userStatusChanged();
 }
 
 QUrl UserStatusSelectorModel::onlineIcon() const
@@ -234,9 +250,7 @@ QString UserStatusSelectorModel::userStatusEmoji() const
 
 void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
 {
-    if (userStatus.state() != UserStatus::OnlineStatus::Offline) {
-        _userStatus.setState(userStatus.state());
-    }
+    _userStatus.setState(userStatus.state());
     _userStatus.setMessage(userStatus.message());
     _userStatus.setMessagePredefined(userStatus.messagePredefined());
     _userStatus.setId(userStatus.id());
@@ -247,7 +261,6 @@ void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
     }
 
     emit userStatusChanged();
-    emit onlineStatusChanged();
     emit clearAtDisplayStringChanged();
 }
 
