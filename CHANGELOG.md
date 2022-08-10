@@ -8,6 +8,7 @@ ownCloud admins and users.
 Summary
 -------
 
+* Bugfix - Don't unset implicit log flush: [#9515](https://github.com/owncloud/client/pull/9515)
 * Bugfix - Compare usernames case insensitive: [#5174](https://github.com/owncloud/enterprise/issues/5174)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Don't display a conext menu on the root folder: [#8595](https://github.com/owncloud/client/issues/8595)
@@ -54,6 +55,13 @@ Summary
 
 Details
 -------
+
+* Bugfix - Don't unset implicit log flush: [#9515](https://github.com/owncloud/client/pull/9515)
+
+   Since https://github.com/owncloud/client/pull/9515 we flush the the log if the output is
+   stdout. We fixed a bug which disabled it again.
+
+   https://github.com/owncloud/client/pull/9515
 
 * Bugfix - Compare usernames case insensitive: [#5174](https://github.com/owncloud/enterprise/issues/5174)
 
