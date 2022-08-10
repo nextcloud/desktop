@@ -280,16 +280,27 @@ ColumnLayout {
 
             RowLayout {
                 Layout.fillWidth: true
-                spacing: Style.standardSpacing
+                spacing: Style.smallSpacing
 
                 Label {
+                    id: clearComboLabel
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    verticalAlignment: Text.AlignVCenter
+
                     text: qsTr("Clear status message after")
                     color: Style.ncTextColor
+                    wrapMode: Text.Wrap
                 }
 
                 BasicComboBox {
                     id: clearComboBox
+
                     Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.minimumWidth: implicitWidth
+
                     model: userStatusSelectorModel.clearStageTypes
                     textRole: "display"
                     valueRole: "clearStageType"
