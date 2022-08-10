@@ -323,19 +323,23 @@ ColumnLayout {
         Layout.alignment: Qt.AlignBottom
 
         UserStatusSelectorButton {
-            Layout.fillWidth: true
+            // Prevent being squashed by the other buttons with larger text
+            Layout.minimumWidth: implicitWidth
+            Layout.fillHeight: true
             primary: true
             text: qsTr("Cancel")
             onClicked: finished()
         }
         UserStatusSelectorButton {
             Layout.fillWidth: true
+            Layout.fillHeight: true
             primary: true
             text: qsTr("Clear status message")
             onClicked: userStatusSelectorModel.clearUserStatus()
         }
         UserStatusSelectorButton {
             Layout.fillWidth: true
+            Layout.fillHeight: true
             primary: true
             colored: true
             text: qsTr("Set status message")
