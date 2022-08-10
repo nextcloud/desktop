@@ -141,6 +141,7 @@ ColumnLayout {
             }
 
             RowLayout {
+                id: statusFieldLayout
                 Layout.fillWidth: true
                 spacing: 0
 
@@ -264,9 +265,11 @@ ColumnLayout {
                     model: userStatusSelectorModel.predefinedStatuses
 
                     PredefinedStatusButton {
-                        id: control
                         Layout.fillWidth: true
-                        internalSpacing: Style.standardSpacing + fieldButton.padding + userStatusMessageTextField.padding
+
+                        leftPadding: 0
+                        emojiWidth: fieldButton.width
+                        internalSpacing: statusFieldLayout.spacing + userStatusMessageTextField.leftPadding
 
                         emoji: modelData.icon
                         text: "<b>%1</b> – %2".arg(modelData.message).arg(userStatusSelectorModel.clearAtReadable(modelData))
