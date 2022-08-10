@@ -254,6 +254,7 @@ ApplicationWindow {
                                     userStatusDrawer.openUserStatusDrawer(model.index);
                                     accountMenu.close();
                                 }
+                                onClicked: UserModel.currentUserId = model.index;
                             }
                             onObjectAdded: accountMenu.insertItem(index, object)
                             onObjectRemoved: accountMenu.removeItem(object)
