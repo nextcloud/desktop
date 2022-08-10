@@ -46,7 +46,7 @@ AbstractButton {
                 height: width
                 anchors.bottom: accountAvatar.bottom
                 anchors.right: accountAvatar.right
-                color: accountButton.hovered || accountButton.visualFocus ? "#f6f6f6" : "white"
+                color: userLine.hovered || userLine.visualFocus ? "#f6f6f6" : "white"
                 radius: width*0.5
             }
 
