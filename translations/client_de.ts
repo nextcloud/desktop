@@ -1073,7 +1073,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Geben Sie Ihre Passphrase für die Ende-Zu-Ende-Verschlüsselung ein:&lt;br&gt;&lt;br&gt;Benutzername: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <translation>Geben Sie Ihre Passphrase für die Ende-zu-Ende-Verschlüsselung ein:&lt;br&gt;&lt;br&gt;Benutzername: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1744,7 +1744,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Datei zur lokalen Bearbeitung konnte nicht gefunden werden. Stellen Sie sicher, dass es nicht durch die selektive Synchronisierung ausgeschlossen wird.</translation>
+        <translation>Datei zur lokalen Bearbeitung konnte nicht gefunden werden. Stellen Sie sicher, dass sie nicht durch die selektive Synchronisierung ausgeschlossen wird.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1456"/>

@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemônico de criptografia de ponta a ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Não criptografar pasta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -447,7 +447,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Esta conta é compatível com criptografia de ponta a ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -1073,7 +1073,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Insira sua senha de criptografia de ponta a ponta:&lt;br&gt;&lt;br&gt;Nome do usuário: %2&lt;br&gt;Conta: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
