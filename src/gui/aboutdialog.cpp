@@ -20,7 +20,7 @@
 namespace OCC {
 
 AboutDialog::AboutDialog(QWidget *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , ui(new Ui::AboutDialog)
 {
     Utility::setModal(this);

@@ -39,7 +39,7 @@ namespace OCC {
 // ==============================================================================
 
 LogBrowser::LogBrowser(QWidget *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , ui(new Ui::LogBrowser)
 {
     Utility::setModal(this);

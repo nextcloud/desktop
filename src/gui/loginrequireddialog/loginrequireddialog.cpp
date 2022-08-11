@@ -25,7 +25,7 @@
 namespace OCC {
 
 LoginRequiredDialog::LoginRequiredDialog(AbstractLoginRequiredWidget *contentWidget, QWidget *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , _ui(new ::Ui::LoginRequiredDialog)
 {
     _ui->setupUi(this);

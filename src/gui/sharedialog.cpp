@@ -48,7 +48,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
     SharePermissions maxSharingPermissions,
     ShareDialogStartPage startPage,
     QWidget *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , _ui(new Ui::ShareDialog)
     , _accountState(accountState)
     , _sharePath(sharePath)

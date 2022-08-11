@@ -156,7 +156,7 @@ bool FolderWizardPrivate::useVirtualFiles() const
 }
 
 FolderWizard::FolderWizard(const AccountStatePtr &account, QWidget *parent)
-    : QWizard(parent, Qt::Sheet)
+    : QWizard(parent)
     , d_ptr(new FolderWizardPrivate(this, account))
 {
     Utility::setModal(this);

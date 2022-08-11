@@ -24,7 +24,7 @@
 namespace OCC {
 
 AuthenticationDialog::AuthenticationDialog(const QString &realm, const QString &domain, QWidget *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , _user(new QLineEdit)
     , _password(new QLineEdit)
 {

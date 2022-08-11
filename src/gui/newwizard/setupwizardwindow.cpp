@@ -31,7 +31,7 @@ namespace OCC::Wizard {
 Q_LOGGING_CATEGORY(lcSetupWizardWindow, "setupwizard.window")
 
 SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
-    : QDialog(parent, Qt::Sheet)
+    : QDialog(parent)
     , _ui(new ::Ui::SetupWizardWindow)
 {
     Utility::setModal(this);
