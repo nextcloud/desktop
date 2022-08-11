@@ -1336,7 +1336,6 @@ bool ProcessDirectoryJob::checkIfLocalFileWasChanged(const SyncFileItemPtr &item
 {
     const auto fileInfoFromDisk = QFileInfo(_discoveryData->_localDir + item->_file);
     const auto fileInfoMtime = static_cast<time_t>(fileInfoFromDisk.lastModified().toTime_t());
-    const auto fileInfoSize = fileInfoFromDisk.size();
     const auto fileMtimeWasChanged = item->_type == ItemTypeFile && fileInfoMtime > item->_modtime;
     const auto isAnyFileWasChangedLocally = [this, &item]() {
 
