@@ -112,7 +112,7 @@ CoreJob *CheckServerJobFactory::startJob(const QUrl &url)
             qCWarning(lcCheckServerJob) << "error:" << reply->errorString();
             setJobError(job, reply->errorString(), reply);
         } else if (httpStatus != 200 || reply->bytesAvailable() == 0) {
-            qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus;
+            qCWarning(lcCheckServerJob) << "error: status.php replied" << httpStatus;
             setJobError(job, QStringLiteral("Invalid HTTP status code received for status.php: %1").arg(httpStatus), reply);
         } else {
             const QByteArray body = reply->peek(4 * 1024);
