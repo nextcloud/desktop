@@ -678,6 +678,11 @@ QVector<std::tuple<QString, QString, QUrl>> Theme::urlButtons() const
     return {};
 }
 
+bool Theme::enableCernBranding() const
+{
+    return false;
+}
+
 template <>
 OWNCLOUDSYNC_EXPORT QString Utility::enumToDisplayName(Theme::UserIDType userIdType)
 {

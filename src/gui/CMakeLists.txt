@@ -82,6 +82,8 @@ set(client_SRCS
     models/expandingheaderview.cpp
     models/models.cpp
     models/protocolitemmodel.cpp
+
+    spacemigration.cpp
 )
 
 set(3rdparty_SRC

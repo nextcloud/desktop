@@ -463,6 +463,15 @@ public:
      * */
     virtual QVector<std::tuple<QString, QString, QUrl>> urlButtons() const;
 
+
+    /**
+     * Whether to enable the special code for cernbox
+     * This includes:
+     * - spaces migration.
+     */
+    bool enableCernBranding() const;
+
+
 protected:
     QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
     QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;

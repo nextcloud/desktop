@@ -1,0 +1,19 @@
+{
+    "folders": {
+        "/": {
+            "space_id": "1284d238-aa92-42ce-bdc4-0b0000009157$534bb038-6f9d-4093-946f-133be61fa4e7",
+            "path": "/"
+        },
+        "/Documents": {
+            "space_id": "1284d238-aa92-42ce-bdc4-0b0000009157$534bb038-6f9d-4093-946f-133be61fa4e7",
+            "path": "/Documents"
+        },
+        "/eos/a/Alice": {
+            "space_id": "1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05",
+            "path": "/"
+        },
+        "/Shares": {
+            "error": "Migration not possible"
+        }
+    }
+}

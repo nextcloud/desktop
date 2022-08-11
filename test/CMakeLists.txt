@@ -59,5 +59,6 @@ configure_file(test_journal.db "${PROJECT_BINARY_DIR}/bin/test_journal.db" COPYO
 
 
 owncloud_add_test(JobQueue)
+owncloud_add_test(SpacesMigration)
 
 add_subdirectory(modeltests)

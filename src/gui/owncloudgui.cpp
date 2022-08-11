@@ -88,7 +88,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                     for (const auto &d : drives) {
                         const QString name = GraphApi::Drives::getDriveDisplayName(d);
                         const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir, name);
-                        auto folder = addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
+                        auto folder = addFolder(folderName, {}, QUrl(d.getRoot().getWebDavUrl()), name);
                         folder->setPriority(GraphApi::Drives::getDrivePriority(d));
                         // save the new priority
                         folder->saveToSettings();

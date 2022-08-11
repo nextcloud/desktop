@@ -1,0 +1,148 @@
+{
+    "value": [
+        {
+            "driveAlias": "personal/katherine",
+            "driveType": "personal",
+            "id": "1284d238-aa92-42ce-bdc4-0b0000009157$534bb038-6f9d-4093-946f-133be61fa4e7",
+            "lastModifiedDateTime": "2022-07-26T11:44:07.613627918Z",
+            "name": "Katherine Johnson",
+            "owner": {
+                "user": {
+                    "id": "534bb038-6f9d-4093-946f-133be61fa4e7"
+                }
+            },
+            "quota": {
+                "remaining": 205987495936,
+                "state": "normal",
+                "used": 1429664893
+            },
+            "root": {
+                "eTag": "\"997dd59b42bb42b90c822362f441c88d\"",
+                "id": "1284d238-aa92-42ce-bdc4-0b0000009157$534bb038-6f9d-4093-946f-133be61fa4e7",
+                "webDavUrl": "https://ocis.owncloud.test/dav/spaces/1284d238-aa92-42ce-bdc4-0b0000009157$534bb038-6f9d-4093-946f-133be61fa4e7"
+            }
+        },
+        {
+            "driveAlias": "project/lost-in-space",
+            "driveType": "project",
+            "id": "1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05",
+            "lastModifiedDateTime": "2022-07-28T08:18:55.209218778Z",
+            "name": "Lost in space",
+            "owner": {
+                "user": {
+                    "id": "534bb038-6f9d-4093-946f-133be61fa4e7"
+                }
+            },
+            "quota": {
+                "remaining": 999117858,
+                "state": "normal",
+                "total": 1000000000,
+                "used": 882142
+            },
+            "root": {
+                "eTag": "\"0e9da589b1c0ea22680470528a8b7fed\"",
+                "id": "1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05",
+                "permissions": [
+                    {
+                        "grantedTo": [
+                            {
+                                "user": {
+                                    "id": "4c510ada-c86b-4815-8820-42cdf82c3d51"
+                                }
+                            },
+                            {
+                                "user": {
+                                    "id": "534bb038-6f9d-4093-946f-133be61fa4e7"
+                                }
+                            }
+                        ],
+                        "roles": [
+                            "editor"
+                        ]
+                    }
+                ],
+                "webDavUrl": "https://ocis.owncloud.test/dav/spaces/1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05"
+            },
+            "special": [
+                {
+                    "eTag": "\"53014327df8fda7cd586a4a5fe86e93a\"",
+                    "file": {
+                        "mimeType": "image/gif"
+                    },
+                    "id": "1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05!1f2da3dc-6248-457a-b337-7729f65ee949",
+                    "lastModifiedDateTime": "2022-02-17T09:38:17.000000496Z",
+                    "name": "mind-blow-galaxy.gif",
+                    "size": 881919,
+                    "specialFolder": {
+                        "name": "image"
+                    },
+                    "webDavUrl":
+                        "https://ocis.owncloud.test/dav/spaces/1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05%2131f599a1-94e1-4dfb-8bc9-841a57066d05/.space/mind-blow-galaxy.gif"
+                },
+                {
+                    "eTag": "\"c70081a95ad0938009aea08a45ab458f\"",
+                    "file": {
+                        "mimeType": "text/markdown"
+                    },
+                    "id": "1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05!1b8bb7ba-4fe5-419a-a31d-843d51e93466",
+                    "lastModifiedDateTime": "2022-05-25T10:58:04.625983014Z",
+                    "name": "readme.md",
+                    "size": 163,
+                    "specialFolder": {
+                        "name": "readme"
+                    },
+                    "webDavUrl":
+                        "https://ocis.owncloud.test/dav/spaces/1284d238-aa92-42ce-bdc4-0b0000009157$31f599a1-94e1-4dfb-8bc9-841a57066d05%2131f599a1-94e1-4dfb-8bc9-841a57066d05/.space/readme.md"
+                }
+            ]
+        },
+        {
+            "driveAlias": "virtual/shares",
+            "driveType": "virtual",
+            "id": "a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668",
+            "lastModifiedDateTime": "2022-05-25T11:17:22.593211809Z",
+            "name": "Shares Jail",
+            "quota": {
+                "remaining": 0,
+                "state": "exceeded",
+                "used": 0
+            },
+            "root": {
+                "eTag": "\"d1a362a801c8821c9c3074385c2a7d44\"",
+                "id": "a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668",
+                "webDavUrl": "https://ocis.owncloud.test/dav/spaces/a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668"
+            }
+        },
+        {
+            "driveAlias": "mountpoint/new-folder",
+            "driveType": "mountpoint",
+            "id": "a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668!48224266-d46b-4c3c-8ab4-d4334c3020dc",
+            "name": "New folder",
+            "owner": {
+                "user": {
+                    "id": "4c510ada-c86b-4815-8820-42cdf82c3d51"
+                }
+            },
+            "quota": {
+                "remaining": 0,
+                "state": "exceeded",
+                "used": 0
+            },
+            "root": {
+                "id": "a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668!48224266-d46b-4c3c-8ab4-d4334c3020dc",
+                "remoteItem": {
+                    "eTag": "\"d1a362a801c8821c9c3074385c2a7d44\"",
+                    "folder": {},
+                    "id": "1284d238-aa92-42ce-bdc4-0b0000009157$4c510ada-c86b-4815-8820-42cdf82c3d51!b58e4a22-6395-45f9-89a2-4233ba16d2fe",
+                    "lastModifiedDateTime": "2022-05-25T11:17:22.593211809Z",
+                    "name": "New folder",
+                    "size": 45204672,
+                    "webDavUrl":
+                        "https://ocis.owncloud.test/dav/spaces/1284d238-aa92-42ce-bdc4-0b0000009157$4c510ada-c86b-4815-8820-42cdf82c3d51%21b58e4a22-6395-45f9-89a2-4233ba16d2fe"
+                },
+                "webDavUrl":
+                    "https://ocis.owncloud.test/dav/spaces/a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668%2148224266-d46b-4c3c-8ab4-d4334c3020dc"
+            }
+        }
+    ]
+}

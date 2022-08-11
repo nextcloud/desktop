@@ -195,6 +195,8 @@ private:
     std::chrono::milliseconds _maintenanceToConnectedDelay;
 
     QuotaInfo *_quotaInfo = nullptr;
+
+    friend class SpaceMigration;
 };
 }
 

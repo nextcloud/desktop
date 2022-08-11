@@ -1,0 +1,6 @@
+Change: Implement server guided migration to spaces
+
+We added a feature that allows limited automatic migration of existing syncs to OCIS spaces.
+
+https://github.com/owncloud/client/issues/9945
+https://github.com/owncloud/ocis/issues/3574
