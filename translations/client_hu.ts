@@ -5594,19 +5594,9 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Az előre meghatározott állapotok nem kérhetők le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Az állapot nem kérhető le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>A felhasználói állapot nem kérhető le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>Az állapot funkció nem támogatott. Nem fog tudni egyéni állapotot beállítani.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5614,19 +5604,9 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>A felhasználói állapot funkció nem támogatott. Nem fog tudni egyéni állapotot beállítani.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Az emodzsik nem támogatottak. Egyes állapotfunkciók lehet, hogy nem fognak működni.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
         <translation>Az emodzsi funkció nem támogatott. Egyes állapotfunkciók lehet, hogy nem fognak működni.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Az állapot nem állítható be. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5635,13 +5615,33 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Az állapotüzenet nem törölhető. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation>Az állapot nem kérhető le. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>A felhasználói állapot nem törölhető. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation>Az állapot funkció nem támogatott. Nem fog tudni egyéni állapotot beállítani.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation>Az emodzsik nem támogatottak. Egyes állapotfunkciók lehet, hogy nem fognak működni.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation>Az állapot nem állítható be. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation>Az állapotüzenet nem törölhető. Győződjön meg róla, hogy kapcsolódik a kiszolgálóhoz.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6460,22 +6460,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>Fiókbejegyzés</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="37"/>
         <source>Switch to account</source>
         <translation>Váltás fiókra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is online</source>
         <translation>Jelenlegi fiókállapot: online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>Jelenlegi fiókállapot: ne zavarjanak</translation>
     </message>
@@ -6505,11 +6500,6 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Fiókműveletek</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
-        <source>Remove Account</source>
-        <translation>Fiók törlése</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation>Állapot beállítása</translation>
@@ -6521,10 +6511,20 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Kijelentkezés</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation>Fiókbejegyzés</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="203"/>
         <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>Bejelentkezés</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <source>Remove Account</source>
+        <translation>Fiók törlése</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="237"/>
@@ -6555,7 +6555,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Ne zavarjanak</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
         <source>Mute all notifications</source>
         <translation>Összes értesítés némítása</translation>
     </message>
@@ -6565,7 +6565,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Láthatatlan</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
         <source>Appear offline</source>
         <translation>Megjelenés nem kapcsolódottként</translation>
     </message>
@@ -6585,6 +6585,11 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Állapotüzenet törlése ennyi idő után:</translation>
     </message>
     <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
         <source>Clear status message</source>
         <translation>Állapotüzenet törlése</translation>
@@ -6593,14 +6598,6 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/gui/UserStatusSelector.qml" line="184"/>
         <source>Set status message</source>
         <translation>Állapotüzenet beállítása</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusSelectorDialog</name>
-    <message>
-        <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
-        <source>Set account status</source>
-        <translation>Fiókállapot beállítása</translation>
     </message>
 </context>
 <context>
@@ -6759,17 +6756,17 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Jelenlegi felhasználói állapot: ne zavarjanak</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="390"/>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
         <translation>Jelenlegi fiókprofilkép</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>Jelenlegi fiókállapot: online</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>Jelenlegi fiókállapot: ne zavarjanak</translation>
     </message>
@@ -6794,14 +6791,29 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Kapcsolat bontva</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Megosztási párbeszédpanel megnyitása</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>A Nextcloud Beszélgetés alkalmazás megnyitása böngészőben</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
+        <source>More apps</source>
+        <translation>További alkalmazások</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Alkalmazások menü</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open %1 in browser</source>
+        <translation>A(z) %1 megnyitása böngészőben</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6812,21 +6824,6 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
         <translation>A(z) %1 megnyitása helyben</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Megosztási párbeszédpanel megnyitása</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="576"/>
-        <source>More apps</source>
-        <translation>További alkalmazások</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
-        <source>Open %1 in browser</source>
-        <translation>A(z) %1 megnyitása böngészőben</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>

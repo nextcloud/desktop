@@ -5594,19 +5594,9 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin izan dira aurrez definitutako egoerak eskuratu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Ezin izan da egoera eskuratu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>Ezin izan da erabiltzaile egoera eskuratu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>Egoera ezaugarria ez da onartzen. Ezin izango duzu zure egoera ezarri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5614,19 +5604,9 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erabiltzailearen egoera ezaugarria ez da onartzen. Ezin izango duzu zure erabiltzaile egoera ezarri.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Emotikonoak ez dira onartzen. Hainbat egoera funtzionalitate mugatuta egon daitezke.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
         <translation>Emotikonoak ezaugarria ez da onartzen. Baliteke zenbait erabiltzaileren egoera funtzionalitateak ez funtzionatzea.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Ezin izan da egoera ezarri. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5635,13 +5615,33 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Ezin izan da egoera mezua garbitu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation>Ezin izan da egoera eskuratu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>Ezin izan da garbitu erabiltzailearen egoera mezua. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation>Egoera ezaugarria ez da onartzen. Ezin izango duzu zure egoera ezarri.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation>Emotikonoak ez dira onartzen. Hainbat egoera funtzionalitate mugatuta egon daitezke.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation>Ezin izan da egoera ezarri. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation>Ezin izan da egoera mezua garbitu. Ziurtatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6460,22 +6460,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>Kontu sarrera</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="37"/>
         <source>Switch to account</source>
         <translation>Aldatu kontu honetara</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is online</source>
         <translation>Erabiltzailea linean dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>Erabiltzailea ez molestatu egoeran dago</translation>
     </message>
@@ -6505,11 +6500,6 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Kontuaren ekintzak</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
-        <source>Remove Account</source>
-        <translation>Kendu kontua</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation>Ezarri egoera</translation>
@@ -6521,10 +6511,20 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Amaitu saioa</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation>Kontu sarrera</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="203"/>
         <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>Hasi saioa</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <source>Remove Account</source>
+        <translation>Kendu kontua</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="237"/>
@@ -6555,7 +6555,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ez molestatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
         <source>Mute all notifications</source>
         <translation>Mututu jakinarazpen guztiak</translation>
     </message>
@@ -6565,7 +6565,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ikusezina</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
         <source>Appear offline</source>
         <translation>Lineaz kanpo agertu</translation>
     </message>
@@ -6585,6 +6585,11 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Garbitu egoera mezua ondoren</translation>
     </message>
     <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
         <source>Clear status message</source>
         <translation>Garbitu egoera mezua ondoren</translation>
@@ -6593,14 +6598,6 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/UserStatusSelector.qml" line="184"/>
         <source>Set status message</source>
         <translation>Ezarri egoera-mezua</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusSelectorDialog</name>
-    <message>
-        <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
-        <source>Set account status</source>
-        <translation>Ezarri kontuaren egoera</translation>
     </message>
 </context>
 <context>
@@ -6759,17 +6756,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Erabiltzailea &apos;ez molestatu&apos; egoeran dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="390"/>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
         <translation>Uneko kontuaren avatarra</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>Uneko kontua linean dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>Uneko kontua ez molestatu egoeran dago</translation>
     </message>
@@ -6794,14 +6791,29 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Deskonektatuta</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Ireki Nextcloud Talk nabigatzailean</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
+        <source>More apps</source>
+        <translation>Aplikazio gehiago</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Aplikazioen menua</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open %1 in browser</source>
+        <translation>Ireki %1 arakatzailean</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6812,21 +6824,6 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
         <translation>Ireki %1 lokalean</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="576"/>
-        <source>More apps</source>
-        <translation>Aplikazio gehiago</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
-        <source>Open %1 in browser</source>
-        <translation>Ireki %1 arakatzailean</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
