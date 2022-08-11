@@ -6,8 +6,12 @@ include(ECMAddTests)
 function(owncloud_add_test test_class)
     set(OWNCLOUD_TEST_CLASS ${test_class})
     string(TOLOWER "${OWNCLOUD_TEST_CLASS}" OWNCLOUD_TEST_CLASS_LOWERCASE)
+    set(SRC_PATH test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp)
+    if (IS_DIRECTORY  ${CMAKE_CURRENT_SOURCE_DIR}/test${OWNCLOUD_TEST_CLASS_LOWERCASE}/)
+        set(SRC_PATH test${OWNCLOUD_TEST_CLASS_LOWERCASE}/${SRC_PATH})
+    endif()
 
-    ecm_add_test(test${OWNCLOUD_TEST_CLASS_LOWERCASE}.cpp
+    ecm_add_test(${SRC_PATH}
         ${ARGN}
         TEST_NAME "${OWNCLOUD_TEST_CLASS}Test"
         LINK_LIBRARIES
