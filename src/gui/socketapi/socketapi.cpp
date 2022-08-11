@@ -451,14 +451,15 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             Q_FALLTHROUGH();
         case SyncResult::Problem:
             Q_FALLTHROUGH();
-        case SyncResult::Error:
-            Q_FALLTHROUGH();
-        case SyncResult::SetupError: {
+        case SyncResult::Error: {
             const QString rootPath = Utility::stripTrailingSlash(f->path());
             broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
 
             broadcastMessage(buildMessage(QStringLiteral("UPDATE_VIEW"), rootPath));
-        } break;
+            break;
+        }
+        case SyncResult::SetupError:
+            [[fallthrough]];
         case OCC::SyncResult::Undefined:
             Q_FALLTHROUGH();
         case OCC::SyncResult::NotYetStarted:

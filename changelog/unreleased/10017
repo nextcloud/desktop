@@ -1,0 +1,5 @@
+Bugfix: We fixed a crash
+
+We fixed a crash that could occur after a folder reported a setup error
+
+https://github.com/owncloud/client/pull/10017
