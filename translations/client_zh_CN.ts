@@ -5576,19 +5576,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>无法获取预定义状态。确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>无法获取用户状态。确保您已连接到服务器。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5596,19 +5586,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>不支持用户状态特性。您将无法设置您的用户状态。</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
         <translation>不支持表情符号功能。某些用户状态功能可能无法工作。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5617,13 +5597,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>无法清除用户状态信息。确保您已连接到服务器。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6442,22 +6442,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>账号输入</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="37"/>
         <source>Switch to account</source>
         <translation>切换到账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is online</source>
         <translation>当前账号状态为在线</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>当前账号状态为请勿打扰</translation>
     </message>
@@ -6487,11 +6482,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>账号操作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
-        <source>Remove Account</source>
-        <translation>移除账号</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation>设置状态</translation>
@@ -6503,10 +6493,20 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>登出</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation>账号输入</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="203"/>
         <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>登录</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <source>Remove Account</source>
+        <translation>移除账号</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="237"/>
@@ -6537,7 +6537,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>勿扰</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
         <source>Mute all notifications</source>
         <translation>静音所有通知</translation>
     </message>
@@ -6547,7 +6547,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>不可见</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
         <source>Appear offline</source>
         <translation>显示为离线</translation>
     </message>
@@ -6567,6 +6567,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>在指定时间段后清除状态消息</translation>
     </message>
     <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
         <source>Clear status message</source>
         <translation>清除状态消息</translation>
@@ -6575,14 +6580,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/UserStatusSelector.qml" line="184"/>
         <source>Set status message</source>
         <translation>设置状态消息</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusSelectorDialog</name>
-    <message>
-        <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
-        <source>Set account status</source>
-        <translation>设定账号状态</translation>
     </message>
 </context>
 <context>
@@ -6741,17 +6738,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>当前用户状态为“请勿打扰” </translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="390"/>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
         <translation>当前账号头像</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>当前账号状态为在线</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>当前账号状态为请勿打扰</translation>
     </message>
@@ -6776,14 +6773,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>连接已断开</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>打开共享对话框</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在浏览器中打开 Nextcloud Talk </translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
+        <source>More apps</source>
+        <translation>更多的应用程序</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>应用菜单</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open %1 in browser</source>
+        <translation>在浏览器中打开%1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6794,21 +6806,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
         <translation>本地打开 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>打开共享对话框</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="576"/>
-        <source>More apps</source>
-        <translation>更多的应用程序</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
-        <source>Open %1 in browser</source>
-        <translation>在浏览器中打开%1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>

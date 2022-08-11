@@ -370,7 +370,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Цялостно мнемонично криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -436,7 +436,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Да не се се криптира папка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -447,7 +447,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Този профил поддържа цялостно криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -484,7 +484,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports end-to-end encryption</source>
-        <translation>Този профил поддържа криптиране от край до край</translation>
+        <translation>Този профил поддържа цялостно криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
@@ -1068,12 +1068,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Моля, въведете паролата си за шифроване от край до край:&lt;br&gt;&lt;br&gt; Потребител:% 2Профил:% 3&lt;br&gt;</translation>
+        <translation>Моля, въведете паролата си за цялостно шифроване:&lt;br&gt;&lt;br&gt; Потребител:% 2Профил:% 3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Моля, въведете паролата си за цялостно шифроване:&lt;br&gt;&lt;br&gt; Потребител:% 2&lt;br&gt;Профил:% 3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1249"/>
@@ -1740,17 +1740,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1438"/>
         <source>Could not find an account for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се намери профил за локално редактиране</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се намери файл за локално редактиране. Уверете се, че не е изключен чрез селективно синхронизиране.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се намери файл за локално редактиране. Уверете се, че пътят му е валиден и е синхронизиран локално.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1562"/>
@@ -5595,19 +5595,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не можаха да се извлекът предварително дефинирани състояния. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="143"/>
-        <source>Could not fetch status. Make sure you are connected to the server.</source>
-        <translation>Не можа да се извлече статус. Уверете се, че сте свързани със сървъра.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
         <translation>Не можа да се извлече потребителски статус. Уверете се, че сте свързани със сървъра.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="147"/>
-        <source>Status feature is not supported. You will not be able to set your status.</source>
-        <translation>Функцията за състояние не се поддържа. Няма да можете да зададете състоянието си.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
@@ -5615,19 +5605,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Функцията за потребителско състояние не се поддържа. Няма да можете да зададете потребителското си състояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="151"/>
-        <source>Emojis are not supported. Some status functionality may not work.</source>
-        <translation>Функцията за емотикони не се поддържа. Някои функции за състоянието може да не работят.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
         <translation>Функцията за емотикони не се поддържа. Някои функции за състоянието на потребителя може да не работят.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
-        <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation>Не можа да се зададе статус. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
@@ -5636,13 +5616,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
-        <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation>Съобщението за състоянието не можа да бъде изчистено. Уверете се, че сте свързани със сървъра.</translation>
+        <source>Could not fetch status. Make sure you are connected to the server.</source>
+        <translation>Не можа да се извлече статус. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
         <translation>Съобщението за състоянието на потребителя не можа да бъде изчистено. Уверете се, че сте свързани със сървъра.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
+        <source>Status feature is not supported. You will not be able to set your status.</source>
+        <translation>Функцията за състояние не се поддържа. Няма да можете да зададете състоянието си.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="167"/>
+        <source>Emojis are not supported. Some status functionality may not work.</source>
+        <translation>Функцията за емотикони не се поддържа. Някои функции за състоянието може да не работят.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
+        <source>Could not set status. Make sure you are connected to the server.</source>
+        <translation>Не можа да се зададе статус. Уверете се, че сте свързани със сървъра.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
+        <source>Could not clear status message. Make sure you are connected to the server.</source>
+        <translation>Съобщението за състоянието не можа да бъде изчистено. Уверете се, че сте свързани със сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="359"/>
@@ -6461,22 +6461,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>UserLine</name>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
-        <source>Account entry</source>
-        <translation>Въвеждане на Профил</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="37"/>
         <source>Switch to account</source>
         <translation>Превключване към профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is online</source>
         <translation>Текущият статус на профил е: на линия</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="89"/>
+        <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
         <translation>Текущият статус на профил е: не безпокойте</translation>
     </message>
@@ -6506,11 +6501,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Действия на профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
-        <source>Remove Account</source>
-        <translation>Премахване на профил</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="182"/>
         <source>Set status</source>
         <translation>Задаване на състояние</translation>
@@ -6522,10 +6512,20 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Отписване</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="15"/>
+        <source>Account entry</source>
+        <translation>Въвеждане на Профил</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/UserLine.qml" line="203"/>
         <location filename="../src/gui/tray/UserLine.qml" line="223"/>
         <source>Log in</source>
         <translation>Вписване</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/UserLine.qml" line="173"/>
+        <source>Remove Account</source>
+        <translation>Премахване на профил</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="237"/>
@@ -6556,7 +6556,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не безпокой</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="90"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
         <source>Mute all notifications</source>
         <translation>Заглушаване на всички известия</translation>
     </message>
@@ -6566,7 +6566,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Невидим</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="105"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
         <source>Appear offline</source>
         <translation>Показване като офлайн</translation>
     </message>
@@ -6586,6 +6586,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Изчистване на съобщение за състоянието след това</translation>
     </message>
     <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
         <source>Clear status message</source>
         <translation>Изчистване на съобщението за състоянието</translation>
@@ -6594,14 +6599,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/UserStatusSelector.qml" line="184"/>
         <source>Set status message</source>
         <translation>Задаване на съобщение за състоянието</translation>
-    </message>
-</context>
-<context>
-    <name>UserStatusSelectorDialog</name>
-    <message>
-        <location filename="../src/gui/UserStatusSelectorDialog.qml" line="9"/>
-        <source>Set account status</source>
-        <translation>Задаване на състояние на профил</translation>
     </message>
 </context>
 <context>
@@ -6760,17 +6757,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Текущият потребителски статус е не безпокойте</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="390"/>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
         <translation>Текущ аватар на профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>Текущият статус на профил е: на линия</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="429"/>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>Текущият статус на профил е: не безпокойте</translation>
     </message>
@@ -6795,14 +6792,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Без връзка</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="812"/>
+        <source>Open share dialog</source>
+        <translation>Отваряне на диалоговия прозорец за споделяне</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="556"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Отваряне на Nextcloud Разговор в браузъра</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="576"/>
+        <source>More apps</source>
+        <translation>Още приложения</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="549"/>
         <source>Apps menu</source>
         <translation>Меню с приложения</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="631"/>
+        <source>Open %1 in browser</source>
+        <translation>Отвори %1 в браузъра</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="578"/>
@@ -6813,21 +6825,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="563"/>
         <source>Open %1 locally</source>
         <translation>Отворяне  %1 локално</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="812"/>
-        <source>Open share dialog</source>
-        <translation>Отваряне на диалоговия прозорец за споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="576"/>
-        <source>More apps</source>
-        <translation>Още приложения</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="631"/>
-        <source>Open %1 in browser</source>
-        <translation>Отвори %1 в браузъра</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="720"/>
