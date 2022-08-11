@@ -94,7 +94,7 @@ void ServerNotificationHandler::slotNotificationsReceived(JsonApiJob *job, const
         // https://github.com/owncloud/notifications/blob/master/docs/ocs-endpoint-v1.md#deleting-a-notification-for-a-user
         ActivityLink al;
         al._label = tr("Dismiss");
-        al._link = Utility::concatUrlPath(accountState->account()->url(), notificationsPath + "/" + QString::number(id)).toString();
+        al._link = Utility::concatUrlPath(Utility::concatUrlPath(accountState->account()->url(), notificationsPath), QString::number(id)).toString();
         al._verb  = "DELETE";
         al._isPrimary = false;
         linkList.append(al);

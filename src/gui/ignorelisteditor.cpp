@@ -104,7 +104,7 @@ void IgnoreListEditor::slotUpdateLocalIgnoreList()
             QByteArray prepend;
             if (deletableItem->checkState() == Qt::Checked) {
                 prepend = "]";
-            } else if (patternItem->text().startsWith('#')) {
+            } else if (patternItem->text().startsWith(QLatin1Char('#'))) {
                 prepend = "\\";
             }
             ignores.write(prepend + patternItem->text().toUtf8() + '\n');
@@ -167,7 +167,7 @@ void IgnoreListEditor::readIgnoreFile(const QString &file, bool global)
         }
 
         bool deletable = false;
-        if (line.startsWith(']')) {
+        if (line.startsWith(QLatin1Char(']'))) {
             deletable = true;
             line = line.mid(1);
         }

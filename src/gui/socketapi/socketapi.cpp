@@ -317,18 +317,18 @@ void SocketApi::slotReadSocket()
 
         qCInfo(lcSocketApi) << "Received SocketAPI message <--" << line << "from" << socket;
         const int argPos = line.indexOf(QLatin1Char(':'));
-        const QByteArray command = line.midRef(0, argPos).toUtf8().toUpper();
+        const QString command = line.mid(0, argPos).toUpper();
         const int indexOfMethod = [&] {
             QByteArray functionWithArguments = QByteArrayLiteral("command_");
-            if (command.startsWith("ASYNC_")) {
-                functionWithArguments += command + QByteArrayLiteral("(QSharedPointer<SocketApiJob>)");
-            } else if (command.startsWith("V2/")) {
-                functionWithArguments += QByteArrayLiteral("V2_") + command.mid(3) + QByteArrayLiteral("(QSharedPointer<SocketApiJobV2>)");
+            if (command.startsWith(QLatin1String("ASYNC_"))) {
+                functionWithArguments += command.toUtf8() + QByteArrayLiteral("(QSharedPointer<SocketApiJob>)");
+            } else if (command.startsWith(QLatin1String("V2/"))) {
+                functionWithArguments += QByteArrayLiteral("V2_") + command.mid(3).toUtf8() + QByteArrayLiteral("(QSharedPointer<SocketApiJobV2>)");
             } else {
-                functionWithArguments += command + QByteArrayLiteral("(QString,SocketListener*)");
+                functionWithArguments += command.toUtf8() + QByteArrayLiteral("(QString,SocketListener*)");
             }
-            Q_ASSERT(staticQtMetaObject.normalizedSignature(functionWithArguments) == functionWithArguments);
-            const auto out = staticMetaObject.indexOfMethod(functionWithArguments);
+            Q_ASSERT(staticQtMetaObject.normalizedSignature(functionWithArguments.constData()) == functionWithArguments);
+            const auto out = staticMetaObject.indexOfMethod(functionWithArguments.constData());
             if (out == -1) {
                 listener->sendError(QStringLiteral("Function %1 not found").arg(QString::fromUtf8(functionWithArguments)));
             }
@@ -337,8 +337,8 @@ void SocketApi::slotReadSocket()
         }();
 
         const auto argument = argPos != -1 ? line.midRef(argPos + 1) : QStringRef();
-        if (command.startsWith("ASYNC_")) {
-            auto arguments = argument.split('|');
+        if (command.startsWith(QLatin1String("ASYNC_"))) {
+            auto arguments = argument.split(QLatin1Char('|'));
             if (arguments.size() != 2) {
                 listener->sendError(QStringLiteral("argument count is wrong"));
                 return;
@@ -359,7 +359,7 @@ void SocketApi::slotReadSocket()
                                        << "with argument:" << argument;
                 socketApiJob->reject(QStringLiteral("command not found"));
             }
-        } else if (command.startsWith("V2/")) {
+        } else if (command.startsWith(QLatin1String("V2/"))) {
             QJsonParseError error;
             const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
             if (error.error != QJsonParseError::NoError) {
@@ -523,8 +523,8 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QStringLiteral("STATUS"), systemPath, fileStatus.toSocketAPIString());
-    Q_ASSERT(!systemPath.endsWith('/'));
-    uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
+    Q_ASSERT(!systemPath.endsWith(QLatin1Char('/')));
+    uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf(QLatin1Char('/'))));
     for (const auto &listener : qAsConst(_listeners)) {
         listener->sendMessageIfDirectoryMonitored(msg, directoryHash);
     }
@@ -547,7 +547,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
     } else {
         // The user probably visited this directory in the file shell.
         // Let the listener know that it should now send status pushes for sibblings of this file.
-        QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf('/'));
+        QString directory = fileData.localPath.left(fileData.localPath.lastIndexOf(QLatin1Char('/')));
         listener->registerMonitoredDirectory(qHash(directory));
 
         statusString = fileData.syncFileStatus().toSocketAPIString();
@@ -680,14 +680,14 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
     AccountPtr account = fileData.folder->accountState()->account();
     auto job = new GetOrCreatePublicLinkShare(account, fileData.serverRelativePath, this);
     connect(job, &GetOrCreatePublicLinkShare::done, this,
-        [](const QString &url) { copyUrlToClipboard(url); });
+        [](const QString &url) { copyUrlToClipboard(QUrl(url)); });
     connect(job, &GetOrCreatePublicLinkShare::error, this,
         [=]() { emit shareCommandReceived(fileData.serverRelativePath, fileData.localPath, ShareDialogStartPage::PublicLinks); });
     job->run();
 }
 
 // Fetches the private link url asynchronously and then calls the target slot
-void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QString &url)> &targetFun)
+void SocketApi::fetchPrivateLinkUrlHelper(const QString &localFile, const std::function<void(const QUrl &url)> &targetFun)
 {
     auto fileData = FileData::get(localFile);
     if (!fileData.folder) {
@@ -724,7 +724,7 @@ void SocketApi::command_OPEN_PRIVATE_LINK(const QString &localFile, SocketListen
 
 void SocketApi::command_OPEN_PRIVATE_LINK_VERSIONS(const QString &localFile, SocketListener *)
 {
-    auto openVersionsLink = [](const QString &link) {
+    auto openVersionsLink = [](const QUrl &link) {
         QUrl url(link);
         QUrlQuery query(url);
         query.addQueryItem(QStringLiteral("details"), QStringLiteral("versionsTabView"));
@@ -734,9 +734,9 @@ void SocketApi::command_OPEN_PRIVATE_LINK_VERSIONS(const QString &localFile, Soc
     fetchPrivateLinkUrlHelper(localFile, openVersionsLink);
 }
 
-void SocketApi::copyUrlToClipboard(const QString &link)
+void SocketApi::copyUrlToClipboard(const QUrl &link)
 {
-    QApplication::clipboard()->setText(link);
+    QApplication::clipboard()->setText(link.toString());
 }
 
 void SocketApi::command_MAKE_AVAILABLE_LOCALLY(const QString &filesArg, SocketListener *)
@@ -810,7 +810,7 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
 
     // If it's a conflict, we want to save it under the base name by default
     if (Utility::isConflictFile(defaultDirAndName)) {
-        defaultDirAndName = fileData.folder->journalDb()->conflictFileBaseName(fileData.folderRelativePath.toUtf8());
+        defaultDirAndName = QString::fromUtf8(fileData.folder->journalDb()->conflictFileBaseName(fileData.folderRelativePath.toUtf8()));
     }
 
     // If the parent doesn't accept new files, go to the root of the sync folder
@@ -896,30 +896,30 @@ void SocketApi::command_V2_GET_CLIENT_ICON(const QSharedPointer<SocketApiJobV2> 
     job->success({ { QStringLiteral("png"), QString::fromUtf8(data) } });
 }
 
-void SocketApi::emailPrivateLink(const QString &link)
+void SocketApi::emailPrivateLink(const QUrl &link)
 {
     Utility::openEmailComposer(
         tr("I shared something with you"),
-        link,
+        link.toString(),
         nullptr);
 }
 
-void OCC::SocketApi::openPrivateLink(const QString &link)
+void OCC::SocketApi::openPrivateLink(const QUrl &link)
 {
     Utility::openBrowser(link, nullptr);
 }
 
 void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *listener)
 {
-    static std::array<std::pair<const char *, QString>, 5> strings { {
-        { "SHARE_MENU_TITLE", tr("Share...") },
-        { "CONTEXT_MENU_TITLE", Theme::instance()->appNameGUI() },
-        { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
-        { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
+    static std::array<std::pair<QString, QString>, 5> strings { {
+        { QStringLiteral("SHARE_MENU_TITLE"), tr("Share...") },
+        { QStringLiteral("CONTEXT_MENU_TITLE"), Theme::instance()->appNameGUI() },
+        { QStringLiteral("COPY_PRIVATE_LINK_MENU_TITLE"), tr("Copy private link to clipboard") },
+        { QStringLiteral("EMAIL_PRIVATE_LINK_MENU_TITLE"), tr("Send private link by email...") },
     } };
     listener->sendMessage(QStringLiteral("GET_STRINGS:BEGIN"));
     for (auto key_value : strings) {
-        if (argument.isEmpty() || argument == QLatin1String(key_value.first)) {
+        if (argument.isEmpty() || argument == key_value.first) {
             listener->sendMessage(QStringLiteral("STRING:%1:%2").arg(key_value.first, key_value.second));
         }
     }
@@ -1013,7 +1013,7 @@ SyncJournalFileRecord SocketApi::FileData::journalRecord() const
 
 SocketApi::FileData SocketApi::FileData::parentFolder() const
 {
-    return FileData::get(QFileInfo(localPath).dir().path().toUtf8());
+    return FileData::get(QFileInfo(localPath).dir().path());
 }
 
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
@@ -1371,7 +1371,7 @@ void SocketApiJob::resolve(const QString &response)
 
 void SocketApiJob::resolve(const QJsonObject &response)
 {
-    resolve(QJsonDocument { response }.toJson());
+    resolve(QString::fromUtf8(QJsonDocument { response }.toJson()));
 }
 
 void SocketApiJob::reject(const QString &response)
@@ -1379,7 +1379,7 @@ void SocketApiJob::reject(const QString &response)
     _socketListener->sendMessage(QStringLiteral("REJECT|") + _jobId + QLatin1Char('|') + response);
 }
 
-SocketApiJobV2::SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QByteArray &command, const QJsonObject &arguments)
+SocketApiJobV2::SocketApiJobV2(const QSharedPointer<SocketListener> &socketListener, const QString &command, const QJsonObject &arguments)
     : _socketListener(socketListener)
     , _command(command)
     , _jobId(arguments[QStringLiteral("id")].toString())
@@ -1404,7 +1404,7 @@ void SocketApiJobV2::doFinish(const QJsonObject &obj) const
     if (!_warning.isEmpty()) {
         data[QStringLiteral("warning")] = _warning;
     }
-    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QJsonDocument(data).toJson(QJsonDocument::Compact));
+    _socketListener->sendMessage(_command + QStringLiteral("_RESULT:") + QString::fromUtf8(QJsonDocument(data).toJson(QJsonDocument::Compact)));
     Q_EMIT finished();
 }
 

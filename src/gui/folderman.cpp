@@ -1005,8 +1005,8 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
 
     // We'll be comparing against Folder::remotePath which always starts with /
     QString serverPath = relPath;
-    if (!serverPath.startsWith('/'))
-        serverPath.prepend('/');
+    if (!serverPath.startsWith(QLatin1Char('/')))
+        serverPath.prepend(QLatin1Char('/'));
 
     for (auto *folder : _folders) {
         if (acc != nullptr && folder->accountState()->account() != acc) {
@@ -1015,7 +1015,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
         if (!serverPath.startsWith(folder->remotePath()))
             continue;
 
-        QString path = folder->cleanPath() + '/';
+        QString path = folder->cleanPath() + QLatin1Char('/');
         path += serverPath.midRef(folder->remotePathTrailingSlash().length());
         if (QFile::exists(path)) {
             re.append(path);
@@ -1267,7 +1267,7 @@ static QString canonicalPath(const QString &path)
             return path;
         }
 
-        return canonicalPath(parentPath) + '/' + selFile.fileName();
+        return canonicalPath(parentPath) + QLatin1Char('/') + selFile.fileName();
     }
     return selFile.canonicalFilePath();
 }
@@ -1277,9 +1277,9 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
     // check if the local directory isn't used yet in another ownCloud sync
     const auto cs = Utility::fsCaseSensitivity();
 
-    const QString userDir = QDir::cleanPath(canonicalPath(path)) + '/';
+    const QString userDir = QDir::cleanPath(canonicalPath(path)) + QLatin1Char('/');
     for (auto f : _folders) {
-        const QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + '/';
+        const QString folderDir = QDir::cleanPath(canonicalPath(f->path())) + QLatin1Char('/');
 
         if (QString::compare(folderDir, userDir, cs) == 0) {
             return tr("There is already a sync from the server to this local folder. "
@@ -1444,7 +1444,7 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
 
 Folder *FolderMan::addFolderFromFolderWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config)
 {
-    return addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl.toString(), config.displayName, config.useVirtualFiles);
+    return addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
 }
 
 QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)

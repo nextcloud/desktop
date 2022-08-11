@@ -216,13 +216,13 @@ void OCUpdater::slotStartInstaller()
             return QDir::toNativeSeparators(path);
         };
 
-        QString msiLogFile = ConfigFile::configPath() + "msi.log";
+        QString msiLogFile = ConfigFile::configPath() + QStringLiteral("msi.log");
         const QString command = QStringLiteral("&{msiexec /norestart /passive /i '%1' /L*V '%2'| Out-Null ; &'%3'}")
                                     .arg(preparePathForPowershell(updateFile),
                                         preparePathForPowershell(msiLogFile),
                                         preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
-        QProcess::startDetached(QStringLiteral("powershell.exe"), QStringList { "-Command", command });
+        QProcess::startDetached(QStringLiteral("powershell.exe"), QStringList { QStringLiteral("-Command"), command });
     }
 }
 
@@ -238,7 +238,7 @@ void OCUpdater::checkForUpdate()
 
 void OCUpdater::slotOpenUpdateUrl()
 {
-    QDesktopServices::openUrl(_updateInfo.web());
+    QDesktopServices::openUrl(QUrl(_updateInfo.web()));
 }
 
 bool OCUpdater::updateSucceeded() const
@@ -381,7 +381,7 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         if (url.isEmpty()) {
             showNoUrlDialog(info);
         } else {
-            _targetFile = ConfigFile::configPath() + url.mid(url.lastIndexOf('/') + 1);
+            _targetFile = ConfigFile::configPath() + url.mid(url.lastIndexOf(QLatin1Char('/')) + 1);
             if (QFile::exists(_targetFile)) {
                 setDownloadState(DownloadComplete);
             } else {

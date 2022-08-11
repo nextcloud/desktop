@@ -200,7 +200,7 @@ void FolderWatcherPrivate::removeFoldersBelow(const QString &path)
     if (it == _pathToWatch.end())
         return;
 
-    const QString pathSlash = path + '/';
+    const QString pathSlash = path + QLatin1Char('/');
 
     // Remove the entry and all subentries
     while (it != _pathToWatch.end()) {

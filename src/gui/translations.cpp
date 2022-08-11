@@ -52,7 +52,7 @@ namespace Translations {
         QSet<QString> availableTranslations;
 
         // calculate a glob pattern which can be used in the iterator below to match only translations files
-        QString pattern = translationsFilePrefix() + "*" + translationsFileSuffix();
+        const QString pattern = translationsFilePrefix() + QLatin1Char('*') + translationsFileSuffix();
 
         QDirIterator it(Translations::translationsDirectoryPath(), QStringList() << pattern);
 

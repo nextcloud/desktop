@@ -572,7 +572,7 @@ void ShareLinkWidget::slotCheckBoxExpireClicked()
 
 void ShareLinkWidget::emailShareLink(const QUrl &url)
 {
-    QString fileName = _sharePath.mid(_sharePath.lastIndexOf('/') + 1);
+    QString fileName = _sharePath.mid(_sharePath.lastIndexOf(QLatin1Char('/')) + 1);
     Utility::openEmailComposer(
         tr("I shared %1 with you").arg(fileName),
         url.toString(),

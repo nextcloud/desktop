@@ -26,7 +26,6 @@
 #include "common/asserts.h"
 #include "common/version.h"
 #include "common/vfs.h"
-#include "config.h"
 #include "configfile.h"
 #include "connectionvalidator.h"
 #include "creds/abstractcredentials.h"
@@ -124,7 +123,7 @@ void migrateConfigFile(const QCoreApplication *app)
                     const auto filesList = QDir(oldDir).entryInfoList(QDir::Files);
                     qCInfo(lcApplication) << Q_FUNC_INFO << "Will move the individual files" << filesList;
                     for (const auto &fileInfo : filesList) {
-                        if (!QFile::rename(fileInfo.canonicalFilePath(), confDir + "/" + fileInfo.fileName())) {
+                        if (!QFile::rename(fileInfo.canonicalFilePath(), confDir + QLatin1Char('/') + fileInfo.fileName())) {
                             qCWarning(lcApplication) << Q_FUNC_INFO << "Fallback move of " << fileInfo.fileName() << "also failed";
                         } else {
                             // we found a suitable config directory to migrate, hence we can stop here
@@ -184,7 +183,7 @@ bool Application::configVersionMigration()
 
         QMessageBox box(
             QMessageBox::Warning,
-            APPLICATION_SHORTNAME,
+            Theme::instance()->appNameGUI(),
             tr("Some settings were configured in newer versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
@@ -234,7 +233,7 @@ Application::Application(int &argc, char **argv)
 {
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
-    const QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
+    const QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #elif defined(Q_OS_LINUX)
 #if defined(OC_PLUGIN_DIR)
@@ -511,7 +510,7 @@ AccountStatePtr Application::addNewAccount(AccountPtr newAccount)
 #ifdef Q_OS_MAC
     // Don't auto start when not being 'installed'
     shouldSetAutoStart = shouldSetAutoStart
-        && QCoreApplication::applicationDirPath().startsWith("/Applications/");
+        && QCoreApplication::applicationDirPath().startsWith(QLatin1String("/Applications/"));
 #endif
     if (shouldSetAutoStart) {
         Utility::setLaunchOnStartup(_theme->appName(), _theme->appNameGUI(), true);
@@ -578,7 +577,7 @@ static void displayHelpText(const QString &t, std::ostream &stream = std::cout)
     stream << qUtf8Printable(t) << std::endl;
 #ifdef Q_OS_WIN
     // No console on Windows.
-    QString spaces(80, ' '); // Add a line of non-wrapped space to make the messagebox wide enough.
+    QString spaces(80, QLatin1Char(' ')); // Add a line of non-wrapped space to make the messagebox wide enough.
     QString text = QStringLiteral("<qt><pre style='white-space:pre-wrap'>")
         + t.toHtmlEscaped() + QStringLiteral("</pre><pre>") + spaces + QStringLiteral("</pre></qt>");
     QMessageBox::information(0, Theme::instance()->appNameGUI(), text);
@@ -611,8 +610,8 @@ void Application::parseOptions(const QStringList &arguments)
         return option;
     };
 
-    auto showSettingsOption = addOption({ { "s", "showsettings" }, tr("Show the settings dialog while starting.") });
-    auto quitInstanceOption = addOption({ { "q", "quit" }, tr("Quit the running instance.") });
+    auto showSettingsOption = addOption({ { QStringLiteral("s"), QStringLiteral("showsettings") }, tr("Show the settings dialog while starting.") });
+    auto quitInstanceOption = addOption({ { QStringLiteral("q"), QStringLiteral("quit") }, tr("Quit the running instance.") });
     auto logFileOption = addOption({ QStringLiteral("logfile"), tr("Write log to file (use - to write to stdout)."), QStringLiteral("filename") });
     auto logDirOption = addOption({ QStringLiteral("logdir"), tr("Write each sync log output in a new file in folder."), QStringLiteral("name") });
     auto logFlushOption = addOption({ QStringLiteral("logflush"), tr("Flush the log file after every write.") });

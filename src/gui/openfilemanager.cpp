@@ -41,7 +41,7 @@ static QStringList xdgDataDirs()
     // local location
     QString xdgDataHome = QFile::decodeName(qgetenv("XDG_DATA_HOME"));
     if (xdgDataHome.isEmpty()) {
-        xdgDataHome = QDir::homePath() + "/.local/share";
+        xdgDataHome = QDir::homePath() + QStringLiteral("/.local/share");
     }
     dirs.prepend(xdgDataHome);
     return dirs;
@@ -131,7 +131,7 @@ void showInFileManager(const QString &localPath)
         QString pathToOpen = QFileInfo(localPath).absolutePath();
         bool canHandleFile = false; // assume dumb fm
 
-        args = exec.split(' ');
+        args = exec.split(QLatin1Char(' '));
         if (args.count() > 0)
             app = args.takeFirst();
 

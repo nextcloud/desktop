@@ -57,7 +57,7 @@ TlsErrorDialog::~TlsErrorDialog()
 QString TlsErrorDialog::describeCertificateHtml(const QSslCertificate &certificate)
 {
     auto formatFingerprint = [certificate](QCryptographicHash::Algorithm algorithm) {
-        return Utility::escape(certificate.digest(algorithm).toHex());
+        return Utility::escape(QString::fromUtf8(certificate.digest(algorithm).toHex()));
     };
 
     auto formatInfo = [](const QStringList &stringList) {

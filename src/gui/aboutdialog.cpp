@@ -41,7 +41,7 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::openBrowser(const QString &s)
 {
-    Utility::openBrowser(s, this);
+    Utility::openBrowser(QUrl(s), this);
 }
 
 void AboutDialog::openBrowserFromUrl(const QUrl &s)

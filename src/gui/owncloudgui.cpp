@@ -572,7 +572,7 @@ void ownCloudGui::setupContextMenu()
         || desktopSession.contains("plasma")
         || desktopSession.contains("kde");
     QObject *platformMenu = reinterpret_cast<QObject *>(_tray->contextMenu()->platformMenu());
-    if (isKde && platformMenu && platformMenu->metaObject()->className() == QLatin1String("QDBusPlatformMenu")) {
+    if (isKde && platformMenu && platformMenu->metaObject()->className() == QByteArrayLiteral("QDBusPlatformMenu")) {
         _workaroundManualVisibility = true;
         _workaroundNoAboutToShowUpdate = true;
     }
@@ -930,7 +930,7 @@ void ownCloudGui::slotUpdateProgress(Folder *folder, const ProgressInfo &progres
         QString timeStr = QTime::currentTime().toString(QStringLiteral("hh:mm"));
         QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
         QAction *action = new QAction(actionText, this);
-        QString fullPath = folder->path() + '/' + progress._lastCompletedItem._file;
+        QString fullPath = folder->path() + QLatin1Char('/') + progress._lastCompletedItem._file;
         if (QFile(fullPath).exists()) {
             connect(action, &QAction::triggered, this, [this, fullPath] { this->slotOpenPath(fullPath); });
         } else {

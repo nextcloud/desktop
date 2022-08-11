@@ -29,8 +29,7 @@ void Utility::startShellIntegration()
 
 QString Utility::socketApiSocketPath()
 {
-    QString runtimeDir = QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation);
-    return runtimeDir + "/" + Theme::instance()->appName() + "/socket";
+    return QStringLiteral("%1/%2/socket").arg(QStandardPaths::writableLocation(QStandardPaths::RuntimeLocation), Theme::instance()->appName());
 }
 
 } // namespace OCC

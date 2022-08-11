@@ -34,7 +34,7 @@ static void updateFolder(const AccountPtr &account, const QString &path)
         if (f->accountState()->account() != account)
             continue;
         auto folderPath = f->remotePath();
-        if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
+        if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith(QLatin1Char('/')) || path[folderPath.size()] == QLatin1Char('/'))) {
             // Workaround the fact that the server does not invalidate the etags of parent directories
             // when something is shared.
             auto relative = path.midRef(f->remotePathTrailingSlash().length());
@@ -129,7 +129,7 @@ QUrl LinkShare::getLink() const
 QUrl LinkShare::getDirectDownloadLink() const
 {
     QUrl url = _url;
-    url.setPath(url.path() + "/download");
+    url.setPath(url.path() + QStringLiteral("/download"));
     return url;
 }
 
@@ -359,15 +359,7 @@ void ShareManager::fetchShares(const QString &path)
 
 QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
 {
-    QUrl url;
-
-    // From ownCloud server 8.2 the url field is always set for public shares
-    if (data.contains(QStringLiteral("url"))) {
-        url = QUrl(data.value(QStringLiteral("url")).toString());
-    } else {
-        // From ownCloud server version 8 on, a different share link scheme is used.
-        url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("index.php/s/") + data.value(QStringLiteral("token")).toString())).toString();
-    }
+    const QUrl url(data.value(QStringLiteral("url")).toString());
 
     QDate expireDate;
     if (data.value(QStringLiteral("expiration")).isString()) {

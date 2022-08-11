@@ -144,7 +144,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
     QFileIconProvider prov;
     QIcon folderIcon = prov.icon(QFileIconProvider::Folder);
     if (pathTrail.size() == 0) {
-        if (path.endsWith('/')) {
+        if (path.endsWith(QLatin1Char('/'))) {
             path.chop(1);
         }
         parent->setToolTip(0, path);
@@ -157,7 +157,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
                 || parent->checkState(0) == Qt::PartiallyChecked) {
                 item->setCheckState(0, Qt::Checked);
                 for (const auto &str : qAsConst(_oldBlackList)) {
-                    if (str == path || str == QLatin1String("/")) {
+                    if (str == path || str == QLatin1Char('/')) {
                         item->setCheckState(0, Qt::Unchecked);
                         break;
                     } else if (str.startsWith(path)) {
@@ -235,11 +235,11 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     for (auto path : qAsConst(list)) {
         auto size = job ? job->sizes().value(path) : 0;
         path.remove(pathToRemove);
-        const QStringList paths = path.split('/', Qt::SkipEmptyParts);
+        const QStringList paths = path.split(QLatin1Char('/'), Qt::SkipEmptyParts);
         if (paths.isEmpty())
             continue;
-        if (!path.endsWith('/')) {
-            path.append('/');
+        if (!path.endsWith(QLatin1Char('/'))) {
+            path.append(QLatin1Char('/'));
         }
         recursiveInsert(root, paths, path, size);
     }
@@ -348,7 +348,7 @@ QStringList SelectiveSyncWidget::createBlackList(QTreeWidgetItem *root) const
 
     switch (root->checkState(0)) {
     case Qt::Unchecked:
-        return QStringList(root->data(0, Qt::UserRole).toString() + "/");
+        return QStringList(root->data(0, Qt::UserRole).toString() + QLatin1Char('/'));
     case Qt::Checked:
         return QStringList();
     case Qt::PartiallyChecked:
@@ -419,7 +419,7 @@ SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWi
     init(account);
     QStringList selectiveSyncList = _folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     if (ok) {
-        _selectiveSync->setFolderInfo(_folder->remotePath(), _folder->id(), selectiveSyncList);
+        _selectiveSync->setFolderInfo(_folder->remotePath(), QStringLiteral("/"), selectiveSyncList);
     } else {
         _okButton->setEnabled(false);
     }

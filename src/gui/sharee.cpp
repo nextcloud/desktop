@@ -72,10 +72,10 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
     _search = search;
     _shareeBlacklist = blacklist;
     const JsonApiJob::UrlQuery query {
-        { "search", search },
-        { "itemType", _type },
-        { "page", "1" },
-        { "perPage", "50" }
+        { QStringLiteral("search"), search },
+        { QStringLiteral("itemType"), _type },
+        { QStringLiteral("page"), QStringLiteral("1") },
+        { QStringLiteral("perPage"), QStringLiteral("50") }
 
     };
     auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v1.php/apps/files_sharing/api/v1/sharees"), query, {}, this);
@@ -229,7 +229,7 @@ QVariant ShareeModel::data(const QModelIndex &index, int role) const
         // the full name and the user name and thus we include both
         // in the output here. But we need to take care this string
         // doesn't leak to the user.
-        return QString(sharee->displayName() + " (" + sharee->shareWith() + ")");
+        return QStringLiteral("%1 (%2)").arg(sharee->displayName(), sharee->shareWith());
 
     } else if (role == Qt::UserRole) {
         return QVariant::fromValue(sharee);

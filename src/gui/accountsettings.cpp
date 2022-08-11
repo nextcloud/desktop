@@ -306,7 +306,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
                 path += info->_path;
             }
             menu->addAction(CommonStrings::showInWebBrowser(), [path, davUrl = info->_folder->webDavUrl(), this] {
-                fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QString &url) {
+                fetchPrivateLinkUrl(_accountState->account(), davUrl, path, this, [](const QUrl &url) {
                     Utility::openBrowser(url, nullptr);
                 });
             });
@@ -936,13 +936,13 @@ void AccountSettings::refreshSelectiveSyncStatus()
                 msg += QLatin1String(", ");
             }
             QString myFolder = (it);
-            if (myFolder.endsWith('/')) {
+            if (myFolder.endsWith(QLatin1Char('/'))) {
                 myFolder.chop(1);
             }
             QModelIndex theIndx = _model->indexForPath(folder, myFolder);
             if (theIndx.isValid()) {
                 msg += QStringLiteral("<a href=\"%1?folder=%2\">%1</a>")
-                           .arg(Utility::escape(myFolder), QUrl::toPercentEncoding(folder->id()));
+                           .arg(Utility::escape(myFolder), QString::fromUtf8(QUrl::toPercentEncoding(QString::fromUtf8(folder->id()))));
             } else {
                 msg += myFolder; // no link because we do not know the index yet.
             }

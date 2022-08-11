@@ -25,9 +25,21 @@
 #include <QNetworkAccessManager>
 
 namespace {
-const char urlC[] = "url";
-const char userC[] = "user";
-const char httpUserC[] = "http_user";
+auto urlC()
+{
+    return QStringLiteral("url");
+}
+
+auto userC()
+{
+    return QStringLiteral("user");
+}
+
+auto httpUserC()
+{
+    return QStringLiteral("http_user");
+}
+
 auto defaultSyncRootC()
 {
     return QStringLiteral("default_sync_root");
@@ -48,9 +60,20 @@ const QString userUUIDC()
     return QStringLiteral("uuid");
 }
 
-static const char caCertsKeyC[] = "CaCertificates";
-static const char accountsC[] = "Accounts";
-static const char versionC[] = "version";
+auto caCertsKeyC()
+{
+    return QStringLiteral("CaCertificates");
+}
+
+auto accountsC()
+{
+    return QStringLiteral("Accounts");
+}
+
+auto versionC()
+{
+    return QStringLiteral("version");
+}
 
 auto capabilitesC()
 {
@@ -78,7 +101,7 @@ bool AccountManager::restore()
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
 
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(accountsC());
     if (settings->status() != QSettings::NoError) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
@@ -94,7 +117,7 @@ bool AccountManager::restore()
     // If there are no accounts, check the old format.
     const auto &childGroups = settings->childGroups();
     if (childGroups.isEmpty()
-        && !settings->contains(QLatin1String(versionC))) {
+        && !settings->contains(versionC())) {
         restoreFromLegacySettings();
         return true;
     }
@@ -120,13 +143,13 @@ bool AccountManager::restore()
 
 void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
 {
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    const int accountsVersion = settings->value(QLatin1String(versionC)).toInt();
+    auto settings = ConfigFile::settingsWithGroup(accountsC());
+    const int accountsVersion = settings->value(versionC()).toInt();
     if (accountsVersion <= maxAccountsVersion) {
         const auto &childGroups = settings->childGroups();
         for (const auto &accountId : childGroups) {
             settings->beginGroup(accountId);
-            const int accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
+            const int accountVersion = settings->value(versionC(), 1).toInt();
             if (accountVersion > maxAccountVersion) {
                 ignoreKeys->append(settings->group());
             }
@@ -154,8 +177,8 @@ bool AccountManager::restoreFromLegacySettings()
         // Now try to open the original ownCloud settings to see if they exist.
         QString oCCfgFile = QDir::fromNativeSeparators(settings->fileName());
         // replace the last two segments with ownCloud/owncloud.cfg
-        oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
-        oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
+        oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf(QLatin1Char('/')));
+        oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf(QLatin1Char('/')));
         oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
 
         qCInfo(lcAccountManager) << logPrefix
@@ -172,11 +195,11 @@ bool AccountManager::restoreFromLegacySettings()
             // Check the theme url to see if it is the same url that the oC config was for
             QString overrideUrl = Theme::instance()->overrideServerUrlV2();
             if (!overrideUrl.isEmpty()) {
-                if (overrideUrl.endsWith('/')) {
+                if (overrideUrl.endsWith(QLatin1Char('/'))) {
                     overrideUrl.chop(1);
                 }
-                QString oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
-                if (oCUrl.endsWith('/')) {
+                QString oCUrl = oCSettings->value(urlC()).toString();
+                if (oCUrl.endsWith(QLatin1Char('/'))) {
                     oCUrl.chop(1);
                 }
 
@@ -204,8 +227,8 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save(bool saveCredentials)
 {
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    settings->setValue(QLatin1String(versionC), maxAccountsVersion);
+    auto settings = ConfigFile::settingsWithGroup(accountsC());
+    settings->setValue(versionC(), maxAccountsVersion);
     for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
@@ -220,7 +243,7 @@ void AccountManager::save(bool saveCredentials)
 void AccountManager::saveAccount(Account *a)
 {
     qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(accountsC());
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
@@ -242,8 +265,8 @@ QStringList AccountManager::accountNames() const
 
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
-    settings.setValue(QLatin1String(versionC), maxAccountVersion);
-    settings.setValue(QLatin1String(urlC), acc->_url.toString());
+    settings.setValue(versionC(), maxAccountVersion);
+    settings.setValue(urlC(), acc->_url.toString());
     settings.setValue(davUserC(), acc->_davUser);
     settings.setValue(davUserDisplyNameC(), acc->_displayName);
     settings.setValue(userUUIDC(), acc->uuid());
@@ -267,8 +290,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         }
 
         // HACK: Save http_user also as user
-        if (acc->_settingsMap.contains(httpUserC))
-            settings.setValue(userC, acc->_settingsMap.value(httpUserC));
+        if (acc->_settingsMap.contains(httpUserC()))
+            settings.setValue(userC(), acc->_settingsMap.value(httpUserC()));
     }
 
     // Save accepted certificates.
@@ -280,14 +303,14 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
-        settings.setValue(QLatin1String(caCertsKeyC), certs);
+        settings.setValue(caCertsKeyC(), certs);
     }
     settings.endGroup();
 }
 
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 {
-    auto urlConfig = settings.value(QLatin1String(urlC));
+    auto urlConfig = settings.value(urlC());
     if (!urlConfig.isValid()) {
         // No URL probably means a corrupted entry in the account settings
         qCWarning(lcAccountManager) << "No URL for account " << settings.group();
@@ -305,7 +328,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setDefaultSyncRoot(settings.value(defaultSyncRootC()).toString());
 
     // We want to only restore settings for that auth type and the user value
-    acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
+    acc->_settingsMap.insert(userC(), settings.value(userC()));
     const QString authTypePrefix = QStringLiteral("http_");
     const auto childKeys = settings.childKeys();
     for (const auto &key : childKeys) {
@@ -317,7 +340,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     // now the server cert, it is in the general group
     settings.beginGroup(QStringLiteral("General"));
-    const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray());
+    const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC()).toByteArray());
     qCInfo(lcAccountManager) << "Restored: " << certs.count() << " unknown certs.";
     acc->setApprovedCerts(certs);
     settings.endGroup();
@@ -366,7 +389,7 @@ void AccountManager::deleteAccount(AccountStatePtr account)
     account->account()->credentials()->forgetSensitiveData();
     account->account()->credentialManager()->clear();
 
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    auto settings = ConfigFile::settingsWithGroup(accountsC());
     settings->remove(account->account()->id());
 
     emit accountRemoved(account);

@@ -21,9 +21,23 @@
 #include <QDBusInterface>
 #include <QDBusMessage>
 #include <QDBusPendingCall>
-#define NOTIFICATIONS_SERVICE "org.freedesktop.Notifications"
-#define NOTIFICATIONS_PATH "/org/freedesktop/Notifications"
-#define NOTIFICATIONS_IFACE "org.freedesktop.Notifications"
+
+namespace {
+auto NOTIFICATIONS_SERVICE_C()
+{
+    return QStringLiteral("org.freedesktop.Notifications");
+}
+
+auto NOTIFICATIONS_PATH_C()
+{
+    return QStringLiteral("/org/freedesktop/Notifications");
+}
+
+auto NOTIFICATIONS_IFACE_C()
+{
+    return QStringLiteral("org.freedesktop.Notifications");
+}
+}
 #endif
 
 namespace OCC {
@@ -60,10 +74,10 @@ void Systray::showMessage(const QString &title, const QString &message, const QI
     sendOsXUserNotification(title, message);
 #else
 #ifdef USE_FDO_NOTIFICATIONS
-    if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
-        QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME
+    if (QDBusInterface(NOTIFICATIONS_SERVICE_C(), NOTIFICATIONS_PATH_C(), NOTIFICATIONS_IFACE_C()).isValid()) {
+        QList<QVariant> args = QList<QVariant>() << Theme::instance()->appNameGUI() << quint32(0) << QStringLiteral(APPLICATION_ICON_NAME)
                                                  << title << message << QStringList() << QVariantMap() << qint32(-1);
-        QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, QStringLiteral("Notify"));
+        QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE_C(), NOTIFICATIONS_PATH_C(), NOTIFICATIONS_IFACE_C(), QStringLiteral("Notify"));
         method.setArguments(args);
         QDBusConnection::sessionBus().asyncCall(method);
     } else

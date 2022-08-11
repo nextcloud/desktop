@@ -322,7 +322,7 @@ void ShareUserGroupWidget::displayError(int code, const QString &message)
 
 void ShareUserGroupWidget::slotPrivateLinkOpenBrowser()
 {
-    Utility::openBrowser(_privateLinkUrl, this);
+    Utility::openBrowser(QUrl(_privateLinkUrl), this);
 }
 
 void ShareUserGroupWidget::slotPrivateLinkCopy()

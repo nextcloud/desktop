@@ -119,12 +119,8 @@ target_link_libraries(owncloudCore
         qt5keychain
         newwizard folderwizard spaces loginrequireddialog
         libsync)
-target_compile_definitions(owncloudCore
-    PUBLIC QT_USE_QSTRINGBUILDER
-           QT_MESSAGELOGCONTEXT  # enable function name and line number in debug output
-           QT_DEPRECATED_WARNINGS
-           QT_NO_FOREACH
-)
+
+apply_common_target_settings(owncloudCore)
 
 
 add_subdirectory(spaces)

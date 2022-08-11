@@ -85,14 +85,14 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
             entriesToRemove.removeOne(folder->navigationPaneClsid());
 
             QString clsidStr = folder->navigationPaneClsid().toString();
-            QString clsidPath = QString() % "Software\\Classes\\CLSID\\" % clsidStr;
-            QString clsidPathWow64 = QString() % "Software\\Classes\\Wow6432Node\\CLSID\\" % clsidStr;
-            QString namespacePath = QString() % "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\" % clsidStr;
+            QString clsidPath = QStringLiteral("Software\\Classes\\CLSID\\%1").arg(clsidStr);
+            QString clsidPathWow64 = QStringLiteral("Software\\Classes\\Wow6432Node\\CLSID\\%1").arg(clsidStr);
+            QString namespacePath = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\%1").arg(clsidStr);
 
             QString title = folder->displayName();
             // Write the account name in the sidebar only when using more than one account.
             if (AccountManager::instance()->accounts().size() > 1)
-                title = title % " - " % folder->accountState()->account()->displayName();
+                title = title % QStringLiteral(" - ") % folder->accountState()->account()->displayName();
             QString iconPath = QDir::toNativeSeparators(qApp->applicationFilePath());
             QString targetFolderPath = QDir::toNativeSeparators(folder->cleanPath());
 
@@ -143,9 +143,9 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
     // Then remove anything that isn't in our folder list anymore.
     for (const auto &clsid : qAsConst(entriesToRemove)) {
         QString clsidStr = clsid.toString();
-        QString clsidPath = QString() % "Software\\Classes\\CLSID\\" % clsidStr;
-        QString clsidPathWow64 = QString() % "Software\\Classes\\Wow6432Node\\CLSID\\" % clsidStr;
-        QString namespacePath = QString() % "Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\" % clsidStr;
+        QString clsidPath = QStringLiteral("Software\\Classes\\CLSID\\%1").arg(clsidStr);
+        QString clsidPathWow64 = QStringLiteral("Software\\Classes\\Wow6432Node\\CLSID\\%1").arg(clsidStr);
+        QString namespacePath = QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace\\%1").arg(clsidStr);
 
         qCInfo(lcNavPane) << "Explorer Cloud storage provider: now unused, removing own CLSID" << clsidStr;
         Utility::registryDeleteKeyTree(HKEY_CURRENT_USER, clsidPath);

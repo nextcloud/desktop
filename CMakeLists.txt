@@ -35,6 +35,7 @@ include(CTest)
 
 include(OCConfigPluginDir)
 include(OCBundleResources)
+include(OCApplyCommonSettings)
 
 if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
     set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
