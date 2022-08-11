@@ -107,6 +107,8 @@ ownCloudGui::ownCloudGui(Application *parent)
         this, &ownCloudGui::slotShowOptionalTrayMessage);
     connect(Logger::instance(), &Logger::guiMessage,
         this, &ownCloudGui::slotShowGuiMessage);
+
+    connect(UserModel::instance(), &UserModel::currentUserChanged, this, &ownCloudGui::slotComputeOverallSyncStatus);
 }
 
 void ownCloudGui::createTray()
@@ -264,7 +266,22 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     }
 
     if (!problemAccounts.empty()) {
-        _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+        const auto currentAccountIndex = UserModel::instance()->currentUserIndex();
+
+        if (currentAccountIndex >= 0 && currentAccountIndex < AccountManager::instance()->accounts().size()) {
+            const auto currentAccount = AccountManager::instance()->accounts().at(currentAccountIndex);
+
+            if (!currentAccount->isConnected()) {
+                _tray->setIcon(Theme::instance()->folderOfflineIcon(true));
+            } else {
+                SyncResult::Status overallStatus = SyncResult::Undefined;
+                bool hasUnresolvedConflicts = false;
+                FolderMan::trayOverallStatus(FolderMan::instance()->map().values(), &overallStatus, &hasUnresolvedConflicts);
+                QIcon statusIcon = Theme::instance()->syncStateIcon(overallStatus, true);
+                _tray->setIcon(statusIcon);
+            }
+        }
+
         if (allDisconnected) {
             setStatusText(tr("Disconnected"));
         } else {

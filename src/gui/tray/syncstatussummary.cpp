@@ -333,8 +333,16 @@ void SyncStatusSummary::setAccountState(AccountStatePtr accountState)
 
 void SyncStatusSummary::initSyncState()
 {
+    const auto currentUser = UserModel::instance()->currentUser();
+    if (!currentUser) {
+        return;
+    }
+
     auto syncStateFallbackNeeded = true;
     for (const auto &folder : FolderMan::instance()->map()) {
+        if (!folder->accountState()->isConnected() && folder->accountState()->account() != currentUser->accountState()->account()) {
+            continue;
+        }
         onFolderSyncStateChanged(folder);
         syncStateFallbackNeeded = false;
     }
