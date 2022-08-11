@@ -164,7 +164,7 @@ void ShareUserGroupWidget::searchForSharees()
     ShareeModel::ShareeSet blacklist;
 
     // Add the current user to _sharees since we can't share with ourself
-    QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), QLatin1String(""), Sharee::Type::User));
+    QSharedPointer<Sharee> currentUser(new Sharee(_account->credentials()->user(), QString(), Sharee::Type::User));
     blacklist << currentUser;
 
     const auto &shareUserLines = _ui->scrollArea->findChildren<ShareUserLine *>();
@@ -465,7 +465,7 @@ void ShareUserLine::slotAvatarLoaded(const QPixmap &avatar)
     _ui->avatar->setPixmap(_avatar);
 
     // Remove the stylesheet for the fallback avatar
-    _ui->avatar->setStyleSheet(QLatin1String(""));
+    _ui->avatar->setStyleSheet(QString());
 }
 
 void ShareUserLine::on_deleteShareButton_clicked()

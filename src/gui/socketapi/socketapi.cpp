@@ -453,7 +453,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             Q_FALLTHROUGH();
         case SyncResult::Error: {
             const QString rootPath = Utility::stripTrailingSlash(f->path());
-            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(QLatin1String("")));
+            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(QString()));
 
             broadcastMessage(buildMessage(QStringLiteral("UPDATE_VIEW"), rootPath));
             break;
