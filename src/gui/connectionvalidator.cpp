@@ -97,7 +97,7 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 void ConnectionValidator::slotCheckServerAndAuth()
 {
     // in order to receive all ssl erorrs we need a fresh QNam
-    auto nam = new AccessManager(this);
+    auto nam = _account->credentials()->createAM();
     nam->setCustomTrustedCaCertificates(_account->approvedCerts());
 
     // do we start with the old cookies or new
