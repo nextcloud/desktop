@@ -45,7 +45,7 @@ QStringList findConflicts(const FileInfo &dir)
 {
     QStringList conflicts;
     for (const auto &item : dir.children) {
-        if (item.name.contains("(conflicted copy")) {
+        if (item.name.contains(QLatin1String("(conflicted copy"))) {
             conflicts.append(item.path());
         }
     }
@@ -59,7 +59,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     if (!base)
         return false;
     for (const auto &item : qAsConst(base->children)) {
-        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
+        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains(QLatin1String("(conflicted copy"))) {
             local.remove(item.path());
             return true;
         }
@@ -86,15 +86,15 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        fakeFolder.localModifier().setContents("A/a1", 'L');
-        fakeFolder.remoteModifier().setContents("A/a1", 'R');
-        fakeFolder.localModifier().appendByte("A/a2");
-        fakeFolder.remoteModifier().appendByte("A/a2");
-        fakeFolder.remoteModifier().appendByte("A/a2");
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'L');
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'R');
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         QVERIFY(fakeFolder.syncOnce());
 
         // Verify that the conflict names don't have the user name
-        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]);
         for (const auto &name : conflicts) {
             QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
         }
@@ -129,11 +129,11 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().setContents("A/a1", 'L');
-        fakeFolder.remoteModifier().setContents("A/a1", 'R');
-        fakeFolder.localModifier().appendByte("A/a2");
-        fakeFolder.remoteModifier().appendByte("A/a2");
-        fakeFolder.remoteModifier().appendByte("A/a2");
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'L');
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'R');
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         QVERIFY(fakeFolder.syncOnce());
         auto local = fakeFolder.currentLocalState();
         auto remote = fakeFolder.currentRemoteState();
@@ -184,7 +184,7 @@ private slots:
         // file didn't finish in the same sync run that the conflict was created.
         // To do that we need to create a mock conflict record.
         auto a1FileId = fakeFolder.remoteModifier().find("A/a1")->fileId;
-        QString conflictName = QLatin1String("A/a1 (conflicted copy me 1234)");
+        QString conflictName = QStringLiteral("A/a1 (conflicted copy me 1234)");
         fakeFolder.localModifier().insert(conflictName, 64, 'L');
         ConflictRecord conflictRecord;
         conflictRecord.path = conflictName.toUtf8();
@@ -235,7 +235,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // With no headers from the server
-        fakeFolder.remoteModifier().insert("A/a1 (conflicted copy 1234)");
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1 (conflicted copy 1234)"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1 (conflicted copy 1234)");
@@ -258,7 +258,7 @@ private slots:
             }
             return nullptr;
         });
-        fakeFolder.remoteModifier().insert("A/really-a-conflict"); // doesn't look like a conflict, but headers say it is
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/really-a-conflict")); // doesn't look like a conflict, but headers say it is
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         conflictRecord = fakeFolder.syncJournal().conflictRecord("A/really-a-conflict");
@@ -290,7 +290,7 @@ private slots:
         QVERIFY(fakeFolder.syncJournal().conflictRecord("A/a2").isValid());
 
         // When the file is removed, the record is removed too
-        fakeFolder.localModifier().remove("A/a2");
+        fakeFolder.localModifier().remove(QStringLiteral("A/a2"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(fakeFolder.syncJournal().conflictRecord("A/a1").isValid());
@@ -305,21 +305,21 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Create two conflicts
-        fakeFolder.localModifier().appendByte("A/a1");
-        fakeFolder.localModifier().appendByte("A/a1");
-        fakeFolder.remoteModifier().appendByte("A/a1");
-        fakeFolder.localModifier().appendByte("A/a2");
-        fakeFolder.localModifier().appendByte("A/a2");
-        fakeFolder.remoteModifier().appendByte("A/a2");
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         QVERIFY(fakeFolder.syncOnce());
 
-        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]);
         QByteArray a1conflict;
         QByteArray a2conflict;
         for (const auto & conflict : conflicts) {
-            if (conflict.contains("a1"))
+            if (conflict.contains(QLatin1String("a1")))
                 a1conflict = conflict.toUtf8();
-            if (conflict.contains("a2"))
+            if (conflict.contains(QLatin1String("a2")))
                 a2conflict = conflict.toUtf8();
         }
 
@@ -427,26 +427,26 @@ private slots:
         cleanup();
 
         // 1) a NEW/NEW conflict
-        fakeFolder.localModifier().mkdir("Z");
-        fakeFolder.localModifier().mkdir("Z/subdir");
-        fakeFolder.localModifier().insert("Z/foo");
-        fakeFolder.remoteModifier().insert("Z", 63);
+        fakeFolder.localModifier().mkdir(QStringLiteral("Z"));
+        fakeFolder.localModifier().mkdir(QStringLiteral("Z/subdir"));
+        fakeFolder.localModifier().insert(QStringLiteral("Z/foo"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("Z"), 63);
 
         // 2) local file becomes a dir; remote file changes
-        fakeFolder.localModifier().remove("A/a1");
-        fakeFolder.localModifier().mkdir("A/a1");
-        fakeFolder.localModifier().insert("A/a1/bar");
-        fakeFolder.remoteModifier().appendByte("A/a1");
+        fakeFolder.localModifier().remove(QStringLiteral("A/a1"));
+        fakeFolder.localModifier().mkdir(QStringLiteral("A/a1"));
+        fakeFolder.localModifier().insert(QStringLiteral("A/a1/bar"));
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a1"));
 
         // 3) local dir gets a new file; remote dir becomes a file
-        fakeFolder.localModifier().insert("B/zzz");
-        fakeFolder.remoteModifier().remove("B");
-        fakeFolder.remoteModifier().insert("B", 31);
+        fakeFolder.localModifier().insert(QStringLiteral("B/zzz"));
+        fakeFolder.remoteModifier().remove(QStringLiteral("B"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("B"), 31);
 
         QVERIFY(fakeFolder.syncOnce());
 
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
-        conflicts += findConflicts(fakeFolder.currentLocalState().children["A"]);
+        conflicts += findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]);
         QCOMPARE(conflicts.size(), 3);
         std::sort(conflicts.begin(), conflicts.end());
 
@@ -500,25 +500,25 @@ private slots:
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // 1) a NEW/NEW conflict
-        fakeFolder.remoteModifier().mkdir("Z");
-        fakeFolder.remoteModifier().mkdir("Z/subdir");
-        fakeFolder.remoteModifier().insert("Z/foo");
-        fakeFolder.localModifier().insert("Z");
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("Z"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("Z/subdir"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("Z/foo"));
+        fakeFolder.localModifier().insert(QStringLiteral("Z"));
 
         // 2) local dir becomes file: remote dir adds file
-        fakeFolder.localModifier().remove("A");
-        fakeFolder.localModifier().insert("A", 63);
-        fakeFolder.remoteModifier().insert("A/bar");
+        fakeFolder.localModifier().remove(QStringLiteral("A"));
+        fakeFolder.localModifier().insert(QStringLiteral("A"), 63);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/bar"));
 
         // 3) local file changes; remote file becomes dir
-        fakeFolder.localModifier().appendByte("B/b1");
-        fakeFolder.remoteModifier().remove("B/b1");
-        fakeFolder.remoteModifier().mkdir("B/b1");
-        fakeFolder.remoteModifier().insert("B/b1/zzz");
+        fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/b1"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("B/b1"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("B/b1/zzz"));
 
         QVERIFY(fakeFolder.syncOnce());
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
-        conflicts += findConflicts(fakeFolder.currentLocalState().children["B"]);
+        conflicts += findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("B")]);
         QCOMPARE(conflicts.size(), 3);
         std::sort(conflicts.begin(), conflicts.end());
 
@@ -551,15 +551,15 @@ private slots:
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // the remote becomes a file, but a file inside the dir has moved away!
-        fakeFolder.remoteModifier().remove("A");
-        fakeFolder.remoteModifier().insert("A");
-        fakeFolder.localModifier().rename("A/a1", "a1");
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("A"));
+        fakeFolder.localModifier().rename(QStringLiteral("A/a1"), QStringLiteral("a1"));
 
         // same, but with a new file inside the dir locally
-        fakeFolder.remoteModifier().remove("B");
-        fakeFolder.remoteModifier().insert("B");
-        fakeFolder.localModifier().rename("B/b1", "b1");
-        fakeFolder.localModifier().insert("B/new");
+        fakeFolder.remoteModifier().remove(QStringLiteral("B"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("B"));
+        fakeFolder.localModifier().rename(QStringLiteral("B/b1"), QStringLiteral("b1"));
+        fakeFolder.localModifier().insert(QStringLiteral("B/new"));
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -584,18 +584,18 @@ private slots:
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // dir becomes file
-        fakeFolder.remoteModifier().remove("A");
-        fakeFolder.remoteModifier().insert("A");
-        fakeFolder.localModifier().remove("B");
-        fakeFolder.localModifier().insert("B");
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("A"));
+        fakeFolder.localModifier().remove(QStringLiteral("B"));
+        fakeFolder.localModifier().insert(QStringLiteral("B"));
 
         // file becomes dir
-        fakeFolder.remoteModifier().remove("C/c1");
-        fakeFolder.remoteModifier().mkdir("C/c1");
-        fakeFolder.remoteModifier().insert("C/c1/foo");
-        fakeFolder.localModifier().remove("C/c2");
-        fakeFolder.localModifier().mkdir("C/c2");
-        fakeFolder.localModifier().insert("C/c2/bar");
+        fakeFolder.remoteModifier().remove(QStringLiteral("C/c1"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("C/c1"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("C/c1/foo"));
+        fakeFolder.localModifier().remove(QStringLiteral("C/c2"));
+        fakeFolder.localModifier().mkdir(QStringLiteral("C/c2"));
+        fakeFolder.localModifier().insert(QStringLiteral("C/c2/bar"));
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -621,10 +621,10 @@ private slots:
     void testRemoveRemove()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.remoteModifier().remove("A");
-        fakeFolder.localModifier().remove("A");
-        fakeFolder.remoteModifier().remove("B/b1");
-        fakeFolder.localModifier().remove("B/b1");
+        fakeFolder.remoteModifier().remove(QStringLiteral("A"));
+        fakeFolder.localModifier().remove(QStringLiteral("A"));
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/b1"));
+        fakeFolder.localModifier().remove(QStringLiteral("B/b1"));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto expectedState = fakeFolder.currentLocalState();

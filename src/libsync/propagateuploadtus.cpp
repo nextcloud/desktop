@@ -237,7 +237,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         auto check = new PropfindJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file));
         addChildJob(check);
         check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
-        connect(check, &PropfindJob::result, this, [this, check](const QMap<QString, QString> &map) {
+        connect(check, &PropfindJob::result, this, [this](const QMap<QString, QString> &map) {
             _finished = true;
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             finalize(Utility::normalizeEtag(map.value(QStringLiteral("getetag")).toUtf8()), map.value(QStringLiteral("fileid")).toUtf8());

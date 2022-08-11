@@ -199,7 +199,7 @@ void GeneralSettings::slotUpdateInfo()
 #endif
 
     // Channel selection
-    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == "beta" ? 1 : 0);
+    _ui->updateChannel->setCurrentIndex(ConfigFile().updateChannel() == QLatin1String("beta") ? 1 : 0);
     connect(_ui->updateChannel, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 #endif

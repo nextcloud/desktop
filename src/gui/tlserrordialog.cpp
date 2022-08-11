@@ -34,7 +34,7 @@ TlsErrorDialog::TlsErrorDialog(const QList<QSslError> &sslErrors, const QString 
         errorStrings << error.errorString() << describeCertificateHtml(error.certificate());
     }
 
-    _ui->textBrowser->setHtml(errorStrings.join("\n"));
+    _ui->textBrowser->setHtml(errorStrings.join(QStringLiteral("\n")));
 
     // FIXME: add checkbox for second confirmation
 
@@ -61,7 +61,7 @@ QString TlsErrorDialog::describeCertificateHtml(const QSslCertificate &certifica
     };
 
     auto formatInfo = [](const QStringList &stringList) {
-        return Utility::escape(stringList.join(", "));
+        return Utility::escape(stringList.join(QStringLiteral(", ")));
     };
 
     auto escapeValueOrNotSpecified = [&](const QStringList &stringList) {

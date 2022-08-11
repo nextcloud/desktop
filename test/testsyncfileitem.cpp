@@ -32,18 +32,18 @@ private slots:
         QTest::addColumn<SyncFileItem>("b");
         QTest::addColumn<SyncFileItem>("c");
 
-        QTest::newRow("a1") << createItem("client") << createItem("client/build") << createItem("client-build") ;
-        QTest::newRow("a2") << createItem("test/t1") << createItem("test/t2") << createItem("test/t3") ;
-        QTest::newRow("a3") << createItem("ABCD") << createItem("abcd") << createItem("zzzz");
+        QTest::newRow("a1") << createItem(QStringLiteral("client")) << createItem(QStringLiteral("client/build")) << createItem(QStringLiteral("client-build"));
+        QTest::newRow("a2") << createItem(QStringLiteral("test/t1")) << createItem(QStringLiteral("test/t2")) << createItem(QStringLiteral("test/t3"));
+        QTest::newRow("a3") << createItem(QStringLiteral("ABCD")) << createItem(QStringLiteral("abcd")) << createItem(QStringLiteral("zzzz"));
 
         SyncFileItem movedItem1;
-        movedItem1._file = "folder/source/file.f";
-        movedItem1._renameTarget = "folder/destination/file.f";
+        movedItem1._file = QLatin1String("folder/source/file.f");
+        movedItem1._renameTarget = QLatin1String("folder/destination/file.f");
         movedItem1._instruction = CSYNC_INSTRUCTION_RENAME;
 
-        QTest::newRow("move1") << createItem("folder/destination") << movedItem1 << createItem("folder/destination-2");
-        QTest::newRow("move2") << createItem("folder/destination/1") << movedItem1 << createItem("folder/source");
-        QTest::newRow("move3") << createItem("abc") << movedItem1 << createItem("ijk");
+        QTest::newRow("move1") << createItem(QStringLiteral("folder/destination")) << movedItem1 << createItem(QStringLiteral("folder/destination-2"));
+        QTest::newRow("move2") << createItem(QStringLiteral("folder/destination/1")) << movedItem1 << createItem(QStringLiteral("folder/source"));
+        QTest::newRow("move3") << createItem(QStringLiteral("abc")) << movedItem1 << createItem(QStringLiteral("ijk"));
     }
 
     void testComparator() {

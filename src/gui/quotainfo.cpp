@@ -110,8 +110,8 @@ void QuotaInfo::slotUpdateLastQuota(const QMap<QString, QString> &result)
 {
     // The server can return fractional bytes (#1374)
     // <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>
-    qint64 avail = result["quota-available-bytes"].toDouble();
-    _lastQuotaUsedBytes = result["quota-used-bytes"].toDouble();
+    qint64 avail = result[QStringLiteral("quota-available-bytes")].toDouble();
+    _lastQuotaUsedBytes = result[QStringLiteral("quota-used-bytes")].toDouble();
     // negative value of the available quota have special meaning (#3940)
     _lastQuotaTotalBytes = avail >= 0 ? _lastQuotaUsedBytes + avail : avail;
     emit quotaUpdated(_lastQuotaTotalBytes, _lastQuotaUsedBytes);

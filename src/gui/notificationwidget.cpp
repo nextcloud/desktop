@@ -46,7 +46,7 @@ void NotificationWidget::setActivity(const Activity &activity)
     if (activity.link().isEmpty()) {
         _ui._subjectLabel->setText(activity.subject());
     } else {
-        _ui._subjectLabel->setText(QString("<a href=\"%1\">%2</a>")
+        _ui._subjectLabel->setText(QStringLiteral("<a href=\"%1\">%2</a>")
                                        .arg(activity.link().toString(QUrl::FullyEncoded),
                                            activity.subject().toHtmlEscaped()));
         _ui._subjectLabel->setTextFormat(Qt::RichText);

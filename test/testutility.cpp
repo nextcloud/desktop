@@ -30,7 +30,7 @@ private slots:
     }
     void testOctetsToString()
     {
-        QLocale::setDefault(QLocale("en"));
+        QLocale::setDefault(QLocale(QStringLiteral("en")));
         QCOMPARE(octetsToString(999) , QString("999 B"));
         QCOMPARE(octetsToString(1024) , QString("1 KB"));
         QCOMPARE(octetsToString(1364) , QString("1 KB"));
@@ -56,8 +56,8 @@ private slots:
     {
         QString postfix = QString::number(QRandomGenerator::global()->generate());
 
-        const QString appName = QString::fromLatin1("testLaunchOnStartup.%1").arg(postfix);
-        const QString guiName = "LaunchOnStartup GUI Name";
+        const QString appName = QStringLiteral("testLaunchOnStartup.%1").arg(postfix);
+        const QString guiName = QStringLiteral("LaunchOnStartup GUI Name");
 
         QVERIFY(hasLaunchOnStartup(appName) == false);
         setLaunchOnStartup(appName, guiName, true);
@@ -68,7 +68,7 @@ private slots:
 
     void testDurationToDescriptiveString()
     {
-        QLocale::setDefault(QLocale("C"));
+        QLocale::setDefault(QLocale(QStringLiteral("C")));
         //NOTE: in order for the plural to work we would need to load the english translation
 
         quint64 sec = 1000;
@@ -129,14 +129,14 @@ private slots:
     void testTimeAgo()
     {
         // Both times in same timezone
-        QDateTime d1 = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
-        QDateTime d2 = QDateTime::fromString("2015-01-23T09:20:30+01:00", Qt::ISODate);
+        QDateTime d1 = QDateTime::fromString(QStringLiteral("2015-01-24T09:20:30+01:00"), Qt::ISODate);
+        QDateTime d2 = QDateTime::fromString(QStringLiteral("2015-01-23T09:20:30+01:00"), Qt::ISODate);
         QString s = timeAgoInWords(d2, d1);
         QCOMPARE(s, QLatin1String("1 day(s) ago"));
 
         // Different timezones
-        QDateTime earlyTS = QDateTime::fromString("2015-01-24T09:20:30+01:00", Qt::ISODate);
-        QDateTime laterTS = QDateTime::fromString("2015-01-24T09:20:30-01:00", Qt::ISODate);
+        QDateTime earlyTS = QDateTime::fromString(QStringLiteral("2015-01-24T09:20:30+01:00"), Qt::ISODate);
+        QDateTime laterTS = QDateTime::fromString(QStringLiteral("2015-01-24T09:20:30-01:00"), Qt::ISODate);
         s = timeAgoInWords(earlyTS, laterTS);
         QCOMPARE(s, QLatin1String("2 hour(s) ago"));
 

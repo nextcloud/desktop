@@ -58,7 +58,7 @@ bool ClientProxy::isUsingSystemDefault()
 
 QString printQNetworkProxy(const QNetworkProxy &proxy)
 {
-    return QString("%1://%2:%3").arg(proxy.type()).arg(proxy.hostName()).arg(proxy.port());
+    return QStringLiteral("%1://%2:%3").arg(proxy.type()).arg(proxy.hostName()).arg(proxy.port());
 }
 
 void ClientProxy::setupQtProxyFromConfig()

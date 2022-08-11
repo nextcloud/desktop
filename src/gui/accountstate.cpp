@@ -40,7 +40,7 @@ inline const QLatin1String userExplicitlySignedOutC()
 {
     return QLatin1String("userExplicitlySignedOut");
 }
-const auto supportsSpacesC()
+auto supportsSpacesC()
 {
     return QLatin1String("supportsSpaces");
 }
@@ -506,7 +506,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
 
 std::unique_ptr<QSettings> AccountState::settings()
 {
-    auto s = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
+    auto s = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
     s->beginGroup(_account->id());
     return s;
 }

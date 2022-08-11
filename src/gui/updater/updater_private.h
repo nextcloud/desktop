@@ -15,10 +15,10 @@
 #pragma once
 
 namespace OCC {
-static const QString updateAvailableC = "Updater/updateAvailable";
-static const QString updateTargetVersionC = "Updater/updateTargetVersion";
-static const QString updateTargetVersionStringC = "Updater/updateTargetVersionString";
+static const QString updateAvailableC = QStringLiteral("Updater/updateAvailable");
+static const QString updateTargetVersionC = QStringLiteral("Updater/updateTargetVersion");
+static const QString updateTargetVersionStringC = QStringLiteral("Updater/updateTargetVersionString");
 // the config file key's name is preserved for legacy reasons
-static const QString previouslySkippedVersionC = "Updater/seenVersion";
-static const QString autoUpdateAttemptedC = "Updater/autoUpdateAttempted";
+static const QString previouslySkippedVersionC = QStringLiteral("Updater/seenVersion");
+static const QString autoUpdateAttemptedC = QStringLiteral("Updater/autoUpdateAttempted");
 }

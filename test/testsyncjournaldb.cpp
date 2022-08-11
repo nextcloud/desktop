@@ -68,7 +68,7 @@ private slots:
 
         // Update checksum
         record._checksumHeader = "Adler32:newchecksum";
-        _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
+        _db.updateFileRecordChecksum(QStringLiteral("foo"), "newchecksum", "Adler32");
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -131,27 +131,27 @@ private slots:
     void testDownloadInfo()
     {
         typedef SyncJournalDb::DownloadInfo Info;
-        Info record = _db.getDownloadInfo("nonexistant");
+        Info record = _db.getDownloadInfo(QStringLiteral("nonexistant"));
         QVERIFY(!record._valid);
 
         record._errorCount = 5;
         record._etag = "ABCDEF";
         record._valid = true;
-        record._tmpfile = "/tmp/foo";
-        _db.setDownloadInfo("foo", record);
+        record._tmpfile = QLatin1String("/tmp/foo");
+        _db.setDownloadInfo(QStringLiteral("foo"), record);
 
-        Info storedRecord = _db.getDownloadInfo("foo");
+        Info storedRecord = _db.getDownloadInfo(QStringLiteral("foo"));
         QVERIFY(storedRecord == record);
 
-        _db.setDownloadInfo("foo", Info());
-        Info wipedRecord = _db.getDownloadInfo("foo");
+        _db.setDownloadInfo(QStringLiteral("foo"), Info());
+        Info wipedRecord = _db.getDownloadInfo(QStringLiteral("foo"));
         QVERIFY(!wipedRecord._valid);
     }
 
     void testUploadInfo()
     {
         typedef SyncJournalDb::UploadInfo Info;
-        Info record = _db.getUploadInfo("nonexistant");
+        Info record = _db.getUploadInfo(QStringLiteral("nonexistant"));
         QVERIFY(!record._valid);
 
         record._errorCount = 5;
@@ -160,13 +160,13 @@ private slots:
         record._size = 12894789147;
         record._modtime = dropMsecs(QDateTime::currentDateTime());
         record._valid = true;
-        _db.setUploadInfo("foo", record);
+        _db.setUploadInfo(QStringLiteral("foo"), record);
 
-        Info storedRecord = _db.getUploadInfo("foo");
+        Info storedRecord = _db.getUploadInfo(QStringLiteral("foo"));
         QVERIFY(storedRecord == record);
 
-        _db.setUploadInfo("foo", Info());
-        Info wipedRecord = _db.getUploadInfo("foo");
+        _db.setUploadInfo(QStringLiteral("foo"), Info());
+        Info wipedRecord = _db.getUploadInfo(QStringLiteral("foo"));
         QVERIFY(!wipedRecord._valid);
     }
 
@@ -297,17 +297,17 @@ private slots:
             return ok;
         };
 
-        _db.deleteFileRecord("moo", true);
+        _db.deleteFileRecord(QStringLiteral("moo"), true);
         elements.removeAll("moo");
         elements.removeAll("moo/file");
         QVERIFY(checkElements());
 
-        _db.deleteFileRecord("fo_", true);
+        _db.deleteFileRecord(QStringLiteral("fo_"), true);
         elements.removeAll("fo_");
         elements.removeAll("fo_/file");
         QVERIFY(checkElements());
 
-        _db.deleteFileRecord("foo%bar", true);
+        _db.deleteFileRecord(QStringLiteral("foo%bar"), true);
         elements.removeAll("foo%bar");
         QVERIFY(checkElements());
     }

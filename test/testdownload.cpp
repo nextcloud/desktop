@@ -73,11 +73,11 @@ private slots:
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
         auto size = 30 * 1000 * 1000;
-        fakeFolder.remoteModifier().insert("A/a0", size);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"), size);
 
         // First, download only the first 3 MB of the file
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a0")) {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/a0"))) {
                 return new BrokenFakeGetReply(fakeFolder.remoteModifier(), op, request, this);
             }
             return nullptr;
@@ -91,7 +91,7 @@ private slots:
         // Now, we need to restart, this time, it should resume.
         QByteArray ranges;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a0")) {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/a0"))) {
                 ranges = request.rawHeader("Range");
             }
             return nullptr;
@@ -109,13 +109,13 @@ private slots:
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
         auto size = 3'500'000;
-        fakeFolder.remoteModifier().insert("A/broken", size);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/broken"), size);
 
         QByteArray serverMessage = "The file was not downloaded because the tests wants so!";
 
         // First, download only the first 3 MB of the file
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/broken")) {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/broken"))) {
                 return new FakeErrorReply(op, request, this, 400,
                     "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     "<d:error xmlns:d=\"DAV:\" xmlns:s=\"http://sabredav.org/ns\">\n"
@@ -138,7 +138,7 @@ private slots:
         // Server in maintenance must abort the sync.
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.remoteModifier().insert("A/broken");
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/broken"));
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
             if (op == QNetworkAccessManager::GetOperation) {
                 return new FakeErrorReply(op, request, this, 503,
@@ -174,8 +174,8 @@ private slots:
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
-        fakeFolder.remoteModifier().setContents("A/a1", 'A');
-        fakeFolder.localModifier().setContents("A/a1", 'B');
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'A');
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'B');
 
         bool propConnected = false;
         QString conflictFile;
@@ -186,7 +186,7 @@ private slots:
                 return;
             propConnected = true;
             connect(propagator.data(), &OwncloudPropagator::touchedFile, [&](const QString &s) {
-                if (s.contains("conflicted copy")) {
+                if (s.contains(QLatin1String("conflicted copy"))) {
                     QCOMPARE(conflictFile, QString());
                     conflictFile = s;
                     return;
@@ -225,7 +225,7 @@ private slots:
 
     void testHttp2Resend() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        fakeFolder.remoteModifier().insert("A/resendme", 300);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/resendme"), 300);
 
         QByteArray serverMessage = "Needs to be resend on a new connection!";
         int resendActual = 0;
@@ -233,7 +233,7 @@ private slots:
 
         // First, download only the first 3 MB of the file
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/resendme") && resendActual < resendExpected) {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/resendme")) && resendActual < resendExpected) {
                 auto errorReply = new FakeErrorReply(op, request, this, 400, "ignore this body");
                 errorReply->setError(QNetworkReply::ContentReSendError, serverMessage);
                 errorReply->setAttribute(QNetworkRequest::Http2WasUsedAttribute, true);
@@ -248,7 +248,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(resendActual, 2);
 
-        fakeFolder.remoteModifier().appendByte("A/resendme");
+        fakeFolder.remoteModifier().appendByte(QStringLiteral("A/resendme"));
         resendActual = 0;
         resendExpected = 10;
 

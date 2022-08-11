@@ -337,7 +337,7 @@ CmdOptions parseOptions(const QStringList &app_args)
     if (argCount < 3) {
         if (argCount >= 2) {
             const QString option = args.at(1);
-            if (option == "-v" || option == "--version") {
+            if (option == QLatin1String("-v") || option == QLatin1String("--version")) {
                 showVersion();
             }
         }
@@ -346,7 +346,7 @@ CmdOptions parseOptions(const QStringList &app_args)
 
     options.target_url = args.takeLast();
     // check if the webDAV path was added to the url and append if not.
-    if (!options.target_url.endsWith("/")) {
+    if (!options.target_url.endsWith(QLatin1String("/"))) {
         options.target_url.append("/");
     }
 
@@ -369,34 +369,34 @@ CmdOptions parseOptions(const QStringList &app_args)
     while (it.hasNext()) {
         const QString option = it.next();
 
-        if (option == "--httpproxy" && !it.peekNext().startsWith("-")) {
+        if (option == QLatin1String("--httpproxy") && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.proxy = it.next();
-        } else if (option == "-s" || option == "--silent") {
+        } else if (option == QLatin1String("-s") || option == QLatin1String("--silent")) {
             options.silent = true;
-        } else if (option == "--trust") {
+        } else if (option == QLatin1String("--trust")) {
             options.trustSSL = true;
-        } else if (option == "-n") {
+        } else if (option == QLatin1String("-n")) {
             options.useNetrc = true;
-        } else if (option == "-h") {
+        } else if (option == QLatin1String("-h")) {
             options.ignoreHiddenFiles = false;
-        } else if (option == "--non-interactive") {
+        } else if (option == QLatin1String("--non-interactive")) {
             options.interactive = false;
-        } else if ((option == "-u" || option == "--user") && !it.peekNext().startsWith("-")) {
+        } else if ((option == QLatin1String("-u") || option == QLatin1String("--user")) && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.user = it.next();
-        } else if ((option == "-p" || option == "--password") && !it.peekNext().startsWith("-")) {
+        } else if ((option == QLatin1String("-p") || option == QLatin1String("--password")) && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.password = it.next();
-        } else if (option == "--exclude" && !it.peekNext().startsWith("-")) {
+        } else if (option == QLatin1String("--exclude") && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.exclude = it.next();
-        } else if (option == "--unsyncedfolders" && !it.peekNext().startsWith("-")) {
+        } else if (option == QLatin1String("--unsyncedfolders") && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.unsyncedfolders = it.next();
-        } else if (option == "--max-sync-retries" && !it.peekNext().startsWith("-")) {
+        } else if (option == QLatin1String("--max-sync-retries") && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.restartTimes = it.next().toInt();
-        } else if (option == "--uplimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == QLatin1String("--uplimit") && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.uplimit = it.next().toInt() * 1000;
-        } else if (option == "--downlimit" && !it.peekNext().startsWith("-")) {
+        } else if (option == QLatin1String("--downlimit") && !it.peekNext().startsWith(QLatin1String("-"))) {
             options.downlimit = it.next().toInt() * 1000;
-        } else if (option == "--logdebug") {
-            Logger::instance()->setLogFile("-");
+        } else if (option == QLatin1String("--logdebug")) {
+            Logger::instance()->setLogFile(QStringLiteral("-"));
             Logger::instance()->setLogDebug(true);
         } else {
             help();
@@ -441,11 +441,11 @@ int main(int argc, char **argv)
         // Find the folder and the original owncloud url
         QStringList splitted = tmp.path().split("/" + ctx.account->davPath());
         tmp.setPath(splitted.value(0));
-        tmp.setScheme(tmp.scheme().replace("owncloud", "http"));
+        tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
 
         // Remote folders typically start with a / and don't end with one
         ctx.folder = "/" + splitted.value(1);
-        if (ctx.folder.endsWith("/") && ctx.folder != "/") {
+        if (ctx.folder.endsWith(QLatin1String("/")) && ctx.folder != QLatin1String("/")) {
             ctx.folder.chop(1);
         }
         return tmp;
@@ -500,7 +500,7 @@ int main(int argc, char **argv)
             // http: //192.168.178.23 : 8080
             //  0            1            2
             host = pList.at(1);
-            if (host.startsWith("//"))
+            if (host.startsWith(QLatin1String("//")))
                 host.remove(0, 2);
 
             port = pList.at(2).toUInt(&ok);
@@ -560,7 +560,7 @@ int main(int argc, char **argv)
             // Perform a call to get the capabilities.
             auto *capabilitiesJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/capabilities"), {}, {}, nullptr);
             QObject::connect(capabilitiesJob, &JsonApiJob::finishedSignal, qApp, [capabilitiesJob, ctx] {
-                auto caps = capabilitiesJob->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+                auto caps = capabilitiesJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
                 qDebug() << "Server capabilities" << caps;
                 ctx.account->setCapabilities(caps.toVariantMap());
 
@@ -572,11 +572,11 @@ int main(int argc, char **argv)
                     qFatal("Error connecting to server");
                 }
 
-                auto userJob = new JsonApiJob(ctx.account, QLatin1String("ocs/v1.php/cloud/user"), {}, {}, nullptr);
+                auto userJob = new JsonApiJob(ctx.account, QStringLiteral("ocs/v1.php/cloud/user"), {}, {}, nullptr);
                 QObject::connect(userJob, &JsonApiJob::finishedSignal, qApp, [userJob, ctx] {
-                    const QJsonObject data = userJob->data().value("ocs").toObject().value("data").toObject();
-                    ctx.account->setDavUser(data.value("id").toString());
-                    ctx.account->setDavDisplayName(data.value("display-name").toString());
+                    const QJsonObject data = userJob->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
+                    ctx.account->setDavUser(data.value(QStringLiteral("id")).toString());
+                    ctx.account->setDavDisplayName(data.value(QStringLiteral("display-name")).toString());
 
                     // much lower age than the default since this utility is usually made to be run right after a change in the tests
                     SyncEngine::minimumFileAgeForUpload = std::chrono::milliseconds(0);

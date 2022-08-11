@@ -195,7 +195,7 @@ using namespace OCC::Utility;
         vali->start(_testfile, "Adler32:543345");
         QTRY_VERIFY(_errorSeen);
 
-        _expectedError = QLatin1String("The checksum header contained an unknown checksum type 'Klaas32'");
+        _expectedError = QStringLiteral("The checksum header contained an unknown checksum type 'Klaas32'");
         _errorSeen = false;
         file.seek(0);
         vali->start(_testfile, "Klaas32:543345");

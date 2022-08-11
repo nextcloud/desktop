@@ -141,13 +141,13 @@ private slots:
         const auto &children = fakeFolder.currentRemoteState().children;
         for (auto it = children.cbegin(); it != children.cend(); ++it)
             fakeFolder.syncJournal().avoidRenamesOnNextSync(it.key()); // clears all the fileid and inodes.
-        fakeFolder.localModifier().remove("A/a1");
+        fakeFolder.localModifier().remove(QStringLiteral("A/a1"));
         auto expectedState = fakeFolder.currentLocalState();
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
 
-        fakeFolder.remoteModifier().remove("B/b1");
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/b1"));
         changeAllFileId(fakeFolder.remoteModifier());
         expectedState = fakeFolder.currentRemoteState();
         QVERIFY(fakeFolder.syncOnce());
@@ -169,14 +169,14 @@ private slots:
             });
 
         // Some small changes
-        fakeFolder.localModifier().mkdir("Q");
-        fakeFolder.localModifier().insert("Q/q1");
-        fakeFolder.localModifier().appendByte("B/b1");
+        fakeFolder.localModifier().mkdir(QStringLiteral("Q"));
+        fakeFolder.localModifier().insert(QStringLiteral("Q/q1"));
+        fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
 
         // Do some change localy
-        fakeFolder.localModifier().appendByte("A/a1");
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
 
         // reset the server.
         fakeFolder.remoteModifier() = FileInfo::A12_B12_C12_S12();
@@ -198,9 +198,9 @@ private slots:
     {
         QFETCH(bool, hasInitialFingerPrint);
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.remoteModifier().setContents("C/c1", 'N');
-        fakeFolder.remoteModifier().setModTime("C/c1", QDateTime::currentDateTimeUtc().addDays(-2));
-        fakeFolder.remoteModifier().remove("C/c2");
+        fakeFolder.remoteModifier().setContents(QStringLiteral("C/c1"), 'N');
+        fakeFolder.remoteModifier().setModTime(QStringLiteral("C/c1"), QDateTime::currentDateTimeUtc().addDays(-2));
+        fakeFolder.remoteModifier().remove(QStringLiteral("C/c2"));
         if (hasInitialFingerPrint) {
             fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>initial_finger_print</oc:data-fingerprint>";
         } else {
@@ -234,18 +234,18 @@ private slots:
         /* Simulate a backup restoration */
 
         // A/a1 is an old file
-        fakeFolder.remoteModifier().setContents("A/a1", 'O');
-        fakeFolder.remoteModifier().setModTime("A/a1", QDateTime::currentDateTimeUtc().addDays(-2));
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'O');
+        fakeFolder.remoteModifier().setModTime(QStringLiteral("A/a1"), QDateTime::currentDateTimeUtc().addDays(-2));
         // B/b1 did not exist at the time of the backup
-        fakeFolder.remoteModifier().remove("B/b1");
+        fakeFolder.remoteModifier().remove(QStringLiteral("B/b1"));
         // B/b2 was uploaded by another user in the mean time.
-        fakeFolder.remoteModifier().setContents("B/b2", 'N');
-        fakeFolder.remoteModifier().setModTime("B/b2", QDateTime::currentDateTimeUtc().addDays(2));
+        fakeFolder.remoteModifier().setContents(QStringLiteral("B/b2"), 'N');
+        fakeFolder.remoteModifier().setModTime(QStringLiteral("B/b2"), QDateTime::currentDateTimeUtc().addDays(2));
 
         // C/c3 was removed since we made the backup
-        fakeFolder.remoteModifier().insert("C/c3_removed");
+        fakeFolder.remoteModifier().insert(QStringLiteral("C/c3_removed"));
         // C/c4 was moved to A/a2 since we made the backup
-        fakeFolder.remoteModifier().rename("A/a2", "C/old_a2_location");
+        fakeFolder.remoteModifier().rename(QStringLiteral("A/a2"), QStringLiteral("C/old_a2_location"));
 
         // The admin sets the data-fingerprint property
         fakeFolder.remoteModifier().extraDavProperties = "<oc:data-fingerprint>new_finger_print</oc:data-fingerprint>";
@@ -255,7 +255,7 @@ private slots:
         auto currentState = fakeFolder.currentLocalState();
         // Altough the local file is kept as a conflict, the server file is downloaded
         QCOMPARE(currentState.find("A/a1")->contentChar, 'O');
-        auto conflict = findConflict(currentState, "A/a1");
+        auto conflict = findConflict(currentState, QStringLiteral("A/a1"));
         QVERIFY(conflict);
         QCOMPARE(conflict->contentChar, 'W');
         fakeFolder.localModifier().remove(conflict->path());
@@ -264,7 +264,7 @@ private slots:
 
         // b2 has the new content (was not restored), since its mode time goes forward in time
         QCOMPARE(currentState.find("B/b2")->contentChar, 'N');
-        conflict = findConflict(currentState, "B/b2");
+        conflict = findConflict(currentState, QStringLiteral("B/b2"));
         QVERIFY(conflict); // Just to be sure, we kept the old file in a conflict
         QCOMPARE(conflict->contentChar, 'W');
         fakeFolder.localModifier().remove(conflict->path());
@@ -287,13 +287,13 @@ private slots:
             });
 
         // add a single file
-        fakeFolder.localModifier().insert("hello.txt");
+        fakeFolder.localModifier().insert(QStringLiteral("hello.txt"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // rename it
-        fakeFolder.localModifier().rename("hello.txt", "goodbye.txt");
+        fakeFolder.localModifier().rename(QStringLiteral("hello.txt"), QStringLiteral("goodbye.txt"));
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
@@ -318,7 +318,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList,
-            QStringList() << "A/" << "B/" << "C/" << "S/");
+            QStringList() << QStringLiteral("A/") << QStringLiteral("B/") << QStringLiteral("C/") << QStringLiteral("S/"));
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), FileInfo{}); // all files should be one localy

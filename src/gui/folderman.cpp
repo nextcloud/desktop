@@ -251,7 +251,7 @@ int FolderMan::setupFolders()
     // We ignore them here just in case.
     skipSettingsKeys += deleteSettingsKeys;
 
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
+    auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
     const auto &accountsWithSettings = settings->childGroups();
     if (accountsWithSettings.isEmpty()) {
         int r = setupFoldersMigration();
@@ -348,8 +348,8 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         // So if the configured journalPath has a dot-underscore ("._sync_*.db")
         // but the current default doesn't have the underscore, switch to the
         // new default if no db exists yet.
-        if (folderDefinition.journalPath.startsWith("._sync_")
-            && defaultJournalPath.startsWith(".sync_")
+        if (folderDefinition.journalPath.startsWith(QLatin1String("._sync_"))
+            && defaultJournalPath.startsWith(QLatin1String(".sync_"))
             && !QFile::exists(folderDefinition.absoluteJournalPath())) {
             folderDefinition.journalPath = defaultJournalPath;
         }
@@ -399,7 +399,7 @@ int FolderMan::setupFoldersMigration()
 
 void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
 {
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String("Accounts"));
+    auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
 
     auto processSubgroup = [&](const QString &name) {
         settings->beginGroup(name);
@@ -423,9 +423,9 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
     const auto &childGroups = settings->childGroups();
     for (const auto &accountId : childGroups) {
         settings->beginGroup(accountId);
-        processSubgroup("Folders");
-        processSubgroup("Multifolders");
-        processSubgroup("FoldersWithPlaceholders");
+        processSubgroup(QStringLiteral("Folders"));
+        processSubgroup(QStringLiteral("Multifolders"));
+        processSubgroup(QStringLiteral("FoldersWithPlaceholders"));
         settings->endGroup();
     }
 }
@@ -1068,7 +1068,7 @@ void FolderMan::removeFolder(Folder *f)
 
 QString FolderMan::getBackupName(QString fullPathName) const
 {
-    if (fullPathName.endsWith("/"))
+    if (fullPathName.endsWith(QLatin1String("/")))
         fullPathName.chop(1);
 
     if (fullPathName.isEmpty())
@@ -1433,7 +1433,7 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
         if (!ConfigFile().newBigFolderSizeLimit().first) {
             // The user already accepted the selective sync dialog. everything is in the white list
             newFolder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-                QStringList() << QLatin1String("/"));
+                QStringList() << QStringLiteral("/"));
         }
         qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
     } else {

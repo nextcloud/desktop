@@ -30,11 +30,11 @@ static void setup_init() {
     QVERIFY(excludedFiles->reloadExcludeFiles());
 
     /* and add some unicode stuff */
-    excludedFiles->addManualExclude("*.💩"); // is this source file utf8 encoded?
-    excludedFiles->addManualExclude("пятницы.*");
-    excludedFiles->addManualExclude("*/*.out");
-    excludedFiles->addManualExclude("latex*/*.run.xml");
-    excludedFiles->addManualExclude("latex/*/*.tex.tmp");
+    excludedFiles->addManualExclude(QStringLiteral("*.💩")); // is this source file utf8 encoded?
+    excludedFiles->addManualExclude(QStringLiteral("пятницы.*"));
+    excludedFiles->addManualExclude(QStringLiteral("*/*.out"));
+    excludedFiles->addManualExclude(QStringLiteral("latex*/*.run.xml"));
+    excludedFiles->addManualExclude(QStringLiteral("latex/*/*.tex.tmp"));
 
     QVERIFY(excludedFiles->reloadExcludeFiles());
 }
@@ -119,7 +119,7 @@ private slots:
     void check_csync_exclude_add()
     {
         setup();
-        excludedFiles->addManualExclude("/tmp/check_csync1/*");
+        excludedFiles->addManualExclude(QStringLiteral("/tmp/check_csync1/*"));
         QCOMPARE(check_file_full("/tmp/check_csync1/foo"), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_file_full("/tmp/check_csync2/foo"), CSYNC_NOT_EXCLUDED);
         QVERIFY(excludedFiles->_allExcludes.contains("/tmp/check_csync1/*"));
@@ -128,7 +128,7 @@ private slots:
         QVERIFY(excludedFiles->_fullTraversalRegexFile.pattern().contains("csync1"));
         QVERIFY(!excludedFiles->_bnameTraversalRegexFile.pattern().contains("csync1"));
 
-        excludedFiles->addManualExclude("foo");
+        excludedFiles->addManualExclude(QStringLiteral("foo"));
         QVERIFY(excludedFiles->_bnameTraversalRegexFile.pattern().contains("foo"));
         QVERIFY(excludedFiles->_fullRegexFile.pattern().contains("foo"));
         QVERIFY(!excludedFiles->_fullTraversalRegexFile.pattern().contains("foo"));
@@ -210,14 +210,14 @@ private slots:
     #endif
 
         /* ? character */
-        excludedFiles->addManualExclude("bond00?");
+        excludedFiles->addManualExclude(QStringLiteral("bond00?"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_full("bond00"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("bond007"), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_file_full("bond0071"), CSYNC_NOT_EXCLUDED);
 
         /* brackets */
-        excludedFiles->addManualExclude("a [bc] d");
+        excludedFiles->addManualExclude(QStringLiteral("a [bc] d"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_full("a d d"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("a  d"), CSYNC_NOT_EXCLUDED);
@@ -226,9 +226,9 @@ private slots:
 
 #ifndef Q_OS_WIN   // Because of CSYNC_FILE_EXCLUDE_INVALID_CHAR on windows
         /* escapes */
-        excludedFiles->addManualExclude("a \\*");
-        excludedFiles->addManualExclude("b \\?");
-        excludedFiles->addManualExclude("c \\[d]");
+        excludedFiles->addManualExclude(QStringLiteral("a \\*"));
+        excludedFiles->addManualExclude(QStringLiteral("b \\?"));
+        excludedFiles->addManualExclude(QStringLiteral("c \\[d]"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_full("a \\*"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_full("a bc"), CSYNC_NOT_EXCLUDED);
@@ -316,7 +316,7 @@ private slots:
 
         /* From here the actual traversal tests */
 
-        excludedFiles->addManualExclude("/exclude");
+        excludedFiles->addManualExclude(QStringLiteral("/exclude"));
         excludedFiles->reloadExcludeFiles();
 
         /* Check toplevel dir, the pattern only works for toplevel dir. */
@@ -328,7 +328,7 @@ private slots:
         QCOMPARE(check_file_traversal("/foo/exclude"), CSYNC_NOT_EXCLUDED);
 
         /* Add an exclude for directories only: excl/ */
-        excludedFiles->addManualExclude("excl/");
+        excludedFiles->addManualExclude(QStringLiteral("excl/"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_dir_traversal("/excl"), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_dir_traversal("meep/excl"), CSYNC_FILE_EXCLUDE_LIST);
@@ -337,7 +337,7 @@ private slots:
         QCOMPARE(check_file_traversal("meep/excl/file"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_traversal("/excl"), CSYNC_NOT_EXCLUDED);
 
-        excludedFiles->addManualExclude("/excludepath/withsubdir");
+        excludedFiles->addManualExclude(QStringLiteral("/excludepath/withsubdir"));
         excludedFiles->reloadExcludeFiles();
 
         QCOMPARE(check_dir_traversal("/excludepath/withsubdir"), CSYNC_FILE_EXCLUDE_LIST);
@@ -352,19 +352,19 @@ private slots:
         QCOMPARE(check_file_traversal("/excludeX"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_traversal("exclude"), CSYNC_NOT_EXCLUDED);
 
-        excludedFiles->addManualExclude("exclude");
+        excludedFiles->addManualExclude(QStringLiteral("exclude"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_traversal("exclude"), CSYNC_FILE_EXCLUDE_LIST);
 
         /* ? character */
-        excludedFiles->addManualExclude("bond00?");
+        excludedFiles->addManualExclude(QStringLiteral("bond00?"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_traversal("bond00"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_traversal("bond007"), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_file_traversal("bond0071"), CSYNC_NOT_EXCLUDED);
 
         /* brackets */
-        excludedFiles->addManualExclude("a [bc] d");
+        excludedFiles->addManualExclude(QStringLiteral("a [bc] d"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_traversal("a d d"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_traversal("a  d"), CSYNC_NOT_EXCLUDED);
@@ -373,9 +373,9 @@ private slots:
 
 #ifndef Q_OS_WIN   // Because of CSYNC_FILE_EXCLUDE_INVALID_CHAR on windows
         /* escapes */
-        excludedFiles->addManualExclude("a \\*");
-        excludedFiles->addManualExclude("b \\?");
-        excludedFiles->addManualExclude("c \\[d]");
+        excludedFiles->addManualExclude(QStringLiteral("a \\*"));
+        excludedFiles->addManualExclude(QStringLiteral("b \\?"));
+        excludedFiles->addManualExclude(QStringLiteral("c \\[d]"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_file_traversal("a \\*"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_traversal("a bc"), CSYNC_NOT_EXCLUDED);
@@ -392,8 +392,8 @@ private slots:
     void check_csync_dir_only()
     {
         setup();
-        excludedFiles->addManualExclude("filedir");
-        excludedFiles->addManualExclude("dir/");
+        excludedFiles->addManualExclude(QStringLiteral("filedir"));
+        excludedFiles->addManualExclude(QStringLiteral("dir/"));
 
         QCOMPARE(check_file_traversal("other"), CSYNC_NOT_EXCLUDED);
         QCOMPARE(check_file_traversal("filedir"), CSYNC_FILE_EXCLUDE_LIST);
@@ -418,7 +418,7 @@ private slots:
     void check_csync_pathes()
     {
         setup_init();
-        excludedFiles->addManualExclude("/exclude");
+        excludedFiles->addManualExclude(QStringLiteral("/exclude"));
         excludedFiles->reloadExcludeFiles();
 
         /* Check toplevel dir, the pattern only works for toplevel dir. */
@@ -432,7 +432,7 @@ private slots:
         QCOMPARE(check_file_full("/foo/exclude"), CSYNC_NOT_EXCLUDED);
 
         /* Add an exclude for directories only: excl/ */
-        excludedFiles->addManualExclude("excl/");
+        excludedFiles->addManualExclude(QStringLiteral("excl/"));
         excludedFiles->reloadExcludeFiles();
         QCOMPARE(check_dir_full("/excl"), CSYNC_FILE_EXCLUDE_LIST);
         QCOMPARE(check_dir_full("meep/excl"), CSYNC_FILE_EXCLUDE_LIST);
@@ -440,7 +440,7 @@ private slots:
 
         QCOMPARE(check_file_full("/excl"), CSYNC_NOT_EXCLUDED);
 
-        excludedFiles->addManualExclude("/excludepath/withsubdir");
+        excludedFiles->addManualExclude(QStringLiteral("/excludepath/withsubdir"));
         excludedFiles->reloadExcludeFiles();
 
         QCOMPARE(check_dir_full("/excludepath/withsubdir"), CSYNC_FILE_EXCLUDE_LIST);
@@ -454,13 +454,13 @@ private slots:
     void check_csync_wildcards()
     {
         setup();
-        excludedFiles->addManualExclude("a/foo*bar");
-        excludedFiles->addManualExclude("b/foo*bar*");
-        excludedFiles->addManualExclude("c/foo?bar");
-        excludedFiles->addManualExclude("d/foo?bar*");
-        excludedFiles->addManualExclude("e/foo?bar?");
-        excludedFiles->addManualExclude("g/bar*");
-        excludedFiles->addManualExclude("h/bar?");
+        excludedFiles->addManualExclude(QStringLiteral("a/foo*bar"));
+        excludedFiles->addManualExclude(QStringLiteral("b/foo*bar*"));
+        excludedFiles->addManualExclude(QStringLiteral("c/foo?bar"));
+        excludedFiles->addManualExclude(QStringLiteral("d/foo?bar*"));
+        excludedFiles->addManualExclude(QStringLiteral("e/foo?bar?"));
+        excludedFiles->addManualExclude(QStringLiteral("g/bar*"));
+        excludedFiles->addManualExclude(QStringLiteral("h/bar?"));
 
         excludedFiles->setWildcardsMatchSlash(false);
 
@@ -598,8 +598,8 @@ private slots:
         QBENCHMARK {
 
             for (int i = 0; i < N; ++i) {
-                totalRc += check_dir_full("/this/is/quite/a/long/path/with/many/components");
-                totalRc += check_file_full("/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29");
+                totalRc += check_dir_full(QStringLiteral("/this/is/quite/a/long/path/with/many/components"));
+                totalRc += check_file_full(QStringLiteral("/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29"));
             }
             QCOMPARE(totalRc, 0); // mainly to avoid optimization
         }
@@ -612,8 +612,8 @@ private slots:
 
         QBENCHMARK {
             for (int i = 0; i < N; ++i) {
-                totalRc += check_dir_traversal("/this/is/quite/a/long/path/with/many/components");
-                totalRc += check_file_traversal("/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29");
+                totalRc += check_dir_traversal(QStringLiteral("/this/is/quite/a/long/path/with/many/components"));
+                totalRc += check_file_traversal(QStringLiteral("/1/2/3/4/5/6/7/8/9/10/11/12/13/14/15/16/17/18/19/20/21/22/23/24/25/26/27/29"));
             }
             QCOMPARE(totalRc, 0); // mainly to avoid optimization
         }

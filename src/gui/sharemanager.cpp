@@ -216,13 +216,13 @@ void LinkShare::setExpireDate(const QDate &date)
         if (!job->ocsSuccess()) {
             emit serverError(job->ocsStatus(), job->ocsMessage());
         } else {
-            auto data = job->data().value("ocs").toObject().value("data").toObject();
+            auto data = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
             /*
              * If the reply provides a data back (more REST style)
              * they use this date.
              */
-            if (data.value("expiration").isString()) {
-                _expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+            if (data.value(QStringLiteral("expiration")).isString()) {
+                _expireDate = QDate::fromString(data.value(QStringLiteral("expiration")).toString(), QStringLiteral("yyyy-MM-dd 00:00:00"));
             } else {
                 _expireDate = date;
             }
@@ -254,7 +254,7 @@ void ShareManager::createLinkShare(const QString &path,
             emit serverError(job->ocsStatus(), job->ocsMessage());
         } else {
             // Parse share
-            auto data = job->data().value("ocs").toObject().value("data").toObject();
+            auto data = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
             QSharedPointer<LinkShare> share(parseLinkShare(data));
 
             emit linkShareCreated(share);
@@ -288,8 +288,8 @@ void ShareManager::createShare(const QString &path,
             const auto &array = job->data()[QLatin1String("ocs")].toObject()[QLatin1String("data")].toArray();
             for (const auto &element : array) {
                 auto map = element.toObject();
-                if (map["file_target"] == path)
-                    existingPermissions = Share::Permissions(map["permissions"].toInt());
+                if (map[QStringLiteral("file_target")] == path)
+                    existingPermissions = Share::Permissions(map[QStringLiteral("permissions")].toInt());
             }
 
             // Limit the permissions we request for a share to the ones the item
@@ -308,7 +308,7 @@ void ShareManager::createShare(const QString &path,
                 emit serverError(job2->ocsStatus(), job2->ocsMessage());
             } else {
                 //Parse share
-                auto data = job2->data().value("ocs").toObject().value("data").toObject();
+                auto data = job2->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
                 QSharedPointer<Share> share(parseShare(data));
 
                 emit shareCreated(share);
@@ -339,7 +339,7 @@ void ShareManager::fetchShares(const QString &path)
             for (const auto &share : tmpShares) {
                 auto data = share.toObject();
 
-                auto shareType = data.value("share_type").toInt();
+                auto shareType = data.value(QStringLiteral("share_type")).toInt();
 
                 QSharedPointer<Share> newShare;
 
@@ -362,40 +362,40 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
     QUrl url;
 
     // From ownCloud server 8.2 the url field is always set for public shares
-    if (data.contains("url")) {
-        url = QUrl(data.value("url").toString());
+    if (data.contains(QStringLiteral("url"))) {
+        url = QUrl(data.value(QStringLiteral("url")).toString());
     } else {
         // From ownCloud server version 8 on, a different share link scheme is used.
-        url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("index.php/s/") + data.value("token").toString())).toString();
+        url = QUrl(Utility::concatUrlPath(_account->url(), QLatin1String("index.php/s/") + data.value(QStringLiteral("token")).toString())).toString();
     }
 
     QDate expireDate;
-    if (data.value("expiration").isString()) {
-        expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
+    if (data.value(QStringLiteral("expiration")).isString()) {
+        expireDate = QDate::fromString(data.value(QStringLiteral("expiration")).toString(), QStringLiteral("yyyy-MM-dd 00:00:00"));
     }
 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
-        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
-        data.value("path").toString(),
-        data.value("name").toString(),
-        data.value("token").toString(),
-        (Share::Permissions)data.value("permissions").toInt(),
-        data.value("share_with").isString(), // has password?
+        data.value(QStringLiteral("id")).toVariant().toString(), // "id" used to be an integer, support both
+        data.value(QStringLiteral("path")).toString(),
+        data.value(QStringLiteral("name")).toString(),
+        data.value(QStringLiteral("token")).toString(),
+        (Share::Permissions)data.value(QStringLiteral("permissions")).toInt(),
+        data.value(QStringLiteral("share_with")).isString(), // has password?
         url,
         expireDate));
 }
 
 QSharedPointer<Share> ShareManager::parseShare(const QJsonObject &data)
 {
-    QSharedPointer<Sharee> sharee(new Sharee(data.value("share_with").toString(),
-        data.value("share_with_displayname").toString(),
-        (Sharee::Type)data.value("share_type").toInt()));
+    QSharedPointer<Sharee> sharee(new Sharee(data.value(QStringLiteral("share_with")).toString(),
+        data.value(QStringLiteral("share_with_displayname")).toString(),
+        (Sharee::Type)data.value(QStringLiteral("share_type")).toInt()));
 
     return QSharedPointer<Share>(new Share(_account,
-        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
-        data.value("path").toString(),
-        (Share::ShareType)data.value("share_type").toInt(),
-        (Share::Permissions)data.value("permissions").toInt(),
+        data.value(QStringLiteral("id")).toVariant().toString(), // "id" used to be an integer, support both
+        data.value(QStringLiteral("path")).toString(),
+        (Share::ShareType)data.value(QStringLiteral("share_type")).toInt(),
+        (Share::Permissions)data.value(QStringLiteral("permissions")).toInt(),
         sharee));
 }
 }

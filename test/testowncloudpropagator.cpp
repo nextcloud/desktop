@@ -31,7 +31,7 @@ private slots:
         QString fn;
         // without dir
         for (int i = 1; i <= 1000; i++) {
-            fn+="F";
+            fn += QLatin1String("F");
             QString tmpFileName = createDownloadTmpFileName(fn);
             if (tmpFileName.contains('/')) {
                 tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
@@ -40,9 +40,9 @@ private slots:
             QVERIFY( tmpFileName.length() <= 254);
         }
         // with absolute dir
-        fn = "/Users/guruz/ownCloud/rocks/GPL";
+        fn = QLatin1String("/Users/guruz/ownCloud/rocks/GPL");
         for (int i = 1; i < 1000; i++) {
-            fn+="F";
+            fn += QLatin1String("F");
             QString tmpFileName = createDownloadTmpFileName(fn);
             if (tmpFileName.contains('/')) {
                 tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);
@@ -51,9 +51,9 @@ private slots:
             QVERIFY( tmpFileName.length() <= 254);
         }
         // with relative dir
-        fn = "rocks/GPL";
+        fn = QLatin1String("rocks/GPL");
         for (int i = 1; i < 1000; i++) {
-            fn+="F";
+            fn += QLatin1String("F");
             QString tmpFileName = createDownloadTmpFileName(fn);
             if (tmpFileName.contains('/')) {
                 tmpFileName = tmpFileName.mid(tmpFileName.lastIndexOf('/')+1);

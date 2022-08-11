@@ -22,10 +22,10 @@ class DesktopServiceHook : public QObject
 signals:
     void hooked(const QUrl &);
 public:
-    DesktopServiceHook() { QDesktopServices::setUrlHandler("oauthtest", this, "hooked"); }
+    DesktopServiceHook() { QDesktopServices::setUrlHandler(QStringLiteral("oauthtest"), this, "hooked"); }
 };
 
-static const QUrl sOAuthTestServer("oauthtest://someserver/owncloud");
+static const QUrl sOAuthTestServer(QStringLiteral("oauthtest://someserver/owncloud"));
 
 
 class FakePostReply : public QNetworkReply
@@ -49,7 +49,7 @@ public:
 
     Q_INVOKABLE virtual void respond() {
         if (aborted) {
-            setError(OperationCanceledError, "Operation Canceled");
+            setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
             emit metaDataChanged();
             emit finished();
             return;
@@ -123,11 +123,11 @@ public:
         // therefore, we should never call fakeAm->setThis(...)
         account->setCredentials(new FakeCredentials { fakeAm });
         fakeAm->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
-            if (req.url().path().endsWith(".well-known/openid-configuration")) {
+            if (req.url().path().endsWith(QLatin1String(".well-known/openid-configuration"))) {
                 return this->wellKnownReply(op, req);
-            } else if (req.url().path().endsWith("status.php")) {
+            } else if (req.url().path().endsWith(QLatin1String("status.php"))) {
                 return this->statusPhpReply(op, req);
-            } else if (req.url().path().endsWith("ocs/v2.php/cloud/user") && req.url().query() == "format=json") {
+            } else if (req.url().path().endsWith(QLatin1String("ocs/v2.php/cloud/user")) && req.url().query() == QLatin1String("format=json")) {
                 return this->userInfoReply(op, req);
             }
             OC_ASSERT(device);
@@ -363,7 +363,7 @@ private slots:
                     };
                     for (const auto &x : payloads) {
                         auto socket = new QTcpSocket(this);
-                        socket->connectToHost("localhost", port);
+                        socket->connectToHost(QStringLiteral("localhost"), port);
                         QVERIFY(socket->waitForConnected());
                         socket->write(x);
                     }
@@ -400,7 +400,7 @@ private slots:
         struct Test : OAuthTestCase {
             Test()
             {
-                localHost = QLatin1String("127.0.0.1");
+                localHost = QStringLiteral("127.0.0.1");
             }
 
             QNetworkReply * wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest & req) override {
@@ -425,8 +425,8 @@ private slots:
                 OC_ASSERT(browserReply);
                 OC_ASSERT(request.url().toString().startsWith("oauthtest://openidserver/token_endpoint"));
                 auto req = request;
-                req.setUrl(request.url().toString().replace("oauthtest://openidserver/token_endpoint",
-                        sOAuthTestServer.toString() + "/index.php/apps/oauth2/api/v1/token"));
+                req.setUrl(request.url().toString().replace(QLatin1String("oauthtest://openidserver/token_endpoint"),
+                    sOAuthTestServer.toString() + "/index.php/apps/oauth2/api/v1/token"));
                 return OAuthTestCase::tokenReply(op, req);
             }
         } test;
@@ -443,7 +443,7 @@ private slots:
             Test()
                 : rollback(AbstractNetworkJob::httpTimeout, 1s)
             {
-                localHost = QLatin1String("127.0.0.1");
+                localHost = QStringLiteral("127.0.0.1");
             }
 
             QNetworkReply *statusPhpReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req) override

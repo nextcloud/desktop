@@ -56,7 +56,7 @@ private slots:
         QTest::addColumn<QString>("expectedErrorString");
         QTest::addColumn<bool>("syncSucceeds");
 
-        QString itemErrorMessage = "Internal Server Fake Error";
+        QString itemErrorMessage = QStringLiteral("Internal Server Fake Error");
 
         QTest::newRow("400") << 400 << itemErrorMessage << false;
         QTest::newRow("401") << 401 << itemErrorMessage << false;
@@ -81,12 +81,12 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
 
         // Do Some change as well
-        fakeFolder.localModifier().insert("A/z1");
-        fakeFolder.localModifier().insert("B/z1");
-        fakeFolder.localModifier().insert("C/z1");
-        fakeFolder.remoteModifier().insert("A/z2");
-        fakeFolder.remoteModifier().insert("B/z2");
-        fakeFolder.remoteModifier().insert("C/z2");
+        fakeFolder.localModifier().insert(QStringLiteral("A/z1"));
+        fakeFolder.localModifier().insert(QStringLiteral("B/z1"));
+        fakeFolder.localModifier().insert(QStringLiteral("C/z1"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/z2"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("B/z2"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("C/z2"));
 
         auto oldLocalState = fakeFolder.currentLocalState();
         auto oldRemoteState = fakeFolder.currentRemoteState();
@@ -134,7 +134,7 @@ private slots:
         // Check the same discovery error on the sync root
         //
         errorFolder = fakeFolder.account()->davPath();
-        fatalErrorPrefix = "Server replied with an error while reading directory '' : ";
+        fatalErrorPrefix = QLatin1String("Server replied with an error while reading directory '' : ");
         errorSpy.clear();
         QVERIFY(!fakeFolder.syncOnce());
         QCOMPARE(errorSpy.size(), 1);
@@ -144,17 +144,17 @@ private slots:
     void testMissingData()
     {
         FakeFolder fakeFolder{ FileInfo() };
-        fakeFolder.remoteModifier().insert("good");
-        fakeFolder.remoteModifier().insert("noetag");
+        fakeFolder.remoteModifier().insert(QStringLiteral("good"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("noetag"));
         fakeFolder.remoteModifier().find("noetag")->etag.clear();
-        fakeFolder.remoteModifier().insert("nofileid");
+        fakeFolder.remoteModifier().insert(QStringLiteral("nofileid"));
         fakeFolder.remoteModifier().find("nofileid")->fileId.clear();
-        fakeFolder.remoteModifier().mkdir("nopermissions");
-        fakeFolder.remoteModifier().insert("nopermissions/A");
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("nopermissions"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("nopermissions/A"));
 
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
-                -> QNetworkReply *{
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND" && req.url().path().endsWith("nopermissions"))
+                                         -> QNetworkReply * {
+            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "PROPFIND" && req.url().path().endsWith(QLatin1String("nopermissions")))
                 return new MissingPermissionsPropfindReply(fakeFolder.remoteModifier(), op, req, this);
             return nullptr;
         });

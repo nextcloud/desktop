@@ -296,8 +296,8 @@ SpaceSupport::SpaceSupport(const QVariantMap &spaces_support)
     if (spaces_support.isEmpty()) {
         return;
     }
-    enabled = spaces_support.value(QLatin1String("enabled")).toBool();
-    version = QVersionNumber::fromString(spaces_support.value(QLatin1String("version")).toString());
+    enabled = spaces_support.value(QStringLiteral("enabled")).toBool();
+    version = QVersionNumber::fromString(spaces_support.value(QStringLiteral("version")).toString());
 }
 
 bool SpaceSupport::isValid() const

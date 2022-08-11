@@ -213,7 +213,7 @@ void NetworkSettings::saveBWLimitSettings()
 void NetworkSettings::checkEmptyProxyHost()
 {
     if (_ui->hostLineEdit->isEnabled() && _ui->hostLineEdit->text().isEmpty()) {
-        _ui->hostLineEdit->setStyleSheet("border: 1px solid red");
+        _ui->hostLineEdit->setStyleSheet(QStringLiteral("border: 1px solid red"));
     } else {
         _ui->hostLineEdit->setStyleSheet(QString());
     }
@@ -243,7 +243,7 @@ void NetworkSettings::checkAccountLocalhost()
         for (const auto &account : AccountManager::instance()->accounts()) {
             const auto host = account->account()->url().host();
             // Some typical url for localhost
-            if (host == "localhost" || host.startsWith("127.") || host == "[::1]")
+            if (host == QLatin1String("localhost") || host.startsWith(QLatin1String("127.")) || host == QLatin1String("[::1]"))
                 visible = true;
         }
     }

@@ -24,7 +24,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcServerNotification, "gui.servernotification", QtInfoMsg)
 
-const QString notificationsPath = QLatin1String("ocs/v2.php/apps/notifications/api/v1/notifications");
+const QString notificationsPath = QStringLiteral("ocs/v2.php/apps/notifications/api/v1/notifications");
 
 ServerNotificationHandler::ServerNotificationHandler(QObject *parent)
     : QObject(parent)
@@ -77,7 +77,7 @@ void ServerNotificationHandler::slotNotificationsReceived(JsonApiJob *job, const
         const auto json = element.toObject();
         const auto id = json.value(QStringLiteral("notification_id")).toVariant().value<Activity::Identifier>();
 
-        const auto actions = json.value("actions").toArray();
+        const auto actions = json.value(QStringLiteral("actions")).toArray();
         QVector<ActivityLink> linkList;
         linkList.reserve(actions.size() + 1);
         for (const auto &action : actions) {

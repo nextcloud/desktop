@@ -45,9 +45,9 @@ IgnoreListEditor::IgnoreListEditor(QWidget *parent)
                          "and cannot be modified in this view.")
                           .arg(QDir::toNativeSeparators(cfgFile.excludeFile(ConfigFile::SystemScope)));
 
-    addPattern(".csync_journal.db*", /*deletable=*/false, /*readonly=*/true, /*global=*/true);
-    addPattern("._sync_*.db*", /*deletable=*/false, /*readonly=*/true, /*global=*/true);
-    addPattern(".sync_*.db*", /*deletable=*/false, /*readonly=*/true, /*global=*/true);
+    addPattern(QStringLiteral(".csync_journal.db*"), /*deletable=*/false, /*readonly=*/true, /*global=*/true);
+    addPattern(QStringLiteral("._sync_*.db*"), /*deletable=*/false, /*readonly=*/true, /*global=*/true);
+    addPattern(QStringLiteral(".sync_*.db*"), /*deletable=*/false, /*readonly=*/true, /*global=*/true);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::SystemScope), /*global=*/true);
     readIgnoreFile(cfgFile.excludeFile(ConfigFile::UserScope), /*global=*/false);
 
@@ -158,10 +158,10 @@ void IgnoreListEditor::readIgnoreFile(const QString &file, bool global)
         line.chop(1);
 
         // Collect empty lines and comments, we want to preserve them
-        if (line.isEmpty() || line.startsWith("#")) {
+        if (line.isEmpty() || line.startsWith(QLatin1String("#"))) {
             skippedLines.append(line);
             // A directive that prohibits editing in the ui
-            if (line == "#!readonly")
+            if (line == QLatin1String("#!readonly"))
                 readonly = true;
             continue;
         }

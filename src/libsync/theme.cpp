@@ -521,7 +521,7 @@ QIcon Theme::syncStateIcon(const SyncResult &result, bool sysTray, bool sysTrayM
 
 QIcon Theme::folderDisabledIcon() const
 {
-    return themeIcon(QLatin1String("state-pause"));
+    return themeIcon(QStringLiteral("state-pause"));
 }
 
 QIcon Theme::folderOfflineIcon(bool sysTray, bool sysTrayMenuVisible) const

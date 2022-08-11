@@ -28,7 +28,7 @@ namespace {
 const char urlC[] = "url";
 const char userC[] = "user";
 const char httpUserC[] = "http_user";
-const auto defaultSyncRootC()
+auto defaultSyncRootC()
 {
     return QStringLiteral("default_sync_root");
 }
@@ -167,7 +167,7 @@ bool AccountManager::restoreFromLegacySettings()
         QFileInfo fi(oCCfgFile);
         if (fi.isReadable()) {
             auto oCSettings = std::make_unique<QSettings>(oCCfgFile, QSettings::IniFormat);
-            oCSettings->beginGroup(QLatin1String("ownCloud"));
+            oCSettings->beginGroup(QStringLiteral("ownCloud"));
 
             // Check the theme url to see if it is the same url that the oC config was for
             QString overrideUrl = Theme::instance()->overrideServerUrlV2();
@@ -272,7 +272,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     }
 
     // Save accepted certificates.
-    settings.beginGroup(QLatin1String("General"));
+    settings.beginGroup(QStringLiteral("General"));
     qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     const auto approvedCerts = acc->approvedCerts();
     QByteArray certs;
@@ -316,7 +316,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setCredentials(new HttpCredentialsGui);
 
     // now the server cert, it is in the general group
-    settings.beginGroup(QLatin1String("General"));
+    settings.beginGroup(QStringLiteral("General"));
     const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray());
     qCInfo(lcAccountManager) << "Restored: " << certs.count() << " unknown certs.";
     acc->setApprovedCerts(certs);

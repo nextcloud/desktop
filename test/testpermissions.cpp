@@ -13,7 +13,7 @@
 using namespace OCC;
 
 static void applyPermissionsFromName(FileInfo &info) {
-    static QRegularExpression rx("_PERM_([^_]*)_[^/]*$");
+    static QRegularExpression rx(QStringLiteral("_PERM_([^_]*)_[^/]*$"));
     auto m = rx.match(info.name);
     if (m.hasMatch()) {
         info.permissions = RemotePermissions::fromServerString(m.captured(1));
@@ -95,13 +95,13 @@ private slots:
         };
 
         //put them in some directories
-        fakeFolder.remoteModifier().mkdir("normalDirectory_PERM_CKDNV_");
-        insertIn("normalDirectory_PERM_CKDNV_/");
-        fakeFolder.remoteModifier().mkdir("readonlyDirectory_PERM_M_" );
-        insertIn("readonlyDirectory_PERM_M_/" );
-        fakeFolder.remoteModifier().mkdir("readonlyDirectory_PERM_M_/subdir_PERM_CK_");
-        fakeFolder.remoteModifier().mkdir("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_");
-        fakeFolder.remoteModifier().insert("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data", 100);
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("normalDirectory_PERM_CKDNV_"));
+        insertIn(QStringLiteral("normalDirectory_PERM_CKDNV_/"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_"));
+        insertIn(QStringLiteral("readonlyDirectory_PERM_M_/"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_"));
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data"), 100);
         applyPermissionsFromName(fakeFolder.remoteModifier());
 
         QVERIFY(fakeFolder.syncOnce());
@@ -111,8 +111,8 @@ private slots:
 
         //1. remove the file than cannot be removed
         //  (they should be recovered)
-        fakeFolder.localModifier().remove("normalDirectory_PERM_CKDNV_/cannotBeRemoved_PERM_WVN_.data");
-        fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_/cannotBeRemoved_PERM_WVN_.data");
+        fakeFolder.localModifier().remove(QStringLiteral("normalDirectory_PERM_CKDNV_/cannotBeRemoved_PERM_WVN_.data"));
+        fakeFolder.localModifier().remove(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeRemoved_PERM_WVN_.data"));
 
         //2. remove the file that can be removed
         //  (they should properly be gone)
@@ -121,8 +121,8 @@ private slots:
             QFile(fakeFolder.localPath() + file).setPermissions(QFile::WriteOwner | QFile::ReadOwner);
             fakeFolder.localModifier().remove(file);
         };
-        removeReadOnly("normalDirectory_PERM_CKDNV_/canBeRemoved_PERM_D_.data");
-        removeReadOnly("readonlyDirectory_PERM_M_/canBeRemoved_PERM_D_.data");
+        removeReadOnly(QStringLiteral("normalDirectory_PERM_CKDNV_/canBeRemoved_PERM_D_.data"));
+        removeReadOnly(QStringLiteral("readonlyDirectory_PERM_M_/canBeRemoved_PERM_D_.data"));
 
         //3. Edit the files that cannot be modified
         //  (they should be recovered, and a conflict shall be created)
@@ -131,17 +131,17 @@ private slots:
             QFile(fakeFolder.localPath() + file).setPermissions(QFile::WriteOwner | QFile::ReadOwner);
             fakeFolder.localModifier().appendByte(file);
         };
-        editReadOnly("normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data");
-        editReadOnly("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data");
+        editReadOnly(QStringLiteral("normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data"));
+        editReadOnly(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
 
         //4. Edit other files
         //  (they should be uploaded)
-        fakeFolder.localModifier().appendByte("normalDirectory_PERM_CKDNV_/canBeModified_PERM_W_.data");
-        fakeFolder.localModifier().appendByte("readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data");
+        fakeFolder.localModifier().appendByte(QStringLiteral("normalDirectory_PERM_CKDNV_/canBeModified_PERM_W_.data"));
+        fakeFolder.localModifier().appendByte(QStringLiteral("readonlyDirectory_PERM_M_/canBeModified_PERM_W_.data"));
 
         //5. Create a new file in a read write folder
         // (should be uploaded)
-        fakeFolder.localModifier().insert("normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data", 106 );
+        fakeFolder.localModifier().insert(QStringLiteral("normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data"), 106);
         applyPermissionsFromName(fakeFolder.remoteModifier());
 
         //do the sync
@@ -164,10 +164,10 @@ private slots:
         QCOMPARE(currentLocalState.find("normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data")->contentSize, cannotBeModifiedSize);
         QCOMPARE(currentLocalState.find("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data")->contentSize, cannotBeModifiedSize);
         // and conflict created
-        auto c1 = findConflict(currentLocalState, "normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data");
+        auto c1 = findConflict(currentLocalState, QStringLiteral("normalDirectory_PERM_CKDNV_/cannotBeModified_PERM_DVN_.data"));
         QVERIFY(c1);
         QCOMPARE(c1->contentSize, cannotBeModifiedSize + 1);
-        auto c2 = findConflict(currentLocalState, "readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data");
+        auto c2 = findConflict(currentLocalState, QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
         QVERIFY(c2);
         QCOMPARE(c2->contentSize, cannotBeModifiedSize + 1);
         // remove the conflicts for the next state comparison
@@ -189,7 +189,7 @@ private slots:
 
         //6. Create a new file in a read only folder
         // (they should not be uploaded)
-        fakeFolder.localModifier().insert("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data", 105 );
+        fakeFolder.localModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"), 105);
 
         applyPermissionsFromName(fakeFolder.remoteModifier());
         // error: can't upload to readonly
@@ -203,7 +203,7 @@ private slots:
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
         QVERIFY(!fakeFolder.currentRemoteState().find("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
         // remove it so next test succeed.
-        fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data");
+        fakeFolder.localModifier().remove(QStringLiteral("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"));
         // Both side should still be the same
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -211,7 +211,7 @@ private slots:
         //######################################################################
         qInfo( "remove the read only directory" );
         // -> It must be recovered
-        fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_");
+        fakeFolder.localModifier().remove(QStringLiteral("readonlyDirectory_PERM_M_"));
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
         assertCsyncJournalOk(fakeFolder.syncJournal());
@@ -223,8 +223,8 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // restore
-        fakeFolder.remoteModifier().mkdir("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_");
-        fakeFolder.remoteModifier().insert("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data");
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data"));
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -235,7 +235,7 @@ private slots:
 
         //Missing directory should be restored
         //new directory should be uploaded
-        fakeFolder.localModifier().rename("readonlyDirectory_PERM_M_/subdir_PERM_CK_", "normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_");
+        fakeFolder.localModifier().rename(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_"), QStringLiteral("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
         currentLocalState = fakeFolder.currentLocalState();
@@ -252,8 +252,8 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // restore for further tests
-        fakeFolder.remoteModifier().mkdir("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_");
-        fakeFolder.remoteModifier().insert("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data");
+        fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data"));
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -272,10 +272,10 @@ private slots:
         //1. rename a directory in a read only folder
         //Missing directory should be restored
         //new directory should stay but not be uploaded
-        fakeFolder.localModifier().rename("readonlyDirectory_PERM_M_/subdir_PERM_CK_", "readonlyDirectory_PERM_M_/newname_PERM_CK_"  );
+        fakeFolder.localModifier().rename(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_"), QStringLiteral("readonlyDirectory_PERM_M_/newname_PERM_CK_"));
 
         //2. move a directory from read to read only  (move the directory from previous step)
-        fakeFolder.localModifier().rename("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_", "readonlyDirectory_PERM_M_/moved_PERM_CK_" );
+        fakeFolder.localModifier().rename(QStringLiteral("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"), QStringLiteral("readonlyDirectory_PERM_M_/moved_PERM_CK_"));
 
         // error: can't upload to readonly!
         QVERIFY(!fakeFolder.syncOnce());
@@ -289,7 +289,7 @@ private slots:
         // new still exist
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/newname_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         // but is not on server: so remove it localy for the future comarison
-        fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_/newname_PERM_CK_");
+        fakeFolder.localModifier().remove(QStringLiteral("readonlyDirectory_PERM_M_/newname_PERM_CK_"));
 
         //2.
         // old removed
@@ -299,8 +299,8 @@ private slots:
         // new still there
         QVERIFY(currentLocalState.find("readonlyDirectory_PERM_M_/moved_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data" ));
         //but not on server
-        fakeFolder.localModifier().remove("readonlyDirectory_PERM_M_/moved_PERM_CK_");
-        fakeFolder.remoteModifier().remove("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_");
+        fakeFolder.localModifier().remove(QStringLiteral("readonlyDirectory_PERM_M_/moved_PERM_CK_"));
+        fakeFolder.remoteModifier().remove(QStringLiteral("normalDirectory_PERM_CKDNV_/subdir_PERM_CKDNV_"));
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -308,20 +308,20 @@ private slots:
         //######################################################################
         qInfo( "multiple restores of a file create different conflict files" );
 
-        fakeFolder.remoteModifier().insert("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data");
+        fakeFolder.remoteModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
 
-        editReadOnly("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data");
-        fakeFolder.localModifier().setContents("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data", 's');
+        editReadOnly(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
+        fakeFolder.localModifier().setContents(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"), 's');
         //do the sync
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
         assertCsyncJournalOk(fakeFolder.syncJournal());
 
         QThread::sleep(1); // make sure changes have different mtime
-        editReadOnly("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data");
-        fakeFolder.localModifier().setContents("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data", 'd');
+        editReadOnly(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
+        fakeFolder.localModifier().setContents(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"), 'd');
 
         //do the sync
         applyPermissionsFromName(fakeFolder.remoteModifier());
@@ -331,7 +331,7 @@ private slots:
         // there should be two conflict files
         currentLocalState = fakeFolder.currentLocalState();
         int count = 0;
-        while (auto i = findConflict(currentLocalState, "readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data")) {
+        while (auto i = findConflict(currentLocalState, QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"))) {
             QVERIFY((i->contentChar == 's') || (i->contentChar == 'd'));
             fakeFolder.localModifier().remove(i->path());
             currentLocalState = fakeFolder.currentLocalState();
@@ -362,50 +362,50 @@ private slots:
 
         auto &lm = fakeFolder.localModifier();
         auto &rm = fakeFolder.remoteModifier();
-        rm.mkdir("allowed");
-        rm.mkdir("norename");
-        rm.mkdir("nomove");
-        rm.mkdir("nocreatefile");
-        rm.mkdir("nocreatedir");
-        rm.mkdir("zallowed"); // order of discovery matters
+        rm.mkdir(QStringLiteral("allowed"));
+        rm.mkdir(QStringLiteral("norename"));
+        rm.mkdir(QStringLiteral("nomove"));
+        rm.mkdir(QStringLiteral("nocreatefile"));
+        rm.mkdir(QStringLiteral("nocreatedir"));
+        rm.mkdir(QStringLiteral("zallowed")); // order of discovery matters
 
-        rm.mkdir("allowed/sub");
-        rm.mkdir("allowed/sub2");
-        rm.insert("allowed/file");
-        rm.insert("allowed/sub/file");
-        rm.insert("allowed/sub2/file");
-        rm.mkdir("norename/sub");
-        rm.insert("norename/file");
-        rm.insert("norename/sub/file");
-        rm.mkdir("nomove/sub");
-        rm.insert("nomove/file");
-        rm.insert("nomove/sub/file");
-        rm.mkdir("zallowed/sub");
-        rm.mkdir("zallowed/sub2");
-        rm.insert("zallowed/file");
-        rm.insert("zallowed/sub/file");
-        rm.insert("zallowed/sub2/file");
+        rm.mkdir(QStringLiteral("allowed/sub"));
+        rm.mkdir(QStringLiteral("allowed/sub2"));
+        rm.insert(QStringLiteral("allowed/file"));
+        rm.insert(QStringLiteral("allowed/sub/file"));
+        rm.insert(QStringLiteral("allowed/sub2/file"));
+        rm.mkdir(QStringLiteral("norename/sub"));
+        rm.insert(QStringLiteral("norename/file"));
+        rm.insert(QStringLiteral("norename/sub/file"));
+        rm.mkdir(QStringLiteral("nomove/sub"));
+        rm.insert(QStringLiteral("nomove/file"));
+        rm.insert(QStringLiteral("nomove/sub/file"));
+        rm.mkdir(QStringLiteral("zallowed/sub"));
+        rm.mkdir(QStringLiteral("zallowed/sub2"));
+        rm.insert(QStringLiteral("zallowed/file"));
+        rm.insert(QStringLiteral("zallowed/sub/file"));
+        rm.insert(QStringLiteral("zallowed/sub2/file"));
 
-        setAllPerm(rm.find("norename"), RemotePermissions::fromServerString("WDVCK"));
-        setAllPerm(rm.find("nomove"), RemotePermissions::fromServerString("WDNCK"));
-        setAllPerm(rm.find("nocreatefile"), RemotePermissions::fromServerString("WDNVK"));
-        setAllPerm(rm.find("nocreatedir"), RemotePermissions::fromServerString("WDNVC"));
+        setAllPerm(rm.find("norename"), RemotePermissions::fromServerString(QStringLiteral("WDVCK")));
+        setAllPerm(rm.find("nomove"), RemotePermissions::fromServerString(QStringLiteral("WDNCK")));
+        setAllPerm(rm.find("nocreatefile"), RemotePermissions::fromServerString(QStringLiteral("WDNVK")));
+        setAllPerm(rm.find("nocreatedir"), RemotePermissions::fromServerString(QStringLiteral("WDNVC")));
 
         QVERIFY(fakeFolder.syncOnce());
 
         // Renaming errors
-        lm.rename("norename/file", "norename/file_renamed");
-        lm.rename("norename/sub", "norename/sub_renamed");
+        lm.rename(QStringLiteral("norename/file"), QStringLiteral("norename/file_renamed"));
+        lm.rename(QStringLiteral("norename/sub"), QStringLiteral("norename/sub_renamed"));
         // Moving errors
-        lm.rename("nomove/file", "allowed/file_moved");
-        lm.rename("nomove/sub", "allowed/sub_moved");
+        lm.rename(QStringLiteral("nomove/file"), QStringLiteral("allowed/file_moved"));
+        lm.rename(QStringLiteral("nomove/sub"), QStringLiteral("allowed/sub_moved"));
         // Createfile errors
-        lm.rename("allowed/file", "nocreatefile/file");
-        lm.rename("zallowed/file", "nocreatefile/zfile");
-        lm.rename("allowed/sub", "nocreatefile/sub"); // TODO: probably forbidden because it contains file children?
+        lm.rename(QStringLiteral("allowed/file"), QStringLiteral("nocreatefile/file"));
+        lm.rename(QStringLiteral("zallowed/file"), QStringLiteral("nocreatefile/zfile"));
+        lm.rename(QStringLiteral("allowed/sub"), QStringLiteral("nocreatefile/sub")); // TODO: probably forbidden because it contains file children?
         // Createdir errors
-        lm.rename("allowed/sub2", "nocreatedir/sub2");
-        lm.rename("zallowed/sub2", "nocreatedir/zsub2");
+        lm.rename(QStringLiteral("allowed/sub2"), QStringLiteral("nocreatedir/sub2"));
+        lm.rename(QStringLiteral("zallowed/sub2"), QStringLiteral("nocreatedir/zsub2"));
 
         // also hook into discovery!!
         SyncFileItemSet discovery;
@@ -482,28 +482,28 @@ private slots:
 
         auto &lm = fakeFolder.localModifier();
         auto &rm = fakeFolder.remoteModifier();
-        rm.mkdir("changeonly");
-        rm.mkdir("changeonly/sub1");
-        rm.insert("changeonly/sub1/file1");
-        rm.insert("changeonly/sub1/filetorname1a");
-        rm.insert("changeonly/sub1/filetorname1z");
-        rm.mkdir("changeonly/sub2");
-        rm.insert("changeonly/sub2/file2");
-        rm.insert("changeonly/sub2/filetorname2a");
-        rm.insert("changeonly/sub2/filetorname2z");
+        rm.mkdir(QStringLiteral("changeonly"));
+        rm.mkdir(QStringLiteral("changeonly/sub1"));
+        rm.insert(QStringLiteral("changeonly/sub1/file1"));
+        rm.insert(QStringLiteral("changeonly/sub1/filetorname1a"));
+        rm.insert(QStringLiteral("changeonly/sub1/filetorname1z"));
+        rm.mkdir(QStringLiteral("changeonly/sub2"));
+        rm.insert(QStringLiteral("changeonly/sub2/file2"));
+        rm.insert(QStringLiteral("changeonly/sub2/filetorname2a"));
+        rm.insert(QStringLiteral("changeonly/sub2/filetorname2z"));
 
-        setAllPerm(rm.find("changeonly"), RemotePermissions::fromServerString("NSV"));
+        setAllPerm(rm.find("changeonly"), RemotePermissions::fromServerString(QStringLiteral("NSV")));
 
         QVERIFY(fakeFolder.syncOnce());
 
-        lm.rename("changeonly/sub1/filetorname1a", "changeonly/sub1/aaa1_renamed");
-        lm.rename("changeonly/sub1/filetorname1z", "changeonly/sub1/zzz1_renamed");
+        lm.rename(QStringLiteral("changeonly/sub1/filetorname1a"), QStringLiteral("changeonly/sub1/aaa1_renamed"));
+        lm.rename(QStringLiteral("changeonly/sub1/filetorname1z"), QStringLiteral("changeonly/sub1/zzz1_renamed"));
 
-        lm.rename("changeonly/sub2/filetorname2a", "changeonly/sub2/aaa2_renamed");
-        lm.rename("changeonly/sub2/filetorname2z", "changeonly/sub2/zzz2_renamed");
+        lm.rename(QStringLiteral("changeonly/sub2/filetorname2a"), QStringLiteral("changeonly/sub2/aaa2_renamed"));
+        lm.rename(QStringLiteral("changeonly/sub2/filetorname2z"), QStringLiteral("changeonly/sub2/zzz2_renamed"));
 
-        lm.rename("changeonly/sub1", "changeonly/aaa");
-        lm.rename("changeonly/sub2", "changeonly/zzz");
+        lm.rename(QStringLiteral("changeonly/sub1"), QStringLiteral("changeonly/aaa"));
+        lm.rename(QStringLiteral("changeonly/sub2"), QStringLiteral("changeonly/zzz"));
 
 
         auto expectedState = fakeFolder.currentLocalState();

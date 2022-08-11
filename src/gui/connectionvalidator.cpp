@@ -168,7 +168,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
 
     // Check for maintenance mode: Servers send "true", so go through QVariant
     // to parse it correctly.
-    if (info["maintenance"].toVariant().toBool()) {
+    if (info[QStringLiteral("maintenance")].toVariant().toBool()) {
         reportResult(MaintenanceMode);
         return;
     }
@@ -249,7 +249,7 @@ void ConnectionValidator::checkServerCapabilities()
     job->setTimeout(timeoutToUse);
 
     QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
-        auto caps = job->data().value("ocs").toObject().value("data").toObject().value("capabilities").toObject();
+        auto caps = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("capabilities")).toObject();
         qCInfo(lcConnectionValidator) << "Server capabilities" << caps;
         _account->setCapabilities(caps.toVariantMap());
         if (!checkServerInfo()) {
@@ -263,15 +263,15 @@ void ConnectionValidator::checkServerCapabilities()
 
 void ConnectionValidator::fetchUser()
 {
-    auto *job = new JsonApiJob(_account, QLatin1String("ocs/v2.php/cloud/user"), {}, {}, this);
+    auto *job = new JsonApiJob(_account, QStringLiteral("ocs/v2.php/cloud/user"), {}, {}, this);
     job->setTimeout(timeoutToUse);
     job->setAuthenticationJob(true);
     QObject::connect(job, &JsonApiJob::finishedSignal, this, [job, this] {
-        const QString user = job->data().value("ocs").toObject().value("data").toObject().value("id").toString();
+        const QString user = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("id")).toString();
         if (!user.isEmpty()) {
             _account->setDavUser(user);
         }
-        const QString displayName = job->data().value("ocs").toObject().value("data").toObject().value("display-name").toString();
+        const QString displayName = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject().value(QStringLiteral("display-name")).toString();
         if (!displayName.isEmpty()) {
             _account->setDavDisplayName(displayName);
         }

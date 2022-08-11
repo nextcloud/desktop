@@ -65,7 +65,7 @@ private slots:
 
     void cleanupTestCase() {
         if( _root.startsWith(QDir::tempPath() )) {
-           system( QString("rm -rf %1").arg(_root).toLocal8Bit() );
+            system(QStringLiteral("rm -rf %1").arg(_root).toLocal8Bit());
         }
     }
 };

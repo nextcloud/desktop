@@ -519,8 +519,8 @@ void DetermineAuthTypeJob::finished()
 
 SimpleNetworkJob::SimpleNetworkJob(AccountPtr account, const QUrl &rootUrl, const QString &path, const QByteArray &verb, const QNetworkRequest &req, QObject *parent)
     : AbstractNetworkJob(account, rootUrl, path, parent)
-    , _verb(verb)
     , _request(req)
+    , _verb(verb)
 {
 }
 

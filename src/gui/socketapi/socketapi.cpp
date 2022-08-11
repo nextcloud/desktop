@@ -223,7 +223,7 @@ SocketApi::SocketApi(QObject *parent)
         // environment, because we belong to an App Group.
         QFileInfo info(socketPath);
         if (!info.dir().exists()) {
-            bool result = info.dir().mkpath(".");
+            bool result = info.dir().mkpath(QStringLiteral("."));
             qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
             if (result) {
                 QFile::setPermissions(socketPath,
@@ -453,7 +453,7 @@ void SocketApi::slotUpdateFolderView(Folder *f)
             Q_FALLTHROUGH();
         case SyncResult::Error: {
             const QString rootPath = Utility::stripTrailingSlash(f->path());
-            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(""));
+            broadcastStatusPushMessage(rootPath, f->syncEngine().syncFileStatusTracker().fileStatus(QLatin1String("")));
 
             broadcastMessage(buildMessage(QStringLiteral("UPDATE_VIEW"), rootPath));
             break;
@@ -507,7 +507,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         auto &remotePath = fileData.serverRelativePath;
 
         // Can't share root folder
-        if (remotePath == "/") {
+        if (remotePath == QLatin1String("/")) {
             const QString message = QLatin1String("SHARE:CANNOTSHAREROOT:") + QDir::toNativeSeparators(localFile);
             listener->sendMessage(message);
             return;
@@ -522,7 +522,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
 
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
-    QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
+    QString msg = buildMessage(QStringLiteral("STATUS"), systemPath, fileStatus.toSocketAPIString());
     Q_ASSERT(!systemPath.endsWith('/'));
     uint directoryHash = qHash(systemPath.left(systemPath.lastIndexOf('/')));
     for (const auto &listener : qAsConst(_listeners)) {
@@ -857,7 +857,7 @@ void SocketApi::command_V2_GET_CLIENT_ICON(const QSharedPointer<SocketApiJobV2> 
     OC_ASSERT(job);
     const auto &arguments = job->arguments();
 
-    const auto size = arguments.value("size");
+    const auto size = arguments.value(QStringLiteral("size"));
     if (size.isUndefined()) {
         qCWarning(lcSocketApi) << "Icon size not given in " << Q_FUNC_INFO;
         job->failure(QStringLiteral("cannot get client icon"));
@@ -917,13 +917,13 @@ void SocketApi::command_GET_STRINGS(const QString &argument, SocketListener *lis
         { "COPY_PRIVATE_LINK_MENU_TITLE", tr("Copy private link to clipboard") },
         { "EMAIL_PRIVATE_LINK_MENU_TITLE", tr("Send private link by email...") },
     } };
-    listener->sendMessage(QString("GET_STRINGS:BEGIN"));
+    listener->sendMessage(QStringLiteral("GET_STRINGS:BEGIN"));
     for (auto key_value : strings) {
         if (argument.isEmpty() || argument == QLatin1String(key_value.first)) {
-            listener->sendMessage(QString("STRING:%1:%2").arg(key_value.first, key_value.second));
+            listener->sendMessage(QStringLiteral("STRING:%1:%2").arg(key_value.first, key_value.second));
         }
     }
-    listener->sendMessage(QString("GET_STRINGS:END"));
+    listener->sendMessage(QStringLiteral("GET_STRINGS:END"));
 }
 
 void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener)
@@ -1018,7 +1018,7 @@ SocketApi::FileData SocketApi::FileData::parentFolder() const
 
 void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListener *listener)
 {
-    listener->sendMessage(QString("GET_MENU_ITEMS:BEGIN"));
+    listener->sendMessage(QStringLiteral("GET_MENU_ITEMS:BEGIN"));
     const QStringList files = split(argument);
 
     // Find the common sync folder.
@@ -1359,7 +1359,7 @@ void SocketApi::command_ASYNC_ASSERT_ICON_IS_EQUAL(const QSharedPointer<SocketAp
 QString SocketApi::buildRegisterPathMessage(const QString &path)
 {
     QFileInfo fi(path);
-    QString message = QLatin1String("REGISTER_PATH:");
+    QString message = QStringLiteral("REGISTER_PATH:");
     message.append(QDir::toNativeSeparators(fi.absoluteFilePath()));
     return message;
 }

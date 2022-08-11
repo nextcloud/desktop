@@ -63,7 +63,7 @@ void Systray::showMessage(const QString &title, const QString &message, const QI
     if (QDBusInterface(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE).isValid()) {
         QList<QVariant> args = QList<QVariant>() << APPLICATION_NAME << quint32(0) << APPLICATION_ICON_NAME
                                                  << title << message << QStringList() << QVariantMap() << qint32(-1);
-        QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, "Notify");
+        QDBusMessage method = QDBusMessage::createMethodCall(NOTIFICATIONS_SERVICE, NOTIFICATIONS_PATH, NOTIFICATIONS_IFACE, QStringLiteral("Notify"));
         method.setArguments(args);
         QDBusConnection::sessionBus().asyncCall(method);
     } else

@@ -33,8 +33,8 @@ static QStringList xdgDataDirs()
     // http://standards.freedesktop.org/basedir-spec/latest/
     QString xdgDataDirsEnv = QFile::decodeName(qgetenv("XDG_DATA_DIRS"));
     if (xdgDataDirsEnv.isEmpty()) {
-        dirs.append(QString::fromLatin1("/usr/local/share"));
-        dirs.append(QString::fromLatin1("/usr/share"));
+        dirs.append(QStringLiteral("/usr/local/share"));
+        dirs.append(QStringLiteral("/usr/share"));
     } else {
         dirs = xdgDataDirsEnv.split(QLatin1Char(':'));
     }
@@ -51,9 +51,7 @@ static QStringList xdgDataDirs()
 static QString findDefaultFileManager()
 {
     QProcess p;
-    p.start("xdg-mime", QStringList() << "query"
-                                      << "default"
-                                      << "inode/directory",
+    p.start(QStringLiteral("xdg-mime"), QStringList() << QStringLiteral("query") << QStringLiteral("default") << QStringLiteral("inode/directory"),
         QFile::ReadOnly);
     p.waitForFinished();
     QString fileName = QString::fromUtf8(p.readAll().trimmed());
@@ -78,7 +76,7 @@ static QString findDefaultFileManager()
 static bool checkDolphinCanSelect()
 {
     QProcess p;
-    p.start("dolphin", QStringList() << "--help", QFile::ReadOnly);
+    p.start(QStringLiteral("dolphin"), QStringList() << QStringLiteral("--help"), QFile::ReadOnly);
     p.waitForFinished();
     return p.readAll().contains("--select");
 }
@@ -88,7 +86,7 @@ static bool checkDolphinCanSelect()
 void showInFileManager(const QString &localPath)
 {
     if (Utility::isWindows()) {
-        QString explorer = "explorer.exe "; // FIXME: we trust it's in PATH
+        QString explorer = QStringLiteral("explorer.exe "); // FIXME: we trust it's in PATH
         QFileInfo fi(localPath);
 
         // canonicalFilePath returns empty if the file does not exist
@@ -113,21 +111,21 @@ void showInFileManager(const QString &localPath)
         }
     } else if (Utility::isMac()) {
         QStringList scriptArgs;
-        scriptArgs << QLatin1String("-e")
-                   << QString::fromLatin1("tell application \"Finder\" to reveal POSIX file \"%1\"")
+        scriptArgs << QStringLiteral("-e")
+                   << QStringLiteral("tell application \"Finder\" to reveal POSIX file \"%1\"")
                           .arg(localPath);
-        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+        QProcess::execute(QStringLiteral("/usr/bin/osascript"), scriptArgs);
         scriptArgs.clear();
-        scriptArgs << QLatin1String("-e")
-                   << QLatin1String("tell application \"Finder\" to activate");
-        QProcess::execute(QLatin1String("/usr/bin/osascript"), scriptArgs);
+        scriptArgs << QStringLiteral("-e")
+                   << QStringLiteral("tell application \"Finder\" to activate");
+        QProcess::execute(QStringLiteral("/usr/bin/osascript"), scriptArgs);
     } else {
         QString app;
         QStringList args;
 
         static QString defaultManager = findDefaultFileManager();
         QSettings desktopFile(defaultManager, QSettings::IniFormat);
-        QString exec = desktopFile.value("Desktop Entry/Exec").toString();
+        QString exec = desktopFile.value(QStringLiteral("Desktop Entry/Exec")).toString();
 
         QString fileToOpen = QFileInfo(localPath).absoluteFilePath();
         QString pathToOpen = QFileInfo(localPath).absolutePath();
@@ -137,15 +135,15 @@ void showInFileManager(const QString &localPath)
         if (args.count() > 0)
             app = args.takeFirst();
 
-        QString kdeSelectParam("--select");
+        QString kdeSelectParam(QStringLiteral("--select"));
 
-        if (app.contains("konqueror") && !args.contains(kdeSelectParam)) {
+        if (app.contains(QLatin1String("konqueror")) && !args.contains(kdeSelectParam)) {
             // konq needs '--select' in order not to launch the file
             args.prepend(kdeSelectParam);
             canHandleFile = true;
         }
 
-        if (app.contains("dolphin")) {
+        if (app.contains(QLatin1String("dolphin"))) {
             static bool dolphinCanSelect = checkDolphinCanSelect();
             if (dolphinCanSelect && !args.contains(kdeSelectParam)) {
                 args.prepend(kdeSelectParam);
@@ -154,29 +152,29 @@ void showInFileManager(const QString &localPath)
         }
 
         // whitelist
-        if (app.contains("nautilus") || app.contains("nemo")) {
+        if (app.contains(QLatin1String("nautilus")) || app.contains(QLatin1String("nemo"))) {
             canHandleFile = true;
         }
 
         static QString name;
         if (name.isEmpty()) {
-            name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name[%1]").arg(ocApp()->displayLanguage())).toString();
+            name = desktopFile.value(QStringLiteral("Desktop Entry/Name[%1]").arg(ocApp()->displayLanguage())).toString();
             if (name.isEmpty()) {
-                name = desktopFile.value(QString::fromLatin1("Desktop Entry/Name")).toString();
+                name = desktopFile.value(QStringLiteral("Desktop Entry/Name")).toString();
             }
         }
 
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%c"), name);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%u"), fileToOpen);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%U"), fileToOpen);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%f"), fileToOpen);
-        std::replace(args.begin(), args.end(), QString::fromLatin1("%F"), fileToOpen);
+        std::replace(args.begin(), args.end(), QStringLiteral("%c"), name);
+        std::replace(args.begin(), args.end(), QStringLiteral("%u"), fileToOpen);
+        std::replace(args.begin(), args.end(), QStringLiteral("%U"), fileToOpen);
+        std::replace(args.begin(), args.end(), QStringLiteral("%f"), fileToOpen);
+        std::replace(args.begin(), args.end(), QStringLiteral("%F"), fileToOpen);
 
         // fixme: needs to append --icon, according to http://standards.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
-        QStringList::iterator it = std::find(args.begin(), args.end(), QString::fromLatin1("%i"));
+        QStringList::iterator it = std::find(args.begin(), args.end(), QStringLiteral("%i"));
         if (it != args.end()) {
-            (*it) = desktopFile.value("Desktop Entry/Icon").toString();
-            args.insert(it, QString::fromLatin1("--icon")); // before
+            (*it) = desktopFile.value(QStringLiteral("Desktop Entry/Icon")).toString();
+            args.insert(it, QStringLiteral("--icon")); // before
         }
 
 

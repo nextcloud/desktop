@@ -83,43 +83,43 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
         if (!job->ocsSuccess()) {
             Q_EMIT displayErrorMessage(job->ocsStatus(), job->ocsMessage());
         } else if (job->parseError().error == QJsonParseError::NoError) {
-                    auto data = job->data().value("ocs").toObject().value("data").toObject();
+            auto data = job->data().value(QStringLiteral("ocs")).toObject().value(QStringLiteral("data")).toObject();
 
-                    QVector<QSharedPointer<Sharee>> newSharees;
+            QVector<QSharedPointer<Sharee>> newSharees;
 
-                    /*
-* Todo properly loop all of this
-                     */
-                    auto exact = data.value("exact").toObject();
+            /*
+             * Todo properly loop all of this
+             */
+            auto exact = data.value(QStringLiteral("exact")).toObject();
+            {
+                const auto &users = exact.value(QStringLiteral("users")).toArray();
+                for (const auto &user : users) {
+                    newSharees.append(parseSharee(user.toObject()));
+                }
+                const auto &groups = exact.value(QStringLiteral("groups")).toArray();
+                for (const auto &group : groups) {
+                    newSharees.append(parseSharee(group.toObject()));
+                }
+                const auto &remotes = exact.value(QStringLiteral("remotes")).toArray();
+                for (const auto &remote : remotes) {
+                    newSharees.append(parseSharee(remote.toObject()));
+                }
+            }
+
                     {
-                        const auto &users = exact.value("users").toArray();
+                        const auto &users = data.value(QStringLiteral("users")).toArray();
                         for (const auto &user : users) {
                             newSharees.append(parseSharee(user.toObject()));
                         }
-                        const auto &groups = exact.value("groups").toArray();
-                        for (const auto &group : groups) {
-                            newSharees.append(parseSharee(group.toObject()));
-                        }
-                        const auto &remotes = exact.value("remotes").toArray();
-                        for (const auto &remote : remotes) {
-                            newSharees.append(parseSharee(remote.toObject()));
-                        }
-                    }
-
-                    {
-                        const auto &users = data.value("users").toArray();
-                        for (const auto &user : users) {
-                            newSharees.append(parseSharee(user.toObject()));
-                        }
                     }
                     {
-                        const auto &groups = data.value("groups").toArray();
+                        const auto &groups = data.value(QStringLiteral("groups")).toArray();
                         for (const auto &group : groups) {
                             newSharees.append(parseSharee(group.toObject()));
                         }
                     }
                     {
-                        const auto &remotes = data.value("remotes").toArray();
+                        const auto &remotes = data.value(QStringLiteral("remotes")).toArray();
                         for (const auto &remote : remotes) {
                             newSharees.append(parseSharee(remote.toObject()));
                         }
@@ -149,10 +149,10 @@ void ShareeModel::fetch(const QString &search, const ShareeSet &blacklist)
 
 QSharedPointer<Sharee> ShareeModel::parseSharee(const QJsonObject &data)
 {
-    QString displayName = data.value("label").toString();
-    const QString shareWith = data.value("value").toObject().value("shareWith").toString();
-    Sharee::Type type = (Sharee::Type)data.value("value").toObject().value("shareType").toInt();
-    const QString additionalInfo = data.value("value").toObject().value("shareWithAdditionalInfo").toString();
+    QString displayName = data.value(QStringLiteral("label")).toString();
+    const QString shareWith = data.value(QStringLiteral("value")).toObject().value(QStringLiteral("shareWith")).toString();
+    Sharee::Type type = (Sharee::Type)data.value(QStringLiteral("value")).toObject().value(QStringLiteral("shareType")).toInt();
+    const QString additionalInfo = data.value(QStringLiteral("value")).toObject().value(QStringLiteral("shareWithAdditionalInfo")).toString();
     if (!additionalInfo.isEmpty()) {
         displayName = tr("%1 (%2)", "sharee (shareWithAdditionalInfo)").arg(displayName, additionalInfo);
     }

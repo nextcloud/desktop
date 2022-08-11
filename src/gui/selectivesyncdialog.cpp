@@ -199,7 +199,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 
     // Since / cannot be in the blacklist, expand it to the actual
     // list of top-level folders as soon as possible.
-    if (_oldBlackList == QStringList("/")) {
+    if (_oldBlackList == QStringList(QStringLiteral(QStringLiteral("/")))) {
         _oldBlackList.clear();
         for (auto path : qAsConst(list)) {
             path.remove(pathToRemove);

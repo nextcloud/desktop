@@ -47,7 +47,7 @@ private:
         settingsFile.close();
 
         auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
-        settings->setValue("0/Folders/1/localPath", tmp.path());
+        settings->setValue(QStringLiteral("0/Folders/1/localPath"), tmp.path());
         qDebug() << settings->childGroups() << settings->childKeys();
 
 
@@ -75,8 +75,8 @@ private slots:
         QFETCH(QString, url);
         auto tmp = OCC::TestUtils::createTempDir();
         const auto settings = writeSettings(tmp, Settings_2_4());
-        settings->setValue("0/url", url);
-        settings->remove("0/Folders/1/journalPath");
+        settings->setValue(QStringLiteral("0/url"), url);
+        settings->remove(QStringLiteral("0/Folders/1/journalPath"));
         QVERIFY(!settings->value("0/Folders/1/journalPath").isValid());
 
         for (const auto &journalPath : journalPaths) {
@@ -88,7 +88,7 @@ private slots:
 
         AccountManager::instance()->restore();
 
-        settings->beginGroup("0/Folders");
+        settings->beginGroup(QStringLiteral("0/Folders"));
         TestUtils::folderMan()->setupFoldersHelper(*settings.get(), AccountManager::instance()->accounts().first(), {}, true, false);
         settings->endGroup();
 

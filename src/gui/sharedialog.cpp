@@ -62,7 +62,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
 {
     Utility::setModal(this);
     setAttribute(Qt::WA_DeleteOnClose);
-    setObjectName("SharingDialog");
+    setObjectName(QStringLiteral("SharingDialog"));
 
     _ui->setupUi(this);
 
@@ -153,12 +153,12 @@ ShareDialog::~ShareDialog()
 
 void ShareDialog::slotPropfindReceived(const QMap<QString, QString> &result)
 {
-    const auto &receivedPermissions = result["share-permissions"];
+    const auto &receivedPermissions = result[QStringLiteral("share-permissions")];
     if (!receivedPermissions.isEmpty()) {
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
         qCInfo(lcSharing) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
     }
-    auto privateLinkUrl = result["privatelink"];
+    auto privateLinkUrl = result[QStringLiteral("privatelink")];
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcSharing) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;

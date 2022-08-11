@@ -201,7 +201,7 @@ bool Application::configVersionMigration()
             return false;
         }
 
-        auto settings = ConfigFile::settingsWithGroup("foo");
+        auto settings = ConfigFile::settingsWithGroup(QStringLiteral("foo"));
         settings->endGroup();
 
         // Wipe confusing keys from the future, ignore the others
@@ -243,7 +243,7 @@ Application::Application(int &argc, char **argv)
 #endif
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
-    setOrganizationDomain(QLatin1String(APPLICATION_REV_DOMAIN));
+    setOrganizationDomain(QStringLiteral(APPLICATION_REV_DOMAIN));
     setApplicationName(_theme->appName());
     setWindowIcon(_theme->applicationIcon());
 
@@ -349,7 +349,7 @@ Application::Application(int &argc, char **argv)
     _proxy.setupQtProxyFromConfig(); // folders have to be defined first, than we set up the Qt proxy.
 
     // Enable word wrapping of QInputDialog (#4197)
-    setStyleSheet("QInputDialog QLabel { qproperty-wordWrap:1; }");
+    setStyleSheet(QStringLiteral("QInputDialog QLabel { qproperty-wordWrap:1; }"));
 
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Application::slotAccountStateAdded);
@@ -613,17 +613,17 @@ void Application::parseOptions(const QStringList &arguments)
 
     auto showSettingsOption = addOption({ { "s", "showsettings" }, tr("Show the settings dialog while starting.") });
     auto quitInstanceOption = addOption({ { "q", "quit" }, tr("Quit the running instance.") });
-    auto logFileOption = addOption({ "logfile", tr("Write log to file (use - to write to stdout)."), "filename" });
-    auto logDirOption = addOption({ "logdir", tr("Write each sync log output in a new file in folder."), "name" });
-    auto logFlushOption = addOption({ "logflush", tr("Flush the log file after every write.") });
-    auto logDebugOption = addOption({ "logdebug", tr("Output debug-level messages in the log.") });
-    auto languageOption = addOption({ "language", tr("Override UI language."), "language" });
-    auto listLanguagesOption = addOption({ "list-languages", tr("Override UI language.") });
-    auto confDirOption = addOption({ "confdir", tr("Use the given configuration folder."), "dirname" });
-    auto debugOption = addOption({ "debug", tr("Enable debug mode.") });
+    auto logFileOption = addOption({ QStringLiteral("logfile"), tr("Write log to file (use - to write to stdout)."), QStringLiteral("filename") });
+    auto logDirOption = addOption({ QStringLiteral("logdir"), tr("Write each sync log output in a new file in folder."), QStringLiteral("name") });
+    auto logFlushOption = addOption({ QStringLiteral("logflush"), tr("Flush the log file after every write.") });
+    auto logDebugOption = addOption({ QStringLiteral("logdebug"), tr("Output debug-level messages in the log.") });
+    auto languageOption = addOption({ QStringLiteral("language"), tr("Override UI language."), QStringLiteral("language") });
+    auto listLanguagesOption = addOption({ QStringLiteral("list-languages"), tr("Override UI language.") });
+    auto confDirOption = addOption({ QStringLiteral("confdir"), tr("Use the given configuration folder."), QStringLiteral("dirname") });
+    auto debugOption = addOption({ QStringLiteral("debug"), tr("Enable debug mode.") });
 
     // virtual file system parameters (optional)
-    parser.addPositionalArgument("vfs file", tr("Virtual file system file to be opened (optional)."), { tr("[<vfs file>]") });
+    parser.addPositionalArgument(QStringLiteral("vfs file"), tr("Virtual file system file to be opened (optional)."), { tr("[<vfs file>]") });
 
     parser.process(arguments);
 
@@ -675,7 +675,7 @@ void Application::parseOptions(const QStringList &arguments)
     if (parser.isSet(listLanguagesOption)) {
         auto availableTranslations = Translations::listAvailableTranslations().toList();
         availableTranslations.sort(Qt::CaseInsensitive);
-        displayHelpText(tr("Available translations: %1").arg(availableTranslations.join(", ")));
+        displayHelpText(tr("Available translations: %1").arg(availableTranslations.join(QStringLiteral(", "))));
         std::exit(1);
     }
 
@@ -700,10 +700,10 @@ QString substLang(const QString &lang)
 
     // Simplified Chinese
     if (lang == QLatin1String("zh_Hans"))
-        return QLatin1String("zh_CN");
+        return QStringLiteral("zh_CN");
     // Traditional Chinese
     if (lang == QLatin1String("zh_Hant"))
-        return QLatin1String("zh_TW");
+        return QStringLiteral("zh_TW");
     return lang;
 }
 

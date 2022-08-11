@@ -201,7 +201,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Qt::DisplayRole:
             if (x->_hasError) {
                 return QVariant(tr("Error while loading the list of folders from the server.")
-                    + QString("\n") + x->_lastErrorString);
+                    + QStringLiteral("\n") + x->_lastErrorString);
             } else {
                 return tr("Fetching folder list from server...");
             }
@@ -261,7 +261,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             toolTip = Theme::instance()->statusHeaderText(f->syncResult().status());
         else
             toolTip = tr("Signed out");
-        toolTip += "\n";
+        toolTip += QLatin1String("\n");
         toolTip += folderInfo._folder->path();
         return toolTip;
     }
@@ -617,7 +617,7 @@ void FolderStatusModel::resetAndFetch(const QModelIndex &parent)
 
 void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QString, QString> &map)
 {
-    auto it = map.find("permissions");
+    auto it = map.find(QStringLiteral("permissions"));
     if (it == map.end())
         return;
 
@@ -701,7 +701,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
         newInfo._size = job->sizes().value(path);
-        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains("M");
+        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains(QLatin1String("M"));
         newInfo._path = relativePath;
         newInfo._name = removeTrailingSlash(relativePath).split('/').last();
 

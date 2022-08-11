@@ -41,14 +41,14 @@ private slots:
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        fakeFolder.remoteModifier().createDir("A/newBigDir");
-        fakeFolder.remoteModifier().createDir("A/newBigDir/subDir");
-        fakeFolder.remoteModifier().insert("A/newBigDir/subDir/bigFile", options._newBigFolderSizeLimit + 10);
-        fakeFolder.remoteModifier().insert("A/newBigDir/subDir/smallFile", 10);
+        fakeFolder.remoteModifier().createDir(QStringLiteral("A/newBigDir"));
+        fakeFolder.remoteModifier().createDir(QStringLiteral("A/newBigDir/subDir"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/newBigDir/subDir/bigFile"), options._newBigFolderSizeLimit + 10);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/newBigDir/subDir/smallFile"), 10);
 
-        fakeFolder.remoteModifier().createDir("B/newSmallDir");
-        fakeFolder.remoteModifier().createDir("B/newSmallDir/subDir");
-        fakeFolder.remoteModifier().insert("B/newSmallDir/subDir/smallFile", 10);
+        fakeFolder.remoteModifier().createDir(QStringLiteral("B/newSmallDir"));
+        fakeFolder.remoteModifier().createDir(QStringLiteral("B/newSmallDir/subDir"));
+        fakeFolder.remoteModifier().insert(QStringLiteral("B/newSmallDir/subDir/smallFile"), 10);
 
         // Because the test system don't do that automatically
         fakeFolder.remoteModifier().find("A/newBigDir")->extraDavProperties = "<oc:size>20020</oc:size>";
@@ -69,7 +69,7 @@ private slots:
 
         auto oldSync = fakeFolder.currentLocalState();
         // syncing again should do the same
-        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), oldSync);
         QCOMPARE(newBigFolder.count(), 1); // (since we don't have a real Folder, the files were not added to any list)
@@ -79,8 +79,8 @@ private slots:
 
         // Simulate that we accept all files by seting a wildcard white list
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
-            QStringList() << QLatin1String("/"));
-        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QString("A/newBigDir"));
+            QStringList() << QStringLiteral("/"));
+        fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(newBigFolder.count(), 0);
         QCOMPARE(sizeRequests.count(), 0);

@@ -88,16 +88,16 @@ private slots:
 
         // Tests about query args
         QTest::newRow("query1")
-                << "/baa"
-                << "/foo"
-                << make("a=a", "b=b",
-                        "c", "d")
-                << "/baa/foo?a%3Da=b%3Db&c=d";
+            << "/baa"
+            << "/foo"
+            << make(QStringLiteral("a=a"), QStringLiteral("b=b"),
+                   QStringLiteral("c"), QStringLiteral("d"))
+            << "/baa/foo?a%3Da=b%3Db&c=d";
         QTest::newRow("query2")
-                << ""
-                << ""
-                << make("foo", "bar")
-                << "?foo=bar";
+            << ""
+            << ""
+            << make(QStringLiteral("foo"), QStringLiteral("bar"))
+            << "?foo=bar";
     }
 
 };

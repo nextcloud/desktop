@@ -202,17 +202,16 @@ void OCUpdater::slotStartInstaller()
     settings.sync();
     qCInfo(lcUpdater) << "Running updater" << updateFile;
 
-    if(updateFile.endsWith(".exe")) {
-        QProcess::startDetached(updateFile, QStringList() << "/S"
-                                                          << "/launch");
-    } else if(updateFile.endsWith(".msi")) {
+    if (updateFile.endsWith(QLatin1String(".exe"))) {
+        QProcess::startDetached(updateFile, QStringList() << QStringLiteral("/S") << QStringLiteral("/launch"));
+    } else if (updateFile.endsWith(QLatin1String(".msi"))) {
         // When MSIs are installed without gui they cannot launch applications
         // as they lack the user context. That is why we need to run the client
         // manually here. We wrap the msiexec and client invocation in a powershell
         // script because owncloud.exe will be shut down for installation.
         // | Out-Null forces powershell to wait for msiexec to finish.
         auto preparePathForPowershell = [](QString path) {
-            path.replace("'", "''");
+            path.replace(QLatin1String("'"), QLatin1String("''"));
 
             return QDir::toNativeSeparators(path);
         };
@@ -223,7 +222,7 @@ void OCUpdater::slotStartInstaller()
                                         preparePathForPowershell(msiLogFile),
                                         preparePathForPowershell(QCoreApplication::applicationFilePath()));
 
-        QProcess::startDetached("powershell.exe", QStringList{"-Command", command});
+        QProcess::startDetached(QStringLiteral("powershell.exe"), QStringList { "-Command", command });
     }
 }
 

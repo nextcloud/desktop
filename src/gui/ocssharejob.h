@@ -106,7 +106,7 @@ namespace OcsShareJob {
      */
     JsonApiJob *createShare(AccountPtr account, QObject *parent, const QString &path,
         const Share::ShareType shareType,
-        const QString &shareWith = "",
+        const QString &shareWith = QLatin1String(""),
         const Share::Permissions permissions = SharePermissionRead);
 
     /**

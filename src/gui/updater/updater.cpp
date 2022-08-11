@@ -49,9 +49,9 @@ QUrl Updater::updateUrl()
 {
     QUrl updateBaseUrl(QString::fromLocal8Bit(qgetenv("OCC_UPDATE_URL")));
     if (updateBaseUrl.isEmpty()) {
-        updateBaseUrl = QUrl(QLatin1String(APPLICATION_UPDATE_URL));
+        updateBaseUrl = QUrl(QStringLiteral(APPLICATION_UPDATE_URL));
     }
-    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == ".") {
+    if (!updateBaseUrl.isValid() || updateBaseUrl.host() == QLatin1String(".")) {
         return QUrl();
     }
 
@@ -118,7 +118,7 @@ QString Updater::getSystemInfo()
 {
 #ifdef Q_OS_LINUX
     QProcess process;
-    process.start(QLatin1String("lsb_release -a"));
+    process.start(QStringLiteral("lsb_release -a"));
     process.waitForFinished();
     QByteArray output = process.readAllStandardOutput();
     qCDebug(lcUpdater) << "Sys Info size: " << output.length();

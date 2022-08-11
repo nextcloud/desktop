@@ -136,7 +136,7 @@ public:
         }
 
         QToolButton *btn = new QToolButton(toolbar);
-        QString objectName = QLatin1String("settingsdialog_toolbutton_");
+        QString objectName = QStringLiteral("settingsdialog_toolbutton_");
         objectName += text();
         btn->setObjectName(objectName);
 
@@ -182,11 +182,11 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
 
     // People perceive this as a Window, so also make Ctrl+W work
     QAction *closeWindowAction = new QAction(this);
-    closeWindowAction->setShortcut(QKeySequence("Ctrl+W"));
+    closeWindowAction->setShortcut(QKeySequence(QStringLiteral("Ctrl+W")));
     connect(closeWindowAction, &QAction::triggered, this, &SettingsDialog::hide);
     addAction(closeWindowAction);
 
-    setObjectName("Settings"); // required as group for saveGeometry call
+    setObjectName(QStringLiteral("Settings")); // required as group for saveGeometry call
     setWindowTitle(Theme::instance()->appNameGUI());
 
     _actionGroup = new QActionGroup(this);
@@ -261,7 +261,7 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     connect(_ui->hideButton, &QPushButton::clicked, this, &SettingsDialog::hide);
 
     QAction *showLogWindow = new QAction(this);
-    showLogWindow->setShortcut(QKeySequence("F12"));
+    showLogWindow->setShortcut(QKeySequence(QStringLiteral("F12")));
     connect(showLogWindow, &QAction::triggered, gui, &ownCloudGui::slotToggleLogBrowser);
     addAction(showLogWindow);
 
@@ -376,7 +376,7 @@ void SettingsDialog::accountAdded(AccountStatePtr s)
     }
     _ui->toolBar->insertAction(_addAccountAction ? _ui->toolBar->actions().at(1) : _ui->toolBar->actions().at(0), accountAction);
     auto accountSettings = new AccountSettings(s, this);
-    QString objectName = QLatin1String("accountSettings_");
+    QString objectName = QStringLiteral("accountSettings_");
     objectName += s->account()->displayName();
     accountSettings->setObjectName(objectName);
     _ui->stack->insertWidget(0 , accountSettings);
