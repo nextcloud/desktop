@@ -365,7 +365,7 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End to end encryption mnemonic</source>
-        <translation>Мнемонично криптиране от край до край</translation>
+        <translation>Цялостно мнемонично криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
@@ -6588,7 +6588,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отказ</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
