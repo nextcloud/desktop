@@ -6586,7 +6586,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Storno</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>

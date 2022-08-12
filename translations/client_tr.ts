@@ -6587,7 +6587,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>İptal</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="178"/>
