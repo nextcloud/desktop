@@ -4473,12 +4473,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
         <source>Expires:</source>
-        <translation>Sona erme:</translation>
+        <translation>Geçerlilik süresi sonu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
         <source>Expires</source>
-        <translation>Sona erme</translation>
+        <translation>Geçerlilik süresi sonu</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="150"/>
@@ -4669,7 +4669,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation>Sona erme:</translation>
+        <translation>Geçerlilik süresi sonu:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
@@ -4920,7 +4920,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="105"/>
         <source>Expires on:</source>
-        <translation>Bitiş:</translation>
+        <translation>Geçerlilik süresi sonu:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="108"/>
@@ -7196,7 +7196,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/creds/shibboleth/shibbolethwebview.cpp" line="101"/>
         <source>Your session has expired. You need to re-login to continue to use the client.</source>
-        <translation>Oturumunuzun süresi dolmuş. İstemciyi kullanmayı sürdürmek için yeniden oturum açmanız gerekiyor.</translation>
+        <translation>Oturumunuzun geçerlilik süresi dolmuş. İstemciyi kullanmayı sürdürmek için yeniden oturum açmanız gerekiyor.</translation>
     </message>
 </context>
 <context>
