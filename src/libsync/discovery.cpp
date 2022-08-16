@@ -670,7 +670,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     _childModified |= serverModified;
 
-    auto finalize = [&] {
+    auto finalize = [item, localEntry, serverEntry, this](const PathTuple &path, QueryMode recurseQueryServer) {
         bool recurse = item->isDirectory() || localEntry.isDirectory || serverEntry.isDirectory;
         // Even if we have a local directory: If the remote is a file that's propagated as a
         // conflict we don't need to recurse into it. (local c1.owncloud, c1/ ; remote: c1)
@@ -717,7 +717,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         }
 
-        finalize();
+        finalize(path, recurseQueryServer);
         return;
     }
 
@@ -819,7 +819,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             }
         }
 
-        finalize();
+        finalize(path, recurseQueryServer);
         return;
     }
 
@@ -830,11 +830,11 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // The instruction should already be set correctly.
         OC_ASSERT(item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA);
         OC_ASSERT(item->_type == ItemTypeVirtualFile);
-        finalize();
+        finalize(path, recurseQueryServer);
         return;
     } else if (serverModified) {
         processFileConflict(item, path, localEntry, serverEntry, dbEntry);
-        finalize();
+        finalize(path, recurseQueryServer);
         return;
     }
 
@@ -847,7 +847,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
 
-    auto postProcessLocalNew = [item, localEntry, path, this]() {
+    auto postProcessLocalNew = [item, localEntry, this](const PathTuple &path) {
         if (localEntry.isVirtualFile) {
             const bool isPlaceHolder = _discoveryData->_syncOptions._vfs->isDehydratedPlaceholder(_discoveryData->_localDir + path._local);
             if (isPlaceHolder) {
@@ -921,9 +921,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     // If it's not a move it's just a local-NEW
     if (!moveCheck()) {
-       postProcessLocalNew();
-       finalize();
-       return;
+        postProcessLocalNew(path);
+        finalize(path, recurseQueryServer);
+        return;
     }
 
     // Check local permission if we are allowed to put move the file here
@@ -937,8 +937,8 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
         // If we can create the destination, do that.
         // Permission errors on the destination will be handled by checkPermissions later.
-        postProcessLocalNew();
-        finalize();
+        postProcessLocalNew(path);
+        finalize(path, recurseQueryServer);
 
         // If the destination upload will work, we're fine with the source deletion.
         // If the source deletion can't work, checkPermissions will error.
@@ -964,7 +964,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     auto wasDeletedOnClient = _discoveryData->findAndCancelDeletedJob(originalPath);
 
-    auto processRename = [item, originalPath, base, this](PathTuple &path) {
+    auto processRename = [item, originalPath, base, this](PathTuple path) {
         auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
         _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
         item->_renameTarget = path._target;
@@ -990,10 +990,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_type = ItemTypeFile;
 
         qCInfo(lcDisco) << "Rename detected (up) " << item->_file << " -> " << item->_renameTarget;
+        return path;
     };
     if (wasDeletedOnClient.first) {
-        recurseQueryServer = wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery;
-        processRename(path);
+        finalize(processRename(path), wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery);
     } else {
         // We must query the server to know if the etag has not changed
         _pendingAsyncJobs++;
@@ -1002,26 +1002,23 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             serverOriginalPath = chopVirtualFileSuffix(serverOriginalPath);
         }
         auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_baseUrl, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
-            if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
-                qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
-                // Can't be a rename, leave it as a new.
-                postProcessLocalNew();
-            } else {
-                // In case the deleted item was discovered in parallel
-                _discoveryData->findAndCancelDeletedJob(originalPath);
-                processRename(path);
-                recurseQueryServer = etag.get() == base._etag ? ParentNotChanged : NormalQuery;
-            }
-            processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
-            _pendingAsyncJobs--;
-            QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-        });
+        connect(job, &RequestEtagJob::finishedWithResult, this,
+            [recurseQueryServer, path = path, postProcessLocalNew, processRename, base, item, originalPath, this](const HttpResult<QByteArray> &etag) {
+                if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+                    qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
+                    // Can't be a rename, leave it as a new.
+                    postProcessLocalNew(path);
+                    processFileFinalize(item, path, item->isDirectory(), NormalQuery, recurseQueryServer);
+                } else {
+                    // In case the deleted item was discovered in parallel
+                    _discoveryData->findAndCancelDeletedJob(originalPath);
+                    processFileFinalize(item, processRename(path), item->isDirectory(), NormalQuery, etag.get() == base._etag ? ParentNotChanged : NormalQuery);
+                }
+                _pendingAsyncJobs--;
+                QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
+            });
         job->start();
-        return;
     }
-
-    finalize();
 }
 
 void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, const ProcessDirectoryJob::PathTuple &path, const LocalInfo &localEntry, const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)

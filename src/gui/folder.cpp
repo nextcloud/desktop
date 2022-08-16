@@ -84,7 +84,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
 
 Folder::Folder(const FolderDefinition &definition,
-    const AccountStatePtr &accountState, const std::unique_ptr<Vfs> &vfs,
+    const AccountStatePtr &accountState, std::unique_ptr<Vfs> &&vfs,
     QObject *parent)
     : QObject(parent)
     , _accountState(accountState)

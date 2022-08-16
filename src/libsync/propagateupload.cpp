@@ -63,7 +63,7 @@ static bool fileIsStillChanging(const SyncFileItem &item)
         && msSinceMod > -10000;
 }
 
-PUTFileJob::PUTFileJob(AccountPtr account, const QUrl &url, const QString &path, const std::unique_ptr<QIODevice> &device, const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent)
+PUTFileJob::PUTFileJob(AccountPtr account, const QUrl &url, const QString &path, std::unique_ptr<QIODevice> &&device, const QMap<QByteArray, QByteArray> &headers, int chunk, QObject *parent)
     : AbstractNetworkJob(account, url, path, parent)
     , _device(device.release())
     , _headers(headers)
