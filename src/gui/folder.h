@@ -155,7 +155,7 @@ public:
 
     /** Create a new Folder
      */
-    Folder(const FolderDefinition &definition, AccountStatePtr accountState, std::unique_ptr<Vfs> vfs, QObject *parent = nullptr);
+    Folder(const FolderDefinition &definition, const AccountStatePtr &accountState, const std::unique_ptr<Vfs> &vfs, QObject *parent = nullptr);
 
     ~Folder() override;
     /**
@@ -385,7 +385,7 @@ public slots:
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, std::function<void(bool)> abort);
+    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, const std::function<void(bool)> &abort);
 
     /**
       * Starts a sync operation

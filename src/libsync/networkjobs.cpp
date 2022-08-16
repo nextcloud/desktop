@@ -596,7 +596,7 @@ void SimpleNetworkJob::newReplyHook(QNetworkReply *reply)
 }
 
 void fetchPrivateLinkUrl(AccountPtr account, const QUrl &baseUrl, const QString &remotePath, QObject *target,
-    std::function<void(const QUrl &url)> targetFun)
+    const std::function<void(const QUrl &url)> &targetFun)
 {
     if (account->capabilities().privateLinkPropertyAvailable()) {
         // Retrieve the new link by PROPFIND

@@ -169,7 +169,7 @@ void sync(const SyncCTX &ctx)
             }
         }
     });
-    QObject::connect(engine, &SyncEngine::aboutToRemoveAllFiles, engine, [ctx](OCC::SyncFileItem::Direction dir, std::function<void(bool)> abort) {
+    QObject::connect(engine, &SyncEngine::aboutToRemoveAllFiles, engine, [ctx](OCC::SyncFileItem::Direction dir, const std::function<void(bool)> &abort) {
         if (!ctx.options.interactive) {
             abort(false);
         } else {

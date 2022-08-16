@@ -145,7 +145,7 @@ static QTreeWidgetItem *findFirstChild(QTreeWidgetItem *parent, const QString &t
     return nullptr;
 }
 
-void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path)
+void FolderWizardRemotePath::recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, const QString &path)
 {
     if (pathTrail.isEmpty())
         return;

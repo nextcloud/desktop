@@ -84,7 +84,7 @@ namespace OCC {
 Q_LOGGING_CATEGORY(lcFolder, "gui.folder", QtInfoMsg)
 
 Folder::Folder(const FolderDefinition &definition,
-    AccountStatePtr accountState, std::unique_ptr<Vfs> vfs,
+    const AccountStatePtr &accountState, const std::unique_ptr<Vfs> &vfs,
     QObject *parent)
     : QObject(parent)
     , _accountState(accountState)
@@ -433,7 +433,7 @@ void Folder::slotRunEtagJob()
     _requestEtagJob->setTimeout(60s);
     // check if the etag is different when retrieved
     QObject::connect(_requestEtagJob.data(), &RequestEtagJob::etagRetreived, this, &Folder::etagRetreived);
-    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray>) { _timeSinceLastEtagCheckDone.start(); });
+    QObject::connect(_requestEtagJob.data(), &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &) { _timeSinceLastEtagCheckDone.start(); });
     FolderMan::instance()->slotScheduleETagJob(_requestEtagJob);
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
@@ -1278,7 +1278,7 @@ bool Folder::virtualFilesEnabled() const
     return _definition.virtualFilesMode != Vfs::Off && !isVfsOnOffSwitchPending();
 }
 
-void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::function<void(bool)> abort)
+void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, const std::function<void(bool)> &abort)
 {
     ConfigFile cfgFile;
     if (!cfgFile.promptDeleteFiles()) {

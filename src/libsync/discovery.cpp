@@ -313,7 +313,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const QString &loc
     return true;
 }
 
-void ProcessDirectoryJob::processFile(PathTuple path,
+void ProcessDirectoryJob::processFile(const PathTuple &path,
     const LocalInfo &localEntry, const RemoteInfo &serverEntry,
     const SyncJournalFileRecord &dbEntry)
 {
@@ -644,7 +644,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
 }
 
 void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
-    const SyncFileItemPtr &item, PathTuple path, const LocalInfo &localEntry,
+    const SyncFileItemPtr &item, const PathTuple &path, const LocalInfo &localEntry,
     const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry, QueryMode recurseQueryServer)
 {
     bool noServerEntry = (_queryServer != ParentNotChanged && !serverEntry.isValid())
@@ -1024,7 +1024,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     finalize();
 }
 
-void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, ProcessDirectoryJob::PathTuple path, const LocalInfo &localEntry, const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)
+void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, const ProcessDirectoryJob::PathTuple &path, const LocalInfo &localEntry, const RemoteInfo &serverEntry, const SyncJournalFileRecord &dbEntry)
 {
     item->_previousSize = localEntry.size;
     item->_previousModtime = localEntry.modtime;

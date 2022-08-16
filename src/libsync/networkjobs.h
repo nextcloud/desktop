@@ -287,7 +287,7 @@ private:
  * loop and never directly.
  */
 void OWNCLOUDSYNC_EXPORT fetchPrivateLinkUrl(AccountPtr account, const QUrl &baseUrl, const QString &remotePath, QObject *target,
-    std::function<void(const QUrl &url)> targetFun);
+    const std::function<void(const QUrl &url)> &targetFun);
 
 } // namespace OCC
 

@@ -30,7 +30,7 @@ namespace {
     const auto failIntervalT = 5s;
 }
 
-QuotaInfo::QuotaInfo(AccountStatePtr accountState, QObject *parent)
+QuotaInfo::QuotaInfo(const AccountStatePtr &accountState, QObject *parent)
     : QObject(parent)
     , _accountState(accountState)
     , _lastQuotaTotalBytes(0)

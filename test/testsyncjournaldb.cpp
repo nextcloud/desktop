@@ -26,7 +26,7 @@ public:
         QVERIFY(_tempDir.isValid());
     }
 
-    qint64 dropMsecs(QDateTime time)
+    qint64 dropMsecs(const QDateTime &time)
     {
         return Utility::qDateTimeToTime_t(time);
     }

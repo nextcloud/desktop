@@ -42,7 +42,7 @@ class FolderStatusModel : public QAbstractItemModel
 public:
     FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel() override;
-    void setAccountState(AccountStatePtr accountState);
+    void setAccountState(const AccountStatePtr &accountState);
 
     Qt::ItemFlags flags(const QModelIndex &) const override;
     QVariant data(const QModelIndex &index, int role) const override;
@@ -93,7 +93,7 @@ public:
         bool hasLabel() const;
 
         // Reset all subfolders and fetch status
-        void resetSubs(FolderStatusModel *model, QModelIndex index);
+        void resetSubs(FolderStatusModel *model, const QModelIndex &index);
 
         struct Progress
         {

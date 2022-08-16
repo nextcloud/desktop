@@ -124,14 +124,14 @@ public:
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
-    Folder *addFolder(AccountStatePtr accountState, const FolderDefinition &folderDefinition);
+    Folder *addFolder(const AccountStatePtr &accountState, const FolderDefinition &folderDefinition);
 
     /**
      * Adds a folder for an account. Used to be part of the wizard code base. Constructs the folder definition from the parameters.
      * In case Wizard::SyncMode::SelectiveSync is used, nullptr is returned.
      */
-    Folder *addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs);
-    Folder *addFolderFromFolderWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config);
+    Folder *addFolderFromWizard(const AccountStatePtr &accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs);
+    Folder *addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config);
 
     /** Removes a folder */
     void removeFolder(Folder *);
@@ -311,7 +311,7 @@ private slots:
     void slotStartScheduledFolderSync();
     void slotEtagPollTimerTimeout();
 
-    void slotRemoveFoldersForAccount(AccountStatePtr accountState);
+    void slotRemoveFoldersForAccount(const AccountStatePtr &accountState);
 
     // Wraps the Folder::syncStateChange() signal into the
     // FolderMan::folderSyncStateChange(Folder*) signal.
@@ -340,7 +340,7 @@ private:
      *  does not set an account on the new folder.
       */
     Folder *addFolderInternal(FolderDefinition folderDefinition,
-        AccountStatePtr accountState, std::unique_ptr<Vfs> vfs);
+        const AccountStatePtr &accountState, std::unique_ptr<Vfs> vfs);
 
     /* unloads a folder object, does not delete it */
     void unloadFolder(Folder *);

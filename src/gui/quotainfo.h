@@ -48,7 +48,7 @@ class QuotaInfo : public QObject
 {
     Q_OBJECT
 public:
-    explicit QuotaInfo(AccountStatePtr accountState, QObject *parent = nullptr);
+    explicit QuotaInfo(const AccountStatePtr &accountState, QObject *parent = nullptr);
 
     qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
     qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }

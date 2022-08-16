@@ -64,7 +64,7 @@ QStringList findConflicts(const FileInfo &dir)
     return conflicts;
 }
 
-bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString path)
+bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString &path)
 {
     PathComponents pathComponents(path);
     auto base = state.find(pathComponents.parentDirComponents());

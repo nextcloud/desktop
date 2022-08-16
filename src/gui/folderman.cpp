@@ -755,7 +755,7 @@ void FolderMan::slotEtagPollTimerTimeout()
     }
 }
 
-void FolderMan::slotRemoveFoldersForAccount(AccountStatePtr accountState)
+void FolderMan::slotRemoveFoldersForAccount(const AccountStatePtr &accountState)
 {
     QList<Folder *> foldersToRemove;
     // reserve a magic number
@@ -901,7 +901,7 @@ void FolderMan::slotFolderSyncFinished(const SyncResult &)
         startScheduledSyncSoon();
 }
 
-Folder *FolderMan::addFolder(AccountStatePtr accountState, const FolderDefinition &folderDefinition)
+Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDefinition &folderDefinition)
 {
     // Choose a db filename
     auto definition = folderDefinition;
@@ -944,7 +944,7 @@ Folder *FolderMan::addFolder(AccountStatePtr accountState, const FolderDefinitio
 
 Folder *FolderMan::addFolderInternal(
     FolderDefinition folderDefinition,
-    AccountStatePtr accountState,
+    const AccountStatePtr &accountState,
     std::unique_ptr<Vfs> vfs)
 {
     // ensure we don't add multiple legacy folders with the same id
@@ -1401,7 +1401,7 @@ bool FolderMan::checkVfsAvailability(const QString &path, Vfs::Mode mode) const
     return unsupportedConfiguration(path) && Vfs::checkAvailability(path, mode);
 }
 
-Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
+Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName, bool useVfs)
 {
     if (!FolderMan::prepareFolder(localFolder)) {
         return {};
@@ -1442,7 +1442,7 @@ Folder *FolderMan::addFolderFromWizard(AccountStatePtr accountStatePtr, const QS
     return newFolder;
 }
 
-Folder *FolderMan::addFolderFromFolderWizardResult(AccountStatePtr accountStatePtr, const FolderWizard::Result &config)
+Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config)
 {
     return addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
 }

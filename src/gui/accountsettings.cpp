@@ -109,7 +109,7 @@ protected:
     }
 };
 
-AccountSettings::AccountSettings(AccountStatePtr accountState, QWidget *parent)
+AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::AccountSettings)
     , _wasDisabledBefore(false)

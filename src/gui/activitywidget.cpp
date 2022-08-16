@@ -125,12 +125,12 @@ ActivityWidget::~ActivityWidget()
     delete _ui;
 }
 
-void ActivityWidget::slotRefreshActivities(AccountStatePtr ptr)
+void ActivityWidget::slotRefreshActivities(const AccountStatePtr &ptr)
 {
     _model->slotRefreshActivity(ptr);
 }
 
-void ActivityWidget::slotRefreshNotifications(AccountStatePtr ptr)
+void ActivityWidget::slotRefreshNotifications(const AccountStatePtr &ptr)
 {
     // start a server notification handler if no notification requests
     // are running
@@ -145,7 +145,7 @@ void ActivityWidget::slotRefreshNotifications(AccountStatePtr ptr)
     }
 }
 
-void ActivityWidget::slotRemoveAccount(AccountStatePtr ptr)
+void ActivityWidget::slotRemoveAccount(const AccountStatePtr &ptr)
 {
     _model->slotRemoveAccount(ptr);
 }
@@ -548,7 +548,7 @@ void ActivitySettings::slotShowIssuesTab()
     _tab->setCurrentIndex(_syncIssueTabId);
 }
 
-void ActivitySettings::slotRemoveAccount(AccountStatePtr ptr)
+void ActivitySettings::slotRemoveAccount(const AccountStatePtr &ptr)
 {
     _activityWidget->slotRemoveAccount(ptr);
 }

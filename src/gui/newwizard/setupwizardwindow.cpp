@@ -16,7 +16,7 @@ namespace {
 
 using namespace OCC;
 
-QString replaceCssColors(QString stylesheet)
+QString replaceCssColors(const QString &stylesheet)
 {
     return Utility::renderTemplate(stylesheet, {
                                                    { QStringLiteral("WIZARD_BACKGROUND_COLOR"), Theme::instance()->wizardHeaderBackgroundColor().name() }, //

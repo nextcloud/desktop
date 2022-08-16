@@ -215,7 +215,7 @@ class DiscoveryPhase : public QObject
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
     void checkSelectiveSyncNewFolder(const QString &path, RemotePermissions rp,
-        std::function<void(bool)> callback);
+        const std::function<void(bool)> &callback);
 
     /** Given an original path, return the target path obtained when renaming is done.
      *

@@ -68,7 +68,7 @@ protected slots:
 
 private:
     LsColJob *runLsColJob(const QString &path);
-    void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
+    void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, const QString &path);
     bool selectByPath(QString path);
     Ui_FolderWizardTargetPage *_ui;
     bool _warnWasVisible;

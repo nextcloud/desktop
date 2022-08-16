@@ -73,9 +73,9 @@ public:
     void checkActivityTabVisibility();
 
 public slots:
-    void slotRefreshActivities(AccountStatePtr ptr);
-    void slotRefreshNotifications(AccountStatePtr ptr);
-    void slotRemoveAccount(AccountStatePtr ptr);
+    void slotRefreshActivities(const AccountStatePtr &ptr);
+    void slotRefreshNotifications(const AccountStatePtr &ptr);
+    void slotRemoveAccount(const AccountStatePtr &ptr);
     void slotAccountActivityStatus(AccountStatePtr ast, int statusCode);
     void slotRequestCleanupAndBlacklist(const Activity &blacklistActivity);
 
@@ -134,7 +134,7 @@ public:
 
 public slots:
     void slotRefresh(AccountStatePtr ptr);
-    void slotRemoveAccount(AccountStatePtr ptr);
+    void slotRemoveAccount(const AccountStatePtr &ptr);
 
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
 

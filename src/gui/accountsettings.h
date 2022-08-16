@@ -53,7 +53,7 @@ class AccountSettings : public QWidget
     Q_PROPERTY(AccountStatePtr accountState MEMBER _accountState)
 
 public:
-    explicit AccountSettings(AccountStatePtr accountState, QWidget *parent = nullptr);
+    explicit AccountSettings(const AccountStatePtr &accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
 
     AccountStatePtr accountsState() const { return _accountState; }

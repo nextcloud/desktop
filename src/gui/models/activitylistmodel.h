@@ -61,7 +61,7 @@ public:
 
 
 public slots:
-    void slotRefreshActivity(AccountStatePtr ast);
+    void slotRefreshActivity(const AccountStatePtr &ast);
     void slotRemoveAccount(AccountStatePtr ast);
 
 signals:

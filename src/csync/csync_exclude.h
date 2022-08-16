@@ -126,7 +126,7 @@ public:
     /**
      * Sets the client version, only used for testing.
      */
-    void setClientVersion(QVersionNumber version);
+    void setClientVersion(const QVersionNumber &version);
 
     /**
      * @brief Check if the given path should be excluded in a traversal situation.

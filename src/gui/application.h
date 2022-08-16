@@ -99,7 +99,7 @@ protected slots:
     void slotCleanup();
     void slotAccountStateAdded(AccountStatePtr accountState) const;
     void slotAccountStateRemoved() const;
-    void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
+    void slotSystemOnlineConfigurationChanged(const QNetworkConfiguration &);
 
 private:
     /**

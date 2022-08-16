@@ -77,7 +77,7 @@ bool DiscoveryPhase::isInSelectiveSyncBlackList(const QString &path) const
 }
 
 void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePermissions remotePerm,
-    std::function<void(bool)> callback)
+    const std::function<void(bool)> &callback)
 {
     if (_syncOptions._confirmExternalStorage && _syncOptions._vfs->mode() == Vfs::Off
         && remotePerm.hasPermission(RemotePermissions::IsMounted)) {

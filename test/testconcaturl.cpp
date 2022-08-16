@@ -23,15 +23,15 @@ static QueryItems make()
     return QueryItems();
 }
 
-static QueryItems make(QString key, QString value)
+static QueryItems make(const QString &key, const QString &value)
 {
     QueryItems q;
     q.append(qMakePair(key, value));
     return q;
 }
 
-static QueryItems make(QString key1, QString value1,
-                       QString key2, QString value2)
+static QueryItems make(const QString &key1, const QString &value1,
+    const QString &key2, const QString &value2)
 {
     QueryItems q;
     q.append(qMakePair(key1, value1));

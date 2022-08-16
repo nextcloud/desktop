@@ -259,7 +259,7 @@ void ActivityListModel::fetchMore(const QModelIndex &)
     }
 }
 
-void ActivityListModel::slotRefreshActivity(AccountStatePtr ast)
+void ActivityListModel::slotRefreshActivity(const AccountStatePtr &ast)
 {
     if (ast && _activityLists.contains(ast)) {
         _activityLists.remove(ast);

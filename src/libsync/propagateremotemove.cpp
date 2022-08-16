@@ -29,7 +29,7 @@ Q_LOGGING_CATEGORY(lcMoveJob, "sync.networkjob.move", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcPropagateRemoteMove, "sync.propagator.remotemove", QtInfoMsg)
 
 MoveJob::MoveJob(AccountPtr account, const QUrl &url, const QString &path, const QString &destination,
-    HeaderMap extraHeaders, QObject *parent)
+    const HeaderMap &extraHeaders, QObject *parent)
     : AbstractNetworkJob(account, url, path, parent)
     , _destination(destination)
     , _extraHeaders(extraHeaders)

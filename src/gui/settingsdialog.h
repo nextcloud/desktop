@@ -61,7 +61,7 @@ public slots:
     void showActivityPage();
     void showIssuesList();
     void slotSwitchPage(QAction *action);
-    void slotRefreshActivity(AccountStatePtr accountState);
+    void slotRefreshActivity(const AccountStatePtr &accountState);
     void slotRefreshActivityAccountStateSender();
     void slotAccountAvatarChanged();
     void slotAccountDisplayNameChanged();

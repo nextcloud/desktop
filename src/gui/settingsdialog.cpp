@@ -478,7 +478,7 @@ void SettingsDialog::slotRefreshActivityAccountStateSender()
     slotRefreshActivity(accountState);
 }
 
-void SettingsDialog::slotRefreshActivity(AccountStatePtr accountState)
+void SettingsDialog::slotRefreshActivity(const AccountStatePtr &accountState)
 {
     if (accountState) {
         _activitySettings->slotRefresh(accountState);

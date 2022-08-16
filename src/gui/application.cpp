@@ -442,7 +442,7 @@ void Application::slotCleanup()
 // FIXME: This is not ideal yet since a ConnectionValidator might already be running and is in
 // progress of timing out in some seconds.
 // Maybe we need 2 validators, one triggered by timer, one by network configuration changes?
-void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf)
+void Application::slotSystemOnlineConfigurationChanged(const QNetworkConfiguration &cnf)
 {
     if (cnf.state() & QNetworkConfiguration::Active) {
         QMetaObject::invokeMethod(this, "slotCheckConnection", Qt::QueuedConnection);

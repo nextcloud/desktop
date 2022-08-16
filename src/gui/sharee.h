@@ -43,8 +43,8 @@ public:
         Federated = 6
     };
 
-    explicit Sharee(const QString shareWith,
-        const QString displayName,
+    explicit Sharee(const QString &shareWith,
+        const QString &displayName,
         const Type type);
 
     QString format() const;

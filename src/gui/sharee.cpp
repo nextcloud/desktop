@@ -23,8 +23,8 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcSharing, "gui.sharing", QtInfoMsg)
 
-Sharee::Sharee(const QString shareWith,
-    const QString displayName,
+Sharee::Sharee(const QString &shareWith,
+    const QString &displayName,
     const Type type)
     : _shareWith(shareWith)
     , _displayName(displayName)

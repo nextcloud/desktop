@@ -68,7 +68,7 @@ static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, cons
         < 0;
 }
 
-void FolderStatusModel::setAccountState(AccountStatePtr accountState)
+void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
 {
     beginResetModel();
     _dirty = false;
@@ -1243,7 +1243,7 @@ bool FolderStatusModel::SubFolderInfo::hasLabel() const
     return _hasError || _fetchingLabel;
 }
 
-void FolderStatusModel::SubFolderInfo::resetSubs(FolderStatusModel *model, QModelIndex index)
+void FolderStatusModel::SubFolderInfo::resetSubs(FolderStatusModel *model, const QModelIndex &index)
 {
     _fetched = false;
     if (_fetchingJob) {

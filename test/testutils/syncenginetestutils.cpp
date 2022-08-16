@@ -965,7 +965,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
     // handle aboutToRemoveAllFiles with a timeout in case our test does not handle it
-    QObject::connect(_syncEngine.get(), &OCC::SyncEngine::aboutToRemoveAllFiles, _syncEngine.get(), [this](OCC::SyncFileItem::Direction, std::function<void(bool)> callback) {
+    QObject::connect(_syncEngine.get(), &OCC::SyncEngine::aboutToRemoveAllFiles, _syncEngine.get(), [this](OCC::SyncFileItem::Direction, const std::function<void(bool)> &callback) {
         QTimer::singleShot(1s, _syncEngine.get(), [callback] {
             callback(false);
         });
@@ -1123,7 +1123,7 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
     }
 }
 
-FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
+FileInfo &findOrCreateDirs(FileInfo &base, const PathComponents &components)
 {
     if (components.isEmpty())
         return base;

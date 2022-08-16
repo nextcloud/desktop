@@ -91,7 +91,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             return item.getRoot().getWebDavUrl();
         case Columns::Image: {
             const auto &special = item.getSpecial();
-            const auto img = std::find_if(special.cbegin(), special.cend(), [](OpenAPI::OAIDriveItem it) {
+            const auto img = std::find_if(special.cbegin(), special.cend(), [](const OpenAPI::OAIDriveItem &it) {
                 return it.getSpecialFolder().getName() == QLatin1String("image");
             });
             return img == special.cend() ? QString() : img->getWebDavUrl();

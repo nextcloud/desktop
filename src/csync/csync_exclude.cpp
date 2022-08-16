@@ -273,7 +273,7 @@ void ExcludedFiles::setWildcardsMatchSlash(bool onoff)
     prepare();
 }
 
-void ExcludedFiles::setClientVersion(QVersionNumber version)
+void ExcludedFiles::setClientVersion(const QVersionNumber &version)
 {
     _clientVersion = version;
 }

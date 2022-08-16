@@ -97,7 +97,7 @@ class ListenerClosure : public QObject
     Q_OBJECT
 public:
     using CallbackFunction = std::function<void()>;
-    ListenerClosure(CallbackFunction callback)
+    ListenerClosure(const CallbackFunction &callback)
         : callback_(callback)
     {
     }
