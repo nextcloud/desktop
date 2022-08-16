@@ -36,7 +36,7 @@ OAuthCredentialsSetupWizardPage::OAuthCredentialsSetupWizardPage(const QUrl &ser
         // change button title after first click
         _ui->openBrowserButton->setText(tr("Reopen Browser"));
     });
-    connect(_ui->copyUrlToClipboardButton, &QToolButton::clicked, this, [this]() {
+    connect(_ui->copyUrlToClipboardButton, &QPushButton::clicked, this, [this]() {
         Q_EMIT copyUrlToClipboardButtonPushed();
     });
 
