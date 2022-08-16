@@ -1,0 +1,5 @@
+Change: Don't display error state when server is unreachable
+
+We no longer display a network error if the server is currently unavailable.
+
+https://github.com/owncloud/client/issues/9790
