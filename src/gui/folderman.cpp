@@ -160,7 +160,7 @@ FolderMan::FolderMan(QObject *parent)
     connect(&_startScheduledSyncTimer, &QTimer::timeout,
         this, &FolderMan::slotStartScheduledFolderSync);
 
-    _timeScheduler.setInterval(5000);
+    _timeScheduler.setInterval(5s);
     _timeScheduler.setSingleShot(false);
     connect(&_timeScheduler, &QTimer::timeout,
         this, &FolderMan::slotScheduleFolderByTime);
@@ -1206,21 +1206,14 @@ void FolderMan::removeFolder(Folder *f)
     f->removeFromSettings();
 
     unloadFolder(f);
-    if (currentlyRunning) {
-        // We want to schedule the next folder once this is done
-        connect(f, &Folder::syncFinished,
-            this, &FolderMan::slotFolderSyncFinished);
-        // Let the folder delete itself when done.
-        connect(f, &Folder::syncFinished, f, &QObject::deleteLater);
-    } else {
-        f->deleteLater();
-    }
+    f->deleteLater();
 
 #ifdef Q_OS_WIN
     _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
 #endif
     Q_EMIT folderRemoved(f);
     emit folderListChanged(_folderMap);
+    QTimer::singleShot(0, this, &FolderMan::startScheduledSyncSoon);
 }
 
 QString FolderMan::getBackupName(QString fullPathName) const
