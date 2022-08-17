@@ -26,6 +26,7 @@ Summary
 * Bugfix - We fixed a potential crash: [#9864](https://github.com/owncloud/client/issues/9864)
 * Bugfix - Changes during upload of a file could still trigger the ignore list: [#9924](https://github.com/owncloud/client/issues/9924)
 * Bugfix - Windows VFS: Files in an existing folder are dehydrated: [#9966](https://github.com/owncloud/client/pull/9966)
+* Bugfix - Run next scheduled sync after a folder was removed: [#9969](https://github.com/owncloud/client/issues/9969)
 * Bugfix - Windows VFS: Keep file attributes and pin state: [#34](https://github.com/owncloud/client-desktop-vfs-win/pull/34)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
@@ -172,6 +173,13 @@ Details
    existing files.
 
    https://github.com/owncloud/client/pull/9966
+
+* Bugfix - Run next scheduled sync after a folder was removed: [#9969](https://github.com/owncloud/client/issues/9969)
+
+   We fixed a bug where we did not start another sync when a folder that was currently syncing was
+   removed.
+
+   https://github.com/owncloud/client/issues/9969
 
 * Bugfix - Windows VFS: Keep file attributes and pin state: [#34](https://github.com/owncloud/client-desktop-vfs-win/pull/34)
 
