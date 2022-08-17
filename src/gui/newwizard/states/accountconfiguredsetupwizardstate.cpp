@@ -57,7 +57,14 @@ void AccountConfiguredSetupWizardState::evaluatePage()
     Q_ASSERT(accountConfiguredSetupWizardPage != nullptr);
 
     if (accountConfiguredSetupWizardPage->syncMode() != Wizard::SyncMode::ConfigureUsingFolderWizard) {
-        _context->accountBuilder().setDefaultSyncTargetDir(QDir::fromNativeSeparators(accountConfiguredSetupWizardPage->syncTargetDir()));
+        QString syncTargetDir = QDir::fromNativeSeparators(accountConfiguredSetupWizardPage->syncTargetDir());
+
+        if (!QDir::isAbsolutePath(syncTargetDir)) {
+            Q_EMIT evaluationFailed(tr("Sync target directory path must be absolute"));
+            return;
+        }
+
+        _context->accountBuilder().setDefaultSyncTargetDir(syncTargetDir);
     }
 
     Q_EMIT evaluationSuccessful();
