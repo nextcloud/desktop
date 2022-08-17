@@ -1863,7 +1863,7 @@ QByteArray SyncJournalDb::getChecksumType(int checksumTypeId)
 
 int SyncJournalDb::mapChecksumType(CheckSums::Algorithm checksumType)
 {
-    if (checksumType == CheckSums::Algorithm::Error || checksumType == CheckSums::Algorithm::None) {
+    if (checksumType == CheckSums::Algorithm::PARSE_ERROR || checksumType == CheckSums::Algorithm::NONE) {
         return 0;
     }
 
@@ -1872,7 +1872,8 @@ int SyncJournalDb::mapChecksumType(CheckSums::Algorithm checksumType)
         return *it;
     }
 
-    const QString typeName = CheckSums::toQString(checksumType);
+    // the type is mapped as utf8
+    const auto typeName = CheckSums::toQString(checksumType).toUtf8();
     // Ensure the checksum type is in the db
     {
         const auto query = _queryManager.get(PreparedSqlQueryManager::InsertChecksumTypeQuery, QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db);
@@ -1887,7 +1888,7 @@ int SyncJournalDb::mapChecksumType(CheckSums::Algorithm checksumType)
 
     // Retrieve the id
     {
-        const auto query = _queryManager.get(PreparedSqlQueryManager::GetChecksumTypeIdQuery, QByteArrayLiteral("SELECT id FROM checksumtype WHERE name=?1"), _db);
+        const auto query = _queryManager.get(PreparedSqlQueryManager::GetChecksumTypeIdQuery, QByteArrayLiteral("SELECT id FROM checksumtype WHERE UPPER(name)=?1"), _db);
         if (!query) {
             return 0;
         }

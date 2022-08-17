@@ -51,7 +51,6 @@ OCSYNC_EXPORT QByteArray findBestChecksum(const QByteArray &checksums);
 class OCSYNC_EXPORT ChecksumHeader
 {
 public:
-    /// Parses a checksum header
     static ChecksumHeader parseChecksumHeader(const QByteArray &header);
 
     ChecksumHeader() = default;
@@ -73,7 +72,7 @@ public:
     bool operator!=(const ChecksumHeader &other) const;
 
 private:
-    CheckSums::Algorithm _checksumType = CheckSums::Algorithm::None;
+    CheckSums::Algorithm _checksumType = CheckSums::Algorithm::NONE;
     QByteArray _checksum;
     QString _error;
 };

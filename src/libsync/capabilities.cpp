@@ -142,7 +142,7 @@ QList<CheckSums::Algorithm> Capabilities::supportedChecksumTypes() const
 CheckSums::Algorithm Capabilities::preferredUploadChecksumType() const
 {
     static auto envType = CheckSums::fromByteArray(qgetenv("OWNCLOUD_CONTENT_CHECKSUM_TYPE"));
-    if (envType != CheckSums::Algorithm::None && envType != CheckSums::Algorithm::Error) {
+    if (envType != CheckSums::Algorithm::NONE && envType != CheckSums::Algorithm::PARSE_ERROR) {
         return envType;
     }
     const auto val = _capabilities.value(QStringLiteral("checksums")).toMap().value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1")).toString().toUpper().toUtf8();
@@ -152,12 +152,12 @@ CheckSums::Algorithm Capabilities::preferredUploadChecksumType() const
 CheckSums::Algorithm Capabilities::uploadChecksumType() const
 {
     auto preferred = preferredUploadChecksumType();
-    if (preferred != CheckSums::Algorithm::Error)
+    if (preferred != CheckSums::Algorithm::PARSE_ERROR)
         return preferred;
     QList<CheckSums::Algorithm> supported = supportedChecksumTypes();
     if (!supported.isEmpty())
         return supported.first();
-    return CheckSums::Algorithm::Error;
+    return CheckSums::Algorithm::PARSE_ERROR;
 }
 
 bool Capabilities::chunkingNg() const

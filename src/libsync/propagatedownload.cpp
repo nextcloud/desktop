@@ -860,7 +860,7 @@ void PropagateDownloadFile::transmissionChecksumValidated(CheckSums::Algorithm c
     //
     // We could do this more aggressively and accept both MD5 and SHA1
     // instead of insisting on the exactly correct checksum type.
-    if (theContentChecksumType == checksumType || theContentChecksumType != CheckSums::Algorithm::Error) {
+    if (theContentChecksumType == checksumType || theContentChecksumType != CheckSums::Algorithm::PARSE_ERROR) {
         return contentChecksumComputed(checksumType, checksum);
     }
 

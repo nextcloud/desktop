@@ -34,14 +34,14 @@ namespace CheckSums {
     OCSYNC_EXPORT Q_NAMESPACE;
 
     enum class Algorithm {
+        NONE,
         SHA3_256 = QCryptographicHash::Sha3_256,
         SHA256 = QCryptographicHash::Sha256,
         SHA1 = QCryptographicHash::Sha1,
         MD5 = QCryptographicHash::Md5,
         ADLER32 = 100,
         DUMMY_FOR_TESTS,
-        None,
-        Error
+        PARSE_ERROR
     };
     Q_ENUM_NS(Algorithm);
 
@@ -60,12 +60,14 @@ namespace CheckSums {
             return "ADLER32";
         case Algorithm::DUMMY_FOR_TESTS:
             return "DUMMY_FOR_TESTS";
-        case Algorithm::Error:
-            [[fallthrough]];
-        case Algorithm::None:
+        case Algorithm::PARSE_ERROR:
+            break;
+        case Algorithm::NONE:
+            // while none is a valid enum value, it is not valid when used to create a checksum string
+            Q_UNREACHABLE();
             break;
         }
-        return "Error";
+        return "ERROR";
     }
 
     inline QString toQString(Algorithm algo)
@@ -78,7 +80,6 @@ namespace CheckSums {
     {
         return std::make_pair(a, toString(a));
     }
-
 
     constexpr_list auto All = {
         // Sorted by priority
@@ -110,12 +111,9 @@ namespace CheckSums {
         if (it != All.end()) {
             return it->first;
         }
-        return Algorithm::Error;
+        return Algorithm::PARSE_ERROR;
     }
 
-    inline Algorithm fromByteArray(const QByteArray &s)
-    {
-        return fromName(s.toUpper().constData());
-    }
+    OCSYNC_EXPORT Algorithm fromByteArray(const QByteArray &s);
 }
 }

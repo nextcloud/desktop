@@ -17,4 +17,25 @@
  */
 
 #include "checksumalgorithms.h"
+
+using namespace OCC;
+CheckSums::Algorithm CheckSums::fromByteArray(const QByteArray &s)
+{
+    // assert to ensure that all keys are uppercase
+    Q_ASSERT([] {
+        // ensure to run the check only once
+        static bool once = [] {
+            for (const auto &a : All) {
+                const QString s = CheckSums::toQString(a.first);
+                if (s != s.toUpper()) {
+                    return false;
+                }
+            }
+            return true;
+        }();
+        return once;
+    }());
+    return fromName(s.toUpper().constData());
+}
+
 #include "moc_checksumalgorithms.cpp"

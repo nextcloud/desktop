@@ -201,7 +201,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(CheckSums::Algor
     if (uploadChecksumEnabled()) {
         computeChecksum->setChecksumType(propagator()->account()->capabilities().uploadChecksumType());
     } else {
-        computeChecksum->setChecksumType(CheckSums::Algorithm::Error);
+        computeChecksum->setChecksumType(CheckSums::Algorithm::PARSE_ERROR);
     }
 
     connect(computeChecksum, &ComputeChecksum::done,

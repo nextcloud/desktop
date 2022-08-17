@@ -122,7 +122,7 @@ ChecksumHeader ChecksumHeader::parseChecksumHeader(const QByteArray &header)
         out._error = QCoreApplication::translate("ChecksumHeader", "The checksum header is malformed: %1").arg(QString::fromUtf8(header));
     } else {
         out._checksumType = CheckSums::fromByteArray(header.left(idx));
-        if (out._checksumType == CheckSums::Algorithm::Error) {
+        if (out._checksumType == CheckSums::Algorithm::PARSE_ERROR) {
             out._error = QCoreApplication::translate("ChecksumHeader", "The checksum header contained an unknown checksum type '%1'").arg(QString::fromUtf8(header.left(idx)));
         }
         out._checksum = header.mid(idx + 1);
@@ -159,7 +159,7 @@ QByteArray ChecksumHeader::checksum() const
 
 bool ChecksumHeader::isValid() const
 {
-    return _checksumType != CheckSums::Algorithm::None && _checksumType != CheckSums::Algorithm::Error && !_checksum.isEmpty();
+    return _checksumType != CheckSums::Algorithm::NONE && _checksumType != CheckSums::Algorithm::PARSE_ERROR && !_checksum.isEmpty();
 }
 
 QString ChecksumHeader::error() const
@@ -315,7 +315,7 @@ QByteArray ComputeChecksum::computeNow(QIODevice *device, CheckSums::Algorithm a
         return calcAdler32(device);
     case CheckSums::Algorithm::DUMMY_FOR_TESTS:
         return QByteArrayLiteral("0x1");
-    case CheckSums::Algorithm::Error:
+    case CheckSums::Algorithm::PARSE_ERROR:
         return {};
     }
     Q_UNREACHABLE();
@@ -327,7 +327,7 @@ void ComputeChecksum::slotCalculationDone()
     if (!checksum.isNull()) {
         emit done(_checksumType, checksum);
     } else {
-        emit done(CheckSums::Algorithm::Error, QByteArray());
+        emit done(CheckSums::Algorithm::PARSE_ERROR, QByteArray());
     }
 }
 
@@ -341,7 +341,7 @@ ComputeChecksum *ValidateChecksumHeader::prepareStart(const QByteArray &checksum
 {
     // If the incoming header is empty no validation can happen. Just continue.
     if (checksumHeader.isEmpty()) {
-        emit validated(CheckSums::Algorithm::Error, QByteArray());
+        emit validated(CheckSums::Algorithm::PARSE_ERROR, QByteArray());
         return nullptr;
     }
     _expectedChecksum = ChecksumHeader::parseChecksumHeader(checksumHeader);
@@ -373,7 +373,7 @@ void ValidateChecksumHeader::start(std::unique_ptr<QIODevice> device, const QByt
 void ValidateChecksumHeader::slotChecksumCalculated(CheckSums::Algorithm checksumType,
     const QByteArray &checksum)
 {
-    if (_expectedChecksum.type() == CheckSums::Algorithm::Error) {
+    if (_expectedChecksum.type() == CheckSums::Algorithm::PARSE_ERROR) {
         emit validationFailed(_expectedChecksum.error());
         return;
     }
