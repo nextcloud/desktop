@@ -922,7 +922,7 @@ Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDe
     // Migration: The first account that's configured for a local folder shall
     // be saved in a backwards-compatible way.
     bool oneAccountOnly = true;
-    for (auto *other : _folders) {
+    for (auto *other : qAsConst(_folders)) {
         if (other != folder && other->cleanPath() == folder->cleanPath()) {
             oneAccountOnly = false;
             break;
@@ -982,7 +982,7 @@ Folder *FolderMan::folderForPath(const QString &path, QString *relativePath)
 {
     QString absolutePath = QDir::cleanPath(path) + QLatin1Char('/');
 
-    for (auto *folder : _folders) {
+    for (auto *folder : qAsConst(_folders)) {
         const QString folderPath = folder->cleanPath() + QLatin1Char('/');
 
         if (absolutePath.startsWith(folderPath, (Utility::isWindows() || Utility::isMac()) ? Qt::CaseInsensitive : Qt::CaseSensitive)) {
@@ -1008,7 +1008,7 @@ QStringList FolderMan::findFileInLocalFolders(const QString &relPath, const Acco
     if (!serverPath.startsWith(QLatin1Char('/')))
         serverPath.prepend(QLatin1Char('/'));
 
-    for (auto *folder : _folders) {
+    for (auto *folder : qAsConst(_folders)) {
         if (acc != nullptr && folder->accountState()->account() != acc) {
             continue;
         }

@@ -326,7 +326,7 @@ void AccountState::checkConnectivity(bool blockJobs)
                 _tlsDialog->setAttribute(Qt::WA_DeleteOnClose);
                 QSet<QSslCertificate> certs;
                 certs.reserve(filteredErrors.size());
-                for (const auto &error : filteredErrors) {
+                for (const auto &error : qAsConst(filteredErrors)) {
                     certs << error.certificate();
                 }
                 connect(_tlsDialog, &TlsErrorDialog::accepted, _tlsDialog, [certs, blockJobs, this]() {

@@ -543,7 +543,7 @@ int main(int argc, char **argv)
             Q_UNUSED(reply)
 
             qCritical() << "SSL error encountered";
-            for (auto e : errors) {
+            for (const auto &e : errors) {
                 qCritical() << e.errorString();
             }
             qFatal("If you trust the certificate and want to ignore the errors, use the --trust option.");

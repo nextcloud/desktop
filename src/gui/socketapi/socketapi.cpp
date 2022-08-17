@@ -282,7 +282,7 @@ void SocketApi::slotNewConnection()
 
     auto listener = QSharedPointer<SocketListener>::create(socket);
     _listeners.insert(socket, listener);
-    for (auto a : _registeredAccounts) {
+    for (const auto &a : qAsConst(_registeredAccounts)) {
         if (a->hasDefaultSyncRoot()) {
             broadcastMessage(buildRegisterPathMessage(Utility::stripTrailingSlash(a->defaultSyncRoot())));
         }
