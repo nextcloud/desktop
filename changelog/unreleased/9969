@@ -1,0 +1,5 @@
+Bugfix: Run next scheduled sync after a folder was removed
+
+We fixed a bug where we did not start another sync when a folder that was currently syncing was removed.
+
+https://github.com/owncloud/client/issues/9969

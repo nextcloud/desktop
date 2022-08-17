@@ -363,7 +363,7 @@ private:
     QSet<Folder *> _disabledFolders;
     QVector<Folder *> _folders;
     QString _folderConfigPath;
-    Folder *_currentSyncFolder;
+    QPointer<Folder> _currentSyncFolder;
     QPointer<Folder> _lastSyncFolder;
     bool _syncEnabled;
 
