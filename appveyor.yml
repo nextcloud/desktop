@@ -1,0 +1,42 @@
+version: '{build}-{branch}'
+
+image: Visual Studio 2019
+
+branches:
+  only:
+    - master
+
+clone_depth: 1
+
+init:
+- ps: |
+    function craft() {
+        cmd /C "echo %PATH%"
+        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+        if($LASTEXITCODE -ne 0) {exit $LASTEXITCODE}
+    }
+    function crafttests() {
+        cmd /C "echo %PATH%"
+        & "C:\Python39-x64\python.exe" "C:\CraftMaster\CraftMaster\CraftMaster.py" --config "$env:APPVEYOR_BUILD_FOLDER\appveyor.ini" --variables "APPVEYOR_BUILD_FOLDER=$env:APPVEYOR_BUILD_FOLDER" --target $env:TARGET -c $args
+    }
+
+install:
+- ps: |
+    #use cmd to silence powershell behaviour for stderr
+    & cmd /C "git clone -q --depth=1 https://invent.kde.org/packaging/craftmaster.git C:\CraftMaster\CraftMaster 2>&1"
+    craft --add-blueprint-repository [git]https://github.com/nextcloud/desktop-client-blueprints.git
+    craft craft
+    craft --install-deps nextcloud-client
+    craft nsis
+
+build_script:
+- ps: |
+    craft --src-dir $env:APPVEYOR_BUILD_FOLDER nextcloud-client
+
+test_script:
+- ps: |
+    crafttests --test --src-dir $env:APPVEYOR_BUILD_FOLDER nextcloud-client
+
+environment:
+    matrix:
+    - TARGET: windows-msvc2019_64-cl
