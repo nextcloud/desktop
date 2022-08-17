@@ -201,7 +201,7 @@ void ShareLinkWidget::setupUiOptions()
          permissionMenu->addAction(_allowUploadEditingLinkAction);
 
         checked = (perm == SharePermissionCreate);
-        _allowUploadLinkAction = permissionsGroup->addAction(tr("File drop (upload only)"));
+        _allowUploadLinkAction = permissionsGroup->addAction(tr("File drop"));
         _allowUploadLinkAction->setCheckable(true);
         _allowUploadLinkAction->setChecked(checked);
         permissionMenu->addAction(_allowUploadLinkAction);
@@ -547,24 +547,37 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
 {
     const auto state = action->isChecked();
     SharePermissions perm = SharePermissionRead;
-
+    _ui->currentPermission_3->setElideMode(Qt::ElideRight);
     if (action == _addAnotherLinkAction.data()) {
         emit createLinkShare();
 
     } else if (action == _readOnlyLinkAction && state) {
         _linkShare->setPermissions(perm);
+        if(_isFile)
+        {
+            _ui->currentPermission_3->setEnabled(false);
+        }
+        else
+        {
+            _ui->currentPermission_3->setEnabled(true);
+        }
+        _linkShare->setPermissions(perm);
+        _ui->currentPermission_3->setText(action->text());
 
     } else if (action == _allowEditingLinkAction && state) {
         perm |= SharePermissionUpdate;
         _linkShare->setPermissions(perm);
+        _ui->currentPermission_3->setText(action->text());
 
     } else if (action == _allowUploadEditingLinkAction && state) {
         perm |= SharePermissionCreate | SharePermissionUpdate | SharePermissionDelete;
         _linkShare->setPermissions(perm);
+         _ui->currentPermission_3->setText(action->text());
 
     } else if (action == _allowUploadLinkAction && state) {
         perm = SharePermissionCreate;
         _linkShare->setPermissions(perm);
+         _ui->currentPermission_3->setText(action->text());
 
     } else if (action == _passwordProtectLinkAction) {
         togglePasswordOptions(state);

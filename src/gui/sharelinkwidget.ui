@@ -147,22 +147,25 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_3">
      <item>
-      <spacer name="horizontalSpacer_4">
+      <spacer name="horizontalSpacer_3">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>40</width>
-         <height>20</height>
+         <width>20</width>
+         <height>23</height>
         </size>
        </property>
       </spacer>
      </item>
      <item>
-      <widget class="OCC::ElidedLabel" name="permissionlabel">
+      <widget class="OCC::ElidedLabel" name="currentPermission_3">
        <property name="text">
-        <string/>
+        <string>Read Only</string>
        </property>
       </widget>
      </item>
@@ -180,33 +183,7 @@
       </widget>
      </item>
      <item>
-      <spacer name="horizontalSpacer_6">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_5">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <spacer name="horizontalSpacer_3">
+      <spacer name="horizontalSpacer_4">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -510,7 +487,7 @@
   <customwidget>
    <class>OCC::ElidedLabel</class>
    <extends>QLabel</extends>
-   <header>elidedlabel.h</header>
+   <header location="global">elidedlabel.h</header>
   </customwidget>
  </customwidgets>
  <resources>

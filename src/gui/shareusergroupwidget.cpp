@@ -924,7 +924,7 @@ void ShareUserLine::displayPermissions()
         //  _permissionCreate->setChecked(perm & SharePermissionCreate);
         _permissionChange->setChecked(perm & SharePermissionUpdate);
         //        _permissionDelete->setChecked(perm & SharePermissionDelete);
-         _ui->currentPermission->setText(tr("Can Edit"));
+       //  _ui->currentPermission->setText(tr("Can Edit"));
     }
 }
 
