@@ -59,8 +59,16 @@ void AccountConfiguredSetupWizardState::evaluatePage()
     if (accountConfiguredSetupWizardPage->syncMode() != Wizard::SyncMode::ConfigureUsingFolderWizard) {
         QString syncTargetDir = QDir::fromNativeSeparators(accountConfiguredSetupWizardPage->syncTargetDir());
 
+        const QString errorMessageTemplate = tr("Invalid local download directory: %1");
+
         if (!QDir::isAbsolutePath(syncTargetDir)) {
-            Q_EMIT evaluationFailed(tr("Sync target directory path must be absolute"));
+            Q_EMIT evaluationFailed(errorMessageTemplate.arg(QStringLiteral("path must be absolute")));
+            return;
+        }
+
+        QString invalidPathErrorMessage = FolderMan::checkPathValidityRecursive(syncTargetDir);
+        if (!invalidPathErrorMessage.isEmpty()) {
+            Q_EMIT evaluationFailed(errorMessageTemplate.arg(invalidPathErrorMessage));
             return;
         }
 

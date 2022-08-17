@@ -89,6 +89,8 @@ public:
     static QString suggestSyncFolder(const QUrl &server, const QString &displayName);
     [[nodiscard]] static bool prepareFolder(const QString &folder);
 
+    static QString checkPathValidityRecursive(const QString &path);
+
     ~FolderMan() override;
 
     /**

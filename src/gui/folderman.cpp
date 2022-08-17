@@ -1213,7 +1213,28 @@ QString FolderMan::trayTooltipStatusString(
     return folderMessage;
 }
 
-static QString checkPathValidityRecursive(const QString &path)
+// QFileInfo::canonicalPath returns an empty string if the file does not exist.
+// This function also works with files that does not exist and resolve the symlinks in the
+// parent directories.
+static QString canonicalPath(const QString &path)
+{
+    QFileInfo selFile(path);
+    if (!selFile.exists()) {
+        const auto parentPath = selFile.dir().path();
+
+        // It's possible for the parentPath to match the path
+        // (possibly we've arrived at a non-existant drive root on Windows)
+        // and recursing would be fatal.
+        if (parentPath == path) {
+            return path;
+        }
+
+        return canonicalPath(parentPath) + QLatin1Char('/') + selFile.fileName();
+    }
+    return selFile.canonicalFilePath();
+}
+
+QString FolderMan::checkPathValidityRecursive(const QString &path)
 {
     if (path.isEmpty()) {
         return FolderMan::tr("No valid folder selected!");
@@ -1242,27 +1263,6 @@ static QString checkPathValidityRecursive(const QString &path)
         return FolderMan::tr("You have no permission to write to the selected folder!");
     }
     return QString();
-}
-
-// QFileInfo::canonicalPath returns an empty string if the file does not exist.
-// This function also works with files that does not exist and resolve the symlinks in the
-// parent directories.
-static QString canonicalPath(const QString &path)
-{
-    QFileInfo selFile(path);
-    if (!selFile.exists()) {
-        const auto parentPath = selFile.dir().path();
-
-        // It's possible for the parentPath to match the path
-        // (possibly we've arrived at a non-existant drive root on Windows)
-        // and recursing would be fatal.
-        if (parentPath == path) {
-            return path;
-        }
-
-        return canonicalPath(parentPath) + QLatin1Char('/') + selFile.fileName();
-    }
-    return selFile.canonicalFilePath();
 }
 
 QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
