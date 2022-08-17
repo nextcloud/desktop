@@ -407,7 +407,8 @@ void PropagateDownloadFile::start()
             || _item->_modtime == _item->_previousModtime)) {
         qCDebug(lcPropagateDownload) << _item->_file << "may not need download, computing checksum";
         auto computeChecksum = new ComputeChecksum(this);
-        computeChecksum->setChecksumType(parseChecksumHeaderType(_item->_checksumHeader));
+        const auto checksumHeader = ChecksumHeader::parseChecksumHeader(_item->_checksumHeader);
+        computeChecksum->setChecksumType(checksumHeader.type());
         connect(computeChecksum, &ComputeChecksum::done,
             this, &PropagateDownloadFile::conflictChecksumComputed);
         propagator()->_activeJobList.append(this);
@@ -418,10 +419,11 @@ void PropagateDownloadFile::start()
     startDownload();
 }
 
-void PropagateDownloadFile::conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::conflictChecksumComputed(CheckSums::Algorithm checksumType, const QByteArray &checksum)
 {
     propagator()->_activeJobList.removeOne(this);
-    if (makeChecksumHeader(checksumType, checksum) == _item->_checksumHeader) {
+    const auto checksumHeader = ChecksumHeader::parseChecksumHeader(_item->_checksumHeader);
+    if (checksumHeader == ChecksumHeader(checksumType, checksum)) {
         // No download necessary, just update fs and journal metadata
         qCDebug(lcPropagateDownload) << _item->_file << "remote and local checksum match";
 
@@ -850,15 +852,15 @@ namespace { // Anonymous namespace for the recall feature
     }
 } // end namespace
 
-void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::transmissionChecksumValidated(CheckSums::Algorithm checksumType, const QByteArray &checksum)
 {
-    const QByteArray theContentChecksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
+    const CheckSums::Algorithm theContentChecksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
 
     // Reuse transmission checksum as content checksum.
     //
     // We could do this more aggressively and accept both MD5 and SHA1
     // instead of insisting on the exactly correct checksum type.
-    if (theContentChecksumType == checksumType || theContentChecksumType.isEmpty()) {
+    if (theContentChecksumType == checksumType || theContentChecksumType != CheckSums::Algorithm::Error) {
         return contentChecksumComputed(checksumType, checksum);
     }
 
@@ -871,9 +873,9 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
     computeChecksum->start(_tmpFile.fileName());
 }
 
-void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+void PropagateDownloadFile::contentChecksumComputed(CheckSums::Algorithm checksumType, const QByteArray &checksum)
 {
-    _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
+    _item->_checksumHeader = ChecksumHeader(checksumType, checksum).makeChecksumHeader();
 
     downloadFinished();
 }

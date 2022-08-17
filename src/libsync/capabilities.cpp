@@ -128,32 +128,36 @@ bool Capabilities::isValid() const
     return !_capabilities.isEmpty();
 }
 
-QList<QByteArray> Capabilities::supportedChecksumTypes() const
+QList<CheckSums::Algorithm> Capabilities::supportedChecksumTypes() const
 {
-    QList<QByteArray> list;
+    // TODO: compute once
+    QList<CheckSums::Algorithm> list;
     const auto &supportedTypes = _capabilities.value(QStringLiteral("checksums")).toMap().value(QStringLiteral("supportedTypes")).toList();
     for (const auto &t : supportedTypes) {
-        list.push_back(t.toByteArray());
+        list.push_back(CheckSums::fromByteArray(t.toByteArray()));
     }
     return list;
 }
 
-QByteArray Capabilities::preferredUploadChecksumType() const
+CheckSums::Algorithm Capabilities::preferredUploadChecksumType() const
 {
-    return qEnvironmentVariable("OWNCLOUD_CONTENT_CHECKSUM_TYPE",
-                                _capabilities.value(QStringLiteral("checksums")).toMap()
-                                .value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1")).toString()).toUtf8();
+    static auto envType = CheckSums::fromByteArray(qgetenv("OWNCLOUD_CONTENT_CHECKSUM_TYPE"));
+    if (envType != CheckSums::Algorithm::None && envType != CheckSums::Algorithm::Error) {
+        return envType;
+    }
+    const auto val = _capabilities.value(QStringLiteral("checksums")).toMap().value(QStringLiteral("preferredUploadType"), QStringLiteral("SHA1")).toString().toUpper().toUtf8();
+    return CheckSums::fromByteArray(val);
 }
 
-QByteArray Capabilities::uploadChecksumType() const
+CheckSums::Algorithm Capabilities::uploadChecksumType() const
 {
-    QByteArray preferred = preferredUploadChecksumType();
-    if (!preferred.isEmpty())
+    auto preferred = preferredUploadChecksumType();
+    if (preferred != CheckSums::Algorithm::Error)
         return preferred;
-    QList<QByteArray> supported = supportedChecksumTypes();
+    QList<CheckSums::Algorithm> supported = supportedChecksumTypes();
     if (!supported.isEmpty())
         return supported.first();
-    return QByteArray();
+    return CheckSums::Algorithm::Error;
 }
 
 bool Capabilities::chunkingNg() const

@@ -67,8 +67,8 @@ private slots:
         QVERIFY(storedRecord == record);
 
         // Update checksum
-        record._checksumHeader = "Adler32:newchecksum";
-        _db.updateFileRecordChecksum(QStringLiteral("foo"), "newchecksum", "Adler32");
+        record._checksumHeader = "ADLER32:newchecksum";
+        _db.updateFileRecordChecksum(QStringLiteral("foo"), "newchecksum", CheckSums::fromByteArray("Adler32"));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -103,9 +103,9 @@ private slots:
 
             SyncJournalFileRecord storedRecord;
             QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo-checksum"), &storedRecord));
-            QVERIFY(storedRecord._path == record._path);
-            QVERIFY(storedRecord._remotePerm == record._remotePerm);
-            QVERIFY(storedRecord._checksumHeader == record._checksumHeader);
+            QCOMPARE(storedRecord._path, record._path);
+            QCOMPARE(storedRecord._remotePerm, record._remotePerm);
+            QCOMPARE(storedRecord._checksumHeader, record._checksumHeader);
 
             // qDebug()<< "OOOOO " << storedRecord._modtime.toTime_t() << record._modtime.toTime_t();
 

@@ -48,15 +48,35 @@ class SyncJournalDb;
  */
 OCSYNC_EXPORT QByteArray findBestChecksum(const QByteArray &checksums);
 
+class OCSYNC_EXPORT ChecksumHeader
+{
+public:
+    /// Parses a checksum header
+    static ChecksumHeader parseChecksumHeader(const QByteArray &header);
 
-/// Creates a checksum header from type and value.
-OCSYNC_EXPORT QByteArray makeChecksumHeader(const QByteArray &checksumType, const QByteArray &checksum);
+    ChecksumHeader() = default;
+    ChecksumHeader(CheckSums::Algorithm type, const QByteArray &checksum);
 
-/// Parses a checksum header
-OCSYNC_EXPORT bool parseChecksumHeader(const QByteArray &header, QByteArray *type, QByteArray *checksum);
+    QByteArray makeChecksumHeader() const;
 
-/// Convenience for getting the type from a checksum header, null if none
-OCSYNC_EXPORT QByteArray parseChecksumHeaderType(const QByteArray &header);
+
+    CheckSums::Algorithm type() const;
+
+    QByteArray checksum() const;
+
+    bool isValid() const;
+
+    QString error() const;
+
+    bool operator==(const ChecksumHeader &other) const;
+
+    bool operator!=(const ChecksumHeader &other) const;
+
+private:
+    CheckSums::Algorithm _checksumType = CheckSums::Algorithm::None;
+    QByteArray _checksum;
+    QString _error;
+};
 
 /// Checks OWNCLOUD_DISABLE_CHECKSUM_UPLOAD
 OCSYNC_EXPORT bool uploadChecksumEnabled();
@@ -73,11 +93,11 @@ public:
     ~ComputeChecksum() override;
 
     /**
-     * Sets the checksum type to be used. The default is empty.
+     * Sets the checksum type to be used.
      */
-    void setChecksumType(const QByteArray &type);
+    void setChecksumType(CheckSums::Algorithm type);
 
-    QByteArray checksumType() const;
+    CheckSums::Algorithm checksumType() const;
 
     /**
      * Computes the checksum for the given file path.
@@ -99,20 +119,15 @@ public:
     /**
      * Computes the checksum synchronously.
      */
-    static QByteArray computeNow(QIODevice *device, const QByteArray &checksumType);
-
-    /**
-     * Computes the checksum synchronously.
-     */
     static QByteArray computeNow(QIODevice *device, CheckSums::Algorithm algo);
 
     /**
      * Computes the checksum synchronously on file. Convenience wrapper for computeNow().
      */
-    static QByteArray computeNowOnFile(const QString &filePath, const QByteArray &checksumType);
+    static QByteArray computeNowOnFile(const QString &filePath, CheckSums::Algorithm checksumType);
 
 signals:
-    void done(const QByteArray &checksumType, const QByteArray &checksum);
+    void done(CheckSums::Algorithm checksumType, const QByteArray &checksum);
 
 private slots:
     void slotCalculationDone();
@@ -120,7 +135,7 @@ private slots:
 private:
     void startImpl(std::unique_ptr<QIODevice> device);
 
-    QByteArray _checksumType;
+    CheckSums::Algorithm _checksumType;
 
     // watcher for the checksum calculation thread
     QFutureWatcher<QByteArray> _watcher;
@@ -156,36 +171,15 @@ public:
     void start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader);
 
 signals:
-    void validated(const QByteArray &checksumType, const QByteArray &checksum);
+    void validated(CheckSums::Algorithm checksumType, const QByteArray &checksum);
     void validationFailed(const QString &errMsg);
 
 private slots:
-    void slotChecksumCalculated(const QByteArray &checksumType, const QByteArray &checksum);
+    void slotChecksumCalculated(CheckSums::Algorithm checksumType, const QByteArray &checksum);
 
 private:
     ComputeChecksum *prepareStart(const QByteArray &checksumHeader);
 
-    QByteArray _expectedChecksumType;
-    QByteArray _expectedChecksum;
-};
-
-/**
- * Hooks checksum computations into csync.
- * @ingroup libsync
- */
-class OCSYNC_EXPORT CSyncChecksumHook : public QObject
-{
-    Q_OBJECT
-public:
-    explicit CSyncChecksumHook();
-
-    /**
-     * Returns the checksum value for \a path that is comparable to \a otherChecksum.
-     *
-     * Called from csync, where a instance of CSyncChecksumHook has
-     * to be set as userdata.
-     * The return value will be owned by csync.
-     */
-    static QByteArray hook(const QByteArray &path, const QByteArray &otherChecksumHeader, void *this_obj);
+    ChecksumHeader _expectedChecksum;
 };
 }

@@ -195,9 +195,9 @@ public:
 private slots:
     void slotComputeContentChecksum();
     // Content checksum computed, compute the transmission checksum
-    void slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum);
+    void slotComputeTransmissionChecksum(CheckSums::Algorithm contentChecksumType, const QByteArray &contentChecksum);
     // transmission checksum computed, prepare the upload
-    void slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum);
+    void slotStartUpload(CheckSums::Algorithm transmissionChecksumType, const QByteArray &transmissionChecksum);
 
 public:
     virtual void doStartUpload() = 0;

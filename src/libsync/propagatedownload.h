@@ -13,8 +13,9 @@
  */
 #pragma once
 
-#include "owncloudpropagator.h"
+#include "common/checksumalgorithms.h"
 #include "networkjobs.h"
+#include "owncloudpropagator.h"
 
 #include <QBuffer>
 #include <QFile>
@@ -169,16 +170,16 @@ public:
 private slots:
     /// Called when ComputeChecksum on the local file finishes,
     /// maybe the local and remote checksums are identical?
-    void conflictChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+    void conflictChecksumComputed(CheckSums::Algorithm checksumType, const QByteArray &checksum);
     /// Called to start downloading the remote file
     void startDownload();
     void startFullDownload();
     /// Called when the GETJob finishes
     void slotGetFinished();
     /// Called when the download's checksum header was validated
-    void transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum);
+    void transmissionChecksumValidated(CheckSums::Algorithm checksumType, const QByteArray &checksum);
     /// Called when the download's checksum computation is done
-    void contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+    void contentChecksumComputed(CheckSums::Algorithm checksumType, const QByteArray &checksum);
     void downloadFinished();
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);

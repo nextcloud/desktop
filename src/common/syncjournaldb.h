@@ -25,12 +25,13 @@
 #include <QHash>
 #include <functional>
 
-#include "common/utility.h"
+#include "common/checksumalgorithms.h"
 #include "common/ownsql.h"
-#include "common/preparedsqlquerymanager.h"
-#include "common/syncjournalfilerecord.h"
-#include "common/result.h"
 #include "common/pinstate.h"
+#include "common/preparedsqlquerymanager.h"
+#include "common/result.h"
+#include "common/syncjournalfilerecord.h"
+#include "common/utility.h"
 
 namespace OCC {
 class SyncJournalFileRecord;
@@ -67,7 +68,7 @@ public:
     bool deleteFileRecord(const QString &filename, bool recursively = false);
     bool updateFileRecordChecksum(const QString &filename,
         const QByteArray &contentChecksum,
-        const QByteArray &contentChecksumType);
+        CheckSums::Algorithm contentChecksumType);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated
@@ -387,12 +388,12 @@ private:
     // Returns the integer id of the checksum type
     //
     // Returns 0 on failure and for empty checksum types.
-    int mapChecksumType(const QByteArray &checksumType);
+    int mapChecksumType(CheckSums::Algorithm checksumType);
 
     SqlDatabase _db;
     QString _dbFile;
     QMutex _mutex; // Public functions are protected with the mutex.
-    QMap<QByteArray, int> _checksymTypeCache;
+    QMap<CheckSums::Algorithm, int> _checksymTypeCache;
     int _transaction;
     bool _metadataTableIsEmpty;
 

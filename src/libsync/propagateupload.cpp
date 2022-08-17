@@ -164,13 +164,12 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     // change during the checksum calculation
     _item->_modtime = FileSystem::getModTime(filePath);
 
-    const QByteArray checksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
+    const auto checksumType = propagator()->account()->capabilities().preferredUploadChecksumType();
 
     // Maybe the discovery already computed the checksum?
-    QByteArray existingChecksumType, existingChecksum;
-    parseChecksumHeader(_item->_checksumHeader, &existingChecksumType, &existingChecksum);
-    if (existingChecksumType == checksumType) {
-        slotComputeTransmissionChecksum(checksumType, existingChecksum);
+    const auto checksumHeader = ChecksumHeader::parseChecksumHeader(_item->_checksumHeader);
+    if (checksumHeader.type() == checksumType) {
+        slotComputeTransmissionChecksum(checksumType, checksumHeader.checksum());
         return;
     }
 
@@ -185,9 +184,9 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
     computeChecksum->start(filePath);
 }
 
-void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray &contentChecksumType, const QByteArray &contentChecksum)
+void PropagateUploadFileCommon::slotComputeTransmissionChecksum(CheckSums::Algorithm contentChecksumType, const QByteArray &contentChecksum)
 {
-    _item->_checksumHeader = makeChecksumHeader(contentChecksumType, contentChecksum);
+    _item->_checksumHeader = ChecksumHeader(contentChecksumType, contentChecksum).makeChecksumHeader();
 
     // Reuse the content checksum as the transmission checksum if possible
     const auto supportedTransmissionChecksums =
@@ -202,7 +201,7 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
     if (uploadChecksumEnabled()) {
         computeChecksum->setChecksumType(propagator()->account()->capabilities().uploadChecksumType());
     } else {
-        computeChecksum->setChecksumType(QByteArray());
+        computeChecksum->setChecksumType(CheckSums::Algorithm::Error);
     }
 
     connect(computeChecksum, &ComputeChecksum::done,
@@ -213,13 +212,13 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(const QByteArray
     computeChecksum->start(filePath);
 }
 
-void PropagateUploadFileCommon::slotStartUpload(const QByteArray &transmissionChecksumType, const QByteArray &transmissionChecksum)
+void PropagateUploadFileCommon::slotStartUpload(CheckSums::Algorithm transmissionChecksumType, const QByteArray &transmissionChecksum)
 {
     // Remove ourselfs from the list of active job, before any posible call to done()
     // When we start chunks, we will add it again, once for every chunks.
     propagator()->_activeJobList.removeOne(this);
 
-    _transmissionChecksumHeader = makeChecksumHeader(transmissionChecksumType, transmissionChecksum);
+    _transmissionChecksumHeader = ChecksumHeader(transmissionChecksumType, transmissionChecksum).makeChecksumHeader();
 
     // If no checksum header was not set, reuse the transmission checksum as the content checksum.
     if (_item->_checksumHeader.isEmpty()) {

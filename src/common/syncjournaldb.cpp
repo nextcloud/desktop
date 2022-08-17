@@ -893,9 +893,9 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
         if (fileId.isEmpty())
             fileId = "";
         QByteArray remotePerm = record._remotePerm.toDbValue();
-        QByteArray checksumType, checksum;
-        parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
-        int contentChecksumTypeId = mapChecksumType(checksumType);
+
+        const auto checksumHeader = ChecksumHeader::parseChecksumHeader(record._checksumHeader);
+        int contentChecksumTypeId = mapChecksumType(checksumHeader.type());
         const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO metadata "
                                                                                                             "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId) "
                                                                                                             "VALUES (?1 , ?2, ?3 , ?4 , ?5 , ?6 , ?7,  ?8 , ?9 , ?10, ?11, ?12, ?13, ?14, ?15, ?16);"),
@@ -918,7 +918,7 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
         query->bindValue(12, remotePerm);
         query->bindValue(13, record._fileSize);
         query->bindValue(14, record._serverHasIgnoredFiles ? 1 : 0);
-        query->bindValue(15, checksum);
+        query->bindValue(15, checksumHeader.checksum());
         query->bindValue(16, contentChecksumTypeId);
 
         if (!query->exec()) {
@@ -1203,7 +1203,7 @@ int SyncJournalDb::getFileRecordCount()
 
 bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
     const QByteArray &contentChecksum,
-    const QByteArray &contentChecksumType)
+    CheckSums::Algorithm contentChecksumType)
 {
     QMutexLocker locker(&_mutex);
 
@@ -1861,23 +1861,25 @@ QByteArray SyncJournalDb::getChecksumType(int checksumTypeId)
     return query->baValue(0);
 }
 
-int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
+int SyncJournalDb::mapChecksumType(CheckSums::Algorithm checksumType)
 {
-    if (checksumType.isEmpty()) {
+    if (checksumType == CheckSums::Algorithm::Error || checksumType == CheckSums::Algorithm::None) {
         return 0;
     }
 
-    auto it =  _checksymTypeCache.find(checksumType);
-    if (it != _checksymTypeCache.end())
+    auto it = _checksymTypeCache.constFind(checksumType);
+    if (it != _checksymTypeCache.cend()) {
         return *it;
+    }
 
+    const QString typeName = CheckSums::toQString(checksumType);
     // Ensure the checksum type is in the db
     {
         const auto query = _queryManager.get(PreparedSqlQueryManager::InsertChecksumTypeQuery, QByteArrayLiteral("INSERT OR IGNORE INTO checksumtype (name) VALUES (?1)"), _db);
         if (!query) {
             return 0;
         }
-        query->bindValue(1, checksumType);
+        query->bindValue(1, typeName);
         if (!query->exec()) {
             return 0;
         }
@@ -1889,7 +1891,7 @@ int SyncJournalDb::mapChecksumType(const QByteArray &checksumType)
         if (!query) {
             return 0;
         }
-        query->bindValue(1, checksumType);
+        query->bindValue(1, typeName);
         if (!query->exec()) {
             return 0;
         }

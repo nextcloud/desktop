@@ -378,12 +378,12 @@ void ProcessDirectoryJob::processFile(const PathTuple &path,
 // Returns true if the checksum was successfully computed
 static bool computeLocalChecksum(const QByteArray &header, const QString &path, const SyncFileItemPtr &item)
 {
-    auto type = parseChecksumHeaderType(header);
-    if (!type.isEmpty()) {
+    const auto checksumHeader = ChecksumHeader::parseChecksumHeader(header);
+    if (checksumHeader.isValid()) {
         // TODO: compute async?
-        QByteArray checksum = ComputeChecksum::computeNowOnFile(path, type);
+        QByteArray checksum = ComputeChecksum::computeNowOnFile(path, checksumHeader.type());
         if (!checksum.isEmpty()) {
-            item->_checksumHeader = makeChecksumHeader(type, checksum);
+            item->_checksumHeader = ChecksumHeader(checksumHeader.type(), checksum).makeChecksumHeader();
             return true;
         }
     }

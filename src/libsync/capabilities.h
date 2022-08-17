@@ -18,6 +18,8 @@
 
 #include "owncloudlib.h"
 
+#include "common/checksumalgorithms.h"
+
 #include <QVariantMap>
 #include <QStringList>
 #include <QVersionNumber>
@@ -163,24 +165,21 @@ public:
      * Default: []
      * Possible entries: "Adler32", "MD5", "SHA1"
      */
-    QList<QByteArray> supportedChecksumTypes() const;
+    QList<OCC::CheckSums::Algorithm> supportedChecksumTypes() const;
 
     /**
      * The checksum algorithm that the server recommends for file uploads.
      * This is just a preference, any algorithm listed in supportedTypes may be used.
      *
      * Path: checksums/preferredUploadType
-     * Default: empty, meaning "no preference"
-     * Possible values: empty or any of the supportedTypes
      */
-    QByteArray preferredUploadChecksumType() const;
+    OCC::CheckSums::Algorithm preferredUploadChecksumType() const;
 
     /**
      * Helper that returns the preferredUploadChecksumType() if set, or one
-     * of the supportedChecksumTypes() if it isn't. May return an empty
-     * QByteArray if no checksum types are supported.
+     * of the supportedChecksumTypes() if it isn't.
      */
-    QByteArray uploadChecksumType() const;
+    CheckSums::Algorithm uploadChecksumType() const;
 
     /**
      * List of HTTP error codes should be guaranteed to eventually reset

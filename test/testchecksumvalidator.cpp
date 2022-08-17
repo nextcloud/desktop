@@ -27,17 +27,18 @@ using namespace OCC::Utility;
         QString _testfile;
         QString _expectedError;
         QByteArray     _expected;
-        QByteArray     _expectedType;
+        CheckSums::Algorithm _expectedType;
         bool           _successDown;
         bool           _errorSeen;
 
     public slots:
 
-    void slotUpValidated(const QByteArray& type, const QByteArray& checksum) {
-         qDebug() << "Checksum: " << checksum;
-         QVERIFY(_expected == checksum );
-         QVERIFY(_expectedType == type );
-    }
+        void slotUpValidated(CheckSums::Algorithm type, const QByteArray &checksum)
+        {
+            qDebug() << "Checksum: " << checksum;
+            QCOMPARE(_expected, checksum);
+            QVERIFY(_expectedType == type);
+        }
 
     void slotDownValidated() {
          _successDown = true;
@@ -114,7 +115,7 @@ using namespace OCC::Utility;
 
     void testUploadChecksummingAdler() {
         ComputeChecksum *vali = new ComputeChecksum(this);
-        _expectedType = "Adler32";
+        _expectedType = CheckSums::Algorithm::ADLER32;
         vali->setChecksumType(_expectedType);
 
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
@@ -135,7 +136,7 @@ using namespace OCC::Utility;
     void testUploadChecksummingMd5() {
 
         ComputeChecksum *vali = new ComputeChecksum(this);
-        _expectedType = OCC::CheckSums::toString(OCC::CheckSums::Algorithm::MD5).data();
+        _expectedType = OCC::CheckSums::Algorithm::MD5;
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 
@@ -153,7 +154,7 @@ using namespace OCC::Utility;
 
     void testUploadChecksummingSha1() {
         ComputeChecksum *vali = new ComputeChecksum(this);
-        _expectedType = OCC::CheckSums::toString(OCC::CheckSums::Algorithm::SHA1).data();
+        _expectedType = OCC::CheckSums::Algorithm::SHA1;
         vali->setChecksumType(_expectedType);
         connect(vali, &ComputeChecksum::done, this, &TestChecksumValidator::slotUpValidated);
 

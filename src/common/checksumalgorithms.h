@@ -17,6 +17,8 @@
  */
 #pragma once
 
+#include "ocsynclib.h"
+
 #include <QCryptographicHash>
 #include <QString>
 
@@ -29,6 +31,8 @@
 #endif
 namespace OCC {
 namespace CheckSums {
+    OCSYNC_EXPORT Q_NAMESPACE;
+
     enum class Algorithm {
         SHA3_256 = QCryptographicHash::Sha3_256,
         SHA256 = QCryptographicHash::Sha256,
@@ -36,8 +40,10 @@ namespace CheckSums {
         MD5 = QCryptographicHash::Md5,
         ADLER32 = 100,
         DUMMY_FOR_TESTS,
+        None,
         Error
     };
+    Q_ENUM_NS(Algorithm);
 
     constexpr std::string_view toString(Algorithm algo)
     {
@@ -55,6 +61,8 @@ namespace CheckSums {
         case Algorithm::DUMMY_FOR_TESTS:
             return "DUMMY_FOR_TESTS";
         case Algorithm::Error:
+            [[fallthrough]];
+        case Algorithm::None:
             break;
         }
         return "Error";
@@ -99,7 +107,15 @@ namespace CheckSums {
         auto it = std::find_if(All.begin(), All.end(), [s](const auto &it) {
             return it.second == s;
         });
-        return it != All.end() ? it->first : Algorithm::Error;
+        if (it != All.end()) {
+            return it->first;
+        }
+        return Algorithm::Error;
+    }
+
+    inline Algorithm fromByteArray(const QByteArray &s)
+    {
+        return fromName(s.toUpper().constData());
     }
 }
 }
