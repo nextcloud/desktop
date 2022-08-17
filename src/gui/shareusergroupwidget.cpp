@@ -553,7 +553,7 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     /*
      * Files can't have create or delete permissions
      */
-    if (!_isFile) {
+//    if (!_isFile) {
         _permissionRead = new QAction(tr("Read only"));
         _permissionRead->setCheckable(true);
         _permissionRead->setEnabled(maxSharingPermissions & SharePermissionRead);
@@ -566,7 +566,7 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
         _permissionChange->setEnabled(maxSharingPermissions & SharePermissionUpdate);
         permissionMenu->addAction(_permissionChange);
         connect(_permissionChange, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
-    }
+//    }
 
     _ui->permissionMenu->setMenu(permissionMenu);
     _ui->permissionMenu->setPopupMode(QToolButton::InstantPopup);
@@ -761,7 +761,7 @@ void ShareUserLine::slotPermissionsChanged()
     if (_permissionReshare->isChecked())
         permissions |= SharePermissionShare;
 
-    if (!_isFile) {
+//    if (!_isFile) {
         if (_permissionChange->isChecked()){
             permissions |= SharePermissionUpdate;
             _ui->currentPermission->setText(_permissionChange->text());
@@ -776,10 +776,10 @@ void ShareUserLine::slotPermissionsChanged()
         //            permissions |= SharePermissionCreate;
         //        if (_permissionDelete->isChecked())
         //            permissions |= SharePermissionDelete;
-    } else {
-        //        if (_ui->permissionsEdit->isChecked())
-        //            permissions |= SharePermissionUpdate;
-    }
+//    } else {
+//        //        if (_ui->permissionsEdit->isChecked())
+//        //            permissions |= SharePermissionUpdate;
+//    }
 
     _share->setPermissions(permissions);
 }

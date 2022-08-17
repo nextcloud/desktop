@@ -186,6 +186,19 @@ void ShareLinkWidget::setupUiOptions()
         _allowEditingLinkAction->setCheckable(true);
         _allowEditingLinkAction->setChecked(checked);
 
+        checked = (perm == SharePermissionRead);
+        _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
+        _readOnlyLinkAction->setCheckable(true);
+        _readOnlyLinkAction->setChecked(checked);
+        permissionMenu->addAction(_readOnlyLinkAction);
+
+        checked = (perm & SharePermissionRead) && (perm & SharePermissionCreate)
+            && (perm & SharePermissionUpdate) && (perm & SharePermissionDelete);
+        _allowUploadEditingLinkAction = permissionsGroup->addAction(tr("Can Edit"));
+        _allowUploadEditingLinkAction->setCheckable(true);
+        _allowUploadEditingLinkAction->setChecked(checked);
+         permissionMenu->addAction(_allowUploadEditingLinkAction);
+
     } else {
         checked = (perm == SharePermissionRead);
         _readOnlyLinkAction = permissionsGroup->addAction(tr("Read only"));
@@ -248,6 +261,8 @@ void ShareLinkWidget::setupUiOptions()
 
     // Adds permissions actions (radio button style)
     if (_isFile) {
+        _linkContextMenu->addAction(_readOnlyLinkAction);
+         _linkContextMenu->addAction(_allowUploadEditingLinkAction);
         _linkContextMenu->addAction(_allowEditingLinkAction);
     } else {
         _linkContextMenu->addAction(_readOnlyLinkAction);
