@@ -34,6 +34,7 @@ Summary
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 * Change - Rewrote TLS error handling: [#9655](https://github.com/owncloud/client/issues/9655)
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
+* Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Don't query private links if disabled on the server: [#8998](https://github.com/owncloud/client/issues/8998)
@@ -218,6 +219,12 @@ Details
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
 
    https://github.com/owncloud/client/pull/9675
+
+* Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
+
+   We no longer display a network error if the server is currently unavailable.
+
+   https://github.com/owncloud/client/issues/9790
 
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 
