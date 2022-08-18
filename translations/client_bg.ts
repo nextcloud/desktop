@@ -6586,7 +6586,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Изчистване на съобщение за състоянието след това</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>

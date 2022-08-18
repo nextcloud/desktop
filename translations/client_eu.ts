@@ -6585,7 +6585,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Garbitu egoera mezua ondoren</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation>Utzi</translation>
     </message>

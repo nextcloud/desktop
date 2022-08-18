@@ -6583,7 +6583,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Limpar mensagem de status após</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
