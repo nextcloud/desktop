@@ -6585,7 +6585,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Effacer le message de statut après</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>

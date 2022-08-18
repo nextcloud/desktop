@@ -6585,7 +6585,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Durum iletisinin kaldırılma süresi</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>

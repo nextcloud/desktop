@@ -6589,7 +6589,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>이후 상태 메시지 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
