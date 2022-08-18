@@ -133,18 +133,13 @@ public:
     };
     NextResult next();
 
-    template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
+    template <class T>
     void bindValue(int pos, const T &value)
     {
-        qCDebug(lcSql) << "SQL bind" << pos << value;
-        bindValueInternal(pos, static_cast<int>(value));
-    }
-
-    template<class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
-    void bindValue(int pos, const T &value)
-    {
-        qCDebug(lcSql) << "SQL bind" << pos << value;
-        bindValueInternal(pos, value);
+        QString s;
+        QDebug(&s).noquote().nospace() << '\'' << value << '\'';
+        _boundQuery.replace(QStringLiteral("?%1").arg(QString::number(pos)), s);
+        bindValueConvert(pos, value);
     }
 
     const QByteArray &lastQuery() const;
@@ -152,6 +147,18 @@ public:
     void reset_and_clear_bindings();
 
 private:
+    template <class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
+    void bindValueConvert(int pos, const T &value)
+    {
+        bindValueInternal(pos, static_cast<int>(value));
+    }
+
+    template <class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
+    void bindValueConvert(int pos, const T &value)
+    {
+        bindValueInternal(pos, value);
+    }
+
     void bindValueInternal(int pos, const QVariant &value);
     void finish();
 
@@ -161,6 +168,7 @@ private:
     QString _error;
     int _errId;
     QByteArray _sql;
+    QString _boundQuery;
 
     friend class SqlDatabase;
     friend class PreparedSqlQueryManager;

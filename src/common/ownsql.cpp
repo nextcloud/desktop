@@ -263,6 +263,7 @@ int SqlQuery::prepare(const QByteArray &sql, bool allow_failure)
     if (_stmt) {
         finish();
     }
+    _boundQuery = QString::fromUtf8(_sql);
     if (!_sql.isEmpty()) {
         int rc = {};
         for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
@@ -316,12 +317,11 @@ bool SqlQuery::exec()
         qCWarning(lcSql) << "Can't exec query, statement unprepared.";
         return false;
     }
-
     // Don't do anything for selects, that is how we use the lib :-|
     if (!isSelect() && !isPragma()) {
         int rc = 0;
         for (int n = 0; n < SQLITE_REPEAT_COUNT; ++n) {
-            qCDebug(lcSql) << "SQL exec" << _sql << "Try:" << n;
+            qCDebug(lcSql) << "SQL exec" << _boundQuery << "Try:" << n;
             rc = sqlite3_step(_stmt);
             if (rc != SQLITE_DONE && rc != SQLITE_ROW) {
                 qCWarning(lcSql) << "SQL exec failed" << _sql << QString::fromUtf8(sqlite3_errmsg(_db));
@@ -503,6 +503,7 @@ void SqlQuery::reset_and_clear_bindings()
     if (_stmt) {
         SQLITE_DO(sqlite3_reset(_stmt));
         SQLITE_DO(sqlite3_clear_bindings(_stmt));
+        _boundQuery = QString::fromUtf8(_sql);
     }
 }
 
