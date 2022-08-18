@@ -24,13 +24,13 @@
 
 namespace OCC {
 
-LoginRequiredDialog::LoginRequiredDialog(AbstractLoginRequiredWidget *contentWidget, QWidget *parent)
+LoginRequiredDialog::LoginRequiredDialog(AbstractLoginWidget *contentWidget, QWidget *parent)
     : QDialog(parent)
     , _ui(new ::Ui::LoginRequiredDialog)
 {
     _ui->setupUi(this);
 
-    _ui->iconLabel->setPixmap(Theme::instance()->applicationIcon().pixmap(64, 64));
+    _ui->iconLabel->setPixmap(Theme::instance()->applicationIcon().pixmap(128, 128));
 
     // we want a custom text, but we make use of the button box's built-in reject role
     _ui->rightButtonBox->addButton(tr("Log out"), QDialogButtonBox::RejectRole);
@@ -39,22 +39,28 @@ LoginRequiredDialog::LoginRequiredDialog(AbstractLoginRequiredWidget *contentWid
     connect(_ui->rightButtonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
     connect(_ui->rightButtonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
 
-    for (auto [button, role] : contentWidget->buttons()) {
-        _ui->rightButtonBox->addButton(button, role);
-    }
-
     // using a stacked widget appears to work better than a plain widget
     // we do this in the setup wizard as well
     _ui->contentWidget->addWidget(contentWidget);
     _ui->contentWidget->setCurrentWidget(contentWidget);
 
     Utility::setModal(this);
-    setFixedSize(this->sizeHint());
+    setFixedSize(this->minimumSize());
 }
 
 LoginRequiredDialog::~LoginRequiredDialog()
 {
     delete _ui;
+}
+
+void LoginRequiredDialog::setTopLabelText(const QString &newText)
+{
+    _ui->topLabel->setText(newText);
+}
+
+void LoginRequiredDialog::addLogInButton()
+{
+    _ui->rightButtonBox->addButton(tr("Log in"), QDialogButtonBox::AcceptRole);
 }
 
 } // OCC

@@ -17,7 +17,7 @@
 #include "abstractsetupwizardpage.h"
 
 namespace Ui {
-class OAuthCredentialsSetupWizardPage;
+class CredentialsSetupWizardPage;
 }
 
 namespace OCC::Wizard {
@@ -39,7 +39,7 @@ Q_SIGNALS:
     void copyUrlToClipboardButtonPushed();
 
 private:
-    ::Ui::OAuthCredentialsSetupWizardPage *_ui;
+    ::Ui::CredentialsSetupWizardPage *_ui;
 };
 
 } // namespace OCC::Wizard

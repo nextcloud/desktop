@@ -128,8 +128,10 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     // bring to front if necessary
     ownCloudGui::raiseDialog(this);
 
-    // this can optionally be overwritten by the page
-    Q_EMIT _currentPage->pageDisplayed();
+    QTimer::singleShot(0, [this]() {
+        // this can optionally be overwritten by the page
+        Q_EMIT _currentPage->pageDisplayed();
+    });
 }
 
 void SetupWizardWindow::slotStartTransition()

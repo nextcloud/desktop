@@ -16,8 +16,8 @@
 #include "creds/httpcredentialsgui.h"
 #include "account.h"
 #include "application.h"
+#include "basicloginwidget.h"
 #include "common/asserts.h"
-#include "httploginrequiredwidget.h"
 #include "loginrequireddialog.h"
 #include "networkjobs.h"
 #include "settingsdialog.h"
@@ -113,13 +113,20 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
 
 void HttpCredentialsGui::showDialog()
 {
-    auto *contentWidget = new HttpLoginRequiredWidget(_account->sharedFromThis());
+    auto *contentWidget = new BasicLoginWidget();
+    contentWidget->setServerUrl(_account->url());
+    contentWidget->forceUsername(_account->davUser());
 
     auto *dialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());
     dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+    dialog->setTopLabelText(tr("Please enter your password to log in to your account."));
+
+    // in this case, we want to use the login button
+    dialog->addLogInButton();
 
     connect(dialog, &LoginRequiredDialog::finished, ocApp()->gui()->settingsDialog(), [this, contentWidget](const int result) {
         if (result == QDialog::Accepted) {
+            Q_ASSERT(contentWidget->username() == _account->davUser());
             _password = contentWidget->password();
             _refreshToken.clear();
             _ready = true;
@@ -132,12 +139,10 @@ void HttpCredentialsGui::showDialog()
 
     dialog->open();
     ownCloudGui::raiseDialog(dialog);
-}
 
-QString HttpCredentialsGui::requestAppPasswordText(const Account *account)
-{
-    return tr("<a href=\"%1\">Click here</a> to request an app password from the web interface.")
-        .arg(Utility::concatUrlPath(account->url(), QStringLiteral("/index.php/settings/personal?sectionid=security#apppasswords")).toString());
+    QTimer::singleShot(0, [contentWidget]() {
+        contentWidget->setFocus(Qt::OtherFocusReason);
+    });
 }
 
 QUrl HttpCredentialsGui::authorisationLink() const

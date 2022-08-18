@@ -57,7 +57,7 @@
 #include "account.h"
 #include "askexperimentalvirtualfilesfeaturemessagebox.h"
 #include "loginrequireddialog.h"
-#include "oauthloginrequiredwidget.h"
+#include "oauthloginwidget.h"
 
 namespace OCC {
 
@@ -805,11 +805,29 @@ void AccountSettings::slotAccountStateChanged()
 
                 qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
 
-                auto *contentWidget = new OAuthLoginRequiredWidget(account);
+                auto *contentWidget = new OAuthLoginWidget();
+
                 _askForOAuthLoginDialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());
+
+                connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [account]() {
+                    // TODO: use authorisationLinkAsync
+                    auto link = qobject_cast<HttpCredentialsGui *>(account->credentials())->authorisationLink().toString();
+                    ocApp()->clipboard()->setText(link);
+                });
+
+                connect(contentWidget, &OAuthLoginWidget::openBrowserButtonClicked, _askForOAuthLoginDialog, [cred]() {
+                    cred->openBrowser();
+                });
+
+                contentWidget->setEnabled(false);
+                connect(cred, &HttpCredentialsGui::authorisationLinkChanged, this, [contentWidget]() {
+                    contentWidget->setEnabled(true);
+                });
 
                 // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
                 _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
+
+                _askForOAuthLoginDialog->setTopLabelText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(account->displayName()));
 
                 connect(
                     cred, &HttpCredentialsGui::authorisationLinkChanged,
@@ -825,6 +843,10 @@ void AccountSettings::slotAccountStateChanged()
 
                 _askForOAuthLoginDialog->show();
                 ocApp()->gui()->raiseDialog(_askForOAuthLoginDialog);
+
+                QTimer::singleShot(0, [contentWidget]() {
+                    contentWidget->setFocus(Qt::OtherFocusReason);
+                });
             } else {
                 showConnectionLabel(tr("Connecting to %1...").arg(serverWithUser));
             }

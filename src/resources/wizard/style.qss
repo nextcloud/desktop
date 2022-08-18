@@ -31,7 +31,7 @@
 #contentWidget #usernameLabel,
 #contentWidget #passwordLabel,
 #contentWidget #appPasswordLabel,
-#contentWidget #pleaseLogIntoLabel,
+#contentWidget #topLabel,
 #contentWidget #usernameLabel,
 #contentWidget #passwordLabel,
 #contentWidget #advancedConfigGroupBox::title

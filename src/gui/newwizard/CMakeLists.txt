@@ -12,17 +12,17 @@ add_library(newwizard STATIC
     pages/webfingersetupwizardpage.h
     pages/webfingersetupwizardpage.cpp
 
-    pages/basiccredentialssetupwizardpage.ui
+    pages/credentialssetupwizardpage.ui
+
     pages/basiccredentialssetupwizardpage.h
     pages/basiccredentialssetupwizardpage.cpp
+
+    pages/oauthcredentialssetupwizardpage.h
+    pages/oauthcredentialssetupwizardpage.cpp
 
     pages/accountconfiguredwizardpage.ui
     pages/accountconfiguredwizardpage.h
     pages/accountconfiguredwizardpage.cpp
-
-    pages/oauthcredentialssetupwizardpage.ui
-    pages/oauthcredentialssetupwizardpage.h
-    pages/oauthcredentialssetupwizardpage.cpp
 
     setupwizardwindow.ui
     setupwizardwindow.h

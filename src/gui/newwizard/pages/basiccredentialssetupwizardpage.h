@@ -17,7 +17,7 @@
 #include "abstractsetupwizardpage.h"
 
 namespace Ui {
-class BasicCredentialsSetupWizardPage;
+class CredentialsSetupWizardPage;
 }
 
 namespace OCC::Wizard {
@@ -38,7 +38,7 @@ public:
     bool validateInput() override;
 
 private:
-    ::Ui::BasicCredentialsSetupWizardPage *_ui;
+    ::Ui::CredentialsSetupWizardPage *_ui;
 };
 
 }

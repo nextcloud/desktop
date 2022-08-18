@@ -13,53 +13,48 @@
  */
 
 #include "basiccredentialssetupwizardpage.h"
-#include "ui_basiccredentialssetupwizardpage.h"
+#include "ui_credentialssetupwizardpage.h"
 
 #include "theme.h"
 
 namespace OCC::Wizard {
 
 BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &serverUrl)
-    : _ui(new ::Ui::BasicCredentialsSetupWizardPage)
+    : _ui(new ::Ui::CredentialsSetupWizardPage)
 {
     _ui->setupUi(this);
+
+    _ui->topLabel->setText(tr("Please enter your credentials to log in to your account."));
+
+    // bring the correct widget to the front
+    _ui->contentWidget->setCurrentWidget(_ui->basicLoginWidget);
+
+    _ui->basicLoginWidget->setServerUrl(serverUrl, QStringLiteral("color: %1").arg(Theme::instance()->wizardHeaderTitleColor().name()));
 
     const QString linkColor = Theme::instance()->wizardHeaderTitleColor().name();
 
     _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), linkColor));
 
     connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
-        _ui->usernameLineEdit->setFocus();
+        _ui->basicLoginWidget->setFocus();
     });
-
-    const QString usernameLabelText = Utility::enumToDisplayName(Theme::instance()->userIDType());
-    _ui->usernameLabel->setText(usernameLabelText);
-    _ui->usernameLineEdit->setPlaceholderText(usernameLabelText);
-
-    if (!Theme::instance()->userIDHint().isEmpty()) {
-        _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
-    }
-
-    QString appPasswordUrl = QStringLiteral("%1/settings/personal?sectionid=security#apppasswords").arg(serverUrl.toString());
-    _ui->appPasswordLabel->setText(tr("Click <a href='%1' style='color: %2;'>here</a> to set up an app password.").arg(appPasswordUrl, linkColor));
 }
 
 BasicCredentialsSetupWizardPage *BasicCredentialsSetupWizardPage::createForWebFinger(const QUrl &serverUrl, const QString &username)
 {
     auto page = new BasicCredentialsSetupWizardPage(serverUrl);
-    page->_ui->usernameLineEdit->setText(username);
-    page->_ui->usernameLineEdit->setEnabled(false);
+    page->_ui->basicLoginWidget->forceUsername(username);
     return page;
 }
 
 QString BasicCredentialsSetupWizardPage::username() const
 {
-    return _ui->usernameLineEdit->text();
+    return _ui->basicLoginWidget->username();
 }
 
 QString BasicCredentialsSetupWizardPage::password() const
 {
-    return _ui->passwordLineEdit->text();
+    return _ui->basicLoginWidget->password();
 }
 
 BasicCredentialsSetupWizardPage::~BasicCredentialsSetupWizardPage()

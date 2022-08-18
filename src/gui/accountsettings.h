@@ -22,9 +22,10 @@
 #include <QTimer>
 
 #include "folder.h"
-#include "quotainfo.h"
-#include "progressdispatcher.h"
+#include "loginrequireddialog.h"
 #include "owncloudgui.h"
+#include "progressdispatcher.h"
+#include "quotainfo.h"
 
 class QModelIndex;
 class QNetworkReply;
@@ -105,7 +106,7 @@ private:
     QAction *_addAccountAction;
 
     // needed to make sure we show only one dialog at a time
-    QPointer<QDialog> _askForOAuthLoginDialog = nullptr;
+    QPointer<LoginRequiredDialog> _askForOAuthLoginDialog = nullptr;
 };
 
 } // namespace OCC

@@ -14,7 +14,7 @@
 
 #pragma once
 
-#include "abstractloginrequiredwidget.h"
+#include "abstractloginwidget.h"
 #include "account.h"
 #include <QDialog>
 
@@ -24,13 +24,25 @@ class LoginRequiredDialog;
 
 namespace OCC {
 
+/**
+ * This dialog is used to ask users to re-authenticate in case an existing account's credentials no longer work or the user logged out.
+ * It is one of two locations in the code where we have users log in to their accounts (the other one is the setup wizard).
+ */
 class LoginRequiredDialog : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit LoginRequiredDialog(AbstractLoginRequiredWidget *contentWidget, QWidget *parent = nullptr);
+    explicit LoginRequiredDialog(AbstractLoginWidget *contentWidget, QWidget *parent = nullptr);
     ~LoginRequiredDialog() override;
+
+    void setTopLabelText(const QString &newText);
+
+    /**
+     * Add a "log in" button to the dialog. When clicked, the dialog is accepted.
+     * For use with HTTP basic authentication.
+     */
+    void addLogInButton();
 
 private:
     ::Ui::LoginRequiredDialog *_ui;

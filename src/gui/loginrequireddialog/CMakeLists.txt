@@ -2,13 +2,13 @@ add_library(loginrequireddialog STATIC
     loginrequireddialog.cpp
     loginrequireddialog.ui
 
-    abstractloginrequiredwidget.cpp
+    abstractloginwidget.cpp
 
-    oauthloginrequiredwidget.cpp
-    oauthloginrequiredwidget.ui
+    oauthloginwidget.cpp
+    oauthloginwidget.ui
 
-    httploginrequiredwidget.cpp
-    httploginrequiredwidget.ui
+    basicloginwidget.cpp
+    basicloginwidget.ui
 )
 target_link_libraries(loginrequireddialog PUBLIC Qt5::Widgets libsync)
 set_target_properties(loginrequireddialog PROPERTIES AUTOUIC ON AUTORCC ON)

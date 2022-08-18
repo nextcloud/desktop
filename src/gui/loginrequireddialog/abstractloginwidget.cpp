@@ -12,11 +12,11 @@
 * for more details.
  */
 
-#include "abstractloginrequiredwidget.h"
+#include "abstractloginwidget.h"
 
 namespace OCC {
 
-AbstractLoginRequiredWidget::AbstractLoginRequiredWidget(QWidget *parent)
+AbstractLoginWidget::AbstractLoginWidget(QWidget *parent)
     : QWidget(parent)
 {
 }

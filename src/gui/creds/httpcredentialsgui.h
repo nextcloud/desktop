@@ -54,7 +54,6 @@ public:
      */
     void askFromUser() override;
 
-    static QString requestAppPasswordText(const Account *account);
 private slots:
     void asyncAuthResult(OAuth::Result, const QString &user, const QString &accessToken, const QString &refreshToken, const QString &displayName);
     void showDialog();
