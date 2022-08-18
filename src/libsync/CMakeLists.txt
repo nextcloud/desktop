@@ -55,6 +55,7 @@ set(libsync_SRCS
     networkjobs/fetchuserinfojobfactory.cpp
     networkjobs/checkserverjobfactory.cpp
     networkjobs/jsonjob.cpp
+    networkjobs/jobgroup.cpp
 
     abstractcorejob.cpp
     determineauthtypejobfactory.cpp
