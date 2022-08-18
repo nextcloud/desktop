@@ -61,7 +61,9 @@ set(libsync_SRCS
     determineauthtypejobfactory.cpp
 
     graphapi/drives.cpp
-)
+
+    appprovider.cpp
+ )
 
 if(TOKEN_AUTH_ONLY)
     set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)

@@ -29,6 +29,7 @@ Capabilities::Capabilities(const QVariantMap &capabilities)
     , _tusSupport(_capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("tus_support")).toMap())
     , _spaces(_capabilities.value(QStringLiteral("spaces")).toMap())
     , _status(_capabilities.value(QStringLiteral("core")).toMap().value(QStringLiteral("status")).toMap())
+    , _appProviders(AppProviders::findVersion(_capabilities.value(QStringLiteral("files")).toMap().value(QStringLiteral("app_providers")).toList(), QVersionNumber({ 1, 1, 0 })))
 {
 }
 
@@ -309,5 +310,28 @@ bool SpaceSupport::isValid() const
     return !version.isNull();
 }
 
+Capabilities::AppProviders::AppProviders(const QVariantMap &appProviders)
+    : enabled(appProviders.value(QStringLiteral("enabled")).toBool())
+    , version(QVersionNumber::fromString(appProviders.value(QStringLiteral("version")).toString()))
+    , appsUrl(appProviders.value(QStringLiteral("apps_url")).toString())
+    , openUrl(appProviders.value(QStringLiteral("open_url")).toString())
+    , newUrl(appProviders.value(QStringLiteral("new_url")).toString())
+    , openWebUrl(appProviders.value(QStringLiteral("open_web_url")).toString())
+{
+}
+
+const Capabilities::AppProviders &Capabilities::appProviders() const
+{
+    return _appProviders;
+}
+
+Capabilities::AppProviders Capabilities::AppProviders::findVersion(const QVariantList &list, const QVersionNumber &v)
+{
+    auto it = std::find_if(list.cbegin(), list.cend(), [&v](const auto &it) {
+        return QVersionNumber::fromString(it.toMap().value(QStringLiteral("version")).toString()) == v;
+    });
+    return it != list.cend() ? Capabilities::AppProviders { it->toMap() }
+                             : Capabilities::AppProviders();
+}
 
 } // namespace OCC

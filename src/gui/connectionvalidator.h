@@ -131,10 +131,6 @@ protected slots:
     void slotAuthFailed(QNetworkReply *reply);
     void slotAuthSuccess();
 
-#ifndef TOKEN_AUTH_ONLY
-    void slotAvatarImage(const QPixmap &img);
-#endif
-
 private:
     void reportResult(Status status);
     void checkServerCapabilities();

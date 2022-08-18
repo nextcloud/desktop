@@ -16,6 +16,12 @@
 #ifndef SERVERCONNECTION_H
 #define SERVERCONNECTION_H
 
+#include "common/utility.h"
+
+#include "appprovider.h"
+#include "capabilities.h"
+#include "jobqueue.h"
+
 #include <QByteArray>
 #include <QNetworkAccessManager>
 #include <QNetworkCookie>
@@ -33,10 +39,7 @@
 #include <QPixmap>
 #endif
 
-#include "common/utility.h"
 #include <memory>
-#include "capabilities.h"
-#include "jobqueue.h"
 
 class QSettings;
 class QNetworkReply;
@@ -168,6 +171,9 @@ public:
 
     bool hasCapabilities() const;
 
+    void setAppProvider(AppProvider &&p);
+    const AppProvider &appProvider() const;
+
     /** Whether the server is too old.
      *
      * Not supporting server versions is a gradual process. There's a hard
@@ -250,6 +256,7 @@ private:
     JobQueue _jobQueue;
     JobQueueGuard _queueGuard;
     CredentialManager *_credentialManager;
+    AppProvider _appProvider;
     friend class AccountManager;
 };
 }

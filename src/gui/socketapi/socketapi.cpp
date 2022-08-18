@@ -841,6 +841,18 @@ void SocketApi::command_MOVE_ITEM(const QString &localFile, SocketListener *)
     }
 }
 
+Q_INVOKABLE void OCC::SocketApi::command_OPEN_APP_LINK(const QString &localFile, SocketListener *listener)
+{
+    const auto data = FileData::get(localFile);
+    if (OC_ENSURE(data.folder)) {
+        const auto &provider = data.folder->accountState()->account()->appProvider();
+        const auto record = data.journalRecord();
+        if (record.isValid()) {
+            provider.open(data.folder->accountState()->account(), localFile, record._fileId);
+        }
+    }
+}
+
 void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const
 {
     QJsonArray out;
@@ -1021,21 +1033,6 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
     listener->sendMessage(QStringLiteral("GET_MENU_ITEMS:BEGIN"));
     const QStringList files = split(argument);
 
-    // Find the common sync folder.
-    // syncFolder will be null if files are in different folders.
-    Folder *folder = nullptr;
-    for (const auto &file : files) {
-        auto f = FolderMan::instance()->folderForPath(file);
-        if (f != folder) {
-            if (!folder) {
-                folder = f;
-            } else {
-                folder = nullptr;
-                break;
-            }
-        }
-    }
-
     // Some options only show for single files
     if (files.size() == 1) {
         const FileData fileData = FileData::get(files.first());
@@ -1044,7 +1041,12 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             const bool isOnTheServer = record.isValid();
             const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
 
-            if (fileData.folder && fileData.folder->accountState()->isConnected()) {
+            const auto app = fileData.folder->accountState()->account()->appProvider().app(fileData.localPath);
+            if (!app.defaultApplication.isEmpty()) {
+                listener->sendMessage(QStringLiteral("MENU_ITEM:OPEN_APP_LINK") + flagString + tr("Open in %1").arg(app.defaultApplication));
+            }
+
+            if (fileData.folder->accountState()->isConnected()) {
                 sendSharingContextMenuOptions(fileData, listener);
 
                 const auto &capabilities = fileData.folder->accountState()->account()->capabilities();
@@ -1107,6 +1109,20 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
                         }
                     }
                 }
+            }
+        }
+    }
+    // Find the common sync folder.
+    // syncFolder will be null if files are in different folders.
+    Folder *folder = nullptr;
+    for (const auto &file : files) {
+        auto f = FolderMan::instance()->folderForPath(file);
+        if (f != folder) {
+            if (!folder) {
+                folder = f;
+            } else {
+                folder = nullptr;
+                break;
             }
         }
     }

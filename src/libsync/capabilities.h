@@ -99,6 +99,31 @@ struct OWNCLOUDSYNC_EXPORT SpaceSupport
 class OWNCLOUDSYNC_EXPORT Capabilities
 {
 public:
+    struct OWNCLOUDSYNC_EXPORT AppProviders
+    {
+        /**
+         "app_providers": [
+                {
+                  "enabled": true,
+                  "version": "1.0.0",
+                  "apps_url": "/app/list",
+                  "open_url": "/app/open",
+                  "new_url": "/app/new"
+                }
+        */
+        AppProviders() = default;
+        static AppProviders findVersion(const QVariantList &list, const QVersionNumber &v);
+        AppProviders(const QVariantMap &appProviders);
+
+        bool enabled = false;
+        QVersionNumber version;
+        QString appsUrl;
+        QString openUrl;
+        QString newUrl;
+        QString openWebUrl;
+    };
+
+
     Capabilities(const QVariantMap &capabilities);
 
     bool shareAPI() const;
@@ -227,6 +252,8 @@ public:
     /** Are avatars (profile pictures) available? */
     bool avatarsAvailable() const;
 
+    const AppProviders &appProviders() const;
+
 
     QVariantMap raw() const;
 
@@ -237,6 +264,7 @@ private:
     TusSupport _tusSupport;
     SpaceSupport _spaces;
     Status _status;
+    AppProviders _appProviders;
 };
 }
 

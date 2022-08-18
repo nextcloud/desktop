@@ -334,4 +334,14 @@ void Account::setDefaultSyncRoot(const QString &syncRoot)
     }
 }
 
+void Account::setAppProvider(AppProvider &&p)
+{
+    _appProvider = std::move(p);
+}
+
+const AppProvider &Account::appProvider() const
+{
+    return _appProvider;
+}
+
 } // namespace OCC
