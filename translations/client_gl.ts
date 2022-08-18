@@ -6580,7 +6580,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Limpar a mensaxe de estado após</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>

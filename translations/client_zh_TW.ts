@@ -6585,7 +6585,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>在這個時間後清除狀態訊息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="314"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
