@@ -14,6 +14,8 @@
 #include "spacesmodel.h"
 
 #include "common/utility.h"
+// TODO: move models out from core
+#include "gui/models/models.h"
 #include "networkjobs.h"
 
 #include <QPixmap>
@@ -89,13 +91,6 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             return item.getWebUrl();
         case Columns::WebDavUrl:
             return item.getRoot().getWebDavUrl();
-        case Columns::Image: {
-            const auto &special = item.getSpecial();
-            const auto img = std::find_if(special.cbegin(), special.cend(), [](const OpenAPI::OAIDriveItem &it) {
-                return it.getSpecialFolder().getName() == QLatin1String("image");
-            });
-            return img == special.cend() ? QString() : img->getWebDavUrl();
-        }
         case Columns::ColumnCount:
             Q_UNREACHABLE();
             break;
@@ -107,7 +102,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             if (auto it = Utility::optionalFind(_images, item.getId())) {
                 return QVariant::fromValue(it->value());
             }
-            const auto imgUrl = data(index, Qt::DisplayRole).toUrl();
+            const auto imgUrl = data(index, Models::UnderlyingDataRole).toUrl();
             if (imgUrl.isEmpty()) {
                 return {};
             }
@@ -135,6 +130,18 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             return {};
         }
     }
+    case Models::UnderlyingDataRole:
+        switch (column) {
+        case Columns::Image: {
+            const auto &special = item.getSpecial();
+            const auto img = std::find_if(special.cbegin(), special.cend(), [](const OpenAPI::OAIDriveItem &it) {
+                return it.getSpecialFolder().getName() == QLatin1String("image");
+            });
+            return img == special.cend() ? QString() : img->getWebDavUrl();
+        }
+        default:
+            return data(index, Qt::DisplayRole);
+        }
     }
     return {};
 }
