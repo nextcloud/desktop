@@ -4,17 +4,17 @@ import squish
 
 class EnterPassword:
     PASSWORD_BOX = {
-        "container": names.loginRequiredDialog_contentWidget_QStackedWidget, 
+        "container": names.loginRequiredDialog_contentWidget_QStackedWidget,
         "name": "passwordLineEdit",
         "type": "QLineEdit",
-        "visible": 1
+        "visible": 1,
     }
     LOGIN_BUTTON = {
         "text": "Log in",
         "type": "QPushButton",
         "unnamed": 1,
         "visible": 1,
-        "window": names.loginRequiredDialog_OCC_LoginRequiredDialog
+        "window": names.loginRequiredDialog_OCC_LoginRequiredDialog,
     }
 
     def __init__(self):

@@ -71,10 +71,7 @@ def main(ctx):
             trigger = cron_trigger,
         )
 
-        # owncloudci/squish image is not working as expected
-        # Skipping GUI test pipeline until the following issue is resolved:
-        # https://github.com/owncloud-ci/squish/issues/34
-        gui_tests = []  # gui_test_pipeline(ctx, trigger = cron_trigger)
+        gui_tests = gui_test_pipeline(ctx, trigger = cron_trigger)
         notify = notification(
             name = "build",
             trigger = cron_trigger,
@@ -85,11 +82,8 @@ def main(ctx):
                     gui_tests_format(build_trigger) + \
                     check_starlark(build_trigger) + \
                     changelog(ctx, trigger = build_trigger) + \
-                    unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger)
-        # owncloudci/squish image is not working as expected
-        # Skipping GUI test pipeline until the following issue is resolved:
-        # https://github.com/owncloud-ci/squish/issues/34
-        # gui_test_pipeline(ctx, trigger = build_trigger, version = "latest")
+                    unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
+                    gui_test_pipeline(ctx, trigger = build_trigger, version = "latest")
 
     return pipelines
 
@@ -210,7 +204,7 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
     return [
         {
             "name": "generate",
-            "image": OC_CI_CLIENT,
+            "image": "sawjan/client-fedora",
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
@@ -222,7 +216,7 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
         },
         {
             "name": build_command,
-            "image": OC_CI_CLIENT,
+            "image": "sawjan/client-fedora",
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
@@ -253,7 +247,7 @@ def unit_tests(build_dir, depends_on = []):
 def gui_tests(squish_parameters = "", depends_on = []):
     return [{
         "name": "GUItests",
-        "image": OC_CI_SQUISH,
+        "image": "sawjan/squish-fedora",
         "environment": {
             "LICENSEKEY": from_secret("squish_license_server"),
             "GUI_TEST_REPORT_DIR": GUI_TEST_REPORT_DIR,
