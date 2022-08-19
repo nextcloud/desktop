@@ -136,10 +136,15 @@ public:
     template <class T>
     void bindValue(int pos, const T &value)
     {
-        QString s;
-        QDebug(&s).noquote().nospace() << '\'' << value << '\'';
-        _boundQuery.replace(QStringLiteral("?%1").arg(QString::number(pos)), s);
-        bindValueConvert(pos, value);
+        const auto converted = convertValue(value);
+        if (lcSql().isDebugEnabled()) {
+            auto stream = QDebug(&_boundValues[pos - 1].value).noquote().nospace() << '\'' << value;
+            if (typeid(converted) != typeid(value)) {
+                stream << " [" << converted << ']';
+            }
+            stream << '\'';
+        }
+        bindValueInternal(pos, converted);
     }
 
     const QByteArray &lastQuery() const;
@@ -148,15 +153,15 @@ public:
 
 private:
     template <class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
-    void bindValueConvert(int pos, const T &value)
+    auto convertValue(const T &value)
     {
-        bindValueInternal(pos, static_cast<int>(value));
+        return static_cast<int>(value);
     }
 
     template <class T, typename std::enable_if<!std::is_enum<T>::value, int>::type = 0>
-    void bindValueConvert(int pos, const T &value)
+    auto convertValue(const T &value)
     {
-        bindValueInternal(pos, value);
+        return value;
     }
 
     void bindValueInternal(int pos, const QVariant &value);
@@ -168,7 +173,12 @@ private:
     QString _error;
     int _errId;
     QByteArray _sql;
-    QString _boundQuery;
+    struct Binding
+    {
+        QString name;
+        QString value;
+    };
+    QVector<Binding> _boundValues;
 
     friend class SqlDatabase;
     friend class PreparedSqlQueryManager;
