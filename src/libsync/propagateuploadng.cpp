@@ -171,7 +171,6 @@ bool PropagateUploadFileNG::markRangeAsDone(qint64 start, qint64 size)
 
 void PropagateUploadFileNG::slotPropfindFinished()
 {
-    auto job = qobject_cast<LsColJob *>(sender());
     propagator()->_activeJobList.removeOne(this);
 
     _currentChunkOffset = 0;
