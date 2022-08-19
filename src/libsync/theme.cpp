@@ -427,14 +427,13 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
         }
     }
     return QCoreApplication::translate("ownCloudTheme::aboutVersions()",
-        "%1 %2 %3%8"
-        "%9"
-        "Libraries Qt %4, %5%8"
-        "Using virtual files plugin: %6%8"
-        "%7")
+        "%1 %2%7"
+        "%8"
+        "Libraries Qt %3, %4%7"
+        "Using virtual files plugin: %5%7"
+        "%6")
         .arg(appName(),
             _version,
-            QStringLiteral(__DATE__ " " __TIME__),
             qtVersionString,
             QSslSocket::sslLibraryVersionString(),
             Vfs::modeToString(bestAvailableVfsMode()),
