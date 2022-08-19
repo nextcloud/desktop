@@ -305,9 +305,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="521"/>
-        <location filename="../src/gui/accountsettings.cpp" line="615"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1053"/>
+        <location filename="../src/gui/accountsettings.cpp" line="518"/>
+        <location filename="../src/gui/accountsettings.cpp" line="609"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1029"/>
         <source>Cancel</source>
         <translation>අවලංගු කරන්න</translation>
     </message>
@@ -367,22 +367,22 @@
         <translation>&lt;p&gt;දේශීය ෆෝල්ඩරය &lt;i&gt;%1&lt;/i&gt;නිර්මාණය කළ නොහැකි විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතා ඉවත් කිරීම තහවුරු කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="520"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
         <source>Remove Folder Sync Connection</source>
         <translation>ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවය ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="606"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>Disable virtual file support?</source>
         <translation>අතථ්‍ය ගොනු සහාය අක්‍රිය කරන්නද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="607"/>
+        <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -395,98 +395,98 @@ This action will abort any currently running synchronization.</source>
 මෙම ක්‍රියාව දැනට ක්‍රියාත්මක වන ඕනෑම සමමුහුර්තකරණයක් නවත්වනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="614"/>
+        <location filename="../src/gui/accountsettings.cpp" line="608"/>
         <source>Disable support</source>
         <translation>සහය අබල කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="716"/>
+        <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>Sync Running</source>
         <translation>සමමුහුර්ත ධාවනය</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="717"/>
+        <location filename="../src/gui/accountsettings.cpp" line="693"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>සමමුහුර්ත කිරීමේ මෙහෙයුම ක්රියාත්මක වේ.&lt;br/&gt;ඔබට එය අවසන් කිරීමට අවශ්‍යද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="814"/>
+        <location filename="../src/gui/accountsettings.cpp" line="790"/>
         <source>%1 in use</source>
         <translation>%1 භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="841"/>
+        <location filename="../src/gui/accountsettings.cpp" line="817"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 &lt;i&gt;%2&lt;/i&gt;ලෙස</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="826"/>
         <source>Connected to %1.</source>
         <translation>%1වෙත සම්බන්ධ කර ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="855"/>
+        <location filename="../src/gui/accountsettings.cpp" line="831"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>සේවාදායකය %1 තාවකාලිකව නොමැත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="858"/>
+        <location filename="../src/gui/accountsettings.cpp" line="834"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>සේවාදායකය %1 දැනට නඩත්තු මාදිලියේ ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="861"/>
+        <location filename="../src/gui/accountsettings.cpp" line="837"/>
         <source>Signed out from %1.</source>
         <translation>%1සිට වරනය විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="871"/>
+        <location filename="../src/gui/accountsettings.cpp" line="847"/>
         <source>Connecting to %1...</source>
         <translation>%1වෙත සම්බන්ධ වෙමින්...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="876"/>
+        <location filename="../src/gui/accountsettings.cpp" line="852"/>
         <source>No connection to %1 at %2.</source>
         <translation>%1 ට %2ට සම්බන්ධයක් නැත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="915"/>
+        <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>Log in</source>
         <translation>ඇතුල් වන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1010"/>
+        <location filename="../src/gui/accountsettings.cpp" line="986"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>ඒවා විශාල වැඩි නිසා සමමුහුර්ත නොකළ ෆෝල්ඩර තිබේ: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1012"/>
+        <location filename="../src/gui/accountsettings.cpp" line="988"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>බාහිර ගබඩා නිසා සමමුහුර්ත නොකළ ෆෝල්ඩර තිබේ: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1013"/>
+        <location filename="../src/gui/accountsettings.cpp" line="989"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>ඒවා විශාල හෝ බාහිර ගබඩා නිසා සමමුහුර්ත නොකළ ෆෝල්ඩර ඇත: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
         <source>Confirm Account Removal</source>
         <translation>ගිණුම ඉවත් කිරීම තහවුරු කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1047"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ඔබට ඇත්තටම &lt;i&gt;%1&lt;/i&gt;ගිණුමට ඇති සම්බන්ධතාවය ඉවත් කිරීමට අවශ්‍යද?&lt;/p&gt;&lt;p&gt;&lt;b&gt;සටහන:&lt;/b&gt; මෙය &lt;b&gt;&lt;/b&gt; කිසිඳු ගොනුවක් මකන්නේ නැත.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1052"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
         <source>Remove connection</source>
         <translation>සම්බන්ධතාවය ඉවත් කරන්න</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="917"/>
+        <location filename="../src/gui/accountsettings.cpp" line="893"/>
         <source>Log out</source>
         <translation>ලොග් අවුට් වෙන්න</translation>
     </message>
@@ -511,42 +511,42 @@ This action will abort any currently running synchronization.</source>
         <translation> (පර්යේෂණාත්මක)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="513"/>
+        <location filename="../src/gui/accountsettings.cpp" line="510"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;ඔබට ඇත්තටම &lt;i&gt;%1&lt;/i&gt;ෆෝල්ඩරය සමමුහුර්ත කිරීම නැවැත්වීමට අවශ්‍යද?&lt;/p&gt;&lt;p&gt;&lt;b&gt;සටහන:&lt;/b&gt; මෙය &lt;b&gt;&lt;/b&gt; කිසිඳු ගොනුවක් මකන්නේ නැත.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="801"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%2 න් %1 (%3%) භාවිතා වේ. ජාල සවිකර ඇති හෝ බෙදාගත් ෆෝල්ඩර ඇතුළු සමහර ෆෝල්ඩරවලට විවිධ සීමාවන් තිබිය හැක.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="802"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>%1 of %2 in use</source>
         <translation>%2 න් %1 භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="811"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>දැනට ගබඩා භාවිත තොරතුරු නොමැත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="848"/>
+        <location filename="../src/gui/accountsettings.cpp" line="824"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>සේවාදායක අනුවාදය %1 සහාය නොදක්වයි! ඔබේම අවදානමකින් ඉදිරියට යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="868"/>
+        <location filename="../src/gui/accountsettings.cpp" line="844"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>බ්රවුසරයෙන් අවසරය ලබා ගැනීම.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="881"/>
+        <location filename="../src/gui/accountsettings.cpp" line="857"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>සේවාදායක වින්‍යාස දෝෂය: %1 ට %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="892"/>
+        <location filename="../src/gui/accountsettings.cpp" line="868"/>
         <source>No %1 connection configured.</source>
         <translation>%1 සම්බන්ධතාවක් වින්‍යාස කර නැත.</translation>
     </message>
@@ -1081,41 +1081,41 @@ File synchronization desktop utility.</source>
         <translation>සමමුහුර්ත ක්‍රියාකාරකම්</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="918"/>
+        <location filename="../src/gui/folder.cpp" line="906"/>
         <source>Could not read system exclude file</source>
         <translation>පද්ධතිය බැහැර ගොනුව කියවීමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1164"/>
+        <location filename="../src/gui/folder.cpp" line="1152"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB ට වඩා විශාල නව ෆෝල්ඩරයක් එකතු කර ඇත: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1167"/>
+        <location filename="../src/gui/folder.cpp" line="1155"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>බාහිර ගබඩාවකින් ෆෝල්ඩරයක් එක් කර ඇත.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1168"/>
+        <location filename="../src/gui/folder.cpp" line="1156"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>ඔබට එය බාගත කිරීමට අවශ්‍ය නම් එය තේරීමට කරුණාකර සැකසීම් වෙත යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1227"/>
+        <location filename="../src/gui/folder.cpp" line="1215"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>ෆෝල්ඩරය %1 නිර්මාණය කරන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කර ඇත. එය තුළ ඇති දත්ත සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1230"/>
+        <location filename="../src/gui/folder.cpp" line="1218"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 ගොනුව සාදන ලද නමුත් කලින් සමමුහුර්තකරණයෙන් බැහැර කරන ලදී. එය සමමුහුර්ත නොවනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1241"/>
+        <location filename="../src/gui/folder.cpp" line="1229"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1128,7 +1128,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1318"/>
+        <location filename="../src/gui/folder.cpp" line="1282"/>
         <source>All files in the sync folder '%1' folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
@@ -1139,7 +1139,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 ඔබ ගොනු මකා දැමීමට තීරණය කරන්නේ නම්, ඔබ හිමිකරු නම් මිස, ඒවා ඔබට ලබාගත නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1323"/>
+        <location filename="../src/gui/folder.cpp" line="1287"/>
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1148,17 +1148,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 මෙය හදිසි අනතුරක් නම් සහ ඔබ ඔබේ ගොනු තබා ගැනීමට තීරණය කරන්නේ නම්, ඒවා සේවාදායකයෙන් නැවත සමමුහුර්ත කරනු ලැබේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1327"/>
+        <location filename="../src/gui/folder.cpp" line="1291"/>
         <source>Remove All Files?</source>
         <translation>සියලුම ගොනු ඉවත් කරන්නද?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1331"/>
+        <location filename="../src/gui/folder.cpp" line="1295"/>
         <source>Remove all files</source>
         <translation>සියලුම ගොනු ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1332"/>
+        <location filename="../src/gui/folder.cpp" line="1296"/>
         <source>Keep files</source>
         <translation>ගොනු තබා ගන්න</translation>
     </message>
@@ -1166,122 +1166,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="456"/>
+        <location filename="../src/gui/folderman.cpp" line="449"/>
         <source>Could not reset folder state</source>
         <translation>ෆෝල්ඩර තත්ත්වය යළි පිහිටුවීමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="457"/>
+        <location filename="../src/gui/folderman.cpp" line="450"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>පැරණි සමමුහුර්ත සඟරාවක් &apos;%1&apos; හමු වූ නමුත් ඉවත් කළ නොහැකි විය. කරුණාකර කිසිදු යෙදුමක් දැනට එය භාවිතා නොකරන බවට වග බලා ගන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1241"/>
+        <location filename="../src/gui/folderman.cpp" line="1227"/>
         <source> (backup)</source>
         <translation> (උපස්ථ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1246"/>
+        <location filename="../src/gui/folderman.cpp" line="1232"/>
         <source> (backup %1)</source>
         <translation> (උපස්ථ %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1348"/>
+        <location filename="../src/gui/folderman.cpp" line="1334"/>
         <source>Undefined State.</source>
         <translation>නිර්වචනය නොකළ රාජ්යය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1351"/>
+        <location filename="../src/gui/folderman.cpp" line="1337"/>
         <source>Waiting to start syncing.</source>
         <translation>සමමුහුර්ත කිරීම ආරම්භ කිරීමට රැඳී සිටිමින්.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1354"/>
+        <location filename="../src/gui/folderman.cpp" line="1340"/>
         <source>Preparing for sync.</source>
         <translation>සමමුහුර්ත කිරීම සඳහා සූදානම් වෙමින්</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1357"/>
+        <location filename="../src/gui/folderman.cpp" line="1343"/>
         <source>Sync is running.</source>
         <translation>සමමුහුර්ත කිරීම ක්රියාත්මක වේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1362"/>
+        <location filename="../src/gui/folderman.cpp" line="1348"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>සමමුහුර්ත කිරීම සාර්ථක විය, නොවිසඳුණු ගැටුම්.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1364"/>
+        <location filename="../src/gui/folderman.cpp" line="1350"/>
         <source>Last Sync was successful.</source>
         <translation>අවසාන සමමුහුර්ත කිරීම සාර්ථක විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1370"/>
+        <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>Setup Error.</source>
         <translation>පිහිටුවීමේ දෝෂය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1373"/>
+        <location filename="../src/gui/folderman.cpp" line="1359"/>
         <source>User Abort.</source>
         <translation>පරිශීලක Abort.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1376"/>
+        <location filename="../src/gui/folderman.cpp" line="1362"/>
         <source>Sync is paused.</source>
         <translation>සමමුහුර්ත කිරීම විරාම කර ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1382"/>
+        <location filename="../src/gui/folderman.cpp" line="1368"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (සමමුහුර්ත කිරීම විරාම කර ඇත)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1390"/>
+        <location filename="../src/gui/folderman.cpp" line="1376"/>
         <source>No valid folder selected!</source>
         <translation>වලංගු ෆෝල්ඩරයක් තෝරා නැත!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1398"/>
+        <location filename="../src/gui/folderman.cpp" line="1384"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවයක ෆෝල්ඩරය %1 භාවිතා වේ!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1405"/>
+        <location filename="../src/gui/folderman.cpp" line="1391"/>
         <source>The selected path does not exist!</source>
         <translation>තෝරාගත් මාර්ගය නොපවතී!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1409"/>
+        <location filename="../src/gui/folderman.cpp" line="1395"/>
         <source>The selected path is not a folder!</source>
         <translation>තෝරාගත් මාර්ගය ෆෝල්ඩරයක් නොවේ!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1413"/>
+        <location filename="../src/gui/folderman.cpp" line="1399"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>තෝරාගත් ෆෝල්ඩරයට ලිවීමට ඔබට අවසර නැත!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1436"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>සේවාදායකයෙන් මෙම දේශීය ෆෝල්ඩරයට දැනටමත් සමමුහුර්ත කිරීමක් ඇත. කරුණාකර වෙනත් දේශීය ෆෝල්ඩරයක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
+        <location filename="../src/gui/folderman.cpp" line="1440"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>දේශීය ෆෝල්ඩරය %1 හි දැනටමත් ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවයක භාවිතා කරන ලද ෆෝල්ඩරයක් අඩංගු වේ. කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1460"/>
+        <location filename="../src/gui/folderman.cpp" line="1446"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>දේශීය ෆෝල්ඩරය %1 දැනටමත් ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවයක භාවිතා කරන ෆෝල්ඩරයක අඩංගු වේ. කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1467"/>
+        <location filename="../src/gui/folderman.cpp" line="1453"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1546"/>
+        <location filename="../src/gui/folderman.cpp" line="1532"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -4130,7 +4130,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::VfsSuffix</name>
     <message>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="109"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="104"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
         <translation>තැන් දරණ නම සහිත ගොනුවක් දැනටමත් පවතින නිසා ස්ථාන දරන්නා තැනිය නොහැක</translation>
     </message>
