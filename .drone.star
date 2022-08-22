@@ -17,10 +17,12 @@ MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CLIENT = "owncloudci/client:latest"
+OC_CI_CLIENT_FEDORA = "sawjan/client-fedora"
 OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
 OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_SQUISH = "owncloudci/squish:6.7-20220106-1008-qt515x-linux64"
+OC_CI_SQUISH_FEDORA = "sawjan/squish-fedora"
 OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
 OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.6.0"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
@@ -180,6 +182,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
                      build_config["generator"],
                      build_config["build_command"],
                      build_dir,
+                     OC_CI_CLIENT_FEDORA,
                  ) +
                  gui_tests(squish_parameters, [build_config["build_command"]]) +
                  # GUI test result has been disabled for now, as we squish can not produce the result in both html and json format.
@@ -200,11 +203,11 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
         ],
     }]
 
-def build_client(c_compiler, cxx_compiler, build_type, generator, build_command, build_dir):
+def build_client(c_compiler, cxx_compiler, build_type, generator, build_command, build_dir, image = OC_CI_CLIENT):
     return [
         {
             "name": "generate",
-            "image": "sawjan/client-fedora",
+            "image": image,
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
@@ -216,7 +219,7 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
         },
         {
             "name": build_command,
-            "image": "sawjan/client-fedora",
+            "image": image,
             "environment": {
                 "LC_ALL": "C.UTF-8",
             },
@@ -247,7 +250,7 @@ def unit_tests(build_dir, depends_on = []):
 def gui_tests(squish_parameters = "", depends_on = []):
     return [{
         "name": "GUItests",
-        "image": "sawjan/squish-fedora",
+        "image": OC_CI_SQUISH_FEDORA,
         "environment": {
             "LICENSEKEY": from_secret("squish_license_server"),
             "GUI_TEST_REPORT_DIR": GUI_TEST_REPORT_DIR,
