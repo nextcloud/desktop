@@ -160,6 +160,9 @@
      </item>
      <item>
       <widget class="QScrollArea" name="scrollArea">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="sizePolicy">
         <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
          <horstretch>0</horstretch>
