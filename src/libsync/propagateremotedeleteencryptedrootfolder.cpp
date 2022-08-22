@@ -153,7 +153,7 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotDeleteNestedRemoteItemFinishe
     if (_nestedItems.size() == 0) {
         // we wait for all _nestedItems' DeleteJobs to finish, and then - fail if any of those jobs has failed
         if (networkError() != QNetworkReply::NetworkError::NoError || _item->_httpErrorCode != 0) {
-            const int errorCode = networkError() != QNetworkReply::NetworkError::NoError ? networkError() : _item->_httpErrorCode;
+            const auto errorCode = (networkError() != QNetworkReply::NetworkError::NoError ? static_cast<int>(networkError()) : _item->_httpErrorCode);
             qCCritical(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "Delete of nested items finished with error" << errorCode << ". Failing the entire sequence.";
             taskFailed();
             return;

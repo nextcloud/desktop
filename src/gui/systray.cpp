@@ -140,7 +140,12 @@ void Systray::create()
         }
 
         QQmlComponent trayWindowComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/Window.qml"));
-        _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
+
+        if(trayWindowComponent.isError()) {
+            qCWarning(lcSystray) << trayWindowComponent.errorString();
+        } else {
+            _trayWindow.reset(qobject_cast<QQuickWindow*>(trayWindowComponent.create()));
+        }
     }
     hideWindow();
     emit activated(QSystemTrayIcon::ActivationReason::Unknown);
@@ -260,8 +265,13 @@ void Systray::createCallDialog(const Activity &callNotification, const AccountSt
         };
 
         const auto callDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/CallNotificationDialog.qml"));
-        callDialog->createWithInitialProperties(initialProperties);
 
+        if(callDialog->isError()) {
+            qCWarning(lcSystray) << callDialog->errorString();
+            return;
+        }
+
+        callDialog->createWithInitialProperties(initialProperties);
         _callsAlreadyNotified.insert(callNotification._id);
     }
 }

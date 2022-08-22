@@ -6,6 +6,7 @@ import com.nextcloud.desktopclient 1.0
 
 QtObject {
     readonly property int pixelSize: fontMetrics.font.pixelSize
+    readonly property bool darkMode: Theme.darkMode
 
     // Colors
     readonly property color ncBlue:      Theme.wizardHeaderBackgroundColor
@@ -34,6 +35,8 @@ QtObject {
     property int trayWindowBorderWidth: variableSize(1)
     property int trayWindowHeaderHeight: variableSize(60)
     property int trayHorizontalMargin: 10
+    property int trayModalWidth: 380
+    property int trayModalHeight: 490
     property int trayListItemIconSize: accountAvatarSize
     property real thumbnailImageSizeReduction: 0.2  // We reserve some space within the thumbnail "item", here about 20%.
                                                     // This is because we need to also add the added/modified icon and we
@@ -42,6 +45,7 @@ QtObject {
                                                     // images, which will work so long as the thumbnails are left aligned
 
     property int standardSpacing: 10
+    property int smallSpacing: 5
 
     property int minActivityHeight: variableSize(40)
 

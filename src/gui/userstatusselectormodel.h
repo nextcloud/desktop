@@ -34,9 +34,10 @@ class UserStatusSelectorModel : public QObject
 {
     Q_OBJECT
 
+    Q_PROPERTY(int userIndex READ userIndex WRITE setUserIndex NOTIFY userIndexChanged)
     Q_PROPERTY(QString userStatusMessage READ userStatusMessage WRITE setUserStatusMessage NOTIFY userStatusChanged)
     Q_PROPERTY(QString userStatusEmoji READ userStatusEmoji WRITE setUserStatusEmoji NOTIFY userStatusChanged)
-    Q_PROPERTY(OCC::UserStatus::OnlineStatus onlineStatus READ onlineStatus WRITE setOnlineStatus NOTIFY onlineStatusChanged)
+    Q_PROPERTY(OCC::UserStatus::OnlineStatus onlineStatus READ onlineStatus WRITE setOnlineStatus NOTIFY userStatusChanged)
     Q_PROPERTY(QVector<OCC::UserStatus> predefinedStatuses READ predefinedStatuses NOTIFY predefinedStatusesChanged)
     Q_PROPERTY(QVariantList clearStageTypes READ clearStageTypes CONSTANT)
     Q_PROPERTY(QString clearAtDisplayString READ clearAtDisplayString NOTIFY clearAtDisplayStringChanged)
@@ -73,6 +74,8 @@ public:
     explicit UserStatusSelectorModel(const UserStatus &userStatus,
         QObject *parent = nullptr);
 
+    Q_REQUIRED_RESULT int userIndex() const;
+
     Q_REQUIRED_RESULT UserStatus::OnlineStatus onlineStatus() const;
     void setOnlineStatus(UserStatus::OnlineStatus status);
 
@@ -95,16 +98,16 @@ public:
     Q_REQUIRED_RESULT QString errorMessage() const;
 
 public slots:
-    void load(int id);
+    void setUserIndex(const int userIndex);
     void setUserStatus();
     void clearUserStatus();
     void setClearAt(const ClearStageType clearStageType);
     void setPredefinedStatus(const UserStatus &predefinedStatus);
 
 signals:
+    void userIndexChanged();
     void errorMessageChanged();
     void userStatusChanged();
-    void onlineStatusChanged();
     void clearAtDisplayStringChanged();
     void predefinedStatusesChanged();
     void finished();
@@ -125,6 +128,7 @@ private:
     void setError(const QString &reason);
     void clearError();
 
+    int _userIndex = -1;
     std::shared_ptr<UserStatusConnector> _userStatusConnector {};
     QVector<UserStatus> _predefinedStatuses;
     UserStatus _userStatus;

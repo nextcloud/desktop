@@ -59,7 +59,7 @@ QString onlineStatusToString(OCC::UserStatus::OnlineStatus status)
     case OCC::UserStatus::OnlineStatus::DoNotDisturb:
         return QStringLiteral("dnd");
     case OCC::UserStatus::OnlineStatus::Away:
-        return QStringLiteral("offline");
+        return QStringLiteral("away");
     case OCC::UserStatus::OnlineStatus::Offline:
         return QStringLiteral("offline");
     case OCC::UserStatus::OnlineStatus::Invisible:
