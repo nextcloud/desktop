@@ -21,9 +21,9 @@ class EnterPassword:
         pass
 
     def enterPassword(self, password):
-        try:
-            squish.waitForObject(self.PASSWORD_BOX, 10000)
-            squish.type(squish.waitForObject(self.PASSWORD_BOX), password)
-            squish.clickButton(squish.waitForObject(self.LOGIN_BUTTON))
-        except LookupError:
-            pass
+        # try:
+        squish.waitForObject(self.PASSWORD_BOX, 10000)
+        squish.type(squish.waitForObject(self.PASSWORD_BOX), password)
+        squish.clickButton(squish.waitForObject(self.LOGIN_BUTTON))
+        # except LookupError:
+        #     pass
