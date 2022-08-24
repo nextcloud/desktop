@@ -130,6 +130,7 @@ private:
     bool _disableCompleterActivated; // in order to avoid that we share the contents twice
     ShareManager *_manager;
 
+
     QProgressIndicator _pi_sharee;
 
     QString _lastCreatedShareId;
@@ -220,13 +221,16 @@ private:
   bool _isFile;
 
   ProfilePageMenu _profilePageMenu;
+  QString _permission;
 
   // _permissionEdit is a checkbox
   QAction *_permissionReshare;
   QAction *_deleteShareButton;
-  QAction *_permissionCreate;
+//  QAction *_permissionCreate;
+  QAction *_permissionRead;
+  QAction *_permissionCanEdit;
   QAction *_permissionChange;
-  QAction *_permissionDelete;
+//  QAction *_permissionDelete;
   QAction *_noteLinkAction;
   QAction *_expirationDateLinkAction;
   QAction *_passwordProtectLinkAction;
