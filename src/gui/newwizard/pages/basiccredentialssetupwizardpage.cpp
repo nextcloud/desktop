@@ -29,8 +29,6 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
     // bring the correct widget to the front
     _ui->contentWidget->setCurrentWidget(_ui->basicLoginWidget);
 
-    _ui->basicLoginWidget->setServerUrl(serverUrl, QStringLiteral("color: %1").arg(Theme::instance()->wizardHeaderTitleColor().name()));
-
     const QString linkColor = Theme::instance()->wizardHeaderTitleColor().name();
 
     _ui->urlLabel->setText(tr("Connecting to <a href='%1' style='color: %2;'>%1</a>").arg(serverUrl.toString(), linkColor));

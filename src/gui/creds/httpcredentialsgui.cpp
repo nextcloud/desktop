@@ -114,7 +114,6 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
 void HttpCredentialsGui::showDialog()
 {
     auto *contentWidget = new BasicLoginWidget();
-    contentWidget->setServerUrl(_account->url());
     contentWidget->forceUsername(_account->davUser());
 
     auto *dialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());

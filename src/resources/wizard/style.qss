@@ -30,7 +30,6 @@
 #contentWidget #urlLabel,
 #contentWidget #usernameLabel,
 #contentWidget #passwordLabel,
-#contentWidget #appPasswordLabel,
 #contentWidget #topLabel,
 #contentWidget #usernameLabel,
 #contentWidget #passwordLabel,

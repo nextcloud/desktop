@@ -51,12 +51,6 @@ BasicLoginWidget::~BasicLoginWidget()
     delete _ui;
 }
 
-void BasicLoginWidget::setServerUrl(const QUrl &serverUrl, const QString &linkStyle)
-{
-    const QString appPasswordUrl = QStringLiteral("%1/settings/personal?sectionid=security#apppasswords").arg(serverUrl.toString());
-    _ui->appPasswordLabel->setText(tr("Click <a style='%1' href='%2'>here</a> to request an app password on the server.").arg(linkStyle, appPasswordUrl));
-}
-
 void BasicLoginWidget::forceUsername(const QString &username)
 {
     _ui->usernameLineEdit->setText(username);

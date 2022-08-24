@@ -41,13 +41,6 @@ public:
     ~BasicLoginWidget() override;
 
     /**
-     * Update a label's text to provide a link directly to app password configuration on the web interface.
-     * @param serverUrl URL to ownCloud server instance
-     * @param linkStyle custom style to set on the app password link (needed for the setup wizard)
-     */
-    void setServerUrl(const QUrl &serverUrl, const QString &linkStyle = QString());
-
-    /**
      * Enter provided username into line edit and lock it from user interaction.
      * For use primarily with WebFinger.
      * @param username username to use
