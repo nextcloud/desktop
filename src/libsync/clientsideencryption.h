@@ -138,6 +138,8 @@ public:
 
     void forgetSensitiveData(const AccountPtr &account);
     bool newMnemonicGenerated() const;
+
+    void checkServerForKeys(const AccountPtr &account);
 public slots:
     void slotRequestMnemonic();
 
@@ -169,7 +171,6 @@ private:
     void generateKeyPair(const AccountPtr &account);
     void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
     void encryptPrivateKey(const AccountPtr &account);
-
     void getPrivateKeyFromServer(const AccountPtr &account);
     void getPublicKeyFromServer(const AccountPtr &account);
     void fetchAndValidatePublicKeyFromServer(const AccountPtr &account);

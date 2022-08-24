@@ -105,7 +105,7 @@ protected slots:
 
     // Encryption Related Stuff.
     void slotShowMnemonic(const QString &mnemonic);
-    void slotNewMnemonicGenerated();
+    void slotOfferEnableE2EE();
     void slotEncryptFolderFinished(int status);
 
     void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
