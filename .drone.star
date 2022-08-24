@@ -17,7 +17,7 @@ MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CLIENT = "owncloudci/client:latest"
-OC_CI_CLIENT_FEDORA = "sawjan/client-fedora"
+OC_CI_CLIENT_FEDORA = "sawjan/client-fedora:slim"
 OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
 OC_CI_PHP = "owncloudci/php:%s"
@@ -182,7 +182,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
                      build_config["generator"],
                      build_config["build_command"],
                      build_dir,
-                     #  OC_CI_CLIENT_FEDORA,
+                     OC_CI_CLIENT_FEDORA,
                  ) +
                  gui_tests(squish_parameters, [build_config["build_command"]]) +
                  # GUI test result has been disabled for now, as we squish can not produce the result in both html and json format.
