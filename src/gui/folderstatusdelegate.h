@@ -50,6 +50,8 @@ public:
         IsReady, // boolean
         IsUsingSpaces // boolean
     };
+    Q_ENUM(datarole);
+
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
 

@@ -45,6 +45,7 @@ public:
 
         ColumnCount
     };
+    Q_ENUM(ActivityRole)
 
 
     explicit ActivityListModel(QObject *parent = nullptr);

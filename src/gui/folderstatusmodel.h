@@ -117,10 +117,14 @@ public:
     };
 
 
-    enum ItemType { RootFolder,
+    enum ItemType {
+        RootFolder,
         SubFolder,
         AddButton,
-        FetchLabel };
+        FetchLabel
+    };
+    Q_ENUM(ItemType);
+
     ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 

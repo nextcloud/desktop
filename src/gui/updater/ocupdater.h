@@ -99,14 +99,16 @@ class OCUpdater : public Updater
 {
     Q_OBJECT
 public:
-    enum DownloadState { Unknown = 0,
+    enum DownloadState {
+        Unknown = 0,
         CheckingServer,
         UpToDate,
         Downloading,
         DownloadComplete,
         DownloadFailed,
         DownloadTimedOut,
-        UpdateOnlyAvailableThroughSystem };
+        UpdateOnlyAvailableThroughSystem
+    };
     Q_ENUM(DownloadState);
 
     explicit OCUpdater(const QUrl &url);

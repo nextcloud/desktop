@@ -78,11 +78,13 @@ class ConnectionValidator : public QObject
     Q_OBJECT
 public:
     explicit ConnectionValidator(AccountPtr account, QObject *parent = nullptr);
+
     enum class ValidationMode {
         ValidateServer,
         ValidateAuth,
         ValidateAuthAndUpdate
     };
+    Q_ENUM(ValidationMode)
 
     enum Status {
         Undefined,

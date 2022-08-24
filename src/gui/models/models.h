@@ -37,10 +37,13 @@ signals:
 };
 
 namespace Models {
+    Q_NAMESPACE
+
     enum DataRoles {
         UnderlyingDataRole = Qt::UserRole + 100,
         StringFormatWidthRole // The width for a cvs formated column
     };
+    Q_ENUM_NS(DataRoles)
 
     /**
      * Returns a cvs representation of a table

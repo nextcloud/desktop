@@ -99,6 +99,7 @@ public:
         BrandedIconWithFallbackToVanillaIcon,
         VanillaIcon
     };
+    Q_ENUM(IconType)
 
     /**
       * get an sync state icon
@@ -308,9 +309,12 @@ public:
      * @value UserIDEmail Wizard asks for an email as ID
      * @value UserIDCustom Specify string in \ref customUserID
      */
-    enum UserIDType { UserIDUserName = 0,
+    enum UserIDType {
+        UserIDUserName = 0,
         UserIDEmail,
-        UserIDCustom };
+        UserIDCustom
+    };
+    Q_ENUM(UserIDType)
 
     /** @brief What to display as the userID (e.g. in the wizards)
      *

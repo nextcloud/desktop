@@ -76,6 +76,7 @@ public:
         /// We are currently asking the user for credentials
         AskingCredentials
     };
+    Q_ENUM(State)
 
     /// The actual current connectivity status.
     typedef ConnectionValidator::Status ConnectionStatus;

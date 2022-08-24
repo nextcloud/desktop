@@ -37,6 +37,8 @@ public:
 
         ColumnCount
     };
+    Q_ENUM(ProtocolItemRole)
+
     /**
      * @brief ProtocolItemModel
      * @param parent

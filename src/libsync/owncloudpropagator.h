@@ -69,12 +69,15 @@ public:
         Synchronous,
         Asynchronous
     };
+    Q_ENUM(AbortType)
 
     enum JobState {
         NotYetStarted,
         Running,
         Finished
     };
+    Q_ENUM(JobState)
+
     JobState _state;
 
     enum JobParallelism {
@@ -87,6 +90,7 @@ public:
             are executed. */
         WaitForFinished,
     };
+    Q_ENUM(JobParallelism)
 
     virtual JobParallelism parallelism() { return FullParallelism; }
 
@@ -483,6 +487,7 @@ public:
         DiskSpaceFailure,
         DiskSpaceCritical
     };
+    Q_ENUM(DiskSpaceResult)
 
     /** Checks whether there's enough disk space available to complete
      *  all jobs that are currently running.

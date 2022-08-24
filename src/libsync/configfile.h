@@ -46,8 +46,10 @@ public:
 
     ConfigFile();
 
-    enum Scope { UserScope,
-        SystemScope };
+    enum Scope {
+        UserScope,
+        SystemScope
+    };
 
     QString excludeFile(Scope scope) const;
     static QString excludeFileFromSystem(); // doesn't access config dir

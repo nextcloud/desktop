@@ -47,6 +47,7 @@ public:
         TypeLink = 3,
         TypeRemote = Sharee::Federated
     };
+    Q_ENUM(ShareType)
 
     typedef SharePermissions Permissions;
 
