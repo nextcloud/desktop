@@ -281,8 +281,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
         return tr("Local folder: %1").arg(f->shortGuiLocalPath());
-    case FolderStatusDelegate::IsReady:
-        return f->isReady();
     }
     return QVariant();
 }
@@ -570,9 +568,10 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
 
 void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
-    if (!data(parent, FolderStatusDelegate::IsReady).toBool()) {
+    if (!folder(parent)->isReady()) {
         return;
     }
+
     auto info = infoForIndex(parent);
 
     if (!info || info->_fetched || info->_fetchingJob)

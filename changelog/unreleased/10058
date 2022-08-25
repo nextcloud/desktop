@@ -1,0 +1,6 @@
+Bugfix: Fix configuration of selective sync from account settings
+
+We removed a superfluous check which caused the directory tree in the account settings window to no longer expand beyond the first level.
+The problem was introduced in 8d0dd36d2.
+
+https://github.com/owncloud/client/pull/10058

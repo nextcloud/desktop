@@ -48,8 +48,6 @@ public:
 
         AddButton, // 1 = enabled; 2 = disabled
         FolderSyncText,
-        
-        IsReady // boolean
     };
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
