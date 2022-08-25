@@ -30,9 +30,6 @@ Window {
     }
 
     Component.onCompleted: {
-        Systray.forceWindowInit(dialog);
-        Systray.positionWindowAtScreenCenter(dialog);
-
         dialog.show();
         dialog.raise();
         dialog.requestActivate();
