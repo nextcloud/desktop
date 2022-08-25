@@ -27,7 +27,7 @@ Feature: adding accounts
         Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
         And an account should be displayed with the displayname Brian Murphy and host %local_server_hostname%
 
-
+    @skip
     Scenario: Adding account with wrong credentials
         Given the user has started the client
         And the user has added the following server address:
@@ -37,7 +37,7 @@ Feature: adding accounts
             | password | 12345 |
         Then error "Login failed: username and/or password incorrect" should be displayed
 
-
+    @skip
     Scenario: Adding account with self signed certificate for the first time
         Given the user has started the client
         When the user adds the following server address:
