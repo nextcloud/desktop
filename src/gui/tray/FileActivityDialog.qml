@@ -33,5 +33,8 @@ Window {
         dialog.show();
         dialog.raise();
         dialog.requestActivate();
+
+        Systray.forceWindowInit(dialog);
+        Systray.positionWindowAtScreenCenter(dialog);
     }
 }
