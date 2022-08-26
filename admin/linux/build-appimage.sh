@@ -109,7 +109,7 @@ export LD_LIBRARY_PATH=/usr/lib/
 
 # Workaround issue #103
 rm -rf ./squashfs-root
-APPIMAGE=$(ls Nextcloud*.AppImage)
+APPIMAGE=$(ls *.AppImage)
 "./${APPIMAGE}" --appimage-extract
 rm "./${APPIMAGE}"
 rm ./squashfs-root/usr/lib/libglib-2.0.so.0
@@ -119,6 +119,6 @@ PATH=./linuxdeployqt-squashfs-root/usr/bin:$PATH appimagetool -n ./squashfs-root
 #move AppImage
 if [ ! -z "$DRONE_COMMIT" ]
 then
-    mv Nextcloud*.AppImage Nextcloud-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
+    mv *.AppImage ${APPNAME}-${SUFFIX}-${DRONE_COMMIT}-x86_64.AppImage
 fi
 mv *.AppImage ${DESKTOP_CLIENT_ROOT}/
