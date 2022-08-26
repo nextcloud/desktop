@@ -474,7 +474,7 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     if(!_isFile) enabled = enabled && (maxSharingPermissions & SharePermissionCreate &&
                                       maxSharingPermissions & SharePermissionDelete);
    // _ui->permissionsEdit->setEnabled(enabled);
-   // connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
+  // connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
 
@@ -488,7 +488,6 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     // create menu with checkable permissions
     auto *menu = new QMenu(this);
     auto *permissionMenu = new QMenu(this);
-
 
     auto *permissionsGroup = new QActionGroup(this);
     permissionsGroup->setExclusive(true);
@@ -556,30 +555,6 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     menu->addAction(_deleteShareButton);
     connect(_deleteShareButton, &QAction::triggered, this, &ShareUserLine::on_deleteShareButton_clicked);
 
-    /*
-     * Files can't have create or delete permissions
-     */
-   /* if (!_isFile) {
-        _permissionCreate = new QAction(tr("Can create"), this);
-        _permissionCreate->setCheckable(true);
-        _permissionCreate->setEnabled(maxSharingPermissions & SharePermissionCreate);
-        menu->addAction(_permissionCreate);
-        connect(_permissionCreate, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
-
-        _permissionChange = new QAction(tr("Can change"), this);
-        _permissionChange->setCheckable(true);
-        _permissionChange->setVisible(true);
-        _permissionChange->setEnabled(maxSharingPermissions & SharePermissionUpdate);
-        menu->addAction(_permissionChange);
-        connect(_permissionChange, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
-
-        _permissionDelete = new QAction(tr("Can delete"), this);
-        _permissionDelete->setCheckable(true);
-        _permissionDelete->setEnabled(maxSharingPermissions & SharePermissionDelete);
-        menu->addAction(_permissionDelete);
-        connect(_permissionDelete, &QAction::triggered, this, &ShareUserLine::slotPermissionsChanged);
-    }*/
-
     // Adds action to display password widget (check box)
     if (_share->getShareType() == Share::TypeEmail && (_share->isPasswordSet() || _account->capabilities().shareEmailPasswordEnabled())) {
         _passwordProtectLinkAction = new QAction(tr("Password protect"), this);
@@ -604,11 +579,9 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     _ui->permissionToolButton->setMenu(menu);
     _ui->permissionToolButton->setPopupMode(QToolButton::InstantPopup);
 
-
     _ui->permissionMenu->setMenu(permissionMenu);
     _ui->permissionMenu->setPopupMode(QToolButton::InstantPopup);
     _ui->permissionMenu->setStyleSheet("QToolButton::menu-indicator { image: none; }");
-
 
     _ui->passwordProgressIndicator->setVisible(false);
 
@@ -717,14 +690,12 @@ void ShareUserLine::slotAvatarLoaded(QImage avatar)
     _ui->avatar->setStyleSheet("");
 }
 
-void ShareUserLine::on_deleteShareButton_clicked()
-{
+void ShareUserLine::on_deleteShareButton_clicked(){
     setEnabled(false);
     _share->deleteShare();
 }
 
-ShareUserLine::~ShareUserLine()
-{
+ShareUserLine::~ShareUserLine(){
     delete _ui;
 }
 
@@ -743,7 +714,6 @@ void ShareUserLine::slotEditPermissionsChanged()
 
     //  folders edit = CREATE, READ, UPDATE, DELETE
     //  files edit = READ + UPDATE
-  //  if (_ui->permissionsEdit->checkState() == Qt::Checked) {
 
         /*
          * Files can't have create or delete permisisons
@@ -761,7 +731,6 @@ void ShareUserLine::slotEditPermissionsChanged()
             permissions |= SharePermissionUpdate;
 
         }
-  //  }
 
     if(_isFile && _permissionReshare->isEnabled() && _permissionReshare->isChecked())
         permissions |= SharePermissionShare;
@@ -769,8 +738,7 @@ void ShareUserLine::slotEditPermissionsChanged()
     _share->setPermissions(permissions);
 }
 
-void ShareUserLine::slotPermissionsChanged()
-{
+void ShareUserLine::slotPermissionsChanged(){
     setEnabled(false);
 
     Share::Permissions permissions = SharePermissionRead;

@@ -70,7 +70,6 @@ ShareLinkWidget::ShareLinkWidget(AccountPtr account,
 
     _ui->shareLinkToolButton->hide();
 
-
     //Is this a file or folder?
     QFileInfo fi(localPath);
     _isFile = fi.isFile();
@@ -202,7 +201,6 @@ void ShareLinkWidget::setupUiOptions()
         _readOnlyLinkAction->setChecked(checked);
         permissionMenu->addAction(_readOnlyLinkAction);
 
-
         checked = (perm & SharePermissionRead) && (perm & SharePermissionUpdate);
         _allowEditingLinkAction =  permissionsGroup->addAction(tr("Can Edit"));
         _allowEditingLinkAction->setCheckable(true);
@@ -229,8 +227,6 @@ void ShareLinkWidget::setupUiOptions()
     _ui->permissionMenu->setPopupMode(QToolButton::InstantPopup);
     _ui->permissionMenu->setStyleSheet("QToolButton::menu-indicator { image: none; }");
 
-
-    
     _shareLinkElidedLabel = new OCC::ElidedLabel(this);
     _shareLinkElidedLabel->setElideMode(Qt::ElideRight);
     displayShareLinkLabel();
@@ -274,8 +270,7 @@ void ShareLinkWidget::setupUiOptions()
         _linkContextMenu->addAction(_allowEditingLinkAction);
         _linkContextMenu->addAction(_allowUploadLinkAction);
     }
-
-      _linkContextMenu->addAction(_shareLinkWidgetAction);
+    _linkContextMenu->addAction(_shareLinkWidgetAction);
 
     // Adds action to display note widget (check box)
     _noteLinkAction = _linkContextMenu->addAction(tr("Note to recipient"));
@@ -570,7 +565,6 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
     SharePermissions perm = SharePermissionRead;
 
     _ui->currentPermission->setElideMode(Qt::ElideRight);
-
     if (action == _addAnotherLinkAction.data()) {
         emit createLinkShare();
 
