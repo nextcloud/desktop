@@ -156,6 +156,9 @@ void ProgressInfo::reset()
 
     _updateEstimatesTimer.stop();
     _lastCompletedItem = SyncFileItem();
+
+    _estimatedDownBw = 0;
+    _estimatedUpBw = 0;
 }
 
 ProgressInfo::Status ProgressInfo::status() const
@@ -333,6 +336,53 @@ bool ProgressInfo::trustEta() const
 ProgressInfo::Estimates ProgressInfo::fileProgress(const SyncFileItem &item) const
 {
     return _currentItems[item._file]._progress.estimates();
+}
+
+void ProgressInfo::setEstimatedBandwidth(const SyncFileItem &item)
+{
+    if (item._direction != SyncFileItem::Up) {
+        _estimatedDownBw = fileProgress(item).estimatedBandwidth;
+    } else {
+        _estimatedUpBw = fileProgress(item).estimatedBandwidth;
+    }
+}
+
+quint64 ProgressInfo::estimatedUpBw() const
+{
+    return _estimatedUpBw;
+}
+
+quint64 ProgressInfo::estimatedDownBw() const
+{
+    return _estimatedDownBw;
+}
+
+QString ProgressInfo::estimatedBwString() const
+{
+    QString estimatedBwString;
+    if (_estimatedDownBw > 0) {
+        estimatedBwString.append(tr(", "));
+// ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
+#ifdef Q_OS_WIN
+        //: Example text: "download 24Kb/s"   (%1 is replaced by 24Kb (translated))
+        estimatedBwString.append(tr("download %1/s").arg(Utility::octetsToString(_estimatedDownBw)));
+#else
+        estimatedBwString.append(tr("\u2193 %1/s")
+                                      .arg(Utility::octetsToString(_estimatedDownBw)));
+#endif
+    }
+    if (_estimatedUpBw > 0) {
+        estimatedBwString.append(tr(", "));
+#ifdef Q_OS_WIN
+        //: Example text: "upload 24Kb/s"   (%1 is replaced by 24Kb (translated))
+        estimatedBwString.append(tr("upload %1/s").arg(Utility::octetsToString(_estimatedUpBw)));
+#else
+        estimatedBwString.append(tr("\u2191 %1/s")
+                                      .arg(Utility::octetsToString(_estimatedUpBw)));
+#endif
+    }
+
+    return estimatedBwString;
 }
 
 void ProgressInfo::updateEstimates()
