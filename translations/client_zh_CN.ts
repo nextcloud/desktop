@@ -305,9 +305,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
-        <location filename="../src/gui/accountsettings.cpp" line="609"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1029"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -332,17 +332,17 @@
         <translation>账户</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="335"/>
         <source>Choose what to sync</source>
         <translation>选择同步内容</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>Force sync now</source>
         <translation>强制同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="344"/>
+        <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Restart sync</source>
         <translation>重新开始同步</translation>
     </message>
@@ -352,37 +352,37 @@
         <translation>断开文件夹同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Disable virtual file support...</source>
         <translation>关闭虚拟文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="454"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Folder creation failed</source>
         <translation>文件夹创建失败</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="455"/>
+        <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;无法创建文件夹 &lt;i&gt;%1&lt;/i&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>确定断开文件夹同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>Remove Folder Sync Connection</source>
         <translation>断开文件夹同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="600"/>
+        <location filename="../src/gui/accountsettings.cpp" line="599"/>
         <source>Disable virtual file support?</source>
         <translation>是否取消虚拟文件？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="601"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -395,158 +395,158 @@ This action will abort any currently running synchronization.</source>
 此操作将中止任何当前正在运行的同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Disable support</source>
         <translation>取消支持</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
         <source>Sync Running</source>
         <translation>正在同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="693"/>
+        <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>正在执行同步。&lt;br /&gt;您确定要关闭它吗？</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>%1 in use</source>
         <translation>%1 使用中</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="816"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1, &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="826"/>
+        <location filename="../src/gui/accountsettings.cpp" line="825"/>
         <source>Connected to %1.</source>
         <translation>连接到 %1。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="831"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>远程服务器%1暂时不可用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="834"/>
+        <location filename="../src/gui/accountsettings.cpp" line="833"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>服务器%1处于维护模式。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="837"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>Signed out from %1.</source>
         <translation>从 %1 退出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Connecting to %1...</source>
         <translation>正在连接到 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>No connection to %1 at %2.</source>
         <translation>没有到位于%2中的%1的连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="891"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>Log in</source>
         <translation>登录</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="986"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>以下目录由于太大而没有同步：</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988"/>
+        <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>以下目录由于是外部存储而没有同步：</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="989"/>
+        <location filename="../src/gui/accountsettings.cpp" line="988"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>以下目录由于太大或是外部存储而没有同步：</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1021"/>
         <source>Confirm Account Removal</source>
         <translation>确认删除账号</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;你确定要删除账号的连接？ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Remove connection</source>
         <translation>删除连接</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="893"/>
+        <location filename="../src/gui/accountsettings.cpp" line="892"/>
         <source>Log out</source>
         <translation>注销</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Resume sync</source>
         <translation>恢复同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Pause sync</source>
         <translation>暂停同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>Enable virtual file support%1...</source>
         <translation>启用虚拟文件支持%1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source> (experimental)</source>
         <translation>(试验性)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;你确定要停止文件夹同步？ &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; 这 &lt;b&gt;不会&lt;/b&gt; 删除任何文件&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="776"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) of %2 使用中。一些文件夹，例如网络挂载的和共享的文件夹，可能有不同的限制。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>%1 of %2 in use</source>
         <translation>使用量 %1 / %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="787"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>目前没有储存使用量信息可用。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="824"/>
+        <location filename="../src/gui/accountsettings.cpp" line="823"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>不支持服务器版本 %1！继续操作将自行承担风险。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="844"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>从浏览器获取授权。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="857"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>服务器配置错误：%1，位于%2。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="868"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>No %1 connection configured.</source>
         <translation>没有 %1 连接配置。</translation>
     </message>
@@ -1348,62 +1348,62 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>有未解决的冲突。点击显示详细信息。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>检查远端文件  &apos;%1&apos; 的变动</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>检查本地文件  &apos;%1&apos; 的变动</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="911"/>
         <source>Reconciling changes</source>
         <translation>调整变更</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>正在同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>, </source>
         <translation>，</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>下载 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/秒</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/秒</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>上传 %1/s</translation>
@@ -1414,46 +1414,46 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>本地文件夹: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 / %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1027"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1026"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>剩余: %5，%1 / %2, 文件数量 %3 / %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1034"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 of %2, file %3 of %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>file %1 of %2</source>
         <translation>第 %1 个文件，共 %2 个</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1092"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>Waiting...</source>
         <translation>请稍等...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>等待 %n 个其他文件(文件夹)</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>Preparing to sync...</source>
         <translation>准备同步...</translation>
     </message>

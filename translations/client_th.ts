@@ -306,9 +306,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
-        <location filename="../src/gui/accountsettings.cpp" line="609"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1029"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
         <source>Cancel</source>
         <translation>ยกเลิก</translation>
     </message>
@@ -333,17 +333,17 @@
         <translation>บัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="335"/>
         <source>Choose what to sync</source>
         <translation>เลือกข้อมูลที่ต้องการประสาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>Force sync now</source>
         <translation>บังคับประสานข้อมูลเดี๋ยวนี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="344"/>
+        <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Restart sync</source>
         <translation>ประสานข้อมูลอีกครั้ง</translation>
     </message>
@@ -353,37 +353,37 @@
         <translation>ลบโฟลเดอร์ที่ประสานข้อมูลออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Disable virtual file support...</source>
         <translation>ปิดใช้งานการสนับสนุนไฟล์เสมือน...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="454"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Folder creation failed</source>
         <translation>สร้างโฟลเดอร์ล้มเหลว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="455"/>
+        <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;ไม่สามารถสร้างโฟลเดอร์ในเครื่อง &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>ยืนยันการลบโฟลเดอร์ที่ประสานข้อมูลออก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>Remove Folder Sync Connection</source>
         <translation>ลบโฟลเดอร์ที่ประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="600"/>
+        <location filename="../src/gui/accountsettings.cpp" line="599"/>
         <source>Disable virtual file support?</source>
         <translation>ปิดใช้งานการสนับสนุนไฟล์เสมือน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="601"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -396,158 +396,158 @@ This action will abort any currently running synchronization.</source>
 การดำเนินการนี้จะยกเลิกการประสานข้อมูลที่กำลังทำงานอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Disable support</source>
         <translation>ปิดใช้งานการสนับสนุน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
         <source>Sync Running</source>
         <translation>กำลังประสานข้อมูล</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="693"/>
+        <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>กำลังดำเนินการประสานข้อมูลอยู่ &lt;br/&gt;คุณต้องการสิ้นสุดการทำงาน?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>%1 in use</source>
         <translation>%1 กำลังถูกใช้งาน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="816"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 เช่น &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="826"/>
+        <location filename="../src/gui/accountsettings.cpp" line="825"/>
         <source>Connected to %1.</source>
         <translation>เชื่อมต่อกับ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="831"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>เซิร์ฟเวอร์ %1 ไม่สามารถใช้ได้ชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="834"/>
+        <location filename="../src/gui/accountsettings.cpp" line="833"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>เซิร์ฟเวอร์ %1 กำลังอยู่ในโหมดการบำรุงรักษา</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="837"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>Signed out from %1.</source>
         <translation>ลงชื่อออกจาก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Connecting to %1...</source>
         <translation>กำลังเชื่อมต่อไปยัง %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>No connection to %1 at %2.</source>
         <translation>ไม่มีการเชื่อมต่อไปยัง %1 ที่ %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="891"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>Log in</source>
         <translation>เข้าสู่ระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="986"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>บางโฟลเดอร์จะไม่ถูกประสานข้อมูลเพราะขนาดของมันใหญ่เกินไป:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988"/>
+        <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>มีบางโฟลเดอร์จะไม่ถูกประสานข้อมูลเพราะเป็นพื้นที่จัดเก็บข้อมูลภายนอก</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="989"/>
+        <location filename="../src/gui/accountsettings.cpp" line="988"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>มีบางโฟลเดอร์จะไม่ถูกประสานข้อมูลเพราะเป็นพื้นที่จัดเก็บข้อมูลภายนอกหรือมีขนาดที่ใหญ่เกินไป</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1021"/>
         <source>Confirm Account Removal</source>
         <translation>ยืนยันการลบบัญชี</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการลบการเชื่อมต่อกับบัญชี&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Remove connection</source>
         <translation>ลบการเชื่อมต่อ</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="893"/>
+        <location filename="../src/gui/accountsettings.cpp" line="892"/>
         <source>Log out</source>
         <translation>ออกจากระบบ</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Resume sync</source>
         <translation>ประสานข้อมูลอีกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Pause sync</source>
         <translation>หยุดประสานข้อมูลชั่วคราว</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>Enable virtual file support%1...</source>
         <translation>เปิดใช้งานการสนับสนุนไฟล์เสมือน %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source> (experimental)</source>
         <translation>(โหมดเบต้า)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;คุณต้องการหยุดการประสานข้อมูลโฟลเดอร์&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;หมายเหตุ:&lt;/b&gt; นี้จะ &lt;b&gt;ไม่&lt;/b&gt; ลบไฟล์ใดๆ&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="776"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>มีการใช้งาน %1 (%3%) จาก %2  บางโฟลเดอร์รวมทั้งเครือข่ายที่ติดตั้งหรือโฟลเดอร์ที่แชร์อาจมีข้อจำกัดที่แตกต่างกัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>%1 of %2 in use</source>
         <translation>มีการใช้งาน %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="787"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>ขณะนี้ไม่มีพื้นที่จัดเก็บข้อมูลที่ใช้งานได้</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="824"/>
+        <location filename="../src/gui/accountsettings.cpp" line="823"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>เซิร์ฟไม่สนับสนุนเวอร์เวอร์ชัน %1 นี่เป็นความเสี่ยงของคุณเอง</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="844"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Obtaining authorization from the browser.</source>
         <translation>กำลังขออนุมัติจากเบราว์เซอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="857"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>ข้อผิดพลาดการกำหนดค่าเซิร์ฟเวอร์: %1 ที่ %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="868"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>No %1 connection configured.</source>
         <translation>ไม่มีการเชื่อมต่อ %1 ที่ถูกกำหนดค่า</translation>
     </message>
@@ -1345,62 +1345,62 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>มีข้อขัดแย้งที่ยังไม่ได้รับการแก้ไข คลิกเพื่อดูรายละเอียด</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>กำลังตรวจหาการเปลี่ยนแปลงในรีโมต &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>กำลังตรวจหาการเปลี่ยนแปลงในเครื่อง &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="911"/>
         <source>Reconciling changes</source>
         <translation>คืนค่าการเปลี่ยนแปลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>, </source>
         <translation>หรือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ดาวน์โหลด %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>อัปโหลด %1/s</translation>
@@ -1411,46 +1411,46 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>โฟลเดอร์ในเครื่อง: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1027"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1026"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>เหลืออีก %5 ไฟล์, %1 ไฟล์จาก %2, %3 ไฟล์จาก %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1034"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 จาก %2, %3 จาก %4 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>file %1 of %2</source>
         <translation>ไฟล์ %1 จาก %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1092"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>Waiting...</source>
         <translation>โปรดรอสักครู่...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>กำลังรออีก (%n) โฟลเดอร์...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>Preparing to sync...</source>
         <translation>กำลังเตรียมพร้อมในการประสานข้อมูล</translation>
     </message>

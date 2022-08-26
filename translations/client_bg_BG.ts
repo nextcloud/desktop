@@ -305,9 +305,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="269"/>
-        <location filename="../src/gui/accountsettings.cpp" line="518"/>
-        <location filename="../src/gui/accountsettings.cpp" line="609"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1029"/>
+        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>
@@ -332,17 +332,17 @@
         <translation>Профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="336"/>
+        <location filename="../src/gui/accountsettings.cpp" line="335"/>
         <source>Choose what to sync</source>
         <translation>Избери какво да се синхронизира</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="342"/>
+        <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>Force sync now</source>
         <translation>Синхронизирай сега</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="344"/>
+        <location filename="../src/gui/accountsettings.cpp" line="343"/>
         <source>Restart sync</source>
         <translation>Рестартирай синхронизирането</translation>
     </message>
@@ -352,37 +352,37 @@
         <translation>Пемахване на връзка за синхронизиране на папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="357"/>
+        <location filename="../src/gui/accountsettings.cpp" line="356"/>
         <source>Disable virtual file support...</source>
         <translation>Деактивиране на поддръжката на виртуални файлове ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="454"/>
+        <location filename="../src/gui/accountsettings.cpp" line="453"/>
         <source>Folder creation failed</source>
         <translation>Неуспешно създаване на папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="455"/>
+        <location filename="../src/gui/accountsettings.cpp" line="454"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.</source>
         <translation>&lt;p&gt;Не може да създаде локална папка &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Потвърждаване на премахването на връзката за синхронизиране на папката</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="517"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Премахване на синхронизираща връзка на папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="600"/>
+        <location filename="../src/gui/accountsettings.cpp" line="599"/>
         <source>Disable virtual file support?</source>
         <translation>Деактивиране на поддръжката на виртуални файлове?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="601"/>
+        <location filename="../src/gui/accountsettings.cpp" line="600"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as 'available online only' will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -395,158 +395,158 @@ This action will abort any currently running synchronization.</source>
 Това действие ще прекрати всяка текуща синхронизация.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Disable support</source>
         <translation>Деактивиране на поддръжката</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="692"/>
+        <location filename="../src/gui/accountsettings.cpp" line="691"/>
         <source>Sync Running</source>
         <translation>Синхронизирането е включено</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="693"/>
+        <location filename="../src/gui/accountsettings.cpp" line="692"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Активна е синхронизираща операция.&lt;br/&gt;Искате ли да я преустановите?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="790"/>
+        <location filename="../src/gui/accountsettings.cpp" line="789"/>
         <source>%1 in use</source>
         <translation>%1 се използва</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="817"/>
+        <location filename="../src/gui/accountsettings.cpp" line="816"/>
         <source>%1 as &lt;i&gt;%2&lt;/i&gt;</source>
         <translation>%1 като &lt;i&gt;%2&lt;/i&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="826"/>
+        <location filename="../src/gui/accountsettings.cpp" line="825"/>
         <source>Connected to %1.</source>
         <translation>Свързан към %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="831"/>
+        <location filename="../src/gui/accountsettings.cpp" line="830"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Сървъра %1 е временно недостъпен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="834"/>
+        <location filename="../src/gui/accountsettings.cpp" line="833"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>В момента сървър %1 е в режим на поддръжка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="837"/>
+        <location filename="../src/gui/accountsettings.cpp" line="836"/>
         <source>Signed out from %1.</source>
         <translation>Излизане от профила на %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="847"/>
+        <location filename="../src/gui/accountsettings.cpp" line="846"/>
         <source>Connecting to %1...</source>
         <translation>Свързване с %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="852"/>
+        <location filename="../src/gui/accountsettings.cpp" line="851"/>
         <source>No connection to %1 at %2.</source>
         <translation>Няма връзка с %1 от %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="891"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>Log in</source>
         <translation>Влизане</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="986"/>
+        <location filename="../src/gui/accountsettings.cpp" line="985"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Има папки, които не са синхронизирани защото са твърде големи:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="988"/>
+        <location filename="../src/gui/accountsettings.cpp" line="987"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Има папки, които не са синхронизирани, защото са на външни дискови устройства:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="989"/>
+        <location filename="../src/gui/accountsettings.cpp" line="988"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Има папки, които не са синхронизирани защото са твърде големи или на външни дискови устройства:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1021"/>
         <source>Confirm Account Removal</source>
         <translation>Потвърждаване за премахване на профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1023"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1022"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Сигурни ли сте, че желаете да премахнете връзката с профил &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Блежка:&lt;/b&gt; Това &lt;b&gt;няма&lt;/b&gt; да изтрие никакви файлове.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1028"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
         <source>Remove connection</source>
         <translation>Премахване на връзка</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="201"/>
-        <location filename="../src/gui/accountsettings.cpp" line="893"/>
+        <location filename="../src/gui/accountsettings.cpp" line="892"/>
         <source>Log out</source>
         <translation>Излизане</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Resume sync</source>
         <translation>Продължаване на синхронизацията</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="350"/>
+        <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Pause sync</source>
         <translation>Пауза на синхронизацията</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>Enable virtual file support%1...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="364"/>
+        <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source> (experimental)</source>
         <translation>(експериментален)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="510"/>
+        <location filename="../src/gui/accountsettings.cpp" line="509"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Сигурни ли сте, че желаете да спрете синхронизацията на папка&lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Бележка:&lt;/b&gt; Това &lt;b&gt;няма&lt;/b&gt; да изтрие никакви файлове.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="777"/>
+        <location filename="../src/gui/accountsettings.cpp" line="776"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) от %2 се използва. Някои папки, включително мрежови или споделени папки, могат да имат различни ограничения.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="778"/>
+        <location filename="../src/gui/accountsettings.cpp" line="777"/>
         <source>%1 of %2 in use</source>
         <translation>%1 от %2 се използва</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="787"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>В момента липсва информация за използваното пространство.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="824"/>
+        <location filename="../src/gui/accountsettings.cpp" line="823"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Версията на сървъра %1 не се поддържа! Продължете на свой риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="844"/>
+        <location filename="../src/gui/accountsettings.cpp" line="843"/>
         <source>Obtaining authorization from the browser.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="857"/>
+        <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="868"/>
+        <location filename="../src/gui/accountsettings.cpp" line="867"/>
         <source>No %1 connection configured.</source>
         <translation>Липсва %1 конфигурирана връзка.</translation>
     </message>
@@ -1345,62 +1345,62 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Има нерешени конфликти. Кликнете за повече подробности.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="904"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="903"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Проверка за промени в отдалечената „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="907"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="906"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Проверка за промени в локалната „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="912"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="911"/>
         <source>Reconciling changes</source>
         <translation>Запис на промените</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="957"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="956"/>
         <source>, &apos;%1&apos;</source>
         <extracomment>Build a list of file names</extracomment>
         <translation>, &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="960"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="959"/>
         <source>&apos;%1&apos;</source>
         <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="982"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Синхронизиране на %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="995"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="983"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="987"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>теглене с %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="990"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="989"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="997"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>качване с %1/s</translation>
@@ -1411,46 +1411,46 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Локална папка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1006"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 от %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1009"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1027"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1026"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>още %5, %1 от %2, файл %3 от %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1035"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1034"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 от %2, файл %3 от %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1042"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1041"/>
         <source>file %1 of %2</source>
         <translation>файл %1 от %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1092"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>Waiting...</source>
         <translation>Изчакване...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1094"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1093"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>Изчакване на %n други папка(и)...</numerusform><numerusform>Изчакване на %n други папка(и)...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1100"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>Preparing to sync...</source>
         <translation>Подготовка за синхронизация...</translation>
     </message>
