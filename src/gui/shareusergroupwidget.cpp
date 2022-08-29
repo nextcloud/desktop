@@ -473,8 +473,6 @@ ShareUserLine::ShareUserLine(AccountPtr account, QSharedPointer<UserGroupShare> 
     bool enabled = (maxSharingPermissions & SharePermissionUpdate);
     if(!_isFile) enabled = enabled && (maxSharingPermissions & SharePermissionCreate &&
                                       maxSharingPermissions & SharePermissionDelete);
-   // _ui->permissionsEdit->setEnabled(enabled);
-  // connect(_ui->permissionsEdit, &QAbstractButton::clicked, this, &ShareUserLine::slotEditPermissionsChanged);
     connect(_ui->noteConfirmButton, &QAbstractButton::clicked, this, &ShareUserLine::onNoteConfirmButtonClicked);
     connect(_ui->calendar, &QDateTimeEdit::dateChanged, this, &ShareUserLine::setExpireDate);
 
@@ -690,12 +688,14 @@ void ShareUserLine::slotAvatarLoaded(QImage avatar)
     _ui->avatar->setStyleSheet("");
 }
 
-void ShareUserLine::on_deleteShareButton_clicked(){
+void ShareUserLine::on_deleteShareButton_clicked()
+{
     setEnabled(false);
     _share->deleteShare();
 }
 
-ShareUserLine::~ShareUserLine(){
+ShareUserLine::~ShareUserLine()
+{
     delete _ui;
 }
 
@@ -706,9 +706,6 @@ void ShareUserLine::slotEditPermissionsChanged()
     // Can never manually be set to "partial".
     // This works because the state cycle for clicking is
     // unchecked -> partial -> checked -> unchecked.
-//    if (_ui->permissionsEdit->checkState() == Qt::PartiallyChecked) {
-//        _ui->permissionsEdit->setCheckState(Qt::Checked);
-//    }
 
     Share::Permissions permissions = SharePermissionRead;
 
@@ -723,10 +720,6 @@ void ShareUserLine::slotEditPermissionsChanged()
                 permissions |= SharePermissionUpdate;
                _ui->currentPermission->setText("Can Edit");
             }
-            /*if (_permissionCreate->isEnabled())
-                permissions |= SharePermissionCreate;
-            if (_permissionDelete->isEnabled())
-                permissions |= SharePermissionDelete;*/
         } else {
             permissions |= SharePermissionUpdate;
 
@@ -738,7 +731,8 @@ void ShareUserLine::slotEditPermissionsChanged()
     _share->setPermissions(permissions);
 }
 
-void ShareUserLine::slotPermissionsChanged(){
+void ShareUserLine::slotPermissionsChanged()
+{
     setEnabled(false);
 
     Share::Permissions permissions = SharePermissionRead;
@@ -746,8 +740,7 @@ void ShareUserLine::slotPermissionsChanged(){
     if (_permissionReshare->isChecked()){
         permissions |= SharePermissionShare;
          _share->setPermissions(permissions);
-    }
-    else if(_permissionRead->isChecked()){
+    }else if(_permissionRead->isChecked()){
         permissions |= SharePermissionRead;
         _ui->currentPermission->setText("Read Only");
          _share->setPermissions(permissions);
@@ -757,7 +750,6 @@ void ShareUserLine::slotPermissionsChanged(){
         _ui->currentPermission->setText("Can Edit");
          _share->setPermissions(permissions);
     }
-   // _share->setPermissions(permissions);
 }
 
 void ShareUserLine::slotPasswordCheckboxChanged()
@@ -883,23 +875,13 @@ void ShareUserLine::displayPermissions()
 
 //  folders edit = CREATE, READ, UPDATE, DELETE
 //  files edit = READ + UPDATE
-  /*  if (perm & SharePermissionUpdate && (_isFile ||
-                                         (perm & SharePermissionCreate && perm & SharePermissionDelete))) {
-        _ui->permissionsEdit->setCheckState(Qt::Checked);
-    } else if (!_isFile && perm & (SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete)) {
-        _ui->permissionsEdit->setCheckState(Qt::PartiallyChecked);
-    } else if(perm & SharePermissionRead) {
-        _ui->permissionsEdit->setCheckState(Qt::Unchecked);
-    }*/
 
 //  edit is independent of reshare
     if (perm & SharePermissionShare)
         _permissionReshare->setChecked(true);
 
     if(!_isFile){
-        //_permissionCreate->setChecked(perm & SharePermissionCreate);
         _permissionChange->setChecked(perm & SharePermissionUpdate);
-        //_permissionDelete->setChecked(perm & SharePermissionDelete);
     }
 }
 

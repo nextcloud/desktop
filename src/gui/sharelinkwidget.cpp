@@ -202,7 +202,7 @@ void ShareLinkWidget::setupUiOptions()
         permissionMenu->addAction(_readOnlyLinkAction);
 
         checked = (perm & SharePermissionRead) && (perm & SharePermissionUpdate);
-        _allowEditingLinkAction =  permissionsGroup->addAction(tr("Can Edit"));
+        _allowEditingLinkAction = permissionsGroup->addAction(tr("Can Edit"));
         _allowEditingLinkAction->setCheckable(true);
         _allowEditingLinkAction->setChecked(checked);
          permissionMenu->addAction(_allowEditingLinkAction);
@@ -521,7 +521,8 @@ void ShareLinkWidget::toggleExpireDateOptions(const bool enable)
     }
 }
 
-void ShareLinkWidget::confirmAndDeleteShare(){
+void ShareLinkWidget::confirmAndDeleteShare()
+{
     auto messageBox = new QMessageBox(
         QMessageBox::Question,
         tr("Confirm Link Share Deletion"),
@@ -569,10 +570,7 @@ void ShareLinkWidget::slotLinkContextMenuActionTriggered(QAction *action)
         emit createLinkShare();
 
     } else if (action == _readOnlyLinkAction && state) {
-        if(_isFile)
-            _ui->currentPermission->setEnabled(false);
-        else
-            _ui->currentPermission->setEnabled(true);
+        _ui->currentPermission->setEnabled(_isFile);
         _linkShare->setPermissions(perm);
         _ui->currentPermission->setText(action->text());
 
