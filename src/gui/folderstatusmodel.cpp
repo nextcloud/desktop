@@ -185,6 +185,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QVariant();
             return QVariant(f->path() + x._path);
         }
+        case FolderStatusDelegate::IsReady: {
+            auto f = x._folder;
+            return f->isReady();
+        }
         }
     }
         return QVariant();
@@ -281,6 +285,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return progress._overallSyncString;
     case FolderStatusDelegate::FolderSyncText:
         return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+    case FolderStatusDelegate::IsReady:
+        return f->isReady();
     }
     return QVariant();
 }
@@ -568,8 +574,14 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
 
 void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
-    if (!folder(parent)->isReady()) {
-        return;
+    {
+        const auto isReady = data(parent, FolderStatusDelegate::IsReady);
+
+        Q_ASSERT(isReady.isValid());
+
+        if (!isReady.toBool()) {
+            return;
+        }
     }
 
     auto info = infoForIndex(parent);
