@@ -716,7 +716,7 @@ void ShareUserLine::slotEditPermissionsChanged()
          * Files can't have create or delete permisisons
          */
         if (!_isFile) {
-            if (_permissionChange->isEnabled()){
+            if (_permissionChange->isEnabled()) {
                 permissions |= SharePermissionUpdate;
                _ui->currentPermission->setText("Can Edit");
             }
@@ -737,15 +737,14 @@ void ShareUserLine::slotPermissionsChanged()
 
     Share::Permissions permissions = SharePermissionRead;
 
-    if (_permissionReshare->isChecked()){
+    if (_permissionReshare->isChecked()) {
         permissions |= SharePermissionShare;
          _share->setPermissions(permissions);
-    }else if(_permissionRead->isChecked()){
+    } else if(_permissionRead->isChecked()) {
         permissions |= SharePermissionRead;
         _ui->currentPermission->setText("Read Only");
          _share->setPermissions(permissions);
-    }
-    else if(_permissionChange->isChecked()){
+    } else if(_permissionChange->isChecked()) {
         permissions |= SharePermissionUpdate;
         _ui->currentPermission->setText("Can Edit");
          _share->setPermissions(permissions);
@@ -877,10 +876,11 @@ void ShareUserLine::displayPermissions()
 //  files edit = READ + UPDATE
 
 //  edit is independent of reshare
-    if (perm & SharePermissionShare)
+    if (perm & SharePermissionShare) {
         _permissionReshare->setChecked(true);
+    }
 
-    if(!_isFile){
+    if (!_isFile) {
         _permissionChange->setChecked(perm & SharePermissionUpdate);
     }
 }
