@@ -17,12 +17,16 @@ MYSQL = "mysql:8.0"
 OC_CI_ALPINE = "owncloudci/alpine:latest"
 OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CLIENT = "owncloudci/client:latest"
-OC_CI_CLIENT_FEDORA = "sawjan/client-fedora:slim"
 OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
 OC_CI_PHP = "owncloudci/php:%s"
-OC_CI_SQUISH = "owncloudci/squish:6.7-20220106-1008-qt515x-linux64"
-OC_CI_SQUISH_FEDORA = "sawjan/squish-fedora:slim"
+
+# Eventually, we have to use image built on ubuntu
+# Todo: update or remove the following images
+# https://github.com/owncloud/client/issues/10070
+OC_CI_CLIENT_FEDORA = "owncloudci/client:fedora-36-amd64"
+OC_CI_SQUISH = "owncloudci/squish:fedora-36-6.7-20220106-1008-qt515x-linux64"
+
 OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
 OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.6.0"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
@@ -250,7 +254,7 @@ def unit_tests(build_dir, depends_on = []):
 def gui_tests(squish_parameters = "", depends_on = []):
     return [{
         "name": "GUItests",
-        "image": OC_CI_SQUISH_FEDORA,
+        "image": OC_CI_SQUISH,
         "environment": {
             "LICENSEKEY": from_secret("squish_license_server"),
             "GUI_TEST_REPORT_DIR": GUI_TEST_REPORT_DIR,
