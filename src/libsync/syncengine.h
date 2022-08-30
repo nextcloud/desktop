@@ -144,6 +144,8 @@ public:
 
     auto getPropagator() { return _propagator; } // for the test
 
+    ProgressInfo* progressInfo() const { return _progressInfo.get(); }
+
 signals:
     // During update, before reconcile
     void rootEtag(const QByteArray &, const QDateTime &);

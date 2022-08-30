@@ -108,7 +108,7 @@ Folder::Folder(const FolderDefinition &definition,
     connect(_engine.data(), &SyncEngine::addErrorToGui, this, &Folder::slotAddErrorToGui);
 
     _scheduleSelfTimer.setSingleShot(true);
-    _scheduleSelfTimer.setInterval(SyncEngine::minimumFileAgeForUpload);
+    _scheduleSelfTimer.setInterval(5000);
     connect(&_scheduleSelfTimer, &QTimer::timeout,
         this, &Folder::slotScheduleThisFolder);
 
@@ -1226,6 +1226,9 @@ void Folder::slotHydrationDone()
 void Folder::scheduleThisFolderSoon()
 {
     if (!_scheduleSelfTimer.isActive()) {
+        _scheduleSelfTimer.start();
+    } else {
+        _scheduleSelfTimer.stop();
         _scheduleSelfTimer.start();
     }
 }
