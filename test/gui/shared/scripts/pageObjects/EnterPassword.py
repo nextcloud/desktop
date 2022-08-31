@@ -21,6 +21,6 @@ class EnterPassword:
         pass
 
     def enterPassword(self, password):
-        squish.waitForObject(self.PASSWORD_BOX, 10000)
+        squish.waitForObject(self.PASSWORD_BOX)
         squish.type(squish.waitForObject(self.PASSWORD_BOX), password)
         squish.clickButton(squish.waitForObject(self.LOGIN_BUTTON))

@@ -427,9 +427,9 @@ def step(context, type, resource):
     waitForFileOrFolderToSync(context, resource, type)
 
 
-@Given('user has waited for the files to be synced')
-def step(context):
-    waitForRootFolderToSync(context)
+@Given(r'user has waited for (file|folder) to be synced', regexp=True)
+def step(context, type, resource):
+    waitForFileOrFolderToSync(context, resource, type)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
