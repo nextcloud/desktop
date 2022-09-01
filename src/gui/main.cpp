@@ -59,6 +59,7 @@ void warnSystray()
 int main(int argc, char **argv)
 {
     qputenv("QTWEBENGINE_CHROMIUM_FLAGS", "--disable-gpu --no-sandbox");
+    QCoreApplication::setAttribute(Qt::AA_UseOpenGLES);
 
 #ifdef Q_OS_WIN
     SetDllDirectory(L"");
