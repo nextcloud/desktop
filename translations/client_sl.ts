@@ -1021,12 +1021,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <source>; Restoration Failed: %1</source>
+        <translation>Obnovitev je spodletela: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>Obnovitev je spodletela: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

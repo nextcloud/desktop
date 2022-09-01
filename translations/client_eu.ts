@@ -1021,12 +1021,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Sareko errorea: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Sareko errorea: %1</translation>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>Berrezartzeak huts egin du: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; Berreskurapenak huts egin du: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Berreskurapenak huts egin du: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>Berrezartzeak huts egin du: %1</translation>
     </message>
 </context>
 <context>

@@ -1020,12 +1020,12 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Netwerkfout: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Netwerkfout: %1</translation>
     </message>
     <message>
@@ -1045,13 +1045,13 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>Herstellen mislukt: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; Herstellen mislukt: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Herstellen mislukt: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>Herstellen mislukt: %1</translation>
     </message>
 </context>
 <context>

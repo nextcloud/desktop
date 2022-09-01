@@ -1021,12 +1021,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Chyba sítě: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Chyba sítě: %1</translation>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>Obnovení se nezdařilo: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; Obnovení se nezdařilo: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Obnovení se nezdařilo: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>Obnovení se nezdařilo: %1</translation>
     </message>
 </context>
 <context>

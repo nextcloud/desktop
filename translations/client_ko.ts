@@ -1021,13 +1021,13 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
-        <translation>네트워크 오류: %1</translation>
+        <source>Network Error: %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <source>Network error: %1</source>
+        <translation>네트워크 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="465"/>
@@ -1046,13 +1046,13 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>복원 실패: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; 복원 실패: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; 복원 실패: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>복원 실패: %1</translation>
     </message>
 </context>
 <context>
