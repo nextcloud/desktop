@@ -1021,12 +1021,12 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Hálózati hiba: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Hálózati hiba: %1</translation>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>Helyreállítás sikertelen: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; Sikertelen helyreállítás: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Sikertelen helyreállítás: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>Helyreállítás sikertelen: %1</translation>
     </message>
 </context>
 <context>

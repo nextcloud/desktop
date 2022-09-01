@@ -1021,12 +1021,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Erro de rede: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Erro de rede: %1</translation>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>Falha na restauração: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; A restauração falhou: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; A restauração falhou: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>Falha na restauração: %1</translation>
     </message>
 </context>
 <context>

@@ -1021,12 +1021,12 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Eroare de rețea: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Eroare de rețea: %1</translation>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation>Restaurarea a eșuat: %1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; Restaurare eșuată: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Restaurare eșuată: %1</translation>
+        <source>Restoration failed: %1</source>
+        <translation>Restaurarea a eșuat: %1</translation>
     </message>
 </context>
 <context>

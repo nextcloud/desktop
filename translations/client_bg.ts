@@ -1021,12 +1021,12 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network error: %1</source>
+        <source>Network Error: %1</source>
         <translation>Мрежова грешка: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
-        <source>Network Error: %1</source>
+        <source>Network error: %1</source>
         <translation>Мрежова грешка: %1</translation>
     </message>
     <message>
@@ -1046,13 +1046,13 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>Restoration failed: %1</source>
-        <translation> Възстановяването е неуспешно: % 1</translation>
+        <source>; Restoration Failed: %1</source>
+        <translation>; Възстановяването е Неуспешно: % 1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="676"/>
-        <source>; Restoration Failed: %1</source>
-        <translation>; Възстановяването е Неуспешно: % 1</translation>
+        <source>Restoration failed: %1</source>
+        <translation> Възстановяването е неуспешно: % 1</translation>
     </message>
 </context>
 <context>
