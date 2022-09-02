@@ -836,6 +836,8 @@ void ClientSideEncryption::initialize(const AccountPtr &account)
     }
 
     fetchFromKeyChain(account);
+    getPublicKeyFromServer(account);
+    getPrivateKeyFromServer(account);
 }
 
 void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account)
@@ -912,9 +914,11 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming)
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
+        setKeychainHasPublicKey(false);
         getPublicKeyFromServer(account);
         return;
     }
+    setKeychainHasPublicKey(true);
 
     _certificate = QSslCertificate(readJob->binaryData(), QSsl::Pem);
 
@@ -950,6 +954,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
 
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
+        setKeychainHasPrivateKey(false);
         _certificate = QSslCertificate();
 
         _publicKey = QSslKey();
@@ -958,6 +963,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
         getPublicKeyFromServer(account);
         return;
     }
+    setKeychainHasPrivateKey(true);
 
     //_privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
     _privateKey = readJob->binaryData();
