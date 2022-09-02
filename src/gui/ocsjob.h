@@ -19,8 +19,7 @@
 #include "abstractnetworkjob.h"
 
 #include <QVector>
-#include <QList>
-#include <QPair>
+#include <QHash>
 #include <QUrl>
 
 #define OCS_SUCCESS_STATUS_CODE 100
@@ -110,6 +109,8 @@ public:
      */
     void addRawHeader(const QByteArray &headerName, const QByteArray &value);
 
+    [[nodiscard]] QString getParamValue(const QString &key) const;
+
 
 protected slots:
 
@@ -149,7 +150,7 @@ private slots:
 
 private:
     QByteArray _verb;
-    QList<QPair<QString, QString>> _params;
+    QHash<QString, QString> _params;
     QVector<int> _passStatusCodes;
     QNetworkRequest _request;
 };

@@ -982,6 +982,9 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
     }
 
     shareFolder->accountState()->account()->setLockFileState(fileData.serverRelativePath, shareFolder->journalDb(), lockState);
+
+    shareFolder->journalDb()->schedulePathForRemoteDiscovery(fileData.serverRelativePath);
+    shareFolder->scheduleThisFolderSoon();
 }
 
 void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const

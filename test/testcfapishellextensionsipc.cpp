@@ -5,22 +5,121 @@
  *
  */
 
+#include <account.h>
+#include <accountstate.h>
+#include <accountmanager.h>
+#include <common/vfs.h>
+#include <common/shellextensionutils.h>
+#include "config.h"
+#include <folderman.h>
+#include <libsync/vfs/cfapi/shellext/configvfscfapishellext.h>
+#include <ocssharejob.h>
+#include <shellextensionsserver.h>
+#include <syncengine.h>
+#include "syncenginetestutils.h"
+#include "testhelper.h"
+#include <vfs/cfapi/shellext/customstateprovideripc.h>
+#include <vfs/cfapi/shellext/thumbnailprovideripc.h>
 #include <QtTest>
 #include <QImage>
 #include <QPainter>
-#include "syncenginetestutils.h"
-#include "common/vfs.h"
-#include "common/shellextensionutils.h"
-#include "config.h"
-#include <syncengine.h>
 
-#include "folderman.h"
-#include "account.h"
-#include "accountstate.h"
-#include "accountmanager.h"
-#include "testhelper.h"
-#include "vfs/cfapi/shellext/thumbnailprovideripc.h"
-#include "shellextensionsserver.h"
+namespace {
+static constexpr auto roootFolderName = "A";
+static constexpr auto imagesFolderName = "photos";
+static constexpr auto filesFolderName = "files";
+
+static const QByteArray fakeNoSharesResponse = R"({"ocs":{"data":[],"meta":{"message":"OK","status":"ok","statuscode":200}}})";
+
+static const QByteArray fakeSharedFilesResponse = R"({"ocs":{"data":[{
+                "attributes": null,
+                "can_delete": true,
+                "can_edit": true,
+                "displayname_file_owner": "admin",
+                "displayname_owner": "admin",
+                "expiration": null,
+                "file_parent": 2981,
+                "file_source": 3538,
+                "file_target": "/test_shared_file.txt",
+                "has_preview": true,
+                "hide_download": 0,
+                "id": "36",
+                "item_source": 3538,
+                "item_type": "file",
+                "label": null,
+                "mail_send": 0,
+                "mimetype": "text/plain",
+                "note": "",
+                "parent": null,
+                "path": "A/files/test_shared_file.txt",
+                "permissions": 19,
+                "share_type": 0,
+                "share_with": "newstandard",
+                "share_with_displayname": "newstandard",
+                "share_with_displayname_unique": "newstandard",
+                "status": {
+                    "clearAt": null,
+                    "icon": null,
+                    "message": null,
+                    "status": "offline"
+                },
+                "stime": 1662995777,
+                "storage": 2,
+                "storage_id": "home::admin",
+                "token": null,
+                "uid_file_owner": "admin",
+                "uid_owner": "admin"
+            },
+            {
+                "attributes": null,
+                "can_delete": true,
+                "can_edit": true,
+                "displayname_file_owner": "admin",
+                "displayname_owner": "admin",
+                "expiration": null,
+                "file_parent": 2981,
+                "file_source": 3538,
+                "file_target": "/test_shared_and_locked_file.txt",
+                "has_preview": true,
+                "hide_download": 0,
+                "id": "36",
+                "item_source": 3538,
+                "item_type": "file",
+                "label": null,
+                "mail_send": 0,
+                "mimetype": "text/plain",
+                "note": "",
+                "parent": null,
+                "path": "A/files/test_shared_and_locked_file.txt",
+                "permissions": 19,
+                "share_type": 0,
+                "share_with": "newstandard",
+                "share_with_displayname": "newstandard",
+                "share_with_displayname_unique": "newstandard",
+                "status": {
+                    "clearAt": null,
+                    "icon": null,
+                    "message": null,
+                    "status": "offline"
+                },
+                "stime": 1662995777,
+                "storage": 2,
+                "storage_id": "home::admin",
+                "token": null,
+                "uid_file_owner": "admin",
+                "uid_owner": "admin"
+            }
+        ],
+        "meta": {
+            "message": "OK",
+            "status": "ok",
+            "statuscode": 200
+        }
+    }
+})";
+
+static constexpr auto shellExtensionServerOverrideIntervalMs = 1000LL * 2LL;
+}
 
 using namespace OCC;
 
@@ -38,21 +137,39 @@ class TestCfApiShellExtensionsIPC : public QObject
 
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
 
-    QStringList dummmyImageNames = {
-        "A/photos/imageJpg.jpg",
-        "A/photos/imagePng.png",
-        "A/photos/imagePng.bmp",
+    const QStringList dummmyImageNames = {
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(imagesFolderName) + QLatin1Char('/') + QStringLiteral("imageJpg.jpg")) },
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(imagesFolderName) + QLatin1Char('/') + QStringLiteral("imagePng.png")) },
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(imagesFolderName) + QLatin1Char('/') + QStringLiteral("imagePng.bmp")) }
     };
     QMap<QString, QByteArray> dummyImages;
 
     QString currentImage;
 
+    struct FileStates
+    {
+        bool _isShared = false;
+        bool _isLocked = false;
+    };
+
+    const QMap<QString, FileStates> dummyFileStates = {
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(filesFolderName) + QLatin1Char('/') + QStringLiteral("test_locked_file.txt")), { false, true } },
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(filesFolderName) + QLatin1Char('/') + QStringLiteral("test_shared_file.txt")), { true, false } },
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(filesFolderName) + QLatin1Char('/') + QStringLiteral("test_shared_and_locked_file.txt")), { true, true }},
+        { QString(QString(roootFolderName) + QLatin1Char('/') + QString(filesFolderName) + QLatin1Char('/') + QStringLiteral("test_non_shared_and_non_locked_file.txt")), { false, false }}
+    };
+
+public:
+    static bool replyWithNoShares;
+
 private slots:
     void initTestCase()
     {
         VfsShellExtensions::ThumbnailProviderIpc::overrideServerName = VfsShellExtensions::serverNameForApplicationNameDefault();
+        VfsShellExtensions::CustomStateProviderIpc::overrideServerName = VfsShellExtensions::serverNameForApplicationNameDefault();
 
         _shellExtensionsServer.reset(new ShellExtensionsServer);
+        _shellExtensionsServer->setIsSharedInvalidationInterval(shellExtensionServerOverrideIntervalMs);
 
         for (const auto &dummyImageName : dummmyImageNames) {
             const auto extension = dummyImageName.split(".").last();
@@ -66,6 +183,16 @@ private slots:
             buffer.open(QIODevice::WriteOnly);
             image.save(&buffer, extension.toStdString().c_str());
             dummyImages.insert(dummyImageName, byteArray);
+        }
+
+        fakeFolder.remoteModifier().mkdir(roootFolderName);
+
+        fakeFolder.remoteModifier().mkdir(QString(roootFolderName) + QLatin1Char('/') + QString(filesFolderName));
+
+        fakeFolder.remoteModifier().mkdir(QString(roootFolderName) + QLatin1Char('/') + QString(imagesFolderName));
+
+        for (const auto &fileStateKey : dummyFileStates.keys()) {
+            fakeFolder.remoteModifier().insert(fileStateKey, 256);
         }
 
         fakeQnam.reset(new FakeQNAM({}));
@@ -86,31 +213,43 @@ private slots:
                 Q_UNUSED(device);
                 QNetworkReply *reply = nullptr;
 
-                const auto urlQuery = QUrlQuery(req.url());
-                const auto fileId = urlQuery.queryItemValue(QStringLiteral("fileId"));
-                const auto x = urlQuery.queryItemValue(QStringLiteral("x")).toInt();
-                const auto y = urlQuery.queryItemValue(QStringLiteral("y")).toInt();
                 const auto path = req.url().path();
 
-                if (fileId.isEmpty() || x <= 0 || y <= 0) {
-                    reply = new FakePayloadReply(op, req, {}, nullptr);
-                } else {
-                    const auto foundImageIt = dummyImages.find(currentImage);
-
-                    QByteArray byteArray;
-                    if (foundImageIt != dummyImages.end()) {
-                        byteArray = foundImageIt.value();
-                    }
-
-                    currentImage.clear();
-
-                    auto fakePayloadReply = new FakePayloadReply(op, req, byteArray, nullptr);
-
+                if (path.endsWith(OCC::OcsShareJob::_pathForSharesRequest)) {
+                    const auto jsonReply = TestCfApiShellExtensionsIPC::replyWithNoShares ? fakeNoSharesResponse : fakeSharedFilesResponse;
+                    TestCfApiShellExtensionsIPC::replyWithNoShares = false;
+                    auto fakePayloadReply = new FakePayloadReply(op, req, jsonReply, nullptr);
                     QMap<QNetworkRequest::KnownHeaders, QByteArray> additionalHeaders = {
-                        {QNetworkRequest::KnownHeaders::ContentTypeHeader, "image/jpeg"}};
+                        {QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json"}};
                     fakePayloadReply->_additionalHeaders = additionalHeaders;
-
                     reply = fakePayloadReply;
+                } else if (path.endsWith(ShellExtensionsServer::getFetchThumbnailPath())) {
+                    const auto urlQuery = QUrlQuery(req.url());
+                    const auto fileId = urlQuery.queryItemValue(QStringLiteral("fileId"));
+                    const auto x = urlQuery.queryItemValue(QStringLiteral("x")).toInt();
+                    const auto y = urlQuery.queryItemValue(QStringLiteral("y")).toInt();
+                    if (fileId.isEmpty() || x <= 0 || y <= 0) {
+                        reply = new FakePayloadReply(op, req, {}, nullptr);
+                    } else {
+                        const auto foundImageIt = dummyImages.find(currentImage);
+
+                        QByteArray byteArray;
+                        if (foundImageIt != dummyImages.end()) {
+                            byteArray = foundImageIt.value();
+                        }
+
+                        currentImage.clear();
+
+                        auto fakePayloadReply = new FakePayloadReply(op, req, byteArray, nullptr);
+
+                        QMap<QNetworkRequest::KnownHeaders, QByteArray> additionalHeaders = {
+                            {QNetworkRequest::KnownHeaders::ContentTypeHeader, "image/jpeg"}};
+                        fakePayloadReply->_additionalHeaders = additionalHeaders;
+
+                        reply = fakePayloadReply;
+                    }
+                } else {
+                    reply = new FakePayloadReply(op, req, {}, nullptr);
                 }
                 
                 return reply;
@@ -126,6 +265,7 @@ private slots:
 
         folder->setVirtualFilesEnabled(true);
 
+        QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
 
@@ -135,8 +275,6 @@ private slots:
         cleanup();
 
         // Create a virtual file for remote files
-        fakeFolder.remoteModifier().mkdir("A");
-        fakeFolder.remoteModifier().mkdir("A/photos");
         for (const auto &dummyImageName : dummmyImageNames) {
             fakeFolder.remoteModifier().insert(dummyImageName, 256);
         }
@@ -198,6 +336,137 @@ private slots:
         QVERIFY(thumbnailReplyData.isEmpty());
     }
 
+    void testRequestCustomStates()
+    {
+        FolderMan *folderman = FolderMan::instance();
+        QVERIFY(folderman);
+        auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
+        QVERIFY(folder);
+
+        folder->setVirtualFilesEnabled(true);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // just add records from fake folder's journal to real one's to make test work
+        SyncJournalFileRecord record;
+        auto realFolder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
+        QVERIFY(realFolder);
+        for (auto it = std::begin(dummyFileStates); it != std::end(dummyFileStates); ++it) {
+            if (fakeFolder.syncJournal().getFileRecord(it.key(), &record)) {
+                record._isShared = it.value()._isShared;
+                if (record._isShared) {
+                    record._remotePerm.setPermission(OCC::RemotePermissions::Permissions::IsShared);
+                }
+                record._lockstate._locked = it.value()._isLocked;
+                if (record._lockstate._locked) {
+                    record._lockstate._lockOwnerId = "admin@example.cloud.com";
+                    record._lockstate._lockOwnerDisplayName = "Admin";
+                    record._lockstate._lockOwnerType = static_cast<int>(SyncFileItem::LockOwnerType::UserLock);
+                    record._lockstate._lockTime = QDateTime::currentMSecsSinceEpoch();
+                    record._lockstate._lockTimeout = 1000 * 60 * 60;
+                }
+                QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+                QVERIFY(realFolder->journalDb()->setFileRecord(record));
+            }
+        }
+
+        // #1 Test every file's states fetching. Everything must succeed.
+        for (auto it = std::cbegin(dummyFileStates); it != std::cend(dummyFileStates); ++it) {
+            QEventLoop loop;
+            QVariantList customStates;
+            std::thread t([&] {
+                VfsShellExtensions::CustomStateProviderIpc customStateProviderIpc;
+                customStates = customStateProviderIpc.fetchCustomStatesForFile(fakeFolder.localPath() + it.key());
+                QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
+            });
+            loop.exec();
+            t.detach();
+            QVERIFY(!customStates.isEmpty() || (!it.value()._isLocked && !it.value()._isShared));
+        }
+
+        // #2 Test wrong file's states fetching. It must fail.
+        QEventLoop loop;
+        QVariantList customStates;
+        std::thread t1([&] {
+            VfsShellExtensions::CustomStateProviderIpc customStateProviderIpc;
+            customStates = customStateProviderIpc.fetchCustomStatesForFile(fakeFolder.localPath() + QStringLiteral("A/files/wrong.jpg"));
+            QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
+        });
+        loop.exec();
+        t1.detach();
+        QVERIFY(customStates.isEmpty());
+
+        // #3 Test wrong file states fetching. It must fail.
+        customStates.clear();
+        std::thread t2([&] {
+            VfsShellExtensions::CustomStateProviderIpc customStateProviderIpc;
+            customStates = customStateProviderIpc.fetchCustomStatesForFile(fakeFolder.localPath() + QStringLiteral("A/files/test_non_shared_and_non_locked_file.txt"));
+            QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
+        });
+        loop.exec();
+        t2.detach();
+        QVERIFY(customStates.isEmpty());
+
+        // reset all share states to make sure we'll get new states when fetching
+        for (auto it = std::begin(dummyFileStates); it != std::end(dummyFileStates); ++it) {
+            if (fakeFolder.syncJournal().getFileRecord(it.key(), &record)) {
+                record._remotePerm.unsetPermission(OCC::RemotePermissions::Permissions::IsShared);
+                record._isShared = false;
+                QVERIFY(fakeFolder.syncJournal().setFileRecord(record));
+                QVERIFY(realFolder->journalDb()->setFileRecord(record));
+            }
+        }
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        //
+
+        // wait enough time to make shares' state invalid
+        QTest::qWait(shellExtensionServerOverrideIntervalMs + 1000);
+
+        // #4 Test every file's states fetching. Everything must succeed.
+        for (auto it = std::cbegin(dummyFileStates); it != std::cend(dummyFileStates); ++it) {
+            QEventLoop loop;
+            QVariantList customStates;
+            std::thread t([&] {
+                VfsShellExtensions::CustomStateProviderIpc customStateProviderIpc;
+                customStates = customStateProviderIpc.fetchCustomStatesForFile(fakeFolder.localPath() + it.key());
+                QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
+            });
+            loop.exec();
+            t.detach();
+            QVERIFY(!customStates.isEmpty() || (!it.value()._isLocked && !it.value()._isShared));
+
+            if (!customStates.isEmpty()) {
+                const auto lockedIndex = QString(CUSTOM_STATE_ICON_LOCKED_INDEX).toInt() - QString(CUSTOM_STATE_ICON_INDEX_OFFSET).toInt();
+                const auto sharedIndex = QString(CUSTOM_STATE_ICON_SHARED_INDEX).toInt() - QString(CUSTOM_STATE_ICON_INDEX_OFFSET).toInt();
+
+                if (customStates.contains(lockedIndex) && customStates.contains(sharedIndex)) {
+                    QVERIFY(it.value()._isLocked && it.value()._isShared);
+                }
+                if (customStates.contains(lockedIndex)) {
+                    QVERIFY(it.value()._isLocked);
+                }
+                if (customStates.contains(sharedIndex)) {
+                    QVERIFY(it.value()._isShared);
+                }
+            }
+        }
+
+        // #5 Test no shares response for a file
+        QTest::qWait(shellExtensionServerOverrideIntervalMs + 1000);
+        TestCfApiShellExtensionsIPC::replyWithNoShares = true;
+        customStates.clear();
+        std::thread t3([&] {
+            VfsShellExtensions::CustomStateProviderIpc customStateProviderIpc;
+            customStates = customStateProviderIpc.fetchCustomStatesForFile(fakeFolder.localPath() + QStringLiteral("A/files/test_non_shared_and_non_locked_file.txt"));
+            QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
+        });
+        loop.exec();
+        t3.detach();
+        QVERIFY(customStates.isEmpty());
+    }
+
     void cleanupTestCase()
     {
         VfsShellExtensions::ThumbnailProviderIpc::overrideServerName.clear();
@@ -211,6 +480,8 @@ private slots:
         }
     }
 };
+
+bool TestCfApiShellExtensionsIPC::replyWithNoShares = false;
 
 QTEST_GUILESS_MAIN(TestCfApiShellExtensionsIPC)
 #include "testcfapishellextensionsipc.moc"

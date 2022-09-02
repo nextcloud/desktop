@@ -144,6 +144,8 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
     connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
         propagator()->_activeJobList.removeOne(this);
         _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
+        _item->_isShared = _item->_remotePerm.hasPermission(RemotePermissions::IsShared);
+        _item->_lastShareStateFetchedTimestmap = QDateTime::currentMSecsSinceEpoch();
 
         if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
             success();
