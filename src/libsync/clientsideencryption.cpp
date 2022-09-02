@@ -965,7 +965,6 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
     }
     setKeychainHasPrivateKey(true);
 
-    //_privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
     _privateKey = readJob->binaryData();
     Q_EMIT privateKeyChanged();
 
@@ -1391,11 +1390,10 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
             qCInfo(lcCse()) << "Generated key:" << pass;
 
             QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key);
-            //_privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
             _privateKey = privateKey;
             Q_EMIT privateKeyChanged();
 
-            qCInfo(lcCse()) << "Private key: " << _privateKey;
+            qCInfo(lcCse()) << "Private key has been decrypted";
 
             if (!_privateKey.isNull() && checkPublicKeyValidity(account)) {
                 writePrivateKey(account);
