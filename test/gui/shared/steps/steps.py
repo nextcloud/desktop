@@ -35,7 +35,6 @@ confdir = '/tmp/bdd-tests-owncloud-client/'
 confFilePath = confdir + 'owncloud.cfg'
 socketConnect = None
 
-stateDataFromMiddleware = None
 
 # File syncing in client has the following status
 SYNC_STATUS = {
@@ -48,16 +47,14 @@ SYNC_STATUS = {
 
 
 def getTestStateFromMiddleware(context):
-    global stateDataFromMiddleware
-    if stateDataFromMiddleware is None:
+    try:
         res = requests.get(
             os.path.join(context.userData['middlewareUrl'], 'state'),
             headers={"Content-Type": "application/json"},
         )
-        try:
-            stateDataFromMiddleware = res.json()
-        except ValueError:
-            raise Exception("Could not get created users information from middleware")
+        stateDataFromMiddleware = res.json()
+    except ValueError:
+        raise Exception("Could not get created users information from middleware")
 
     return stateDataFromMiddleware
 
