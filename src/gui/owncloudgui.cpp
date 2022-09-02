@@ -25,6 +25,7 @@
 #include "folderwizard/folderwizard.h"
 #include "graphapi/drives.h"
 #include "gui/accountsettings.h"
+#include "gui/spaces/space.h"
 #include "guiutility.h"
 #include "logbrowser.h"
 #include "logger.h"
@@ -69,26 +70,26 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
     };
 
     if (accountStatePtr->supportsSpaces()) {
-        auto *drive = new GraphApi::Drives(accountStatePtr->account());
+        auto *drivesJob = new GraphApi::DrivesJob(accountStatePtr->account());
 
-        QObject::connect(drive, &GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
-            if (drive->parseError().error == QJsonParseError::NoError) {
-                const auto &drives = drive->drives();
+        QObject::connect(drivesJob, &GraphApi::DrivesJob::finishedSignal, [accountStatePtr, drivesJob, addFolder, finalize] {
+            if (drivesJob->parseError().error == QJsonParseError::NoError) {
+                const auto &drives = drivesJob->drives();
                 if (!drives.isEmpty()) {
                     const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
                     FileSystem::setFolderMinimumPermissions(localDir.path());
                     Utility::setupFavLink(localDir.path());
                     for (const auto &d : drives) {
-                        const QString name = GraphApi::Drives::getDriveDisplayName(d);
-                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(name));
-                        addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
+                        const auto space = Spaces::Space::fromDrive(d);
+                        const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(space.title()));
+                        addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), space.title());
                     }
                     finalize();
                 }
             }
         });
 
-        drive->start();
+        drivesJob->start();
 
         return;
     } else {

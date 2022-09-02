@@ -13,11 +13,12 @@
  */
 #pragma once
 
-#include "gui/spaces/spacesmodel.h"
-
 #include "accountfwd.h"
+#include "gui/spaces/space.h"
 
 #include <QWizardPage>
+
+#include <optional>
 
 
 namespace Ui {
@@ -30,16 +31,15 @@ class SpacesPage : public QWizardPage
     Q_OBJECT
 
 public:
-    explicit SpacesPage(AccountPtr acc, QWidget *parent = nullptr);
+    explicit SpacesPage(AccountPtr accountPtr, QWidget *parent = nullptr);
     ~SpacesPage();
 
     bool isComplete() const override;
 
-
-    QVariant selectedSpace(Spaces::SpacesModel::Columns column) const;
+    std::optional<Spaces::Space> selectedSpace() const;
 
 private:
-    Ui::SpacesPage *ui;
+    Ui::SpacesPage *_ui;
 };
 
 }

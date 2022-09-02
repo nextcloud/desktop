@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Hannah von Reth <hannah.vonreth@owncloud.com>
+ * Copyright (C) by Fabian Müller <fmueller@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,32 +19,33 @@
 
 #include <QWidget>
 
-#include <optional>
 
+QT_BEGIN_NAMESPACE
 namespace Ui {
-class SpacesBrowser;
+class SpaceItemWidget;
 }
+QT_END_NAMESPACE
 
 namespace OCC::Spaces {
-class SpacesModel;
 
-class SpacesBrowser : public QWidget
+class SpaceItemWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit SpacesBrowser(QWidget *parent = nullptr);
-    ~SpacesBrowser();
+    explicit SpaceItemWidget(const AccountPtr &accountPtr, const Space &space, QWidget *parent = nullptr);
+    ~SpaceItemWidget() override;
 
-    void setItems(const AccountPtr &accountPtr, const QList<Space> &spaces);
+    [[nodiscard]] const Space &space() const;
 
-    std::optional<Space> selectedSpace() const;
+    void setRadioButtonChecked(bool checked);
 
 Q_SIGNALS:
-    void selectionChanged();
+    void radioButtonClicked();
 
 private:
-    Ui::SpacesBrowser *_ui;
+    Ui::SpaceItemWidget *_ui;
+    Space _space;
 };
 
-}
+} // OCC::Spaces

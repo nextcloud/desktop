@@ -11,14 +11,14 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
+
 #include "spacesbrowser.h"
 #include "ui_spacesbrowser.h"
-
-#include "spacesmodel.h"
 
 #include "graphapi/drives.h"
 
 #include "gui/models/expandingheaderview.h"
+#include "spaceitemwidget.h"
 
 #include <QCursor>
 #include <QMenu>
@@ -27,52 +27,63 @@ using namespace OCC::Spaces;
 
 SpacesBrowser::SpacesBrowser(QWidget *parent)
     : QWidget(parent)
-    , ui(new Ui::SpacesBrowser)
+    , _ui(new Ui::SpacesBrowser)
 {
-    ui->setupUi(this);
-    _model = new SpacesModel(this);
-    ui->tableView->setModel(_model);
+    _ui->setupUi(this);
 
-    connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &SpacesBrowser::selectionChanged);
+    connect(_ui->listWidget, &QListWidget::itemSelectionChanged, this, [this]() {
+        Q_EMIT selectionChanged();
+    });
 
-    ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    auto header = new OCC::ExpandingHeaderView(QStringLiteral("SpacesBrowserHeader"), ui->tableView);
-    ui->tableView->setHorizontalHeader(header);
-    header->setExpandingColumn(static_cast<int>(SpacesModel::Columns::Name));
-    header->hideSection(static_cast<int>(SpacesModel::Columns::WebDavUrl));
-    // not used yet
-    header->hideSection(static_cast<int>(SpacesModel::Columns::WebUrl));
-    header->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
-        auto menu = new QMenu(this);
-        menu->setAttribute(Qt::WA_DeleteOnClose);
-        header->addResetActionToMenu(menu);
-        menu->popup(QCursor::pos());
+    // this way, we just need to emit selectionChanged, and have this code be called anyway
+    connect(this, &SpacesBrowser::selectionChanged, this, [this]() {
+        for (int i = 0; i < _ui->listWidget->count(); ++i) {
+            qobject_cast<SpaceItemWidget *>(_ui->listWidget->itemWidget(_ui->listWidget->item(i)))->setRadioButtonChecked(false);
+        }
+
+        const auto selectedItems = _ui->listWidget->selectedItems();
+
+        Q_ASSERT(selectedItems.size() == 1);
+        const auto itemWidget = qobject_cast<SpaceItemWidget *>(_ui->listWidget->itemWidget(selectedItems.front()));
+
+        itemWidget->setRadioButtonChecked(true);
     });
 }
 
-SpacesBrowser::~SpacesBrowser()
+void SpacesBrowser::setItems(const AccountPtr &accountPtr, const QList<OCC::Spaces::Space> &spaces)
 {
-    delete ui;
-}
+    for (const auto &space : spaces) {
+        auto listWidgetItem = new QListWidgetItem(_ui->listWidget);
 
-void SpacesBrowser::setAccount(OCC::AccountPtr acc)
-{
-    _acc = acc;
-    if (acc) {
-        QTimer::singleShot(0, this, [this] {
-            auto drive = new OCC::GraphApi::Drives(_acc);
-            connect(drive, &OCC::GraphApi::Drives::finishedSignal, [drive, this] {
-                _model->setData(_acc, drive->drives());
-                show();
-            });
-            drive->start();
+        _ui->listWidget->addItem(listWidgetItem);
+
+        auto itemWidget = new SpaceItemWidget(accountPtr, space, _ui->listWidget);
+        _ui->listWidget->setItemWidget(listWidgetItem, itemWidget);
+
+        // otherwise, the widget will collapse to its minimum size
+        // note that this expands the frame the list widget draws around the frame, which can only be done here
+        listWidgetItem->setSizeHint(itemWidget->sizeHint());
+
+        connect(itemWidget, &SpaceItemWidget::radioButtonClicked, this, [this, listWidgetItem]() {
+            listWidgetItem->setSelected(true);
+            Q_EMIT selectionChanged();
         });
     }
 }
 
-QModelIndex SpacesBrowser::currentSpace()
+SpacesBrowser::~SpacesBrowser()
 {
-    const auto spaces = ui->tableView->selectionModel()->selectedRows();
-    return spaces.isEmpty() ? QModelIndex {} : spaces.first();
+    delete _ui;
+}
+
+std::optional<Space> SpacesBrowser::selectedSpace() const
+{
+    const auto selectedItems = _ui->listWidget->selectedItems();
+
+    if (selectedItems.empty()) {
+        return std::nullopt;
+    }
+
+    Q_ASSERT(selectedItems.size() == 1);
+    return qobject_cast<SpaceItemWidget *>(_ui->listWidget->itemWidget(selectedItems.front()))->space();
 }

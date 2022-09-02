@@ -18,26 +18,17 @@
 #include "owncloudlib.h"
 #include <OAIDrive.h>
 
-namespace OCC {
-namespace GraphApi {
-    class OWNCLOUDSYNC_EXPORT Drives : public JsonJob
-    {
-        Q_OBJECT
-    public:
-        Drives(const AccountPtr &account, QObject *parent = nullptr);
-        ~Drives();
+namespace OCC::GraphApi {
+class OWNCLOUDSYNC_EXPORT DrivesJob : public JsonJob
+{
+    Q_OBJECT
+public:
+    DrivesJob(const AccountPtr &account, QObject *parent = nullptr);
+    ~DrivesJob();
 
-        /***
-         * Returns the display name of the drive.
-         * This is identical to drive.getName() for most drives.
-         * Exceptions: Personal spaces
-         */
-        static QString getDriveDisplayName(const OpenAPI::OAIDrive &drive);
+    const QList<OpenAPI::OAIDrive> &drives() const;
 
-        const QList<OpenAPI::OAIDrive> &drives() const;
-
-    private:
-        mutable QList<OpenAPI::OAIDrive> _drives;
-    };
-}
+private:
+    mutable QList<OpenAPI::OAIDrive> _drives;
+};
 }

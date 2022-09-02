@@ -28,21 +28,18 @@ using namespace GraphApi;
 namespace {
 
 const auto mountpointC = QLatin1String("mountpoint");
-const auto personalC = QLatin1String("personal");
-const auto shareC = QLatin1String("virtual");
-
 }
 
-Drives::Drives(const AccountPtr &account, QObject *parent)
+DrivesJob::DrivesJob(const AccountPtr &account, QObject *parent)
     : JsonJob(account, account->url(), QStringLiteral("/graph/v1.0/me/drives"), "GET", {}, {}, parent)
 {
 }
 
-Drives::~Drives()
+DrivesJob::~DrivesJob()
 {
 }
 
-const QList<OpenAPI::OAIDrive> &Drives::drives() const
+const QList<OpenAPI::OAIDrive> &DrivesJob::drives() const
 {
     if (_drives.isEmpty() && parseError().error == QJsonParseError::NoError) {
         OpenAPI::OAICollection_of_drives drives;
@@ -55,15 +52,4 @@ const QList<OpenAPI::OAIDrive> &Drives::drives() const
             _drives.end());
     }
     return _drives;
-}
-
-QString Drives::getDriveDisplayName(const OpenAPI::OAIDrive &drive)
-{
-    if (drive.getDriveType() == personalC) {
-        return tr("Personal");
-    } else if (drive.getDriveType() == shareC) {
-        // don't call it ShareJail
-        return tr("Shares");
-    }
-    return drive.getName();
 }
