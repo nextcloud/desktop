@@ -12,11 +12,11 @@
         <file alias="resources/light/quit.svg">font-awesome/light/power-off-solid.svg</file>
         <file alias="resources/light/plus-solid.svg">font-awesome/light/plus-solid.svg</file>
         <file alias="resources/light/warning.svg">font-awesome/light/exclamation-triangle-solid.svg</file>
-        <file alias="resources/light/ban.svg">font-awesome/dark/ban-solid.svg</file>
-        <file alias="resources/light/check.svg">font-awesome/dark/check-solid.svg</file>
-        <file alias="resources/light/step-forward.svg">font-awesome/dark/step-forward-solid.svg</file>
-        <file alias="resources/light/clipboard.svg">font-awesome/dark/clipboard-solid.svg</file>
-        <file alias="resources/light/copy.svg">font-awesome/dark/copy-solid.svg</file>
+        <file alias="resources/light/ban.svg">font-awesome/light/ban-solid.svg</file>
+        <file alias="resources/light/check.svg">font-awesome/light/check-solid.svg</file>
+        <file alias="resources/light/step-forward.svg">font-awesome/light/step-forward-solid.svg</file>
+        <file alias="resources/light/clipboard.svg">font-awesome/light/clipboard-solid.svg</file>
+        <file alias="resources/light/copy.svg">font-awesome/light/copy-solid.svg</file>
         <file alias="resources/dark/folder-sync.svg">font-awesome/dark/folder-solid.svg</file>
         <file alias="resources/dark/settings.svg">font-awesome/dark/cog-solid.svg</file>
         <file alias="resources/dark/activity.svg">font-awesome/dark/bolt-solid.svg</file>
