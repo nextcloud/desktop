@@ -924,6 +924,7 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming)
     }
 
     _publicKey = _certificate.publicKey();
+    Q_EMIT publicKeyChanged();
 
     qCInfo(lcCse()) << "Public key fetched from keychain";
 
@@ -950,13 +951,17 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
         _certificate = QSslCertificate();
+
         _publicKey = QSslKey();
+        Q_EMIT publicKeyChanged();
+
         getPublicKeyFromServer(account);
         return;
     }
 
     //_privateKey = QSslKey(readJob->binaryData(), QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
     _privateKey = readJob->binaryData();
+    Q_EMIT privateKeyChanged();
 
     if (_privateKey.isNull()) {
         getPrivateKeyFromServer(account);
@@ -988,13 +993,19 @@ void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming)
     // Error or no valid public key error out
     if (readJob->error() != NoError || readJob->textData().length() == 0) {
         _certificate = QSslCertificate();
+
         _publicKey = QSslKey();
+        Q_EMIT publicKeyChanged();
+
         _privateKey = QByteArray();
+        Q_EMIT privateKeyChanged();
+
         getPublicKeyFromServer(account);
         return;
     }
 
     _mnemonic = readJob->textData();
+    Q_EMIT mnemonicChanged(_mnemonic);
 
     qCInfo(lcCse()) << "Mnemonic key fetched from keychain: " << _mnemonic;
 
@@ -1058,12 +1069,103 @@ void ClientSideEncryption::writeMnemonic(const AccountPtr &account)
     job->start();
 }
 
+void ClientSideEncryption::setServerHasPrivateKey(bool newServerHasPrivateKey)
+{
+    if (_serverHasPrivateKey == newServerHasPrivateKey) {
+        return;
+    }
+
+    _serverHasPrivateKey = newServerHasPrivateKey;
+    emit serverHasPrivateKeyChanged();
+}
+
+void ClientSideEncryption::setKeychainHasPublicKey(bool newKeychainHasPublicKey)
+{
+    if (_keychainHasPublicKey == newKeychainHasPublicKey) {
+        return;
+    }
+
+    _keychainHasPublicKey = newKeychainHasPublicKey;
+    emit keychainHasPublicKeyChanged();
+}
+
+void ClientSideEncryption::setKeychainHasPrivateKey(bool newKeychainHasPrivateKey)
+{
+    if (_keychainHasPrivateKey == newKeychainHasPrivateKey) {
+        return;
+    }
+
+    _keychainHasPrivateKey = newKeychainHasPrivateKey;
+    emit keychainHasPrivateKeyChanged();
+}
+
+void ClientSideEncryption::setServerHasPublicKey(bool newServerHasPublicKey)
+{
+    if (_serverHasPublicKey == newServerHasPublicKey) {
+        return;
+    }
+
+    _serverHasPublicKey = newServerHasPublicKey;
+    emit serverHasPublicKeyChanged();
+}
+
+bool ClientSideEncryption::serverHasPrivateKey() const
+{
+    return _serverHasPrivateKey;
+}
+
+bool ClientSideEncryption::keychainHasPublicKey() const
+{
+    return _keychainHasPublicKey;
+}
+
+bool ClientSideEncryption::keychainHasPrivateKey() const
+{
+    return _keychainHasPrivateKey;
+}
+
+bool ClientSideEncryption::serverHasPublicKey() const
+{
+    return _serverHasPublicKey;
+}
+
+const QByteArray &ClientSideEncryption::privateKey() const
+{
+    return _privateKey;
+}
+
+const QSslKey &ClientSideEncryption::publicKey() const
+{
+    return _publicKey;
+}
+
+const QString &ClientSideEncryption::mnemonic() const
+{
+    return _mnemonic;
+}
+
+void ClientSideEncryption::setMnemonic(const QString &newMnemonic)
+{
+    if (_mnemonic == newMnemonic) {
+        return;
+    }
+
+    _mnemonic = newMnemonic;
+    Q_EMIT mnemonicChanged(_mnemonic);
+}
+
 void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
 {
     _privateKey = QByteArray();
+    Q_EMIT privateKeyChanged();
+
     _certificate = QSslCertificate();
+
     _publicKey = QSslKey();
+    Q_EMIT publicKeyChanged();
+
     _mnemonic = QString();
+    Q_EMIT mnemonicChanged(_mnemonic);
 
     auto startDeleteJob = [account](QString user) {
         auto *job = new DeletePasswordJob(Theme::instance()->appName());
@@ -1121,6 +1223,7 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
     QByteArray key = BIO2ByteArray(privKey);
     //_privateKey = QSslKey(key, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
     _privateKey = key;
+    Q_EMIT privateKeyChanged();
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
     generateCSR(account, localKeyPair);
@@ -1188,7 +1291,10 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, EVP_PKEY *keyP
         if (retCode == 200) {
             QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
+
             _publicKey = _certificate.publicKey();
+            Q_EMIT publicKeyChanged();
+
             fetchAndValidatePublicKeyFromServer(account);
         }
         qCInfo(lcCse()) << retCode;
@@ -1203,7 +1309,7 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
     _newMnemonicGenerated = true;
     qCInfo(lcCse()) << "mnemonic Generated:" << _mnemonic;
 
-    emit mnemonicGenerated(_mnemonic);
+    emit mnemonicChanged(_mnemonic);
 
     QString passPhrase = list.join(QString()).toLower();
     qCInfo(lcCse()) << "Passphrase Generated:" << passPhrase;
@@ -1262,6 +1368,8 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
             prev = dialog.textValue();
 
             _mnemonic = prev;
+            Q_EMIT mnemonicChanged(_mnemonic);
+
             QString mnemonic = prev.split(" ").join(QString()).toLower();
             qCInfo(lcCse()) << "mnemonic:" << mnemonic;
 
@@ -1274,6 +1382,7 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
             QByteArray privateKey = EncryptionHelper::decryptPrivateKey(pass, key);
             //_privateKey = QSslKey(privateKey, QSsl::Rsa, QSsl::Pem, QSsl::PrivateKey);
             _privateKey = privateKey;
+            Q_EMIT privateKeyChanged();
 
             qCInfo(lcCse()) << "Private key: " << _privateKey;
 
@@ -1285,7 +1394,11 @@ void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QB
             }
         } else {
             _mnemonic = QString();
+            Q_EMIT mnemonicChanged(_mnemonic);
+
             _privateKey = QByteArray();
+            Q_EMIT privateKeyChanged();
+
             qCInfo(lcCse()) << "Cancelled";
             break;
         }
@@ -1304,9 +1417,12 @@ void ClientSideEncryption::getPrivateKeyFromServer(const AccountPtr &account)
                 qCInfo(lcCse()) << key;
                 qCInfo(lcCse()) << "Found private key, lets decrypt it!";
                 decryptPrivateKey(account, key.toLocal8Bit());
+                setServerHasPrivateKey(true);
             } else if (retCode == 404) {
+                setServerHasPrivateKey(false);
                 qCInfo(lcCse()) << "No private key on the server: setup is incomplete.";
             } else {
+                setServerHasPrivateKey(false);
                 qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
             }
     });
@@ -1321,13 +1437,19 @@ void ClientSideEncryption::getPublicKeyFromServer(const AccountPtr &account)
             if (retCode == 200) {
                 QString publicKey = doc.object()["ocs"].toObject()["data"].toObject()["public-keys"].toObject()[account->davUser()].toString();
                 _certificate = QSslCertificate(publicKey.toLocal8Bit(), QSsl::Pem);
+
                 _publicKey = _certificate.publicKey();
+                Q_EMIT publicKeyChanged();
+
+                setServerHasPublicKey(true);
                 qCInfo(lcCse()) << "Found Public key, requesting Server Public Key. Public key:" << publicKey;
                 fetchAndValidatePublicKeyFromServer(account);
             } else if (retCode == 404) {
+                setServerHasPublicKey(false);
                 qCInfo(lcCse()) << "No public key on the server";
                 generateKeyPair(account);
             } else {
+                setServerHasPublicKey(false);
                 qCInfo(lcCse()) << "Error while requesting public key: " << retCode;
             }
     });
@@ -1353,8 +1475,13 @@ void ClientSideEncryption::fetchAndValidatePublicKeyFromServer(const AccountPtr 
             } else {
                 qCInfo(lcCse()) << "Error invalid server public key";
                 _certificate = QSslCertificate();
+
                 _publicKey = QSslKey();
+                Q_EMIT publicKeyChanged();
+
                 _privateKey = QByteArray();
+                Q_EMIT privateKeyChanged();
+
                 getPublicKeyFromServer(account);
                 return;
             }
@@ -1473,7 +1600,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const
 {
     Bio publicKeyBio;
-    QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
+    QByteArray publicKeyPem = _account->e2e()->publicKey().toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = PKey::readPublicKey(publicKeyBio);
 
@@ -1484,7 +1611,7 @@ QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const
 QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadata) const
 {
     Bio privateKeyBio;
-    QByteArray privateKeyPem = _account->e2e()->_privateKey;
+    QByteArray privateKeyPem = _account->e2e()->privateKey();
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
     auto key = PKey::readPrivateKey(privateKeyBio);
 
@@ -1516,7 +1643,7 @@ void FolderMetadata::setupEmptyMetadata() {
     QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
     _metadataKeys.insert(0, newMetadataPass);
 
-    QString publicKey = _account->e2e()->_publicKey.toPem().toBase64();
+    QString publicKey = _account->e2e()->publicKey().toPem().toBase64();
     QString displayName = _account->displayName();
 
     _sharing.append({displayName, publicKey});

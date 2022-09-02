@@ -115,34 +115,61 @@ private:
 
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
+
+    Q_PROPERTY(QString mnemonic READ mnemonic NOTIFY mnemonicChanged)
+    Q_PROPERTY(bool serverHasPublicKey READ serverHasPublicKey NOTIFY serverHasPublicKeyChanged)
+    Q_PROPERTY(bool serverHasPrivateKey READ serverHasPrivateKey NOTIFY serverHasPrivateKeyChanged)
+    Q_PROPERTY(bool keychainHasPublicKey READ keychainHasPublicKey NOTIFY keychainHasPublicKeyChanged)
+    Q_PROPERTY(bool keychainHasPrivateKey READ keychainHasPrivateKey NOTIFY keychainHasPrivateKeyChanged)
+    Q_PROPERTY(QSslKey publicKey READ publicKey NOTIFY publicKeyChanged)
+    Q_PROPERTY(QByteArray privateKey READ privateKey NOTIFY privateKeyChanged)
 public:
     ClientSideEncryption();
     void initialize(const AccountPtr &account);
 
-private:
-    void generateKeyPair(const AccountPtr &account);
-    void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
-    void encryptPrivateKey(const AccountPtr &account);
+    const QString &mnemonic() const;
 
-public:
+    const QSslKey &publicKey() const;
+    const QByteArray &privateKey() const;
+    bool serverHasPublicKey() const;
+    bool serverHasPrivateKey() const;
+    bool keychainHasPublicKey() const;
+    bool keychainHasPrivateKey() const;
+
     void forgetSensitiveData(const AccountPtr &account);
-
     bool newMnemonicGenerated() const;
-
 public slots:
     void slotRequestMnemonic();
+
+    void setMnemonicGenerated(const QString &newMnemonic);
+
+signals:
+    void initializationFinished();
+    void mnemonicChanged(const QString& mnemonic);
+    void showMnemonic(const QString& mnemonic);
+    void serverHasPublicKeyChanged();
+    void serverHasPrivateKeyChanged();
+    void keychainHasPublicKeyChanged();
+    void keychainHasPrivateKeyChanged();
+    void publicKeyChanged();
+    void privateKeyChanged();
 
 private slots:
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
-signals:
-    void initializationFinished();
-    void mnemonicGenerated(const QString& mnemonic);
-    void showMnemonic(const QString& mnemonic);
+    void setMnemonic(const QString &newMnemonic);
+    void setServerHasPublicKey(bool newServerHasPublicKey);
+    void setServerHasPrivateKey(bool newServerHasPrivateKey);
+    void setKeychainHasPublicKey(bool newKeychainHasPublicKey);
+    void setKeychainHasPrivateKey(bool newKeychainHasPrivateKey);
 
 private:
+    void generateKeyPair(const AccountPtr &account);
+    void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
+    void encryptPrivateKey(const AccountPtr &account);
+
     void getPrivateKeyFromServer(const AccountPtr &account);
     void getPublicKeyFromServer(const AccountPtr &account);
     void fetchAndValidatePublicKeyFromServer(const AccountPtr &account);
@@ -158,13 +185,15 @@ private:
 
     bool isInitialized = false;
 
-public:
-    //QSslKey _privateKey;
     QByteArray _privateKey;
     QSslKey _publicKey;
     QSslCertificate _certificate;
     QString _mnemonic;
     bool _newMnemonicGenerated = false;
+    bool _serverHasPublicKey = false;
+    bool _serverHasPrivateKey = false;
+    bool _keychainHasPublicKey = false;
+    bool _keychainHasPrivateKey = false;
 };
 
 /* Generates the Metadata for the folder */
