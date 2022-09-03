@@ -94,11 +94,15 @@ void CloudProviderWrapper::slotUpdateProgress(const QString &folder, const Progr
 
     // Build recently changed files list
     if (!progress._lastCompletedItem.isEmpty() && shouldShowInRecentsMenu(progress._lastCompletedItem)) {
+        QFontMetrics fm = QApplication::fontMetrics();
         QString kindStr = Progress::asResultString(progress._lastCompletedItem);
+        QString elidedKindStr = fm.elidedText(kindStr, Qt::ElideRight, preferredTextWidth);
         QString timeStr = QTime::currentTime().toString("hh:mm");
-        QString actionText = tr("%1 (%2, %3)").arg(progress._lastCompletedItem._file, kindStr, timeStr);
+        QString fileName = progress._lastCompletedItem._file;
+        QString elidedFileName = fm.elidedText(fileName, Qt::ElideRight, preferredTextWidth);
+        QString actionText = tr("%1 (%2, %3)").arg(elidedFileName, elidedKindStr, timeStr);
         if (f) {
-            QString fullPath = f->path() + '/' + progress._lastCompletedItem._file;
+            QString fullPath = f->path() + '/' + fileName;
             if (QFile(fullPath).exists()) {
                 if (_recentlyChanged.length() > 5)
                     _recentlyChanged.removeFirst();
