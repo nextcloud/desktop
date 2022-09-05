@@ -72,7 +72,7 @@ def hook(context):
             for key, value in context.userData.items():
                 if value == '':
                     context.userData[key] = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
-    except:
+    except Exception as err:
         test.log(str(err))
 
     # Set the default values if empty
@@ -139,6 +139,16 @@ def hook(context):
         )
 
 
+# determines if the test scenario failed or not
+def scenarioFailed():
+    global previousFailResultCount
+    global previousErrorResultCount
+    return (
+        test.resultCount("fails") - previousFailResultCount > 0
+        or test.resultCount("errors") - previousErrorResultCount > 0
+    )
+
+
 @OnScenarioEnd
 def hook(context):
     # Currently, this workaround is needed because we cannot find out a way to determine the pass/fail status of currently running test scenario.
@@ -147,11 +157,7 @@ def hook(context):
     global previousErrorResultCount
 
     # capture a screenshot if there is error or test failure in the current scenario execution
-    if (
-        (test.resultCount("fails") - previousFailResultCount) > 0
-        or (test.resultCount("errors") - previousErrorResultCount) > 0
-        and os.getenv('CI')
-    ):
+    if scenarioFailed() and os.getenv('CI'):
 
         import gi
 
@@ -194,7 +200,7 @@ def hook(context):
     # search coredumps after every test scenario
     # CI pipeline might fail although all tests are passing
     coredumps = getCoredumps()
-    if coredumps:
+    if scenarioFailed() and coredumps:
         try:
             generateStacktrace(context, coredumps)
             test.log("Stacktrace generated!")
