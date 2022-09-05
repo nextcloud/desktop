@@ -35,7 +35,7 @@ confdir = '/tmp/bdd-tests-owncloud-client/'
 confFilePath = confdir + 'owncloud.cfg'
 socketConnect = None
 
-stateDataFromMiddleware = {}
+createdUsers = {}
 
 # File syncing in client has the following status
 SYNC_STATUS = {
@@ -47,18 +47,19 @@ SYNC_STATUS = {
 }
 
 
-def getTestStateFromMiddleware(context):
-    stateDataFromMiddleware = {}
+# gets all users information created in a test scenario
+def getCreatedUsersFromMiddleware(context):
+    createdUsers = {}
     try:
         res = requests.get(
             os.path.join(context.userData['middlewareUrl'], 'state'),
             headers={"Content-Type": "application/json"},
         )
-        stateDataFromMiddleware = res.json()
+        createdUsers = res.json()['created_users']
     except ValueError:
         raise Exception("Could not get created users information from middleware")
 
-    return stateDataFromMiddleware
+    return createdUsers
 
 
 @OnScenarioStart
@@ -102,12 +103,18 @@ def step(context, displayname, host):
 
 
 def getUserInfo(context, username, attribute):
-    global stateDataFromMiddleware
-    if stateDataFromMiddleware and username in stateDataFromMiddleware['created_users']:
-        return stateDataFromMiddleware['created_users'][username][attribute]
+    # add and update users to the global createdUsers dict if not already there
+    # so that we don't have to request for user information in every scenario
+    # but instead get user information from the global dict
+    global createdUsers
+    if createdUsers and username in createdUsers:
+        return createdUsers[username][attribute]
     else:
-        stateDataFromMiddleware = {**stateDataFromMiddleware, **getTestStateFromMiddleware(context)}
-        return stateDataFromMiddleware['created_users'][username][attribute]
+        createdUsers = {
+            **createdUsers,
+            **getCreatedUsersFromMiddleware(context)
+        }
+        return createdUsers[username][attribute]
 
 
 def getDisplaynameForUser(context, username):
