@@ -54,6 +54,7 @@ def hook(context):
         'clientConfigFile': '-',
         'clientRootSyncPath': '/tmp/client-bdd/',
         'tempFolderPath': gettempdir(),
+        'clientConfigDir': '/tmp/owncloud-client/',
     }
 
     # log tests scenario title on serverlog file
@@ -89,9 +90,17 @@ def hook(context):
             context.userData[key] = DEFAULT_CONFIG[key]
         elif key == 'maxSyncTimeout' or key == 'minSyncTimeout':
             context.userData[key] = builtins.int(value)
-        elif key == 'clientRootSyncPath' or 'tempFolderPath':
+        elif key == 'clientRootSyncPath' or 'tempFolderPath' or 'clientConfigDir':
             # make sure there is always one trailing slash
             context.userData[key] = value.rstrip('/') + '/'
+
+    # set owncloud config file path
+    context.userData['clientConfigFile'] = os.path.join(context.userData['clientConfigDir'], 'owncloud.cfg')
+    if os.path.exists(context.userData['clientConfigDir']):
+        os.unlink(context.userData['clientConfigFile'])
+    else:
+        os.makedirs(context.userData['clientConfigDir'], 0o0755)
+
 
     # initially set user sync path to root
     # this path will be changed according to the user added to the client

@@ -4,10 +4,6 @@ from os import makedirs
 from os.path import exists, join
 
 
-confdir = '/tmp/bdd-tests-owncloud-client/'
-confFilePath = confdir + 'owncloud.cfg'
-
-
 def substituteInLineCodes(context, value):
     value = value.replace('%local_server%', context.userData['localBackendUrl'])
     value = value.replace(
@@ -73,7 +69,7 @@ def startClient(context):
         + " --logdebug"
         + " --logflush"
         + " --confdir "
-        + confdir
+        + context.userData['clientConfigDir']
     )
 
     squish.snooze(1)

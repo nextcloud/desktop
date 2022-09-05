@@ -31,8 +31,6 @@ import syncstate
 import functools
 
 
-confdir = '/tmp/bdd-tests-owncloud-client/'
-confFilePath = confdir + 'owncloud.cfg'
 socketConnect = None
 
 createdUsers = {}
@@ -60,18 +58,6 @@ def getCreatedUsersFromMiddleware(context):
         raise Exception("Could not get created users information from middleware")
 
     return createdUsers
-
-
-@OnScenarioStart
-def hook(context):
-    try:
-        os.makedirs(confdir, 0o0755)
-    except:
-        pass
-    try:
-        os.remove(confFilePath)
-    except:
-        pass
 
 
 @Given(r'the user has added (the first|another) account with', regexp=True)
@@ -126,7 +112,7 @@ def getPasswordForUser(context, username):
 def step(context, username):
     password = getPasswordForUser(context, username)
     displayName = getDisplaynameForUser(context, username)
-    setUpClient(context, username, displayName, confFilePath)
+    setUpClient(context, username, displayName, context.userData['clientConfigFile'])
     enterUserPassword = EnterPassword()
     enterUserPassword.enterPassword(password)
 
