@@ -22,6 +22,8 @@ if [ $TAG_NAME != "master" ]; then
 fi
 
 cd ${DESKTOP_CLIENT_ROOT}
+echo `pwd`
+ls
 
 # AppImage
 export APPIMAGE=$(readlink -f ./Nextcloud*.AppImage)
@@ -90,6 +92,7 @@ uploadUrl=$(echo $json | jq -r '.upload_url')
 if [[ "$uploadUrl" == "null" ]]; then
     # Try to create a release
     json=$(create_release)
+    echo $json
 
     releaseId=$(echo $json | jq -r '.id')
     uploadUrl=$(echo $json | jq -r '.upload_url')
