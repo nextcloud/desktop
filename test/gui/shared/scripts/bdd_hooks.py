@@ -96,12 +96,13 @@ def hook(context):
             context.userData[key] = value.rstrip('/') + '/'
 
     # set owncloud config file path
-    context.userData['clientConfigFile'] = os.path.join(context.userData['clientConfigDir'], 'owncloud.cfg')
+    context.userData['clientConfigFile'] = os.path.join(
+        context.userData['clientConfigDir'], 'owncloud.cfg'
+    )
     if os.path.exists(context.userData['clientConfigDir']):
         # clean previous configs
         shutil.rmtree(context.userData['clientConfigDir'])
     os.makedirs(context.userData['clientConfigDir'], 0o0755)
-
 
     # initially set user sync path to root
     # this path will be changed according to the user added to the client
