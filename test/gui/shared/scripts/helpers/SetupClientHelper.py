@@ -65,7 +65,7 @@ def startClient(context):
     squish.startApplication(
         "owncloud OWNCLOUD_CORE_DUMP=1 -s"
         + " --logfile "
-        + context.userData['clientConfigFile']
+        + context.userData['clientLogFile']
         + " --logdebug"
         + " --logflush"
         + " --confdir "

@@ -39,9 +39,10 @@ def hook(context):
         'minSyncTimeout': 'MIN_SYNC_TIMEOUT',
         'lowestSyncTimeout': 'LOWEST_SYNC_TIMEOUT',
         'middlewareUrl': 'MIDDLEWARE_URL',
-        'clientConfigFile': 'CLIENT_LOG_FILE',
+        'clientLogFile': 'CLIENT_LOG_FILE',
         'clientRootSyncPath': 'CLIENT_ROOT_SYNC_PATH',
         'tempFolderPath': 'TEMP_FOLDER_PATH',
+        'clientConfigDir': 'CLIENT_CONFIG_DIR',
     }
 
     DEFAULT_CONFIG = {
@@ -51,7 +52,7 @@ def hook(context):
         'minSyncTimeout': 5,
         'lowestSyncTimeout': 1,
         'middlewareUrl': 'http://localhost:3000/',
-        'clientConfigFile': '-',
+        'clientLogFile': '-',
         'clientRootSyncPath': '/tmp/client-bdd/',
         'tempFolderPath': gettempdir(),
         'clientConfigDir': '/tmp/owncloud-client/',
@@ -97,9 +98,9 @@ def hook(context):
     # set owncloud config file path
     context.userData['clientConfigFile'] = os.path.join(context.userData['clientConfigDir'], 'owncloud.cfg')
     if os.path.exists(context.userData['clientConfigDir']):
-        os.unlink(context.userData['clientConfigFile'])
-    else:
-        os.makedirs(context.userData['clientConfigDir'], 0o0755)
+        # clean previous configs
+        shutil.rmtree(context.userData['clientConfigDir'])
+    os.makedirs(context.userData['clientConfigDir'], 0o0755)
 
 
     # initially set user sync path to root
