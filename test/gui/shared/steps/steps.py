@@ -107,13 +107,10 @@ def getUserInfo(context, username, attribute):
     # so that we don't have to request for user information in every scenario
     # but instead get user information from the global dict
     global createdUsers
-    if createdUsers and username in createdUsers:
+    if username in createdUsers:
         return createdUsers[username][attribute]
     else:
-        createdUsers = {
-            **createdUsers,
-            **getCreatedUsersFromMiddleware(context)
-        }
+        createdUsers = {**createdUsers, **getCreatedUsersFromMiddleware(context)}
         return createdUsers[username][attribute]
 
 
