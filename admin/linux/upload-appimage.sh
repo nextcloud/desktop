@@ -5,6 +5,7 @@ export BUILD=${DRONE_BUILD_NUMBER}
 export PR=${DRONE_PULL_REQUEST}
 export GIT_USERNAME=${CI_UPLOAD_GIT_USERNAME}
 export GIT_TOKEN=${CI_UPLOAD_GIT_TOKEN}
+export DESKTOP_CLIENT_ROOT=${DESKTOP_CLIENT_ROOT:-/home/user}
 
 # Defaults
 export GIT_REPO=ci-builds
@@ -20,7 +21,7 @@ if [ $TAG_NAME != "master" ]; then
     RELEASE_BODY="nextcloud/desktop#$PR"
 fi
 
-cd /build
+cd ${DESKTOP_CLIENT_ROOT}
 
 # AppImage
 export APPIMAGE=$(readlink -f ./Nextcloud*.AppImage)
