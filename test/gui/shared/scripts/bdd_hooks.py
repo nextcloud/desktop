@@ -43,6 +43,7 @@ def hook(context):
         'clientRootSyncPath': 'CLIENT_ROOT_SYNC_PATH',
         'tempFolderPath': 'TEMP_FOLDER_PATH',
         'clientConfigDir': 'CLIENT_CONFIG_DIR',
+        'guiTestReportDir': 'GUI_TEST_REPORT_DIR',
     }
 
     DEFAULT_CONFIG = {
@@ -56,19 +57,8 @@ def hook(context):
         'clientRootSyncPath': '/tmp/client-bdd/',
         'tempFolderPath': gettempdir(),
         'clientConfigDir': '/tmp/owncloud-client/',
+        'guiTestReportDir': os.path.abspath('../reports/'),
     }
-
-    # log tests scenario title on serverlog file
-    if os.getenv('CI'):
-        guiTestReportDir = os.environ.get("GUI_TEST_REPORT_DIR")
-        f = open(guiTestReportDir + "/serverlog.log", "a")
-        f.write(
-            str((datetime.now()).strftime("%H:%M:%S:%f"))
-            + "\tBDD Scenario: "
-            + context._data["title"]
-            + "\n"
-        )
-        f.close()
 
     # read configs from environment variables
     context.userData = {}
@@ -91,7 +81,12 @@ def hook(context):
             context.userData[key] = DEFAULT_CONFIG[key]
         elif key == 'maxSyncTimeout' or key == 'minSyncTimeout':
             context.userData[key] = builtins.int(value)
-        elif key == 'clientRootSyncPath' or 'tempFolderPath' or 'clientConfigDir':
+        elif (
+            key == 'clientRootSyncPath'
+            or 'tempFolderPath'
+            or 'clientConfigDir'
+            or 'guiTestReportDir'
+        ):
             # make sure there is always one trailing slash
             context.userData[key] = value.rstrip('/') + '/'
 
@@ -103,6 +98,22 @@ def hook(context):
         # clean previous configs
         shutil.rmtree(context.userData['clientConfigDir'])
     os.makedirs(context.userData['clientConfigDir'], 0o0755)
+
+    # create reports dir if not exists
+    if not os.path.exists(context.userData['guiTestReportDir']):
+        os.makedirs(context.userData['guiTestReportDir'])
+
+    # log tests scenario title on serverlog file
+    if os.getenv('CI'):
+        guiTestReportDir = context.userData['guiTestReportDir']
+        f = open(guiTestReportDir + "/serverlog.log", "a")
+        f.write(
+            str((datetime.now()).strftime("%H:%M:%S:%f"))
+            + "\tBDD Scenario: "
+            + context._data["title"]
+            + "\n"
+        )
+        f.close()
 
     # initially set user sync path to root
     # this path will be changed according to the user added to the client
@@ -155,7 +166,7 @@ def hook(context):
             context._data["title"].replace(" ", "_").replace("/", "_").strip(".")
             + ".png"
         )
-        directory = os.environ["GUI_TEST_REPORT_DIR"] + "/screenshots"
+        directory = context.userData['guiTestReportDir'] + "/screenshots"
 
         if not os.path.exists(directory):
             os.makedirs(directory)
