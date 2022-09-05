@@ -35,6 +35,7 @@ confdir = '/tmp/bdd-tests-owncloud-client/'
 confFilePath = confdir + 'owncloud.cfg'
 socketConnect = None
 
+stateDataFromMiddleware = {}
 
 # File syncing in client has the following status
 SYNC_STATUS = {
@@ -47,6 +48,7 @@ SYNC_STATUS = {
 
 
 def getTestStateFromMiddleware(context):
+    stateDataFromMiddleware = {}
     try:
         res = requests.get(
             os.path.join(context.userData['middlewareUrl'], 'state'),
@@ -99,14 +101,21 @@ def step(context, displayname, host):
     )
 
 
+def getUserInfo(context, username, attribute):
+    global stateDataFromMiddleware
+    if stateDataFromMiddleware and username in stateDataFromMiddleware['created_users']:
+        return stateDataFromMiddleware['created_users'][username][attribute]
+    else:
+        stateDataFromMiddleware = {**stateDataFromMiddleware, **getTestStateFromMiddleware(context)}
+        return stateDataFromMiddleware['created_users'][username][attribute]
+
+
 def getDisplaynameForUser(context, username):
-    usersDataFromMiddleware = getTestStateFromMiddleware(context)
-    return usersDataFromMiddleware['created_users'][username]['displayname']
+    return getUserInfo(context, username, 'displayname')
 
 
 def getPasswordForUser(context, username):
-    usersDataFromMiddleware = getTestStateFromMiddleware(context)
-    return usersDataFromMiddleware['created_users'][username]['password']
+    return getUserInfo(context, username, 'password')
 
 
 @Given('user "|any|" has set up a client with default settings')
