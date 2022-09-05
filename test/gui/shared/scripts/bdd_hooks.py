@@ -78,11 +78,11 @@ def hook(context):
     # try reading configs from config.ini
     cfg = ConfigParser()
     try:
-        cfg.read('../config.ini')
-        for key, value in context.userData.items():
-            if value == '':
-                context.userData[key] = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
-    except Exception as err:
+        if cfg.read('../config.ini'):
+            for key, value in context.userData.items():
+                if value == '':
+                    context.userData[key] = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
+    except:
         test.log(str(err))
 
     # Set the default values if empty
