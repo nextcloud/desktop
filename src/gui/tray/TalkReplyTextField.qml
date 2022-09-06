@@ -48,9 +48,8 @@ TextField {
             top: replyMessageTextField.top
         }
 
-        ToolTip {
+        NCToolTip {
             visible: sendReplyMessageButton.hovered
-            delay: Qt.styleHints.mousePressAndHoldInterval
             text:  qsTr("Send reply to chat message")
         }
     }
