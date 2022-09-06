@@ -35,6 +35,7 @@
 #include "gui/accountstate.h"
 #include "gui/folderman.h"
 #include "gui/selectivesyncdialog.h"
+#include "gui/spaces/spacesmodel.h"
 
 #include <QDesktopServices>
 #include <QDir>
@@ -103,7 +104,7 @@ QString FolderWizardPrivate::initialLocalPath() const
 {
     QString defaultPath = defaultSyncRoot();
     if (_account->supportsSpaces()) {
-        defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace()->title();
+        defaultPath += QLatin1Char('/') + _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
     };
     return FolderMan::instance()->findGoodPathForNewSyncFolder(defaultPath);
 }
@@ -116,7 +117,7 @@ QString FolderWizardPrivate::remotePath() const
 QUrl FolderWizardPrivate::davUrl() const
 {
     if (_account->supportsSpaces()) {
-        auto url = _spacesPage->selectedSpace()->webDavUrl();
+        auto url = _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::WebDavUrl).toUrl();
         if (!url.path().endsWith(QLatin1Char('/'))) {
             url.setPath(url.path() + QLatin1Char('/'));
         }
@@ -128,9 +129,7 @@ QUrl FolderWizardPrivate::davUrl() const
 QString FolderWizardPrivate::displayName() const
 {
     if (_account->supportsSpaces()) {
-        const auto selectedSpace = _spacesPage->selectedSpace();
-        Q_ASSERT(selectedSpace.has_value());
-        return selectedSpace->title();
+        return _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Name).toString();
     };
     return QString();
 }

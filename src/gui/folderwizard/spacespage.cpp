@@ -12,52 +12,34 @@
  * for more details.
  */
 #include "spacespage.h"
-#include "graphapi/drives.h"
 #include "ui_spacespage.h"
 
 #include <QModelIndex>
-#include <QTimer>
 
 using namespace OCC;
 
-SpacesPage::SpacesPage(AccountPtr accountPtr, QWidget *parent)
+SpacesPage::SpacesPage(AccountPtr acc, QWidget *parent)
     : QWizardPage(parent)
-    , _ui(new Ui::SpacesPage)
+    , ui(new Ui::SpacesPage)
 {
-    _ui->setupUi(this);
+    ui->setupUi(this);
 
-    connect(_ui->widget, &Spaces::SpacesBrowser::selectionChanged, this, &QWizardPage::completeChanged);
+    ui->widget->setAccount(acc);
 
-    QTimer::singleShot(0, this, [this, accountPtr] {
-        auto drive = new OCC::GraphApi::DrivesJob(accountPtr);
-
-        connect(drive, &OCC::GraphApi::DrivesJob::finishedSignal, [drive, accountPtr, this] {
-            QList<Spaces::Space> spaces;
-
-            for (const auto &d : drive->drives()) {
-                spaces.append(Spaces::Space::fromDrive(d));
-            }
-
-            _ui->widget->setItems(accountPtr, spaces);
-        });
-
-        drive->start();
-    });
+    connect(ui->widget, &Spaces::SpacesBrowser::selectionChanged, this, &QWizardPage::completeChanged);
 }
 
 SpacesPage::~SpacesPage()
 {
-    delete _ui;
+    delete ui;
 }
 
 bool OCC::SpacesPage::isComplete() const
 {
-    return _ui->widget->selectedSpace().has_value();
+    return ui->widget->currentSpace().isValid();
 }
 
-std::optional<Spaces::Space> OCC::SpacesPage::selectedSpace() const
+QVariant OCC::SpacesPage::selectedSpace(Spaces::SpacesModel::Columns column) const
 {
-    const auto &selectedSpace = _ui->widget->selectedSpace();
-    Q_ASSERT(selectedSpace.has_value());
-    return selectedSpace;
+    return ui->widget->currentSpace().siblingAtColumn(static_cast<int>(column)).data();
 }
