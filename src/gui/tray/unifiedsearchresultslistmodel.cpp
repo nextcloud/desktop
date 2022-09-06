@@ -155,7 +155,8 @@ QString generateUrlForIcon(const QString &fallbackIcon, const QUrl &serverUrl, c
     return fallbackIconCopy;
 }
 
-QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallbackIcon, const QUrl &serverUrl, const bool darkMode)
+// Return image URL and whether it is a thumbnail or not
+std::pair<QString, bool> iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallbackIcon, const QUrl &serverUrl, const bool darkMode)
 {
     if (thumbnailUrl.isEmpty() && fallbackIcon.isEmpty()) {
         return {};
@@ -163,7 +164,7 @@ QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QSt
 
     if (serverUrl.isEmpty()) {
         const QStringList listImages = {thumbnailUrl, fallbackIcon};
-        return listImages.join(QLatin1Char(';'));
+        return {listImages.join(QLatin1Char(';')), false};
     }
 
     const auto urlForThumbnail = generateUrlForThumbnail(thumbnailUrl, serverUrl);
@@ -172,15 +173,15 @@ QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QSt
     qDebug() << "SEARCH" << urlForThumbnail << urlForFallbackIcon;
 
     if (urlForThumbnail.isEmpty() && !urlForFallbackIcon.isEmpty()) {
-        return urlForFallbackIcon;
+        return {urlForFallbackIcon, false};
     }
 
     if (!urlForThumbnail.isEmpty() && urlForFallbackIcon.isEmpty()) {
-        return urlForThumbnail;
+        return {urlForThumbnail, true};
     }
 
     const QStringList listImages{urlForThumbnail, urlForFallbackIcon};
-    return listImages.join(QLatin1Char(';'));
+    return {listImages.join(QLatin1Char(';')), true};
 }
 
 constexpr int searchTermEditingFinishedSearchStartDelay = 800;
@@ -214,6 +215,10 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
         return _results.at(index.row())._darkIcons;
     case LightIconsRole:
         return _results.at(index.row())._lightIcons;
+    case DarkIconsIsThumbnailRole:
+        return _results.at(index.row())._darkIconsIsThumbnail;
+    case LightIconsIsThumbnailRole:
+        return _results.at(index.row())._lightIconsIsThumbnail;
     case TitleRole:
         return _results.at(index.row())._title;
     case SublineRole:
@@ -247,6 +252,8 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     roles[ProviderIdRole] = "providerId";
     roles[DarkIconsRole] = "darkIcons";
     roles[LightIconsRole] = "lightIcons";
+    roles[DarkIconsIsThumbnailRole] = "darkIconsIsThumbnail";
+    roles[LightIconsIsThumbnailRole] = "lightIconsIsThumbnail";
     roles[DarkImagePlaceholderRole] = "darkImagePlaceholder";
     roles[LightImagePlaceholderRole] = "lightImagePlaceholder";
     roles[TitleRole] = "resultTitle";
@@ -585,10 +592,14 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
         const auto accountUrl = (_accountState && _accountState->account()) ? _accountState->account()->url() : QUrl();
 
         result._resourceUrl = makeResourceUrl(resourceUrl, accountUrl);
-        result._darkIcons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
-            entryMap.value(QStringLiteral("icon")).toString(), accountUrl, true);
-        result._lightIcons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
-            entryMap.value(QStringLiteral("icon")).toString(), accountUrl, false);
+        const auto darkIconsData = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
+                                                                     entryMap.value(QStringLiteral("icon")).toString(), accountUrl, true);
+        const auto lightIconsData = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
+                                                                      entryMap.value(QStringLiteral("icon")).toString(), accountUrl, false);
+        result._darkIcons = darkIconsData.first;
+        result._lightIcons = lightIconsData.first;
+        result._darkIconsIsThumbnail = darkIconsData.second;
+        result._lightIconsIsThumbnail = lightIconsData.second;
 
         newEntries.push_back(result);
     }
