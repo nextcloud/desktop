@@ -555,9 +555,11 @@ void Application::slotUseMonoIconsChanged(bool)
 
 void Application::slotParseMessage(const QString &msg, QObject *)
 {
-    if (msg.startsWith(QLatin1String("MSG_PARSEOPTIONS:"))) {
-        const int lengthOfMsgPrefix = 17;
-        QStringList options = msg.mid(lengthOfMsgPrefix).split(QLatin1Char('|'));
+    qCInfo(lcApplication) << Q_FUNC_INFO << msg;
+    const QLatin1String prefix("MSG_PARSEOPTIONS:");
+    if (msg.startsWith(prefix)) {
+        QStringList options = msg.mid(prefix.size()).split(QLatin1Char('|'));
+        // TODO: don't modify the application state in the parser
         _showSettings = false;
         parseOptions(options);
         setupLogging();
