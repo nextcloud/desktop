@@ -257,7 +257,6 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
-
     // Only allow removal if the item isn't in "ready" state.
     if (classification == FolderStatusModel::RootFolder && !_model->data(index, FolderStatusDelegate::IsReady).toBool() && !_model->folder(index)->isDeployed()) {
         QMenu *menu = new QMenu(tv);
