@@ -78,7 +78,7 @@ QUrlQuery Updater::getQueryParams()
     if (Utility::isLinux()) {
 #ifdef WITH_APPIMAGEUPDATER
         if (Utility::runningInAppImage()) {
-            platform = "linux-appimage-" + QSysInfo::buildCpuArchitecture();
+            platform = QStringLiteral("linux-appimage-") + QSysInfo::buildCpuArchitecture();
         } else {
 #endif
             platform = QStringLiteral("linux");
