@@ -176,4 +176,5 @@ FakesAssemblies/
 
 # squish test
 test/gui/config.ini
+test/gui/reports
 */**/__pycache__/
