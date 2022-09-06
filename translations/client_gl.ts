@@ -6550,7 +6550,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Non molestar</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>Silenciar todas as notificacións</translation>
     </message>
@@ -6560,7 +6560,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Invisíbel</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation>Aparecer como sen conexión</translation>
     </message>
@@ -6580,7 +6580,7 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <translation>Limpar a mensaxe de estado após</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
