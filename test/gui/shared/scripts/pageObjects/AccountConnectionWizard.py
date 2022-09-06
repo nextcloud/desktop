@@ -29,7 +29,7 @@ class AccountConnectionWizard:
     }
     CREDENTIAL_PAGE = {
         "container": names.setupWizardWindow_contentWidget_QStackedWidget,
-        "name": "BasicCredentialsSetupWizardPage",
+        "name": "CredentialsSetupWizardPage",
         "type": "OCC::Wizard::BasicCredentialsSetupWizardPage",
         "visible": 1,
     }
