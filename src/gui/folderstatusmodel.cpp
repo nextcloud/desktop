@@ -963,6 +963,10 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
 
     auto *pi = &_folders[folderIndex]._progress;
 
+    if (progress.status() == ProgressInfo::Starting) {
+        _isSyncRunningForAwhile = false;
+    }
+
     QVector<int> roles;
     roles << FolderStatusDelegate::SyncProgressItemString
           << FolderStatusDelegate::WarningCount
@@ -1086,13 +1090,23 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
         QString s1 = Utility::octetsToString(completedSize);
         QString s2 = Utility::octetsToString(totalSize);
 
-        if (progress.trustEta()) {
+        const auto estimatedEta = progress.totalProgress().estimatedEta;
+
+        if (progress.trustEta() && (estimatedEta > 0 || _isSyncRunningForAwhile)) {
+            _isSyncRunningForAwhile = true;
             //: Example text: "5 minutes left, 12 MB of 345 MB, file 6 of 7"
-            overallSyncString = tr("%5 left, %1 of %2, file %3 of %4")
-                                    .arg(s1, s2)
-                                    .arg(currentFile)
-                                    .arg(totalFileCount)
-                                    .arg(Utility::durationToDescriptiveString1(progress.totalProgress().estimatedEta));
+            if (estimatedEta == 0) {
+                overallSyncString = tr("A few seconds left, %1 of %2, file %3 of %4")
+                                        .arg(s1, s2)
+                                        .arg(currentFile)
+                                        .arg(totalFileCount);
+            } else {
+                overallSyncString = tr("%5 left, %1 of %2, file %3 of %4")
+                                        .arg(s1, s2)
+                                        .arg(currentFile)
+                                        .arg(totalFileCount)
+                                        .arg(Utility::durationToDescriptiveString1(estimatedEta));
+            }
 
         } else {
             //: Example text: "12 MB of 345 MB, file 6 of 7"
