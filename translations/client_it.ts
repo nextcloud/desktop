@@ -6545,7 +6545,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Non disturbare</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>Silenzia tutte le notifiche</translation>
     </message>
@@ -6555,7 +6555,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Invisibile</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation>Appari non in linea</translation>
     </message>
@@ -6575,7 +6575,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Cancella il messaggio di stato dopo</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
