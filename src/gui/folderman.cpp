@@ -643,6 +643,12 @@ void FolderMan::scheduleFolder(Folder *f)
     startScheduledSyncSoon();
 }
 
+void FolderMan::scheduleFolderForImmediateSync(Folder *f)
+{
+    _nextSyncShouldStartImmediately = true;
+    scheduleFolder(f);
+}
+
 void FolderMan::scheduleFolderNext(Folder *f)
 {
     auto alias = f->alias();
@@ -791,6 +797,12 @@ void FolderMan::startScheduledSyncSoon()
 
     // Time since the last sync run counts against the delay
     msDelay = qMax(1ll, msDelay - msSinceLastSync);
+
+    if (_nextSyncShouldStartImmediately) {
+        _nextSyncShouldStartImmediately = false;
+        qCInfo(lcFolderMan) << "Next sync is marked to start immediately, so setting the delay to '0'";
+        msDelay = 0;
+    }
 
     qCInfo(lcFolderMan) << "Starting the next scheduled sync in" << (msDelay / 1000) << "seconds";
     _startScheduledSyncTimer.start(msDelay);
