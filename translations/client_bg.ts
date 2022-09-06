@@ -6556,7 +6556,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не безпокой</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>Заглушаване на всички известия</translation>
     </message>
@@ -6566,7 +6566,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Невидим</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation>Показване като офлайн</translation>
     </message>
@@ -6586,7 +6586,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Изчистване на съобщение за състоянието след това</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>

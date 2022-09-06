@@ -6557,7 +6557,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Niet storen</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -6567,7 +6567,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Onzichtbaar</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation type="unfinished"/>
     </message>
@@ -6587,7 +6587,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <translation>Statusbericht wissen na</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>

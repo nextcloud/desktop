@@ -6537,7 +6537,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>勿扰</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>静音所有通知</translation>
     </message>
@@ -6547,7 +6547,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>不可见</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation>显示为离线</translation>
     </message>
@@ -6567,7 +6567,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>在指定时间段后清除状态消息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>

@@ -6553,7 +6553,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Ne pustim se motiti</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -6563,7 +6563,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Drugim nevidno</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation type="unfinished"/>
     </message>
@@ -6583,7 +6583,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Počisti sporočilo stanja po</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>

@@ -6535,7 +6535,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Μην ενοχλείτε</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation type="unfinished"/>
     </message>
@@ -6545,7 +6545,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Αόρατος</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="117"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Appear offline</source>
         <translation type="unfinished"/>
     </message>
@@ -6565,7 +6565,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Εκκαθάριση μηνύματος κατάστασης μετά από</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="330"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
