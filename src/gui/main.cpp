@@ -15,6 +15,7 @@
 #include <QtGlobal>
 
 #include "application.h"
+#include "application_p.h"
 #include "common/utility.h"
 #include "guiutility.h"
 #include "platform.h"
@@ -84,7 +85,7 @@ int main(int argc, char **argv)
         QStringList args = app.arguments();
         if (args.size() > 1) {
             QString msg = args.join(QLatin1String("|"));
-            if (!app.sendMessage(QLatin1String("MSG_PARSEOPTIONS:") + msg))
+            if (!app.sendMessage(ApplicationPrivate::msgParseOptionsC() + msg))
                 return -1;
         }
         return 0;

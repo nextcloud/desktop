@@ -15,6 +15,7 @@
  */
 
 #include "application.h"
+#include "application_p.h"
 
 #include <iostream>
 #include <random>
@@ -556,13 +557,11 @@ void Application::slotUseMonoIconsChanged(bool)
 void Application::slotParseMessage(const QString &msg, QObject *)
 {
     qCInfo(lcApplication) << Q_FUNC_INFO << msg;
-    const QLatin1String prefix("MSG_PARSEOPTIONS:");
-    if (msg.startsWith(prefix)) {
-        QStringList options = msg.mid(prefix.size()).split(QLatin1Char('|'));
+    if (msg.startsWith(ApplicationPrivate::msgParseOptionsC())) {
+        QStringList options = msg.mid(ApplicationPrivate::msgParseOptionsC().size()).split(QLatin1Char('|'));
         // TODO: don't modify the application state in the parser
         _showSettings = false;
         parseOptions(options);
-        setupLogging();
         if (_showSettings) {
             _gui->slotShowSettings();
         }
