@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Don't unset implicit log flush: [#9515](https://github.com/owncloud/client/pull/9515)
 * Bugfix - We fixed a crash: [#10017](https://github.com/owncloud/client/pull/10017)
+* Bugfix - Fix configuration of selective sync from account settings: [#10058](https://github.com/owncloud/client/pull/10058)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Don't display a conext menu on the root folder: [#8595](https://github.com/owncloud/client/issues/8595)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
@@ -60,6 +61,14 @@ Details
    We fixed a crash that could occur after a folder reported a setup error
 
    https://github.com/owncloud/client/pull/10017
+
+* Bugfix - Fix configuration of selective sync from account settings: [#10058](https://github.com/owncloud/client/pull/10058)
+
+   We fixed a bug that prevented the directory tree in the account settings window from being
+   expanded beyond the root directory level. The problem was introduced in 8d0dd36d2.
+
+   https://github.com/owncloud/client/pull/10058
+   https://github.com/owncloud/client/pull/10065
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 
