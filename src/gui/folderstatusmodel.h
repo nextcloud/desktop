@@ -147,6 +147,8 @@ private:
     const AccountState *_accountState = nullptr;
     bool _dirty = false; // If the selective sync checkboxes were changed
 
+    bool _isSyncRunningForAwhile = false;
+
     /**
      * Keeps track of items that are fetching data from the server.
      *
