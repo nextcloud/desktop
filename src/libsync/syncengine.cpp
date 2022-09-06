@@ -1056,11 +1056,9 @@ void SyncEngine::switchToVirtualFiles(const QString &localPath, SyncJournalDb &j
 
 void SyncEngine::abort()
 {
-    if (_propagator)
-        qCInfo(lcEngine) << "Aborting sync";
-
     if (_propagator) {
         // If we're already in the propagation phase, aborting that is sufficient
+        qCInfo(lcEngine) << "Aborting sync in propagator...";
         _propagator->abort();
     } else if (_discoveryPhase) {
         // Delete the discovery and all child jobs after ensuring
@@ -1068,7 +1066,8 @@ void SyncEngine::abort()
         disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
 
-        Q_EMIT syncError(tr("Synchronization will resume shortly."));
+        Q_EMIT addErrorToGui(SyncFileItem::SoftError, tr("Synchronization has been aborted."), tr("It will resume shortly."));
+        qCInfo(lcEngine) << "Aborting sync in discovery...";
         finalize(false);
     }
 }

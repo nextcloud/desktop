@@ -193,6 +193,9 @@ public:
     /** Queues a folder for syncing. */
     void scheduleFolder(Folder *);
 
+    /** Queues a folder for syncing that starts immediately. */
+    void scheduleFolderForImmediateSync(Folder *);
+
     /** Puts a folder in the very front of the queue. */
     void scheduleFolderNext(Folder *);
 
@@ -356,6 +359,8 @@ private:
 
     /// Picks the next scheduled folder and starts the sync
     QTimer _startScheduledSyncTimer;
+
+    bool _nextSyncShouldStartImmediately = false;
 
     QScopedPointer<SocketApi> _socketApi;
     NavigationPaneHelper _navigationPaneHelper;
