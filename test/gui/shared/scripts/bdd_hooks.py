@@ -200,13 +200,13 @@ def hook(context):
     # search coredumps after every test scenario
     # CI pipeline might fail although all tests are passing
     coredumps = getCoredumps()
-    if scenarioFailed() and coredumps:
+    if coredumps:
         try:
             generateStacktrace(context, coredumps)
             test.log("Stacktrace generated!")
         except Exception as err:
             test.log("Exception occured:" + str(err))
-    else:
+    elif scenarioFailed():
         test.log("No coredump found!")
 
     # cleanup test server
