@@ -28,6 +28,7 @@ Summary
 * Change - Remove support for Windows 7 sidebar links: [#9618](https://github.com/owncloud/client/pull/9618)
 * Change - Rewrote TLS error handling: [#9655](https://github.com/owncloud/client/issues/9655)
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
+* Change - Add "open in web editor" feature: [#9724](https://github.com/owncloud/client/issues/9724)
 * Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
@@ -174,6 +175,13 @@ Details
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
 
    https://github.com/owncloud/client/pull/9675
+
+* Change - Add "open in web editor" feature: [#9724](https://github.com/owncloud/client/issues/9724)
+
+   We now provide the option to open files in an online office suite from the local file browser
+   context menu, provided the server offers integration with one of the supported services.
+
+   https://github.com/owncloud/client/issues/9724
 
 * Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
 
