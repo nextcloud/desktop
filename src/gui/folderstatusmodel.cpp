@@ -931,7 +931,7 @@ void FolderStatusModel::slotApplySelectiveSync()
                 folder->journalDb()->schedulePathForRemoteDiscovery(it);
                 folder->schedulePathForLocalDiscovery(it);
             }
-            FolderMan::instance()->scheduleFolder(folder);
+            FolderMan::instance()->scheduleFolderForImmediateSync(folder);
         }
     }
 

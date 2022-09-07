@@ -538,6 +538,8 @@ public:
     {
         if (_abortRequested)
             return;
+
+        _abortRequested = true;
         if (_rootJob) {
             // Connect to abortFinished  which signals that abort has been asynchronously finished
             connect(_rootJob.data(), &PropagateDirectory::abortFinished, this, &OwncloudPropagator::emitFinished);
@@ -633,6 +635,7 @@ private slots:
     {
         if (!_finishedEmited)
             emit finished(status == SyncFileItem::Success);
+        _abortRequested = false;
         _finishedEmited = true;
     }
 

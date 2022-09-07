@@ -544,7 +544,7 @@ void SelectiveSyncDialog::accept()
             _folder->schedulePathForLocalDiscovery(it);
         }
 
-        folderMan->scheduleFolder(_folder);
+        folderMan->scheduleFolderForImmediateSync(_folder);
     }
     QDialog::accept();
 }
