@@ -52,7 +52,7 @@ ScrollView {
             isFileActivityList: controlRoot.isFileActivityList
             width: activityList.contentWidth
             flickable: activityList
-            onEntered: {
+            onHoveredChanged: if (hovered) {
                 // When we set the currentIndex the list view will scroll...
                 // unless we tamper with the preferred highlight points to stop this.
                 const savedPreferredHighlightBegin = activityList.preferredHighlightBegin;
