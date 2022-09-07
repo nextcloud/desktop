@@ -1,5 +1,6 @@
 project(gui)
 find_package(Qt5 REQUIRED COMPONENTS Widgets Svg Qml Quick QuickControls2 Xml Network)
+find_package(KF5Archive REQUIRED)
 
 if(QUICK_COMPILER)
         find_package(Qt5QuickCompiler)
@@ -566,6 +567,7 @@ target_link_libraries(nextcloudCore
   Qt5::Qml
   Qt5::Quick
   Qt5::QuickControls2
+  KF5::Archive
   )
 
 add_subdirectory(socketapi)
