@@ -194,6 +194,7 @@ Q_LOGGING_CATEGORY(lcUnifiedSearch, "nextcloud.gui.unifiedsearch", QtInfoMsg)
 
 UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent)
     : QAbstractListModel(parent)
+    , _waitingForSearchTermEditEnd(false)
     , _accountState(accountState)
 {
 }
@@ -280,6 +281,11 @@ QString UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderId() co
     return _currentFetchMoreInProgressProviderId;
 }
 
+bool UnifiedSearchResultsListModel::waitingForSearchTermEditEnd() const
+{
+    return _waitingForSearchTermEditEnd;
+}
+
 void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 {
     if (term == _searchTerm) {
@@ -303,6 +309,8 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 
     if (_unifiedSearchTextEditingFinishedTimer.isActive()) {
         _unifiedSearchTextEditingFinishedTimer.stop();
+        _waitingForSearchTermEditEnd = false;
+        emit waitingForSearchTermEditEndChanged();
     }
 
     if (!_searchTerm.isEmpty()) {
@@ -310,6 +318,8 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
             &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
+        _waitingForSearchTermEditEnd = true;
+        emit waitingForSearchTermEditEndChanged();
     }
 
     if (!_results.isEmpty()) {
@@ -367,6 +377,9 @@ void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &provi
 
 void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
 {
+    _waitingForSearchTermEditEnd = false;
+    emit waitingForSearchTermEditEndChanged();
+
     disconnect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
         &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
 
