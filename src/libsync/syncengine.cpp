@@ -1065,8 +1065,6 @@ void SyncEngine::abort()
         // it can't finish and start the propagator
         disconnect(_discoveryPhase.data(), nullptr, this, nullptr);
         _discoveryPhase.take()->deleteLater();
-
-        Q_EMIT addErrorToGui(SyncFileItem::SoftError, tr("Synchronization has been aborted."), tr("It will resume shortly."));
         qCInfo(lcEngine) << "Aborting sync in discovery...";
         finalize(false);
     }
