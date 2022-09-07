@@ -27,7 +27,7 @@ from pageObjects.AccountStatus import AccountStatus
 # to switch from the built-in interpreter see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
 # if the IDE fails to reference the script, add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
 sys.path.append(os.path.realpath('../../../shell_integration/nautilus/'))
-import syncstate
+from syncstate import SocketConnect
 import functools
 
 
@@ -138,11 +138,18 @@ def step(context):
     newAccount.addAccountCredential(context)
 
 
+def getSocketConnection():
+    global socketConnect
+    if not socketConnect or not socketConnect.connected:
+        socketConnect = SocketConnect()
+    return socketConnect
+
+
 # Using socket API to check file sync status
 def hasSyncStatus(type, itemName, status):
     if type != 'FILE' and type != 'FOLDER':
         raise Exception("type must be 'FILE' or 'FOLDER'")
-    socketConnect = syncstate.SocketConnect()
+    socketConnect = getSocketConnection()
     socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + itemName + "\n")
 
     if not socketConnect.read_socket_data_with_timeout(0.1):
@@ -278,7 +285,7 @@ def sanitizePath(path):
 
 
 def shareResource(resource):
-    socketConnect = syncstate.SocketConnect()
+    socketConnect = getSocketConnection()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     if not socketConnect.read_socket_data_with_timeout(0.1):
         return False
@@ -372,7 +379,7 @@ def collaboratorShouldBeListed(
     context, receiver, resource, permissions, receiverCount=0
 ):
     resource = getResourcePath(context, resource)
-    socketConnect = syncstate.SocketConnect()
+    socketConnect = getSocketConnection()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
 
