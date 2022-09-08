@@ -945,10 +945,14 @@ void FolderMan::runEtagJobIfPossible(Folder *folder)
 
 void FolderMan::slotAccountRemoved(AccountState *accountState)
 {
+    QVector<Folder *> foldersToRemove;
     for (const auto &folder : qAsConst(_folderMap)) {
         if (folder->accountState() == accountState) {
-            folder->onAssociatedAccountRemoved();
+            foldersToRemove.push_back(folder);
         }
+    }
+    for (const auto &folder : qAsConst(foldersToRemove)) {
+        removeFolder(folder);
     }
 }
 
@@ -1663,10 +1667,10 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
 {
     QPair<FolderMan::PathValidityResult, QString> result;
 
-    QString recursiveValidity = checkPathValidityRecursive(path);
+    const auto recursiveValidity = checkPathValidityRecursive(path);
     if (!recursiveValidity.isEmpty()) {
         qCDebug(lcFolderMan) << path << recursiveValidity;
-        result.first = FolderMan::ErrorRecursiveValidity;
+        result.first = FolderMan::PathValidityResult::ErrorRecursiveValidity;
         result.second = recursiveValidity;
         return result;
     }
@@ -1684,7 +1688,7 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
 
         bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
         if (differentPaths && folderDir.startsWith(userDir, cs)) {
-            result.first = FolderMan::ErrorContainsFolder;
+            result.first = FolderMan::PathValidityResult::ErrorContainsFolder;
             result.second = tr("The local folder %1 already contains a folder used in a folder sync connection. "
                               "Please pick another one!")
                                 .arg(QDir::toNativeSeparators(path));
@@ -1692,7 +1696,7 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
         }
 
         if (differentPaths && userDir.startsWith(folderDir, cs)) {
-            result.first = FolderMan::ErrorContainedInFolder;
+            result.first = FolderMan::PathValidityResult::ErrorContainedInFolder;
             result.second = tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
@@ -1708,7 +1712,7 @@ QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNew
             folderUrl.setUserName(user);
 
             if (serverUrl == folderUrl) {
-                result.first = FolderMan::ErrorNonEmptyFolder;
+                result.first = FolderMan::PathValidityResult::ErrorNonEmptyFolder;
                 result.second = tr("There is already a sync from the server to this local folder. "
                           "Please pick another local folder!");
                 return result;

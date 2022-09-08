@@ -65,14 +65,14 @@ private slots:
 
 
         // those should be allowed
-        // QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory)
+        // QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory).second
 
         QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/free").second, QString());
         QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/free2/").second, QString());
         // Not an existing directory -> Ok
         QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/bliblablu").second, QString());
         QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/free/bliblablu").second, QString());
-        // QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/bliblablu/some/more"), QString());
+        // QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/bliblablu/some/more").second, QString());
 
         // A file -> Error
         QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/file.txt").second.isNull());
@@ -104,33 +104,33 @@ private slots:
         QVERIFY(QFile::link(dirPath + "/sub/ownCloud1/folder", dirPath + "/link4"));
 
         // Ok
-        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link1").isNull());
-        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link2/free").isNull());
+        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link1").second.isNull());
+        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link2/free").second.isNull());
 
         // Not Ok
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link2").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link2").second.isNull());
 
         // link 3 points to an existing sync folder. To make it fail, the account must be the same
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3", url2).isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3", url2).second.isNull());
         // while with a different account, this is fine
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/link3", url3), QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/link3", url3).second, QString());
 
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link4").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3/folder").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link4").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3/folder").second.isNull());
 
         // test some non existing sub path (error)
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/some/sub/path").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/blublu").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder/g/h").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3/folder/neu_folder").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/some/sub/path").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/blublu").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder/g/h").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/link3/folder/neu_folder").second.isNull());
 
         // Subfolder of links
-        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link1/subfolder").isNull());
-        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link2/free/subfolder").isNull());
+        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link1/subfolder").second.isNull());
+        QVERIFY(folderman->checkPathValidityForNewFolder(dirPath + "/link2/free/subfolder").second.isNull());
 
         // Should not have the rights
-        QVERIFY(!folderman->checkPathValidityForNewFolder("/").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder("/").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder("/usr/bin/somefolder").second.isNull());
 #endif
 
 #ifdef Q_OS_WIN // drive-letter tests
