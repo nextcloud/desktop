@@ -67,15 +67,15 @@ private slots:
         // those should be allowed
         // QString FolderMan::checkPathValidityForNewFolder(const QString& path, const QUrl &serverUrl, bool forNewDirectory)
 
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/free"), QString());
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/free2/"), QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/free").second, QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/free2/").second, QString());
         // Not an existing directory -> Ok
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/bliblablu"), QString());
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/free/bliblablu"), QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/bliblablu").second, QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/free/bliblablu").second, QString());
         // QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/bliblablu/some/more"), QString());
 
         // A file -> Error
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/file.txt").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/file.txt").second.isNull());
 
         // There are folders configured in those folders, url needs to be taken into account: -> ERROR
         QUrl url2(url);
@@ -83,18 +83,18 @@ private slots:
         url2.setUserName(user);
 
         // The following both fail because they refer to the same account (user and url)
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1", url2).isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/", url2).isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1", url2).second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/", url2).second.isNull());
 
         // Now it will work because the account is different
         QUrl url3("http://anotherexample.org");
         url3.setUserName("dummy");
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1", url3), QString());
-        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/", url3), QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1", url3).second, QString());
+        QCOMPARE(folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/", url3).second, QString());
 
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath).isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder/f").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath).second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/sub/ownCloud1/folder/f").second.isNull());
 
 #ifndef Q_OS_WIN // no links on windows, no permissions
         // make a bunch of links
@@ -135,25 +135,25 @@ private slots:
 
 #ifdef Q_OS_WIN // drive-letter tests
         if (!QFileInfo("v:/").exists()) {
-            QVERIFY(!folderman->checkPathValidityForNewFolder("v:").isNull());
-            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/").isNull());
-            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/foo").isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:").second.isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/").second.isNull());
+            QVERIFY(!folderman->checkPathValidityForNewFolder("v:/foo").second.isNull());
         }
         if (QFileInfo("c:/").isWritable()) {
-            QVERIFY(folderman->checkPathValidityForNewFolder("c:").isNull());
-            QVERIFY(folderman->checkPathValidityForNewFolder("c:/").isNull());
-            QVERIFY(folderman->checkPathValidityForNewFolder("c:/foo").isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:").second.isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:/").second.isNull());
+            QVERIFY(folderman->checkPathValidityForNewFolder("c:/foo").second.isNull());
         }
 #endif
 
         // Invalid paths
-        QVERIFY(!folderman->checkPathValidityForNewFolder("").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder("").second.isNull());
 
 
         // REMOVE ownCloud2 from the filesystem, but keep a folder sync'ed to it.
         QDir(dirPath + "/ownCloud2/").removeRecursively();
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/blublu").isNull());
-        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/sub/subsub/sub").isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/blublu").second.isNull());
+        QVERIFY(!folderman->checkPathValidityForNewFolder(dirPath + "/ownCloud2/sub/subsub/sub").second.isNull());
     }
 
     void testFindGoodPathForNewSyncFolder()

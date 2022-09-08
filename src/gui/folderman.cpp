@@ -1659,12 +1659,16 @@ static QString canonicalPath(const QString &path)
     return selFile.canonicalFilePath();
 }
 
-QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl) const
+QPair<FolderMan::PathValidityResult, QString> FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl) const
 {
+    QPair<FolderMan::PathValidityResult, QString> result;
+
     QString recursiveValidity = checkPathValidityRecursive(path);
     if (!recursiveValidity.isEmpty()) {
         qCDebug(lcFolderMan) << path << recursiveValidity;
-        return recursiveValidity;
+        result.first = FolderMan::ErrorRecursiveValidity;
+        result.second = recursiveValidity;
+        return result;
     }
 
     // check if the local directory isn't used yet in another ownCloud sync
@@ -1680,15 +1684,19 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
 
         bool differentPaths = QString::compare(folderDir, userDir, cs) != 0;
         if (differentPaths && folderDir.startsWith(userDir, cs)) {
-            return tr("The local folder %1 already contains a folder used in a folder sync connection. "
-                      "Please pick another one!")
-                .arg(QDir::toNativeSeparators(path));
+            result.first = FolderMan::ErrorContainsFolder;
+            result.second = tr("The local folder %1 already contains a folder used in a folder sync connection. "
+                              "Please pick another one!")
+                                .arg(QDir::toNativeSeparators(path));
+            return result;
         }
 
         if (differentPaths && userDir.startsWith(folderDir, cs)) {
-            return tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
+            result.first = FolderMan::ErrorContainedInFolder;
+            result.second = tr("The local folder %1 is already contained in a folder used in a folder sync connection. "
                       "Please pick another one!")
                 .arg(QDir::toNativeSeparators(path));
+            return result;
         }
 
         // if both pathes are equal, the server url needs to be different
@@ -1700,13 +1708,15 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path, const QUrl
             folderUrl.setUserName(user);
 
             if (serverUrl == folderUrl) {
-                return tr("There is already a sync from the server to this local folder. "
+                result.first = FolderMan::ErrorNonEmptyFolder;
+                result.second = tr("There is already a sync from the server to this local folder. "
                           "Please pick another local folder!");
+                return result;
             }
         }
     }
 
-    return QString();
+    return result;
 }
 
 QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const
@@ -1728,7 +1738,7 @@ QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath, const Q
     forever {
         const bool isGood =
             !QFileInfo(folder).exists()
-            && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).isEmpty();
+            && FolderMan::instance()->checkPathValidityForNewFolder(folder, serverUrl).second.isEmpty();
         if (isGood) {
             break;
         }
