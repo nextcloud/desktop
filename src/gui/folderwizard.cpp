@@ -98,8 +98,8 @@ bool FolderWizardLocalPath::isComplete() const
     QUrl serverUrl = _account->url();
     serverUrl.setUserName(_account->credentials()->user());
 
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
-        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl);
+    const auto errorStr = FolderMan::instance()->checkPathValidityForNewFolder(
+        QDir::fromNativeSeparators(_ui.localFolderLineEdit->text()), serverUrl).second;
 
 
     bool isOk = errorStr.isEmpty();
