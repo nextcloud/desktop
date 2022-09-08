@@ -34,11 +34,12 @@ ExpandingHeaderView::ExpandingHeaderView(const QString &objectName, QWidget *par
     setObjectName(objectName);
     ConfigFile cfg;
     cfg.restoreGeometryHeader(this);
+}
 
-    connect(qApp, &QApplication::aboutToQuit, this, [this] {
-        ConfigFile cfg;
-        cfg.saveGeometryHeader(this);
-    });
+ExpandingHeaderView::~ExpandingHeaderView()
+{
+    ConfigFile cfg;
+    cfg.saveGeometryHeader(this);
 }
 
 int ExpandingHeaderView::expandingColumn() const
