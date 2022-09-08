@@ -17,6 +17,7 @@
 #include "accountconfiguredsetupwizardstate.h"
 #include "gui/folderman.h"
 #include "pages/accountconfiguredwizardpage.h"
+#include "theme.h"
 
 namespace OCC::Wizard {
 
@@ -35,7 +36,8 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
         vfsModeIsExperimental = false;
         break;
     case Vfs::WithSuffix:
-        vfsIsAvailable = true;
+        // we ignore forceVirtualFilesOption if experimental features are disabled
+        vfsIsAvailable = Theme::instance()->enableExperimentalFeatures();
         enableVfsByDefault = false;
         vfsModeIsExperimental = true;
         break;

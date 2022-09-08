@@ -87,7 +87,12 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     });
 
     // this should be handled on application startup, too
-    Q_ASSERT(!Theme::instance()->forceVirtualFilesOption() || vfsIsAvailable);
+    if (Theme::instance()->forceVirtualFilesOption()) {
+        if (!vfsModeIsExperimental) {
+            // note: this might fail when the VFS plugins have not been built (yet) as well
+            Q_ASSERT(vfsIsAvailable);
+        }
+    }
 
     if (Theme::instance()->forceVirtualFilesOption()) {
         // this has no visual effect, but is needed for syncMode()
