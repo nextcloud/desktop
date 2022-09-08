@@ -26,6 +26,4 @@
 #cmakedefine SYSCONFDIR "@SYSCONFDIR@"
 #cmakedefine OC_PLUGIN_DIR "@OC_PLUGIN_DIR@"
 
-#cmakedefine01 GUI_TESTING
-
 #endif

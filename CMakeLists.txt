@@ -116,8 +116,6 @@ if(APPLE)
 endif()
 
 if(BUILD_CLIENT)
-    OPTION(GUI_TESTING "Build with gui introspection features of socket api" OFF)
-
     if(APPLE)
         find_package(Sparkle REQUIRED)
     endif(APPLE)
