@@ -175,7 +175,7 @@ public:
     void setUiLanguage(const QString &uiLanguage);
 
     void saveGeometryHeader(QHeaderView *header);
-    void restoreGeometryHeader(QHeaderView *header);
+    bool restoreGeometryHeader(QHeaderView *header);
 
     /** The client version that last used this settings file.
         Updated by configVersionMigration() at client startup. */

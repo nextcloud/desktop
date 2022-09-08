@@ -33,7 +33,9 @@ ExpandingHeaderView::ExpandingHeaderView(const QString &objectName, QWidget *par
 
     setObjectName(objectName);
     ConfigFile cfg;
-    cfg.restoreGeometryHeader(this);
+    if (!cfg.restoreGeometryHeader(this)) {
+        _requiresReset = true;
+    }
 }
 
 ExpandingHeaderView::~ExpandingHeaderView()
@@ -58,16 +60,39 @@ void ExpandingHeaderView::resizeEvent(QResizeEvent *event)
     resizeColumns();
 }
 
+bool ExpandingHeaderView::resizeToContent() const
+{
+    return _resizeToContent;
+}
+
+void ExpandingHeaderView::setResizeToContent(bool newResizeToContent)
+{
+    _resizeToContent = newResizeToContent;
+}
+
 void ExpandingHeaderView::resizeColumns(bool reset)
 {
     int availableWidth = width();
     const auto defaultSize = defaultSectionSize();
+    if (_requiresReset && _resizeToContent) {
+        // wee need some rows to adjust to the content
+        if (model()->rowCount() == 0) {
+            return;
+        }
+        reset = true;
+    }
+    if (reset) {
+        _requiresReset = false;
+        if (_resizeToContent) {
+            resizeSections(QHeaderView::ResizeToContents);
+        }
+    }
     for (int i = 0; i < count(); ++i) {
         if (i == _expandingColumn || isSectionHidden(i)) {
             continue;
         }
         if (reset) {
-            resizeSection(i, defaultSize);
+            resizeSection(i, _resizeToContent ? sectionSize(i) : defaultSize);
         }
         availableWidth -= sectionSize(i);
     }
