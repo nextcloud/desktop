@@ -313,7 +313,7 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         editReadOnly(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
-        fakeFolder.localModifier().setContents(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"), 's');
+        fakeFolder.localModifier().setContents(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"), FileModifier::DefaultFileSize, 's');
         //do the sync
         applyPermissionsFromName(fakeFolder.remoteModifier());
         QVERIFY(fakeFolder.syncOnce());
@@ -321,7 +321,7 @@ private slots:
 
         QThread::sleep(1); // make sure changes have different mtime
         editReadOnly(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"));
-        fakeFolder.localModifier().setContents(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"), 'd');
+        fakeFolder.localModifier().setContents(QStringLiteral("readonlyDirectory_PERM_M_/cannotBeModified_PERM_DVN_.data"), FileModifier::DefaultFileSize, 'd');
 
         //do the sync
         applyPermissionsFromName(fakeFolder.remoteModifier());

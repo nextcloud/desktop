@@ -79,8 +79,9 @@ private slots:
             QVERIFY(entry._ignoreDuration > 0);
             QCOMPARE(entry._requestId, reqId);
 
-            if (remote)
+            if (remote) {
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
+            }
         }
         cleanup();
 
@@ -131,6 +132,10 @@ private slots:
                 QCOMPARE(journalRecord(fakeFolder, "A")._etag, initialEtag);
         }
         cleanup();
+
+        // Try to make sure that the modifications below do are not within the same second as the
+        // previous sync attempt was done, otherwise the changes go undetected.
+        QThread::sleep(1);
 
         // When the file changes a retry happens immediately
         modifier.appendByte(testFileName);

@@ -78,15 +78,21 @@ public:
     QString fileName() const { return last(); }
 };
 
+/**
+ * @brief The FileModifier class defines the interface for both the local on-disk modifier and the
+ * remote in-memory modifier.
+ */
 class FileModifier
 {
 public:
+    static constexpr int DefaultFileSize = 64;
+    static constexpr char DefaultContentChar = 'X';
+
     virtual ~FileModifier() { }
     virtual void remove(const QString &relativePath) = 0;
-    virtual void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') = 0;
-    virtual void setContents(const QString &relativePath, char contentChar) = 0;
-    virtual void appendByte(const QString &relativePath, char contentChar = 0) = 0;
-    virtual void modifyByte(const QString &relativePath, quint64 offset, char contentChar) = 0;
+    virtual void insert(const QString &relativePath, quint64 size = DefaultFileSize, char contentChar = DefaultContentChar) = 0;
+    virtual void setContents(const QString &relativePath, quint64 newSize, char contentChar = DefaultContentChar) = 0;
+    virtual void appendByte(const QString &relativePath, char contentChar = DefaultContentChar) = 0;
     virtual void mkdir(const QString &relativePath) = 0;
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
     virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
@@ -102,10 +108,9 @@ public:
     {
     }
     void remove(const QString &relativePath) override;
-    void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') override;
-    void setContents(const QString &relativePath, char contentChar) override;
-    void appendByte(const QString &relativePath, char contentChar) override;
-    void modifyByte(const QString &relativePath, quint64 offset, char contentChar) override;
+    void insert(const QString &relativePath, quint64 size = DefaultFileSize, char contentChar = DefaultContentChar) override;
+    void setContents(const QString &relativePath, quint64 newSize, char contentChar = DefaultContentChar) override;
+    void appendByte(const QString &relativePath, char contentChar = DefaultContentChar) override;
 
     void mkdir(const QString &relativePath) override;
     void rename(const QString &from, const QString &to) override;
@@ -119,9 +124,17 @@ static inline qint64 defaultLastModified()
     return timeInSeconds;
 }
 
-/// FIXME: we should make it explicit in the construtor if we're talking about a hydrated or a dehydrated file!
+/**
+ * @brief The FileInfo class represents the remotely stored (on-server) content. To be able to
+ * modify the content, this class is also the remote \c FileModifier.
+ */
 class FileInfo : public FileModifier
 {
+    /// FIXME: we should make it explicit in the construtor if we're talking about a hydrated or a dehydrated file!
+    /// FIXME: this class is both a remote folder, as the root folder which in turn is the remote FileModifier.
+    ///        This is a mess: unifying remote files/folders is ok, but because it's also the remote root (which
+    ///        should implement the FileModifier), this means that each single remote file/folder also implements
+    ///        this interface.
 public:
     static FileInfo A12_B12_C12_S12();
 
@@ -130,14 +143,14 @@ public:
         : name { name }
     {
     }
-    FileInfo(const QString &name, qint64 size)
+    FileInfo(const QString &name, quint64 size)
         : name { name }
         , isDir { false }
         , fileSize(size)
         , contentSize { size }
     {
     }
-    FileInfo(const QString &name, qint64 size, char contentChar)
+    FileInfo(const QString &name, quint64 size, char contentChar)
         : name { name }
         , isDir { false }
         , fileSize(size)
@@ -151,13 +164,11 @@ public:
 
     void remove(const QString &relativePath) override;
 
-    void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') override;
+    void insert(const QString &relativePath, quint64 size = DefaultFileSize, char contentChar = DefaultContentChar) override;
 
-    void setContents(const QString &relativePath, char contentChar) override;
+    void setContents(const QString &relativePath, quint64 newSize, char contentChar = DefaultContentChar) override;
 
-    void appendByte(const QString &relativePath, char contentChar = 0) override;
-
-    void modifyByte(const QString &relativePath, quint64 offset, char contentChar) override;
+    void appendByte(const QString &relativePath, char contentChar = DefaultContentChar) override;
 
     void mkdir(const QString &relativePath) override;
 
@@ -170,7 +181,7 @@ public:
 
     FileInfo *createDir(const QString &relativePath);
 
-    FileInfo *create(const QString &relativePath, qint64 size, char contentChar);
+    FileInfo *create(const QString &relativePath, quint64 size, char contentChar);
 
     bool operator<(const FileInfo &other) const
     {
@@ -230,8 +241,8 @@ public:
     QByteArray fileId = generateFileId();
     QByteArray checksums;
     QByteArray extraDavProperties;
-    qint64 fileSize = 0;
-    qint64 contentSize = 0;
+    quint64 fileSize = 0;
+    quint64 contentSize = 0;
     char contentChar = 'W';
     bool isDehydratedPlaceholder = false;
 
@@ -259,9 +270,10 @@ public:
 class FakeReply : public QNetworkReply
 {
     Q_OBJECT
+
 public:
     FakeReply(QObject *parent);
-    virtual ~FakeReply();
+    virtual ~FakeReply() override;
 
     // useful to be public for testing
     using QNetworkReply::setRawHeader;
@@ -270,6 +282,7 @@ public:
 class FakePropfindReply : public FakeReply
 {
     Q_OBJECT
+
 public:
     QByteArray payload;
 
@@ -288,7 +301,6 @@ public:
 class FakePutReply : public FakeReply
 {
     Q_OBJECT
-    FileInfo *fileInfo;
 
 public:
     FakePutReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, const QByteArray &putPayload, QObject *parent);
@@ -299,12 +311,14 @@ public:
 
     void abort() override;
     qint64 readData(char *, qint64) override { return 0; }
+
+private:
+    FileInfo *fileInfo;
 };
 
 class FakeMkcolReply : public FakeReply
 {
     Q_OBJECT
-    FileInfo *fileInfo;
 
 public:
     FakeMkcolReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
@@ -313,11 +327,15 @@ public:
 
     void abort() override { }
     qint64 readData(char *, qint64) override { return 0; }
+
+private:
+    FileInfo *fileInfo;
 };
 
 class FakeDeleteReply : public FakeReply
 {
     Q_OBJECT
+
 public:
     FakeDeleteReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
@@ -330,6 +348,7 @@ public:
 class FakeMoveReply : public FakeReply
 {
     Q_OBJECT
+
 public:
     FakeMoveReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
@@ -342,6 +361,7 @@ public:
 class FakeGetReply : public FakeReply
 {
     Q_OBJECT
+
 public:
     enum class State {
         Ok,
@@ -551,7 +571,7 @@ public:
     FileInfo &remoteModifier() { return _fakeAm->currentRemoteState(); }
     FileInfo currentLocalState();
 
-    FileInfo currentRemoteState() { return _fakeAm->currentRemoteState(); }
+    FileInfo &currentRemoteState() { return _fakeAm->currentRemoteState(); }
     FileInfo &uploadState() { return _fakeAm->uploadState(); }
     FileInfo dbState() const;
 

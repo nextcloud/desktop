@@ -15,6 +15,22 @@ using namespace std::chrono_literals;
 using namespace OCC;
 
 namespace {
+
+constexpr unsigned long long operator"" _kb(unsigned long long sz)
+{
+    return sz * 1024;
+}
+
+constexpr unsigned long long operator"" _mb(unsigned long long sz)
+{
+    return operator"" _kb(sz) * 1024;
+}
+
+constexpr unsigned long long operator"" _gb(unsigned long long sz)
+{
+    return operator"" _mb(sz) * 1024;
+}
+
 /* Upload a 1/3 of a file of given size.
  * fakeFolder needs to be synchronized */
 void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
@@ -52,7 +68,8 @@ void setChunkSize(SyncEngine &engine, qint64 size)
     options._minChunkSize = size;
     engine.setSyncOptions(options);
 }
-}
+
+} // anonymous namespace
 
 class TestChunkingNG : public QObject
 {
@@ -367,9 +384,9 @@ private slots:
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
 
-
-        fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), 'B');
-        fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
+        const auto a0size = fakeFolder.currentLocalState().find("A/a0")->contentSize;
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), a0size, 'B');
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"), 'B');
 
         QVERIFY(fakeFolder.syncOnce());
 
@@ -408,16 +425,17 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Modify the file localy and start the upload
-        fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), 'B');
-        fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), size, 'B');
+        fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"), 'B');
 
         // But in the middle of the sync, modify the file on the server
-        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
-                                    [&](const ProgressInfo &progress) {
-                if (progress.completedSize() > (progress.totalSize() / 2 )) {
-                    fakeFolder.remoteModifier().setContents(QStringLiteral("A/a0"), 'C');
-                    QObject::disconnect(con);
-                }
+        QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress, [&](const ProgressInfo &progress) {
+            qDebug() << progress.completedSize() << progress.totalSize();
+            if (progress.completedSize() > (progress.totalSize() / 2)) {
+                auto a0size = fakeFolder.currentRemoteState().find(QStringLiteral("A/a0"))->contentSize;
+                fakeFolder.remoteModifier().setContents(QStringLiteral("A/a0"), a0size, 'C');
+                QObject::disconnect(con);
+            }
         });
 
         QVERIFY(!fakeFolder.syncOnce());
@@ -455,17 +473,17 @@ private slots:
     void testModifyLocalFileWhileUploading() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 10 * 1000 * 1000; // 100 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const int size = 10_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
-        fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);
+        fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size, 'A');
 
         // middle of the sync, modify the file
         QMetaObject::Connection con = QObject::connect(&fakeFolder.syncEngine(), &SyncEngine::transmissionProgress,
                                     [&](const ProgressInfo &progress) {
                 if (progress.completedSize() > (progress.totalSize() / 2 )) {
-                    fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), 'B');
-                    fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"));
+                    fakeFolder.localModifier().setContents(QStringLiteral("A/a0"), size, 'B');
+                    fakeFolder.localModifier().appendByte(QStringLiteral("A/a0"), 'B');
                     QObject::disconnect(con);
                 }
         });
@@ -591,10 +609,10 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    // Test uploading large files (2.5GiB)
+    // Test uploading large files (2 GiB)
     void testVeryBigFiles() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const qint64 size = 2.5 * 1024 * 1024 * 1024; // 2.5 GiB
+        const qint64 size = 2_gb; // stay under the INT_MAX limit: QByteArray takes a signed int, so bigger sizes will give weird results.
 
         // Partial upload of big files
         partialUpload(fakeFolder, QStringLiteral("A/a0"), size);

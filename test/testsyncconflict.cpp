@@ -86,8 +86,8 @@ private slots:
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'L');
-        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'R');
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'L');
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'R');
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
@@ -129,8 +129,8 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'L');
-        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'R');
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'L');
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'R');
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
@@ -200,7 +200,7 @@ private slots:
 
         // Now the user can locally alter the conflict file and it will be uploaded
         // as usual.
-        fakeFolder.localModifier().setContents(conflictName, 'P');
+        fakeFolder.localModifier().setContents(conflictName, FileModifier::DefaultFileSize + 1, 'P'); // make sure the file sizes are different
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(conflictMap.size(), 1);
         QCOMPARE(conflictMap[a1FileId], conflictName);
@@ -208,7 +208,7 @@ private slots:
         conflictMap.clear();
 
         // Similarly, remote modifications of conflict files get propagated downwards
-        fakeFolder.remoteModifier().setContents(conflictName, 'Q');
+        fakeFolder.remoteModifier().setContents(conflictName, FileModifier::DefaultFileSize + 1, 'Q'); // make sure the file sizes are different
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(conflictMap.isEmpty());
@@ -222,8 +222,8 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(conflictMap.size(), 1);
         QVERIFY(conflictMap.contains(a1ConflictFileId));
-        QCOMPARE(fakeFolder.currentRemoteState().find(conflictName)->contentSize, 66);
-        QCOMPARE(fakeFolder.currentRemoteState().find(conflictMap[a1ConflictFileId])->contentSize, 65);
+        QCOMPARE(fakeFolder.currentRemoteState().find(conflictName)->contentSize, FileModifier::DefaultFileSize + 3);
+        QCOMPARE(fakeFolder.currentRemoteState().find(conflictMap[a1ConflictFileId])->contentSize, FileModifier::DefaultFileSize + 2);
         conflictMap.clear();
     }
 

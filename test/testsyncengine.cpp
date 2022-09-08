@@ -134,16 +134,16 @@ private slots:
 
         ItemCompletedSpy completeSpy(fakeFolder);
         // Touch the file without changing the content, shouldn't upload
-        fakeFolder.localModifier().setContents(QStringLiteral("a1.eml"), 'A');
+        fakeFolder.localModifier().setContents(QStringLiteral("a1.eml"), 64, 'A');
         // Change the content/size
-        fakeFolder.localModifier().setContents(QStringLiteral("a2.eml"), 'B');
-        fakeFolder.localModifier().appendByte(QStringLiteral("a3.eml"));
-        fakeFolder.localModifier().appendByte(QStringLiteral("b3.txt"));
+        fakeFolder.localModifier().setContents(QStringLiteral("a2.eml"), 64, 'B');
+        fakeFolder.localModifier().appendByte(QStringLiteral("a3.eml"), 'X');
+        fakeFolder.localModifier().appendByte(QStringLiteral("b3.txt"), 'X');
         fakeFolder.syncOnce();
 
         QCOMPARE(getDbChecksum("a1.eml"), referenceChecksum);
         QCOMPARE(getDbChecksum("a2.eml"), QByteArray("SHA1:84951fc23a4dafd10020ac349da1f5530fa65949"));
-        QCOMPARE(getDbChecksum("a3.eml"), QByteArray("SHA1:826b7e7a7af8a529ae1c7443c23bf185c0ad440c"));
+        QCOMPARE(getDbChecksum("a3.eml"), QByteArray("SHA1:c119308d57884896cd86a7050e449aaba24b1fee"));
         QCOMPARE(getDbChecksum("b3.eml"), getDbChecksum("a3.txt"));
 
         QVERIFY(!itemDidComplete(completeSpy, "a1.eml"));
@@ -356,11 +356,13 @@ private slots:
         auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);
         mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
 
-        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'C');
+        const auto a1size = fakeFolder.currentLocalState().find("A/a1")->contentSize;
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), a1size, 'C');
         fakeFolder.localModifier().setModTime(QStringLiteral("A/a1"), mtime);
-        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'C');
-        if (!sameMtime)
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), a1size, 'C');
+        if (!sameMtime) {
             mtime = mtime.addDays(1);
+        }
         fakeFolder.remoteModifier().setModTime(QStringLiteral("A/a1"), mtime);
         remoteInfo.find("A/a1")->checksums = checksums;
         QVERIFY(fakeFolder.syncOnce());
@@ -398,8 +400,7 @@ private slots:
         initialFileInfo.setModTime(QStringLiteral("B/b1"), initialMtime);
         initialFileInfo.setModTime(QStringLiteral("C/c1"), initialMtime);
 
-        FakeFolder fakeFolder{ initialFileInfo };
-
+        FakeFolder fakeFolder(initialFileInfo);
 
         // upload a
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));

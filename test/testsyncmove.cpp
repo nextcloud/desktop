@@ -224,8 +224,9 @@ private slots:
         // Move-and-change, content only -- c1 has no checksum, so we fail to detect this!
         // NOTE: This is an expected failure.
         mtime = fakeFolder.remoteModifier().find("C/c1")->lastModified();
+        auto size = fakeFolder.currentRemoteState().find("C/c1")->contentSize;
         fakeFolder.localModifier().rename(QStringLiteral("C/c1"), QStringLiteral("C/c1m"));
-        fakeFolder.localModifier().setContents(QStringLiteral("C/c1m"), 'C');
+        fakeFolder.localModifier().setContents(QStringLiteral("C/c1m"), size, 'C');
         fakeFolder.localModifier().setModTime(QStringLiteral("C/c1m"), mtime);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nPUT, 3);
@@ -244,7 +245,7 @@ private slots:
         // Move-and-change, content only, this time while having a checksum
         mtime = fakeFolder.remoteModifier().find("C/c3")->lastModified();
         fakeFolder.localModifier().rename(QStringLiteral("C/c3"), QStringLiteral("C/c3m"));
-        fakeFolder.localModifier().setContents(QStringLiteral("C/c3m"), 'C');
+        fakeFolder.localModifier().setContents(QStringLiteral("C/c3m"), FileModifier::DefaultFileSize, 'C');
         fakeFolder.localModifier().setModTime(QStringLiteral("C/c3m"), mtime);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(nPUT, 5);
@@ -363,9 +364,9 @@ private slots:
         // Touch+Move on same side
         counter.reset();
         local.rename(QStringLiteral("A/a2"), QStringLiteral("A/a2m"));
-        local.setContents(QStringLiteral("A/a2m"), 'A');
+        local.setContents(QStringLiteral("A/a2m"), FileModifier::DefaultFileSize, 'A');
         remote.rename(QStringLiteral("B/b2"), QStringLiteral("B/b2m"));
-        remote.setContents(QStringLiteral("B/b2m"), 'A');
+        remote.setContents(QStringLiteral("B/b2m"), FileModifier::DefaultFileSize, 'A');
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
@@ -379,9 +380,9 @@ private slots:
         // Touch+Move on opposite sides
         counter.reset();
         local.rename(QStringLiteral("A/a1m"), QStringLiteral("A/a1m2"));
-        remote.setContents(QStringLiteral("A/a1m"), 'B');
+        remote.setContents(QStringLiteral("A/a1m"), FileModifier::DefaultFileSize, 'B');
         remote.rename(QStringLiteral("B/b1m"), QStringLiteral("B/b1m2"));
-        local.setContents(QStringLiteral("B/b1m"), 'B');
+        local.setContents(QStringLiteral("B/b1m"), FileModifier::DefaultFileSize, 'B');
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
@@ -496,14 +497,14 @@ private slots:
         // Folder move with contents touched on the same side
         {
             counter.reset();
-            local.setContents(QStringLiteral("AM/a2m"), 'C');
+            local.setContents(QStringLiteral("AM/a2m"), FileModifier::DefaultFileSize, 'C');
             // We must change the modtime for it is likely that it did not change between sync.
             // (Previous version of the client (<=2.5) would not need this because it was always doing
             // checksum comparison for all renames. But newer version no longer does it if the file is
             // renamed because the parent folder is renamed)
             local.setModTime(QStringLiteral("AM/a2m"), QDateTime::currentDateTimeUtc().addDays(3));
             local.rename(QStringLiteral("AM"), QStringLiteral("A2"));
-            remote.setContents(QStringLiteral("BM/b2m"), 'C');
+            remote.setContents(QStringLiteral("BM/b2m"), FileModifier::DefaultFileSize, 'C');
             remote.rename(QStringLiteral("BM"), QStringLiteral("B2"));
             ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.syncOnce());
@@ -521,12 +522,12 @@ private slots:
 
         // Folder rename with contents touched on the other tree
         counter.reset();
-        remote.setContents(QStringLiteral("A2/a2m"), 'D');
+        remote.setContents(QStringLiteral("A2/a2m"), FileModifier::DefaultFileSize, 'D');
         // setContents alone may not produce updated mtime if the test is fast
         // and since we don't use checksums here, that matters.
         remote.appendByte(QStringLiteral("A2/a2m"));
         local.rename(QStringLiteral("A2"), QStringLiteral("A3"));
-        local.setContents(QStringLiteral("B2/b2m"), 'D');
+        local.setContents(QStringLiteral("B2/b2m"), FileModifier::DefaultFileSize, 'D');
         local.appendByte(QStringLiteral("B2/b2m"));
         remote.rename(QStringLiteral("B2"), QStringLiteral("B3"));
         QVERIFY(fakeFolder.syncOnce());
@@ -541,15 +542,15 @@ private slots:
 
         // Folder rename with contents touched on both ends
         counter.reset();
-        remote.setContents(QStringLiteral("A3/a2m"), 'R');
+        remote.setContents(QStringLiteral("A3/a2m"), FileModifier::DefaultFileSize, 'R');
         remote.appendByte(QStringLiteral("A3/a2m"));
-        local.setContents(QStringLiteral("A3/a2m"), 'L');
+        local.setContents(QStringLiteral("A3/a2m"), FileModifier::DefaultFileSize, 'L');
         local.appendByte(QStringLiteral("A3/a2m"));
         local.appendByte(QStringLiteral("A3/a2m"));
         local.rename(QStringLiteral("A3"), QStringLiteral("A4"));
-        remote.setContents(QStringLiteral("B3/b2m"), 'R');
+        remote.setContents(QStringLiteral("B3/b2m"), FileModifier::DefaultFileSize, 'R');
         remote.appendByte(QStringLiteral("B3/b2m"));
-        local.setContents(QStringLiteral("B3/b2m"), 'L');
+        local.setContents(QStringLiteral("B3/b2m"), FileModifier::DefaultFileSize, 'L');
         local.appendByte(QStringLiteral("B3/b2m"));
         local.appendByte(QStringLiteral("B3/b2m"));
         remote.rename(QStringLiteral("B3"), QStringLiteral("B4"));

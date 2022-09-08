@@ -48,7 +48,7 @@ void DiskFileModifier::remove(const QString &relativePath)
         QVERIFY(QDir { fi.filePath() }.removeRecursively());
 }
 
-void DiskFileModifier::insert(const QString &relativePath, qint64 size, char contentChar)
+void DiskFileModifier::insert(const QString &relativePath, quint64 size, char contentChar)
 {
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(!file.exists());
@@ -64,13 +64,12 @@ void DiskFileModifier::insert(const QString &relativePath, qint64 size, char con
     QCOMPARE(file.size(), size);
 }
 
-void DiskFileModifier::setContents(const QString &relativePath, char contentChar)
+void DiskFileModifier::setContents(const QString &relativePath, quint64 newSize, char contentChar)
 {
     QFile file { _rootDir.filePath(relativePath) };
     QVERIFY(file.exists());
-    qint64 size = file.size();
     file.open(QFile::WriteOnly);
-    file.write(QByteArray {}.fill(contentChar, size));
+    file.write(QByteArray {}.fill(contentChar, newSize));
 }
 
 void DiskFileModifier::appendByte(const QString &relativePath, char contentChar)
@@ -85,16 +84,6 @@ void DiskFileModifier::appendByte(const QString &relativePath, char contentChar)
         contents = file.read(1);
     file.seek(file.size());
     file.write(contents);
-}
-
-void DiskFileModifier::modifyByte(const QString &relativePath, quint64 offset, char contentChar)
-{
-    QFile file { _rootDir.filePath(relativePath) };
-    QVERIFY(file.exists());
-    file.open(QFile::ReadWrite);
-    file.seek(offset);
-    file.write(&contentChar, 1);
-    file.close();
 }
 
 void DiskFileModifier::mkdir(const QString &relativePath)
@@ -152,36 +141,31 @@ void FileInfo::remove(const QString &relativePath)
         [&pathComponents](const FileInfo &fi) { return fi.name == pathComponents.fileName(); }));
 }
 
-void FileInfo::insert(const QString &relativePath, qint64 size, char contentChar)
+void FileInfo::insert(const QString &relativePath, quint64 size, char contentChar)
 {
     create(relativePath, size, contentChar);
 }
 
-void FileInfo::setContents(const QString &relativePath, char contentChar)
+void FileInfo::setContents(const QString &relativePath, quint64 newSize, char contentChar)
 {
     FileInfo *file = findInvalidatingEtags(relativePath);
     Q_ASSERT(file);
     file->contentChar = contentChar;
+    file->contentSize = newSize;
+    if (!file->isDehydratedPlaceholder) {
+        file->fileSize = newSize;
+    }
 }
 
 void FileInfo::appendByte(const QString &relativePath, char contentChar)
 {
-    Q_UNUSED(contentChar);
+    Q_UNUSED(contentChar)
     FileInfo *file = findInvalidatingEtags(relativePath);
     Q_ASSERT(file);
     if (!file->isDehydratedPlaceholder) {
         file->contentSize += 1;
     }
     file->fileSize += 1;
-}
-
-void FileInfo::modifyByte(const QString &relativePath, quint64 offset, char contentChar)
-{
-    Q_UNUSED(offset);
-    Q_UNUSED(contentChar);
-    FileInfo *file = findInvalidatingEtags(relativePath);
-    Q_ASSERT(file);
-    Q_ASSERT(!"unimplemented");
 }
 
 void FileInfo::mkdir(const QString &relativePath)
@@ -244,7 +228,7 @@ FileInfo *FileInfo::createDir(const QString &relativePath)
     return &child;
 }
 
-FileInfo *FileInfo::create(const QString &relativePath, qint64 size, char contentChar)
+FileInfo *FileInfo::create(const QString &relativePath, quint64 size, char contentChar)
 {
     const PathComponents pathComponents { relativePath };
     FileInfo *parent = findInvalidatingEtags(pathComponents.parentDirComponents());
@@ -1106,9 +1090,10 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
             fi.setLastModified(diskChild.lastModified());
             if (fi.isDehydratedPlaceholder) {
                 fi.contentChar = '\0';
+                fi.contentSize = 0;
             } else {
                 QFile f { diskChild.filePath() };
-                f.open(QFile::ReadOnly);
+                OC_ENFORCE(f.open(QFile::ReadOnly));
                 auto content = f.read(1);
                 if (content.size() == 0) {
                     qWarning() << "Empty file at:" << diskChild.filePath();

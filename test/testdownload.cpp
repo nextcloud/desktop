@@ -174,8 +174,9 @@ private slots:
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
-        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), 'A');
-        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), 'B');
+        fakeFolder.account()->setCapabilities(TestUtils::testCapabilities(CheckSums::Algorithm::ADLER32));
+        fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'A');
+        fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'B');
 
         bool propConnected = false;
         QString conflictFile;
