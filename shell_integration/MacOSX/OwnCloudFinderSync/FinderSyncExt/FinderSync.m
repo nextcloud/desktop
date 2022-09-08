@@ -103,24 +103,12 @@
 		[rootPaths addObject:[obj path]];
 	}];
 
-	// The server doesn't support sharing a root directory so do not show the option in this case.
-	// It is still possible to get a problematic sharing by selecting both the root and a child,
-	// but this is so complicated to do and meaningless that it's not worth putting this check
-	// also in shareMenuAction.
-	__block BOOL onlyRootsSelected = YES;
-	[syncController.selectedItemURLs enumerateObjectsUsingBlock: ^(id obj, NSUInteger idx, BOOL *stop) {
-		if (![rootPaths member:[obj path]]) {
-			onlyRootsSelected = NO;
-			*stop = YES;
-		}
-	}];
-
 	NSString *paths = [self selectedPathsSeparatedByRecordSeparator];
 	// calling this IPC calls us back from client with several MENU_ITEM entries and then our askOnSocket returns again
 	[_syncClientProxy askOnSocket:paths query:@"GET_MENU_ITEMS"];
 
 	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
-	if (contextMenuTitle && !onlyRootsSelected) {
+	if (contextMenuTitle && _menuItems.count != 0) {
 		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
 		NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
 		NSMenuItem *subMenuItem = [menu addItemWithTitle:contextMenuTitle action:nil keyEquivalent:@""];
