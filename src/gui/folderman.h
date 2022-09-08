@@ -63,7 +63,7 @@ class FolderMan : public QObject
 {
     Q_OBJECT
 public:
-    enum PathValidityResult {
+    enum class PathValidityResult {
         Valid,
         ErrorRecursiveValidity,
         ErrorContainsFolder,
