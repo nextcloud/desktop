@@ -310,7 +310,6 @@ void OAuth::startAuthentication()
                     const QString accessToken = getRequiredField(data, QStringLiteral("access_token"), &fieldsError).toString();
                     const QString refreshToken = getRequiredField(data, QStringLiteral("refresh_token"), &fieldsError).toString();
                     const QString tokenType = getRequiredField(data, QStringLiteral("token_type"), &fieldsError).toString().toLower();
-                    const QString user = data[QStringLiteral("user_id")].toString();
                     const QUrl messageUrl = QUrl::fromEncoded(data[QStringLiteral("message_url")].toByteArray());
 
                     if (reply->error() != QNetworkReply::NoError || jsonParseError.error != QJsonParseError::NoError
