@@ -2012,6 +2012,12 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>%1 %2</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
+        <source>A few seconds left, %1 of %2, file %3 of %4</source>
+        <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
@@ -3308,13 +3314,13 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
-        <source>Impossible to get modification time for file in conflict %1</source>
-        <translation>Pro soubor %1, který je v konfliktu, se nedaří zjistit čas poslední změny</translation>
+        <source>Impossible to get modification time for file in conflict %1)</source>
+        <translation>Nedaří se získat čas změny pro soubor v konfliktu %1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
-        <source>Impossible to get modification time for file in conflict %1)</source>
-        <translation>Nedaří se získat čas změny pro soubor v konfliktu %1)</translation>
+        <source>Impossible to get modification time for file in conflict %1</source>
+        <translation>Pro soubor %1, který je v konfliktu, se nedaří zjistit čas poslední změny</translation>
     </message>
 </context>
 <context>
@@ -3836,12 +3842,12 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modification time</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <source>Error updating metadata due to invalid modification time</source>
         <translation>Chyba při aktualizaci metadat z důvodu neplatného času změny</translation>
     </message>
     <message>
@@ -5188,6 +5194,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Přerušeno</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation>V synchronizaci bude zakrátko navázáno.</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
@@ -5343,11 +5354,6 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>Název souboru obsahuje přinejmenším jeden neplatný znak</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>V synchronizaci bude zakrátko navázáno.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1088"/>

@@ -2011,6 +2011,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>%1 %2</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
+        <source>A few seconds left, %1 of %2, file %3 of %4</source>
+        <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
@@ -3306,13 +3312,13 @@ pode solicitar por privilégios adicionais durante o processo.</translation>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
-        <source>Impossible to get modification time for file in conflict %1</source>
-        <translation>Impossível obter a hora de modificação para o arquivo em conflito %1</translation>
+        <source>Impossible to get modification time for file in conflict %1)</source>
+        <translation>Impossível obter hora de modificação para o arquivo em conflito %1)</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
-        <source>Impossible to get modification time for file in conflict %1)</source>
-        <translation>Impossível obter hora de modificação para o arquivo em conflito %1)</translation>
+        <source>Impossible to get modification time for file in conflict %1</source>
+        <translation>Impossível obter a hora de modificação para o arquivo em conflito %1</translation>
     </message>
 </context>
 <context>
@@ -3835,12 +3841,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modification time</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <source>Error updating metadata due to invalid modification time</source>
         <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
     </message>
     <message>
@@ -5187,6 +5193,11 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Cancelado</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation>A sincronização será retomada em breve.</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
@@ -5342,11 +5353,6 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>O nome do arquivo contém pelo menos um caractere inválido  </translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>A sincronização será retomada em breve.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1088"/>

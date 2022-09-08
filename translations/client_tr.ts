@@ -2013,6 +2013,12 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <translation>%1 %2</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
+        <source>A few seconds left, %1 of %2, file %3 of %4</source>
+        <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
@@ -3309,13 +3315,13 @@ güncelleyici başka izinler isteyebilir.</translation>
     <name>OCC::OwncloudPropagator</name>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
-        <source>Impossible to get modification time for file in conflict %1</source>
-        <translation>%1 ile çakışan dosyasının değiştirilme zamanı alınamadı</translation>
+        <source>Impossible to get modification time for file in conflict %1)</source>
+        <translation>%1 ile çakışan dosyasının değiştirilme zamanı alınamadı)</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
-        <source>Impossible to get modification time for file in conflict %1)</source>
-        <translation>%1 ile çakışan dosyasının değiştirilme zamanı alınamadı)</translation>
+        <source>Impossible to get modification time for file in conflict %1</source>
+        <translation>%1 ile çakışan dosyasının değiştirilme zamanı alınamadı</translation>
     </message>
 </context>
 <context>
@@ -3837,12 +3843,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modification time</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation>Değiştirilme zamanı geçersiz olduğundan üst veriler yüklenirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <source>Error updating metadata due to invalid modification time</source>
         <translation>Değiştirilme zamanı geçersiz olduğundan üst veriler yüklenirken sorun çıktı</translation>
     </message>
     <message>
@@ -5189,6 +5195,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Vazgeçildi</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
+        <source>Synchronization will resume shortly.</source>
+        <translation>Eşitleme kısa bir süre sonra sürdürülecek</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="1396"/>
         <location filename="../src/libsync/syncengine.cpp" line="1436"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
@@ -5344,11 +5355,6 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/syncengine.cpp" line="1110"/>
         <source>File name contains at least one invalid character</source>
         <translation>Dosya adında en az bir geçersiz karakter var</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
-        <source>Synchronization will resume shortly.</source>
-        <translation>Eşitleme kısa bir süre sonra sürdürülecek</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1088"/>
