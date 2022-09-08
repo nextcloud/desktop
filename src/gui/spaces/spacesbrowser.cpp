@@ -14,6 +14,7 @@
 #include "spacesbrowser.h"
 #include "ui_spacesbrowser.h"
 
+#include "spacesdelegate.h"
 #include "spacesmodel.h"
 
 #include "graphapi/drives.h"
@@ -22,6 +23,7 @@
 
 #include <QCursor>
 #include <QMenu>
+#include <QSortFilterProxyModel>
 
 using namespace OCC::Spaces;
 
@@ -31,17 +33,24 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
 {
     ui->setupUi(this);
     _model = new SpacesModel(this);
-    ui->tableView->setModel(_model);
+
+    auto *sortModel = new QSortFilterProxyModel(this);
+    sortModel->setSourceModel(_model);
+
+    ui->tableView->setModel(sortModel);
 
     connect(ui->tableView->selectionModel(), &QItemSelectionModel::selectionChanged, this, &SpacesBrowser::selectionChanged);
 
+    ui->tableView->setItemDelegate(new SpacesDelegate);
     ui->tableView->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    auto header = new OCC::ExpandingHeaderView(QStringLiteral("SpacesBrowserHeader"), ui->tableView);
+    auto *header = new OCC::ExpandingHeaderView(QStringLiteral("SpacesBrowserHeader2"), ui->tableView);
     ui->tableView->setHorizontalHeader(header);
+    header->setResizeToContent(true);
+    header->setSortIndicator(static_cast<int>(SpacesModel::Columns::Name), Qt::DescendingOrder);
     header->setExpandingColumn(static_cast<int>(SpacesModel::Columns::Name));
     header->hideSection(static_cast<int>(SpacesModel::Columns::WebDavUrl));
-    // not used yet
-    header->hideSection(static_cast<int>(SpacesModel::Columns::WebUrl));
+    // part of the name (see the delegate)
+    header->hideSection(static_cast<int>(SpacesModel::Columns::Subtitle));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         auto menu = new QMenu(this);
@@ -62,8 +71,8 @@ void SpacesBrowser::setAccount(OCC::AccountPtr acc)
     if (acc) {
         QTimer::singleShot(0, this, [this] {
             auto drive = new OCC::GraphApi::Drives(_acc);
-            connect(drive, &OCC::GraphApi::Drives::finishedSignal, [drive, this] {
-                _model->setData(_acc, drive->drives());
+            connect(drive, &OCC::GraphApi::Drives::finishedSignal, this, [drive, this] {
+                _model->setDriveData(_acc, drive->drives());
                 show();
             });
             drive->start();

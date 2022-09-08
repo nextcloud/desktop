@@ -26,9 +26,10 @@ class SpacesModel : public QAbstractTableModel
 
 public:
     enum class Columns {
+        Sync,
         Image,
         Name,
-        Description,
+        Subtitle,
         WebUrl,
         WebDavUrl,
 
@@ -44,7 +45,7 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    void setData(OCC::AccountPtr acc, const QList<OpenAPI::OAIDrive> &data);
+    void setDriveData(OCC::AccountPtr acc, const QList<OpenAPI::OAIDrive> &data);
 
 private:
     QList<OpenAPI::OAIDrive> _data;

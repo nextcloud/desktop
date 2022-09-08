@@ -15,13 +15,16 @@
 
 #include "common/utility.h"
 // TODO: move models out from core
+#include "gui/guiutility.h"
 #include "gui/models/models.h"
 #include "networkjobs.h"
 
+#include <QIcon>
 #include <QPixmap>
 
 namespace {
 constexpr QSize ImageSizeC(128, 128);
+constexpr QSize ImageMarginC(ImageSizeC * 0.1);
 }
 
 using namespace OCC::Spaces;
@@ -38,10 +41,12 @@ QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int r
         switch (role) {
         case Qt::DisplayRole:
             switch (actionRole) {
+            case Columns::Sync:
+                return tr("Sync");
             case Columns::Name:
                 return tr("Name");
-            case Columns::Description:
-                return tr("Description");
+            case Columns::Subtitle:
+                return tr("Subtitle");
             case Columns::WebUrl:
                 return tr("Web URL");
             case Columns::WebDavUrl:
@@ -83,14 +88,19 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case Qt::DisplayRole:
         switch (column) {
+        case Columns::Sync:
+            // TODO: return true if we alreaddy sync the space
+            return false;
         case Columns::Name:
             return GraphApi::Drives::getDriveDisplayName(item);
-        case Columns::Description:
+        case Columns::Subtitle:
             return item.getDescription();
         case Columns::WebUrl:
             return item.getWebUrl();
         case Columns::WebDavUrl:
             return item.getRoot().getWebDavUrl();
+        case Columns::Image:
+            return {};
         case Columns::ColumnCount:
             Q_UNREACHABLE();
             break;
@@ -102,21 +112,19 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             if (auto it = Utility::optionalFind(_images, item.getId())) {
                 return QVariant::fromValue(it->value());
             }
+            _images[item.getId()] = OCC::Utility::getCoreIcon(QStringLiteral("th-large")).pixmap(ImageSizeC);
             const auto imgUrl = data(index, Models::UnderlyingDataRole).toUrl();
-            if (imgUrl.isEmpty()) {
-                return {};
+            if (!imgUrl.isEmpty()) {
+                auto job = new OCC::SimpleNetworkJob(_acc, imgUrl, {}, "GET", {}, {}, nullptr);
+                connect(job, &OCC::SimpleNetworkJob::finishedSignal, this, [job, id = item.getId(), index, this] {
+                    QPixmap img;
+                    img.loadFromData(job->reply()->readAll());
+                    img = img.scaled(ImageSizeC, Qt::KeepAspectRatio, Qt::TransformationMode::SmoothTransformation);
+                    _images[id] = img;
+                    Q_EMIT const_cast<SpacesModel *>(this)->dataChanged(index, index, { Qt::DecorationRole });
+                });
+                job->start();
             }
-            // TODO: placeholder
-            _images[item.getId()] = QPixmap();
-            auto job = new OCC::SimpleNetworkJob(_acc, imgUrl, {}, "GET", {}, {}, nullptr);
-            connect(job, &OCC::SimpleNetworkJob::finishedSignal, this, [job, id = item.getId(), index, this] {
-                QPixmap img;
-                qDebug() << img.loadFromData(job->reply()->readAll());
-                img = img.scaled(ImageSizeC, Qt::KeepAspectRatio);
-                _images[id] = img;
-                Q_EMIT const_cast<SpacesModel *>(this)->dataChanged(index, index, { Qt::DecorationRole });
-            });
-            job->start();
             return _images[item.getId()];
         }
         default:
@@ -125,7 +133,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     case Qt::SizeHintRole: {
         switch (column) {
         case Columns::Image:
-            return ImageSizeC;
+            return ImageSizeC + ImageMarginC;
         default:
             return {};
         }
@@ -146,7 +154,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
     return {};
 }
 
-void SpacesModel::setData(OCC::AccountPtr acc, const QList<OpenAPI::OAIDrive> &data)
+void SpacesModel::setDriveData(OCC::AccountPtr acc, const QList<OpenAPI::OAIDrive> &data)
 {
     beginResetModel();
     _acc = acc;
