@@ -87,7 +87,9 @@ Result<Vfs::ConvertToPlaceholderResult, QString> VfsSuffix::updateMetadata(const
         }
         _setupParams.journal->deleteFileRecord(item._originalFile);
     } else {
-        OC_ASSERT(FileSystem::setModTime(filePath, item._modtime));
+        if (item._direction == SyncFileItem::Down) {
+            OC_ASSERT(FileSystem::setModTime(filePath, item._modtime));
+        }
     }
     if (!item.isDirectory()) {
         const bool isReadOnly = !item._remotePerm.isNull() && !item._remotePerm.hasPermission(RemotePermissions::CanWrite);
