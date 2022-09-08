@@ -2425,7 +2425,9 @@ void SyncJournalDb::commitInternal(const QString &context, bool startTrans)
 
 SyncJournalDb::~SyncJournalDb()
 {
-    close();
+    if (isOpen()) {
+        close();
+    }
 }
 
 
