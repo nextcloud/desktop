@@ -513,9 +513,8 @@ QRect Systray::taskbarGeometry() const
     }
     return tbRect;
 #elif defined(Q_OS_MACOS)
-    // Finder bar is always 22px height on macOS (when treating as effective pixels)
     const auto screenWidth = currentScreenRect().width();
-    const auto statusBarHeight = static_cast<int>(OCC::statusBarThickness());
+    const auto statusBarHeight = static_cast<int>(OCC::menuBarThickness());
     return {0, 0, screenWidth, statusBarHeight};
 #else
     if (taskbarOrientation() == TaskBarPosition::Bottom || taskbarOrientation() == TaskBarPosition::Top) {
