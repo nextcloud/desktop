@@ -52,9 +52,18 @@ enum MacNotificationAuthorizationOptions {
     Provisional
 };
 
-double statusBarThickness()
+double menuBarThickness()
 {
-    return [NSStatusBar systemStatusBar].thickness;
+    const NSMenu *mainMenu = [[NSApplication sharedApplication] mainMenu];
+
+    if (mainMenu == nil) {
+        // Return this educated guess if something goes wrong.
+        // As of macOS 12.4 this will always return 22, even on notched Macbooks.
+        qCWarning(lcMacSystray) << "Got nil for main menu. Going with reasonable menu bar height guess.";
+        return [[NSStatusBar systemStatusBar] thickness];
+    }
+
+    return mainMenu.menuBarHeight;
 }
 
 // TODO: Get this to actually check for permissions
