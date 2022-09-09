@@ -205,9 +205,11 @@ QIcon Utility::getCoreIcon(const QString &icon_name)
     if (icon_name.isEmpty()) {
         return {};
     }
-    const QString path = Theme::instance()->isUsingDarkTheme() ? QStringLiteral("dark") : QStringLiteral("light");
-    const QIcon icon(QStringLiteral(":/client/resources/%1/%2").arg(path, icon_name));
-    Q_ASSERT(!icon.isNull());
+    const QString theme = Theme::instance()->isUsingDarkTheme() ? QStringLiteral("dark") : QStringLiteral("light");
+    const QString path = QStringLiteral(":/client/resources/%1/%2").arg(theme, icon_name);
+    const QIcon icon(path);
+    // were we able to load the file?
+    Q_ASSERT(icon.actualSize({ 100, 100 }).isValid());
     return icon;
 }
 
