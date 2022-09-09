@@ -395,9 +395,14 @@ bool LsColJob::finished()
     qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
-    int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
+    const auto contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
+    const auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto validContentType = contentType.contains("application/xml; charset=utf-8") ||
+                                  contentType.contains("application/xml; charset=\"utf-8\"") ||
+                                  contentType.contains("text/xml; charset=utf-8") ||
+                                  contentType.contains("text/xml; charset=\"utf-8\"");
+
+    if (httpCode == 207 && validContentType) {
         LsColXMLParser parser;
         connect(&parser, &LsColXMLParser::directoryListingSubfolders,
             this, &LsColJob::directoryListingSubfolders);
