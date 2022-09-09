@@ -108,31 +108,31 @@
 	[_syncClientProxy askOnSocket:paths query:@"GET_MENU_ITEMS"];
 
 	id contextMenuTitle = [_strings objectForKey:@"CONTEXT_MENU_TITLE"];
-	if (contextMenuTitle && _menuItems.count != 0) {
-		NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
-		NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
-		NSMenuItem *subMenuItem = [menu addItemWithTitle:contextMenuTitle action:nil keyEquivalent:@""];
-		subMenuItem.submenu = subMenu;
-		subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
+        if (contextMenuTitle && _menuItems.count != 0) {
+            NSMenu *menu = [[NSMenu alloc] initWithTitle:@""];
+            NSMenu *subMenu = [[NSMenu alloc] initWithTitle:@""];
+            NSMenuItem *subMenuItem = [menu addItemWithTitle:contextMenuTitle action:nil keyEquivalent:@""];
+            subMenuItem.submenu = subMenu;
+            subMenuItem.image = [[NSBundle mainBundle] imageForResource:@"app.icns"];
 
-		// There is an annoying bug in macOS (at least 10.13.3), it does not use/copy over the representedObject of a menu item
-		// So we have to use tag instead.
-		int idx = 0;
-		for (NSArray* item in _menuItems) {
-			NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
-														action:@selector(subMenuActionClicked:)
-												 keyEquivalent:@""];
-			[actionItem setTag:idx];
-			[actionItem setTarget:self];
-			NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
-			if ([flags rangeOfString:@"d"].location != NSNotFound) {
-				[actionItem setEnabled:false];
-			}
-			idx++;
-		}
-		return menu;
-	}
-	return nil;
+            // There is an annoying bug in macOS (at least 10.13.3), it does not use/copy over the representedObject of a menu item
+            // So we have to use tag instead.
+            int idx = 0;
+            for (NSArray *item in _menuItems) {
+                NSMenuItem *actionItem = [subMenu addItemWithTitle:[item valueForKey:@"text"]
+                                                            action:@selector(subMenuActionClicked:)
+                                                     keyEquivalent:@""];
+                [actionItem setTag:idx];
+                [actionItem setTarget:self];
+                NSString *flags = [item valueForKey:@"flags"]; // e.g. "d"
+                if ([flags rangeOfString:@"d"].location != NSNotFound) {
+                    [actionItem setEnabled:false];
+                }
+                idx++;
+            }
+            return menu;
+        }
+        return nil;
 }
 
 - (void)subMenuActionClicked:(id)sender {
