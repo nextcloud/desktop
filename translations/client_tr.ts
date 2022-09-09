@@ -2016,13 +2016,13 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Birkaç saniye kaldı, %1 / %2, dosya %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>Kalan %5, %1/ %2, dosya %3 / %4</translation>
+        <translation>Kalan %5, %1 / %2, dosya %3 / %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
@@ -2108,7 +2108,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="184"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>&apos;%1&apos; altına eklenecek yeni klasörün adını yazın:</translation>
+        <translation>&quot;%1&quot; altına eklenecek yeni klasörün adını yazın:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard.cpp" line="211"/>

@@ -2015,7 +2015,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>還剩幾秒鐘，%2 之 %1， 檔案 %4 之 %3</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>

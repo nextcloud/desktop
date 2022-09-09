@@ -15,12 +15,12 @@
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="197"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti daugiau veiksmų</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
         <source>View activity</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti veiklą</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="82"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="85"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Rodyti daugiau veiksmų</translation>
     </message>
 </context>
 <context>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Veiklos sąrašas</translation>
     </message>
 </context>
 <context>
@@ -219,7 +219,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
         <source>Error removing &quot;%1&quot;: %2</source>
-        <translation type="unfinished"/>
+        <translation>Klaida šalinant „%1“: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="158"/>
@@ -229,7 +229,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
         <source>Could not remove folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pašalinti aplanko „%1“</translation>
     </message>
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="174"/>
@@ -257,7 +257,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logotipas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="65"/>
@@ -334,12 +334,12 @@
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="139"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Serveris grąžino neteisingą HTTP kodą. Buvo tikimasi 204, bet buvo gauta „%1 %2“.</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractpropagateremotedeleteencrypted.cpp" line="181"/>
         <source>&quot;%1 Failed to unlock encrypted folder %2&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>„%1 Nepavyko atrakinti šifruoto aplanko %2“.</translation>
     </message>
 </context>
 <context>
@@ -365,12 +365,12 @@
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End to end encryption mnemonic</source>
-        <translation>Šifravimo mnemonika</translation>
+        <translation>Ištisinio šifravimo mnemonika</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Ištisinio šifravimo mnemonika</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -436,18 +436,18 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Nešifruoti aplanko</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Šifruoti aplanką</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Ši paskyra palaiko ištisinį šifravimą</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="235"/>
@@ -509,13 +509,14 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Nešifruoti aplanko</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
-        <translation type="unfinished"/>
+        <translation>Jūs negalite šifruoti aplanko su turiniu. Pašalinkite failus.
+Palaukite naujo sinchronizavimo, o tuomet jį šifruokite.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
@@ -525,7 +526,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko šifruoti aplanko, nes aplanko daugiau nebėra</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="466"/>
@@ -867,7 +868,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
         <source>Certificate &amp; Key (pkcs12):</source>
-        <translation type="unfinished"/>
+        <translation>Liudijimas ir raktas (pkcs12):</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="35"/>
@@ -882,7 +883,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation>Sertifikato slaptažodis:</translation>
+        <translation>Liudijimo slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
@@ -968,7 +969,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>Na&amp;udotojo vardas:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1017,17 +1018,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="420"/>
         <source>Network Error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tinklo klaida: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="422"/>
         <source>Network error: %1</source>
-        <translation type="unfinished"/>
+        <translation>Tinklo klaida: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="467"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="470"/>
@@ -1368,7 +1369,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="165"/>
         <source>Polling for authorization</source>
-        <translation>Pieigos teisių apklausa</translation>
+        <translation>Prieigos teisių apklausa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="170"/>
@@ -1383,12 +1384,12 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Atverti naršyklę iš naujo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Kopijuoti nuorodą</translation>
     </message>
 </context>
 <context>
@@ -3451,7 +3452,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
         <source>OK</source>
-        <translation type="unfinished"/>
+        <translation>Gerai</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
@@ -3551,7 +3552,7 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Pridėti %1 paskyrą</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="91"/>
@@ -3566,12 +3567,12 @@ Patariama jo nenaudoti.</translation>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Įjungti eksperimentinę ypatybę?</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="418"/>
@@ -3829,12 +3830,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1220"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1224"/>
         <source>File is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Failas šiuo metu yra naudojamas</translation>
     </message>
 </context>
 <context>
@@ -3915,7 +3916,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1272"/>
@@ -4023,7 +4024,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pervadinti failo</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
@@ -4085,7 +4086,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="285"/>
@@ -4153,7 +4154,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="433"/>
         <source>Failed to unlock encrypted folder.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko atrakinti šifruoto aplanko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="769"/>
@@ -4163,7 +4164,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="791"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="794"/>
@@ -4449,7 +4450,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Nustatyti slaptažodį</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="245"/>
@@ -4539,7 +4540,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
         <source>Delete link</source>
-        <translation type="unfinished"/>
+        <translation>Ištrinti nuorodą</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
@@ -4645,12 +4646,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Slaptažodis:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Galioja iki:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
@@ -4770,29 +4771,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Užrakinti failą</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1086"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Atrakinti failą</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1101"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Užrakino %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Baigia galioti po %1 minutės</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minutės</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Baigia galioti po %1 minutės</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minučių</numerusform><numerusform>Baigia galioti po %1 minutės</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1203"/>
@@ -4988,7 +4989,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
         <source>Additional errors:</source>
-        <translation type="unfinished"/>
+        <translation>Papildomos klaidos:</translation>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
@@ -5355,17 +5356,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Viskas sinchronizuota!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
         <source>Some files couldn&apos;t be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Kai kurių failų nepavyko sinchronizuoti!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="148"/>
         <source>See below for errors</source>
-        <translation type="unfinished"/>
+        <translation>Išsamiau apie klaidas žiūrėkite žemiau</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
@@ -5380,27 +5381,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Kai kurių failų nepavyko sinchronizuoti!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
         <source>See below for warnings</source>
-        <translation type="unfinished"/>
+        <translation>Išsamiau apie įspėjimus žiūrėkite žemiau</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%1 iš %2 · Liko %3</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 iš %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuojamas failas %1 iš %2</translation>
     </message>
 </context>
 <context>
@@ -5408,7 +5409,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="107"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Atsisiųsti</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="207"/>
@@ -5628,7 +5629,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="467"/>
         <source>Don&apos;t clear</source>
-        <translation type="unfinished"/>
+        <translation>Neišvalyti</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
@@ -5778,7 +5779,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Prisijungti</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -6087,17 +6088,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Naudotojo vardas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Vietinis aplankas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
         <source>User name</source>
-        <translation type="unfinished"/>
+        <translation>Naudotojo vardas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
@@ -6117,7 +6118,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Serverio adresas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
@@ -6228,12 +6229,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="73"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>Logotipas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Serverio adresas</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="194"/>
@@ -6390,7 +6391,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko prisijungti prie duomenų bazės.</translation>
     </message>
 </context>
 <context>
@@ -6419,7 +6420,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml" line="31"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Įkelti daugiau rezultatų</translation>
     </message>
 </context>
 <context>
@@ -6435,7 +6436,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="29"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>Įkelti daugiau rezultatų</translation>
     </message>
 </context>
 <context>
@@ -6553,32 +6554,32 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Būsenos žinutė</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="208"/>
         <source>What is your status?</source>
-        <translation type="unfinished"/>
+        <translation>Kokia jūsų būsena?</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="281"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Išvalyti būsenos žinutę po</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Atsisakyti</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Išvalyti būsenos žinutę</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="334"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Nustatyti būsenos žinutę</translation>
     </message>
 </context>
 <context>
