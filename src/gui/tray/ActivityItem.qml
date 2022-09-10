@@ -89,7 +89,6 @@ ItemDelegate {
             linksForActionButtons: model.linksForActionButtons
             linksContextMenu: model.linksContextMenu
 
-            moreActionsButtonColor: activityHover.color
             maxActionButtons: activityModel.maxActionButtons
 
             flickable: root.flickable
