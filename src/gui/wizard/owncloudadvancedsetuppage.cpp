@@ -258,8 +258,9 @@ void OwncloudAdvancedSetupPage::updateStatus()
     const QString locFolder = localFolder();
 
     // check if the local folder exists. If so, and if its not empty, show a warning.
-    QString errorStr = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
-    _localFolderValid = errorStr.isEmpty();
+    const auto pathValidityCheckResult = FolderMan::instance()->checkPathValidityForNewFolder(locFolder, serverUrl());
+    auto errorStr = pathValidityCheckResult.second;
+    _localFolderValid = errorStr.isEmpty() || pathValidityCheckResult.first == FolderMan::PathValidityResult::ErrorNonEmptyFolder;
 
     QString t;
 

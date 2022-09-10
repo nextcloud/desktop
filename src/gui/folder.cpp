@@ -302,14 +302,6 @@ void Folder::setSyncPaused(bool paused)
     emit canSyncChanged();
 }
 
-void Folder::onAssociatedAccountRemoved()
-{
-    if (_vfs) {
-        _vfs->stop();
-        _vfs->unregisterFolder();
-    }
-}
-
 void Folder::setSyncState(SyncResult::Status state)
 {
     _syncResult.setStatus(state);
