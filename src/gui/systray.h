@@ -52,7 +52,7 @@ bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
-double statusBarThickness();
+double menuBarThickness();
 #endif
 
 /**
