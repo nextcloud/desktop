@@ -1415,12 +1415,12 @@ Baliteke OpenSSL liburutegiekin arazoa egotea.</translation>
         <translation>%1 ezin da irakurri.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="428"/>
+        <location filename="../src/gui/folder.cpp" line="420"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 eta beste fitxategi %n ezabatu dira.</numerusform><numerusform>%1 eta beste %n fitxategi ezabatu dira.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 ezabatua izan da.</translation>
@@ -1437,119 +1437,119 @@ Baliteke OpenSSL liburutegiekin arazoa egotea.</translation>
         <translation>%1 deskargatu da.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="435"/>
+        <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 eta beste fitxategi %n gehitu da.</numerusform><numerusform>%1 eta beste %n fitxategi gehitu dira.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="429"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 gehitu da..</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="442"/>
+        <location filename="../src/gui/folder.cpp" line="434"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 eta beste  fitxategi %n eguneratu dira.</numerusform><numerusform>%1 eta beste %n fitxategi eguneratu dira.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="436"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 kargatu da.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 fitxategiak %2 izen berria hartu du eta beste  fitxategi %n berrizendatu da.</numerusform><numerusform>%1 fitxategiak %2 izen berria hartu du eta beste %n fitxategi berrizendatu dira.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="443"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1  %2-(e)ra berrizendatu da.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 fitxategia %2-ra mugitu da eta beste  fitxategi %n mugitu da.</numerusform><numerusform>%1 fitxategia %2-ra mugitu da eta beste %n fitxategi mugitu dira.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 %2-(e)ra mugitu da.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 eta beste  fitxategi %n sinkronizazio gatazkak izan dituzte.</numerusform><numerusform>%1 eta beste %n fitxategi sinkronizazio gatazkak izan dituzte.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="465"/>
+        <location filename="../src/gui/folder.cpp" line="457"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 sinkronizazio gatazka izan du. Begiratu gatazkaren fitxategia!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 eta beste  fitxateg %ni ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform><numerusform>%1 eta beste %n fitxategi ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="472"/>
+        <location filename="../src/gui/folder.cpp" line="464"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 ezin izan da sinkronizatu errore bat dela eta. Ikusi egunkaria xehetasun gehiago izateko.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 eta beste fitxategi %n blokeatuta daude.</numerusform><numerusform>%1 eta beste %n fitxategi blokeatuta daude.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="479"/>
+        <location filename="../src/gui/folder.cpp" line="471"/>
         <source>%1 is currently locked.</source>
         <translation>%1 blokeatuta dago</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="487"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>Sync Activity</source>
         <translation>Sinkronizatu Jarduerak</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="843"/>
+        <location filename="../src/gui/folder.cpp" line="835"/>
         <source>Could not read system exclude file</source>
         <translation>Ezin izan da sistemako baztertutakoen fitxategia irakurri</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1102"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>%1 MB baino handiagoa den karpeta berri bat gehitu da: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1105"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Kanpoko biltegi bateko karpeta gehitu da.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1114"/>
+        <location filename="../src/gui/folder.cpp" line="1106"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Jo ezarpenetara aukeratzeko deskargatu nahi ote duzun.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1174"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>%1 karpeta sortu zen baina sinkronizaziotik kanpo ezarri zen. Haren barneko fitxategiak ez dira sinkronizatuko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1177"/>
+        <location filename="../src/gui/folder.cpp" line="1169"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>%1 fitxategia sortu zen baina sinkronizaziotik kanpo ezarri zen. Fitxategia ez da sinkronizatuko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1188"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1642,7 +1642,7 @@ Ziur zaude ekintza hauek zerbitzarian sinkronizatu nahi dituzula?
 Ezabaketa nahigabea izan bada eta erabakitzen baduzu fitxategiok mantentzea, hauek zerbitzarian ber-sinkronizatuko dira.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1270"/>
+        <location filename="../src/gui/folder.cpp" line="1262"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1653,7 +1653,7 @@ Fitxategiak leheneratzea erabakitzen baduzu, berriro sinkronizatuko dira zerbitz
 Fitxategiak ezabatzea erabakitzen baduzu, ezingo dituzu erabilgarri izan, jabea ez bazara behintzat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1275"/>
+        <location filename="../src/gui/folder.cpp" line="1267"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1662,17 +1662,17 @@ Ziur zaude ekintza horiek zerbitzariarekin sinkronizatu nahi dituzula?
 Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzaritik berriro sinkronizatuko dira.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Remove All Files?</source>
         <translation>Ezabatu fitxategi guztiak?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1283"/>
+        <location filename="../src/gui/folder.cpp" line="1275"/>
         <source>Remove all files</source>
         <translation>Ezabatu fitxategi guztiak</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1284"/>
+        <location filename="../src/gui/folder.cpp" line="1276"/>
         <source>Keep files</source>
         <translation>Mantendu fitxategiak</translation>
     </message>
@@ -1723,12 +1723,12 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>&quot;% 1&quot; sinkronizazio egunkari zahar bat aurkitu da, baina ezin izan da kendu. Ziurtatu ez dela aplikaziorik erabiltzen ari.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1254"/>
+        <location filename="../src/gui/folderman.cpp" line="1258"/>
         <source> (backup)</source>
         <translation> (backup)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1259"/>
+        <location filename="../src/gui/folderman.cpp" line="1263"/>
         <source> (backup %1)</source>
         <translation> (backup %1)</translation>
     </message>
@@ -1738,37 +1738,37 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <location filename="../src/gui/folderman.cpp" line="1442"/>
         <source>Could not find an account for local editing</source>
         <translation>Ezin izan da kontu bat aurkitu editatze lokalerako</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Ezin izan da fitxategi bat aurkitu editatze lokalerako. Ziurtatu ez dagoela ezikusia sinkronizazio hautakorraren bidez.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Ezin izan da fitxategi bat aurkitu editatze lokalerako. Ziurtatu bide-izena baliozkoa dela eta lokalean sinkronizatuta dagoela.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1562"/>
+        <location filename="../src/gui/folderman.cpp" line="1566"/>
         <source>Undefined state.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1565"/>
+        <location filename="../src/gui/folderman.cpp" line="1569"/>
         <source>Waiting to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1568"/>
+        <location filename="../src/gui/folderman.cpp" line="1572"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1571"/>
+        <location filename="../src/gui/folderman.cpp" line="1575"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
@@ -1793,67 +1793,67 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Erabiltzaileak bertan behera utzi du.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1576"/>
+        <location filename="../src/gui/folderman.cpp" line="1580"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinkronizazioa burutu da, ebatzi gabeko gatazka batzuekin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1582"/>
         <source>Last sync was successful.</source>
         <translation>Azkeneko sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1588"/>
         <source>Setup error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1591"/>
         <source>Sync request was cancelled.</source>
         <translation>Sinkronizazio eskaera bertan behera utzi da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1590"/>
+        <location filename="../src/gui/folderman.cpp" line="1594"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1596"/>
+        <location filename="../src/gui/folderman.cpp" line="1600"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1604"/>
+        <location filename="../src/gui/folderman.cpp" line="1608"/>
         <source>No valid folder selected!</source>
         <translation>Ez da baliozko karpetarik hautatu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1616"/>
+        <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>The selected path does not exist!</source>
         <translation>Hautatutako bidea ez da existitzen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1624"/>
         <source>The selected path is not a folder!</source>
         <translation>Hautatutako bidea ez da karpeta bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1624"/>
+        <location filename="../src/gui/folderman.cpp" line="1628"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ez daukazu hautatutako karpetan idazteko baimenik!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1671"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Tokiko &apos;%1&apos; karpetak badu dagoeneko sinkronizatutako karpeta bat. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1677"/>
+        <location filename="../src/gui/folderman.cpp" line="1688"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Tokiko &apos;%1&apos; karpeta dagoeneko sinkronizatutako karpeta batean dago. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1691"/>
+        <location filename="../src/gui/folderman.cpp" line="1704"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Dagoeneko sinkronizazio bat dago zerbitzaritik karpeta lokal honetara. Aukeratu tokiko beste karpeta bat!</translation>
     </message>
@@ -1941,17 +1941,17 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Begiratzen ea aldaketarik dagoen tokiko  &apos;%1&apos;-(e)an</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Urruneko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Tokiko &quot;% 1&quot;-(e)an aldaketarik dagoen egiaztatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>Reconciling changes</source>
         <translation>Aldaketak bateratzen</translation>
     </message>
@@ -1968,47 +1968,47 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1050"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>%1 Sinkronizatzen</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Deskargatu %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>Kargatu %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%4 - %3tik)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
@@ -2020,34 +2020,33 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 falta da,%2tik %1 , %4tik %3 fitxategi</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1113"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%2tik %1 , %4tik %3 fitxategi</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1106"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>file %1 of %2</source>
         <translation>%1. fitxategia %2tik</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1166"/>
         <source>Waiting …</source>
         <translation>Itxaroten …</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1168"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>Beste karpeta %n-en zain</numerusform><numerusform>Beste %n karpetaren zain</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>Preparing to sync …</source>
         <translation>Sinkronizatzeko prestatzen …</translation>
     </message>
@@ -3205,44 +3204,44 @@ pribilegio gehigarriak eskatzen ahal dizu prozesuan.</translation>
         <translation>Fitxategi birtualak ez dira bateragarriak Windows partizio sustraiekin karpeta lokal bezala. Mesedez aukeratu baliozko azpikarpeta bat diskoaren letra azpian.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="271"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 karpeta &quot;%2&quot; lokaleko &quot;%3&quot; karpetan dago sinkronizatuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sinkronizatu &quot;%1&quot; karpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Abisua: karpeta lokala ez dago hutsik. Aukeratu nola konpondu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 egin leku librea</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="374"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Fitxategi birtualak ez daude hautatutako karpetarentzako eskuragarri</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="433"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="434"/>
         <source>Local Sync Folder</source>
         <translation>Sinkronizazio karpeta lokala</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="476"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="517"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="477"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="518"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="534"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="535"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Ez dago nahikoa toki librerik karpeta lokalean!</translation>
     </message>
