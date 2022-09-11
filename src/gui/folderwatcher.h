@@ -120,7 +120,7 @@ private:
     QScopedPointer<FolderWatcherPrivate> _d;
     QElapsedTimer _timer;
     QTimer _syncInterval;
-    std::chrono::milliseconds _syncIntervalLenght;
+    std::chrono::milliseconds _syncIntervalLength;
     QSet<QString> _lastPaths;
     QSet<QString> _changedPaths;
     Folder *_folder;
