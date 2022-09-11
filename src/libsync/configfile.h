@@ -75,6 +75,8 @@ public:
 
     /* Force sync interval, in milliseconds */
     std::chrono::milliseconds forceSyncInterval(const QString &connection = QString()) const;
+    /* Local files sync interval, in milliseconds */
+    std::chrono::milliseconds localSyncInterval(const QString &connection = {}) const;
 
     /**
      * Interval in milliseconds within which full local discovery is required
