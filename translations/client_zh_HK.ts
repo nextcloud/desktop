@@ -1415,12 +1415,12 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>%1 是不可讀的</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="428"/>
+        <location filename="../src/gui/folder.cpp" line="420"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 跟 %n 個其他檔案已經被刪除</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已被移除。</translation>
@@ -1437,118 +1437,118 @@ This can be an issue with your OpenSSL libraries.</source>
         <translation>%1 已被下載。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="435"/>
+        <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1  跟 %n 個其他檔案已經被加入</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="429"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已加入。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="442"/>
+        <location filename="../src/gui/folder.cpp" line="434"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 跟 %n 個其他檔案已經被修改</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="436"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 已被更新。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 已被改名為 %2 並且 %n其他檔案已被改名</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="443"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 已被重新命名為 %2。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 已被搬移到%2 並且 %n 其他檔案已經被搬移</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 已被搬移至 %2。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 跟 %n 其他檔案同步時發生抵觸</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="465"/>
+        <location filename="../src/gui/folder.cpp" line="457"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 同步時發生抵觸，請檢查發生抵觸的檔案</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 與 %n 其他檔案因為錯誤無法被同步。請從紀錄檔觀看細節。</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="472"/>
+        <location filename="../src/gui/folder.cpp" line="464"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 因為錯誤無法被同步。請從紀錄檔觀看細節。</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1以及%n個其他文件正在被鎖定狀態</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="479"/>
+        <location filename="../src/gui/folder.cpp" line="471"/>
         <source>%1 is currently locked.</source>
         <translation>%1正在被鎖定狀態</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="487"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>Sync Activity</source>
         <translation>同步活動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="843"/>
+        <location filename="../src/gui/folder.cpp" line="835"/>
         <source>Could not read system exclude file</source>
         <translation>無法讀取系統的排除檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1102"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>一個大於%1MB的資料夾已被新增至：%2
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1105"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>一個來自外部空間的資料夾已被新增</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1114"/>
+        <location filename="../src/gui/folder.cpp" line="1106"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>若要下載此項目，請前往設定選擇它</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1174"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>已創建%1資料夾，但該資料夾已從要同步的檔案中剔除，因此不會被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1177"/>
+        <location filename="../src/gui/folder.cpp" line="1169"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>已新增%1檔案，但該檔案已從要同步的檔案中剔除，因此不會被同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1188"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1640,7 +1640,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果您意外刪除了檔案並決定保留它們，則它們將從伺服器重新同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1270"/>
+        <location filename="../src/gui/folder.cpp" line="1262"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1651,7 +1651,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 假如您決定刪除這些檔案，除非您是檔案的所有者，否則您將無法讀取這些檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1275"/>
+        <location filename="../src/gui/folder.cpp" line="1267"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1660,17 +1660,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 如果您意外地刪除了檔案並決定保留它們，則它們將從伺服器重新同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Remove All Files?</source>
         <translation>移除所有檔案？</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1283"/>
+        <location filename="../src/gui/folder.cpp" line="1275"/>
         <source>Remove all files</source>
         <translation>移除所有檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1284"/>
+        <location filename="../src/gui/folder.cpp" line="1276"/>
         <source>Keep files</source>
         <translation>保留檔案</translation>
     </message>
@@ -1721,12 +1721,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>發現較舊的同步處理日誌 &quot;%1&quot;，但無法移除。請確認沒有應用程式正在使用它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1254"/>
+        <location filename="../src/gui/folderman.cpp" line="1258"/>
         <source> (backup)</source>
         <translation>（備份）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1259"/>
+        <location filename="../src/gui/folderman.cpp" line="1263"/>
         <source> (backup %1)</source>
         <translation>（備份 %1）</translation>
     </message>
@@ -1736,37 +1736,37 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>未知狀態</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <location filename="../src/gui/folderman.cpp" line="1442"/>
         <source>Could not find an account for local editing</source>
         <translation>找不到用於近端編輯的賬戶</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>找不到用於近端編輯的檔案。請確保它沒有被選擇性同步排除。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>找不到用於近端編輯的檔案。請確保檔案的途徑有效並且在近端同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1562"/>
+        <location filename="../src/gui/folderman.cpp" line="1566"/>
         <source>Undefined state.</source>
         <translation>未定義狀態。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1565"/>
+        <location filename="../src/gui/folderman.cpp" line="1569"/>
         <source>Waiting to start syncing.</source>
         <translation>正在等待同步開始</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1568"/>
+        <location filename="../src/gui/folderman.cpp" line="1572"/>
         <source>Preparing for sync.</source>
         <translation>正在準備同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1571"/>
+        <location filename="../src/gui/folderman.cpp" line="1575"/>
         <source>Sync is running.</source>
         <translation>同步執行中</translation>
     </message>
@@ -1791,67 +1791,67 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>用戶中斷。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1576"/>
+        <location filename="../src/gui/folderman.cpp" line="1580"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>同步完成，但存在未解決的抵觸。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1582"/>
         <source>Last sync was successful.</source>
         <translation>上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1588"/>
         <source>Setup error.</source>
         <translation>設置錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1591"/>
         <source>Sync request was cancelled.</source>
         <translation>同步請求已取消。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1590"/>
+        <location filename="../src/gui/folderman.cpp" line="1594"/>
         <source>Sync is paused.</source>
         <translation>同步已暫停</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1596"/>
+        <location filename="../src/gui/folderman.cpp" line="1600"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1（同步暫停）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1604"/>
+        <location filename="../src/gui/folderman.cpp" line="1608"/>
         <source>No valid folder selected!</source>
         <translation>沒有選擇有效的資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1616"/>
+        <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>The selected path does not exist!</source>
         <translation>所選的路徑不存在！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1624"/>
         <source>The selected path is not a folder!</source>
         <translation>所選的路徑並非資料夾!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1624"/>
+        <location filename="../src/gui/folderman.cpp" line="1628"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>您沒有權限來寫入被選擇的資料夾!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1671"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>近端資料夾 %1 裡已經有被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1677"/>
+        <location filename="../src/gui/folderman.cpp" line="1688"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>近端資料夾 %1 是被包含在一個已經被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1691"/>
+        <location filename="../src/gui/folderman.cpp" line="1704"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>此資料夾已與Server設定同步，請選擇其他資料夾</translation>
     </message>
@@ -1939,17 +1939,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>檢查近端 &apos;%1&apos; 的變動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>正在檢查遠端「%1」中的變更</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>檢查近端「%1」的變動</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>Reconciling changes</source>
         <translation>正在排解更動</translation>
     </message>
@@ -1966,47 +1966,47 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>&apos;％1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1050"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>同步 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>, </source>
         <translation>， </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>下載 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>上傳 %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2（%4 之 %3）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
@@ -2018,34 +2018,33 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>還剩幾秒鐘，%2 之 %1， 檔案 %4 之 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>剩餘 %5，%2 之 %1， 檔案 %4 之 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1113"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%2 之 %1， 檔案 %4 之 %3</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1106"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>file %1 of %2</source>
         <translation>檔案 %2 之 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1166"/>
         <source>Waiting …</source>
         <translation>請稍後...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1168"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>等候其他 %n 個資料夾</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>Preparing to sync …</source>
         <translation>正在準備同步...</translation>
     </message>
@@ -3204,44 +3203,44 @@ for additional privileges during the process.</source>
         <translation>Windows分區根目錄不支持將虛擬文件作為近端資料夾使用。請在硬盤驅動器號下選擇一個有效的子資料夾。</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="271"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 資料夾 &quot;%2&quot; 與近端資料夾 &quot;%3&quot; 同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>同步資料夾 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>警告：近端資料夾不為空。選擇一個解決方案！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 剩餘空間</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="374"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>選擇的資料夾無法使用虛擬檔案</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="433"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="434"/>
         <source>Local Sync Folder</source>
         <translation>近端同步資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="476"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="517"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="477"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="518"/>
         <source>(%1)</source>
         <translation>（%1）</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="534"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="535"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>近端資料夾沒有足夠的剩餘空間！</translation>
     </message>
