@@ -1415,12 +1415,12 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <translation>%1 non è leggibile.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="428"/>
+        <location filename="../src/gui/folder.cpp" line="420"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>%1 e %n altro file sono stati rimossi.</numerusform><numerusform>%1 e %n altri file sono stati rimossi.</numerusform><numerusform>%1 e %n altri file sono stati rimossi.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="422"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato rimosso.</translation>
@@ -1437,97 +1437,97 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
         <translation>%1 è stato scaricato.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="435"/>
+        <location filename="../src/gui/folder.cpp" line="427"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 e %n altro file sono stati aggiunti.</numerusform><numerusform>%1 e %n altri file sono stati aggiunti.</numerusform><numerusform>%1 e %n altri file sono stati aggiunti.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="429"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiunto.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="442"/>
+        <location filename="../src/gui/folder.cpp" line="434"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>%1 e %n altro file sono stati aggiornati.</numerusform><numerusform>%1 e %n altri file sono stati aggiornati.</numerusform><numerusform>%1 e %n altri file sono stati aggiornati.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="436"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>%1 è stato aggiornato.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="441"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>%1 è stato rinominato in %2 e %n altro file sono stati rinominati.</numerusform><numerusform>%1 è stato rinominato in %2 e %n altri file sono stati rinominati.</numerusform><numerusform>%1 è stato rinominato in %2 e %n altri file sono stati rinominati.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="443"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>%1 è stato rinominato in %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="448"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 è stato spostato in %2 e %n altro file sono stati spostati.</numerusform><numerusform>%1 è stato spostato in %2 e %n altri file sono stati spostati.</numerusform><numerusform>%1 è stato spostato in %2 e %n altri file sono stati spostati.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="450"/>
         <source>%1 has been moved to %2.</source>
         <translation>%1 è stato spostato in %2.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="455"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>%1 e %n altro file hanno conflitti di sincronizzazione.</numerusform><numerusform>%1 e %n altri file hanno conflitti di sincronizzazione.</numerusform><numerusform>%1 e %n altri file hanno conflitti di sincronizzazione.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="465"/>
+        <location filename="../src/gui/folder.cpp" line="457"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>%1 ha un conflitto di sincronizzazione. Controlla il file in conflitto!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="462"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>1% e %n altro file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform><numerusform>1% e %n altri file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform><numerusform>1% e %n altri file non sono stati sincronizzati a causa di errori. Controlla il log per i dettagli.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="472"/>
+        <location filename="../src/gui/folder.cpp" line="464"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 non può essere sincronizzato a causa di un errore. Controlla il log per i dettagli.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="469"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 e %n altri file sono attualmente bloccati.</numerusform><numerusform>%1 e %n altri file sono attualmente bloccati.</numerusform><numerusform>%1 e %n altri file sono attualmente bloccati.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="479"/>
+        <location filename="../src/gui/folder.cpp" line="471"/>
         <source>%1 is currently locked.</source>
         <translation>%1 è attualmente bloccato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="487"/>
+        <location filename="../src/gui/folder.cpp" line="479"/>
         <source>Sync Activity</source>
         <translation>Sincronizza attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="843"/>
+        <location filename="../src/gui/folder.cpp" line="835"/>
         <source>Could not read system exclude file</source>
         <translation>Impossibile leggere il file di esclusione di sistema</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1110"/>
+        <location filename="../src/gui/folder.cpp" line="1102"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Una nuova cartella più grande di %1 MB è stata aggiunta: %2.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1113"/>
+        <location filename="../src/gui/folder.cpp" line="1105"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Una nuova cartella da un&apos;archiviazione esterna è stata aggiunta.
@@ -1535,22 +1535,22 @@ Questo può essere un problema delle le tue librerie OpenSSL.</translation>
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1114"/>
+        <location filename="../src/gui/folder.cpp" line="1106"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Vai nelle impostazioni e selezionala se vuoi scaricarla.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1174"/>
+        <location filename="../src/gui/folder.cpp" line="1166"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>La cartella %1 è stata creata, ma è stata esclusa dalla sincronizzazione in precedenza. I dati al suo interno non saranno sincronizzati.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1177"/>
+        <location filename="../src/gui/folder.cpp" line="1169"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Il file %1 è stato creato, ma è stato escluso dalla sincronizzazione in precedenza. Non sarà sincronizzato.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1188"/>
+        <location filename="../src/gui/folder.cpp" line="1180"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1642,7 +1642,7 @@ Sei sicuro di voler sincronizzare queste azioni con il server?
 Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovamente dal server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1270"/>
+        <location filename="../src/gui/folder.cpp" line="1262"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1653,7 +1653,7 @@ Se decidi di ripristinare i file, essi saranno sincronizzati nuovamente con il s
 Se decidi di eliminare i file, non saranno più disponibili, a meno che tu sia il proprietario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1275"/>
+        <location filename="../src/gui/folder.cpp" line="1267"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1662,17 +1662,17 @@ Sei sicuro di voler sincronizzare queste azioni con il server?
 Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovamente dal server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1279"/>
+        <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Remove All Files?</source>
         <translation>Vuoi rimuovere tutti i file?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1283"/>
+        <location filename="../src/gui/folder.cpp" line="1275"/>
         <source>Remove all files</source>
         <translation>Rimuovi tutti i file</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1284"/>
+        <location filename="../src/gui/folder.cpp" line="1276"/>
         <source>Keep files</source>
         <translation>Mantieni i file</translation>
     </message>
@@ -1723,12 +1723,12 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>È stato trovato un vecchio registro di sincronizzazione &quot;%1&quot;, ma non può essere rimosso. Assicurati che nessuna applicazione lo stia utilizzando.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1254"/>
+        <location filename="../src/gui/folderman.cpp" line="1258"/>
         <source> (backup)</source>
         <translation>(copia di sicurezza)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1259"/>
+        <location filename="../src/gui/folderman.cpp" line="1263"/>
         <source> (backup %1)</source>
         <translation>(copia di sicurezza %1)</translation>
     </message>
@@ -1738,37 +1738,37 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Stato non definito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1438"/>
+        <location filename="../src/gui/folderman.cpp" line="1442"/>
         <source>Could not find an account for local editing</source>
         <translation>Impossibile trovare un account per modificare in locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1450"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Impossibile trovare un file per modificare in locale. Assicurati che non sia escluso via sinc. selettiva.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1460"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Impossibile trovare un file per modificare in locale. Assicurati che il percorso sia valido e che sia sincronizzato in locale.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1562"/>
+        <location filename="../src/gui/folderman.cpp" line="1566"/>
         <source>Undefined state.</source>
         <translation>Stato non definito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1565"/>
+        <location filename="../src/gui/folderman.cpp" line="1569"/>
         <source>Waiting to start syncing.</source>
         <translation>In attesa di iniziare la sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1568"/>
+        <location filename="../src/gui/folderman.cpp" line="1572"/>
         <source>Preparing for sync.</source>
         <translation>Preparazione della sincronizzazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1571"/>
+        <location filename="../src/gui/folderman.cpp" line="1575"/>
         <source>Sync is running.</source>
         <translation>La sincronizzazione è in corso.</translation>
     </message>
@@ -1793,67 +1793,67 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Interrotto dall&apos;utente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1576"/>
+        <location filename="../src/gui/folderman.cpp" line="1580"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sincronizzazione terminata con conflitti non risolti.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1582"/>
         <source>Last sync was successful.</source>
         <translation>L&apos;ultima sincronizzazione è stata completata correttamente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1588"/>
         <source>Setup error.</source>
         <translation>Errore di configurazione.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1591"/>
         <source>Sync request was cancelled.</source>
         <translation>Richiesta di sincronizzazione annullata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1590"/>
+        <location filename="../src/gui/folderman.cpp" line="1594"/>
         <source>Sync is paused.</source>
         <translation>La sincronizzazione è sospesa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1596"/>
+        <location filename="../src/gui/folderman.cpp" line="1600"/>
         <source>%1 (Sync is paused)</source>
         <translation> %1 (La sincronizzazione è sospesa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1604"/>
+        <location filename="../src/gui/folderman.cpp" line="1608"/>
         <source>No valid folder selected!</source>
         <translation>Nessuna cartella valida selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1616"/>
+        <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>The selected path does not exist!</source>
         <translation>Il percorso selezionato non esiste!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1624"/>
         <source>The selected path is not a folder!</source>
         <translation>Il percorso selezionato non è una cartella!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1624"/>
+        <location filename="../src/gui/folderman.cpp" line="1628"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Non hai i permessi di scrittura per la cartella selezionata!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1671"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>La cartella locale %1 contiene già una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1677"/>
+        <location filename="../src/gui/folderman.cpp" line="1688"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>La cartella locale %1 è già contenuta in una cartella utilizzata in una connessione di sincronizzazione delle cartelle. Selezionane un&apos;altra!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1691"/>
+        <location filename="../src/gui/folderman.cpp" line="1704"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Esiste già una sincronizzazione dal server a questa cartella locale. Seleziona un&apos;altra cartella locale!</translation>
     </message>
@@ -1941,17 +1941,17 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Controllo delle modifiche in &apos;%1&apos; locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="973"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
         <source>Checking for changes in remote &quot;%1&quot;</source>
         <translation>Controllo delle modifiche in &quot;%1&quot; remoto</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="977"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="981"/>
         <source>Checking for changes in local &quot;%1&quot;</source>
         <translation>Controllo delle modifiche in &quot;%1&quot; locale</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="984"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
         <source>Reconciling changes</source>
         <translation>Riconciliazione delle modifiche</translation>
     </message>
@@ -1968,47 +1968,47 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1050"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>Sincronizzazione di %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1048"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1059"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1063"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1056"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ricezione %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1054"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1058"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1062"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1066"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>invio %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1064"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1068"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1070"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 di %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1074"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1078"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
@@ -2020,34 +2020,33 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1091"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
-        <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 rimanenti, %1 di %2, file %3 di %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1113"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 di %2, file %3 di %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1106"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1120"/>
         <source>file %1 of %2</source>
         <translation>file %1 di %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1152"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1166"/>
         <source>Waiting …</source>
         <translation>Attendi...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1154"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1168"/>
         <source>Waiting for %n other folder(s) …</source>
         <translation><numerusform>In attesa di %n altra cartella...</numerusform><numerusform>In attesa di %n altre cartelle...</numerusform><numerusform>In attesa di %n altre cartelle...</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1160"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>Preparing to sync …</source>
         <translation>Preparazione della sincronizzazione…</translation>
     </message>
@@ -3201,44 +3200,44 @@ for additional privileges during the process.</source>
         <translation>I file virtuali non sono supportati per le radici delle partizioni di Windows come cartelle locali. Scegli una sottocartella valida sotto la lettera del disco.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="270"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="271"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>La cartella &quot;%2&quot; di %1 è sincronizzata con la cartella locale &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="273"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sincronizza la cartella &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="278"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Attenzione: la cartella locale non è vuota. Scegli una soluzione!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>Spazio libero di %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="373"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="374"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>I file virtuali non sono disponibili per la cartella selezionata</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="433"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="434"/>
         <source>Local Sync Folder</source>
         <translation>Cartella locale di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="476"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="517"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="477"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="518"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="534"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="535"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Non c&apos;è spazio libero sufficiente nella cartella locale!</translation>
     </message>
