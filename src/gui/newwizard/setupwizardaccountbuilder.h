@@ -150,6 +150,12 @@ public:
     void clearCustomTrustedCaCertificates();
 
     /**
+     * Set dynamic registration data. Used by OIDC servers to identify dynamically registered clients.
+     */
+    void setDynamicRegistrationData(const QVariantMap &dynamicRegistrationData);
+    QVariantMap dynamicRegistrationData() const;
+
+    /**
      * Attempt to build an account from the previously entered information.
      * @return built account or null if information is still missing
      */
@@ -164,6 +170,8 @@ private:
     DetermineAuthTypeJob::AuthType _authType = DetermineAuthTypeJob::AuthType::Unknown;
 
     std::unique_ptr<AbstractAuthenticationStrategy> _authenticationStrategy;
+
+    QVariantMap _dynamicRegistrationData;
 
     QString _displayName;
 

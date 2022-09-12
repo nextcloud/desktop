@@ -67,6 +67,10 @@ OAuthCredentialsSetupWizardState::OAuthCredentialsSetupWizardState(SetupWizardCo
         oAuthCredentialsPage->setButtonsEnabled(true);
     });
 
+    connect(oAuth, &OAuth::dynamicRegistrationDataReceived, this, [this](const QVariantMap &dynamicRegistrationData) {
+        _context->accountBuilder().setDynamicRegistrationData(dynamicRegistrationData);
+    });
+
     connect(oAuthCredentialsPage, &OAuthCredentialsSetupWizardPage::copyUrlToClipboardButtonPushed, this, [oAuth]() {
         const auto link = oAuth->authorisationLink();
         Q_ASSERT(!link.isEmpty());

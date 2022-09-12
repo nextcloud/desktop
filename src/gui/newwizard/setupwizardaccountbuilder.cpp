@@ -183,4 +183,14 @@ QUrl SetupWizardAccountBuilder::webFingerServerUrl() const
 {
     return _webFingerServerUrl;
 }
+
+void SetupWizardAccountBuilder::setDynamicRegistrationData(const QVariantMap &dynamicRegistrationData)
+{
+    _dynamicRegistrationData = dynamicRegistrationData;
+}
+
+QVariantMap SetupWizardAccountBuilder::dynamicRegistrationData() const
+{
+    return _dynamicRegistrationData;
+}
 }

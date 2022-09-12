@@ -444,6 +444,11 @@ QUrl OAuth::authorisationLink() const
     return url;
 }
 
+void OAuth::saveDynamicRegistrationDataForAccount(const OCC::AccountPtr &accountPtr, const QVariantMap &dynamicRegistrationData)
+{
+    auto credentialsJob = accountPtr->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
+}
+
 void OAuth::fetchWellKnown()
 {
     const QPair<QString, QString> urls = Theme::instance()->oauthOverrideAuthUrl();
@@ -532,8 +537,7 @@ AccountBasedOAuth::AccountBasedOAuth(AccountPtr account, QObject *parent)
 {
     connect(this, &AccountBasedOAuth::dynamicRegistrationDataReceived, this, [this](const QVariantMap &dynamicRegistrationData) {
         // the base class doesn't use the data at all, so no need to call its implementation
-        auto credentialsJob = _account->credentialManager()->set(dynamicRegistrationDataC(), dynamicRegistrationData);
-        credentialsJob->start();
+        OAuth::saveDynamicRegistrationDataForAccount(_account, dynamicRegistrationData);
     });
 }
 
@@ -571,6 +575,10 @@ void AccountBasedOAuth::fetchWellKnown()
 
 void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
 {
+    if (!OC_ENSURE(!_isRefreshingToken)) {
+        return;
+    }
+    _isRefreshingToken = true;
     auto credentialsJob = _account->credentialManager()->get(dynamicRegistrationDataC());
 
     connect(credentialsJob, &CredentialJob::finished, this, [=] {
@@ -580,7 +588,6 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
 
         _dynamicRegistrationData = credentialsJob->data().value<QVariantMap>();
 
-        _isRefreshingToken = true;
         auto refresh = [this, refreshToken] {
             auto reply = postTokenRequest({ { QStringLiteral("grant_type"), QStringLiteral("refresh_token") },
                 { QStringLiteral("refresh_token"), refreshToken } });

@@ -211,7 +211,7 @@ void CredentialJob::start()
             _data = obj.toVariant();
             OC_ASSERT(_data.isValid());
         } else {
-            qCWarning(lcCredentaislManager) << "Failed to read client id" << _job->errorString();
+            qCWarning(lcCredentaislManager) << "Failed to get password" << scopedKey(_parent, _key) << _job->errorString();
             _error = _job->error();
             _errorString = _job->errorString();
         }

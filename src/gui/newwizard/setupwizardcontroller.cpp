@@ -66,7 +66,7 @@ SetupWizardController::SetupWizardController(SettingsDialog *parent)
     // allow settings dialog to clean up the wizard controller and all the objects it created
     connect(_context->window(), &SetupWizardWindow::rejected, this, [this]() {
         qCDebug(lcSetupWizardController) << "wizard window closed";
-        Q_EMIT finished(nullptr, SyncMode::Invalid);
+        Q_EMIT finished(nullptr, SyncMode::Invalid, {});
     });
 
     connect(_context->window(), &SetupWizardWindow::navigationEntryClicked, this, [this](SetupWizardState clickedState) {
@@ -177,7 +177,7 @@ void SetupWizardController::changeStateTo(SetupWizardState nextState)
 
             auto account = _context->accountBuilder().build();
             Q_ASSERT(account != nullptr);
-            Q_EMIT finished(account, pagePtr->syncMode());
+            Q_EMIT finished(account, pagePtr->syncMode(), _context->accountBuilder().dynamicRegistrationData());
             return;
         }
         default:

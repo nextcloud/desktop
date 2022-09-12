@@ -67,6 +67,8 @@ public:
     void openBrowser();
     QUrl authorisationLink() const;
 
+    static void saveDynamicRegistrationDataForAccount(const AccountPtr &accountPtr, const QVariantMap &dynamicRegistrationData);
+
 Q_SIGNALS:
     /**
      * The state has changed.

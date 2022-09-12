@@ -995,7 +995,7 @@ void ownCloudGui::runNewAccountWizard()
         FolderMan::instance()->setSyncEnabled(false);
 
         connect(_wizardController, &Wizard::SetupWizardController::finished, ocApp(),
-            [this](AccountPtr newAccount, Wizard::SyncMode syncMode) {
+            [this](AccountPtr newAccount, Wizard::SyncMode syncMode, const QVariantMap &dynamicRegistrationData) {
                 // note: while the wizard is shown, we disable the folder synchronization
                 // previously we could perform this just here, but now we have to postpone this depending on whether selective sync was chosen
                 // see also #9497
@@ -1009,12 +1009,17 @@ void ownCloudGui::runNewAccountWizard()
                     // ensure we are connected and fetch the capabilities
                     auto validator = new ConnectionValidator(accountStatePtr->account(), accountStatePtr->account().data());
 
-                    QObject::connect(validator, &ConnectionValidator::connectionResult, accountStatePtr.data(), [accountStatePtr, syncMode](ConnectionValidator::Status status, const QStringList &errors) {
+                    QObject::connect(validator, &ConnectionValidator::connectionResult, accountStatePtr.data(), [accountStatePtr, syncMode, dynamicRegistrationData](ConnectionValidator::Status status, const QStringList &errors) {
                         if (OC_ENSURE(status == ConnectionValidator::Connected || status == ConnectionValidator::ServerVersionMismatch)) {
                             // saving once after adding makes sure the account is stored in the config in a working state
                             // this is needed to ensure a consistent state in the config file upon unexpected terminations of the client
                             // (for instance, when running from a debugger and stopping the process from there)
                             AccountManager::instance()->save(true);
+
+                            // only now, we can store the dynamic registration data in the keychain
+                            if (!dynamicRegistrationData.isEmpty()) {
+                                OAuth::saveDynamicRegistrationDataForAccount(accountStatePtr->account(), dynamicRegistrationData);
+                            }
 
                             switch (syncMode) {
                             case Wizard::SyncMode::SyncEverything:
