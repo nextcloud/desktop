@@ -126,7 +126,7 @@ static Result<void, QString> writeNewPlistFile(NSString *plistFile, NSString *fu
     NSDictionary *plistTemplate = @{
         @"Label" : QCoreApplication::organizationDomain().toNSString(),
         @"KeepAlive" : @ {
-            @"Crashed" : @YES,
+            @"Crashed" : @NO,
             @"SuccessfulExit" : @NO
         },
         @"Program" : fullPath,
