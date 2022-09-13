@@ -82,7 +82,7 @@ bool FileSystem::setModTime(const QString &filename, time_t modTime)
     int rc = c_utimes(filename, times);
     if (rc != 0) {
         qCWarning(lcFileSystem) << "Error setting mtime for" << filename
-                                << "failed: rc" << rc << ", errno:" << errno;
+                                << "failed: rc" << rc << ", error message:" << strerror(errno);
         Q_ASSERT(false);
         return false;
     }

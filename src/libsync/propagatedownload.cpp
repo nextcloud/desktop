@@ -953,7 +953,7 @@ void PropagateDownloadFile::downloadFinished()
     emit propagator()->touchedFile(fn);
     // The fileChanged() check is done above to generate better error messages.
     if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
-        qCWarning(lcPropagateDownload) << "Rename failed:" << _tmpFile.fileName() << "=>" << fn;
+        qCWarning(lcPropagateDownload) << "Rename failed:" << _tmpFile.fileName() << "=>" << fn << "with error:" << error;
         propagator()->_anotherSyncNeeded = true;
         done(SyncFileItem::SoftError, error);
         return;
