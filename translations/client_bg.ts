@@ -1058,7 +1058,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1384"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
         <source>Error writing metadata to the database</source>
         <translation>Възника грешка при запис на метаданните в базата данни</translation>
     </message>
@@ -1723,12 +1723,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Намерен е стар дневник за синхронизиране „%1“, но не може да бъде премахнат. Моля да се уверите, че в момента не го използва нито едно приложение.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1258"/>
+        <location filename="../src/gui/folderman.cpp" line="1270"/>
         <source> (backup)</source>
         <translation>(архивиране)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1263"/>
+        <location filename="../src/gui/folderman.cpp" line="1275"/>
         <source> (backup %1)</source>
         <translation>(архивиране %1)</translation>
     </message>
@@ -1738,37 +1738,37 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Неопределено състояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1442"/>
+        <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find an account for local editing</source>
         <translation>Не можа да се намери профил за локално редактиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
+        <location filename="../src/gui/folderman.cpp" line="1466"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Не можа да се намери файл за локално редактиране. Уверете се, че не е изключен чрез селективно синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1460"/>
+        <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Не можа да се намери файл за локално редактиране. Уверете се, че пътят му е валиден и е синхронизиран локално.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1566"/>
+        <location filename="../src/gui/folderman.cpp" line="1578"/>
         <source>Undefined state.</source>
         <translation>Неопределено състояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1569"/>
+        <location filename="../src/gui/folderman.cpp" line="1581"/>
         <source>Waiting to start syncing.</source>
         <translation>Изчакване на сихронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1572"/>
+        <location filename="../src/gui/folderman.cpp" line="1584"/>
         <source>Preparing for sync.</source>
         <translation>Подготвяне за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1575"/>
+        <location filename="../src/gui/folderman.cpp" line="1587"/>
         <source>Sync is running.</source>
         <translation>Синхронизиране на файлове.</translation>
     </message>
@@ -1793,67 +1793,67 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Прекъсване от потребителя.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1580"/>
+        <location filename="../src/gui/folderman.cpp" line="1592"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Синхронизирането приключи с неразрешени конфликти.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1582"/>
+        <location filename="../src/gui/folderman.cpp" line="1594"/>
         <source>Last sync was successful.</source>
         <translation>Последното синхронизиране беше успешно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1588"/>
+        <location filename="../src/gui/folderman.cpp" line="1600"/>
         <source>Setup error.</source>
         <translation>Грешка при настройката.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1591"/>
+        <location filename="../src/gui/folderman.cpp" line="1603"/>
         <source>Sync request was cancelled.</source>
         <translation>Заявката за синхронизиране беше отказана.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1594"/>
+        <location filename="../src/gui/folderman.cpp" line="1606"/>
         <source>Sync is paused.</source>
         <translation>Синхронизирането е на пауза.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1600"/>
+        <location filename="../src/gui/folderman.cpp" line="1612"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Синхронизирането е на пауза)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1608"/>
+        <location filename="../src/gui/folderman.cpp" line="1620"/>
         <source>No valid folder selected!</source>
         <translation>Не сте избрали валидна папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1632"/>
         <source>The selected path does not exist!</source>
         <translation>Избраният път не съществува!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1624"/>
+        <location filename="../src/gui/folderman.cpp" line="1636"/>
         <source>The selected path is not a folder!</source>
         <translation>Избраният път не е папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1628"/>
+        <location filename="../src/gui/folderman.cpp" line="1640"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Нямате права за писане в избраната папка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1680"/>
+        <location filename="../src/gui/folderman.cpp" line="1692"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локалната папка %1 вече съдържа папка, използвана във връзка за синхронизиране на папка. Моля, изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1688"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локалната папка %1 вече се съдържа в папка, използвана във връзка за синхронизиране на папка. Моля, изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1704"/>
+        <location filename="../src/gui/folderman.cpp" line="1716"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Вече има синхронизация от сървъра към тази локална папка. Моля, изберете друга локална папка!</translation>
     </message>
@@ -3319,7 +3319,7 @@ for additional privileges during the process.</source>
         <translation>Невъзможно е да се получи час на модификация за файл в конфликт %1)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="844"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Невъзможно е да се получи час на модификация за файл в конфликт %1</translation>
     </message>
@@ -3847,17 +3847,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Грешка при актуализиране на метаданните поради невалиден час на промяна</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Грешка при актуализиране на метаданните поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1220"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1222"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка при актуализиране на метаданни: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1224"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1226"/>
         <source>File is currently in use</source>
         <translation>Файлът в момента се използва</translation>
     </message>
@@ -5195,7 +5195,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Прекратен</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1071"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1067"/>
         <source>Synchronization will resume shortly.</source>
         <translation>Синхронизацията ще се възобнови скоро.</translation>
     </message>
@@ -5357,12 +5357,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Името на файла съдържа поне един невалиден знак</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1088"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1085"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Дисковото пространство е малко: Пропуснати са изтегляния, които биха намалили свободното място под% 1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1095"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1092"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сървъра няма достатъчно място за някои качвания.</translation>
     </message>
