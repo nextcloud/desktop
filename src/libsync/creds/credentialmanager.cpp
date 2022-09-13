@@ -16,7 +16,7 @@ using namespace std::chrono_literals;
 
 using namespace OCC;
 
-Q_LOGGING_CATEGORY(lcCredentaislManager, "sync.credentials.manager", QtDebugMsg)
+Q_LOGGING_CATEGORY(lcCredentialsManager, "sync.credentials.manager", QtDebugMsg)
 
 namespace {
 QString credentialKeyC()
@@ -55,7 +55,7 @@ CredentialManager::CredentialManager(QObject *parent)
 
 CredentialJob *CredentialManager::get(const QString &key)
 {
-    qCInfo(lcCredentaislManager) << "get" << scopedKey(this, key);
+    qCInfo(lcCredentialsManager) << "get" << scopedKey(this, key);
     auto out = new CredentialJob(this, key);
     out->start();
     return out;
@@ -63,16 +63,16 @@ CredentialJob *CredentialManager::get(const QString &key)
 
 QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
 {
-    qCInfo(lcCredentaislManager) << "set" << scopedKey(this, key);
+    qCInfo(lcCredentialsManager) << "set" << scopedKey(this, key);
     auto writeJob = new QKeychain::WritePasswordJob(Theme::instance()->appName());
     writeJob->setKey(scopedKey(this, key));
     connect(writeJob, &QKeychain::WritePasswordJob::finished, this, [writeJob, key, this] {
         if (writeJob->error() == QKeychain::NoError) {
-            qCInfo(lcCredentaislManager) << "added" << scopedKey(this, key);
+            qCInfo(lcCredentialsManager) << "added" << scopedKey(this, key);
             // just a list, the values don't matter
             credentialsList().setValue(key, true);
         } else {
-            qCWarning(lcCredentaislManager) << "Failed to set:" << scopedKey(this, key) << writeJob->errorString();
+            qCWarning(lcCredentialsManager) << "Failed to set:" << scopedKey(this, key) << writeJob->errorString();
         }
     });
     writeJob->setBinaryData(QCborValue::fromVariant(data).toCbor());
@@ -86,15 +86,15 @@ QKeychain::Job *CredentialManager::remove(const QString &key)
     OC_ASSERT(contains(key));
     // remove immediately to prevent double invocation by clear()
     credentialsList().remove(key);
-    qCInfo(lcCredentaislManager) << "del" << scopedKey(this, key);
+    qCInfo(lcCredentialsManager) << "del" << scopedKey(this, key);
     auto keychainJob = new QKeychain::DeletePasswordJob(Theme::instance()->appName());
     keychainJob->setKey(scopedKey(this, key));
     connect(keychainJob, &QKeychain::DeletePasswordJob::finished, this, [keychainJob, key, this] {
         OC_ASSERT(keychainJob->error() != QKeychain::EntryNotFound);
         if (keychainJob->error() == QKeychain::NoError) {
-            qCInfo(lcCredentaislManager) << "removed" << scopedKey(this, key);
+            qCInfo(lcCredentialsManager) << "removed" << scopedKey(this, key);
         } else {
-            qCWarning(lcCredentaislManager) << "Failed to remove:" << scopedKey(this, key) << keychainJob->errorString();
+            qCWarning(lcCredentialsManager) << "Failed to remove:" << scopedKey(this, key) << keychainJob->errorString();
         }
     });
     // start is delayed so we can directly call it
@@ -194,7 +194,7 @@ void CredentialJob::start()
             // Could be that the backend was not yet available. Wait some extra seconds.
             // (Issues #4274 and #6522)
             // (For kwallet, the error is OtherError instead of NoBackendAvailable, maybe a bug in QtKeychain)
-            qCInfo(lcCredentaislManager) << "Backend unavailable (yet?) Retrying in a few seconds." << _job->errorString();
+            qCInfo(lcCredentialsManager) << "Backend unavailable (yet?) Retrying in a few seconds." << _job->errorString();
             QTimer::singleShot(10s, this, &CredentialJob::start);
             _retryOnKeyChainError = false;
         }
@@ -211,7 +211,7 @@ void CredentialJob::start()
             _data = obj.toVariant();
             OC_ASSERT(_data.isValid());
         } else {
-            qCWarning(lcCredentaislManager) << "Failed to get password" << scopedKey(_parent, _key) << _job->errorString();
+            qCWarning(lcCredentialsManager) << "Failed to get password" << scopedKey(_parent, _key) << _job->errorString();
             _error = _job->error();
             _errorString = _job->errorString();
         }
