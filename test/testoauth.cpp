@@ -92,6 +92,10 @@ class OAuthTestCase : public QObject
 {
     Q_OBJECT
     DesktopServiceHook desktopServiceHook;
+
+protected:
+    QString _expectedClientId = Theme::instance()->oauthClientId();
+
 public:
     enum State { StartState,
         StatusPhpState,
@@ -129,6 +133,8 @@ public:
                 return this->statusPhpReply(op, req);
             } else if (req.url().path().endsWith(QLatin1String("ocs/v2.php/cloud/user")) && req.url().query() == QLatin1String("format=json")) {
                 return this->userInfoReply(op, req);
+            } else if (req.url().path().endsWith(QLatin1String("clients-registrations"))) {
+                return this->clientRegistrationReply(op, req);
             }
             OC_ASSERT(device);
             OC_ASSERT(device && device->bytesAvailable() > 0); // OAuth2 always sends around POST data.
@@ -157,7 +163,7 @@ public:
         QVERIFY(url.toString().startsWith(sOAuthTestServer.toString()));
         QUrlQuery query(url);
         QCOMPARE(query.queryItemValue(QStringLiteral("response_type")), QLatin1String("code"));
-        QCOMPARE(query.queryItemValue(QStringLiteral("client_id")), Theme::instance()->oauthClientId());
+        QCOMPARE(query.queryItemValue(QStringLiteral("client_id")), _expectedClientId);
         QUrl redirectUri(query.queryItemValue(QStringLiteral("redirect_uri")));
         QCOMPARE(redirectUri.host(), localHost);
         redirectUri.setQuery(QStringLiteral("code=%1&state=%2").arg(code, query.queryItemValue(QStringLiteral("state"))));
@@ -219,6 +225,11 @@ public:
     virtual QNetworkReply *wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
     {
         return new FakeErrorReply(op, req, fakeAm, 404);
+    }
+
+    virtual QNetworkReply *clientRegistrationReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req)
+    {
+        return new FakeErrorReply(op, req, fakeAm, 404, {});
     }
 
     virtual QByteArray tokenReplyPayload() const {
@@ -462,6 +473,101 @@ private slots:
                 gotAuthOk = true;
                 replyToBrowserOk = true;
             }
+        } test;
+        test.test();
+    }
+
+    void testDynamicRegistrationFailFallback()
+    {
+        // similar to testWellKnown but the server announces dynamic client registration
+        // when this fails we fall back to the default client id and secret
+        struct Test : OAuthTestCase
+        {
+            Test()
+            {
+                localHost = QStringLiteral("127.0.0.1");
+            }
+
+            QNetworkReply *wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req) override
+            {
+                OC_ASSERT(op == QNetworkAccessManager::GetOperation);
+                const QJsonDocument jsondata(QJsonObject {
+                    { "authorization_endpoint", QJsonValue("oauthtest://openidserver" + sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize") },
+                    { "token_endpoint", "oauthtest://openidserver/token_endpoint" },
+                    { "registration_endpoint", QStringLiteral("%1/clients-registrations").arg(localHost) } });
+                return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
+            }
+
+            void openBrowserHook(const QUrl &url) override
+            {
+                OC_ASSERT(url.host() == "openidserver");
+                QUrl url2 = url;
+                url2.setHost(sOAuthTestServer.host());
+                OAuthTestCase::openBrowserHook(url2);
+            }
+
+            QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request) override
+            {
+                OC_ASSERT(browserReply);
+                OC_ASSERT(request.url().toString().startsWith("oauthtest://openidserver/token_endpoint"));
+                auto req = request;
+                qDebug() << request.url() << request.url().query();
+                req.setUrl(request.url().toString().replace(QLatin1String("oauthtest://openidserver/token_endpoint"),
+                    sOAuthTestServer.toString() + "/index.php/apps/oauth2/api/v1/token"));
+                return OAuthTestCase::tokenReply(op, req);
+            }
+        } test;
+        test.test();
+    }
+
+    void testDynamicRegistration()
+    {
+        // similar to testWellKnown but the server announces dynamic client registration
+        // this means that the client id and secret are provided by the server
+        struct Test : OAuthTestCase
+        {
+            Test()
+            {
+                localHost = QStringLiteral("127.0.0.1");
+                _expectedClientId = QStringLiteral("3e4ea0f3-59ea-434a-92f2-b0d3b54443e9");
+            }
+
+            QNetworkReply *wellKnownReply(QNetworkAccessManager::Operation op, const QNetworkRequest &req) override
+            {
+                OC_ASSERT(op == QNetworkAccessManager::GetOperation);
+                const QJsonDocument jsondata(QJsonObject {
+                    { "authorization_endpoint", QJsonValue("oauthtest://openidserver" + sOAuthTestServer.path() + "/index.php/apps/oauth2/authorize") },
+                    { "token_endpoint", "oauthtest://openidserver/token_endpoint" },
+                    { "registration_endpoint", QStringLiteral("%1/clients-registrations").arg(localHost) } });
+                return new FakePayloadReply(op, req, jsondata.toJson(), fakeAm);
+            }
+
+            void openBrowserHook(const QUrl &url) override
+            {
+                OC_ASSERT(url.host() == "openidserver");
+                QUrl url2 = url;
+                url2.setHost(sOAuthTestServer.host());
+                OAuthTestCase::openBrowserHook(url2);
+            }
+
+            QNetworkReply *tokenReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request) override
+            {
+                OC_ASSERT(browserReply);
+                OC_ASSERT(request.url().toString().startsWith("oauthtest://openidserver/token_endpoint"));
+                auto req = request;
+                qDebug() << request.url() << request.url().query();
+                req.setUrl(request.url().toString().replace(QLatin1String("oauthtest://openidserver/token_endpoint"),
+                    sOAuthTestServer.toString() + "/index.php/apps/oauth2/api/v1/token"));
+                return OAuthTestCase::tokenReply(op, req);
+            }
+
+            QNetworkReply *clientRegistrationReply(QNetworkAccessManager::Operation op, const QNetworkRequest &request) override
+            {
+                const QByteArray payload(QByteArrayLiteral("{\"redirect_uris\":[\"http://127.0.0.1\"],\"token_endpoint_auth_method\":\"client_secret_basic\",\"grant_types\":[\"authorization_code\",\"refresh_token\"],\"response_types\":[\"code\",\"none\"],\"client_id\":\"3e4ea0f3-59ea-434a-92f2-b0d3b54443e9\",\"client_secret\":\"rmoEXFc1Z5tGTApxanBW7STlWODqRTYx\",\"client_name\":\"ownCloud 3.0.0.0\",\"scope\":\"web-origins address phone offline_access microprofile-jwt\",\"subject_type\":\"public\",\"request_uris\":[],\"tls_client_certificate_bound_access_tokens\":false,\"client_id_issued_at\":1663074650,\"client_secret_expires_at\":0,\"registration_client_uri\":\"https://someserver.de/auth/realms/ocis/clients-registrations/openid-connect/3e4ea0f3-59ea-434a-92f2-b0d3b54443e9\",\"registration_access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICIzYjQ2YWVkYi00Y2I3LTRiMGItODA5Ny1lNjRmOGQ5ZWY2YjQifQ.eyJleHAiOjAsImlhdCI6MTY2MzA3NDY1MCwianRpIjoiNTlkZWIzNTktNTBmZS00YTUyLWFmNTItZjFjNDg3ZTFlOWRmIiwiaXNzIjoiaHR0cHM6Ly9rZXljbG9hay5vd25jbG91ZC5jbG91ZHNwZWljaGVyLWJheWVybi5kZS9hdXRoL3JlYWxtcy9vY2lzIiwiYXVkIjoiaHR0cHM6Ly9rZXljbG9hay5vd25jbG91ZC5jbG91ZHNwZWljaGVyLWJheWVybi5kZS9hdXRoL3JlYWxtcy9vY2lzIiwidHlwIjoiUmVnaXN0cmF0aW9uQWNjZXNzVG9rZW4iLCJyZWdpc3RyYXRpb25fYXV0aCI6ImFub255bW91cyJ9.v1giSvpnKw1hTtBYZaqdp3JqnZ5mvCKYhQDKkT7x8Us\",\"backchannel_logout_session_required\":false,\"require_pushed_authorization_requests\":false}"));
+
+                return new FakePayloadReply(op, request, payload, fakeAm);
+            }
+
         } test;
         test.test();
     }
