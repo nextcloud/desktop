@@ -84,6 +84,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[TalkNotificationMessageIdRole] = "messageId";
     roles[TalkNotificationMessageSentRole] = "messageSent";
     roles[TalkNotificationUserAvatarRole] = "userAvatar";
+    roles[ActivityIndexRole] = "activityIndex";
     roles[ActivityRole] = "activity";
 
     return roles;
@@ -222,21 +223,21 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
             colorIconPath.append("state-error.svg");
             return colorIconPath;
         } else if (a._type == Activity::SyncFileItemType) {
-            if (a._status == SyncFileItem::NormalError
-                || a._status == SyncFileItem::FatalError
-                || a._status == SyncFileItem::DetailError
-                || a._status == SyncFileItem::BlacklistedError) {
+            if (a._syncFileItemStatus == SyncFileItem::NormalError
+                || a._syncFileItemStatus == SyncFileItem::FatalError
+                || a._syncFileItemStatus == SyncFileItem::DetailError
+                || a._syncFileItemStatus == SyncFileItem::BlacklistedError) {
                 colorIconPath.append("state-error.svg");
                 return colorIconPath;
-            } else if (a._status == SyncFileItem::SoftError
-                || a._status == SyncFileItem::Conflict
-                || a._status == SyncFileItem::Restoration
-                || a._status == SyncFileItem::FileLocked
-                || a._status == SyncFileItem::FileNameInvalid
-                || a._status == SyncFileItem::FileNameClash) {
+            } else if (a._syncFileItemStatus == SyncFileItem::SoftError
+                || a._syncFileItemStatus == SyncFileItem::Conflict
+                || a._syncFileItemStatus == SyncFileItem::Restoration
+                || a._syncFileItemStatus == SyncFileItem::FileLocked
+                || a._syncFileItemStatus == SyncFileItem::FileNameInvalid
+                || a._syncFileItemStatus == SyncFileItem::FileNameClash) {
                 colorIconPath.append("state-warning.svg");
                 return colorIconPath;
-            } else if (a._status == SyncFileItem::FileIgnored) {
+            } else if (a._syncFileItemStatus == SyncFileItem::FileIgnored) {
                 colorIconPath.append("state-info.svg");
                 return colorIconPath;
             } else {
@@ -301,6 +302,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case ActionRole: {
         switch (a._type) {
         case Activity::ActivityType:
+        case Activity::DummyFetchingActivityType:
+        case Activity::DummyMoreActivitiesAvailableType:
             return "Activity";
         case Activity::NotificationType:
             return "Notification";
@@ -339,7 +342,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case DisplayActions:
         return _displayActions;
     case ShareableRole:
-        return !data(index, PathRole).toString().isEmpty() && a._objectType == QStringLiteral("files") && _displayActions && a._fileAction != "file_deleted" && a._status != SyncFileItem::FileIgnored;
+        return !data(index, PathRole).toString().isEmpty() &&
+                a._objectType == QStringLiteral("files") &&
+                _displayActions &&
+                a._fileAction != "file_deleted" &&
+                a._syncFileItemStatus != SyncFileItem::FileIgnored;
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
     case ThumbnailRole: {
@@ -362,6 +369,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return replyMessageSent(a);
     case TalkNotificationUserAvatarRole:
         return a._talkNotificationData.userAvatar;
+    case ActivityIndexRole:
+        return index.row();
     case ActivityRole:
         return QVariant::fromValue(a);
     }
@@ -468,7 +477,7 @@ void ActivityListModel::appendMoreActivitiesAvailableEntry()
         && _finalList.last()._objectType != moreActivitiesEntryObjectType) {
 
         Activity a;
-        a._type = Activity::ActivityType;
+        a._type = Activity::DummyMoreActivitiesAvailableType;
         a._accName = _accountState->account()->displayName();
         a._id = -1;
         a._objectType = moreActivitiesEntryObjectType;
@@ -488,7 +497,7 @@ void ActivityListModel::insertOrRemoveDummyFetchingActivity()
     const QString dummyFetchingActivityObjectType = QLatin1String("dummy_fetching_activity");
 
     if (_currentlyFetching && _finalList.isEmpty()) {
-        _dummyFetchingActivities._type = Activity::ActivityType;
+        _dummyFetchingActivities._type = Activity::DummyFetchingActivityType;
         _dummyFetchingActivities._accName = _accountState->account()->displayName();
         _dummyFetchingActivities._id = -2;
         _dummyFetchingActivities._objectType = dummyFetchingActivityObjectType;
@@ -762,7 +771,7 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
     const auto path = data(modelIndex, PathRole).toString();
 
     const auto activity = _finalList.at(activityIndex);
-    if (activity._status == SyncFileItem::Conflict) {
+    if (activity._syncFileItemStatus == SyncFileItem::Conflict) {
         Q_ASSERT(!activity._file.isEmpty());
         Q_ASSERT(!activity._folder.isEmpty());
         Q_ASSERT(Utility::isConflictFile(activity._file));
@@ -792,7 +801,7 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         _currentConflictDialog->open();
         ownCloudGui::raiseDialog(_currentConflictDialog);
         return;
-    } else if (activity._status == SyncFileItem::FileNameInvalid) {
+    } else if (activity._syncFileItemStatus == SyncFileItem::FileNameInvalid) {
         if (!_currentInvalidFilenameDialog.isNull()) {
             _currentInvalidFilenameDialog->close();
         }
@@ -811,7 +820,7 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
-    } else if (activity._status == SyncFileItem::FileNameClash) {
+    } else if (activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
         const auto folder = FolderMan::instance()->folder(activity._folder);
         const auto relPath = activity._fileAction == QStringLiteral("file_renamed") ? activity._renamedFile : activity._file;
         SyncJournalFileRecord record;

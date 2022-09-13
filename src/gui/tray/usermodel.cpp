@@ -437,18 +437,18 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (activity._status == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()) {
+            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
-            if (activity._status == SyncFileItem::FileLocked && !QFileInfo(f->path() + activity._file).exists()) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !QFileInfo(f->path() + activity._file).exists()) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
 
-            if (activity._status == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
@@ -474,7 +474,7 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
         QStringList conflicts;
         foreach (Activity activity, _activityModel->errorsList()) {
             if (activity._folder == folder
-                && activity._status == SyncFileItem::Conflict) {
+                && activity._syncFileItemStatus == SyncFileItem::Conflict) {
                 conflicts.append(activity._file);
             }
         }
@@ -494,7 +494,7 @@ void User::slotAddError(const QString &folderAlias, const QString &message, Erro
 
         Activity activity;
         activity._type = Activity::SyncResultType;
-        activity._status = SyncResult::Error;
+        activity._syncResultStatus = SyncResult::Error;
         activity._dateTime = QDateTime::fromString(QDateTime::currentDateTime().toString(), Qt::ISODate);
         activity._subject = message;
         activity._message = folderInstance->shortGuiLocalPath();
@@ -529,7 +529,7 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
 
         Activity activity;
         activity._type = Activity::SyncFileItemType;
-        activity._status = status;
+        activity._syncFileItemStatus = status;
         const auto currentDateTime = QDateTime::currentDateTime();
         activity._dateTime = QDateTime::fromString(currentDateTime.toString(), Qt::ISODate);
         activity._expireAtMsecs = currentDateTime.addMSecs(activityDefaultExpirationTimeMsecs).toMSecsSinceEpoch();
@@ -592,7 +592,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
 
     Activity activity;
     activity._type = Activity::SyncFileItemType; //client activity
-    activity._status = item->_status;
+    activity._syncFileItemStatus = item->_status;
     activity._dateTime = QDateTime::currentDateTime();
     activity._message = item->_originalFile;
     activity._link = account()->url();

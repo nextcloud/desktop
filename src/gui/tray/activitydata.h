@@ -92,11 +92,14 @@ class Activity
 public:
     using Identifier = QPair<qlonglong, QString>;
 
+    // Note that these are in the order we want to present them in the model!
     enum Type {
-        ActivityType,
+        DummyFetchingActivityType,
         NotificationType,
         SyncResultType,
-        SyncFileItemType
+        SyncFileItemType,
+        ActivityType,
+        DummyMoreActivitiesAvailableType,
     };
 
     static Activity fromActivityJson(const QJsonObject &json, const AccountPtr account);
@@ -144,7 +147,8 @@ public:
     QVector<PreviewData> _previews;
 
     // Stores information about the error
-    int _status;
+    SyncFileItem::Status _syncFileItemStatus;
+    SyncResult::Status _syncResultStatus;
 
     QVector<ActivityLink> _links;
     /**

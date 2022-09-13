@@ -46,14 +46,13 @@ public:
     };
     Q_ENUM(Direction)
 
+    // Note: the order of these statuses is used for ordering in the SortedActivityListModel
     enum Status { // stored in 4 bits
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop
         NormalError, ///< Error attached to a particular file
         SoftError, ///< More like an information
-
-        Success, ///< The file was properly synced
 
         /** Marks a conflict, old or new.
          *
@@ -95,7 +94,9 @@ public:
          *
          * A SoftError caused by blacklisting.
          */
-        BlacklistedError
+        BlacklistedError,
+
+        Success, ///< The file was properly synced
     };
     Q_ENUM(Status)
 
