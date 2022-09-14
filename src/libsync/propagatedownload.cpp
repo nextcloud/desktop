@@ -240,14 +240,18 @@ void GETFileJob::setBandwidthManager(BandwidthManager *bwm)
 
 void GETFileJob::setChoked(bool c)
 {
-    _bandwidthChoked = c;
-    QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
+    if (c != _bandwidthChoked) {
+        _bandwidthChoked = c;
+        QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
+    }
 }
 
 void GETFileJob::setBandwidthLimited(bool b)
 {
-    _bandwidthLimited = b;
-    QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
+    if (_bandwidthLimited != b) {
+        _bandwidthLimited = b;
+        QMetaObject::invokeMethod(this, &GETFileJob::slotReadyRead, Qt::QueuedConnection);
+    }
 }
 
 void GETFileJob::giveBandwidthQuota(qint64 q)

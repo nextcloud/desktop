@@ -391,8 +391,10 @@ void UploadDevice::giveBandwidthQuota(qint64 bwq)
 
 void UploadDevice::setBandwidthLimited(bool b)
 {
-    _bandwidthLimited = b;
-    QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection);
+    if (_bandwidthLimited != b) {
+        _bandwidthLimited = b;
+        QMetaObject::invokeMethod(this, "readyRead", Qt::QueuedConnection);
+    }
 }
 
 void UploadDevice::setChoked(bool b)
