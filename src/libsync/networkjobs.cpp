@@ -79,7 +79,8 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QS
 void RequestEtagJob::start()
 {
     QNetworkRequest req;
-    req.setRawHeader("Depth", "0");
+    req.setRawHeader(QByteArrayLiteral("Depth"), QByteArrayLiteral("0"));
+    req.setRawHeader(QByteArrayLiteral("Prefer"), QByteArrayLiteral("return=minimal"));
 
     const QByteArray xml = QByteArrayLiteral("<?xml version=\"1.0\" ?>\n"
                                              "<d:propfind xmlns:d=\"DAV:\">\n"
@@ -318,6 +319,8 @@ void LsColJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader(QByteArrayLiteral("Depth"), QByteArrayLiteral("1"));
+    req.setRawHeader(QByteArrayLiteral("Prefer"), QByteArrayLiteral("return=minimal"));
+
     startImpl(req);
 }
 
