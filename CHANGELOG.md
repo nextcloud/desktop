@@ -29,6 +29,7 @@ Summary
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
 * Change - Add "open in web editor" feature: [#9724](https://github.com/owncloud/client/issues/9724)
 * Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
+* Enhancement - Add a prefer: minimal header to PROPFINDs: [#10104](https://github.com/owncloud/client/pull/10104)
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Don't query private links if disabled on the server: [#8998](https://github.com/owncloud/client/issues/8998)
@@ -179,6 +180,13 @@ Details
    We no longer display a network error if the server is currently unavailable.
 
    https://github.com/owncloud/client/issues/9790
+
+* Enhancement - Add a prefer: minimal header to PROPFINDs: [#10104](https://github.com/owncloud/client/pull/10104)
+
+   This will not return missing attribs in the reply in a 404 not found status propset. That reduces
+   the amount of transfered data significantely.
+
+   https://github.com/owncloud/client/pull/10104
 
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 
