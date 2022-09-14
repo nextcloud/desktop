@@ -21,12 +21,15 @@
 #include "spacesmodel.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QDesktopServices>
 #include <QMouseEvent>
 #include <QPainter>
 #include <QUrl>
 
 using namespace OCC::Spaces;
+
+Q_LOGGING_CATEGORY(lcSpacesDelegate, "spaces.delegate")
 
 void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -131,14 +134,19 @@ bool SpacesDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
         // TODO: simulate "click on button" visually, too (i.e., render button accordingly)
         if (event->type() == QEvent::MouseButtonRelease) {
             auto opt = openBrowserButtonRect(option);
+
             auto *mouseEvent = static_cast<QMouseEvent *>(event);
 
             // we need to make sure the mouse click is within the button's boundary box
             if (opt.rect.contains(mouseEvent->localPos().toPoint())) {
                 const auto url = index.data().toUrl();
 
-                if (url.isValid()) {
-                    QDesktopServices::openUrl(index.data().toUrl());
+                // we only display the button when the URL is valid (see above)
+                Q_ASSERT(url.isValid());
+
+                // log when opening fails
+                if (!QDesktopServices::openUrl(url)) {
+                    qCWarning(lcSpacesDelegate) << "failed to open browser for URL" << url;
                 }
 
                 return true;
