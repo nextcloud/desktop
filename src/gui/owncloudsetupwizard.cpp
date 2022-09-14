@@ -126,9 +126,8 @@ void OwncloudSetupWizard::startWizard()
     const auto startPage = WizardCommon::Page_ServerSetup;
 #endif // WITH_PROVIDERS
     _ocWizard->setStartId(startPage);
-
     _ocWizard->restart();
-
+    _ocWizard->adjustWizardSize();
     _ocWizard->open();
     _ocWizard->raise();
 }

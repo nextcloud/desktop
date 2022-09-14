@@ -134,9 +134,16 @@ void OwncloudWizard::centerWindow()
 void OwncloudWizard::adjustWizardSize()
 {
     const auto pageSizes = calculateWizardPageSizes();
-    const auto longestSide = calculateLongestSideOfWizardPages(pageSizes);
+    const auto currentPageIndex = currentId();
 
-    resize(QSize(longestSide, longestSide));
+    // If we can, just use the size of the current page
+    if(currentPageIndex > -1 && currentPageIndex < pageSizes.count()) {
+        resize(pageSizes.at(currentPageIndex));
+        return;
+    }
+
+    // As a backup, resize to largest page
+    resize(calculateLargestSizeOfWizardPages(pageSizes));
 }
 
 QList<QSize> OwncloudWizard::calculateWizardPageSizes() const
@@ -153,11 +160,17 @@ QList<QSize> OwncloudWizard::calculateWizardPageSizes() const
     return pageSizes;
 }
 
-int OwncloudWizard::calculateLongestSideOfWizardPages(const QList<QSize> &pageSizes) const
+QSize OwncloudWizard::calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const
 {
-    return std::accumulate(std::cbegin(pageSizes), std::cend(pageSizes), 0, [](int current, const QSize &size) {
-        return std::max({ current, size.width(), size.height() });
-    });
+    QSize largestSize;
+    for(const auto size : pageSizes) {
+        const auto largerWidth = qMax(largestSize.width(), size.width());
+        const auto largerHeight = qMax(largestSize.height(), size.height());
+
+        largestSize = QSize(largerWidth, largerHeight);
+    }
+
+    return largestSize;
 }
 
 void OwncloudWizard::setAccount(AccountPtr account)

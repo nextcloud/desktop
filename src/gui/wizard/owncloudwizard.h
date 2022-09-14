@@ -96,6 +96,7 @@ public slots:
     void slotCurrentPageChanged(int);
     void successfulStep();
     void slotCustomButtonClicked(const int which);
+    void adjustWizardSize();
 
 signals:
     void clearPendingRequests();
@@ -114,8 +115,7 @@ protected:
 
 private:
     void customizeStyle();
-    void adjustWizardSize();
-    int calculateLongestSideOfWizardPages(const QList<QSize> &pageSizes) const;
+    QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
     QList<QSize> calculateWizardPageSizes() const;
 
     AccountPtr _account;
