@@ -1273,7 +1273,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="567"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="592"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="597"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>서버 오류: PROPFIND 응답이 XML 형식이 아닙니다!</translation>
     </message>

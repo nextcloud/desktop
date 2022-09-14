@@ -1273,7 +1273,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="567"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="592"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="597"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Sunucu hatası: PROPFIND yanıtı XML biçiminde değil!</translation>
     </message>

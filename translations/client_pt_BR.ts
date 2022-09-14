@@ -1273,7 +1273,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="567"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="592"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="597"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Erro do servidor: a resposta PROPFIND não está formatada em XML! </translation>
     </message>
