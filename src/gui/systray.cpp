@@ -205,6 +205,12 @@ void Systray::setupContextMenu()
     });
 }
 
+void Systray::destroyDialog(QQuickWindow *dialog) const
+{
+    dialog->destroy();
+    dialog->deleteLater();
+}
+
 void Systray::createCallDialog(const Activity &callNotification, const AccountStatePtr accountState)
 {
     qCDebug(lcSystray) << "Starting a new call dialog for notification with id: " << callNotification._id << "with text: " << callNotification._subject;
@@ -244,6 +250,8 @@ void Systray::createCallDialog(const Activity &callNotification, const AccountSt
             return;
         }
 
+        // This call dialog gets deallocated on close conditions
+        // by a call from the QML side to the destroyDialog slot
         callDialog->createWithInitialProperties(initialProperties);
         _callsAlreadyNotified.insert(callNotification._id);
     }

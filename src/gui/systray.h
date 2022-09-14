@@ -118,6 +118,10 @@ public slots:
     void positionWindowAtScreenCenter(QQuickWindow *window) const;
     void positionNotificationWindow(QQuickWindow *window) const;
 
+    // Do not use this for QQuickWindow components managed by the QML engine,
+    // only for those managed by the C++ engine
+    void destroyDialog(QQuickWindow *window) const;
+
     void showWindow(WindowPosition position = WindowPosition::Default);
     void hideWindow();
 
