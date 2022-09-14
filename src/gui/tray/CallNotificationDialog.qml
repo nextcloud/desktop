@@ -48,6 +48,8 @@ Window {
         callStateChecker.checking = false;
         ringSound.stop();
         root.close();
+
+        Systray.destroyDialog(root);
     }
 
     width: root.windowWidth
