@@ -54,9 +54,9 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     } else if (index.column() == static_cast<int>(SpacesModel::Columns::Name)) {
         const QString subTitle =
             option.fontMetrics.elidedText(index.siblingAtColumn(static_cast<int>(SpacesModel::Columns::Subtitle)).data(Qt::DisplayRole).toString(), Qt::ElideRight, option.rect.width());
-        const int titleTextFlags = Qt::AlignVCenter | Qt::TextWordWrap;
+        const int nameTextFlags = Qt::AlignVCenter | Qt::TextWordWrap;
         const int subTitleTextFlags = Qt::AlignTop;
-        QRect titleRect;
+        QRect nameRect;
         QRect subtitleRect;
         if (!subTitle.isEmpty()) {
             subtitleRect = option.fontMetrics.boundingRect(option.rect, subTitleTextFlags, subTitle);
@@ -64,23 +64,23 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         }
         {
             painter->save();
-            const QString title = index.data(Qt::DisplayRole).toString();
+            const QString name = index.data(Qt::DisplayRole).toString();
             auto font = option.font;
             font.setBold(true);
             font.setPointSizeF(font.pointSizeF() * 1.2);
             painter->setFont(font);
             const QFontMetrics fontMetric(font);
-            const QString elidedTitle = fontMetric.elidedText(title, Qt::ElideRight, option.rect.width() * 2); // allow about two lines of title
-            titleRect = fontMetric.boundingRect(option.rect, titleTextFlags, elidedTitle);
+            const QString elidedName = fontMetric.elidedText(name, Qt::ElideRight, option.rect.width() * 2); // allow about two lines of name
+            nameRect = fontMetric.boundingRect(option.rect, nameTextFlags, elidedName);
             if (subtitleRect.isValid()) {
-                titleRect.moveTop(titleRect.top() - subtitleRect.height() / 2);
+                nameRect.moveTop(nameRect.top() - subtitleRect.height() / 2);
             }
-            titleRect = QStyle::visualRect(option.direction, option.rect, titleRect);
-            painter->drawText(titleRect, titleTextFlags, elidedTitle);
+            nameRect = QStyle::visualRect(option.direction, option.rect, nameRect);
+            painter->drawText(nameRect, nameTextFlags, elidedName);
             painter->restore();
         }
-        if (titleRect.isValid()) {
-            subtitleRect.moveTop(titleRect.bottom());
+        if (nameRect.isValid()) {
+            subtitleRect.moveTop(nameRect.bottom());
             painter->drawText(QStyle::visualRect(option.direction, option.rect, subtitleRect), subTitleTextFlags, subTitle);
         }
     } else {
