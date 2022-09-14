@@ -263,4 +263,7 @@ private:
 
 Q_DECLARE_METATYPE(OCC::AccountPtr)
 
+
+QDebug operator<<(QDebug debug, const OCC::Account *job);
+
 #endif //SERVERCONNECTION_H

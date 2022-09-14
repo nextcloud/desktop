@@ -389,7 +389,7 @@ QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job)
 {
     QDebugStateSaver saver(debug);
     debug.setAutoInsertSpaces(false);
-    debug << job->metaObject()->className() << "(Account: " << job->account()->uuid().toString(QUuid::WithoutBraces) << ", " << job->url().toDisplayString()
+    debug << job->metaObject()->className() << "(" << job->account().data() << ", " << job->url().toDisplayString()
           << ", " << job->_verb;
     if (auto reply = job->_reply) {
         debug << ", Original-Request-ID: " << reply->request().rawHeader("Original-Request-ID")

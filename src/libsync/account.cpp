@@ -345,3 +345,12 @@ const AppProvider &Account::appProvider() const
 }
 
 } // namespace OCC
+
+
+QDebug operator<<(QDebug debug, const OCC::Account *acc)
+{
+    QDebugStateSaver saver(debug);
+    debug.setAutoInsertSpaces(false);
+    debug << "OCC::Account(" << acc->displayName() << ")";
+    return debug.maybeSpace();
+}
