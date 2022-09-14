@@ -345,7 +345,7 @@ void AbstractNetworkJob::retry()
 {
     OC_ENFORCE(!_verb.isEmpty());
     _retryCount++;
-    qCInfo(lcNetworkJob) << "Restarting" << _verb << _request.url() << "for the" << _retryCount << "time";
+    qCInfo(lcNetworkJob) << "Restarting" << this << "for the" << _retryCount << "time";
     if (_requestBody) {
         if (_requestBody->isSequential()) {
             Q_ASSERT(_requestBody->isOpen());
@@ -389,18 +389,18 @@ QDebug operator<<(QDebug debug, const OCC::AbstractNetworkJob *job)
 {
     QDebugStateSaver saver(debug);
     debug.setAutoInsertSpaces(false);
-    debug << job->metaObject()->className() << "(" << job->url().toDisplayString()
-          << "," << job->_verb;
+    debug << job->metaObject()->className() << "(Account: " << job->account()->uuid().toString(QUuid::WithoutBraces) << ", " << job->url().toDisplayString()
+          << ", " << job->_verb;
     if (auto reply = job->_reply) {
-        debug << ", " << reply->request().rawHeader("Original-Request-ID")
-              << ", " << reply->request().rawHeader("X-Request-ID");
+        debug << ", Original-Request-ID: " << reply->request().rawHeader("Original-Request-ID")
+              << ", X-Request-ID: " << reply->request().rawHeader("X-Request-ID");
 
         const auto errorString = reply->rawHeader(QByteArrayLiteral("OC-ErrorString"));
         if (!errorString.isEmpty()) {
-            debug << ", " << errorString;
+            debug << ", Error:" << errorString;
         }
         if (reply->error() != QNetworkReply::NoError) {
-            debug << ", " << reply->errorString();
+            debug << ", NetworkError: " << reply->errorString();
         }
     }
     if (job->_timedout) {
