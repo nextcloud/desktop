@@ -107,6 +107,7 @@ RowLayout {
             source: Theme.darkMode ? model.darkIcon : model.lightIcon
             sourceSize.height: 64
             sourceSize.width: 64
+            mipmap: true // Addresses grainy downscale
         }
     }
 
