@@ -716,14 +716,18 @@ void SyncEngine::setNetworkLimits(int upload, int download)
     _uploadLimit = upload;
     _downloadLimit = download;
 
-    if (!_propagator)
-        return;
-
-    _propagator->_uploadLimit = upload;
-    _propagator->_downloadLimit = download;
-
-    if (upload != 0 || download != 0) {
-        qCInfo(lcEngine) << "Network Limits (down/up) " << upload << download;
+    if (_propagator) {
+        if (upload != 0 || download != 0) {
+            qCInfo(lcEngine) << "Network Limits (down/up) " << upload << download;
+            if (!_propagator->_bandwidthManager) {
+                _propagator->_bandwidthManager = new BandwidthManager(_propagator.data());
+            }
+        }
+        // this might set the limit to 0 but only the next sync will have no bandwithd manager set
+        if (_propagator->_bandwidthManager) {
+            _propagator->_bandwidthManager->setCurrentDownloadLimit(download);
+            _propagator->_bandwidthManager->setCurrentUploadLimit(upload);
+        }
     }
 }
 

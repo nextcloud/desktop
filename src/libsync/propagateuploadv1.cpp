@@ -141,7 +141,7 @@ void PropagateUploadFileV1::startNextChunk()
 
     const QString fileName = propagator()->fullLocalPath(_item->_file);
     auto device = std::make_unique<UploadDevice>(fileName, chunkStart, currentChunkSize,
-        &propagator()->_bandwidthManager);
+        propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadV1) << "Could not prepare upload device: " << device->errorString();
         // Soft error because this is likely caused by the user modifying his files while syncing

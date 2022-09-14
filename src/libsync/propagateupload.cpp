@@ -261,7 +261,9 @@ UploadDevice::UploadDevice(const QString &fileName, qint64 start, qint64 size, B
     , _bandwidthLimited(false)
     , _choked(false)
 {
-    _bandwidthManager->registerUploadDevice(this);
+    if (_bandwidthManager) {
+        _bandwidthManager->registerUploadDevice(this);
+    }
 }
 
 

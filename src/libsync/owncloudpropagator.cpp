@@ -84,9 +84,7 @@ OwncloudPropagator::~OwncloudPropagator()
 
 int OwncloudPropagator::maximumActiveTransferJob()
 {
-    if (_downloadLimit != 0
-        || _uploadLimit != 0
-        || !_syncOptions._parallelNetworkJobs) {
+    if (_bandwidthManager || !_syncOptions._parallelNetworkJobs) {
         // disable parallelism when there is a network limit.
         return 1;
     }

@@ -40,7 +40,7 @@ static qint64 relativeLimitMeasuringTimerIntervalMsec = 1000 * 2;
 //  * For relative limiting, smoothen measurements
 
 BandwidthManager::BandwidthManager(OwncloudPropagator *p)
-    : QObject()
+    : QObject(p)
     , _propagator(p)
     , _relativeLimitCurrentMeasuredDevice(nullptr)
     , _relativeUploadLimitProgressAtMeasuringRestart(0)
@@ -48,14 +48,6 @@ BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     , _relativeLimitCurrentMeasuredJob(nullptr)
     , _currentDownloadLimit(0)
 {
-    _currentUploadLimit = _propagator->_uploadLimit;
-    _currentDownloadLimit = _propagator->_downloadLimit;
-
-    QObject::connect(&_switchingTimer, &QTimer::timeout, this, &BandwidthManager::switchingTimerExpired);
-    _switchingTimer.setInterval(10 * 1000);
-    _switchingTimer.start();
-    QMetaObject::invokeMethod(this, "switchingTimerExpired", Qt::QueuedConnection);
-
     // absolute uploads/downloads
     QObject::connect(&_absoluteLimitTimer, &QTimer::timeout, this, &BandwidthManager::absoluteLimitTimerExpired);
     _absoluteLimitTimer.setInterval(1000);
@@ -239,6 +231,31 @@ void BandwidthManager::relativeUploadDelayTimerExpired()
     // now we're in measuring state
 }
 
+qint64 BandwidthManager::currentUploadLimit() const
+{
+    return _currentUploadLimit;
+}
+
+void BandwidthManager::setCurrentUploadLimit(qint64 newUploadLimit)
+{
+    if (newUploadLimit != _currentUploadLimit) {
+        qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
+        _currentUploadLimit = newUploadLimit;
+        for (auto *ud : _relativeUploadDeviceList) {
+            if (newUploadLimit == 0) {
+                ud->setBandwidthLimited(false);
+                ud->setChoked(false);
+            } else if (newUploadLimit > 0) {
+                ud->setBandwidthLimited(true);
+                ud->setChoked(false);
+            } else if (newUploadLimit < 0) {
+                ud->setBandwidthLimited(true);
+                ud->setChoked(true);
+            }
+        }
+    }
+}
+
 // for downloads:
 void BandwidthManager::relativeDownloadMeasuringTimerExpired()
 {
@@ -333,28 +350,13 @@ void BandwidthManager::relativeDownloadDelayTimerExpired()
     // now we're in measuring state
 }
 
-// end downloads
-
-void BandwidthManager::switchingTimerExpired()
+qint64 BandwidthManager::currentDownloadLimit() const
 {
-    qint64 newUploadLimit = _propagator->_uploadLimit;
-    if (newUploadLimit != _currentUploadLimit) {
-        qCInfo(lcBandwidthManager) << "Upload Bandwidth limit changed" << _currentUploadLimit << newUploadLimit;
-        _currentUploadLimit = newUploadLimit;
-        for (auto *ud : _relativeUploadDeviceList) {
-            if (newUploadLimit == 0) {
-                ud->setBandwidthLimited(false);
-                ud->setChoked(false);
-            } else if (newUploadLimit > 0) {
-                ud->setBandwidthLimited(true);
-                ud->setChoked(false);
-            } else if (newUploadLimit < 0) {
-                ud->setBandwidthLimited(true);
-                ud->setChoked(true);
-            }
-        }
-    }
-    qint64 newDownloadLimit = _propagator->_downloadLimit;
+    return _currentDownloadLimit;
+}
+
+void BandwidthManager::setCurrentDownloadLimit(qint64 newDownloadLimit)
+{
     if (newDownloadLimit != _currentDownloadLimit) {
         qCInfo(lcBandwidthManager) << "Download Bandwidth limit changed" << _currentDownloadLimit << newDownloadLimit;
         _currentDownloadLimit = newDownloadLimit;
@@ -372,6 +374,8 @@ void BandwidthManager::switchingTimerExpired()
         }
     }
 }
+
+// end downloads
 
 void BandwidthManager::absoluteLimitTimerExpired()
 {

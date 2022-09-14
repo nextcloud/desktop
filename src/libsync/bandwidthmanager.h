@@ -44,6 +44,12 @@ public:
     bool usingRelativeDownloadLimit() { return _currentDownloadLimit < 0; }
 
 
+    qint64 currentDownloadLimit() const;
+    void setCurrentDownloadLimit(qint64 newCurrentDownloadLimit);
+
+    qint64 currentUploadLimit() const;
+    void setCurrentUploadLimit(qint64 newCurrentUploadLimit);
+
 public slots:
     void registerUploadDevice(UploadDevice *);
     void unregisterUploadDevice(QObject *);
@@ -52,7 +58,6 @@ public slots:
     void unregisterDownloadJob(GETFileJob *);
 
     void absoluteLimitTimerExpired();
-    void switchingTimerExpired();
 
     void relativeUploadMeasuringTimerExpired();
     void relativeUploadDelayTimerExpired();
@@ -61,9 +66,6 @@ public slots:
     void relativeDownloadDelayTimerExpired();
 
 private:
-    // for switching between absolute and relative bw limiting
-    QTimer _switchingTimer;
-
     // FIXME this timer and this variable should be replaced
     // by the propagator emitting the changed limit values to us as signal
     OwncloudPropagator *_propagator;

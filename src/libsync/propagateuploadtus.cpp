@@ -65,7 +65,7 @@ UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(localFileName));
         return nullptr;
     }
-    auto device = std::make_unique<UploadDevice>(localFileName, _currentOffset, chunkSize, &propagator()->_bandwidthManager);
+    auto device = std::make_unique<UploadDevice>(localFileName, _currentOffset, chunkSize, propagator()->_bandwidthManager);
     if (!device->open(QIODevice::ReadOnly)) {
         qCWarning(lcPropagateUploadTUS) << "Could not prepare upload device: " << device->errorString();
 

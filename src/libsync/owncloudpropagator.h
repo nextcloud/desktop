@@ -375,7 +375,6 @@ public:
         const QString &remoteFolder, SyncJournalDb *progressDb)
         : _journal(progressDb)
         , _finishedEmited(false)
-        , _bandwidthManager(this)
         , _anotherSyncNeeded(false)
         , _chunkSize(options._initialChunkSize)
         , _account(account)
@@ -393,9 +392,7 @@ public:
 
     const SyncOptions &syncOptions() const;
 
-    int _downloadLimit = 0;
-    int _uploadLimit = 0;
-    BandwidthManager _bandwidthManager;
+    QPointer<BandwidthManager> _bandwidthManager;
 
     bool _abortRequested = false;
 
