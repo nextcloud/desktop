@@ -20,6 +20,7 @@ Label {
     Accessible.onPressAction: root.clicked(null)
 
     text: action ? action.text : ""
+    textFormat: Text.PlainText
     enabled: !action || action.enabled
     onClicked: if (action) action.trigger()
 
