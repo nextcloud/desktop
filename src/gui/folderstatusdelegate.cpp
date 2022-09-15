@@ -122,7 +122,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QFontMetrics subFm(subFont);
     QFontMetrics aliasFm(aliasFont);
-    QFontMetrics progressFm(progressFont);
 
     int aliasMargin = aliasFm.height() / 2;
     int margin = subFm.height() / 4;
