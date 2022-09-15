@@ -25,15 +25,16 @@ TabButton {
 
     property string svgCustomColorSource: ""
 
-    padding: 0
+    padding: Style.smallSpacing
     background: Rectangle {
+        radius: Style.slightlyRoundedButtonRadius
         color: tabButton.pressed ? Style.lightHover : Style.backgroundColor
     }
 
     contentItem: ColumnLayout {
         id: tabButtonLayout
 
-        property var elementColors: tabButton.checked ? Style.ncTextColor : Style.ncSecondaryTextColor
+        property var elementColors: tabButton.checked || tabButton.hovered ? Style.ncTextColor : Style.ncSecondaryTextColor
 
         // We'd like to just set the height of the Image, but this causes crashing.
         // So we use a wrapping Item and use anchors to adjust the size.
@@ -76,9 +77,11 @@ TabButton {
 
             property int textWidth: fontMetrics.boundingRect(tabButtonLabel.text).width
 
+            Layout.fillWidth: true
             implicitWidth: textWidth + Style.standardSpacing * 2
             implicitHeight: 2
-            color: tabButton.checked ? Style.ncBlue : "transparent"
+
+            color: tabButton.checked ? Style.ncBlue : tabButton.hovered ? Style.lightHover : "transparent"
         }
     }
 }
