@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="190"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="193"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation>Ignorer</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="224"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
         <source>Open share dialog</source>
         <translation>Ouvrir la boîte de dialogue de partage</translation>
     </message>
@@ -75,22 +75,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="172"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="238"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
         <source>Answer Talk call notification</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
         <source>Decline</source>
         <translation>Refuser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="262"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
         <source>Decline Talk call notification</source>
         <translation type="unfinished"/>
     </message>
@@ -1798,7 +1798,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderman.cpp" line="1594"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisation terminée avec succès</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1600"/>
@@ -5482,7 +5482,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Relancer toutes les synchros</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="385"/>
+        <location filename="../src/gui/systray.cpp" line="393"/>
         <source>%1: %2</source>
         <translation>%1 : %2</translation>
     </message>
@@ -6126,7 +6126,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Choisissez un autre dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="148"/>
