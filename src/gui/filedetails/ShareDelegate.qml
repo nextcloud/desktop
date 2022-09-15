@@ -230,25 +230,27 @@ GridLayout {
         visible: text !== ""
     }
 
-    RowLayout {
+    RowLayout {        
         Layout.row: 0
         Layout.column: 2
         Layout.rowSpan: root.rows
         Layout.fillHeight: true
+
         spacing: 0
 
-        Button {
+        CustomButton {
             id: createLinkButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: icon.width + (Style.standardSpacing * 2)
+            Layout.preferredWidth: Style.iconButtonWidth
+            Layout.preferredHeight: width
 
-            flat: true
-            display: AbstractButton.IconOnly
-            icon.color: Style.ncTextColor
-            icon.source: "qrc:///client/theme/add.svg"
-            icon.width: 16
-            icon.height: 16
+            toolTipText: qsTr("Create a new share link")
+
+            bgColor: Style.lightHover
+            bgNormalOpacity: 0
+
+            imageSource: "qrc:///client/theme/add.svg"
 
             visible: root.isPlaceholderLinkShare && root.canCreateLinkShares
             enabled: visible
@@ -256,16 +258,19 @@ GridLayout {
             onClicked: root.createNewLinkShare()
         }
 
-        Button {
+        CustomButton {
             id: copyLinkButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: icon.width + (Style.standardSpacing * 2)
+            Layout.preferredWidth: Style.iconButtonWidth
+            Layout.preferredHeight: width
 
-            flat: true
-            display: AbstractButton.IconOnly
-            icon.color: Style.ncTextColor
-            icon.source: "qrc:///client/theme/copy.svg"
+            toolTipText: qsTr("Copy share link location")
+
+            bgColor: Style.lightHover
+            bgNormalOpacity: 0
+
+            imageSource: "qrc:///client/theme/copy.svg"
             icon.width: 16
             icon.height: 16
 
@@ -282,18 +287,19 @@ GridLayout {
             TextEdit { id: clipboardHelper; visible: false}
         }
 
-        Button {
+        CustomButton {
             id: moreButton
 
             Layout.alignment: Qt.AlignCenter
-            Layout.preferredWidth: icon.width + (Style.standardSpacing * 2)
+            Layout.preferredWidth: Style.iconButtonWidth
+            Layout.preferredHeight: width
 
-            flat: true
-            display: AbstractButton.IconOnly
-            icon.color: Style.ncTextColor
-            icon.source: "qrc:///client/theme/more.svg"
-            icon.width: 16
-            icon.height: 16
+            toolTipText: qsTr("Share options")
+
+            bgColor: Style.lightHover
+            bgNormalOpacity: 0
+
+            imageSource: "qrc:///client/theme/more.svg"
 
             visible: !root.isPlaceholderLinkShare
             enabled: visible

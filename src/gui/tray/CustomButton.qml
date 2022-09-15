@@ -7,7 +7,8 @@ Button {
     id: root
 
     property string imageSource: ""
-    property string imageSourceHover: ""
+    property string imageSourceHover: imageSource
+    property var iconItem: icon
 
     property string toolTipText: ""
 
