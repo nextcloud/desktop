@@ -914,7 +914,8 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
     }
     // depending on the use of virtual files or small files this slot might be called very often.
     // throttle the model updates to prevent an needlessly high cpu usage used on ui updates.
-    if (std::chrono::steady_clock::now() - folder._lastProgressUpdated > progressUpdateTimeOutC) {
+    if (folder._lastProgressUpdateStatus != progress.status() || (std::chrono::steady_clock::now() - folder._lastProgressUpdated > progressUpdateTimeOutC)) {
+        folder._lastProgressUpdateStatus = progress.status();
         const QVector<int> roles = { FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount, Qt::ToolTipRole };
 
         switch (progress.status()) {
@@ -1105,7 +1106,7 @@ void FolderStatusModel::slotFolderSyncStateChange(Folder *f)
         pi = SubFolderInfo::Progress();
     } else if (state == SyncResult::SyncPrepare) {
         pi = SubFolderInfo::Progress();
-        pi._overallSyncString = tr("Preparing to sync...");
+        pi._overallSyncString = Theme::instance()->statusHeaderText(SyncResult::SyncPrepare);
     } else if (state == SyncResult::Problem || state == SyncResult::Success) {
         // Reset the progress info after a sync.
         pi = SubFolderInfo::Progress();

@@ -1,0 +1,4 @@
+Bugfix: Sync status changes are now directly displayed
+
+
+https://github.com/owncloud/client/issues/10101

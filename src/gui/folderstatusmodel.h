@@ -16,6 +16,7 @@
 #define FOLDERSTATUSMODEL_H
 
 #include "accountfwd.h"
+#include "progressdispatcher.h"
 
 #include <QAbstractItemModel>
 #include <QLoggingCategory>
@@ -29,7 +30,6 @@ namespace OCC {
 Q_DECLARE_LOGGING_CATEGORY(lcFolderStatus)
 
 class Folder;
-class ProgressInfo;
 class LsColJob;
 
 /**
@@ -114,6 +114,7 @@ public:
         Progress _progress;
 
         std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
+        ProgressInfo::Status _lastProgressUpdateStatus = ProgressInfo::None;
     };
 
 
