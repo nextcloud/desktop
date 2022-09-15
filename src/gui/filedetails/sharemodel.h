@@ -107,7 +107,7 @@ signals:
     void hasInitialShareFetchCompletedChanged();
 
     void serverError(const int code, const QString &message);
-    void passwordSetError(const QString &shareId);
+    void passwordSetError(const QString &shareId, const int code, const QString &message);
     void requestPasswordForLinkShare();
     void requestPasswordForEmailSharee(const ShareePtr &sharee);
 

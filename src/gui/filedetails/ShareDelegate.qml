@@ -21,6 +21,7 @@ import QtGraphicalEffects 1.15
 import com.nextcloud.desktopclient 1.0
 import Style 1.0
 import "../tray"
+import "../"
 
 GridLayout {
     id: root
@@ -86,6 +87,11 @@ GridLayout {
     property bool waitingForLinkShareLabelChange: false
     property bool waitingForPasswordChange: false
     property bool waitingForNoteChange: false
+
+    function showPasswordSetError(message) {
+        passwordErrorBoxLoader.message = message !== "" ?
+                                         message : qsTr("An error occurred setting the share password.");
+    }
 
     function resetNoteField() {
         noteTextEdit.text = note;
@@ -468,6 +474,7 @@ GridLayout {
                                  !root.waitingForPasswordProtectEnabledChange
 
                         onAccepted: if(text !== root.password && text !== root.passwordPlaceholder) {
+                            passwordErrorBoxLoader.message = "";
                             root.setPassword(text);
                             root.waitingForPasswordChange = true;
                         }
@@ -478,6 +485,36 @@ GridLayout {
                                      root.waitingForPasswordProtectEnabledChange
                             running: visible
                             z: 1
+                        }
+                    }
+                }
+
+                Loader {
+                    id: passwordErrorBoxLoader
+
+                    property string message: ""
+
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    height: message !== "" ? implicitHeight : 0
+
+                    active: message !== ""
+                    visible: active
+
+                    sourceComponent: Item {
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        // Artificially add vertical padding
+                        implicitHeight: passwordErrorBox.implicitHeight + (Style.smallSpacing * 2)
+
+                        ErrorBox {
+                            id: passwordErrorBox
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: passwordErrorBoxLoader.message
                         }
                     }
                 }

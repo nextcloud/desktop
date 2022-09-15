@@ -202,11 +202,12 @@ ColumnLayout {
                         // password set has failed, meaning we won't be able to easily tell when we
                         // have had a response from the server in QML. So we listen to this signal
                         // directly from the model and do the reset of the password field manually.
-                        function onPasswordSetError(shareId) {
+                        function onPasswordSetError(shareId, errorCode, errorMessage) {
                             if(shareId !== model.shareId) {
                                 return;
                             }
                             shareDelegate.resetPasswordField();
+                            shareDelegate.showPasswordSetError(errorMessage);
                         }
 
                         function onServerError() {

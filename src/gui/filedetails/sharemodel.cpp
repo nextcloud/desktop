@@ -388,9 +388,8 @@ void ShareModel::slotAddShare(const SharePtr &share)
     connect(share.data(), &Share::serverError, this, &ShareModel::slotServerError);
     connect(share.data(), &Share::passwordSetError, this, [this, shareId](const int code, const QString &message) {
         _shareIdRecentlySetPasswords.remove(shareId);
-        slotServerError(code, message);
         slotSharePasswordSet(shareId);
-        Q_EMIT passwordSetError(shareId);
+        Q_EMIT passwordSetError(shareId, code, message);
     });
 
     // Passing shareId by reference here will cause crashing, so we pass by value
