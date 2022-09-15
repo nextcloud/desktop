@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="190"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="193"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation>Baztertu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="224"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
         <source>Open share dialog</source>
         <translation>Ireki partekatzeko elkarrizketa-koadroa</translation>
     </message>
@@ -75,22 +75,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="172"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
         <translation>Talk dei-egilearen avatarra jakinarazpenean</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="238"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
         <source>Answer Talk call notification</source>
         <translation>Erantzun Talk dei jakinarazpena</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
         <source>Decline</source>
         <translation>Ukatu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="262"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
         <source>Decline Talk call notification</source>
         <translation>Baztertu Talk dei jakinarazpena</translation>
     </message>
@@ -5482,7 +5482,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Berrekin sinkronizazioa guztientzat</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="385"/>
+        <location filename="../src/gui/systray.cpp" line="393"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
