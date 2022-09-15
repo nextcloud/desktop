@@ -459,7 +459,7 @@ void ShareModel::slotServerError(const int code, const QString &message)
 QString ShareModel::displayStringForShare(const SharePtr &share) const
 {
     if (const auto linkShare = share.objectCast<LinkShare>()) {
-        const auto displayString = tr("Link share");
+        const auto displayString = tr("Share link");
 
         if (!linkShare->getLabel().isEmpty()) {
             return QStringLiteral("%1 (%2)").arg(displayString, linkShare->getLabel());
