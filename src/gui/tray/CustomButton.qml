@@ -51,6 +51,7 @@ Button {
             Layout.fillWidth: icon.status !== Image.Ready
 
             text: root.text
+            textFormat: Text.PlainText
             font.bold: root.bold
 
             visible: root.text !== ""
