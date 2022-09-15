@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="190"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="193"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation>Yok say</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="224"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
         <source>Open share dialog</source>
         <translation>Paylaşma penceresini aç</translation>
     </message>
@@ -75,22 +75,22 @@
 <context>
     <name>CallNotificationDialog</name>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="172"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
         <translation>Talk bildirimi çağrı yapan avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="238"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
         <source>Answer Talk call notification</source>
         <translation>Talk çağrı bildirimini yanıtla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="246"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
         <source>Decline</source>
         <translation>Reddet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="262"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
         <source>Decline Talk call notification</source>
         <translation>Talk çağrı bildirimini reddet</translation>
     </message>
@@ -5482,7 +5482,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Tümü için eşitlemeyi sürdür</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="385"/>
+        <location filename="../src/gui/systray.cpp" line="393"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
