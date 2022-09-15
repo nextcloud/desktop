@@ -61,6 +61,25 @@ bool Utility::hasSystemLaunchOnStartup(const QString &appName)
 static Result<void, QString> writePlistToFile(NSString *plistFile, NSDictionary *plist)
 {
     NSError *error = nil;
+
+    // Check if the directory exists. On a fresh installation for example, the directory does not
+    // exist, so writing the plist file below will fail.
+    QDir plistDir = QFileInfo(QString::fromNSString(plistFile)).dir();
+    if (!plistDir.exists()) {
+        if (!QDir().mkpath(plistDir.path())) {
+            return QString(QStringLiteral("Failed to create directory '%1'")).arg(plistDir.path());
+        }
+
+        // Permissions always seem to be 0700, so set that.
+        // Note: the Permission enum documentation states that on unix the owner permissions are
+        // returned, but: "This behavior might change in a future Qt version." So we play it safe,
+        // and set both the user and the owner permissions to rwx.
+        if (!QFile(plistDir.path()).setPermissions(QFileDevice::ReadOwner | QFileDevice::ReadUser | QFileDevice::WriteOwner | QFileDevice::WriteUser | QFileDevice::ExeOwner | QFileDevice::ExeUser)) {
+            qCInfo(lcUtility()) << "Failed to set directory permmissions for" << plistDir.path();
+        }
+    }
+
+    // Now write the file.
     if (![plist writeToURL:[NSURL fileURLWithPath:plistFile isDirectory:NO] error:&error]) {
         return QString::fromNSString(error.localizedDescription);
     }
