@@ -113,6 +113,10 @@ private:
 };
 }
 
+namespace {
+class PKey;
+}
+
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
@@ -121,7 +125,7 @@ public:
 
 private:
     void generateKeyPair(const AccountPtr &account);
-    void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
+    void generateCSR(const AccountPtr &account, PKey keyPair);
     void encryptPrivateKey(const AccountPtr &account);
 
 public:

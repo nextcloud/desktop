@@ -1123,10 +1123,10 @@ void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
     _privateKey = key;
 
     qCInfo(lcCse()) << "Keys generated correctly, sending to server.";
-    generateCSR(account, localKeyPair);
+    generateCSR(account, std::move(localKeyPair));
 }
 
-void ClientSideEncryption::generateCSR(const AccountPtr &account, EVP_PKEY *keyPair)
+void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
 {
     // OpenSSL expects const char.
     auto cnArray = account->davUser().toLocal8Bit();
@@ -1184,11 +1184,38 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, EVP_PKEY *keyP
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
     job->setCsr(output);
 
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account](const QJsonDocument& json, int retCode) {
+    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, int retCode) {
         if (retCode == 200) {
             QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
             _publicKey = _certificate.publicKey();
+
+            const auto publicKeyString = cert.toLocal8Bit();
+            Bio serverPublicKeyBio;
+            BIO_write(serverPublicKeyBio, publicKeyString.constData(), publicKeyString.size());
+            const auto serverPublicKey = PKey::readPrivateKey(serverPublicKeyBio);
+
+            Bio certificateBio;
+            const auto certificatePem = _certificate.toPem();
+            BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
+            const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
+
+            if (auto certificateCheckResult = X509_check_private_key(x509Certificate, keyPair) ; !certificateCheckResult) {
+                std::array<char, 512> buffer;
+                qCInfo(lcCse()) << "X509_check_private_key" << certificateCheckResult;
+
+                unsigned long lastError = 1;
+                while (lastError) {
+                    lastError = ERR_get_error();
+                    qCInfo(lcCse()) << ERR_error_string(lastError, buffer.data());
+                }
+
+                forgetSensitiveData(account);
+                return;
+            }
+
+            qCInfo(lcCse()) << "received a valid certificate";
+
             fetchAndValidatePublicKeyFromServer(account);
         }
         qCInfo(lcCse()) << retCode;
