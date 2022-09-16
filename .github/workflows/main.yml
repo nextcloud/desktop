@@ -6,6 +6,8 @@ on:
       - master
       - '[0-9]+.*'
   pull_request:
+  
+permissions: {}
 
 defaults:
   run:
@@ -14,6 +16,9 @@ defaults:
 jobs:
 # ------------------------------------------------------------------------------------------------------------------------------------------
   build:
+    permissions:
+      # actions/upload-artifact doesn't need contents: write
+      contents: read
     strategy:
         matrix:
             include:
