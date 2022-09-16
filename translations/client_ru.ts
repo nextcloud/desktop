@@ -3638,17 +3638,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="275"/>
+        <location filename="../src/libsync/discovery.cpp" line="282"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Синхронизация символических ссылок не поддерживается.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="283"/>
+        <location filename="../src/libsync/discovery.cpp" line="290"/>
         <source>File is listed on the ignore list.</source>
         <translation>Файл присутствует в списке исключений из сихнронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="287"/>
+        <location filename="../src/libsync/discovery.cpp" line="294"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Используемая файловая система не поддерживает имена файлов, оканчивающиеся на точку.</translation>
     </message>
@@ -3658,72 +3658,72 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Используемая файловая система не поддерживает имена файлов, содержащие символ «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="297"/>
+        <location filename="../src/libsync/discovery.cpp" line="304"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>Используемая файловая система не поддерживает имена файлов, содержащие символ «%1».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="299"/>
+        <location filename="../src/libsync/discovery.cpp" line="306"/>
         <source>File name contains at least one invalid character</source>
         <translation>Имя файла содержит по крайней мере один некорректный символ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="301"/>
+        <location filename="../src/libsync/discovery.cpp" line="308"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Имя файла является зарезервированным внутренним именем в используемой файловой системе.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="307"/>
+        <location filename="../src/libsync/discovery.cpp" line="314"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Имя файла содержит пробелы на конце.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="311"/>
+        <location filename="../src/libsync/discovery.cpp" line="318"/>
         <source>Filename contains leading spaces.</source>
         <translation>Имя файла содержит пробелы в начале.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="315"/>
+        <location filename="../src/libsync/discovery.cpp" line="322"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Имя файла содержит пробелы в начале или на конце.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="319"/>
+        <location filename="../src/libsync/discovery.cpp" line="326"/>
         <source>Filename is too long.</source>
         <translation>Имя файла слишком длинное.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="323"/>
+        <location filename="../src/libsync/discovery.cpp" line="330"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>Файл или папка исключены из синхронизации, так как являются скрытыми.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="326"/>
+        <location filename="../src/libsync/discovery.cpp" line="333"/>
         <source>Stat failed.</source>
         <translation>Ошибка вызова функции stat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="329"/>
+        <location filename="../src/libsync/discovery.cpp" line="336"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Конфликт: загружена версия файла с сервера, а локальная копия переименована и не передана на сервер.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="333"/>
+        <location filename="../src/libsync/discovery.cpp" line="340"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Имя файла не может быть закодировано для используемой файловой системы.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="336"/>
+        <location filename="../src/libsync/discovery.cpp" line="343"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Имя файла внесено в чёрный список на сервере.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="406"/>
+        <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>Расширение файла является зарезервированным для виртуальных файлов.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="489"/>
+        <location filename="../src/libsync/discovery.cpp" line="496"/>
         <source>size</source>
         <translation>размер</translation>
     </message>
@@ -3733,12 +3733,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>права доступа</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="491"/>
+        <location filename="../src/libsync/discovery.cpp" line="498"/>
         <source>permission</source>
         <translation>разрешение</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="495"/>
+        <location filename="../src/libsync/discovery.cpp" line="502"/>
         <source>file id</source>
         <translation>id файла</translation>
     </message>
@@ -3758,12 +3758,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ответ сервера: %1 отсуствует</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="499"/>
+        <location filename="../src/libsync/discovery.cpp" line="506"/>
         <source>Server reported no %1</source>
         <translation>Сервер сообщил об отсутствии %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="844"/>
+        <location filename="../src/libsync/discovery.cpp" line="859"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation>Синхронизация невозможна по причине некорректного времени изменения файла</translation>
     </message>
@@ -3773,47 +3773,47 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Передача файлов в папку на сервере привела к конфликту версий. Файлы, вызвавшие конфликт версий, будут удалены.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1138"/>
+        <location filename="../src/libsync/discovery.cpp" line="1163"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Передача папки на сервер привела к конфликту версии. Папка, вызвавшая конфликт версии, будет удалена.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1141"/>
+        <location filename="../src/libsync/discovery.cpp" line="1166"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Передача файла на сервер привела к конфликту версии. Файл, вызвавший конфликт версии, будет удалён.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1475"/>
+        <location filename="../src/libsync/discovery.cpp" line="1524"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Игнорируется из-за совпадения с записью в списке исключений из синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1508"/>
+        <location filename="../src/libsync/discovery.cpp" line="1557"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Недостаточно прав для создания вложенных папок</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1513"/>
+        <location filename="../src/libsync/discovery.cpp" line="1562"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation>Недостаточно прав для создания файлов в этой папке</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1526"/>
+        <location filename="../src/libsync/discovery.cpp" line="1575"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Передача этого файла на сервер не разрешена, т.к. он доступен только для чтения, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1548"/>
+        <location filename="../src/libsync/discovery.cpp" line="1597"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Перемещено в некорректное расположение, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1562"/>
+        <location filename="../src/libsync/discovery.cpp" line="1611"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Удаление недопустимо, выполняется восстановление</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1700"/>
+        <location filename="../src/libsync/discovery.cpp" line="1749"/>
         <source>Error while reading the database</source>
         <translation>Ошибка чтения базы данных</translation>
     </message>
@@ -3823,7 +3823,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ошибка сервера при попытке прочитать каталог «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1761"/>
+        <location filename="../src/libsync/discovery.cpp" line="1810"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Ошибка сервера при попытке прочитать каталог «%1»: %2</translation>
     </message>
