@@ -59,6 +59,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     OCSYNC_EXPORT void setupFavLink(const QString &folder);
     OCSYNC_EXPORT QString octetsToString(qint64 octets);
     OCSYNC_EXPORT QByteArray userAgentString();
+
     /**
       * @brief Return whether launch on startup is enabled system wide.
       *
@@ -68,6 +69,11 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
       * Currently only implemented on Windows.
       */
     OCSYNC_EXPORT bool hasSystemLaunchOnStartup(const QString &appName);
+
+    /**
+     * @brief Return if launch on startup is enabled for the current user.
+     * @param appName the name of the application (because of branding)
+     */
     OCSYNC_EXPORT bool hasLaunchOnStartup(const QString &appName);
     OCSYNC_EXPORT void setLaunchOnStartup(const QString &appName, const QString &guiName, bool launch);
 
@@ -379,7 +385,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     OCSYNC_EXPORT QString appImageLocation();
     OCSYNC_EXPORT bool runningInAppImage();
 #endif
-}
+} // Utility namespace
 /** @} */ // \addtogroup
 
 inline bool Utility::isWindows()
@@ -426,7 +432,8 @@ inline bool Utility::isBSD()
     return false;
 #endif
 }
-}
+} // OCC namespace
+
 #endif // UTILITY_H
 
 OCSYNC_EXPORT QDebug &operator<<(QDebug &debug, std::chrono::nanoseconds in);

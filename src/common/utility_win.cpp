@@ -73,7 +73,7 @@ bool Utility::hasLaunchOnStartup(const QString &appName)
 
 void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName, bool enable)
 {
-    Q_UNUSED(guiName);
+    Q_UNUSED(guiName)
     QSettings settings(runPathC(), QSettings::NativeFormat);
     if (enable) {
         settings.setValue(appName, QDir::toNativeSeparators(QCoreApplication::applicationFilePath()));

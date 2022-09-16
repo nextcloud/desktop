@@ -141,6 +141,7 @@ IF( APPLE )
 
     target_sources(owncloudCore PRIVATE
             platform_mac.mm
+            platform_mac_deprecated.mm
             systray.mm
             settingsdialog_mac.mm
             guiutility_mac.mm

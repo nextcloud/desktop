@@ -60,8 +60,9 @@ void UnixPlatform::setLimitsForCoreDumps()
     }
 }
 
-std::unique_ptr<Platform> Platform::create()
+std::unique_ptr<Platform> Platform::create(const QString &appDomain)
 {
+    Q_UNUSED(appDomain)
     return std::make_unique<UnixPlatform>();
 }
 

@@ -14,6 +14,8 @@
 
 #include <memory>
 
+#include <QString>
+
 namespace OCC {
 
 /**
@@ -25,7 +27,7 @@ class Platform
 public:
     virtual ~Platform() = 0;
 
-    static std::unique_ptr<Platform> create();
+    static std::unique_ptr<Platform> create(const QString &appDomain);
 };
 
 } // OCC namespace
