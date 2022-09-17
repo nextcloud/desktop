@@ -69,6 +69,7 @@ AbstractButton {
             verticalAlignment: Text.AlignVCenter
 
             text: root.text
+            textFormat: Text.PlainText
             wrapMode: Text.Wrap
             color: root.colored ? Style.ncHeaderTextColor : Style.ncTextColor
             font.bold: root.primary
@@ -83,6 +84,7 @@ AbstractButton {
             verticalAlignment: Text.AlignVCenter
 
             text: root.secondaryText
+            textFormat: Text.PlainText
             wrapMode: Text.Wrap
             color: Style.ncSecondaryTextColor
             visible: root.secondaryText !== ""

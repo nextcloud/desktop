@@ -43,12 +43,14 @@ AbstractButton {
         Label {
             width: root.emojiWidth > 0 ? root.emojiWidth : implicitWidth
             text: emoji
+            textFormat: Text.PlainText
             horizontalAlignment: Image.AlignHCenter
             verticalAlignment: Image.AlignVCenter
         }
 
         Label {
             text: root.text
+            textFormat: Text.PlainText
             color: Style.ncTextColor
             verticalAlignment: Text.AlignVCenter
         }
