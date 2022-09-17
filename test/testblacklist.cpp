@@ -14,7 +14,7 @@ using namespace OCC;
 SyncJournalFileRecord journalRecord(FakeFolder &folder, const QByteArray &path)
 {
     SyncJournalFileRecord rec;
-    folder.syncJournal().getFileRecord(path, &rec);
+    [[maybe_unused]] const auto result = folder.syncJournal().getFileRecord(path, &rec);
     return rec;
 }
 

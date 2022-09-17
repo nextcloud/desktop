@@ -319,7 +319,11 @@ bool PropagateItemJob::hasEncryptedAncestor() const
     auto pathComponents = parentPath.split('/');
     while (!pathComponents.isEmpty()) {
         SyncJournalFileRecord rec;
-        propagator()->_journal->getFileRecord(pathComponents.join('/'), &rec);
+        const auto pathCompontentsJointed = pathComponents.join('/');
+        if (!propagator()->_journal->getFileRecord(pathCompontentsJointed, &rec)) {
+            qCWarning(lcPropagator) << "could not get file from local DB" << pathCompontentsJointed;
+        }
+
         if (rec.isValid() && rec._isE2eEncrypted) {
             return true;
         }
@@ -1192,9 +1196,17 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     if (!_item->isEmpty() && status == SyncFileItem::Success) {
         // If a directory is renamed, recursively delete any stale items
         // that may still exist below the old path.
-        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
-            && _item->_originalFile != _item->_renameTarget) {
-            propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
+        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME && _item->_originalFile != _item->_renameTarget) {
+            if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, true)) {
+                qCWarning(lcDirectory) << "could not delete file from local DB" << _item->_originalFile;
+                _state = Finished;
+                status = _item->_status = SyncFileItem::FatalError;
+                _item->_errorString = tr("could not delete file %1 from local DB").arg(_item->_originalFile);
+                qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished"
+                                     << "emit finished" << status;
+                emit finished(status);
+                return;
+            }
         }
 
         if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {

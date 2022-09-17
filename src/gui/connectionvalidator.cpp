@@ -278,7 +278,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
             _account->setHttp2Supported(
-                reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
+                reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
         }
     }
 #endif

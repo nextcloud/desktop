@@ -289,7 +289,10 @@ void OCC::HydrationJob::finalize(OCC::VfsCfApi *vfs)
 {
     // Mark the file as hydrated in the sync journal
     SyncJournalFileRecord record;
-    _journal->getFileRecord(_folderPath, &record);
+    if (!_journal->getFileRecord(_folderPath, &record)) {
+        qCWarning(lcHydration) << "could not get file from local DB" << _folderPath;
+        return;
+    }
     Q_ASSERT(record.isValid());
     if (!record.isValid()) {
         qCWarning(lcHydration) << "Couldn't find record to update after hydration" << _requestId << _folderPath;
@@ -320,7 +323,10 @@ void OCC::HydrationJob::finalize(OCC::VfsCfApi *vfs)
     // store the actual size of a file that has been decrypted as we will need its actual size when dehydrating it if requested
     record._fileSize = FileSystem::getSize(localPath() + folderPath());
 
-    _journal->setFileRecord(record);
+    const auto result = _journal->setFileRecord(record);
+    if (!result) {
+        qCWarning(lcHydration) << "Error when setting the file record to the database" << record._path << result.error();
+    }
 }
 
 void OCC::HydrationJob::onGetFinished()

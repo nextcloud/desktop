@@ -459,7 +459,11 @@ void PropagateDownloadFile::start()
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
     SyncJournalFileRecord parentRec;
-    propagator()->_journal->getFileRecord(parentPath, &parentRec);
+    if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
+        qCWarning(lcPropagateDownload) << "could not get file from local DB" << parentPath;
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath));
+        return;
+    }
 
     const auto account = propagator()->account();
     if (!account->capabilities().clientSideEncryptionAvailable() ||
@@ -502,7 +506,13 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
             done(SyncFileItem::NormalError, r.error());
             return;
         }
-        propagator()->_journal->deleteFileRecord(_item->_originalFile);
+
+        if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
+            qCWarning(lcPropagateDownload) << "could not delete file from local DB" << _item->_originalFile;
+            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
+            return;
+        }
+
         updateMetadata(false);
 
         if (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
@@ -855,7 +865,7 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()
+        && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()
          || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
         bodySize = 0;
         hasSizeHeader = false;
@@ -1236,7 +1246,12 @@ void PropagateDownloadFile::downloadFinished()
             auto fn = propagator()->fullLocalPath(virtualFile);
             qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
             QFile::remove(fn);
-            propagator()->_journal->deleteFileRecord(virtualFile);
+
+            if (!propagator()->_journal->deleteFileRecord(virtualFile)) {
+                qCWarning(lcPropagateDownload) << "could not delete file from local DB" << virtualFile;
+                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(virtualFile));
+                return;
+            }
 
             // Move the pin state to the new location
             auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());

@@ -68,7 +68,7 @@ private slots:
 
         // Update checksum
         record._checksumHeader = "Adler32:newchecksum";
-        _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
+        QVERIFY(_db.updateFileRecordChecksum("foo", "newchecksum", "Adler32"));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -81,7 +81,7 @@ private slots:
         record._fileId = "efg";
         record._remotePerm = RemotePermissions::fromDbValue("NV");
         record._fileSize = 289055;
-        _db.setFileRecord(record);
+        QVERIFY(_db.setFileRecord(record));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -213,11 +213,11 @@ private slots:
             record._type = type;
             record._etag = initialEtag;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
-            _db.setFileRecord(record);
+            QVERIFY(_db.setFileRecord(record));
         };
         auto getEtag = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
-            _db.getFileRecord(path, &record);
+            [[maybe_unused]] const auto result = _db.getFileRecord(path, &record);
             return record._etag;
         };
 
@@ -275,7 +275,7 @@ private slots:
             SyncJournalFileRecord record;
             record._path = path;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
-            _db.setFileRecord(record);
+            QVERIFY(_db.setFileRecord(record));
         };
 
         QByteArrayList elements;
@@ -296,8 +296,7 @@ private slots:
             bool ok = true;
             for (const auto& elem : elements) {
                 SyncJournalFileRecord record;
-                _db.getFileRecord(elem, &record);
-                if (!record.isValid()) {
+                if (!_db.getFileRecord(elem, &record) || !record.isValid()) {
                     qWarning() << "Missing record: " << elem;
                     ok = false;
                 }
@@ -305,17 +304,17 @@ private slots:
             return ok;
         };
 
-        _db.deleteFileRecord("moo", true);
+        QVERIFY(_db.deleteFileRecord("moo", true));
         elements.removeAll("moo");
         elements.removeAll("moo/file");
         QVERIFY(checkElements());
 
-        _db.deleteFileRecord("fo_", true);
+        QVERIFY(_db.deleteFileRecord("fo_", true));
         elements.removeAll("fo_");
         elements.removeAll("fo_/file");
         QVERIFY(checkElements());
 
-        _db.deleteFileRecord("foo%bar", true);
+        QVERIFY(_db.deleteFileRecord("foo%bar", true));
         elements.removeAll("foo%bar");
         QVERIFY(checkElements());
     }
