@@ -3773,6 +3773,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="918"/>
+        <source>Error while deleting file record %1 from the database</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Došlo je do nepodudaranja pri otpremanju nekih datoteka u mapu. Nepodudarne datoteke će biti izbrisane!</translation>
@@ -3842,6 +3847,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation type="unfinished"/>
     </message>
@@ -3869,6 +3879,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Datoteka %1 ne može se preuzeti jer nedostaju informacije o šifriranju.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>Datoteka %1 ne može se preuzeti jer nedostaju informacije o šifriranju.</translation>
@@ -3878,6 +3893,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/libsync/propagatedownload.cpp" line="1192"/>
         <source>File has changed since discovery</source>
         <translation>Datoteka se promijenila od njenog otkrića</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -4015,6 +4036,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Nije moguće ukloniti %1 zbog nepodudaranja naziva lokalne datoteke</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
@@ -4029,6 +4055,22 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Datoteka %1 ne može se preimenovati u %2 zbog nepodudaranja naziva lokalne datoteke</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
+        <source>Error writing metadata to the database</source>
+        <translation>Pogreška pri pisanju metapodataka u bazu podataka</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error updating metadata: %1</source>
         <translation>Pogreška pri ažuriranju metapodataka: %1</translation>
@@ -4037,12 +4079,6 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>Datoteka %1 je trenutno u upotrebi</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
-        <source>Error writing metadata to the database</source>
-        <translation>Pogreška pri pisanju metapodataka u bazu podataka</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
@@ -4061,6 +4097,11 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/libsync/propagateremotedelete.cpp" line="110"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Poslužitelj je vratio pogrešnu HTTP šifru. Očekivana je 204, ali je primljena „%1 %2”.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4105,6 +4146,16 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <location filename="../src/libsync/propagateremotemove.cpp" line="231"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Poslužitelj je vratio pogrešnu HTTP šifru. Očekivana je 201, ali je primljena „%1 %2”.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
@@ -5178,15 +5229,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Nije uspjelo ažuriranje metapodataka virtualne datoteke: %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="386"/>
+        <source>Could not set file record to local DB: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
         <source>Unresolved conflict.</source>
         <translation>Neriješeno nepodudaranje.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="478"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Dostupno je samo %1, za pokretanje je potrebno najmanje %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1028"/>
@@ -5261,6 +5311,12 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Simboličke poveznice nisu podržane u sinkronizaciji.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="478"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation>Dostupno je samo %1, za pokretanje je potrebno najmanje %2</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
         <source>File is listed on the ignore list.</source>
         <translation>Datoteka je navedena na popisu za zanemarivanje.</translation>
@@ -5286,11 +5342,6 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Naziv datoteke sadrži završne praznine.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="511"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nije moguće otvoriti ili stvoriti lokalnu sinkronizacijsku bazu podataka. Provjerite imate li pristup pisanju u mapi za sinkronizaciju.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>Naziv datoteke je predugačak.</translation>
@@ -5306,14 +5357,14 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Hijerarhija mapa je previše duboka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="527"/>
-        <source>The filename cannot be encoded on your file system.</source>
-        <translation>Naziv datoteke ne može se kodirati u vašem datotečnom sustavu.</translation>
+        <location filename="../src/libsync/syncengine.cpp" line="511"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Nije moguće otvoriti ili stvoriti lokalnu sinkronizacijsku bazu podataka. Provjerite imate li pristup pisanju u mapi za sinkronizaciju.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Upotrebljavaju se virtualne datoteke sa sufiksom, ali sufiks nije određen</translation>
+        <source>The filename cannot be encoded on your file system.</source>
+        <translation>Naziv datoteke ne može se kodirati u vašem datotečnom sustavu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -5321,14 +5372,19 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
         <translation>Nepodudaranje: preuzeta inačica poslužitelja, lokalna kopija preimenovana i nije otpremljena.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="539"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nije moguće pročitati crnu listu iz lokalne baze podataka</translation>
+        <location filename="../src/libsync/syncengine.cpp" line="527"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation>Upotrebljavaju se virtualne datoteke sa sufiksom, ali sufiks nije određen</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
         <source>Stat failed.</source>
         <translation>Stat nije uspio.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="539"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nije moguće pročitati crnu listu iz lokalne baze podataka</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
@@ -5726,13 +5782,13 @@ Ovo je novi, eksperimentalni način rada. Ako se odlučite aktivirati ga, prijav
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
-        <source>Error updating metadata due to invalid modification time</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <source>Error updating metadata due to invalid modification time</source>
         <translation type="unfinished"/>
     </message>
 </context>

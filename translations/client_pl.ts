@@ -3773,6 +3773,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zsynchronizować z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="918"/>
+        <source>Error while deleting file record %1 from the database</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation>Konflikt podczas wysyłania niektórych plików do katalogu. Konfliktowe zostaną wyjaśnione!</translation>
@@ -3842,6 +3847,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>Błąd podczas aktualizacji metadanych z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
@@ -3869,6 +3879,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można pobrać pliku %1 z powodu braku informacji o szyfrowaniu.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>Nie można pobrać pliku %1 z powodu braku informacji o szyfrowaniu.</translation>
@@ -3878,6 +3893,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagatedownload.cpp" line="1192"/>
         <source>File has changed since discovery</source>
         <translation>W trakcie wyszukiwania plik uległ zmianie</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -4015,6 +4036,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>Nie można usunąć %1 z powodu kolizji z lokalną nazwą pliku</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
@@ -4029,6 +4055,22 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zmienić nazwy pliku %1 na %2 z powodu konfliktu lokalnej nazwy pliku</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
+        <source>Error writing metadata to the database</source>
+        <translation>Błąd zapisu metadanych do bazy danych</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error updating metadata: %1</source>
         <translation>Błąd podczas aktualizowania metadanych: %1</translation>
@@ -4037,12 +4079,6 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>Plik %1 jest aktualnie używany</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
-        <source>Error writing metadata to the database</source>
-        <translation>Błąd zapisu metadanych do bazy danych</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
@@ -4061,6 +4097,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagateremotedelete.cpp" line="110"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Serwer zwrócił nieprawidłowy kod HTTP. Oczekiwano 204, a otrzymano &quot;%1 %2&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4105,6 +4146,16 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagateremotemove.cpp" line="231"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Serwer zwrócił nieprawidłowy kod HTTP. Oczekiwano 201, a otrzymano &quot;%1 %2&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
@@ -5178,15 +5229,14 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zaktualizować metadanych pliku wirtualnego: %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="386"/>
+        <source>Could not set file record to local DB: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
         <source>Unresolved conflict.</source>
         <translation>Nierozpoznany konflikt.</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="478"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>Dostępnych jest tylko %1, aby rozpocząć, potrzebujesz co najmniej %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1028"/>
@@ -5261,6 +5311,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Linki symboliczne nie są wspierane przy synchronizacji. </translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="478"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation>Dostępnych jest tylko %1, aby rozpocząć, potrzebujesz co najmniej %2</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
         <source>File is listed on the ignore list.</source>
         <translation>Plik znajduje się na liście ignorowanych.</translation>
@@ -5286,11 +5342,6 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nazwa pliku zawiera na końcu spacje.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="511"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Nie można otworzyć lub utworzyć lokalnej bazy danych synchronizacji. Upewnij się, że masz dostęp do zapisu w katalogu synchronizacji.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>Nazwa pliku jest za długa.</translation>
@@ -5306,14 +5357,14 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Hierarchia katalogów jest zbyt głęboka</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="527"/>
-        <source>The filename cannot be encoded on your file system.</source>
-        <translation>Nazwa pliku nie może być zakodowana w systemie plików.</translation>
+        <location filename="../src/libsync/syncengine.cpp" line="511"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>Nie można otworzyć lub utworzyć lokalnej bazy danych synchronizacji. Upewnij się, że masz dostęp do zapisu w katalogu synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>Używanie plików wirtualnych z przyrostkiem, lecz przyrostek nie jest ustawiony</translation>
+        <source>The filename cannot be encoded on your file system.</source>
+        <translation>Nazwa pliku nie może być zakodowana w systemie plików.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -5321,14 +5372,19 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Konflikt: Pobrano wersję z serwera, nazwa lokalnej kopii została zmieniona i nie wysłana.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="539"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>Nie można odczytać czarnej listy z lokalnej bazy danych</translation>
+        <location filename="../src/libsync/syncengine.cpp" line="527"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation>Używanie plików wirtualnych z przyrostkiem, lecz przyrostek nie jest ustawiony</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
         <source>Stat failed.</source>
         <translation>Błąd statystyk.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="539"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>Nie można odczytać czarnej listy z lokalnej bazy danych</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
@@ -5726,13 +5782,13 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
-        <source>Error updating metadata due to invalid modification time</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation>Błąd podczas aktualizacji metadanych z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <source>Error updating metadata due to invalid modification time</source>
         <translation>Błąd podczas aktualizacji metadanych z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
 </context>

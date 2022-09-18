@@ -3777,6 +3777,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>유효하지 않은 수정 시간으로 인해 동기화할 수 없습니다.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/discovery.cpp" line="918"/>
+        <source>Error while deleting file record %1 from the database</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
         <source>Conflict when uploading some files to a folder. Those, conflicted, are going to get cleared!</source>
         <translation type="unfinished"/>
@@ -3846,6 +3851,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>유효하지 않은 수정 시간으로 인한 메타데이터 업데이트 오류</translation>
     </message>
@@ -3873,6 +3883,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>암호화 정보가 없어서 %1 파일을 다운로드 할 수 없습니다.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
         <source>File %1 cannot be downloaded because encryption information is missing.</source>
         <translation>암호화 정보가 없어서 %1 파일을 다운로드 할 수 없습니다.</translation>
@@ -3882,6 +3897,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="1192"/>
         <source>File has changed since discovery</source>
         <translation>발견 이후 파일이 변경되었습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -4019,6 +4040,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Could not remove %1 because of a local file name clash</source>
         <translation>로컬 파일 이름 충돌로 인해 %1을 삭제할 수 없습니다.</translation>
     </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::PropagateLocalRename</name>
@@ -4033,6 +4059,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>로컬 파일 이름 충돌로 인해 파일 %1의 이름을 %2로 바꿀 수 없습니다.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
+        <source>Error writing metadata to the database</source>
+        <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error updating metadata: %1</source>
         <translation type="unfinished"/>
@@ -4041,12 +4083,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="263"/>
-        <source>Error writing metadata to the database</source>
-        <translation>데이터베이스에 메타데이터를 쓰는 중 오류가 발생했습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
@@ -4065,6 +4101,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateremotedelete.cpp" line="110"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>서버에서 잘못된 HTTP 코드를 반환했습니다. 204가 받아지는 대신 &quot;1 %2&quot;을 받았습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4109,6 +4150,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateremotemove.cpp" line="231"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>서버에서 잘못된 HTTP 코드를 반환했습니다. 201가 받아지는 대신 &quot;1 %2&quot;을 받았습니다.</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
+        <source>could not get file %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
@@ -5182,15 +5233,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>가상 파일 메타데이터를 업데이트할 수 없음: %1</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="386"/>
+        <source>Could not set file record to local DB: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
         <source>Unresolved conflict.</source>
         <translation>해결되지 않은 충돌</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/syncengine.cpp" line="478"/>
-        <source>Only %1 are available, need at least %2 to start</source>
-        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>%1 만 사용할 수 있습니다. 시작하려면 %2 이상이 필요합니다</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1028"/>
@@ -5265,6 +5315,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>심볼릭 링크는 동기화에서 지원되지 않습니다.</translation>
     </message>
     <message>
+        <location filename="../src/libsync/syncengine.cpp" line="478"/>
+        <source>Only %1 are available, need at least %2 to start</source>
+        <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
+        <translation>%1 만 사용할 수 있습니다. 시작하려면 %2 이상이 필요합니다</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/syncengine.cpp" line="493"/>
         <source>File is listed on the ignore list.</source>
         <translation>파일이 무시 목록에 추가되었습니다.</translation>
@@ -5290,11 +5346,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>파일 이름 뒤에 공백이 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="511"/>
-        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
-    </message>
-    <message>
         <location filename="../src/libsync/syncengine.cpp" line="518"/>
         <source>Filename is too long.</source>
         <translation>파일 이름이 너무 깁니다.</translation>
@@ -5310,14 +5361,14 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>폴더의 계층이 너무 깊습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="527"/>
-        <source>The filename cannot be encoded on your file system.</source>
-        <translation>파일 시스템에서 파일 이름을 인코딩 할 수 없습니다.</translation>
+        <location filename="../src/libsync/syncengine.cpp" line="511"/>
+        <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
+        <translation>로컬 동기화 데이터베이스를 열거나 만들 수 없습니다. 동기화 폴더에 대한 쓰기 권한이 있는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="527"/>
-        <source>Using virtual files with suffix, but suffix is not set</source>
-        <translation>가상 파일에 접미사를 사용 중이나, 접미사가 설정되지 않음</translation>
+        <source>The filename cannot be encoded on your file system.</source>
+        <translation>파일 시스템에서 파일 이름을 인코딩 할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="540"/>
@@ -5325,14 +5376,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>충돌: 서버 버전이 다운로드되었으며 로컬 사본의 이름이 바뀌었고 업로드되지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="539"/>
-        <source>Unable to read the blacklist from the local database</source>
-        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
+        <location filename="../src/libsync/syncengine.cpp" line="527"/>
+        <source>Using virtual files with suffix, but suffix is not set</source>
+        <translation>가상 파일에 접미사를 사용 중이나, 접미사가 설정되지 않음</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="544"/>
         <source>Stat failed.</source>
         <translation>스탯 실패</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="539"/>
+        <source>Unable to read the blacklist from the local database</source>
+        <translation>로컬 데이터베이스에서 블랙리스트를 읽을 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="571"/>
@@ -5730,13 +5786,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
-        <source>Error updating metadata due to invalid modification time</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation>유효하지 않은 수정 시간으로 인한 메타데이터 업데이트 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <source>Error updating metadata due to invalid modification time</source>
         <translation>유효하지 않은 수정 시간으로 인한 메타데이터 업데이트 오류</translation>
     </message>
 </context>
