@@ -457,8 +457,8 @@ void PropagateDownloadFile::start()
 
     SyncJournalFileRecord parentRec;
     if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
-        qCWarning(lcPropagateDownload) << "could not get file from local DB" << parentPath;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath), ErrorCategory::GenericError);
+        qCWarning(lcPropagateDownload) << "Could not get file from local DB" << parentPath;
+        done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(parentPath), ErrorCategory::GenericError);
         return;
     }
 

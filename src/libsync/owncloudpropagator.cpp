@@ -1425,7 +1425,7 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
                 qCWarning(lcDirectory) << "could not delete file from local DB" << _item->_originalFile;
                 _state = Finished;
                 status = _item->_status = SyncFileItem::FatalError;
-                _item->_errorString = tr("could not delete file %1 from local DB").arg(_item->_originalFile);
+                _item->_errorString = tr("Could not delete file %1 from local DB").arg(_item->_originalFile);
                 qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished"
                                      << "emit finished" << status;
                 emit finished(status);
