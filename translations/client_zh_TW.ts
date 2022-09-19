@@ -3775,7 +3775,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="918"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>從資料庫刪除紀錄 %1 時發生錯誤</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -3848,7 +3848,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫中刪除檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
@@ -3881,7 +3881,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
@@ -3898,7 +3898,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -4039,7 +4039,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
 </context>
 <context>
@@ -4057,12 +4057,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -4101,7 +4101,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
 </context>
 <context>
@@ -4150,12 +4150,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫取得檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>無法從本機資料庫刪除檔案紀錄 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
@@ -5231,7 +5231,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="386"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>無法將檔案紀錄設定至本機資料庫：%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
