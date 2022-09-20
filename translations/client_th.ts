@@ -562,7 +562,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="74"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>URL สำหรับ %1 เปลี่ยนจาก %2 เป็น %3 คุณต้องการยอมรับการเปลี่ยนแปลง URL นี้หรือไม่?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="77"/>
@@ -780,7 +780,8 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/application.cpp" line="580"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 รุ่น %2&lt;byte value=&quot;xd&quot;/&gt;
+ประสานข้อมูลไฟล์เดสก์ท็อปยูทิลิตี้</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="585"/>
@@ -791,32 +792,32 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
         <source>Show the settings dialog while starting.</source>
-        <translation type="unfinished"/>
+        <translation>แสดงกล่องโต้ตอบการตั้งค่าขณะเริ่มต้น</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="600"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>ออกจากอินสแตนซ์ที่ทำงานอยู่</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="601"/>
         <source>Write log to file (use - to write to stdout).</source>
-        <translation type="unfinished"/>
+        <translation>เขียนบันทึกลงในไฟล์ (ใช้เพื่อเขียนไปยัง stdout)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="602"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>เขียน Log output ของการประสานข้อมูลแต่ละรายการไปยังไฟล์ใหม่ในโฟลเดอร์</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="603"/>
         <source>Remove logs older than &lt;hours&gt; hours (to be used with --logdir).</source>
-        <translation type="unfinished"/>
+        <translation>ลบบันทึกที่เก่ากว่า &lt;hours&gt; ชั่วโมง (เพื่อใช้กับ --logdir)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="604"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>ล้างไฟล์บันทึกหลังจากเขียนทุกครั้ง</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="605"/>
@@ -827,22 +828,22 @@ File synchronization desktop utility.</source>
         <location filename="../src/gui/application.cpp" line="606"/>
         <location filename="../src/gui/application.cpp" line="607"/>
         <source>Override UI language.</source>
-        <translation type="unfinished"/>
+        <translation>แทนที่ภาษา UI</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="608"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>ใช้โฟลเดอร์การกำหนดค่าที่กำหนด</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="609"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>เปิดใช้งานโหมดแก้ไขข้อบกพร่อง</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="612"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>เปิดไฟล์ ระบบไฟล์เสมือน (ทางเลือก)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="612"/>
@@ -1768,7 +1769,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="74"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>การเปลี่ยนแปลงภาษาจำเป็นต้องรีสตาร์ทแอปพลิเคชันนี้</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="210"/>
@@ -1792,12 +1793,12 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="336"/>
         <source>unknown (%1)</source>
-        <translation type="unfinished"/>
+        <translation>ไม่รู้จัก (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="320"/>
         <source>(use default)</source>
-        <translation type="unfinished"/>
+        <translation>(ใช้ค่าเริ่มต้น)</translation>
     </message>
 </context>
 <context>
@@ -1920,7 +1921,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>ไฟล์ %1 ถูกละเว้นเนื่องจากชื่อถูกสงวนไว้โดย %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
@@ -2259,12 +2260,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="554"/>
         <source>Oauth2 Error</source>
-        <translation type="unfinished"/>
+        <translation>ข้อผิดพลาด Oauth2</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="555"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>การตรวจสอบสิทธิ์ Oauth2 ต้องใช้การเชื่อมต่อที่ปลอดภัย</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="281"/>
@@ -2727,7 +2728,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="386"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถดาวน์โหลดไฟล์ %1 ได้เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="522"/>
@@ -2802,7 +2803,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถสร้างโฟลเดอร์ %1 ในเครื่อง เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
@@ -2830,7 +2831,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถลบ %1 ได้เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -2895,7 +2896,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="187"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>การตั้งค่าสถานะไฟล์ล้มเหลวเนื่องจากไฟล์ถูกล็อก</translation>
     </message>
 </context>
 <context>
@@ -3132,7 +3133,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>ลองประสานข้อมูลอีกครั้ง</translation>
     </message>
 </context>
 <context>
@@ -3685,7 +3686,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="970"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>สร้างและคัดลอกลิงก์สาธารณะไปยังคลิปบอร์ด</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="972"/>
@@ -4063,7 +4064,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="941"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>ไม่สามารถเชื่อมต่อฐานข้อมูล</translation>
     </message>
 </context>
 <context>
@@ -4270,7 +4271,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="303"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>ล่าสุดแล้ว (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="307"/>
