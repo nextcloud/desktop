@@ -391,7 +391,17 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
             emit itemCompleted(item);
         } else {
             // Update only outdated data from the disk.
-            if (!_journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode)) {
+
+            SyncJournalFileLockInfo lockInfo;
+            lockInfo._locked = item->_locked == SyncFileItem::LockStatus::LockedItem;
+            lockInfo._lockTime = item->_lockTime;
+            lockInfo._lockTimeout = item->_lockTimeout;
+            lockInfo._lockOwnerId = item->_lockOwnerId;
+            lockInfo._lockOwnerType = static_cast<qint64>(item->_lockOwnerType);
+            lockInfo._lockOwnerDisplayName = item->_lockOwnerDisplayName;
+            lockInfo._lockEditorApp = item->_lockOwnerDisplayName;
+
+            if (!_journal->updateLocalMetadata(item->_file, item->_modtime, item->_size, item->_inode, lockInfo)) {
                 qCWarning(lcEngine) << "Could not update local metadata for file" << item->_file;
             }
         }
@@ -689,7 +699,11 @@ void SyncEngine::slotDiscoveryFinished()
             restoreOldFiles(_syncItems);
         }
 
-        if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
+        if (_discoveryPhase->_anotherSyncNeeded && _discoveryPhase->_scheduleSyncInSecs > 0) {
+            QTimer::singleShot(_discoveryPhase->_scheduleSyncInSecs * 1000, this, [this]{
+                this->startSync();
+            });
+        } else if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
             _anotherSyncNeeded = ImmediateFollowUp;
         }
 

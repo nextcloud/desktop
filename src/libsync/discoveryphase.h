@@ -283,6 +283,7 @@ public:
     // output
     QByteArray _dataFingerprint;
     bool _anotherSyncNeeded = false;
+    int _scheduleSyncInSecs = -1;
 
 signals:
     void fatalError(const QString &errorString);
