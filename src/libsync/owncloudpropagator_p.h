@@ -55,7 +55,10 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
     case 423:
         // "Locked"
         // Should be temporary.
-        Q_FALLTHROUGH();
+        if (anotherSyncNeeded != nullptr) {
+            *anotherSyncNeeded = true;
+        }
+        return SyncFileItem::Message;
     case 502:
         // "Bad Gateway"
         // Should be temporary.
