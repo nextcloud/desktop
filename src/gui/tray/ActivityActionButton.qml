@@ -18,10 +18,12 @@ Item {
     property color textColor: Style.ncTextColor
     property color textColorHovered: Style.ncSecondaryTextColor
 
+    property bool primaryButton: false
+
     signal clicked()
 
     Loader {
-        active: root.imageSource === ""
+        active: root.imageSource === "" && !primaryButton
 
         anchors.fill: parent
 
@@ -38,7 +40,7 @@ Item {
     }
 
     Loader {
-        active: root.imageSource !== ""
+        active: root.imageSource !== "" || primaryButton
 
         anchors.fill: parent
 
