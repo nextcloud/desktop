@@ -66,7 +66,8 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
     stream << " " << url << " Header: { ";
     for (const auto &it : header) {
         stream << it.first << ": ";
-        if (it.first == "Authorization") {
+        static const bool dontRedact = qEnvironmentVariableIsSet("OWNCLOUD_HTTPLOGGER_NO_REDACT");
+        if (!dontRedact && it.first == "Authorization") {
             stream << (it.second.startsWith("Bearer ") ? "Bearer" : "Basic");
             stream << " [redacted]";
         } else {
