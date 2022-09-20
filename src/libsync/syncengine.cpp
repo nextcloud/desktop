@@ -680,7 +680,11 @@ void SyncEngine::slotDiscoveryFinished()
             restoreOldFiles(_syncItems);
         }
 
-        if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
+        if (_discoveryPhase->_anotherSyncNeeded && _discoveryPhase->_scheduleSyncInSecs > 0) {
+            QTimer::singleShot(_discoveryPhase->_scheduleSyncInSecs * 1000, this, [this]{
+                this->startSync();
+            });
+        } else if (_discoveryPhase->_anotherSyncNeeded && _anotherSyncNeeded == NoFollowUpSync) {
             _anotherSyncNeeded = ImmediateFollowUp;
         }
 

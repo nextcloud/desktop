@@ -1351,7 +1351,7 @@ bool SyncJournalDb::updateFileRecordChecksum(const QString &filename,
 }
 
 bool SyncJournalDb::updateLocalMetadata(const QString &filename,
-    qint64 modtime, qint64 size, quint64 inode)
+    qint64 modtime, qint64 size, quint64 inode, const SyncJournalFileLockInfo &lockInfo)
 
 {
     QMutexLocker locker(&_mutex);
@@ -1365,7 +1365,9 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     }
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::SetFileRecordLocalMetadataQuery, QByteArrayLiteral("UPDATE metadata"
-                                                                                                                     " SET inode=?2, modtime=?3, filesize=?4"
+                                                                                                                     " SET inode=?2, modtime=?3, filesize=?4, lock=?5, lockType=?6,"
+                                                                                                                     " lockOwnerDisplayName=?7, lockOwnerId=?8, lockOwnerEditor = ?9,"
+                                                                                                                     " lockTime=?10, lockTimeout=?11"
                                                                                                                      " WHERE phash == ?1;"),
         _db);
     if (!query) {
@@ -1376,6 +1378,13 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     query->bindValue(2, inode);
     query->bindValue(3, modtime);
     query->bindValue(4, size);
+    query->bindValue(5, lockInfo._locked ? 1 : 0);
+    query->bindValue(6, lockInfo._lockOwnerDisplayName);
+    query->bindValue(7, lockInfo._lockOwnerId);
+    query->bindValue(8, lockInfo._lockOwnerType);
+    query->bindValue(9, lockInfo._lockEditorApp);
+    query->bindValue(10, lockInfo._lockTime);
+    query->bindValue(11, lockInfo._lockTimeout);
     return query->exec();
 }
 
