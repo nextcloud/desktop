@@ -3775,7 +3775,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/discovery.cpp" line="918"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosya kaydı veritabanından silinirken sorun çıktı</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -3848,7 +3848,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası yerel veritabanından silinemedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
@@ -3881,7 +3881,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası yerel veritabanından alınamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
@@ -3898,7 +3898,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosya kaydı yerel veritabanından silinemedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -4039,7 +4039,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosya kaydı yerel veritabanından silinemedi</translation>
     </message>
 </context>
 <context>
@@ -4057,12 +4057,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası yerel veritabanından alınamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosya kaydı yerel veritabanından silinemedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -4101,7 +4101,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosya kaydı yerel veritabanından silinemedi</translation>
     </message>
 </context>
 <context>
@@ -4150,12 +4150,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosyası yerel veritabanından alınamadı</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>%1 dosya kaydı yerel veritabanından silinemedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
@@ -5231,7 +5231,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="386"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dosya kaydı yerel veritabanına yapılamadı: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>

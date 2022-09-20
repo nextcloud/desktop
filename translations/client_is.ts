@@ -442,7 +442,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
         <source>Encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Dulrita möppu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -1392,7 +1392,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
         <source>Copy Link</source>
-        <translation type="unfinished"/>
+        <translation>Afrita tengil</translation>
     </message>
 </context>
 <context>
@@ -3133,7 +3133,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="65"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Tengjast</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="99"/>
@@ -4687,7 +4687,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Lykilorð:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
@@ -5681,7 +5681,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 mínútur</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
@@ -5704,7 +5704,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Í þessari viku</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
@@ -5719,22 +5719,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 mínútur</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 klukkustundir</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 dagur</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dagar</translation>
     </message>
 </context>
 <context>
@@ -6140,7 +6140,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Staðvær mappa</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
@@ -6165,7 +6165,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Vistfang þjóns</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
@@ -6531,7 +6531,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Setja stöðu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="176"/>
