@@ -77,5 +77,31 @@ ScrollView {
                 }
             }
         }
+
+        Column {
+            id: placeholderColumn
+            width: parent.width * 0.8
+            anchors.centerIn: parent
+            visible: activityList.count === 0
+            spacing: Style.standardSpacing
+
+            Image {
+                width: parent.width
+                verticalAlignment: Image.AlignVCenter
+                horizontalAlignment: Image.AlignHCenter
+                fillMode: Image.PreserveAspectFit
+                source: "image://svgimage-custom-color/activity.svg/" + Style.ncSecondaryTextColor
+            }
+
+            Label {
+               width: parent.width
+               text: qsTr("No activities yet")
+               color: Style.ncSecondaryTextColor
+               font.bold: true
+               wrapMode: Text.Wrap
+               horizontalAlignment: Text.AlignHCenter
+               verticalAlignment: Text.AlignVCenter
+            }
+        }
     }
 }
