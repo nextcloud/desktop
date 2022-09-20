@@ -3868,7 +3868,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="528"/>
         <source>File %1 can not be downloaded because of a local file name clash!</source>
-        <translation>Não foi possível transferir o ficheiro %1 devido a um conflito com o nome de ficheiro local!</translation>
+        <translation>Não é possível transferir o ficheiro %1 devido a um conflito com o nome de ficheiro local!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="678"/>
@@ -5373,7 +5373,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1085"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation>O espaço em disco é baixo: Downloads que reduzam o espaço abaixo de %1 serão ignorados.</translation>
+        <translation>O espaço em disco é baixo: foram ignoradas as transferências que reduziriam o espaço abaixo de %1.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1092"/>
@@ -6693,7 +6693,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="252"/>
         <source>The downloaded file does not match the checksum, it will be resumed.</source>
-        <translation>O ficheiro transferido não corresponde ao &quot;checksum&quot;, este irá ser retomado.</translation>
+        <translation>O ficheiro transferido não corresponde à &quot;checksum&quot;, este irá ser retomado.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="368"/>
@@ -6918,7 +6918,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
         <source>Server version downloaded, copied changed local file into conflict file</source>
-        <translation>A versão transferida do servidor, o ficheiro local alterado foi copiado para o ficheiro de conflito</translation>
+        <translation>Versão do servidor transferida, ficheiro local alterado copiado para o ficheiro de conflito</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>

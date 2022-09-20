@@ -6646,7 +6646,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
