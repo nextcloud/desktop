@@ -20,7 +20,7 @@ ItemDelegate {
     property color adjustedHeaderColor: Theme.darkMode ? Qt.lighter(UserModel.currentUser.headerColor, 2)
                                                        : Qt.darker(UserModel.currentUser.headerColor, 1.5)
 
-    enabled: (model.path !== "" || model.link !== "" || model.isCurrentUserFileActivity === true)
+    enabled: (model.path !== "" || model.link !== "" || model.links.length > 0 ||  model.isCurrentUserFileActivity === true)
     padding: Style.standardSpacing
 
     Accessible.role: Accessible.ListItem
