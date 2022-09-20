@@ -53,7 +53,7 @@ def hook(context):
         'guiTestReportDir': 'GUI_TEST_REPORT_DIR',
     }
 
-    DEFAULT_CONFIG = {
+    context.userData = {
         'localBackendUrl': 'https://localhost:9200/',
         'secureLocalBackendUrl': 'https://localhost:9200/',
         'maxSyncTimeout': 60,
@@ -67,32 +67,34 @@ def hook(context):
         'guiTestReportDir': os.path.abspath('../reports/'),
     }
 
-    # read configs from environment variables
-    context.userData = {}
-    for key, value in CONFIG_ENV_MAP.items():
-        context.userData[key] = os.environ.get(value, '')
-
     # try reading configs from config.ini
     cfg = ConfigParser()
     try:
         if cfg.read('../config.ini'):
-            for key, value in context.userData.items():
-                if value == '':
-                    context.userData[key] = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
+            for key, _ in context.userData.items():
+                if key in CONFIG_ENV_MAP:
+                    value = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
+                    if value:
+                        context.userData[key] = value
     except Exception as err:
         test.log(str(err))
 
+    # read and override configs from environment variables
+    for key, value in CONFIG_ENV_MAP.items():
+        if os.environ.get(value):
+            context.userData[key] = os.environ.get(value)
+
     # Set the default values if empty
     for key, value in context.userData.items():
-        if value == '':
-            context.userData[key] = DEFAULT_CONFIG[key]
-        elif key == 'maxSyncTimeout' or key == 'minSyncTimeout':
+        if key == 'maxSyncTimeout' or key == 'minSyncTimeout':
             context.userData[key] = builtins.int(value)
         elif (
             key == 'clientRootSyncPath'
-            or 'tempFolderPath'
-            or 'clientConfigDir'
-            or 'guiTestReportDir'
+            or key == 'tempFolderPath'
+            or key == 'clientConfigDir'
+            or key == 'guiTestReportDir'
+            or key == 'localBackendUrl'
+            or key == 'middlewareUrl'
         ):
             # make sure there is always one trailing slash
             context.userData[key] = value.rstrip('/') + '/'
