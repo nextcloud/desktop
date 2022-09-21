@@ -10,7 +10,7 @@ Item {
     property string text: ""
     property string toolTipText: ""
 
-    property bool bold: false
+    property bool primaryButton: false
 
     property string imageSource: ""
     property string imageSourceHover: ""
@@ -18,12 +18,10 @@ Item {
     property color textColor: Style.ncTextColor
     property color textColorHovered: Style.ncSecondaryTextColor
 
-    property bool primaryButton: false
-
     signal clicked()
 
     Loader {
-        active: root.imageSource === "" && !primaryButton
+        active: !root.primaryButton
 
         anchors.fill: parent
 
@@ -40,7 +38,7 @@ Item {
     }
 
     Loader {
-        active: root.imageSource !== "" || primaryButton
+        active: root.primaryButton
 
         anchors.fill: parent
 
@@ -55,7 +53,7 @@ Item {
             textColor: root.textColor
             textColorHovered: root.textColorHovered
 
-            bold: root.bold
+            bold: root.primaryButton
 
             imageSource: root.imageSource
             imageSourceHover: root.imageSourceHover
