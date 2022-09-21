@@ -97,7 +97,8 @@ bool Progress::isWarningKind(SyncFileItem::Status kind)
         || kind == SyncFileItem::FatalError || kind == SyncFileItem::FileIgnored
         || kind == SyncFileItem::Conflict || kind == SyncFileItem::Restoration
         || kind == SyncFileItem::DetailError || kind == SyncFileItem::BlacklistedError
-        || kind == SyncFileItem::FileLocked;
+        || kind == SyncFileItem::FileLocked || kind == SyncFileItem::FileNameInvalid
+        || kind == SyncFileItem::FileNameClash;
 }
 
 bool Progress::isIgnoredKind(SyncFileItem::Status kind)

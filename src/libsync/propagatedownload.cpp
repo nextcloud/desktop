@@ -518,14 +518,14 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
     }
     if (_item->_type == ItemTypeVirtualFile) {
         if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::NormalError, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            done(SyncFileItem::FileNameClash, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
             return;
         }
 
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
         // do a klaas' case clash check.
         if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
             return;
         }
         auto r = vfs->createPlaceholder(*_item);
@@ -623,7 +623,7 @@ void PropagateDownloadFile::startDownload()
 
     // do a klaas' case clash check.
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::FileNameClash, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
@@ -1116,7 +1116,7 @@ void PropagateDownloadFile::downloadFinished()
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::FileNameClash, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
