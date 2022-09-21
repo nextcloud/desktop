@@ -46,10 +46,9 @@ RowLayout {
             imageSource: model.modelData.imageSource ? model.modelData.imageSource + root.adjustedHeaderColor : ""
             imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
 
-            textColor: imageSource !== "" || primary ? root.adjustedHeaderColor : Style.ncTextColor
-            textColorHovered: imageSource !== "" || primary ? UserModel.currentUser.headerTextColor : Style.ncTextColor
+            textColor: primary ? root.adjustedHeaderColor : Style.ncTextColor
+            textColorHovered: primary ? UserModel.currentUser.headerTextColor : Style.ncTextColor
 
-            bold: primary
             primaryButton: primary
 
             onClicked: !isTalkReplyButton ? root.triggerAction(model.index) : root.showReplyField()
