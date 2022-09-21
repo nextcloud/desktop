@@ -1,3 +1,4 @@
+include(OCApplyCommonSettings)
 
 function(add_vfs_plugin)
     set(options "")
@@ -8,6 +9,8 @@ function(add_vfs_plugin)
     add_library(vfs_${__PLUGIN_NAME} MODULE
         ${__PLUGIN_SRC}
     )
+    apply_common_target_settings(vfs_${__PLUGIN_NAME})
+
 
     set_target_properties(vfs_${__PLUGIN_NAME} PROPERTIES OUTPUT_NAME "${synclib_NAME}_vfs_${__PLUGIN_NAME}")
 

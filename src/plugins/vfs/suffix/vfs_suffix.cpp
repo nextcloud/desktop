@@ -129,7 +129,7 @@ bool VfsSuffix::isDehydratedPlaceholder(const QString &filePath)
 
 bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
 {
-    if (stat->path.endsWith(fileSuffix().toUtf8())) {
+    if (stat->path.endsWith(fileSuffix())) {
         stat->type = ItemTypeVirtualFile;
         return true;
     }
