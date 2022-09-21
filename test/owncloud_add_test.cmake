@@ -1,3 +1,4 @@
+include(OCApplyCommonSettings)
 find_package(Qt5 COMPONENTS Core Test Xml Network REQUIRED)
 
 include(ECMAddTests)
@@ -12,6 +13,7 @@ function(owncloud_add_test test_class)
         LINK_LIBRARIES
         owncloudCore syncenginetestutils testutilsloader Qt5::Test
     )
+    apply_common_target_settings_soft(${OWNCLOUD_TEST_CLASS}Test)
     target_compile_definitions(${OWNCLOUD_TEST_CLASS}Test PRIVATE OWNCLOUD_BIN_PATH="${CMAKE_BINARY_DIR}/bin" SOURCEDIR="${PROJECT_SOURCE_DIR}")
 
     target_include_directories(${OWNCLOUD_TEST_CLASS}Test PRIVATE "${CMAKE_SOURCE_DIR}/test/")

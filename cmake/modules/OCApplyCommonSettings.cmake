@@ -1,4 +1,18 @@
+# common target settings that are used by all important targets
+# not adding strict compile settings
+# included in apply_common_target_settings
+function(apply_common_target_settings_soft targetNamme)
+    if(FORCE_ASSERTS)
+        target_compile_definitions(${targetNamme}
+            PRIVATE
+                QT_FORCE_ASSERTS
+        )
+    endif()
+endfunction()
+
+# common target settings that are used by all important targets
 function(apply_common_target_settings targetNamme)
+    apply_common_target_settings_soft(${targetNamme})
     target_compile_definitions(${targetNamme}
         PRIVATE
             QT_NO_CAST_TO_ASCII

@@ -104,6 +104,9 @@ option(BUILD_GUI "BUILD_GUI" ON)
 # build the auto updater component
 option(WITH_AUTO_UPDATER "WITH_AUTO_UPDATER" ON)
 
+# build with -DQT_FORCE_ASSERTS
+option(FORCE_ASSERTS "FORCE_ASSERTS" OFF)
+
 # specify additional vfs plugins
 set(VIRTUAL_FILE_SYSTEM_PLUGINS off suffix win CACHE STRING "Name of internal plugin in src/libsync/vfs or the locations of virtual file plugins")
 
