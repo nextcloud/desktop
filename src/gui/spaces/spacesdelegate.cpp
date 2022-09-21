@@ -21,7 +21,6 @@
 #include "spacesmodel.h"
 
 #include <QApplication>
-#include <QDebug>
 #include <QDesktopServices>
 #include <QMouseEvent>
 #include <QPainter>
