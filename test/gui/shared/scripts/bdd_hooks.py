@@ -27,6 +27,8 @@ from datetime import datetime
 previousFailResultCount = 0
 previousErrorResultCount = 0
 
+# socket messages
+socket_messages = []
 
 @OnScenarioStart
 def hook(context):
@@ -151,8 +153,9 @@ def scenarioFailed():
 
 @OnScenarioEnd
 def hook(context):
-    # close socket connection
-    global socketConnect
+    # close socket connection and clear messages
+    global socketConnect, socket_messages
+    socket_messages.clear()
     if socketConnect:
         socketConnect.connected = False
         socketConnect._sock.close()

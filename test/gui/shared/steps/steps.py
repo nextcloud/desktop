@@ -11,7 +11,6 @@ import requests
 import builtins
 import shutil
 
-from objectmaphelper import RegularExpression
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 from helpers.SetupClientHelper import *
 from helpers.FilesHelper import buildConflictedRegex
@@ -23,26 +22,80 @@ from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
 from pageObjects.AccountStatus import AccountStatus
 
+from helpers.SyncHelper import (
+    SYNC_STATUS,
+    getRootSyncPatterns,
+    generateSyncPatternFromMessages,
+    filterSyncMessages,
+    matchPatterns,
+)
+
 # the script needs to use the system wide python
 # to switch from the built-in interpreter see https://kb.froglogic.com/squish/howto/using-external-python-interpreter-squish-6-6/
 # if the IDE fails to reference the script, add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
 sys.path.append(os.path.realpath('../../../shell_integration/nautilus/'))
 from syncstate import SocketConnect
-import functools
 
 
 socketConnect = None
 
 createdUsers = {}
 
-# File syncing in client has the following status
-SYNC_STATUS = {
-    'SYNC': 'STATUS:SYNC',  # sync in process
-    'OK': 'STATUS:OK',  # sync completed
-    'ERROR': 'STATUS:ERROR',  # file sync has error
-    'IGNORE': 'STATUS:IGNORE',  # file is igored
-    'NOP': 'STATUS:NOP',  # file yet to be synced
-}
+
+def waitForRootSyncToComplete(context, timeout=None, pool_interval=500):
+    # listen for root folder status before syncing
+    listenSyncStatusForItem(context.userData['currentUserSyncPath'])
+
+    if not timeout:
+        timeout = context.userData['maxSyncTimeout'] * 1000
+
+    synced = waitFor(
+        lambda: checkRootSyncPattern(pool_interval),
+        timeout,
+    )
+    if not synced:
+        raise Exception(
+            "[Timeout Error] "
+            + timeout
+            + "ms timeout while waiting for sync to complete"
+        )
+
+
+def checkRootSyncPattern(pool_interval):
+    patterns = getRootSyncPatterns()
+    new_messages = getSocketMessagesDry()
+    messages = updateSocketMessages(new_messages)
+    for idx, _ in enumerate(messages):
+        next = idx + 1
+        if next in range(len(messages)):
+            actual_pattern = generateSyncPatternFromMessages(messages[idx : next + 1])
+            for pattern in patterns:
+                if matchPatterns(pattern, actual_pattern):
+                    return True
+    # snooze takes time in seconds
+    # convert to milliseconds
+    snooze(pool_interval / 1000)
+    return False
+
+
+def getSocketMessagesDry():
+    socket_messages = []
+    socketConnect = getSocketConnection()
+    socketConnect.read_socket_data_with_timeout(0.1)
+    for line in socketConnect.get_available_responses():
+        socket_messages.append(line)
+    return socket_messages
+
+
+def updateSocketMessages(messages):
+    global socket_messages
+    socket_messages.extend(filterSyncMessages(messages))
+    return socket_messages
+
+
+def listenSyncStatusForItem(item, type='FOLDER'):
+    socketConnect = getSocketConnection()
+    socketConnect.sendCommand("RETRIEVE_" + type.upper() + "_STATUS:" + item + "\n")
 
 
 # gets all users information created in a test scenario
@@ -140,6 +193,9 @@ def step(context, username):
 
     enterUserPassword = EnterPassword()
     enterUserPassword.enterPassword(password)
+
+    # wait for files to sync
+    waitForRootSyncToComplete(context)
 
 
 @Given('the user has started the client')
