@@ -232,7 +232,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._status == SyncFileItem::Conflict
                 || a._status == SyncFileItem::Restoration
                 || a._status == SyncFileItem::FileLocked
-                || a._status == SyncFileItem::FileNameInvalid) {
+                || a._status == SyncFileItem::FileNameInvalid
+                || a._status == SyncFileItem::FileNameClash) {
                 colorIconPath.append("state-warning.svg");
                 return colorIconPath;
             } else if (a._status == SyncFileItem::FileIgnored) {

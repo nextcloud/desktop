@@ -71,6 +71,12 @@ public:
          */
         FileNameInvalid,
 
+        /**
+         * There is a file name clash (e.g. attempting to download test.txt when TEST.TXT already exists
+         * on a platform where the filesystem is case-insensitive
+         */
+        FileNameClash,
+
         /** For errors that should only appear in the error view.
          *
          * Some errors also produce a summary message. Usually displaying that message is
