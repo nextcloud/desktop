@@ -186,6 +186,7 @@ set_target_properties(owncloud PROPERTIES
     AUTOUIC ON
     AUTORCC ON
 )
+apply_common_target_settings(owncloud)
 target_link_libraries(owncloud owncloudCore owncloudResources)
 
 MESSAGE(STATUS "OWNCLOUD_SIDEBAR_ICONS: ${APPLICATION_ICON_NAME}: ${OWNCLOUD_SIDEBAR_ICONS}")

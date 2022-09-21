@@ -57,7 +57,7 @@ bool NetrcParser::parse()
     if (!netrc.open(QIODevice::ReadOnly)) {
         return false;
     }
-    QString content = netrc.readAll();
+    QString content = QString::fromUtf8(netrc.readAll());
 
     QStringTokenizer tokenizer(content, QStringLiteral(" \n\t"));
     tokenizer.setQuoteCharacters(QStringLiteral("\"'"));

@@ -56,7 +56,12 @@ struct QTokenizerPrivate {
         bool inQuote;
         bool inEscape;
         char_type quoteChar;
-        State() : inQuote(false), inEscape(false), quoteChar('\0') {}
+        State()
+            : inQuote(false)
+            , inEscape(false)
+            , quoteChar(QLatin1Char('\0'))
+        {
+        }
     };
 
     QTokenizerPrivate(const T& _string, const T& _delims) :
@@ -85,7 +90,7 @@ struct QTokenizerPrivate {
         if (state->inQuote) {
             if (state->inEscape) {
                 state->inEscape = false;
-            } else if (c == '\\') {
+            } else if (c == QLatin1Char('\\')) {
                 state->inEscape = true;
             } else if (c == state->quoteChar) {
                 state->inQuote = false;

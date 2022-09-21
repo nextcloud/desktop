@@ -114,7 +114,7 @@ void sync(const SyncCTX &ctx)
             qCritical() << "Could not open file containing the list of unsynced folders: " << ctx.options.unsyncedfolders;
         } else {
             // filter out empty lines and comments
-            selectiveSyncList = QString::fromUtf8(f.readAll()).split('\n').filter(QRegExp("\\S+")).filter(QRegExp("^[^#]"));
+            selectiveSyncList = QString::fromUtf8(f.readAll()).split(QLatin1Char('\n')).filter(QRegExp(QStringLiteral("\\S+"))).filter(QRegExp(QStringLiteral("^[^#]")));
 
             for (int i = 0; i < selectiveSyncList.count(); ++i) {
                 if (!selectiveSyncList.at(i).endsWith(QLatin1Char('/'))) {
@@ -245,7 +245,7 @@ void setupCredentials(SyncCTX &ctx)
         uint32_t port = 0;
         bool ok;
 
-        QStringList pList = ctx.options.proxy.split(':');
+        QStringList pList = ctx.options.proxy.split(QLatin1Char(':'));
         if (pList.count() == 3) {
             // http: //192.168.178.23 : 8080
             //  0            1            2
@@ -353,7 +353,7 @@ CmdOptions parseOptions(const QStringList &app_args)
         help();
     }
 
-    options.target_url = args.takeLast();
+    options.target_url = QUrl(args.takeLast());
 
     options.source_dir = args.takeLast();
     QFileInfo fi(options.source_dir);
@@ -362,8 +362,8 @@ CmdOptions parseOptions(const QStringList &app_args)
         exit(1);
     }
     options.source_dir = fi.absoluteFilePath();
-    if (!options.source_dir.endsWith('/')) {
-        options.source_dir.append('/');
+    if (!options.source_dir.endsWith(QLatin1Char('/'))) {
+        options.source_dir.append(QLatin1Char('/'));
     }
 
     QStringListIterator it(args);
@@ -420,7 +420,7 @@ int main(int argc, char **argv)
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
-    QString opensslConf = QCoreApplication::applicationDirPath() + QString("/openssl.cnf");
+    QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 #endif
     SyncCTX ctx { parseOptions(app.arguments()) };
@@ -451,8 +451,8 @@ int main(int argc, char **argv)
         tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
 
         // Remote folders typically start with a / and don't end with one
-        ctx.folder = "/" + splitted.value(1);
-        if (ctx.folder.endsWith(QLatin1String("/")) && ctx.folder != QLatin1String("/")) {
+        ctx.folder = QLatin1Char('/') + splitted.value(1);
+        if (ctx.folder.endsWith(QLatin1Char('/')) && ctx.folder != QLatin1Char('/')) {
             ctx.folder.chop(1);
         }
         return tmp;

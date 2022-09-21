@@ -12,6 +12,7 @@ generate_theme(owncloudResources OWNCLOUD_SIDEBAR_ICONS)
 set(OWNCLOUD_SIDEBAR_ICONS ${OWNCLOUD_SIDEBAR_ICONS} CACHE INTERNAL "Sidebar icons" FORCE)
 
 target_link_libraries(owncloudResources PUBLIC Qt5::Core)
+apply_common_target_settings(owncloudResources)
 
 set_target_properties(owncloudResources PROPERTIES
     OUTPUT_NAME "${APPLICATION_EXECUTABLE}Resources"
