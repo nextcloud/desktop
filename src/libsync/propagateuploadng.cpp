@@ -405,12 +405,9 @@ void PropagateUploadFileNG::startNextChunk()
         return;
     }
 
-    QMap<QByteArray, QByteArray> headers;
-    headers["OC-Chunk-Offset"] = QByteArray::number(_currentChunkOffset);
-
     // job takes ownership of device via a QScopedPointer. Job deletes itself when finishing
     auto devicePtr = device.get(); // for connections later
-    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->account()->url(), chunkPath(_currentChunkOffset), std::move(device), headers, 0, this);
+    PUTFileJob *job = new PUTFileJob(propagator()->account(), propagator()->account()->url(), chunkPath(_currentChunkOffset), std::move(device), {}, 0, this);
     addChildJob(job);
     connect(job, &PUTFileJob::finishedSignal, this, &PropagateUploadFileNG::slotPutFinished);
     connect(job, &PUTFileJob::uploadProgress,

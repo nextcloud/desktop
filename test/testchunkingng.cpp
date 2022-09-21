@@ -95,10 +95,7 @@ private slots:
         fakeFolder.uploadState().children.first().insert(QStringLiteral("10000"), size);
 
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::PutOperation) {
-                // Test that we properly resuming and are not sending past data again.
-                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= uploadedSize);
-            } else if (op == QNetworkAccessManager::DeleteOperation) {
+            if (op == QNetworkAccessManager::DeleteOperation) {
                 Q_ASSERT(request.url().path().endsWith("/10000"));
             }
             return nullptr;
@@ -138,10 +135,7 @@ private slots:
 
         QStringList deletedPaths;
         fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
-            if (op == QNetworkAccessManager::PutOperation) {
-                // Test that we properly resuming, not resending the first chunk
-                Q_ASSERT(request.rawHeader("OC-Chunk-Offset").toLongLong() >= firstChunk.contentSize);
-            } else if (op == QNetworkAccessManager::DeleteOperation) {
+            if (op == QNetworkAccessManager::DeleteOperation) {
                 deletedPaths.append(request.url().path());
             }
             return nullptr;
