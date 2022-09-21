@@ -162,8 +162,7 @@ std::unique_ptr<csync_file_stat_t> csync_vio_local_readdir(csync_vio_handle_t *h
     } else if (handle->ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
         file_stat->type = ItemTypeDirectory;
     } else {
-        // exclude ".lnk" files as they are not essential, but, causing troubles when enabling the VFS due to QFileInfo::isDir() and other methods are freezing, which causes the ".lnk" files to start hydrating and freezing the app eventually.
-        file_stat->type = !OCC::FileSystem::isLnkFile(path) ? ItemTypeFile : ItemTypeSoftLink;
+        file_stat->type = ItemTypeFile;
     }
 
     /* Check for the hidden flag */
