@@ -17,11 +17,35 @@ class TestDatabaseError : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off << false;
+
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
+
+            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+        } else if (Utility::isWindows()) {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+    }
+
     void testDatabaseError() {
         /* This test will make many iteration, at each iteration, the iᵗʰ database access will fail.
          * The test ensure that if there is a failure, the next sync recovers. And if there was
          * no error, then everything was sync'ed properly.
          */
+
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        if (vfsMode == Vfs::WindowsCfApi) {
+            QSKIP("Known to be broken, see https://github.com/owncloud/client-desktop-vfs-win/issues/22");
+        }
 
         FileInfo finalState;
 
@@ -34,7 +58,7 @@ private slots:
         for (int count = 0; true; ++count) {
             qInfo() << "Starting Iteration" << count;
 
-            FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+            FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
 
             // Do a couple of changes
             fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"));
@@ -54,7 +78,7 @@ private slots:
             fakeFolder.syncJournal().autotestFailCounter = count;
 
             // run the sync
-            bool result = fakeFolder.syncOnce();
+            bool result = fakeFolder.applyLocalModificationsAndSync();
 
             qInfo() << "Result of iteration" << count << "was" << result;
 

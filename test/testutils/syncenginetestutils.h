@@ -6,7 +6,6 @@
  */
 #pragma once
 
-#include "accessmanager.h"
 #include "account.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
@@ -21,11 +20,11 @@
 #include <cstring>
 
 #include <QDir>
-#include <QNetworkReply>
 #include <QMap>
+#include <QNetworkReply>
+#include <QTimer>
 #include <QtTest>
 #include <cookiejar.h>
-#include <QTimer>
 
 #include <chrono>
 /*
@@ -98,9 +97,24 @@ public:
     virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
 };
 
+class FakeFolder;
+
+/**
+ * @brief The DiskFileModifier class is a FileModifier for files on the local disk.
+ *
+ * It uses a helper program (`test_helper`) to do the actual modifications. When running without a
+ * VFS, or when running with suffix-VFS, the changes are done before doing a sync. When running
+ * with a VFS, the OS will do callbacks to the test program. So in this case the modifications are
+ * done while the event loop is running, in order to process those OS callbacks.
+ *
+ * Note: these actions do NOT read content from files on disk: if the file would be dehydrated,
+ * reading will cause a re-hydration, which means network requests, and some tests explicitly check
+ * for the amount of requests.
+ */
 class DiskFileModifier : public FileModifier
 {
     QDir _rootDir;
+    QStringList _processArguments;
 
 public:
     DiskFileModifier(const QString &rootDirPath)
@@ -115,6 +129,9 @@ public:
     void mkdir(const QString &relativePath) override;
     void rename(const QString &from, const QString &to) override;
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
+
+    bool applyModifications();
+    Q_REQUIRED_RESULT bool applyModificationsAndSync(FakeFolder &ff, OCC::Vfs::Mode mode);
 };
 
 static inline qint64 defaultLastModified()
@@ -556,10 +573,9 @@ class FakeFolder
     OCC::AccountPtr _account;
     std::unique_ptr<OCC::SyncJournalDb> _journalDb;
     std::unique_ptr<OCC::SyncEngine> _syncEngine;
-    OCC::Vfs::Mode _vfsMode;
 
 public:
-    FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode = OCC::Vfs::Off);
+    FakeFolder(const FileInfo &fileTemplate, OCC::Vfs::Mode vfsMode = OCC::Vfs::Off, bool filesAreDehydrated = false);
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
@@ -609,10 +625,21 @@ public:
         return execUntilFinished();
     }
 
+    Q_REQUIRED_RESULT bool applyLocalModificationsAndSync()
+    {
+        auto mode = _syncEngine->syncOptions()._vfs->mode();
+        return _localModifier.applyModificationsAndSync(*this, mode);
+    }
+
+    Q_REQUIRED_RESULT bool applyLocalModificationsWithoutSync()
+    {
+        return _localModifier.applyModifications();
+    }
+
     bool isDehydratedPlaceholder(const QString &filePath);
+    QSharedPointer<OCC::Vfs> vfs() const;
 
 private:
-    void startVfs();
     static void toDisk(QDir &dir, const FileInfo &templateFi);
 
     void fromDisk(QDir &dir, FileInfo &templateFi);

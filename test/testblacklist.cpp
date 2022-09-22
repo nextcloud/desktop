@@ -23,6 +23,23 @@ class TestBlacklist : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off << false;
+
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
+
+            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+        } else if (Utility::isWindows()) {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+    }
+
     void testBlacklistBasic_data()
     {
         QTest::addColumn<bool>("remote");
@@ -32,9 +49,11 @@ private slots:
 
     void testBlacklistBasic()
     {
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
         QFETCH(bool, remote);
 
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         ItemCompletedSpy completeSpy(fakeFolder);
 
@@ -64,7 +83,15 @@ private slots:
         // The first sync and the download will fail - the item will be blacklisted
         modifier.insert(testFileName);
         fakeFolder.serverErrorPaths().append(testFileName, 500); // will be blacklisted
-        QVERIFY(!fakeFolder.syncOnce());
+        const bool syncResult = fakeFolder.applyLocalModificationsAndSync();
+        if (vfsMode == Vfs::WindowsCfApi && filesAreDehydrated && remote) {
+            // With dehydrated files, only a PROPFIND is done, but not a GET request.
+            // And it is the GET request that fails, and causes a blacklist entry, all "syncs" will succeed.
+            QVERIFY(syncResult);
+            QSKIP("The remainder of this test is not applicable for dehydrated files");
+        }
+
+        QVERIFY(!syncResult);
         {
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
@@ -86,7 +113,7 @@ private slots:
         cleanup();
 
         // Ignored during the second run - but soft errors are also errors
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         {
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
@@ -113,7 +140,7 @@ private slots:
             entry._lastTryTime -= 1;
             fakeFolder.syncJournal().setErrorBlacklistEntry(entry);
         }
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         {
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
@@ -139,7 +166,7 @@ private slots:
 
         // When the file changes a retry happens immediately
         modifier.appendByte(testFileName);
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         {
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);
@@ -167,7 +194,7 @@ private slots:
             entry._lastTryTime -= 1;
             fakeFolder.syncJournal().setErrorBlacklistEntry(entry);
         }
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         {
             auto it = completeSpy.findItem(testFileName);
             QVERIFY(it);

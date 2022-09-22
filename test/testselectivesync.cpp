@@ -17,11 +17,22 @@ class TestSelectiveSync : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
 
+        QTest::newRow("Vfs::Off") << Vfs::Off << false;
+
+        // Selectiv sync does not make sense for Vfs::WindowsCfApi, so don't test it.
+    }
 
     void testSelectiveSyncBigFolders()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         SyncOptions options = fakeFolder.syncEngine().syncOptions();
         options._newBigFolderSizeLimit = 20000; // 20 K
         fakeFolder.syncEngine().setSyncOptions(options);
@@ -56,7 +67,7 @@ private slots:
         fakeFolder.remoteModifier().find("B/newSmallDir")->extraDavProperties = "<oc:size>10</oc:size>";
         fakeFolder.remoteModifier().find("B/newSmallDir/subDir")->extraDavProperties = "<oc:size>10</oc:size>";
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(newBigFolder.count(), 1);
         QCOMPARE(newBigFolder.first()[0].toString(), QString("A/newBigDir"));
@@ -70,7 +81,7 @@ private slots:
         auto oldSync = fakeFolder.currentLocalState();
         // syncing again should do the same
         fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), oldSync);
         QCOMPARE(newBigFolder.count(), 1); // (since we don't have a real Folder, the files were not added to any list)
         newBigFolder.clear();
@@ -81,7 +92,7 @@ private slots:
         fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QStringLiteral("/"));
         fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QStringLiteral("A/newBigDir"));
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(newBigFolder.count(), 0);
         QCOMPARE(sizeRequests.count(), 0);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());

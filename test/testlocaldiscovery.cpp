@@ -20,10 +20,30 @@ class TestLocalDiscovery : public QObject
     Q_OBJECT
 
 private slots:
-    // Check correct behavior when local discovery is partially drawn from the db
+    void initTestCase_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off << false;
+
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
+
+            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+        } else if (Utility::isWindows()) {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+    }
+
+    /// Check correct behavior when local discovery is partially drawn from the db
     void testLocalDiscoveryStyle()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
 
         LocalDiscoveryTracker tracker;
         connect(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted, &tracker, &LocalDiscoveryTracker::slotItemCompleted);
@@ -37,7 +57,7 @@ private slots:
         tracker.addTouchedPath(QStringLiteral("A/X"));
 
         tracker.startSyncFullDiscovery();
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(tracker.localDiscoveryPaths().empty());
@@ -53,7 +73,7 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
         tracker.startSyncPartialDiscovery();
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
         QVERIFY(fakeFolder.currentRemoteState().find("A/X/x2"));
@@ -63,7 +83,7 @@ private slots:
         QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::DatabaseAndFilesystem);
         QVERIFY(tracker.localDiscoveryPaths().empty());
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(fakeFolder.syncEngine().lastLocalDiscoveryStyle(), LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(tracker.localDiscoveryPaths().empty());
@@ -71,7 +91,10 @@ private slots:
 
     void testLocalDiscoveryDecision()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         auto &engine = fakeFolder.syncEngine();
 
         QVERIFY(engine.shouldDiscoverLocally(""));
@@ -117,7 +140,10 @@ private slots:
     // tracker correctly.
     void testTrackerItemCompletion()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
 
         LocalDiscoveryTracker tracker;
         connect(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted, &tracker, &LocalDiscoveryTracker::slotItemCompleted);
@@ -138,7 +164,7 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
         tracker.startSyncPartialDiscovery();
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(fakeFolder.currentRemoteState().find("A/a3"));
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a4"));
@@ -148,7 +174,7 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::FilesystemOnly);
         tracker.startSyncFullDiscovery();
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a4"));
         QVERIFY(trackerContains("A/a4")); // had an error, still here
@@ -160,7 +186,7 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
         tracker.startSyncPartialDiscovery();
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(fakeFolder.currentRemoteState().find("A/a4"));
         QVERIFY(tracker.localDiscoveryPaths().empty());
@@ -168,29 +194,33 @@ private slots:
 
     void testDirectoryAndSubDirectory()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
 
         fakeFolder.localModifier().mkdir(QStringLiteral("A/newDir"));
         fakeFolder.localModifier().mkdir(QStringLiteral("A/newDir/subDir"));
         fakeFolder.localModifier().insert(QStringLiteral("A/newDir/subDir/file"), 10);
 
-        auto expectedState = fakeFolder.currentLocalState();
-
         // Only "A" was modified according to the file system tracker
         fakeFolder.syncEngine().setLocalDiscoveryOptions(
             LocalDiscoveryStyle::DatabaseAndFilesystem,
-            { "A" });
+            { QStringLiteral("A") });
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        QCOMPARE(fakeFolder.currentLocalState(), expectedState);
-        QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.currentRemoteState().find("A/newDir/subDir/file"));
     }
 
     // Tests the behavior of invalid filename detection
     void testServerBlacklist()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         auto cap = TestUtils::testCapabilities();
@@ -201,7 +231,7 @@ private slots:
         fakeFolder.localModifier().insert(QStringLiteral("C/moo"));
         fakeFolder.localModifier().insert(QStringLiteral("C/.moo"));
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentRemoteState().find("C/moo"));
         QVERIFY(fakeFolder.currentRemoteState().find("C/.moo"));
         QVERIFY(!fakeFolder.currentRemoteState().find("C/.foo"));

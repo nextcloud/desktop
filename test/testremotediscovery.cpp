@@ -48,6 +48,22 @@ class TestRemoteDiscovery : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off << false;
+
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
+
+            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+        } else if (Utility::isWindows()) {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+    }
 
     void testRemoteDiscoveryError_data()
     {
@@ -74,11 +90,14 @@ private slots:
     // Check what happens when there is an error.
     void testRemoteDiscoveryError()
     {
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
         QFETCH(int, errorKind);
         QFETCH(QString, expectedErrorString);
         QFETCH(bool, syncSucceeds);
 
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
 
         // Do Some change as well
         fakeFolder.localModifier().insert(QStringLiteral("A/z1"));
@@ -87,6 +106,7 @@ private slots:
         fakeFolder.remoteModifier().insert(QStringLiteral("A/z2"));
         fakeFolder.remoteModifier().insert(QStringLiteral("B/z2"));
         fakeFolder.remoteModifier().insert(QStringLiteral("C/z2"));
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         auto oldLocalState = fakeFolder.currentLocalState();
         auto oldRemoteState = fakeFolder.currentRemoteState();
@@ -112,7 +132,7 @@ private slots:
 
         ItemCompletedSpy completeSpy(fakeFolder);
         QSignalSpy errorSpy(&fakeFolder.syncEngine(), &SyncEngine::syncError);
-        QCOMPARE(fakeFolder.syncOnce(), syncSucceeds);
+        QCOMPARE(fakeFolder.applyLocalModificationsAndSync(), syncSucceeds);
 
         // The folder B should not have been sync'ed (and in particular not removed)
         QCOMPARE(oldLocalState.children["B"], fakeFolder.currentLocalState().children["B"]);
@@ -136,14 +156,17 @@ private slots:
         errorFolder = fakeFolder.account()->davPath();
         fatalErrorPrefix = QLatin1String("Server replied with an error while reading directory '' : ");
         errorSpy.clear();
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(errorSpy.size(), 1);
         QCOMPARE(errorSpy[0][0].toString(), QString(fatalErrorPrefix + expectedErrorString));
     }
 
     void testMissingData()
     {
-        FakeFolder fakeFolder{ FileInfo() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo(), vfsMode, filesAreDehydrated);
         fakeFolder.remoteModifier().insert(QStringLiteral("good"));
         fakeFolder.remoteModifier().insert(QStringLiteral("noetag"));
         fakeFolder.remoteModifier().find("noetag")->etag.clear();
@@ -160,7 +183,7 @@ private slots:
         });
 
         ItemCompletedSpy completeSpy(fakeFolder);
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(completeSpy.findItem("good")->_instruction, CSYNC_INSTRUCTION_NEW);
         QCOMPARE(completeSpy.findItem("noetag")->_instruction, CSYNC_INSTRUCTION_ERROR);

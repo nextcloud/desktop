@@ -71,8 +71,12 @@ private slots:
         for (auto it = children.cbegin(); it != children.cend(); ++it) {
             modifier.remove(it.key());
         }
-
+        // Explicitly check that local modifications are successfully applied, and then that the
+        // sync fails. We could calll `applyLocalModificationsAndSync()` instead, but that could
+        // fail when those local modifications fail to apply correctly.
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         QVERIFY(!fakeFolder.syncOnce()); // Should fail because we cancel the sync
+
         QCOMPARE(aboutToRemoveAllFilesCalled, 1);
 
         // Next sync should recover all files
@@ -113,6 +117,7 @@ private slots:
         for (auto it = children.cbegin(); it != children.cend(); ++it) {
             modifier.remove(it.key());
         }
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         QVERIFY(fakeFolder.syncOnce()); // Should succeed, and all files must then be deleted
 
@@ -174,11 +179,13 @@ private slots:
         fakeFolder.localModifier().mkdir(QStringLiteral("Q"));
         fakeFolder.localModifier().insert(QStringLiteral("Q/q1"));
         fakeFolder.localModifier().appendByte(QStringLiteral("B/b1"));
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(aboutToRemoveAllFilesCalled, 0);
 
         // Do some change localy
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a1"));
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // reset the server.
         fakeFolder.remoteModifier() = FileInfo::A12_B12_C12_S12();
@@ -270,6 +277,7 @@ private slots:
         QVERIFY(conflict); // Just to be sure, we kept the old file in a conflict
         QCOMPARE(conflict->contentChar, 'W');
         fakeFolder.localModifier().remove(conflict->path());
+        QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // We actually do not remove files that technically should have been removed (we don't want data-loss)
         QVERIFY(currentState.find("C/c3_removed"));

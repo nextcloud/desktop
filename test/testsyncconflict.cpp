@@ -52,18 +52,23 @@ QStringList findConflicts(const FileInfo &dir)
     return conflicts;
 }
 
-bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString &path)
+bool expectAndWipeConflict(FakeFolder &fFolder, const QString &path)
 {
     PathComponents pathComponents(path);
-    auto base = state.find(pathComponents.parentDirComponents());
-    if (!base)
+    auto localState = fFolder.currentLocalState();
+    auto base = localState.find(pathComponents.parentDirComponents());
+    if (!base) {
         return false;
+    }
+
     for (const auto &item : qAsConst(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains(QLatin1String("(conflicted copy"))) {
-            local.remove(item.path());
+            fFolder.localModifier().remove(item.path());
+            fFolder.applyLocalModificationsWithoutSync();
             return true;
         }
     }
+
     return false;
 }
 
@@ -81,9 +86,29 @@ class TestSyncConflict : public QObject
     Q_OBJECT
 
 private slots:
+    void initTestCase_data()
+    {
+        QTest::addColumn<Vfs::Mode>("vfsMode");
+        QTest::addColumn<bool>("filesAreDehydrated");
+
+        QTest::newRow("Vfs::Off") << Vfs::Off << false;
+
+        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+            QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
+
+            // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
+            // QTest::newRow("Vfs::WindowsCfApi hydrated") << Vfs::WindowsCfApi << false;
+        } else if (Utility::isWindows()) {
+            QWARN("Skipping Vfs::WindowsCfApi");
+        }
+    }
+
     void testNoUpload()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), FileModifier::DefaultFileSize, 'L');
@@ -91,24 +116,32 @@ private slots:
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        // Verify that the conflict names don't have the user name
         const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]);
-        for (const auto &name : conflicts) {
-            QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
-        }
+        if (filesAreDehydrated) {
+            // There should be no conflicts: before a modification is done to a local file,
+            // it will be downloaded from the remote first.
+            QCOMPARE(conflicts.size(), 0);
+        } else {
+            // Verify that the conflict names don't have the user name
+            for (const auto &name : conflicts) {
+                QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
+            }
 
-        QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a1"));
-        QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a2"));
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+            QVERIFY(expectAndWipeConflict(fakeFolder, "A/a1"));
+            QVERIFY(expectAndWipeConflict(fakeFolder, "A/a2"));
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
     }
 
     void testUploadAfterDownload()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
 
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
+        fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         QMap<QByteArray, QString> conflictMap;
@@ -134,31 +167,40 @@ private slots:
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
-        QVERIFY(fakeFolder.syncOnce());
-        auto local = fakeFolder.currentLocalState();
-        auto remote = fakeFolder.currentRemoteState();
-        QCOMPARE(local, remote);
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+        if (filesAreDehydrated) {
+            // There should be no conflicts: before a modification is done to a local file,
+            // it will be downloaded from the remote first.
+            QCOMPARE(conflictMap.size(), 0);
+        } else {
+            auto local = fakeFolder.currentLocalState();
+            auto remote = fakeFolder.currentRemoteState();
+            QCOMPARE(local, remote);
 
-        auto a1FileId = fakeFolder.remoteModifier().find("A/a1")->fileId;
-        auto a2FileId = fakeFolder.remoteModifier().find("A/a2")->fileId;
-        QVERIFY(conflictMap.contains(a1FileId));
-        QVERIFY(conflictMap.contains(a2FileId));
-        QCOMPARE(conflictMap.size(), 2);
-        QCOMPARE(Utility::conflictFileBaseNameFromPattern(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
+            auto a1FileId = fakeFolder.remoteModifier().find("A/a1")->fileId;
+            auto a2FileId = fakeFolder.remoteModifier().find("A/a2")->fileId;
+            QVERIFY(conflictMap.contains(a1FileId));
+            QVERIFY(conflictMap.contains(a2FileId));
+            QCOMPARE(conflictMap.size(), 2);
+            QCOMPARE(Utility::conflictFileBaseNameFromPattern(conflictMap[a1FileId].toUtf8()), QByteArray("A/a1"));
 
-        // Check that the conflict file contains the username
-        QVERIFY(conflictMap[a1FileId].contains(QString("(conflicted copy %1 ").arg(fakeFolder.syncEngine().account()->davDisplayName())));
+            // Check that the conflict file contains the username
+            QVERIFY(conflictMap[a1FileId].contains(QString("(conflicted copy %1 ").arg(fakeFolder.syncEngine().account()->davDisplayName())));
 
-        QCOMPARE(remote.find(conflictMap[a1FileId])->contentChar, 'L');
-        QCOMPARE(remote.find("A/a1")->contentChar, 'R');
+            QCOMPARE(remote.find(conflictMap[a1FileId])->contentChar, 'L');
+            QCOMPARE(remote.find("A/a1")->contentChar, 'R');
 
-        QCOMPARE(remote.find(conflictMap[a2FileId])->contentSize, 5);
-        QCOMPARE(remote.find("A/a2")->contentSize, 6);
+            QCOMPARE(remote.find(conflictMap[a2FileId])->contentSize, 5);
+            QCOMPARE(remote.find("A/a2")->contentSize, 6);
+        }
     }
 
     void testSeparateUpload()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -185,13 +227,13 @@ private slots:
         // To do that we need to create a mock conflict record.
         auto a1FileId = fakeFolder.remoteModifier().find("A/a1")->fileId;
         QString conflictName = QStringLiteral("A/a1 (conflicted copy me 1234)");
-        fakeFolder.localModifier().insert(conflictName, 64, 'L');
+        fakeFolder.localModifier().insert(conflictName, FileModifier::DefaultFileSize, 'L');
         ConflictRecord conflictRecord;
         conflictRecord.path = conflictName.toUtf8();
         conflictRecord.baseFileId = a1FileId;
         conflictRecord.initialBasePath = "A/a1";
         fakeFolder.syncJournal().setConflictRecord(conflictRecord);
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(conflictMap.size(), 1);
         QCOMPARE(conflictMap[a1FileId], conflictName);
@@ -201,7 +243,7 @@ private slots:
         // Now the user can locally alter the conflict file and it will be uploaded
         // as usual.
         fakeFolder.localModifier().setContents(conflictName, FileModifier::DefaultFileSize + 1, 'P'); // make sure the file sizes are different
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(conflictMap.size(), 1);
         QCOMPARE(conflictMap[a1FileId], conflictName);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -209,7 +251,7 @@ private slots:
 
         // Similarly, remote modifications of conflict files get propagated downwards
         fakeFolder.remoteModifier().setContents(conflictName, FileModifier::DefaultFileSize + 1, 'Q'); // make sure the file sizes are different
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(conflictMap.isEmpty());
 
@@ -218,7 +260,7 @@ private slots:
         fakeFolder.remoteModifier().appendByte(conflictName);
         fakeFolder.remoteModifier().appendByte(conflictName);
         fakeFolder.localModifier().appendByte(conflictName);
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(conflictMap.size(), 1);
         QVERIFY(conflictMap.contains(a1ConflictFileId));
@@ -230,13 +272,16 @@ private slots:
     // What happens if we download a conflict file? Is the metadata set up correctly?
     void testDownloadingConflictFile()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // With no headers from the server
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a1 (conflicted copy 1234)"));
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         auto conflictRecord = fakeFolder.syncJournal().conflictRecord("A/a1 (conflicted copy 1234)");
         QVERIFY(conflictRecord.isValid());
@@ -259,7 +304,7 @@ private slots:
             return nullptr;
         });
         fakeFolder.remoteModifier().insert(QStringLiteral("A/really-a-conflict")); // doesn't look like a conflict, but headers say it is
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         conflictRecord = fakeFolder.syncJournal().conflictRecord("A/really-a-conflict");
         QVERIFY(conflictRecord.isValid());
@@ -272,7 +317,10 @@ private slots:
     // Check that conflict records are removed when the file is gone
     void testConflictRecordRemoval1()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -284,14 +332,14 @@ private slots:
         fakeFolder.syncJournal().setConflictRecord(conflictRecord);
 
         // A nothing-to-sync keeps them alive
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(fakeFolder.syncJournal().conflictRecord("A/a1").isValid());
         QVERIFY(fakeFolder.syncJournal().conflictRecord("A/a2").isValid());
 
         // When the file is removed, the record is removed too
         fakeFolder.localModifier().remove(QStringLiteral("A/a2"));
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QVERIFY(fakeFolder.syncJournal().conflictRecord("A/a1").isValid());
         QVERIFY(!fakeFolder.syncJournal().conflictRecord("A/a2").isValid());
@@ -300,7 +348,10 @@ private slots:
     // Same test, but with uploadConflictFiles == false
     void testConflictRecordRemoval2()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(false));
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
@@ -311,28 +362,34 @@ private slots:
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.localModifier().appendByte(QStringLiteral("A/a2"));
         fakeFolder.remoteModifier().appendByte(QStringLiteral("A/a2"));
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
-        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]);
-        QByteArray a1conflict;
-        QByteArray a2conflict;
-        for (const auto & conflict : conflicts) {
-            if (conflict.contains(QLatin1String("a1")))
-                a1conflict = conflict.toUtf8();
-            if (conflict.contains(QLatin1String("a2")))
-                a2conflict = conflict.toUtf8();
+        const auto &conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        if (filesAreDehydrated) {
+            // There should be no conflicts: before a modification is done to a local file,
+            // it will be downloaded from the remote first.
+            QCOMPARE(conflicts.size(), 0);
+        } else {
+            QByteArray a1conflict;
+            QByteArray a2conflict;
+            for (const auto &conflict : conflicts) {
+                if (conflict.contains("a1"))
+                    a1conflict = conflict.toUtf8();
+                if (conflict.contains("a2"))
+                    a2conflict = conflict.toUtf8();
+            }
+
+            // A nothing-to-sync keeps them alive
+            QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+            QVERIFY(fakeFolder.syncJournal().conflictRecord(a1conflict).isValid());
+            QVERIFY(fakeFolder.syncJournal().conflictRecord(a2conflict).isValid());
+
+            // When the file is removed, the record is removed too
+            fakeFolder.localModifier().remove(a2conflict);
+            QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+            QVERIFY(fakeFolder.syncJournal().conflictRecord(a1conflict).isValid());
+            QVERIFY(!fakeFolder.syncJournal().conflictRecord(a2conflict).isValid());
         }
-
-        // A nothing-to-sync keeps them alive
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.syncJournal().conflictRecord(a1conflict).isValid());
-        QVERIFY(fakeFolder.syncJournal().conflictRecord(a2conflict).isValid());
-
-        // When the file is removed, the record is removed too
-        fakeFolder.localModifier().remove(a2conflict);
-        QVERIFY(fakeFolder.syncOnce());
-        QVERIFY(fakeFolder.syncJournal().conflictRecord(a1conflict).isValid());
-        QVERIFY(!fakeFolder.syncJournal().conflictRecord(a2conflict).isValid());
     }
 
     void testConflictFileBaseName_data()
@@ -417,7 +474,10 @@ private slots:
 
     void testLocalDirRemoteFileConflict()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         ItemCompletedSpy completeSpy(fakeFolder);
 
@@ -443,7 +503,7 @@ private slots:
         fakeFolder.remoteModifier().remove(QStringLiteral("B"));
         fakeFolder.remoteModifier().insert(QStringLiteral("B"), 31);
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         conflicts += findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("A")]);
@@ -482,7 +542,7 @@ private slots:
         // another sync.
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
         cleanup();
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(itemSuccessful(completeSpy, conflicts[0], CSYNC_INSTRUCTION_NEW));
         QVERIFY(itemSuccessful(completeSpy, conflicts[0] + "/bar", CSYNC_INSTRUCTION_NEW));
@@ -495,7 +555,10 @@ private slots:
 
     void testLocalFileRemoteDirConflict()
     {
-        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(uploadConflictFilesCapabilities(true));
         ItemCompletedSpy completeSpy(fakeFolder);
 
@@ -516,7 +579,7 @@ private slots:
         fakeFolder.remoteModifier().mkdir(QStringLiteral("B/b1"));
         fakeFolder.remoteModifier().insert(QStringLiteral("B/b1/zzz"));
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         conflicts += findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("B")]);
         QCOMPARE(conflicts.size(), 3);
@@ -547,7 +610,10 @@ private slots:
 
     void testTypeConflictWithMove()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // the remote becomes a file, but a file inside the dir has moved away!
@@ -561,7 +627,7 @@ private slots:
         fakeFolder.localModifier().rename(QStringLiteral("B/b1"), QStringLiteral("b1"));
         fakeFolder.localModifier().insert(QStringLiteral("B/new"));
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(itemSuccessful(completeSpy, "A", CSYNC_INSTRUCTION_TYPE_CHANGE));
         QVERIFY(itemConflict(completeSpy, "B"));
@@ -580,7 +646,10 @@ private slots:
 
     void testTypeChange()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         ItemCompletedSpy completeSpy(fakeFolder);
 
         // dir becomes file
@@ -597,7 +666,7 @@ private slots:
         fakeFolder.localModifier().mkdir(QStringLiteral("C/c2"));
         fakeFolder.localModifier().insert(QStringLiteral("C/c2/bar"));
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(itemSuccessful(completeSpy, "A", CSYNC_INSTRUCTION_TYPE_CHANGE));
         QVERIFY(itemSuccessful(completeSpy, "B", CSYNC_INSTRUCTION_TYPE_CHANGE));
@@ -613,23 +682,25 @@ private slots:
             QDir(fakeFolder.localPath() + conflict).removeRecursively();
 
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
     // Test what happens if we remove entries both on the server, and locally
     void testRemoveRemove()
     {
-        FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.remoteModifier().remove(QStringLiteral("A"));
         fakeFolder.localModifier().remove(QStringLiteral("A"));
         fakeFolder.remoteModifier().remove(QStringLiteral("B/b1"));
         fakeFolder.localModifier().remove(QStringLiteral("B/b1"));
 
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
-        auto expectedState = fakeFolder.currentLocalState();
+        auto expectedState = fakeFolder.currentRemoteState();
 
-        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QCOMPARE(fakeFolder.currentLocalState(), expectedState);
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
