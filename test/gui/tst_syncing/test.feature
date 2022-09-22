@@ -23,7 +23,6 @@ Feature: Syncing files
         And user "Alice" has created folder "large-folder" on the server
         And user "Alice" has uploaded file on the server with content "test content" to "uploaded-lorem.txt"
         And user "Alice" has set up a client with default settings
-        When the user waits for the files to sync
         Then the file "uploaded-lorem.txt" should exist on the file system
         And the file "uploaded-lorem.txt" should exist on the file system with the following content
             """
@@ -224,7 +223,6 @@ Feature: Syncing files
         And user "Alice" has created a folder "Folder1/subFolder1" inside the sync folder
         And user "Alice" has created a folder "Folder1/subFolder1/subFolder2" inside the sync folder
         And user "Alice" has set up a client with default settings
-        When the user waits for folder "Folder1" to be synced
         Then as "Alice" folder "Folder1" should exist on the server
         And as "Alice" folder "Folder1/subFolder1" should exist on the server
         And as "Alice" folder "Folder1/subFolder1/subFolder2" should exist on the server
@@ -268,7 +266,6 @@ Feature: Syncing files
         And user "Alice" has uploaded file on the server with content "server content" to "/PRN"
         And user "Alice" has uploaded file on the server with content "server content" to "/foo%"
         And user "Alice" has set up a client with default settings
-        When the user waits for the files to sync
         Then the folder "CON" should exist on the file system
         And the folder "test%" should exist on the file system
         And the file "PRN" should exist on the file system
@@ -288,7 +285,6 @@ Feature: Syncing files
         And user "Alice" has uploaded file "test_video.mp4" to "simple-folder/test_video.mp4" on the server
         And user "Alice" has uploaded file "simple.pdf" to "simple-folder/simple.pdf" on the server
         And user "Alice" has set up a client with default settings
-        When the user waits for the files to sync
         Then the folder "simple-folder" should exist on the file system
         And the file "simple-folder/testavatar.png" should exist on the file system
         And the file "simple-folder/testavatar.jpg" should exist on the file system

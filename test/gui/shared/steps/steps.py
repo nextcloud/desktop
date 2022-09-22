@@ -55,9 +55,9 @@ def waitForRootSyncToComplete(context, timeout=None, pool_interval=500):
     )
     if not synced:
         raise Exception(
-            "[Timeout Error] "
+            "Timeout while waiting for sync to complete for "
             + timeout
-            + "ms timeout while waiting for sync to complete"
+            + " milliseconds"
         )
 
 

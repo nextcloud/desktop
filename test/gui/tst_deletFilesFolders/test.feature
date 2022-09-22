@@ -12,8 +12,7 @@ Feature: deleting files and folders
     Scenario Outline: Delete a file
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "<fileName>" on the server
         And user "Alice" has set up a client with default settings
-        When the user waits for the files to sync
-        And the user deletes the file "<fileName>"
+        When the user deletes the file "<fileName>"
         And the user waits for the files to sync
         Then as "Alice" file "<fileName>" should not exist on the server
         Examples:
@@ -25,8 +24,7 @@ Feature: deleting files and folders
     Scenario Outline: Delete a folder
         Given user "Alice" has created folder "<folderName>" on the server
         And user "Alice" has set up a client with default settings
-        When the user waits for the files to sync
-        And the user deletes the folder "<folderName>"
+        When the user deletes the folder "<folderName>"
         And the user waits for the files to sync
         Then as "Alice" file "<folderName>" should not exist on the server
         Examples:

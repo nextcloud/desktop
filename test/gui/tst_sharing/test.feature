@@ -253,8 +253,7 @@ Feature: Sharing
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has shared folder "Parent" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for the files to sync
-        And user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
+        When user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
             """
             test content
             """
@@ -272,8 +271,7 @@ Feature: Sharing
         And user "Brian" has been created on the server with default attributes and without skeleton files
         And user "Alice" has shared folder "Parent" on the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for the files to sync
-        And user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
+        When user "Brian" creates a file "Parent/localFile.txt" with the following content inside the sync folder
             """
             test content
             """
@@ -293,8 +291,7 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "FOLDER" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for the files to sync
-        And the user renames a file "textfile.txt" to "lorem.txt"
+        When the user renames a file "textfile.txt" to "lorem.txt"
         And the user renames a folder "FOLDER" to "PARENT"
         And the user waits for folder "PARENT" to be synced
         And the user waits for file "lorem.txt" to be synced
@@ -316,8 +313,7 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Alice" has shared file "Folder" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for the files to sync
-        And the user deletes the file "textfile.txt"
+        When the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
         And the user waits for the files to sync
         Then as "Brian" file "textfile.txt" on the server should not exist
@@ -333,8 +329,7 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "read" permissions
         And user "Alice" has shared file "Folder" on the server with user "Brian" with "read" permissions
         And user "Brian" has set up a client with default settings
-        When the user waits for the files to sync
-        And the user deletes the file "textfile.txt"
+        When the user deletes the file "textfile.txt"
         And the user deletes the folder "Folder"
         And the user waits for the files to sync
         # Sharee can delete (means unshare) the file shared with read permission
