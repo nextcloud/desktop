@@ -341,13 +341,7 @@ private slots:
         QFETCH(int, expectedGET);
 
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-
-        int nGET = 0;
-        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation)
-                ++nGET;
-            return nullptr;
-        });
+        OperationCounter counter(fakeFolder);
 
         // For directly editing the remote checksum
         FileInfo &remoteInfo = fakeFolder.remoteModifier();
@@ -366,7 +360,7 @@ private slots:
         fakeFolder.remoteModifier().setModTime(QStringLiteral("A/a1"), mtime);
         remoteInfo.find("A/a1")->checksums = checksums;
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, expectedGET);
+        QCOMPARE(counter.nGET, expectedGET);
 
         // check that mtime in journal and filesystem agree
         QString a1path = fakeFolder.localPath() + "A/a1";
@@ -376,7 +370,7 @@ private slots:
 
         // Extra sync reads from db, no difference
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(nGET, expectedGET);
+        QCOMPARE(counter.nGET, expectedGET);
     }
 
     /**

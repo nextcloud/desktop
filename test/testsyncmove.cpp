@@ -12,30 +12,6 @@
 
 using namespace OCC;
 
-
-struct OperationCounter {
-    int nGET = 0;
-    int nPUT = 0;
-    int nMOVE = 0;
-    int nDELETE = 0;
-
-    void reset() { *this = {}; }
-
-    auto functor() {
-        return [&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation)
-                ++nGET;
-            if (op == QNetworkAccessManager::PutOperation)
-                ++nPUT;
-            if (op == QNetworkAccessManager::DeleteOperation)
-                ++nDELETE;
-            if (req.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE")
-                ++nMOVE;
-            return nullptr;
-        };
-    }
-};
-
 bool itemSuccessful(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
 {
     auto item = spy.findItem(path);

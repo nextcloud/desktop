@@ -697,3 +697,51 @@ inline char *printDbData(const FileInfo &fi)
         addFilesDbData(files, fi);
     return QTest::toString(QStringLiteral("FileInfo with %1 files(%2)").arg(files.size()).arg(files.join(QStringLiteral(", "))));
 }
+
+struct OperationCounter
+{
+    int nGET = 0;
+    int nPUT = 0;
+    int nMOVE = 0;
+    int nDELETE = 0;
+
+    OperationCounter() {};
+    OperationCounter(const OperationCounter &) = delete;
+    OperationCounter(OperationCounter &&) = delete;
+    void operator=(OperationCounter const &) = delete;
+    void operator=(OperationCounter &&) = delete;
+
+    void reset()
+    {
+        nGET = 0;
+        nPUT = 0;
+        nMOVE = 0;
+        nDELETE = 0;
+    }
+
+    auto functor()
+    {
+        return [&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
+            if (op == QNetworkAccessManager::GetOperation) {
+                ++nGET;
+            } else if (op == QNetworkAccessManager::PutOperation) {
+                ++nPUT;
+            } else if (op == QNetworkAccessManager::DeleteOperation) {
+                ++nDELETE;
+            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute) == QLatin1String("MOVE")) {
+                ++nMOVE;
+            }
+            return nullptr;
+        };
+    }
+
+    OperationCounter(FakeFolder &fakeFolder)
+    {
+        fakeFolder.setServerOverride(functor());
+    }
+
+    friend inline QDebug operator<<(QDebug dbg, const OperationCounter &oc)
+    {
+        return dbg << "nGET:" << oc.nGET << " nPUT:" << oc.nPUT << " nMOVE:" << oc.nMOVE << " nDELETE:" << oc.nDELETE;
+    }
+};
