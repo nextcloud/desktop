@@ -447,21 +447,21 @@ Feature: Sharing
 
     Scenario: sharing of a file by public link and deleting the link
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
-        And user "Alice" has set up a client with default settings
         And user "Alice" has created a public link on the server with following settings
             | path     | textfile0.txt |
             | name     | Public-link   |
+        And user "Alice" has set up a client with default settings
         When the user deletes the public link for file "textfile0.txt"
         Then as user "Alice" the file "/textfile0.txt" should not have any public link on the server
 
 
     Scenario: sharing of a file by public link with password and changing the password
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
+        Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
         And user "Alice" has created a public link on the server with following settings
             | path     | textfile0.txt |
             | name     | Public-link   |
             | password | 1234          |
+        And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user changes the password of public link "Public-link" to "password1234" using the client-UI
         Then as user "Alice" the file "textfile0.txt" should have a public link on the server
@@ -469,8 +469,8 @@ Feature: Sharing
 
 
     Scenario: simple sharing of a file by public link with default expiration date
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        Given user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link with following settings using the client-UI:
             | path       | textfile.txt |
             | expireDate | %default%    |
@@ -480,9 +480,9 @@ Feature: Sharing
 
     @issue-9321
     Scenario: simple sharing of file and folder by public link with expiration date
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has created folder "FOLDER" on the server
+        Given user "Alice" has created folder "FOLDER" on the server
         And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link with following settings using the client-UI:
             | path       | textfile.txt |
             | expireDate | 2031-10-14   |
@@ -499,8 +499,8 @@ Feature: Sharing
 
     @issue-9321
     Scenario: simple sharing of a file by public link with password and expiration date
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        Given user "Alice" has uploaded file with content "ownCloud test text file" to "/textfile.txt" on the server
+        And user "Alice" has set up a client with default settings
         When the user creates a new public link with following settings using the client-UI:
             | path       | textfile.txt |
             | password   | pass123      |
@@ -513,11 +513,11 @@ Feature: Sharing
     @skip @issue-9321
     Scenario: user changes the expiration date of an already existing public link for file using client-UI
         Given user "Alice" has uploaded file with content "ownCloud test text file 0" to "/textfile0.txt" on the server
-        And user "Alice" has set up a client with default settings
         And user "Alice" has created a public link on the server with following settings
             | path       | textfile0.txt |
             | name       | Public link   |
             | expireDate | 2031-10-14    |
+        And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "textfile0.txt" using the client-UI
         And the user edits the public link named "Public link" of file "textfile0.txt" changing following
             | expireDate | 2038-07-21 |
@@ -527,12 +527,12 @@ Feature: Sharing
     @skip @issue-9321
     Scenario: user changes the expiration date of an already existing public link for folder using client-UI
         Given user "Alice" has created folder "simple-folder" on the server
-        And user "Alice" has set up a client with default settings
         And user "Alice" has created a public link on the server with following settings
             | path        | simple-folder                |
             | name        | Public link                  |
             | expireDate  | 2031-10-14                   |
             | permissions | read, update, create, delete |
+        And user "Alice" has set up a client with default settings
         When the user opens the public links dialog of "simple-folder" using the client-UI
         And the user edits the public link named "Public link" of file "simple-folder" changing following
             | expireDate | 2038-07-21 |
