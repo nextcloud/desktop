@@ -1532,6 +1532,20 @@ def step(context, username):
         f.close()
 
 
+@When('user "|any|" creates the following files inside the sync folder:')
+def step(context, username):
+    syncPath = getUserSyncPath(context, username)
+
+    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
+    # https://github.com/owncloud/client/issues/9325
+    snooze(context.userData['minSyncTimeout'])
+
+    for row in context.table[1:]:
+        filename = syncPath + row[0]
+        f = open(join(syncPath, filename), "w")
+        f.close()
+
+
 @Given(
     'the user has created a folder "|any|" with "|any|" files each of size "|any|" bytes in temp folder'
 )

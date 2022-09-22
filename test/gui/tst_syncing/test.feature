@@ -189,28 +189,23 @@ Feature: Syncing files
 
     Scenario: Both original and copied folders can be synced
         Given user "Alice" has set up a client with default settings
-        And user "Alice" has created a folder "original" inside the sync folder
-        And user "Alice" has created a file "original/test.txt" with the following content inside the sync folder
-            """
-            test content
-            """
-        When the user copies the folder "original" to "copied"
+        When user "Alice" creates a folder "original" inside the sync folder
+        And the user copies the folder "original" to "copied"
         And the user waits for folder "copied" to be synced
         Then as "Alice" folder "original" should exist on the server
         And as "Alice" folder "copied" should exist on the server
 
     @issue-9281
     Scenario: Verify that you can create a subfolder with long name
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has created a folder "Folder1" inside the sync folder
+        Given user "Alice" has created folder "Folder1" on the server
+        And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" inside the sync folder
         And user "Alice" creates a file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" with the following content inside the sync folder
             """
             test content
             """
         And the user waits for the files to sync
-        Then as "Alice" folder "Folder1" should exist on the server
-        And as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
+        Then as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
         And the file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" should exist on the file system with the following content
             """
             test content
@@ -229,29 +224,27 @@ Feature: Syncing files
 
 
     Scenario: Filenames that are rejected by the server are reported
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has created a folder "Folder1" inside the sync folder
-        And the user has waited for folder "Folder1" to be synced
+        Given user "Alice" has created folder "Folder1" on the server
+        And user "Alice" has set up a client with default settings
         When user "Alice" creates a file "Folder1/a\\a.txt" with the following content inside the sync folder
             """
             test content
             """
-        Then as "Alice" folder "Folder1" should exist on the server
-        When the user clicks on the activity tab
+        And the user clicks on the activity tab
         And the user selects "Not Synced" tab in the activity
-        Then the file "Folder1/a\\a.txt" should be blacklisted
+        Then the file "Folder1/a\\a.txt" should exist on the file system
+        And the file "Folder1/a\\a.txt" should be blacklisted
 
 
     Scenario Outline: Verify one empty folder with a length longer than the allowed limit will not be synced
-        Given user "Alice" has set up a client with default settings
-        And user "Alice" has created a folder "<foldername>" inside the sync folder
+        Given user "Alice" has created folder "<foldername>" on the server
+        And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "<foldername>/<foldername>" inside the sync folder
         And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>" inside the sync folder
         And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>/<foldername>" inside the sync folder
         And user "Alice" creates a folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" inside the sync folder
         And the user waits for folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" to be synced
-        Then as "Alice" folder "<foldername>" should exist on the server
-        And as "Alice" folder "<foldername>/<foldername>" should exist on the server
+        Then as "Alice" folder "<foldername>/<foldername>" should exist on the server
         And as "Alice" folder "<foldername>/<foldername>/<foldername>" should exist on the server
         And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>" should exist on the server
         And as "Alice" folder "<foldername>/<foldername>/<foldername>/<foldername>/<foldername>" should exist on the server
@@ -296,7 +289,7 @@ Feature: Syncing files
 
     Scenario: various types of files can be synced from client to server
         Given user "Alice" has set up a client with default settings
-        And user "Alice" has created the following files inside the sync folder:
+        When user "Alice" creates the following files inside the sync folder:
             | files            |
             | /testavatar.png  |
             | /testavatar.jpg  |
@@ -304,7 +297,7 @@ Feature: Syncing files
             | /testaudio.mp3   |
             | /test_video.mp4  |
             | /simple.txt      |
-        When the user waits for the files to sync
+        And the user waits for the files to sync
         Then as "Alice" file "testavatar.png" should exist on the server
         And as "Alice" file "testavatar.jpg" should exist on the server
         And as "Alice" file "testavatar.jpeg" should exist on the server
@@ -358,9 +351,9 @@ Feature: Syncing files
 
 
     Scenario: Syncing folders each having 500 files
-        Given user "Alice" has set up a client with default settings
-        And the user has created a folder "folder1" with "500" files each of size "1048576" bytes in temp folder
+        Given the user has created a folder "folder1" with "500" files each of size "1048576" bytes in temp folder
         And the user has created a folder "folder2" with "500" files each of size "1048576" bytes in temp folder
+        And user "Alice" has set up a client with default settings
         When user "Alice" moves folder "folder1" from the temp folder into the sync folder
         And user "Alice" moves folder "folder2" from the temp folder into the sync folder
         And the user waits for folder "folder1" to be synced
