@@ -204,7 +204,9 @@ Feature: Syncing files
             """
             test content
             """
-        And the user waits for the files to sync
+        And the user clicks on the activity tab
+        And the user selects "Not Synced" tab in the activity
+        And the user waits for file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" to be synced
         Then as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
         And the file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" should exist on the file system with the following content
             """

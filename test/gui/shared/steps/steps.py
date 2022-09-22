@@ -1264,8 +1264,7 @@ def step(context, errorMsg):
 def step(context, itemType, resource):
     # deleting the file immediately after it has been synced from the server seems to have some problem.
     # issue: https://github.com/owncloud/client/issues/8832
-    if itemType == "file":
-        snooze(context.userData['minSyncTimeout'])
+    snooze(context.userData['minSyncTimeout'])
 
     resourcePath = sanitizePath(context.userData['currentUserSyncPath'] + resource)
     if itemType == 'file':

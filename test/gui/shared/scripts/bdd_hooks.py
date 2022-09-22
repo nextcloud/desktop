@@ -30,6 +30,7 @@ previousErrorResultCount = 0
 # socket messages
 socket_messages = []
 
+
 @OnScenarioStart
 def hook(context):
     from configparser import ConfigParser
