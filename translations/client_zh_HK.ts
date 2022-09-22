@@ -77,7 +77,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
-        <translation>Talk 通告來電者頭像</translation>
+        <translation>Talk 通告來電者虛擬化身大頭照</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
@@ -6803,7 +6803,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="373"/>
         <source>Current user avatar</source>
-        <translation>當前用戶頭像</translation>
+        <translation>當前用戶虛擬化身大頭照</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
@@ -6818,7 +6818,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
-        <translation>目前賬戶頭像</translation>
+        <translation>目前賬戶虛擬化身大頭照</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
