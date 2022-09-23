@@ -1379,9 +1379,9 @@ bool SyncJournalDb::updateLocalMetadata(const QString &filename,
     query->bindValue(3, modtime);
     query->bindValue(4, size);
     query->bindValue(5, lockInfo._locked ? 1 : 0);
-    query->bindValue(6, lockInfo._lockOwnerDisplayName);
-    query->bindValue(7, lockInfo._lockOwnerId);
-    query->bindValue(8, lockInfo._lockOwnerType);
+    query->bindValue(6, lockInfo._lockOwnerType);
+    query->bindValue(7, lockInfo._lockOwnerDisplayName);
+    query->bindValue(8, lockInfo._lockOwnerId);
     query->bindValue(9, lockInfo._lockEditorApp);
     query->bindValue(10, lockInfo._lockTime);
     query->bindValue(11, lockInfo._lockTimeout);

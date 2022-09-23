@@ -213,7 +213,35 @@ private slots:
     void slotInsufficientLocalStorage();
     void slotInsufficientRemoteStorage();
 
+    void slotScheduleFilesDelayedSync();
+    void slotCleanupScheduledSyncTimers();
+
 private:
+    // Some files need a sync run to be executed at a specified time after
+    // their status is scheduled to change (e.g. lock status will expire in
+    // 20 minutes.)
+    //
+    // Rather than execute a sync run for each file that needs one, we want
+    // to schedule as few sync runs as possible, trying to have the state of
+    // these files updated in a timely manner without scheduling runs too
+    // frequently. We can therefore group files into a bucket.
+    //
+    // A bucket contains a group of files requiring a sync run in close
+    // proximity to each other, with an assigned sync timer interval that can
+    // be used to schedule a sync run which will update all the files in the
+    // bucket at the time their state is scheduled to change.
+    //
+    // In the pair, first is the actual time at which the bucket is going to
+    // have its sync scheduled. Second is the vector of all the (paths of)
+    // files that fall into this bucket.
+    //
+    // See SyncEngine::groupNeededScheduledSyncRuns and
+    // SyncEngine::slotScheduleFilesDelayedSync for usage.
+    struct ScheduledSyncBucket {
+        long long scheduledSyncTimerSecs;
+        QVector<QString> files;
+    };
+
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
@@ -231,6 +259,24 @@ private:
 
     // cleanup and emit the finished signal
     void finalize(bool success);
+
+    // Aggregate scheduled sync runs into interval buckets. Can be used to
+    // schedule a sync run per bucket instead of per file, reducing load.
+    //
+    // Bucket classification is done by simply dividing the seconds until
+    // scheduled sync time by the interval (note -- integer division!)
+    QHash<long long, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const int interval);
+
+    // Checks if there is already a scheduled sync run timer active near the
+    // time provided as the parameter.
+    //
+    // If this timer will expire within the interval provided, the return is
+    // true.
+    //
+    // If this expiration occurs before the scheduled sync run provided as the
+    // parameter, it is rescheduled to expire at the time of the parameter.
+    bool nearbyScheduledSyncTimerUsable(const long long scheduledSyncTimerSecs,
+                                        const long long intervalSecs) const;
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
@@ -303,6 +349,11 @@ private:
     std::set<QString> _localDiscoveryPaths;
 
     QStringList _leadingAndTrailingSpacesFilesAllowed;
+
+    // Hash of files we have scheduled for later sync runs, along with their lock expire times
+    // NOTE: not necessarily the time at which their sync run will take place
+    QHash<QString, long long> _filesScheduledForLaterSync;
+    QVector<QSharedPointer<QTimer>> _scheduledSyncTimers;
 };
 }
 

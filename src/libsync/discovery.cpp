@@ -398,11 +398,15 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     if(serverEntry.locked == SyncFileItem::LockStatus::LockedItem) {
         const auto lockExpirationTime = serverEntry.lockTime + serverEntry.lockTimeout;
         const auto timeRemaining = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
-        const auto timerInterval = qMax(5LL, timeRemaining);
+        // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
+        const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
 
-        qCInfo(lcDisco) << "Will re-check lock status for:" << path._original << "in:" << timerInterval << "seconds.";
+        qCInfo(lcDisco) << "File:" << path._original << "is locked."
+                        << "Lock expires in:" << lockExpirationTimeout << "seconds."
+                        << "A sync run will be scheduled for around that time.";
+
         _discoveryData->_anotherSyncNeeded = true;
-        _discoveryData->_scheduleSyncInSecs = timerInterval;
+        _discoveryData->_filesNeedingScheduledSync.insert(path._original, lockExpirationTimeout);
     }
 
     // VFS suffixed files on the server are ignored
