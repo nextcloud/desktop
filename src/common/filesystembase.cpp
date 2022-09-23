@@ -43,10 +43,27 @@ Q_LOGGING_CATEGORY(lcFileSystem, "sync.filesystem", QtInfoMsg)
 
 QString FileSystem::longWinPath(const QString &inpath)
 {
-#ifdef Q_OS_WIN
-    return pathtoUNC(inpath);
-#else
+#ifndef Q_OS_WIN
     return inpath;
+#else
+    Q_ASSERT(QFileInfo(inpath).isAbsolute());
+    if (inpath.isEmpty()) {
+        return inpath;
+    }
+    const QString str = QDir::toNativeSeparators(inpath);
+    const QLatin1Char sep('\\');
+
+    // we already have a unc path
+    if (str.startsWith(sep + sep)) {
+        return str;
+    }
+    // prepend \\?\ and to support long names
+
+    if (str.at(0) == sep) {
+        // should not happen as we require the path to be absolute
+        return QStringLiteral("\\\\?") + str;
+    }
+    return QStringLiteral("\\\\?\\") + str;
 #endif
 }
 
@@ -517,30 +534,6 @@ bool FileSystem::isJunction(const QString &filename)
     return false;
 #endif
 }
-
-#ifdef Q_OS_WIN
-QString FileSystem::pathtoUNC(const QString &_str)
-{
-    Q_ASSERT(QFileInfo(_str).isAbsolute());
-    if (_str.isEmpty()) {
-        return _str;
-    }
-    const QString str = QDir::toNativeSeparators(_str);
-    const QLatin1Char sep('\\');
-
-    // we already have a unc path
-    if (str.startsWith(sep + sep)) {
-        return str;
-    }
-    // prepend \\?\ and to support long names
-
-    if (str.at(0) == sep) {
-        // should not happen as we require the path to be absolute
-        return QStringLiteral("\\\\?") + str;
-    }
-    return QStringLiteral("\\\\?\\") + str;
-}
-#endif
 
 bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
 {

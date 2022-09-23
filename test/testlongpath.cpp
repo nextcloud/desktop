@@ -37,35 +37,35 @@ private Q_SLOTS:
         {
             const auto path = QStringLiteral("C://DATA/FILES/MUSIC/MY_MUSIC.mp3"); // check a short path
             const auto exp_path = QStringLiteral("\\\\?\\C:\\\\DATA\\FILES\\MUSIC\\MY_MUSIC.mp3");
-            QString new_short = OCC::FileSystem::pathtoUNC(path);
+            QString new_short = OCC::FileSystem::longWinPath(path);
             QCOMPARE(new_short, exp_path);
         }
 
         {
             const auto path = QStringLiteral("\\\\foo\\bar/MY_MUSIC.mp3");
             const auto exp_path = QStringLiteral("\\\\foo\\bar\\MY_MUSIC.mp3");
-            QString new_short = OCC::FileSystem::pathtoUNC(path);
+            QString new_short = OCC::FileSystem::longWinPath(path);
             QCOMPARE(new_short, exp_path);
         }
 
         {
             const auto path = QStringLiteral("//foo\\bar/MY_MUSIC.mp3");
             const auto exp_path = QStringLiteral("\\\\foo\\bar\\MY_MUSIC.mp3");
-            QString new_short = OCC::FileSystem::pathtoUNC(path);
+            QString new_short = OCC::FileSystem::longWinPath(path);
             QCOMPARE(new_short, exp_path);
         }
 
         {
             const auto path = QStringLiteral("\\foo\\bar");
             const auto exp_path = QStringLiteral("\\\\?\\foo\\bar");
-            QString new_short = OCC::FileSystem::pathtoUNC(path);
+            QString new_short = OCC::FileSystem::longWinPath(path);
             QCOMPARE(new_short, exp_path);
         }
 
         {
             const auto path = QStringLiteral("/foo/bar");
             const auto exp_path = QStringLiteral("\\\\?\\foo\\bar");
-            QString new_short = OCC::FileSystem::pathtoUNC(path);
+            QString new_short = OCC::FileSystem::longWinPath(path);
             QCOMPARE(new_short, exp_path);
         }
 
@@ -78,7 +78,7 @@ private Q_SLOTS:
                                                  "jlonglonglonglong\\klonglonglonglong\\llonglonglonglong\\mlonglonglonglong\\nlonglonglonglong\\"
                                                  "olonglonglonglong\\file.txt");
 
-        QString new_long = OCC::FileSystem::pathtoUNC(longPath);
+        QString new_long = OCC::FileSystem::longWinPath(longPath);
         // printf( "XXXXXXXXXXXX %s %d\n", new_long, mem_reserved);
 
         QCOMPARE(new_long, longPathConv);
