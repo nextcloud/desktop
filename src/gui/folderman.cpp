@@ -1299,26 +1299,30 @@ QString FolderMan::checkPathValidityForNewFolder(const QString &path) const
 
 QString FolderMan::findGoodPathForNewSyncFolder(const QString &basePath) const
 {
-    QString folder = basePath;
+    // reserve 3 characters to allow appending of a number 0-100
+    const QString normalisedPath = FileSystem::createPortableFileName(basePath, 3);
 
     // If the parent folder is a sync folder or contained in one, we can't
     // possibly find a valid sync folder inside it.
     // Example: Someone syncs their home directory. Then ~/foobar is not
     // going to be an acceptable sync folder path for any value of foobar.
-    const QString parentFolder = QFileInfo(folder).canonicalPath();
-    if (FolderMan::instance()->folderForPath(parentFolder)) {
+    if (FolderMan::instance()->folderForPath(QFileInfo(normalisedPath).canonicalPath())) {
         // Any path with that parent is going to be unacceptable,
         // so just keep it as-is.
-        return canonicalPath(basePath);
+        return canonicalPath(normalisedPath);
     }
     // Count attempts and give up eventually
-    for (int attempt = 2; attempt < 100; ++attempt) {
-        if (!QFileInfo::exists(folder)
-            && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty()) {
-            return canonicalPath(folder);
+    {
+        QString folder = normalisedPath;
+        for (int attempt = 2; attempt < 100; ++attempt) {
+            if (!QFileInfo::exists(folder)
+                && FolderMan::instance()->checkPathValidityForNewFolder(folder).isEmpty()) {
+                return canonicalPath(folder);
+            }
+            folder = normalisedPath + QString::number(attempt);
         }
-        folder = basePath + QString::number(attempt);
     }
+    // we failed to find a non existing path
     return canonicalPath(basePath);
 }
 
