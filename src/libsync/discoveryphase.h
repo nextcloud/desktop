@@ -283,7 +283,7 @@ public:
     // output
     QByteArray _dataFingerprint;
     bool _anotherSyncNeeded = false;
-    int _scheduleSyncInSecs = -1;
+    QHash<QString, long long> _filesNeedingScheduledSync;
 
 signals:
     void fatalError(const QString &errorString);
