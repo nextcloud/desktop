@@ -1,0 +1,6 @@
+Enhancement: Windows add longPath awareness
+
+Requires Windows 10 newer than 1607 and the registry key to be enabled see:
+https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
+
+https://github.com/owncloud/client/pull/10136

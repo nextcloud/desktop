@@ -199,10 +199,7 @@ if(NOT APPLE)
           ${CMAKE_CURRENT_SOURCE_DIR}/version.rc.in
           ${CMAKE_CURRENT_BINARY_DIR}/version.rc
           @ONLY)
-        target_sources(owncloud PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc)
-        if(NOT MSVC)
-            target_sources(owncloud PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/manifest-mingw.rc)
-        endif()
+        target_sources(owncloud PRIVATE ${CMAKE_CURRENT_BINARY_DIR}/version.rc ${CMAKE_CURRENT_SOURCE_DIR}/owncloud.exe.manifest)
     else()
         file(GLOB _icons "${OEM_THEME_DIR}/theme/colored/*-${APPLICATION_ICON_NAME}-icon.png")
         foreach(_file ${_icons})
