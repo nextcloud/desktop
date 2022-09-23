@@ -63,6 +63,11 @@
         <source>Activity list</source>
         <translation>활동 목록</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <source>No activities yet</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>BasicComboBox</name>
