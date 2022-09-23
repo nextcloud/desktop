@@ -63,7 +63,7 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
         const int nameTextFlags = Qt::AlignVCenter | Qt::TextWordWrap;
         const int subTitleTextFlags = Qt::AlignTop;
 
-        QRect nameRect;
+        QRect nameBoundingRect;
 
         // default constructor makes this an "invalid" rectangle
         // only when a subtitle is available, we assign proper values to it
@@ -76,6 +76,7 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
 
         // draw title
         {
+            QRect nameRect = option.rect;
             painter->save();
 
             const QString name = index.data(Qt::DisplayRole).toString();
@@ -91,24 +92,20 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
             const QFontMetrics fontMetric(nameFont);
 
             // allow about two lines of title
-            const QString elidedName = fontMetric.elidedText(name, Qt::ElideRight, option.rect.width() * 2);
-
-            nameRect = fontMetric.boundingRect(option.rect, nameTextFlags, elidedName);
+            const QString elidedName = fontMetric.elidedText(name, Qt::ElideRight, nameRect.width() * 2);
 
             // in case we have to draw a subtitle, we want to center the combination of both title and subtitle vertically
             // therefore, we have to move the title up by half the height of the subtitle
             if (subtitleRect.isValid()) {
                 nameRect.moveTop(nameRect.top() - subtitleRect.height() / 2);
             }
-
-            nameRect = QStyle::visualRect(option.direction, option.rect, nameRect);
-
-            painter->drawText(nameRect, nameTextFlags, elidedName);
+            nameBoundingRect = fontMetric.boundingRect(nameRect, nameTextFlags, elidedName);
+            painter->drawText(QStyle::visualRect(option.direction, option.rect, nameRect), nameTextFlags, elidedName);
 
             painter->restore();
         }
-        if (nameRect.isValid()) {
-            subtitleRect.moveTop(nameRect.bottom());
+        if (subtitleRect.isValid()) {
+            subtitleRect.moveTop(nameBoundingRect.bottom());
             painter->drawText(QStyle::visualRect(option.direction, option.rect, subtitleRect), subTitleTextFlags, subTitle);
         }
     } else {
