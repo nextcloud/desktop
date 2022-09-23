@@ -166,7 +166,8 @@ QStyleOptionButton SpacesDelegate::openBrowserButtonRect(const QStyleOptionViewI
     opt.iconSize = QSize { px, px };
 
     opt.rect.setSize(QApplication::style()->sizeFromContents(
-        QStyle::CT_PushButton, &opt, opt.fontMetrics.size(Qt::TextSingleLine, opt.text)));
+        QStyle::CT_PushButton, &opt, opt.fontMetrics.size(Qt::TextSingleLine, opt.text), option.widget));
+    opt.rect.setSize(opt.rect.size() + QSize { px * 2, 0 });
     opt.rect.moveCenter(option.rect.center());
 
     return opt;
