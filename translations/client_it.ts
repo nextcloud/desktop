@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="36"/>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -53,17 +53,17 @@
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="20"/>
         <source>Update available</source>
         <extracomment>AppImage update available dialog</extracomment>
-        <translation type="unfinished"/>
+        <translation>Aggiornamento disponibile</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="31"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtichettaTesto</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="130"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Salta questa versione</translation>
     </message>
 </context>
 <context>
@@ -77,13 +77,13 @@
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="53"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome utente</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="73"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="89"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Password</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="126"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;intestazione di controllo conteneva un tipo di codice di controllo &apos;%1&apos; sconosciuto</translation>
     </message>
 </context>
 <context>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/credentialssetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
 </context>
 <context>
@@ -246,12 +246,12 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Errore:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Avviso:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="62"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="63"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Attenzione:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -993,7 +993,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="7"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Attivare la funzione sperimentale?</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="8"/>
@@ -1009,12 +1009,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Abilita la modalità sperimentale placeholder</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="24"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Resta sicuro</translation>
     </message>
 </context>
 <context>
@@ -1961,7 +1961,7 @@ Nota che ciò seleziona solo da dove vengono presi gli aggiornamenti e che non c
     <message>
         <location filename="../src/libsync/graphapi/drives.cpp" line="66"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>Condivisioni</translation>
     </message>
 </context>
 <context>
@@ -2155,12 +2155,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="36"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Esci</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Accedi</translation>
     </message>
 </context>
 <context>
@@ -2415,7 +2415,7 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Errore di accesso</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
@@ -3703,7 +3703,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Nome</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
@@ -3723,7 +3723,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="55"/>
         <source>Image</source>
-        <translation type="unfinished"/>
+        <translation>Immagine</translation>
     </message>
 </context>
 <context>
@@ -3819,7 +3819,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
         <source>Do you want to trust this certificate anyway?</source>
-        <translation type="unfinished"/>
+        <translation>Vuoi fidarti comunque di questo certificato?</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
@@ -3829,7 +3829,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="69"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;non specificato&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
@@ -3867,7 +3867,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Rifiuta</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
@@ -3877,7 +3877,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;URL per %1 è cambiato da %2 a %3, vuoi accettare il nuovo URL?</translation>
     </message>
 </context>
 <context>
@@ -3952,7 +3952,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Attivare la funzione sperimentale?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
@@ -3968,12 +3968,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Abilita la modalità sperimentale placeholder</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Resta sicuro</translation>
     </message>
 </context>
 <context>
@@ -4074,7 +4074,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="16"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Benvenuti in %1</translation>
     </message>
 </context>
 <context>
@@ -4098,7 +4098,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="93"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Conferma</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
@@ -4431,7 +4431,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
@@ -4449,12 +4449,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="105"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Annulla</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
@@ -4467,7 +4467,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/spaces/spacesbrowser.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
 </context>
 <context>
@@ -4547,7 +4547,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome utente</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="700"/>
@@ -4623,7 +4623,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Modulo</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
@@ -4634,7 +4634,7 @@ Are you sure you want to proceed?</source>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="92"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Nome utente</translation>
     </message>
 </context>
 <context>

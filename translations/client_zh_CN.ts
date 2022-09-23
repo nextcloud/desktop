@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="36"/>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -53,17 +53,17 @@
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="20"/>
         <source>Update available</source>
         <extracomment>AppImage update available dialog</extracomment>
-        <translation type="unfinished"/>
+        <translation>可用更新</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="31"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>文本标签</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="130"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>跳过这个版本</translation>
     </message>
 </context>
 <context>
@@ -77,13 +77,13 @@
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="53"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>用户名</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="73"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="89"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>密码</translation>
     </message>
 </context>
 <context>
@@ -96,7 +96,7 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="126"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>校验头包含未知的校验类型 &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/credentialssetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
 </context>
 <context>
@@ -246,12 +246,12 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;错误：&lt;/b&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;警告：&lt;/b&gt;%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="62"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="63"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;警告：&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -994,7 +994,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="7"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>启用实验性功能？</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="8"/>
@@ -1010,12 +1010,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>启用实验性占位符模式</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="24"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>保持安全</translation>
     </message>
 </context>
 <context>
@@ -1653,7 +1653,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="149"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>所选文件夹没有虚拟文件</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="163"/>
@@ -1961,7 +1961,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/libsync/graphapi/drives.cpp" line="66"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>共享</translation>
     </message>
 </context>
 <context>
@@ -2157,12 +2157,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="36"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>注销</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>登录</translation>
     </message>
 </context>
 <context>
@@ -2419,7 +2419,7 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>登录错误</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
@@ -3707,7 +3707,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>名称</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
@@ -3727,7 +3727,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="55"/>
         <source>Image</source>
-        <translation type="unfinished"/>
+        <translation>图像</translation>
     </message>
 </context>
 <context>
@@ -3823,7 +3823,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
         <source>Do you want to trust this certificate anyway?</source>
-        <translation type="unfinished"/>
+        <translation>是否信任此证书？</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
@@ -3833,7 +3833,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="69"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;未指定&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
@@ -3866,7 +3866,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="40"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>将 url 永久更改为 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
@@ -3876,12 +3876,12 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>为 %1 请求了 URL 更新</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>%1 的 url 从 %2 更改为 %3，您要接受更改后的 url 吗？</translation>
     </message>
 </context>
 <context>
@@ -3956,7 +3956,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>启用实验性功能？</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
@@ -3972,12 +3972,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>启用实验性占位符模式</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>保持安全</translation>
     </message>
 </context>
 <context>
@@ -4078,7 +4078,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="16"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>欢迎来到 %1</translation>
     </message>
 </context>
 <context>
@@ -4102,7 +4102,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="93"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>确认</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
@@ -4435,7 +4435,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
@@ -4453,12 +4453,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>忽略</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="105"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
@@ -4471,7 +4471,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/spaces/spacesbrowser.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
 </context>
 <context>
@@ -4551,7 +4551,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>用户名</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="700"/>
@@ -4627,7 +4627,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>窗体</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
@@ -4638,7 +4638,7 @@ Are you sure you want to proceed?</source>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="92"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>用户名</translation>
     </message>
 </context>
 <context>

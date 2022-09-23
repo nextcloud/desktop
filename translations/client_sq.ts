@@ -4,47 +4,47 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="36"/>
         <source>✓ You&apos;re all set!</source>
-        <translation type="unfinished"/>
+        <translation>✓ Jeni gati!</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
         <source>Advanced configuration</source>
-        <translation type="unfinished"/>
+        <translation>Formësim i mëtejshëm</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
         <source>Configure files download:</source>
-        <translation type="unfinished"/>
+        <translation>Formësoni hkarkim kartelash:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
         <source>Download everything</source>
-        <translation type="unfinished"/>
+        <translation>Shkarko gjithçka</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation type="unfinished"/>
+        <translation>Pas plotësimit të këtyre hapave, mun të ujdisni dorazi njëkohësim dosjesh.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="163"/>
         <source>Configure synchronization manually</source>
-        <translation type="unfinished"/>
+        <translation>Formësoni njëkohësim dorazi</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="210"/>
         <source>Choose local download directory:</source>
-        <translation type="unfinished"/>
+        <translation>Zgjidhni drejtori vendore shkarkimesh:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>…</translation>
     </message>
 </context>
 <context>
@@ -53,17 +53,17 @@
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="20"/>
         <source>Update available</source>
         <extracomment>AppImage update available dialog</extracomment>
-        <translation type="unfinished"/>
+        <translation>Ka një përditësim gati</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="31"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>EtiketëTeksti</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="130"/>
         <source>Skip this version</source>
-        <translation type="unfinished"/>
+        <translation>Anashkaloje këtë version</translation>
     </message>
 </context>
 <context>
@@ -77,13 +77,13 @@
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="53"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="66"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Emër përdoruesi</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="73"/>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="89"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Fjalëkalim</translation>
     </message>
 </context>
 <context>
@@ -91,12 +91,12 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="122"/>
         <source>The checksum header is malformed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kryet e checksum-it janë të keqformuara: %1</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="126"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation type="unfinished"/>
+        <translation>Kryet e checksum-it përmbanin një lloj të panjohur checksum-i &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -206,7 +206,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/credentialssetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -246,12 +246,12 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Gabim:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Kujdes:&lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="62"/>
@@ -261,7 +261,7 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="63"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Sinjalizim:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -320,7 +320,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="14"/>
         <source>Login required</source>
-        <translation type="unfinished"/>
+        <translation>Lypset kryerja e hyrjes</translation>
     </message>
 </context>
 <context>
@@ -351,17 +351,17 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="14"/>
         <source>OAuthLoginWidget</source>
-        <translation type="unfinished"/>
+        <translation>OAuthLoginWidget</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="58"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Hap Shfletues</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="71"/>
         <source>Copy URL to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopjoja URL në të papastër</translation>
     </message>
 </context>
 <context>
@@ -581,12 +581,14 @@ Ky veprim do të shkaktojë ndërprerjen e çfarëdo njëkohësimi në kryerje e
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Prej llogarisë %1 është bërë dalja.
+
+Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="841"/>
         <source>Reauthorization required.</source>
-        <translation type="unfinished"/>
+        <translation>Lypset riautorizim.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
@@ -596,17 +598,17 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>No connection to %1.</source>
-        <translation type="unfinished"/>
+        <translation>S’ka lidhje te %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>Server configuration error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Gabim formësimi shërbyesi: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="871"/>
         <source>No connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>S’ka lidhje të formësuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="893"/>
@@ -971,7 +973,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="642"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile dhe --logdir përjashtojnë reciprokisht njëra-tjetrën</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="656"/>
@@ -994,7 +996,7 @@ Mjet njëkohësimi kartelash për desktop.</translation>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="7"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Të aktivizohet veçoria eksperimentale?</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="8"/>
@@ -1010,12 +1012,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Aktivizoni mënyrë eksperimentale vendëmbajtësish</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="24"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Rrini i parrezikuar</translation>
     </message>
 </context>
 <context>
@@ -1087,12 +1089,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi s’kërkoi mirëfilltësim</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="57"/>
         <source>Failed to determine auth type: %1</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të përcaktohet lloj mirëfilltësimi: %1</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1142,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="70"/>
         <source>Failed to retrieve user info</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të merren hollësi përdoruesi</translation>
     </message>
 </context>
 <context>
@@ -1191,7 +1193,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="212"/>
         <source>%1 failed to open the database.</source>
-        <translation>%1 s’arrit të hapë bazën e të dhënave.</translation>
+        <translation>%1 s’arriti të hapë bazën e të dhënave.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="223"/>
@@ -1461,7 +1463,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderman.cpp" line="1446"/>
         <source>%1 - %2@%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2@%3</translation>
     </message>
 </context>
 <context>
@@ -1474,7 +1476,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add a space</source>
-        <translation type="unfinished"/>
+        <translation>Shtoni një hapësirë</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="294"/>
@@ -1524,7 +1526,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
         <source>Click this button to add a space.</source>
-        <translation type="unfinished"/>
+        <translation>Klikoni mbi këtë buton që të shtoni një hapësirë.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="236"/>
@@ -1653,7 +1655,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="149"/>
         <source>Virtual files are not available for the selected folder</source>
-        <translation type="unfinished"/>
+        <translation>S’ka kartela virtuale për dosjen e përzgjedhur</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="163"/>
@@ -1681,7 +1683,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Përzgjidhni dosjen vendore</translation>
     </message>
 </context>
 <context>
@@ -1798,7 +1800,7 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on &amp;Login</source>
-        <translation type="unfinished"/>
+        <translation>Fillo gjatë &amp;Hyrjes</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1956,12 +1958,12 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/libsync/graphapi/drives.cpp" line="63"/>
         <source>Personal</source>
-        <translation type="unfinished"/>
+        <translation>Personale</translation>
     </message>
     <message>
         <location filename="../src/libsync/graphapi/drives.cpp" line="66"/>
         <source>Shares</source>
-        <translation type="unfinished"/>
+        <translation>Pjesë</translation>
     </message>
 </context>
 <context>
@@ -1969,7 +1971,7 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
         <source>Please enter your password to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, që të hyni te llogaria juaj, jepni fjalëkalimin tuaj.</translation>
     </message>
 </context>
 <context>
@@ -2069,7 +2071,7 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation>Kartela %1 u shpërfill, ngaqë emri i saj është i rezervuar nga2</translation>
+        <translation>Kartela %1 u shpërfill, ngaqë emri i saj është i rezervuar nga %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
@@ -2137,7 +2139,7 @@ Ngaqë kartelat regjistër mund të bëhen të mëdha, klienti do të fillojë n
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>Kartela regjistër për t’u mbajtur:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
@@ -2157,12 +2159,12 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="36"/>
         <source>Log out</source>
-        <translation type="unfinished"/>
+        <translation>Dilni</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Hyni</translation>
     </message>
 </context>
 <context>
@@ -2418,27 +2420,27 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
         <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
         <source>Login Error</source>
-        <translation type="unfinished"/>
+        <translation>Gabim Hyrjeje</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Përdoruesi i gabuar&lt;/h1&gt;&lt;p&gt;Bëtë hyrjen si përdoruesi &lt;em&gt;%1&lt;/em&gt;, por duhet të hyni si përdoruesi &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Ju lutemi, kthehuni te klienti %3 dhe rinisni mirëfilltësimin.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
         <source>Wrong user</source>
-        <translation type="unfinished"/>
+        <translation>Përdorues i gabuar</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Hyrje e Suksesshme&lt;/h1&gt;&lt;p&gt;Mund ta mbyllni këtë dritare.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
         <source>Login Successful</source>
-        <translation type="unfinished"/>
+        <translation>Hyrje e Suksesshme</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
@@ -3457,7 +3459,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="93"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>Mund t’i drejtoni njerëzit për te kjo kartelë ose dosje e përbashkët %1 duke u dhënë atyre një lidhje private</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="215"/>
@@ -3640,7 +3642,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="975"/>
         <source>Open in %1</source>
-        <translation type="unfinished"/>
+        <translation>Hape me %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="983"/>
@@ -3694,7 +3696,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="165"/>
         <source>Open in Web</source>
-        <translation type="unfinished"/>
+        <translation>Hape në Web</translation>
     </message>
 </context>
 <context>
@@ -3702,32 +3704,32 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="45"/>
         <source>Sync</source>
-        <translation type="unfinished"/>
+        <translation>Njëkohësim</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="47"/>
         <source>Name</source>
-        <translation type="unfinished"/>
+        <translation>Emër</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
         <source>Subtitle</source>
-        <translation type="unfinished"/>
+        <translation>Nëntitull</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="51"/>
         <source>Web URL</source>
-        <translation type="unfinished"/>
+        <translation>URL Web</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="53"/>
         <source>Web Dav URL</source>
-        <translation type="unfinished"/>
+        <translation>URL Web Dav</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="55"/>
         <source>Image</source>
-        <translation type="unfinished"/>
+        <translation>Figurë</translation>
     </message>
 </context>
 <context>
@@ -3818,27 +3820,27 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="14"/>
         <source>TLS Certificate Error</source>
-        <translation type="unfinished"/>
+        <translation>Gabim Dëshmie TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
         <source>Do you want to trust this certificate anyway?</source>
-        <translation type="unfinished"/>
+        <translation>Doni të besohet kjo dëshmi sido qoftë?</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
         <source>Cannot connect securely to %1</source>
-        <translation type="unfinished"/>
+        <translation>S’mund të lidhet në mënyrë të parrezik te %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="69"/>
         <source>&amp;lt;not specified&amp;gt;</source>
-        <translation type="unfinished"/>
+        <translation>&amp;lt;e papërcaktuar&amp;gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %7Expiration Date: %8&lt;/div&gt;&lt;h3&gt;Issuer: %9&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %10&lt;br/&gt;Unit: %11&lt;br/&gt;Country: %12&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;me Dëshmi %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Ent: %2&lt;br/&gt;Njësi: %3&lt;br/&gt;Vend: %4&lt;/p&gt;&lt;p&gt;Shenja gishtash (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Shenja gishtash (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Datë Efektive: %7Datë Skadimi: %8&lt;/div&gt;&lt;h3&gt;Lëshues: %9&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Ent: %10&lt;br/&gt;Njësi: %11&lt;br/&gt;Vend: %12&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -3846,19 +3848,21 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
         <source>Installed version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Version i instaluar: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
         <source>Available update: %1</source>
-        <translation type="unfinished"/>
+        <translation>Përditësim i gatshëm: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="38"/>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation type="unfinished"/>
+        <translation>Për këtë AppImage të %1 ka një përditësim gati. Doni të instalohet ky përditësim?
+
+Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e tanishme AppImage. Që të plotësohet përditësimi, lypset të rinisni aplikacionin.</translation>
     </message>
 </context>
 <context>
@@ -3866,22 +3870,22 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="40"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>Ndryshoje përgjithmonë URL-në në %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Hidheni tej</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>U kërkua përditësim URL-je për %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>URL-ja për %1 ndryshoi nga %2 në %3, doni të pranohet URL-ja e ndryshuar?</translation>
     </message>
 </context>
 <context>
@@ -3931,7 +3935,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="30"/>
         <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Përdor kartela &amp;virtuale, në vend se shkarkim të menjëhershëm lënde</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="50"/>
@@ -3951,12 +3955,12 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="74"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Përzgjidhni dosjen vendore</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
         <source>Enable experimental feature?</source>
-        <translation type="unfinished"/>
+        <translation>Të aktivizohet veçoria eksperimentale?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
@@ -3972,12 +3976,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
         <source>Enable experimental placeholder mode</source>
-        <translation type="unfinished"/>
+        <translation>Aktivizoni mënyrë eksperimentale vendëmbajtësish</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Rrini i parrezikuar</translation>
     </message>
 </context>
 <context>
@@ -3990,7 +3994,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Po lidhet me &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4047,7 +4051,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Po lidhet me &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
@@ -4078,7 +4082,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="16"/>
         <source>Welcome to %1</source>
-        <translation type="unfinished"/>
+        <translation>Mirë se vini te %1</translation>
     </message>
 </context>
 <context>
@@ -4086,28 +4090,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="79"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>URL e pavlefshme shërbyesi</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="85"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Lidhje jo e siguruar</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="86"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>Lidhja me %1 është jo e siguruar.
+Jeni i sigurt se doni të ecet më tej?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="93"/>
         <source>Confirm</source>
-        <translation type="unfinished"/>
+        <translation>Ripohojeni</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyes jo i siguruar i hedhur tej nga përdoruesi</translation>
     </message>
 </context>
 <context>
@@ -4115,12 +4120,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="109"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Përfundoje</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Pasuesi &gt;</translation>
     </message>
 </context>
 <context>
@@ -4128,7 +4133,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Po lidhet me &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4333,7 +4338,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="817"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>Shfaq %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="818"/>
@@ -4435,12 +4440,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>Cila është adresa e shërbyesit tuaj?</translation>
     </message>
 </context>
 <context>
@@ -4448,22 +4453,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Shtoni Llogari të Re</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Mos e merr parasysh</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="105"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Anuloje</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; Mbrapasht</translation>
     </message>
 </context>
 <context>
@@ -4471,7 +4476,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/spaces/spacesbrowser.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
 </context>
 <context>
@@ -4551,12 +4556,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="698"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Emër përdoruesi</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="700"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>Adresë email</translation>
     </message>
 </context>
 <context>
@@ -4627,18 +4632,18 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formular</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
         <source>Please enter your username:</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, jepni emrin tuaj të përdoruesit</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="92"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Emër përdoruesi</translation>
     </message>
 </context>
 <context>
@@ -4659,7 +4664,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="429"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Biblioteka Qt %3, %4%7Po përdoret shtojcë kartelash virtuale: %5%7%6</translation>
     </message>
 </context>
 <context>
