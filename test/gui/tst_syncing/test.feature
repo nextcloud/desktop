@@ -200,20 +200,9 @@ Feature: Syncing files
         Given user "Alice" has created folder "Folder1" on the server
         And user "Alice" has set up a client with default settings
         When user "Alice" creates a folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" inside the sync folder
-        And user "Alice" creates a file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" with the following content inside the sync folder
-            """
-            test content
-            """
-        And the user clicks on the activity tab
-        And the user selects "Not Synced" tab in the activity
-        And the user waits for file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" to be synced
-        Then as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
-        And the file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" should exist on the file system with the following content
-            """
-            test content
-            """
-        And as "Alice" the file "Folder1/really long folder name with some spaces and special char such as $%ñ&/test.txt" on the server should have the content "test content"
-
+        And the user waits for folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" to be synced
+        Then the folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the file system
+        And as "Alice" folder "Folder1/really long folder name with some spaces and special char such as $%ñ&" should exist on the server
 
     Scenario: Verify pre existing folders in local (Desktop client) are copied over to the server
         Given user "Alice" has created a folder "Folder1" inside the sync folder

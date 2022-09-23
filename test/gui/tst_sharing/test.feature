@@ -217,7 +217,7 @@ Feature: Sharing
         And user "Brian" has set up a client with default settings
         When the user tries to overwrite the file "Parent/textfile.txt" with content "overwrite file inside a folder"
         And the user tries to overwrite the file "textfile.txt" with content "overwrite file in the root"
-        And the user waits for the files to sync
+        And the user waits for file "textfile.txt" to have sync error
         Then as "Brian" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
         And as "Brian" the file "textfile.txt" on the server should have the content "file in the root"
         And as "Alice" the file "Parent/textfile.txt" on the server should have the content "file inside a folder"
