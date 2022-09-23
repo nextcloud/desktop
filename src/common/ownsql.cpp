@@ -24,7 +24,9 @@
 #include <QString>
 
 #include "common/asserts.h"
+#include "common/filesystembase.h"
 #include "common/utility.h"
+
 #include "ownsql.h"
 
 #include <sqlite3.h>
@@ -77,7 +79,14 @@ bool SqlDatabase::openHelper(const QString &filename, int sqliteFlags)
 
     sqliteFlags |= SQLITE_OPEN_NOMUTEX;
 
-    SQLITE_DO(sqlite3_open_v2(filename.toUtf8().constData(), &_db, sqliteFlags, nullptr));
+#ifdef Q_OS_WIN
+    // allow file paths > 260
+    // https://www.sqlite.org/vfs.html#standard_windows_vfses
+    char *vfs = "win32-longpath";
+#else
+    char *vfs = nullptr;
+#endif
+    SQLITE_DO(sqlite3_open_v2(FileSystem::longWinPath(filename).toUtf8().constData(), &_db, sqliteFlags, vfs));
 
     if (_errId != SQLITE_OK) {
         qCWarning(lcSql) << "Error:" << _error << "for" << filename;

@@ -1,0 +1,5 @@
+Enhancement: Allow creation of sync roots with long paths
+
+Previously we where only able to create a .sync_journal.db in a path < 260 characters.
+
+https://github.com/owncloud/client/pull/10135/
