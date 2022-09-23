@@ -17,18 +17,13 @@
  */
 #pragma once
 
+#include "constexpr_list.h"
 #include "ocsynclib.h"
 
 #include <QCryptographicHash>
 #include <QString>
 
-// https://gcc.gnu.org/bugzilla/show_bug.cgi?id=102921
-// we hope it will be fixed in GCC >= 13
-#if !defined(Q_CC_GNU) || Q_CC_GNU >= 1300
-#define constexpr_list constexpr
-#else
-#define constexpr_list inline
-#endif
+
 namespace OCC {
 namespace CheckSums {
     OCSYNC_EXPORT Q_NAMESPACE;

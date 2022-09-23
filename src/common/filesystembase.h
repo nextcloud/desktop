@@ -18,8 +18,8 @@
 
 #pragma once
 
+#include "constexpr_list.h"
 #include "ocsynclib.h"
-
 #include "utility.h"
 
 #include <QFileInfo>
@@ -46,6 +46,13 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcFileSystem)
  */
 namespace FileSystem {
     OCSYNC_EXPORT Q_NAMESPACE;
+
+    /**
+     * List of characters not allowd in filenames on Windows
+     */
+    constexpr_list auto IllegalFilenameCharsWindows = {
+        QLatin1Char('\\'), QLatin1Char(':'), QLatin1Char('?'), QLatin1Char('*'), QLatin1Char('"'), QLatin1Char('>'), QLatin1Char('<'), QLatin1Char('|')
+    };
 
     /**
      * @brief Mark the file as hidden  (only has effects on windows)
@@ -174,6 +181,11 @@ namespace FileSystem {
      */
     bool OCSYNC_EXPORT isChildPathOf(const QString &child, const QString &parent);
 
+    /**
+     * Ensures the file name length is allowed on all platforms and the file name does not contain illegal characters
+     * reservedSize: The resulting path will be reservedSize < MAX and allows appending.
+     */
+    QString OCSYNC_EXPORT createPortableFileName(const QFileInfo &path, int reservedSize = 0);
 
     namespace SizeLiterals {
         constexpr unsigned long long operator"" _b(unsigned long long sz)

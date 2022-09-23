@@ -37,6 +37,16 @@
 #include <io.h>
 #endif
 
+namespace {
+// Regarding
+// https://en.wikipedia.org/wiki/Comparison_of_file_systems#Limits
+// the file name limit appears to be about 255 chars
+// -10 for safety
+constexpr int fileNameMaxC = 255 - 10;
+
+constexpr auto replacementCharC = QLatin1Char('_');
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFileSystem, "sync.filesystem", QtInfoMsg)
@@ -542,6 +552,21 @@ bool FileSystem::isChildPathOf(const QString &child, const QString &parent)
     return (child.startsWith(parent.endsWith(QLatin1Char('/')) ? parent : parent + QLatin1Char('/'), sensitivity)
         // clear trailing slashes etc
         || QString::compare(QDir::cleanPath(parent), QDir::cleanPath(child), sensitivity) == 0);
+}
+
+QString OCSYNC_EXPORT FileSystem::createPortableFileName(const QFileInfo &path, int reservedSize)
+{
+    // remove leading and trailing whitespace
+    QString tmp = path.fileName().trimmed();
+    // limit size to fileNameMaxC
+    tmp.resize(std::min(tmp.size(), fileNameMaxC - reservedSize));
+    // remove eventual trailing whitespace after the resize
+    tmp = tmp.trimmed();
+    // replace non portable characters
+    for (auto c : IllegalFilenameCharsWindows) {
+        tmp.replace(c, replacementCharC);
+    }
+    return path.dir().filePath(tmp);
 }
 } // namespace OCC
 
