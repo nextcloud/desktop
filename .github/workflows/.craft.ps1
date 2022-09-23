@@ -3,9 +3,11 @@ if ($IsWindows) {
 } else {
     $python = (Get-Command python3).Source
 }
+
+$RepoRoot = "{0}/../../" -f ([System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition))
 $command = @("${env:HOME}/craft/CraftMaster/CraftMaster/CraftMaster.py",
-             "--config", "${env:GITHUB_WORKSPACE}/.craft.ini",
-             "--config-override", "${env:GITHUB_WORKSPACE}/.github/workflows/craft_override.ini",
+             "--config", "${RepoRoot}/.craft.ini",
+             "--config-override", "${RepoRoot}/.github/workflows/craft_override.ini",
              "--target", "${env:CRAFT_TARGET}",
              "--variables", "WORKSPACE=${env:HOME}/craft") + $args
 
