@@ -704,6 +704,10 @@ void SyncEngine::slotDiscoveryFinished()
             _anotherSyncNeeded = ImmediateFollowUp;
         }
 
+        if (!_discoveryPhase->_filesUnscheduleSync.empty()) {
+            slotUnscheduleFilesDelayedSync();
+        }
+
         Q_ASSERT(std::is_sorted(_syncItems.begin(), _syncItems.end()));
 
         qCInfo(lcEngine) << "#### Reconcile (aboutToPropagate) #################################################### " << _stopWatch.addLapTime(QStringLiteral("Reconcile (aboutToPropagate)")) << "ms";
@@ -1138,7 +1142,7 @@ void SyncEngine::slotScheduleFilesDelayedSync()
     // balance between updating the needed file in a timely manner while also syncing late enough
     // to cover all the files in the interval bucket.
 
-    static constexpr long long intervalSecs = 60;
+    static constexpr qint64 intervalSecs = 60;
     const auto scheduledSyncBuckets = groupNeededScheduledSyncRuns(intervalSecs);
 
     qCDebug(lcEngine) << "Active scheduled sync run timers:" << _scheduledSyncTimers.count();
@@ -1149,27 +1153,24 @@ void SyncEngine::slotScheduleFilesDelayedSync()
         const auto scheduledSyncTimerTime = QDateTime::fromSecsSinceEpoch(currentSecsSinceEpoch + scheduledSyncTimerSecs);
         const auto scheduledSyncTimerMsecs = std::chrono::milliseconds(scheduledSyncTimerSecs * 1000);
 
+        const auto addFilesToTimerAndScheduledHash = [this, &files = filesAffected] (const QSharedPointer<ScheduledSyncTimer> &timer) {
+            for (const auto &file : files) {
+                timer->files.insert(file);
+                _filesScheduledForLaterSync.insert(file, timer);
+            }
+        };
+
         // We want to make sure that this bucket won't schedule a sync near a pre-existing sync run,
         // as we often get, for example, locked file notifications one by one as the user interacts
         // through the web.
 
-        if (nearbyScheduledSyncTimerUsable(scheduledSyncTimerSecs, intervalSecs)) {
-            qCInfo(lcEngine) << "Already have a nearby scheduled sync run at:" << scheduledSyncTimerTime
-                             << "which will be used for files:" << filesAffected;
+        const auto nearbyTimer = nearbyScheduledSyncTimer(scheduledSyncTimerSecs, intervalSecs);
 
-            // We still want to remove these files as files scheduled for sync. We schedule another timer
-            // for the same time the nearby scheduled sync run completes, remocing these files from our
-            // hash of files already scheduled for later sync.
-
-            QTimer::singleShot(scheduledSyncTimerMsecs, this, [this, filesAffected = filesAffected] {
-                qCInfo(lcEngine) << "Following files:" << filesAffected
-                                 << "were scheduled for a sync run that already had a nearby run scheduled.";
-
-                for (const auto &file : filesAffected) {
-                    _filesScheduledForLaterSync.remove(file);
-                }
-            });
-
+        if (nearbyTimer) {
+            addFilesToTimerAndScheduledHash(nearbyTimer);
+            qCInfo(lcEngine) << "Using a nearby scheduled sync run at:" << scheduledSyncTimerTime
+                             << "for files:" << filesAffected
+                             << "this timer is now resoponsible for files:" << nearbyTimer->files;
             continue;
         }
 
@@ -1177,17 +1178,12 @@ void SyncEngine::slotScheduleFilesDelayedSync()
                          << "seconds, at" << scheduledSyncTimerTime
                          << "for files:" << filesAffected;
 
-        QSharedPointer<QTimer> newTimer(new QTimer);
+        QSharedPointer<ScheduledSyncTimer> newTimer(new ScheduledSyncTimer);
         newTimer->setSingleShot(true);
+        newTimer->callOnTimeout(this, [this, newTimer] {
+            qCInfo(lcEngine) << "Rescanning now that delayed sync run is scheduled for:" << newTimer->files;
 
-        // In C++17 structured bindings (used above) cannot be captured, so we need an init capture.
-        // This is because structured bindings are never names of variables, thus uncapturable.
-        // This has been changed in C++20 -- feel free to change once we use it
-
-        newTimer->callOnTimeout(this, [this, filesAffected = filesAffected] {
-            qCInfo(lcEngine) << "Rescanning now that delayed sync run is scheduled for:" << filesAffected;
-
-            for (const auto &file : filesAffected) {
+            for (const auto &file : newTimer->files) {
                 this->_filesScheduledForLaterSync.remove(file);
             }
 
@@ -1195,14 +1191,19 @@ void SyncEngine::slotScheduleFilesDelayedSync()
             this->slotCleanupScheduledSyncTimers();
         });
 
+        addFilesToTimerAndScheduledHash(newTimer);
         newTimer->start(scheduledSyncTimerMsecs);
         _scheduledSyncTimers.append(newTimer);
     }
 }
 
-QHash<long long, SyncEngine::ScheduledSyncBucket> SyncEngine::groupNeededScheduledSyncRuns(const int interval)
+QHash<qint64, SyncEngine::ScheduledSyncBucket> SyncEngine::groupNeededScheduledSyncRuns(const qint64 interval) const
 {
-    QHash<long long, ScheduledSyncBucket> intervalSyncBuckets;
+    if (!_discoveryPhase || _discoveryPhase->_filesNeedingScheduledSync.empty()) {
+        return {};
+    }
+
+    QHash<qint64, ScheduledSyncBucket> intervalSyncBuckets;
 
     for (auto it = _discoveryPhase->_filesNeedingScheduledSync.cbegin();
          it != _discoveryPhase->_filesNeedingScheduledSync.cend();
@@ -1213,16 +1214,20 @@ QHash<long long, SyncEngine::ScheduledSyncBucket> SyncEngine::groupNeededSchedul
 
         // We don't want to schedule syncs again for files we have already discovered needing a
         // scheduled sync, unless the files have been re-locked or had their lock expire time
-        // extended
+        // extended. So we check the time-out of the already set timer with the time-out we
+        // receive from the server entry
+        //
+        // Since the division here is both of ints, we receive a "floor" of the division, so we
+        // are safe from a possible situation where the timer's interval is lower than we need
+        // for the file we are possibly scheduling a sync run for
 
         if (_filesScheduledForLaterSync.contains(file) &&
-            _filesScheduledForLaterSync.value(file) > syncScheduledSecs) {
+            _filesScheduledForLaterSync.value(file)->interval() / 1000 >= syncScheduledSecs) {
 
             continue;
         }
 
-        _filesScheduledForLaterSync.insert(file, syncScheduledSecs);
-        // Both long long so division results in floor-ed result
+        // Both qint64 so division results in floor-ed result
         const auto intervalBucketKey = syncScheduledSecs / interval;
 
         if (!intervalSyncBuckets.contains(intervalBucketKey)) {
@@ -1239,39 +1244,36 @@ QHash<long long, SyncEngine::ScheduledSyncBucket> SyncEngine::groupNeededSchedul
     return intervalSyncBuckets;
 }
 
-bool SyncEngine::nearbyScheduledSyncTimerUsable(const long long scheduledSyncTimerSecs,
-                                                const long long intervalSecs) const
+QSharedPointer<SyncEngine::ScheduledSyncTimer> SyncEngine::nearbyScheduledSyncTimer(const qint64 scheduledSyncTimerSecs,
+                                                                                    const qint64 intervalSecs) const
 {
     const auto scheduledSyncTimerMsecs = scheduledSyncTimerSecs * 1000;
     const auto halfIntervalMsecs = (intervalSecs * 1000) / 2;
-    auto nearbyScheduledSync = false;
 
     for (const auto &scheduledTimer : _scheduledSyncTimers) {
 
         const auto timerRemainingMsecs = scheduledTimer->remainingTime();
         const auto differenceMsecs = timerRemainingMsecs - scheduledSyncTimerMsecs;
+        const auto nearbyScheduledSync = differenceMsecs > -halfIntervalMsecs &&
+                                         differenceMsecs < halfIntervalMsecs;
 
-        nearbyScheduledSync = differenceMsecs > -halfIntervalMsecs && differenceMsecs < halfIntervalMsecs;
-
-        // Iterated timer is going to fire slightly before we need it to for the parameter timer,
-        // delay it.
+        // Iterated timer is going to fire slightly before we need it to for the parameter timer, delay it.
         if (differenceMsecs > -halfIntervalMsecs && differenceMsecs < 0) {
-            const auto scheduledSyncTimerTimeoutMsecs = std::chrono::milliseconds(scheduledSyncTimerMsecs);
 
-            nearbyScheduledSync = true;
+            const auto scheduledSyncTimerTimeoutMsecs = std::chrono::milliseconds(scheduledSyncTimerMsecs);
             scheduledTimer->start(scheduledSyncTimerTimeoutMsecs);
 
-            qCInfo(lcEngine) << "Delayed sync timer with remaining time" << timerRemainingMsecs / 1000
-                             << "by" << (differenceMsecs * -1) / 1000
-                             << "seconds due to nearby new sync run needed.";
+            qCDebug(lcEngine) << "Delayed sync timer with remaining time" << timerRemainingMsecs / 1000
+                              << "by" << (differenceMsecs * -1) / 1000
+                              << "seconds due to nearby new sync run needed.";
         }
 
-        if (nearbyScheduledSync) {
-            break;
+        if(nearbyScheduledSync) {
+            return scheduledTimer;
         }
     }
 
-    return nearbyScheduledSync;
+    return {};
 }
 
 void SyncEngine::slotCleanupScheduledSyncTimers()
@@ -1281,15 +1283,48 @@ void SyncEngine::slotCleanupScheduledSyncTimers()
     auto it = _scheduledSyncTimers.begin();
 
     while(it != _scheduledSyncTimers.end()) {
-        const auto &timerPtr = *it;
+        const auto &timer = *it;
+        auto eraseTimer = false;
 
-        if(timerPtr.isNull() || !timerPtr->isActive()) {
-            qCDebug(lcEngine) << "Erasing an expired scheduled sync timer.";
+        if(timer && (timer->files.empty() || !timer->isActive())) {
+            qCInfo(lcEngine) << "Stopping and erasing an expired/empty scheduled sync run timer.";
+            timer->stop();
+            eraseTimer = true;
+        } else if (!timer) {
+            qCInfo(lcEngine) << "Erasing a null scheduled sync run timer.";
+            eraseTimer = true;
+        }
+
+        if(eraseTimer) {
             it = _scheduledSyncTimers.erase(it);
         } else {
             ++it;
         }
     }
+}
+
+void SyncEngine::slotUnscheduleFilesDelayedSync()
+{
+    if (!_discoveryPhase || _discoveryPhase->_filesUnscheduleSync.empty()) {
+        return;
+    }
+
+    for (const auto &file : _discoveryPhase->_filesUnscheduleSync) {
+        const auto fileSyncRunTimer = _filesScheduledForLaterSync.value(file);
+
+        if (fileSyncRunTimer) {
+            fileSyncRunTimer->files.remove(file);
+
+            // Below is only needed for logging
+            const auto currentMSecsSinceEpoch = QDateTime::currentMSecsSinceEpoch();
+            const auto scheduledSyncTimerMSecs = fileSyncRunTimer->remainingTime();
+            const auto timerExpireDate = QDateTime::fromMSecsSinceEpoch(currentMSecsSinceEpoch + scheduledSyncTimerMSecs);
+            qCInfo(lcEngine) << "Removed" << file << "from sync run timer elapsing at" << timerExpireDate
+                             << "this timer is still running for files:" << fileSyncRunTimer->files;
+        }
+    }
+
+    slotCleanupScheduledSyncTimers();
 }
 
 } // namespace OCC
