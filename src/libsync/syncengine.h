@@ -214,6 +214,7 @@ private slots:
     void slotInsufficientRemoteStorage();
 
     void slotScheduleFilesDelayedSync();
+    void slotUnscheduleFilesDelayedSync();
     void slotCleanupScheduledSyncTimers();
 
 private:
@@ -238,8 +239,22 @@ private:
     // See SyncEngine::groupNeededScheduledSyncRuns and
     // SyncEngine::slotScheduleFilesDelayedSync for usage.
     struct ScheduledSyncBucket {
-        long long scheduledSyncTimerSecs;
+        qint64 scheduledSyncTimerSecs;
         QVector<QString> files;
+    };
+
+    // Sometimes we schedule a timer for, say, 10 files. But we receive updated
+    // data from an earlier sync run and we no longer need a scheduled sync.
+    //
+    // E.g. we had a scheduled sync timer going for a file with a lock state
+    // scheduled to expire, but someone already unlocked the file on the web UI
+    //
+    // By keeping a counter of the files depending on this timer we can
+    // perform "garbage collection", by killing the timer if there are no
+    // longer any files depending on the scheduled sync run.
+    class ScheduledSyncTimer : public QTimer {
+    public:
+        QSet<QString> files;
     };
 
     bool checkErrorBlacklisting(SyncFileItem &item);
@@ -265,7 +280,7 @@ private:
     //
     // Bucket classification is done by simply dividing the seconds until
     // scheduled sync time by the interval (note -- integer division!)
-    QHash<long long, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const int interval);
+    QHash<qint64, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const qint64 interval) const;
 
     // Checks if there is already a scheduled sync run timer active near the
     // time provided as the parameter.
@@ -275,8 +290,8 @@ private:
     //
     // If this expiration occurs before the scheduled sync run provided as the
     // parameter, it is rescheduled to expire at the time of the parameter.
-    bool nearbyScheduledSyncTimerUsable(const long long scheduledSyncTimerSecs,
-                                        const long long intervalSecs) const;
+    QSharedPointer<SyncEngine::ScheduledSyncTimer> nearbyScheduledSyncTimer(const qint64 scheduledSyncTimerSecs,
+                                                                            const qint64 intervalSecs) const;
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
@@ -350,10 +365,15 @@ private:
 
     QStringList _leadingAndTrailingSpacesFilesAllowed;
 
-    // Hash of files we have scheduled for later sync runs, along with their lock expire times
-    // NOTE: not necessarily the time at which their sync run will take place
-    QHash<QString, long long> _filesScheduledForLaterSync;
-    QVector<QSharedPointer<QTimer>> _scheduledSyncTimers;
+    // Hash of files we have scheduled for later sync runs, along with a
+    // pointer to the timer which will trigger the sync run for it.
+    //
+    // NOTE: these sync timers are not unique and will likely be shared
+    // between several files
+    QHash<QString, QSharedPointer<ScheduledSyncTimer>> _filesScheduledForLaterSync;
+
+    // A vector of all the (unique) scheduled sync timers
+    QVector<QSharedPointer<ScheduledSyncTimer>> _scheduledSyncTimers;
 };
 }
 

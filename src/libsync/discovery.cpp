@@ -407,6 +407,14 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 
         _discoveryData->_anotherSyncNeeded = true;
         _discoveryData->_filesNeedingScheduledSync.insert(path._original, lockExpirationTimeout);
+
+    } else if (serverEntry.locked == SyncFileItem::LockStatus::UnlockedItem && dbEntry._lockstate._locked) {
+        // We have received data that this file has been unlocked remotely, so let's notify the sync engine
+        // that we no longer need a scheduled sync run for this file
+        qCInfo(lcDisco) << "File:" << path._original << "is unlocked and a scheduled sync is no longer needed."
+                        << "Will remove scheduled sync if there is one.";
+
+        _discoveryData->_filesUnscheduleSync.append(path._original);
     }
 
     // VFS suffixed files on the server are ignored
@@ -520,7 +528,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         const bool isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
         const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
         const bool metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
-        const bool serverEntryLockedAsBool = serverEntry.locked == SyncFileItem::LockStatus::LockedItem;
+        const bool isServerEntryLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem;
 
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
@@ -567,7 +575,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
-        } else if(serverEntryLockedAsBool != dbEntry._lockstate._locked) {
+        } else if(isServerEntryLocked != dbEntry._lockstate._locked) {
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         } else {
             // if (is virtual mode enabled and folder is encrypted - check if the size is the same as on the server and then - trigger server query
