@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Ez dago jarduerarik oraindik</translation>
     </message>
 </context>
 <context>
