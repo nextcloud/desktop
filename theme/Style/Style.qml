@@ -19,9 +19,8 @@ QtObject {
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
 
     // ErrorBox colors
-    readonly property color errorBoxTextColor:       Theme.errorBoxTextColor
-    readonly property color errorBoxBackgroundColor: Theme.errorBoxBackgroundColor
-    readonly property color errorBoxBorderColor:     Theme.errorBoxBorderColor
+    readonly property color errorBoxBackgroundColor: Qt.rgba(0.89, 0.18, 0.18, 1)
+    readonly property int errorBoxStripeWidth: 4
 
     // Fonts
     // We are using pixel size because this is cross platform comparable, point size isn't

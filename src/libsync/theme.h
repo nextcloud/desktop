@@ -64,9 +64,6 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
 
     Q_PROPERTY(QColor defaultColor READ defaultColor CONSTANT)
-    Q_PROPERTY(QColor errorBoxTextColor READ errorBoxTextColor CONSTANT)
-    Q_PROPERTY(QColor errorBoxBackgroundColor READ errorBoxBackgroundColor CONSTANT)
-    Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
 
     Q_PROPERTY(QPalette systemPalette READ systemPalette NOTIFY systemPaletteChanged)
     Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
@@ -582,15 +579,6 @@ public:
     virtual bool enforceVirtualFilesSyncFolder() const;
 
     static QColor defaultColor();
-
-    /** @return color for the ErrorBox text. */
-    virtual QColor errorBoxTextColor() const;
-
-    /** @return color for the ErrorBox background. */
-    virtual QColor errorBoxBackgroundColor() const;
-
-    /** @return color for the ErrorBox border. */
-    virtual QColor errorBoxBorderColor() const;
 
     static constexpr const char *themePrefix = ":/client/theme/";
 
