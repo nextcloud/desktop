@@ -481,7 +481,7 @@ private slots:
 
         testSyncResultErrorActivity._id = 2;
         testSyncResultErrorActivity._type = OCC::Activity::SyncResultType;
-        testSyncResultErrorActivity._status = OCC::SyncResult::Error;
+        testSyncResultErrorActivity._syncResultStatus = OCC::SyncResult::Error;
         testSyncResultErrorActivity._dateTime = QDateTime::currentDateTime();
         testSyncResultErrorActivity._subject = QStringLiteral("Sample failed sync text");
         testSyncResultErrorActivity._message = QStringLiteral("/path/to/thingy");
@@ -490,7 +490,7 @@ private slots:
 
         testSyncFileItemActivity._id = 3;
         testSyncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
-        testSyncFileItemActivity._status = OCC::SyncFileItem::Success;
+        testSyncFileItemActivity._syncFileItemStatus = OCC::SyncFileItem::Success;
         testSyncFileItemActivity._dateTime = QDateTime::currentDateTime();
         testSyncFileItemActivity._message = QStringLiteral("Sample file successfully synced text");
         testSyncFileItemActivity._link = accountState->account()->url();
@@ -499,7 +499,7 @@ private slots:
 
         testFileIgnoredActivity._id = 4;
         testFileIgnoredActivity._type = OCC::Activity::SyncFileItemType;
-        testFileIgnoredActivity._status = OCC::SyncFileItem::FileIgnored;
+        testFileIgnoredActivity._syncFileItemStatus = OCC::SyncFileItem::FileIgnored;
         testFileIgnoredActivity._dateTime = QDateTime::currentDateTime();
         testFileIgnoredActivity._subject = QStringLiteral("Sample ignored file sync text");
         testFileIgnoredActivity._link = accountState->account()->url();
@@ -599,50 +599,15 @@ private slots:
         model->addNotificationToActivityList(testNotificationActivity);
         QCOMPARE(model->rowCount(), 54);
 
-        const auto desiredOrder = QVector<OCC::ActivityListModel::ActivityEntryType>{
-                OCC::ActivityListModel::ActivityEntryType::ErrorType,
-                OCC::ActivityListModel::ActivityEntryType::IgnoredFileType,
-                OCC::ActivityListModel::ActivityEntryType::NotificationType,
-                OCC::ActivityListModel::ActivityEntryType::SyncFileItemType,
-                OCC::ActivityListModel::ActivityEntryType::ActivityType};
-
         // Test all rows for things in common
         for (int i = 0; i < model->rowCount(); i++) {
             const auto index = model->index(i, 0);
-
-            int expectedEntryType = qMin(i, desiredOrder.count() - 1);
-            const auto activity = index.data(OCC::ActivityListModel::ActivityRole).value<OCC::Activity>();
-
-            // Make sure the model has sorted our activities in the right order
-            switch(desiredOrder[expectedEntryType]) {
-            case OCC::ActivityListModel::ActivityEntryType::DummyFetchingActivityType:
-                break;
-            case OCC::ActivityListModel::ActivityEntryType::ErrorType:
-                QCOMPARE(activity._type, OCC::Activity::SyncResultType);
-                QCOMPARE(activity._status, OCC::SyncResult::Error);
-                break;
-            case OCC::ActivityListModel::ActivityEntryType::IgnoredFileType:
-                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
-                QCOMPARE(activity._status, OCC::SyncFileItem::FileIgnored);
-                break;
-            case OCC::ActivityListModel::ActivityEntryType::NotificationType:
-                QCOMPARE(activity._type, OCC::Activity::NotificationType);
-                break;
-            case OCC::ActivityListModel::ActivityEntryType::SyncFileItemType:
-                QCOMPARE(activity._type, OCC::Activity::SyncFileItemType);
-                QCOMPARE(activity._status, OCC::SyncFileItem::Success);
-                break;
-            case OCC::ActivityListModel::ActivityEntryType::ActivityType:
-                QCOMPARE(activity._type, OCC::Activity::ActivityType);
-            case OCC::ActivityListModel::ActivityEntryType::MoreActivitiesAvailableType:
-                break;
-            }
 
             auto text = index.data(OCC::ActivityListModel::ActionTextRole).toString();
 
             QVERIFY(index.data(OCC::ActivityListModel::ActionRole).canConvert<int>());
             const auto type = index.data(OCC::ActivityListModel::ActionRole).toInt();
-            QVERIFY(type >= OCC::Activity::ActivityType);
+            QVERIFY(type >= OCC::Activity::DummyFetchingActivityType);
 
             QVERIFY(!index.data(OCC::ActivityListModel::AccountRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::ActionTextColorRole).toString().isEmpty());
@@ -663,6 +628,8 @@ private slots:
             QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationConversationTokenRole).canConvert<QString>());
             QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationMessageIdRole).canConvert<QString>());
             QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationMessageSentRole).canConvert<QString>());
+
+            QVERIFY(index.data(OCC::ActivityListModel::ActivityRole).canConvert<OCC::Activity>());
 
             // Unfortunately, trying to check anything relating to filepaths causes a crash
             // when the folder manager is invoked by the model to look for the relevant file

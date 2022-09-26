@@ -207,6 +207,8 @@ set(client_SRCS
     tray/usermodel.cpp
     tray/notificationhandler.h
     tray/notificationhandler.cpp
+    tray/sortedactivitylistmodel.h
+    tray/sortedactivitylistmodel.cpp
     creds/credentialsfactory.h
     tray/talkreply.cpp
     creds/credentialsfactory.cpp

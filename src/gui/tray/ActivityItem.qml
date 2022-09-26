@@ -55,7 +55,7 @@ ItemDelegate {
 
             onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.path)
 
-            onDismissButtonClicked: activityModel.slotTriggerDismiss(model.index)
+            onDismissButtonClicked: activityModel.slotTriggerDismiss(model.activityIndex)
         }
 
         Loader {
@@ -69,7 +69,7 @@ ItemDelegate {
 
             sourceComponent: TalkReplyTextField {
                 onSendReply: {
-                    UserModel.currentUser.sendReplyMessage(model.index, model.conversationToken, reply, model.messageId);
+                    UserModel.currentUser.sendReplyMessage(model.activityIndex, model.conversationToken, reply, model.messageId);
                     talkReplyTextFieldLoader.visible = false;
                 }
             }

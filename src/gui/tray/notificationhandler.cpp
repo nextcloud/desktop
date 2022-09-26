@@ -133,8 +133,6 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
             }
         } 
 
-        a._status = 0;
-
         QUrl link(json.value("link").toString());
         if (!link.isEmpty()) {
             if (link.host().isEmpty()) {

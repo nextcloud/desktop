@@ -73,20 +73,10 @@ public:
         TalkNotificationMessageIdRole,
         TalkNotificationMessageSentRole,
         TalkNotificationUserAvatarRole,
+        ActivityIndexRole,
         ActivityRole,
     };
     Q_ENUM(DataRole)
-
-    enum class ActivityEntryType {
-        DummyFetchingActivityType,
-        ActivityType,
-        NotificationType,
-        ErrorType,
-        IgnoredFileType,
-        SyncFileItemType,
-        MoreActivitiesAvailableType,
-    };
-    Q_ENUM(ActivityEntryType);
 
     explicit ActivityListModel(QObject *parent = nullptr);
 
@@ -153,14 +143,14 @@ protected slots:
 
     virtual void startFetchJob();
 
+private slots:
+    void addEntriesToActivityList(const ActivityList &activityList);
+
 private:
     static QVariantList convertLinksToMenuEntries(const Activity &activity);
     static QVariantList convertLinksToActionButtons(const Activity &activity);
     static QVariant convertLinkToActionButton(const ActivityLink &activityLink);
 
-    std::pair<int, int> rowRangeForEntryType(const ActivityEntryType type) const;
-    void addEntriesToActivityList(const ActivityList &activityList, const ActivityEntryType type);
-    void clearEntriesInActivityList(ActivityEntryType type);
     bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);

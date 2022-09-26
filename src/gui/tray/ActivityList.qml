@@ -6,7 +6,7 @@ import Style 1.0
 
 ScrollView {
     id: controlRoot
-    property alias model: activityList.model
+    property alias model: sortedActivityList.activityListModel
 
     property bool isFileActivityList: false
 
@@ -48,6 +48,11 @@ ScrollView {
         preferredHighlightBegin: 0
         preferredHighlightEnd: controlRoot.height
 
+        model: NC.SortedActivityListModel {
+            id: sortedActivityList
+            activityListModel: controlRoot.model
+        }
+
         delegate: ActivityItem {
             isFileActivityList: controlRoot.isFileActivityList
             width: activityList.contentWidth
@@ -73,7 +78,7 @@ ScrollView {
                 if (model.isCurrentUserFileActivity && model.openablePath) {
                     openFile("file://" + model.openablePath);
                 } else {
-                    activityItemClicked(model.index)
+                    activityItemClicked(model.activityIndex)
                 }
             }
         }
