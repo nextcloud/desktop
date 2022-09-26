@@ -108,11 +108,36 @@ def getPasswordForUser(context, username):
     return getUserInfo(context, username, 'password')
 
 
+def isConnecting():
+    return "Connecting to" in str(
+        waitForObjectExists(names.stack_connectLabel_QLabel).text
+    )
+
+
+def waitUntilConnectionIsConfigured(context):
+    timeout = context.userData['maxSyncTimeout'] * 1000
+
+    result = waitFor(
+        lambda: isConnecting(),
+        timeout,
+    )
+
+    if not result:
+        raise Exception(
+            "Timeout waiting for connection to be configured for "
+            + timeout
+            + " milliseconds"
+        )
+
+
 @Given('user "|any|" has set up a client with default settings')
 def step(context, username):
     password = getPasswordForUser(context, username)
     displayName = getDisplaynameForUser(context, username)
     setUpClient(context, username, displayName, context.userData['clientConfigFile'])
+
+    waitUntilConnectionIsConfigured(context)
+
     enterUserPassword = EnterPassword()
     enterUserPassword.enterPassword(password)
 
