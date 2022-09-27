@@ -259,6 +259,7 @@ bool OCUpdater::updateSucceeded() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
+    qCInfo(lcUpdater()) << "received a reply";
     _timeoutWatchdog->stop();
     auto *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
@@ -358,28 +359,32 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     {
         qCInfo(lcUpdater) << "No version information available at the moment";
         setDownloadState(UpToDate);
-    } else if (infoVersion <= currVersion
-               || infoVersion <= seenVersion) {
-        qCInfo(lcUpdater) << "Client is on latest version!";
-        setDownloadState(UpToDate);
     } else {
-        QString url = info.downloadUrl();
-        if (url.isEmpty()) {
-            showNoUrlDialog(info);
+        qint64 currentVer = Helper::currentVersionToInt();
+        qint64 remoteVer = Helper::stringVersionToInt(info.version());
+
+        if (info.version().isEmpty() || currentVer >= remoteVer) {
+            qCInfo(lcUpdater) << "Client is on latest version!";
+            setDownloadState(UpToDate);
         } else {
-            _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
-            if (QFile(_targetFile).exists()) {
-                setDownloadState(DownloadComplete);
+            QString url = info.downloadUrl();
+            if (url.isEmpty()) {
+                showNoUrlDialog(info);
             } else {
-                auto request = QNetworkRequest(QUrl(url));
-                request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
-                QNetworkReply *reply = qnam()->get(request);
-                connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
-                connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
-                setDownloadState(Downloading);
-                _file.reset(new QTemporaryFile);
-                _file->setAutoRemove(true);
-                _file->open();
+                _targetFile = cfg.configPath() + url.mid(url.lastIndexOf('/')+1);
+                if (QFile(_targetFile).exists()) {
+                    setDownloadState(DownloadComplete);
+                } else {
+                    auto request = QNetworkRequest(QUrl(url));
+                    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+                    QNetworkReply *reply = qnam()->get(request);
+                    connect(reply, &QIODevice::readyRead, this, &NSISUpdater::slotWriteFile);
+                    connect(reply, &QNetworkReply::finished, this, &NSISUpdater::slotDownloadFinished);
+                    setDownloadState(Downloading);
+                    _file.reset(new QTemporaryFile);
+                    _file->setAutoRemove(true);
+                    _file->open();
+                }
             }
         }
     }
@@ -554,6 +559,7 @@ void PassiveUpdateNotifier::versionInfoArrived(const UpdateInfo &info)
         qCInfo(lcUpdater) << "Client is on latest version!";
         setDownloadState(UpToDate);
     } else {
+        qCInfo(lcUpdater) << "Client is on older version. We will update!";
         setDownloadState(UpdateOnlyAvailableThroughSystem);
     }
 }
