@@ -630,7 +630,7 @@ QDebug &operator<<(QDebug &debug, nanoseconds in)
     const auto min = duration_cast<minutes>(in -= h);
     const auto s = duration_cast<seconds>(in -= min);
     const auto ms = duration_cast<milliseconds>(in -= s);
-    return debug << "std::chrono::duration("
+    return debug << "duration("
                  << h.count() << "h, "
                  << min.count() << "min, "
                  << s.count() << "s, "
