@@ -1007,7 +1007,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Kur aktivizohet mënyra “kartela virtuale”, fillimisht s’do të shkarkohen kartela. Në vend të kësaj, për çdo kartelë që ekziston në shërbyes, do të krijohet një kartelë e vockël. Lënda mund të shkarkohet duke i vënë në punë këto kartela, ose duke përdorur menunë përkatëse të kontekstit.
+
+Mënyra kartela virtuale dhe njëkohësimi përzgjedhës përjashtojnë njëra-tjetrin. Dosjet aktualisht të papërzgjedhura do të përshoqërohen me dosje vetëm për në internet dhe nga kjo mundet që rregullimet tuaja për njëkohësim përzgjedhës të rikthehen te parazgjedhjet.
+
+Kalimi te kjo mënyrë do të ndërpresë çfarëdo njëkohësimi aktualisht në punë e sipër.
+
+Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju lutemi, njoftoni çfarëdo problemesh që dalin.</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
@@ -1073,7 +1079,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="320"/>
         <source>The configured server for this client is too old.</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi i formësuar për këtë klient është shumë i vjetër.</translation>
     </message>
 </context>
 <context>
@@ -3812,7 +3818,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/libsync/theme.cpp" line="451"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Version %1. Për më tepër hollësi vizitoni &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Për çështje të ditura dhe ndihmë, ju lutemi, vizitoni: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Nga Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller dhe të tjerë.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Të drejta kopjimi ownCloud GmbH&lt;/p&gt;&lt;p&gt;Shpërndarë nga %4 dhe licencusar sipas GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 dhe stema e %5 janë shenja tregtare të regjistruara të %4 në Shtetet e Bashkuara, vende të tjera, ose të dy rastet.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3927,7 +3933,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Drejtori vendore shkarkimesh e pavlefshme: %1</translation>
     </message>
 </context>
 <context>
@@ -3940,17 +3946,17 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="50"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (e rekomanduar)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="68"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>Veçoria sistem kartelash virtuale s’është e passhme për këtë instalim.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="70"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
-        <translation type="unfinished"/>
+        <translation>Veçoria sistem kartelash virtual s’është ende e qëndrueshme. Përdoreni me kujdes.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="74"/>
@@ -3971,7 +3977,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Kur aktivizohet mënyra “kartela virtuale”, fillimisht s’do të shkarkohen kartela. Në vend të kësaj, për çdo kartelë që ekziston në shërbyes, do të krijohet një kartelë e vockël. Lënda mund të shkarkohet duke i vënë në punë këto kartela, ose duke përdorur menunë përkatëse të kontekstit.
+
+Mënyra kartela virtuale dhe njëkohësimi përzgjedhës përjashtojnë njëra-tjetrin. Dosjet aktualisht të papërzgjedhura do të përshoqërohen me dosje vetëm për në internet dhe nga kjo mundet që rregullimet tuaja për njëkohësim përzgjedhës të rikthehen te parazgjedhjet.
+
+Kalimi te kjo mënyrë do të ndërpresë çfarëdo njëkohësimi aktualisht në punë e sipër.
+
+Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju lutemi, njoftoni çfarëdo problemesh që dalin.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
@@ -3989,7 +4001,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Për të bërë hyrjen në llogarinë tuaj, ju lutemi, jepni kredencialet tuaja.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
@@ -4002,22 +4014,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Kredenciale të pavlefshme</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
         <source>Failed to fetch user display name</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të sillet emër përdoruesi në ekran</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation type="unfinished"/>
+        <translation>Hyrja dështoi: emër përdoruesi dhe/ose fjalëkalim i pasaktë</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
         <source>Login failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Hyrja dështoi: %1</translation>
     </message>
 </context>
 <context>
@@ -4025,7 +4037,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="53"/>
         <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
+        <translation>U mor përgjigje e pavlefshme nga shërbyesi</translation>
     </message>
 </context>
 <context>
@@ -4033,17 +4045,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="61"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>S’u pikas dot shërbyes i përputhshmë te %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="90"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Përdoruesi hodhi poshtë ridrejtimin nga %1 në %2</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="118"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>Përdoruesi hodhi poshtë dëshmi SSL të pavlefshme</translation>
     </message>
 </context>
 <context>
@@ -4051,17 +4063,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Po lidhet me &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
+        <translation>Po lidhet te &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Rihapni Shfletuesin</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, përdorni shfletuesin tuaj për të bërë hyrjen te %1.</translation>
     </message>
 </context>
 <context>
@@ -4069,12 +4081,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="50"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation type="unfinished"/>
+        <translation>Gabim teksa provohej të bëhej hyrja te shërbyes me OAuth2 të aktivizuar.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="55"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation type="unfinished"/>
+        <translation>Shërbyesi njofton se OAuth2 nuk mbulohet.</translation>
     </message>
 </context>
 <context>
@@ -4141,12 +4153,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation type="unfinished"/>
+        <translation>S’u arrit të përtypet përgjigje WebFinger: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>Pikëmbarim WebFinger s’dërgoi atribut href</translation>
     </message>
 </context>
 <context>
@@ -4489,7 +4501,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Shtoni një Hapësirë&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Përzgjidhni një Hapësirë për ta njëkohësuar në kompjuterin tuaj.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
