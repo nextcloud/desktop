@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -64,7 +64,7 @@
         <translation>Aktivitetsliste</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
         <translation type="unfinished"/>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
         <translation type="unfinished"/>
     </message>
@@ -85,17 +85,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
         <translation type="unfinished"/>
     </message>
@@ -3828,12 +3828,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>could not delete file %1 from local DB</source>
+        <source>Error updating metadata due to invalid modified time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>Error updating metadata due to invalid modified time</source>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <source>could not delete file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -6813,22 +6813,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="513"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Account switcher and settings menu</source>
         <translation>Menuen til kontoskift og indstillinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="532"/>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
         <source>Open local folder of current account</source>
         <translation>Åbn lokal mappe for nuværende konto</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Connected</source>
         <translation>Forbundet</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Disconnected</source>
         <translation>Frakoblet</translation>
     </message>
@@ -6838,12 +6838,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Åbn delingsdialog</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="591"/>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Åbn Nextcloud Talk i browseren</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="611"/>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
         <source>More apps</source>
         <translation>Flere apps</translation>
     </message>
@@ -6853,7 +6853,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Apps-menuen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="666"/>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open %1 in browser</source>
         <translation>Åbn %1 i browser</translation>
     </message>
@@ -6874,7 +6874,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Vis flere handlinger</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="790"/>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
         <source>Unified search results list</source>
         <translation type="unfinished"/>
     </message>
@@ -6884,7 +6884,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Del %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>

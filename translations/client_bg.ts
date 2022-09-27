@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation>Отхвърляне</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation>Отваряне на диалоговия прозорец за споделяне</translation>
     </message>
@@ -64,15 +64,15 @@
         <translation>Списък на дейностите</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Все още няма активности</translation>
     </message>
 </context>
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
         <translation>Изчистване на менюто за съобщения на състояние</translation>
     </message>
@@ -85,17 +85,17 @@
         <translation>Аватар на приложението за разговори Talk при известие за повикване</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
         <translation>Отговор на Talk известие за повикване</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
         <translation>Отказ</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
         <translation>Отказ на известие за повикване от Talk</translation>
     </message>
@@ -3781,7 +3781,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="918"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при изтриване на запис на файл %1 от базата данни</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="946"/>
@@ -3853,13 +3853,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>Грешка при актуализиране на метаданните поради невалиден час на промяна</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation>не можа да изтрие файл %1 от локалната БД /база данни/</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
@@ -3887,7 +3887,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>не можа да се получи файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
@@ -3904,7 +3904,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -4045,7 +4045,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
 </context>
 <context>
@@ -4063,12 +4063,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>не можа да се получи файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
@@ -4107,7 +4107,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
 </context>
 <context>
@@ -4156,12 +4156,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>не можа да се получи файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
@@ -5237,7 +5237,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="386"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>Не може да се зададе запис на файл в локалната БД: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
@@ -6838,22 +6838,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Текущият статус на профил е: не безпокойте</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="513"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Account switcher and settings menu</source>
         <translation>Меню за превключване на профил и настройки</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="532"/>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
         <source>Open local folder of current account</source>
         <translation>Отворяне на локалната папка на текущия профил</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Connected</source>
         <translation>Свързан</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Disconnected</source>
         <translation>Без връзка</translation>
     </message>
@@ -6863,12 +6863,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Отваряне на диалоговия прозорец за споделяне</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="591"/>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Отваряне на Nextcloud Разговор в браузъра</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="611"/>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
         <source>More apps</source>
         <translation>Още приложения</translation>
     </message>
@@ -6878,7 +6878,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Меню с приложения</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="666"/>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open %1 in browser</source>
         <translation>Отвори %1 в браузъра</translation>
     </message>
@@ -6899,7 +6899,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Показване на повече действия</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="790"/>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
         <source>Unified search results list</source>
         <translation>Обединен списък с резултати от търсенето</translation>
     </message>
@@ -6909,7 +6909,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Споделяне %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
         <translation>%1 - Файлова активност</translation>
     </message>
