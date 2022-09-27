@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation>Dispensar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation>Abrir caixa de diálogo compartilhada</translation>
     </message>
@@ -64,7 +64,7 @@
         <translation>Lista de atividades</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
         <translation>Nenhuma atividade ainda</translation>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
         <translation>Limpar menu de mensagem de status</translation>
     </message>
@@ -85,17 +85,17 @@
         <translation>Avatar do chamador de notificação de conversa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
         <translation>Atender a notificação de chamada do Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
         <translation>Recusar</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
         <translation>Recusar notificação de chamada do Talk</translation>
     </message>
@@ -3850,13 +3850,13 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>could not delete file %1 from local DB</source>
-        <translation>não foi possível eliminar o arquivo %1 do BD local</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>Erro ao atualizar os metadados devido a erro na data/hora modificada</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation>não foi possível eliminar o arquivo %1 do BD local</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
@@ -6835,22 +6835,22 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>O status da conta atual é não perturbe</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="513"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Account switcher and settings menu</source>
         <translation>Alternador de conta e menu de configurações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="532"/>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
         <source>Open local folder of current account</source>
         <translation>Abrir pasta local da conta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
@@ -6860,12 +6860,12 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Abrir janela de compartilhamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="591"/>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Abrir o Nextcloud Talk no navegador</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="611"/>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
         <source>More apps</source>
         <translation>Mais aplicativos</translation>
     </message>
@@ -6875,7 +6875,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Menu de aplicativos</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="666"/>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open %1 in browser</source>
         <translation>Abrir %1 no navegador</translation>
     </message>
@@ -6896,7 +6896,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Mostrar mais ações</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="790"/>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
         <source>Unified search results list</source>
         <translation>Lista unificada de resultados de pesquisa </translation>
     </message>
@@ -6906,7 +6906,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Compartilhar %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
         <translation>%1 - Atividade de arquivo</translation>
     </message>

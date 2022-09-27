@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation>忽略</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation>開啟分享對話方塊</translation>
     </message>
@@ -64,7 +64,7 @@
         <translation>事件清單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
         <translation>尚無活動</translation>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
         <translation>清除狀態訊息選單</translation>
     </message>
@@ -85,17 +85,17 @@
         <translation>Talk 通知來電者大頭照</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
         <translation>接聽 Talk 來電通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
         <translation>回絕</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
         <translation>回絕 Talk 來電通知</translation>
     </message>
@@ -3852,13 +3852,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>could not delete file %1 from local DB</source>
-        <translation>無法從本機資料庫中刪除檔案 %1</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>因為修改時間無效，所以更新詮釋資料時發生錯誤</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation>無法從本機資料庫中刪除檔案 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
@@ -6837,22 +6837,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>目前的帳號狀態為請勿打擾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="513"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Account switcher and settings menu</source>
         <translation>帳號切換器與設定選單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="532"/>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
         <source>Open local folder of current account</source>
         <translation>開啟目前帳號的本機資料夾</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Disconnected</source>
         <translation>已斷線</translation>
     </message>
@@ -6862,12 +6862,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>開啟分享對話框</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="591"/>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>在瀏覽器中開啟 Nextcloud Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="611"/>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
         <source>More apps</source>
         <translation>更多應用程式</translation>
     </message>
@@ -6877,7 +6877,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>應用程式選單</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="666"/>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open %1 in browser</source>
         <translation>在瀏覽器中開啟 %1</translation>
     </message>
@@ -6898,7 +6898,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>顯示更多動作</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="790"/>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
         <source>Unified search results list</source>
         <translation>統一搜尋結果清單</translation>
     </message>
@@ -6908,7 +6908,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>分享 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
         <translation>%1 - 檔案事件</translation>
     </message>

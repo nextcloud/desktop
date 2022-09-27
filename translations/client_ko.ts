@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -64,7 +64,7 @@
         <translation>활동 목록</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
         <translation type="unfinished"/>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
         <translation>상태 메시지 메뉴 지우기</translation>
     </message>
@@ -85,17 +85,17 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
         <translation>거부하다</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
         <translation type="unfinished"/>
     </message>
@@ -3856,13 +3856,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>유효하지 않은 수정 시간으로 인한 메타데이터 업데이트 오류</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
@@ -6841,22 +6841,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>현재 계정 상태가 방해 금지 상태입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="513"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Account switcher and settings menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="532"/>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
         <source>Open local folder of current account</source>
         <translation>현재 계정의 로컬 폴더 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Connected</source>
         <translation>연결됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Disconnected</source>
         <translation>연결이 끊어졌습니다.</translation>
     </message>
@@ -6866,12 +6866,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>공유 대화 상자 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="591"/>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>브라우저에서 Nextcloud Talk 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="611"/>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
         <source>More apps</source>
         <translation>더 많은 앱</translation>
     </message>
@@ -6881,7 +6881,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>앱 메뉴</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="666"/>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open %1 in browser</source>
         <translation>브라우저에서 %1 열기</translation>
     </message>
@@ -6902,7 +6902,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>더 많은 동작 보기</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="790"/>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
         <source>Unified search results list</source>
         <translation>통합 검색 결과 목록</translation>
     </message>
@@ -6912,7 +6912,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>%1 공유</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
         <translation type="unfinished"/>
     </message>

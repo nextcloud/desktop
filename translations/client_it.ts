@@ -45,13 +45,13 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="191"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
         <source>Dismiss</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="225"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
         <translation>Apri finestra di condivisione</translation>
     </message>
@@ -64,7 +64,7 @@
         <translation>Lista attività</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="98"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
         <translation type="unfinished"/>
     </message>
@@ -72,7 +72,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
         <translation>Cancella il messaggio di stato</translation>
     </message>
@@ -85,17 +85,17 @@
         <translation>Avatar chiamante notifica Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="240"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
         <translation>Notifica di risposta chiamata Talk</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
         <translation>Rifiuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
+        <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
         <translation>Notifica di rifiuto chiamata Talk</translation>
     </message>
@@ -3842,13 +3842,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
-        <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1204"/>
         <source>Error updating metadata due to invalid modified time</source>
         <translation>Errore di aggiornamento dei metadati a causa dell&apos;orario di modifica non valido</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <source>could not delete file %1 from local DB</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
@@ -6827,22 +6827,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Lo stato attuale dell&apos;account è non disturbare</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="513"/>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
         <source>Account switcher and settings menu</source>
         <translation>Selettore account e menu impostazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="532"/>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
         <source>Open local folder of current account</source>
         <translation>Apri cartella locale dell&apos;account attuale</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Connected</source>
         <translation>Connesso</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="555"/>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
         <source>Disconnected</source>
         <translation>Disconnesso</translation>
     </message>
@@ -6852,12 +6852,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Apri finestra di condivisione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="591"/>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
         <source>Open Nextcloud Talk in browser</source>
         <translation>Apri Nextcloud Talk nel browser</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="611"/>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
         <source>More apps</source>
         <translation>Altre applicazioni</translation>
     </message>
@@ -6867,7 +6867,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Menu Applicazioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="666"/>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
         <source>Open %1 in browser</source>
         <translation>Apri %1 nel browser</translation>
     </message>
@@ -6888,7 +6888,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Mostra altre azioni</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="790"/>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
         <source>Unified search results list</source>
         <translation>Lista unificata dei risultati di ricerca</translation>
     </message>
@@ -6898,7 +6898,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Condividi %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
         <translation>%1 - Attività file</translation>
     </message>
