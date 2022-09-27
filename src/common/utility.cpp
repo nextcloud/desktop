@@ -592,21 +592,6 @@ QString Utility::sanitizeForFileName(const QString &name)
     return result;
 }
 
-QDebug &operator<<(QDebug &debug, nanoseconds in)
-{
-    QDebugStateSaver save(debug);
-    debug.nospace();
-    const auto h = duration_cast<hours>(in);
-    const auto min = duration_cast<minutes>(in -= h);
-    const auto s = duration_cast<seconds>(in -= min);
-    const auto ms = duration_cast<milliseconds>(in -= s);
-    return debug << "std::chrono::duration("
-                 << h.count() << "h, "
-                 << min.count() << "min, "
-                 << s.count() << "s, "
-                 << ms.count() << "ms)";
-}
-
 QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &values)
 {
     static const QRegularExpression pattern(QStringLiteral("@{([^{}]+)}"));
@@ -636,3 +621,18 @@ QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &val
 }
 
 } // namespace OCC
+
+QDebug &operator<<(QDebug &debug, nanoseconds in)
+{
+    QDebugStateSaver save(debug);
+    debug.nospace();
+    const auto h = duration_cast<hours>(in);
+    const auto min = duration_cast<minutes>(in -= h);
+    const auto s = duration_cast<seconds>(in -= min);
+    const auto ms = duration_cast<milliseconds>(in -= s);
+    return debug << "std::chrono::duration("
+                 << h.count() << "h, "
+                 << min.count() << "min, "
+                 << s.count() << "s, "
+                 << ms.count() << "ms)";
+}

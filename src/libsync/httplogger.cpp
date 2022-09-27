@@ -14,9 +14,15 @@
 
 #include "httplogger.h"
 
+#include "common/chronoelapsedtimer.h"
+#include "common/utility.h"
+
 #include <QRegularExpression>
 #include <QLoggingCategory>
 #include <QBuffer>
+
+
+using namespace std::chrono;
 
 namespace {
 Q_LOGGING_CATEGORY(lcNetworkHttp, "sync.httplogger", QtWarningMsg)
@@ -33,12 +39,13 @@ bool isTextBody(const QString &s)
     return regexp.match(s).hasMatch();
 }
 
-void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device)
+void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, const QString &contentType, const QList<QNetworkReply::RawHeaderPair> &header, QIODevice *device, const nanoseconds &duration = {})
 {
     const auto reply = qobject_cast<QNetworkReply *>(device);
     const auto contentLength = device ? device->size() : 0;
     QString msg;
-    QTextStream stream(&msg);
+    QDebug stream(&msg);
+    stream.nospace().noquote();
     stream << id << ": ";
     if (!reply) {
         stream << "Request: ";
@@ -54,7 +61,7 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
         if (reply->attribute(QNetworkRequest::HttpPipeliningWasUsedAttribute).toBool()) {
             stream << "Piplined,";
         }
-        stream << ")";
+        stream << duration << ")";
     }
     stream << " " << url << " Header: { ";
     for (const auto &it : header) {
@@ -95,10 +102,12 @@ namespace OCC {
 
 void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operation operation, QIODevice *device)
 {
-    const auto request = reply->request();
     if (!lcNetworkHttp().isInfoEnabled()) {
         return;
     }
+    const auto timer = Utility::ChronoElapsedTimer();
+    const auto request = reply->request();
+
     const auto keys = request.rawHeaderList();
     QList<QNetworkReply::RawHeaderPair> header;
     header.reserve(keys.size());
@@ -112,13 +121,14 @@ void HttpLogger::logRequest(QNetworkReply *reply, QNetworkAccessManager::Operati
         header,
         device);
 
-    QObject::connect(reply, &QNetworkReply::finished, reply, [reply] {
+    QObject::connect(reply, &QNetworkReply::finished, reply, [reply, timer] {
         logHttp(requestVerb(*reply),
             reply->url().toString(),
             reply->request().rawHeader(XRequestId()),
             reply->header(QNetworkRequest::ContentTypeHeader).toString(),
             reply->rawHeaderPairs(),
-            reply);
+            reply,
+            timer.duration());
     });
 }
 

@@ -1,0 +1,5 @@
+Enhancement: Estimate duration of network requests in httplogger
+
+We now include an estimated duration in the httploger.
+
+https://github.com/owncloud/client/pull/10142
