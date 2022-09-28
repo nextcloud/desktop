@@ -11,6 +11,7 @@ Summary
 * Bugfix - Don't unset implicit log flush: [#9515](https://github.com/owncloud/client/pull/9515)
 * Bugfix - We fixed a crash: [#10017](https://github.com/owncloud/client/pull/10017)
 * Bugfix - Sync status changes are now directly displayed: [#10101](https://github.com/owncloud/client/issues/10101)
+* Bugfix - Don't trigger ignore list when files are locked on the server: [#5382](https://github.com/owncloud/enterprise/issues/5382)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 * Bugfix - Don't display a conext menu on the root folder: [#8595](https://github.com/owncloud/client/issues/8595)
 * Bugfix - Fix copy url location for private links: [#9048](https://github.com/owncloud/client/issues/9048)
@@ -67,6 +68,10 @@ Details
 * Bugfix - Sync status changes are now directly displayed: [#10101](https://github.com/owncloud/client/issues/10101)
 
    https://github.com/owncloud/client/issues/10101
+
+* Bugfix - Don't trigger ignore list when files are locked on the server: [#5382](https://github.com/owncloud/enterprise/issues/5382)
+
+   https://github.com/owncloud/enterprise/issues/5382
 
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
 
