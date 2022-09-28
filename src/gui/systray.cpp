@@ -257,6 +257,34 @@ void Systray::createCallDialog(const Activity &callNotification, const AccountSt
     }
 }
 
+void Systray::createEditFileLocallyLoadingDialog(const QString &fileName)
+{
+    if (_editFileLocallyLoadingDialog) {
+        return;
+    }
+
+    qCDebug(lcSystray) << "Opening a file local editing dialog...";
+
+    const auto editFileLocallyLoadingDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/tray/EditFileLocallyLoadingDialog.qml"));
+
+    if (editFileLocallyLoadingDialog->isError()) {
+        qCWarning(lcSystray) << editFileLocallyLoadingDialog->errorString();
+        return;
+    }
+
+    _editFileLocallyLoadingDialog = editFileLocallyLoadingDialog->createWithInitialProperties(QVariantMap{{QStringLiteral("fileName"), fileName}});
+}
+
+void Systray::destroyEditFileLocallyLoadingDialog()
+{
+    if (!_editFileLocallyLoadingDialog) {
+        return;
+    }
+    qCDebug(lcSystray) << "Closing a file local editing dialog...";
+    _editFileLocallyLoadingDialog->deleteLater();
+    _editFileLocallyLoadingDialog = nullptr;
+}
+
 void Systray::slotCurrentUserChanged()
 {
     if (_trayEngine) {

@@ -36,6 +36,7 @@
         <file>src/gui/tray/ActivityItemContent.qml</file>
         <file>src/gui/tray/TalkReplyTextField.qml</file>
         <file>src/gui/tray/CallNotificationDialog.qml</file>
+        <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
         <file>src/gui/tray/NCBusyIndicator.qml</file>
         <file>src/gui/tray/NCToolTip.qml</file>
     </qresource>
