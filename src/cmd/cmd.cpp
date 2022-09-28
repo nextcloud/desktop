@@ -30,7 +30,6 @@
 #include "common/syncjournaldb.h"
 #include "config.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
-#include "creds/httpcredentials.h"
 #include "csync_exclude.h"
 #include "libsync/logger.h"
 #include "libsync/theme.h"
@@ -49,7 +48,7 @@ namespace {
 struct CmdOptions
 {
     QString source_dir;
-    QString target_url;
+    QUrl target_url;
     QString config_directory;
     QString user;
     QString password;
@@ -80,7 +79,6 @@ struct SyncCTX
     AccountPtr account;
     QString user;
 };
-
 
 /* If the selective sync list is different from before, we need to disable the read from db
   (The normal client does it in SelectiveSyncDialog::accept*)
@@ -213,6 +211,107 @@ void sync(const SyncCTX &ctx)
     engine->startSync();
 }
 
+void setupCredentials(SyncCTX &ctx)
+{
+    // Order of retrieval attempt (later attempts override earlier ones):
+    // 1. From URL
+    // 2. From options
+    // 3. From netrc (if enabled)
+    // 4. From prompt (if interactive)
+
+    const auto &url = ctx.options.target_url;
+    ctx.user = url.userName();
+    QString password = url.password();
+
+    if (!ctx.options.user.isEmpty()) {
+        ctx.user = ctx.options.user;
+    }
+
+    if (!ctx.options.password.isEmpty()) {
+        password = ctx.options.password;
+    }
+
+    if (ctx.options.useNetrc) {
+        NetrcParser parser;
+        if (parser.parse()) {
+            NetrcParser::LoginPair pair = parser.find(url.host());
+            ctx.user = pair.first;
+            password = pair.second;
+        }
+    }
+
+    if (ctx.options.interactive) {
+        if (ctx.user.isEmpty()) {
+            std::cout << "Please enter user name: ";
+            std::string s;
+            std::getline(std::cin, s);
+            ctx.user = QString::fromStdString(s);
+        }
+#if 0
+         // TODO: should be handled by textcedentials
+        if (password.isEmpty())
+        {
+            password = queryPassword(ctx.user);    
+        }
+#endif
+    }
+
+    if (!ctx.options.proxy.isNull()) {
+        QString host;
+        uint32_t port = 0;
+        bool ok;
+
+        QStringList pList = ctx.options.proxy.split(':');
+        if (pList.count() == 3) {
+            // http: //192.168.178.23 : 8080
+            //  0            1            2
+            host = pList.at(1);
+            if (host.startsWith(QLatin1String("//")))
+                host.remove(0, 2);
+
+            port = pList.at(2).toUInt(&ok);
+            if (!ok || port > std::numeric_limits<uint16_t>::max()) {
+                qFatal("Invalid port number");
+            }
+
+            QNetworkProxyFactory::setUseSystemConfiguration(false);
+            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, static_cast<uint16_t>(port)));
+        } else {
+            qFatal("Could not read httpproxy. The proxy should have the format \"http://hostname:port\".");
+        }
+    }
+
+    // Pre-flight check: verify that the file specified by --unsyncedfolders can be read by us:
+    if (!ctx.options.unsyncedfolders.isNull()) { // yes, isNull and not isEmpty because...:
+        // ... if the user entered "--unsyncedfolders ''" on the command-line, opening that will
+        // also fail
+        QFile f(ctx.options.unsyncedfolders);
+        if (!f.open(QFile::ReadOnly)) {
+            qFatal("Cannot read unsyncedfolders file '%s': %s",
+                qPrintable(ctx.options.unsyncedfolders),
+                qPrintable(f.errorString()));
+        }
+        f.close();
+    }
+
+    HttpCredentialsText *cred = new HttpCredentialsText(ctx.user, password);
+    ctx.account->setCredentials(cred);
+    if (ctx.options.trustSSL) {
+        QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
+            reply->ignoreSslErrors(errors);
+        });
+    } else {
+        QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
+            Q_UNUSED(reply)
+
+            qCritical() << "SSL error encountered";
+            for (const auto &e : errors) {
+                qCritical() << e.errorString();
+            }
+            qFatal("If you trust the certificate and want to ignore the errors, use the --trust option.");
+        });
+    }
+}
 }
 
 
@@ -272,10 +371,6 @@ CmdOptions parseOptions(const QStringList &app_args)
     }
 
     options.target_url = args.takeLast();
-    // check if the webDAV path was added to the url and append if not.
-    if (!options.target_url.endsWith(QLatin1String("/"))) {
-        options.target_url.append("/");
-    }
 
     options.source_dir = args.takeLast();
     if (!options.source_dir.endsWith('/')) {
@@ -359,14 +454,16 @@ int main(int argc, char **argv)
         qFatal("Could not initialize account!");
     }
 
-    if (!ctx.options.target_url.contains(ctx.account->davPath())) {
-        ctx.options.target_url.append(ctx.account->davPath());
+    setupCredentials(ctx);
+
+    if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
+        ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
     }
 
-    const QUrl url = [&ctx] {
-        auto tmp = QUrl::fromUserInput(ctx.options.target_url);
+    const QUrl baseUrl = [&ctx] {
+        auto tmp = ctx.options.target_url;
         // Find the folder and the original owncloud url
-        QStringList splitted = tmp.path().split("/" + ctx.account->davPath());
+        QStringList splitted = tmp.path().split(ctx.account->davPath());
         tmp.setPath(splitted.value(0));
         tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
 
@@ -377,104 +474,8 @@ int main(int argc, char **argv)
         }
         return tmp;
     }();
-    ctx.credentialFreeUrl = url.adjusted(QUrl::RemoveUserInfo);
+    ctx.credentialFreeUrl = baseUrl.adjusted(QUrl::RemoveUserInfo);
 
-    // Order of retrieval attempt (later attempts override earlier ones):
-    // 1. From URL
-    // 2. From options
-    // 3. From netrc (if enabled)
-    // 4. From prompt (if interactive)
-
-    ctx.user = url.userName();
-    QString password = url.password();
-
-    if (!ctx.options.user.isEmpty()) {
-        ctx.user = ctx.options.user;
-    }
-
-    if (!ctx.options.password.isEmpty()) {
-        password = ctx.options.password;
-    }
-
-    if (ctx.options.useNetrc) {
-        NetrcParser parser;
-        if (parser.parse()) {
-            NetrcParser::LoginPair pair = parser.find(url.host());
-            ctx.user = pair.first;
-            password = pair.second;
-        }
-    }
-
-    if (ctx.options.interactive) {
-        if (ctx.user.isEmpty()) {
-            std::cout << "Please enter user name: ";
-            std::string s;
-            std::getline(std::cin, s);
-            ctx.user = QString::fromStdString(s);
-        }
-#if 0
-        // TODO: should be handled by textcedentials
-        if (password.isEmpty()) {
-            password = queryPassword(ctx.user);
-        }
-#endif
-    }
-
-    if (!ctx.options.proxy.isNull()) {
-        QString host;
-        uint32_t port = 0;
-        bool ok;
-
-        QStringList pList = ctx.options.proxy.split(':');
-        if (pList.count() == 3) {
-            // http: //192.168.178.23 : 8080
-            //  0            1            2
-            host = pList.at(1);
-            if (host.startsWith(QLatin1String("//")))
-                host.remove(0, 2);
-
-            port = pList.at(2).toUInt(&ok);
-            if (!ok || port > std::numeric_limits<uint16_t>::max()) {
-                qFatal("Invalid port number");
-            }
-
-            QNetworkProxyFactory::setUseSystemConfiguration(false);
-            QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::HttpProxy, host, static_cast<uint16_t>(port)));
-        } else {
-            qFatal("Could not read httpproxy. The proxy should have the format \"http://hostname:port\".");
-        }
-    }
-
-    // Pre-flight check: verify that the file specified by --unsyncedfolders can be read by us:
-    if (!ctx.options.unsyncedfolders.isNull()) { // yes, isNull and not isEmpty because...:
-        // ... if the user entered "--unsyncedfolders ''" on the command-line, opening that will
-        // also fail
-        QFile f(ctx.options.unsyncedfolders);
-        if (!f.open(QFile::ReadOnly)) {
-            qFatal("Cannot read unsyncedfolders file '%s': %s",
-                qPrintable(ctx.options.unsyncedfolders),
-                qPrintable(f.errorString()));
-        }
-        f.close();
-    }
-
-    HttpCredentialsText *cred = new HttpCredentialsText(ctx.user, password);
-    ctx.account->setCredentials(cred);
-    if (ctx.options.trustSSL) {
-        QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
-            reply->ignoreSslErrors(errors);
-        });
-    } else {
-        QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
-            Q_UNUSED(reply)
-
-            qCritical() << "SSL error encountered";
-            for (const auto &e : errors) {
-                qCritical() << e.errorString();
-            }
-            qFatal("If you trust the certificate and want to ignore the errors, use the --trust option.");
-        });
-    }
 
     ctx.account->setUrl(ctx.credentialFreeUrl);
 
@@ -516,7 +517,7 @@ int main(int argc, char **argv)
                 qFatal("Looking up %s timed out.", qPrintable(ctx.account->url().toString()));
                 break;
             default:
-                qFatal("Failed to resolve %s.", qPrintable(ctx.account->url().toString()));
+                qFatal("Failed to resolve %s Error: %s.", qPrintable(ctx.account->url().toString()), qPrintable(checkServerJob->reply()->errorString()));
             }
         }
     });
