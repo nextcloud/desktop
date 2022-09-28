@@ -14,32 +14,32 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
         <source>Advanced configuration</source>
-        <translation type="unfinished"/>
+        <translation>Gelişmiş yapılandırma</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
         <source>Configure files download:</source>
-        <translation type="unfinished"/>
+        <translation>Yapılandırma dosyalarını indir:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
         <source>Download everything</source>
-        <translation type="unfinished"/>
+        <translation>Her şeyi indir</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation type="unfinished"/>
+        <translation>Bu sihirbazı tamamladıktan sonra klasör senkronizasyonunu manuel olarak ayarlayabilirsiniz.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="163"/>
         <source>Configure synchronization manually</source>
-        <translation type="unfinished"/>
+        <translation>Senkronizasyonu manuel olarak yapılandırın</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="210"/>
         <source>Choose local download directory:</source>
-        <translation type="unfinished"/>
+        <translation>Yerel indirme dizinini seçin:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="20"/>
         <source>BasicLoginWidget</source>
-        <translation type="unfinished"/>
+        <translation>BasicLoginWidget</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="53"/>
@@ -91,7 +91,7 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="122"/>
         <source>The checksum header is malformed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Sağlama toplamı başlığı hatalı biçimlendirilmiş: %1</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="126"/>
@@ -320,7 +320,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="14"/>
         <source>Login required</source>
-        <translation type="unfinished"/>
+        <translation>Giriş gerekli</translation>
     </message>
 </context>
 <context>
@@ -351,17 +351,17 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="14"/>
         <source>OAuthLoginWidget</source>
-        <translation type="unfinished"/>
+        <translation>OAuthLoginWidget</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="58"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Tarayıcıyı Aç</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="71"/>
         <source>Copy URL to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>URL&apos;yi panoya kopyala</translation>
     </message>
 </context>
 <context>
@@ -581,12 +581,14 @@ Bu eylem, o anda çalışan herhangi senkronizasyon işlemini iptal edecektir.</
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
-        <translation type="unfinished"/>
+        <translation>%1 hesabının oturumu şu anda kapalı.
+
+Lütfen tarayıcınızı kullanarak kimliğinizi doğrulayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="841"/>
         <source>Reauthorization required.</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden yetkilendirme gerekli.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="850"/>
@@ -596,17 +598,17 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>No connection to %1.</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile bağlantı yok.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
         <source>Server configuration error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu yapılandırma hatası: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="871"/>
         <source>No connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Yapılandırılmış bağlantı yok.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="893"/>
@@ -971,7 +973,7 @@ Dosya senkronizasyonu masaüstü yardımcı programı.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="642"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile ve --logdir birbirini dışlar</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="656"/>
@@ -1005,7 +1007,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Sanal dosyalar&quot; modu etkinleştirildiğinde, başlangıçta hiçbir dosya indirilmez. Bunun yerine, sunucuda bulunan her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. İçindekiler bu dosyalar çalıştırılarak veya içerik menüleri kullanılarak indirilebilir.
+
+Sanal dosyalar modu, seçici eşleme ile beraber çalışır. Şu anda seçili olmayan klasörler yalnızca çevrimiçi sanal klasörlere çevrilecek ve seçici senkronizasyon ayarlarınız sıfırlanacaktır.
+
+Bu moda geçmek, o anda çalışan eşlemeyi iptal edecektir.
+
+Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıkan sorunları bildirin.</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
@@ -1071,7 +1079,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="320"/>
         <source>The configured server for this client is too old.</source>
-        <translation type="unfinished"/>
+        <translation>Bu istemci için yapılandırılmış sunucu çok eski.</translation>
     </message>
 </context>
 <context>
@@ -1087,12 +1095,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu yetki istemedi</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="57"/>
         <source>Failed to determine auth type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kimlik doğrulama türü belirlenemedi: %1</translation>
     </message>
 </context>
 <context>
@@ -1140,7 +1148,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="70"/>
         <source>Failed to retrieve user info</source>
-        <translation type="unfinished"/>
+        <translation>Kullanıcı bilgileri alınamadı</translation>
     </message>
 </context>
 <context>
@@ -1474,7 +1482,7 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add a space</source>
-        <translation type="unfinished"/>
+        <translation>Bir alan ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="294"/>
@@ -1524,7 +1532,7 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
         <source>Click this button to add a space.</source>
-        <translation type="unfinished"/>
+        <translation>Bir alan eklemek için bu butona tıklayın.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="236"/>
@@ -1681,7 +1689,7 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörü seçin</translation>
     </message>
 </context>
 <context>
@@ -1798,7 +1806,7 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on &amp;Login</source>
-        <translation type="unfinished"/>
+        <translation>Başla &amp;Giriş Yap</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1969,7 +1977,7 @@ Bunun yalnızca hangi güncelleme kanalından alınacağını seçtiğini ve her
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
         <source>Please enter your password to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Hesabınıza giriş yapmak için lütfen şifrenizi giriniz.</translation>
     </message>
 </context>
 <context>
@@ -2137,7 +2145,7 @@ Günlük dosyaları büyüyebileceğinden, istemci her senkronizasyon çalışt�
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>Günlük dosyaları tutmak için:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
@@ -2423,22 +2431,22 @@ Günlüğe kaydetme komut satırı seçeneklerinin kullanılmasının bu ayarlar
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Yanlış kullanıcı &lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; kullanıcısıyla oturum açtınız, ancak &lt;em&gt;%2&lt;/em&gt; kullanıcısıyla oturum açmanız gerekiyor. &lt;br&gt;Lütfen %3 istemcisine dönün ve kimlik doğrulamayı yeniden başlatın.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
         <source>Wrong user</source>
-        <translation type="unfinished"/>
+        <translation>Yanlış kullanıcı</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Giriş Başarılı&lt;/h1&gt;&lt;p&gt; Bu pencereyi kapatabilirsiniz.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
         <source>Login Successful</source>
-        <translation type="unfinished"/>
+        <translation>Giriş Başarılı</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
@@ -3456,7 +3464,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="93"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>Kişileri bu paylaşılan dosyaya veya %1 klasörüne özel bir bağlantı vererek yönlendirebilirsiniz</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="215"/>
@@ -3639,7 +3647,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="975"/>
         <source>Open in %1</source>
-        <translation type="unfinished"/>
+        <translation>%1&apos;de Aç</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="983"/>
@@ -3693,7 +3701,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="165"/>
         <source>Open in Web</source>
-        <translation type="unfinished"/>
+        <translation>Web&apos;de Aç</translation>
     </message>
 </context>
 <context>
@@ -3701,7 +3709,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="45"/>
         <source>Sync</source>
-        <translation type="unfinished"/>
+        <translation>Senkronize et</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="47"/>
@@ -3711,17 +3719,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
         <source>Subtitle</source>
-        <translation type="unfinished"/>
+        <translation>Alt başlık</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="51"/>
         <source>Web URL</source>
-        <translation type="unfinished"/>
+        <translation>Web URL</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="53"/>
         <source>Web Dav URL</source>
-        <translation type="unfinished"/>
+        <translation>Web Dav URL</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="55"/>
@@ -3809,7 +3817,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="451"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versiyon 1. Daha fazla bilgi için &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt; adresini ziyaret edin&lt;/p&gt;&lt;p&gt;Bilinen sorunlar ve yardım için lütfen şu adresi ziyaret edin: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt, Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth ve diğerleri.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Telif hakkı ownCloud GmbH&lt;/p&gt;&lt;p&gt;%4 tarafından dağıtılır ve GNU Genel Kamu Lisansı (GPL) Sürüm 2.0 altında lisanslanır.&lt;br/&gt;%5 ve %5 logosu ABD&apos;de, diğer ülkelerde veya her ikisinde %4&apos;ün tescilli ticari markalarıdır.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3817,7 +3825,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="14"/>
         <source>TLS Certificate Error</source>
-        <translation type="unfinished"/>
+        <translation>TLS Sertifika Hatası</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
@@ -3827,7 +3835,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
         <source>Cannot connect securely to %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 ile güvenli bir şekilde bağlanılamıyor</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="69"/>
@@ -3845,19 +3853,21 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
         <source>Installed version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kurulu sürüm: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
         <source>Available update: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kullanılabilir güncelleme: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="38"/>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation type="unfinished"/>
+        <translation>Bu %1 AppImage için bir güncelleme mevcut. Bu güncellemeyi yüklemek istiyor musunuz?
+
+Güncelleme arka planda gerçekleştirilecek ve mevcut AppImage dosyasının üzerine yazılacaktır. Güncellemeyi tamamlamak için uygulamayı yeniden başlatmanız gerekir.</translation>
     </message>
 </context>
 <context>
@@ -3922,7 +3932,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz yerel indirme dizini: %1</translation>
     </message>
 </context>
 <context>
@@ -3935,7 +3945,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="50"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (tavsiye edilen)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="68"/>
@@ -3950,7 +3960,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="74"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Yerel klasörü seçin</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
@@ -3966,7 +3976,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>&quot;Sanal dosyalar&quot; modu etkinleştirildiğinde, başlangıçta hiçbir dosya indirilmez. Bunun yerine, sunucuda bulunan her dosya için küçük bir &quot;%1&quot; dosyası oluşturulur. İçindekiler bu dosyalar çalıştırılarak veya içerik menüleri kullanılarak indirilebilir.
+
+Sanal dosyalar modu, seçici eşleme ile beraber çalışır. Şu anda seçili olmayan klasörler yalnızca çevrimiçi sanal klasörlere çevrilecek ve seçici senkronizasyon ayarlarınız sıfırlanacaktır.
+
+Bu moda geçmek, o anda çalışan eşlemeyi iptal edecektir.
+
+Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıkan sorunları bildirin.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
@@ -3989,7 +4005,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;&apos;ye bağlanıyor</translation>
     </message>
 </context>
 <context>
@@ -4012,7 +4028,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
         <source>Login failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Giriş başarısız: %1</translation>
     </message>
 </context>
 <context>
@@ -4046,7 +4062,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;&apos;ye bağlanıyor</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
@@ -4085,12 +4101,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="79"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>Geçersiz sunucu URL&apos;i</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="85"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Güvensiz bağlantı</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="86"/>
@@ -4106,7 +4122,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Güvensiz sunucu, kullanıcı tarafından reddedildi</translation>
     </message>
 </context>
 <context>
@@ -4114,12 +4130,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="109"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Bitir</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>İleri &gt;</translation>
     </message>
 </context>
 <context>
@@ -4127,7 +4143,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;&apos;ye bağlanıyor</translation>
     </message>
 </context>
 <context>
@@ -4332,7 +4348,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="817"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 Göster</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="818"/>
@@ -4439,7 +4455,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>Sunucu adresiniz nedir?</translation>
     </message>
 </context>
 <context>
@@ -4447,7 +4463,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Yeni Hesap Ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4462,7 +4478,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; Geri</translation>
     </message>
 </context>
 <context>
@@ -4478,12 +4494,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="14"/>
         <source>WizardPage</source>
-        <translation type="unfinished"/>
+        <translation>WizardPage</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Alan Ekle&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Bilgisayarınızla senkronize etmek için bir Alan seçin.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4555,7 +4571,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="700"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>E-posta adresi</translation>
     </message>
 </context>
 <context>
@@ -4631,7 +4647,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
         <source>Please enter your username:</source>
-        <translation type="unfinished"/>
+        <translation>Lütfen kullanıcı adınızı girin:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
