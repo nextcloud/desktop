@@ -29,12 +29,12 @@
 
 namespace OCC {
 
-static const char updateAvailableC[] = "Updater/updateAvailable";
-static const char updateTargetVersionC[] = "Updater/updateTargetVersion";
-static const char updateTargetVersionStringC[] = "Updater/updateTargetVersionString";
-static const char seenVersionC[] = "Updater/seenVersion";
-static const char autoUpdateAttemptedC[] = "Updater/autoUpdateAttempted";
-
+namespace {
+const auto updateAvailableC = QStringLiteral("Updater/updateAvailable");
+const auto updateTargetVersionC = QStringLiteral("Updater/updateTargetVersion");
+const auto updateTargetVersionStringC = QStringLiteral("Updater/updateTargetVersionString");
+const auto autoUpdateAttemptedC = QStringLiteral("Updater/autoUpdateAttempted");
+}
 
 UpdaterScheduler::UpdaterScheduler(QObject *parent)
     : QObject(parent)
@@ -347,12 +347,9 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
     ConfigFile cfg;
     QSettings settings(cfg.configFile(), QSettings::IniFormat);
     qint64 infoVersion = Helper::stringVersionToInt(info.version());
-    auto seenString = settings.value(seenVersionC).toString();
-    qint64 seenVersion = Helper::stringVersionToInt(seenString);
     qint64 currVersion = Helper::currentVersionToInt();
     qCInfo(lcUpdater) << "Version info arrived:"
             << "Your version:" << currVersion
-            << "Skipped version:" << seenVersion << seenString
             << "Available version:" << infoVersion << info.version()
             << "Available version string:" << info.versionString()
             << "Web url:" << info.web()
@@ -423,15 +420,12 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     hlayout->addWidget(lbl);
 
     auto *bb = new QDialogButtonBox;
-    QPushButton *skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
     QPushButton *reject = bb->addButton(tr("Skip this time"), QDialogButtonBox::AcceptRole);
     QPushButton *getupdate = bb->addButton(tr("Get update"), QDialogButtonBox::AcceptRole);
 
-    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(reject, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
-    connect(skip, &QAbstractButton::clicked, this, &NSISUpdater::slotSetSeenVersion);
     connect(getupdate, &QAbstractButton::clicked, this, &NSISUpdater::slotOpenUpdateUrl);
 
     layout->addWidget(bb);
@@ -473,20 +467,14 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
     hlayout->addWidget(lbl);
 
     auto bb = new QDialogButtonBox;
-    auto skip = bb->addButton(tr("Skip this version"), QDialogButtonBox::ResetRole);
     auto askagain = bb->addButton(tr("Ask again later"), QDialogButtonBox::ResetRole);
     auto retry = bb->addButton(tr("Restart and update"), QDialogButtonBox::AcceptRole);
     auto getupdate = bb->addButton(tr("Update manually"), QDialogButtonBox::AcceptRole);
 
-    connect(skip, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(askagain, &QAbstractButton::clicked, msgBox, &QDialog::reject);
     connect(retry, &QAbstractButton::clicked, msgBox, &QDialog::accept);
     connect(getupdate, &QAbstractButton::clicked, msgBox, &QDialog::accept);
 
-    connect(skip, &QAbstractButton::clicked, this, [this]() {
-        wipeUpdateData();
-        slotSetSeenVersion();
-    });
     // askagain: do nothing
     connect(retry, &QAbstractButton::clicked, this, [this]() {
         slotStartInstaller();
@@ -529,13 +517,6 @@ bool NSISUpdater::handleStartup()
         }
     }
     return false;
-}
-
-void NSISUpdater::slotSetSeenVersion()
-{
-    ConfigFile cfg;
-    QSettings settings(cfg.configFile(), QSettings::IniFormat);
-    settings.setValue(seenVersionC, updateInfo().version());
 }
 
 ////////////////////////////////////////////////////////////////////////
