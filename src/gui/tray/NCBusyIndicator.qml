@@ -22,6 +22,9 @@ BusyIndicator {
     property color color: Style.ncSecondaryTextColor
     property string imageSource: "image://svgimage-custom-color/change.svg/"
 
+    property int imageSourceSizeWidth: 64
+    property int imageSourceSizeHeight: 64
+
     contentItem: Image {
         id: contentImage
 
@@ -31,8 +34,8 @@ BusyIndicator {
         verticalAlignment: Image.AlignVCenter
 
         source: colourableImage ? root.imageSource + root.color : root.imageSource
-        sourceSize.width: 64
-        sourceSize.height: 64
+        sourceSize.width: root.imageSourceSizeWidth
+        sourceSize.height: root.imageSourceSizeHeight
         fillMode: Image.PreserveAspectFit
 
         mipmap: true
