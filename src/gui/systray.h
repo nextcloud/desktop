@@ -88,6 +88,8 @@ public:
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
     void setToolTip(const QString &tip);
     void createCallDialog(const Activity &callNotification, const AccountStatePtr accountState);
+    void createEditFileLocallyLoadingDialog(const QString &fileName);
+    void destroyEditFileLocallyLoadingDialog();
 
     Q_REQUIRED_RESULT QString windowTitle() const;
     Q_REQUIRED_RESULT bool useNormalWindow() const;
@@ -160,6 +162,8 @@ private:
     AccessManagerFactory _accessManagerFactory;
 
     QSet<qlonglong> _callsAlreadyNotified;
+
+    QPointer<QObject> _editFileLocallyLoadingDialog;
 };
 
 } // namespace OCC

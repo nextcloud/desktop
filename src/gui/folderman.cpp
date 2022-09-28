@@ -1473,11 +1473,38 @@ void FolderMan::editFileLocally(const QString &accountDisplayName, const QString
         return;
     }
 
-    // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl from a separate thread, or, there will be a freeze.
-    // To avoid searching for a specific folder and checking if the VFS is enabled - we just always call it from a separate thread.
-    QtConcurrent::run([foundFiles] {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(foundFiles.first()));
-    });
+    const auto localFilePath = foundFiles.first();
+    const auto folderForFile = folderForPath(localFilePath);
+
+    if (!folderForFile) {
+        showError(accountFound, tr("Could not find a folder to sync."), relPath);
+        return;
+    }
+    
+    const auto relPathSplit = relPath.split(QLatin1Char('/'));
+    if (relPathSplit.size() > 0) {
+        Systray::instance()->createEditFileLocallyLoadingDialog(relPathSplit.last());
+    } else {
+        showError(accountFound, tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), relPath);
+        return;
+    }
+    folderForFile->startSync();
+    _localFileEditingSyncFinishedConnections.insert(localFilePath, QObject::connect(folderForFile, &Folder::syncFinished, this,
+        [this, localFilePath](const OCC::SyncResult &result) {
+        Q_UNUSED(result);
+        const auto foundConnectionIt = _localFileEditingSyncFinishedConnections.find(localFilePath);
+        if (foundConnectionIt != std::end(_localFileEditingSyncFinishedConnections) && foundConnectionIt.value()) {
+            QObject::disconnect(foundConnectionIt.value());
+            _localFileEditingSyncFinishedConnections.erase(foundConnectionIt);
+        }
+        // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
+        // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
+        // if the VFS is enabled - we just always call it from a separate thread.
+        QtConcurrent::run([localFilePath]() {
+            QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath));
+            Systray::instance()->destroyEditFileLocallyLoadingDialog();
+        });
+    }));
 }
 
 void FolderMan::trayOverallStatus(const QList<Folder *> &folders,

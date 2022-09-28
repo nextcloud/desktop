@@ -292,7 +292,7 @@ public:
     bool fileCanBeUnlocked(SyncJournalDb * const journal, const QString &folderRelativePath) const;
 
     void setTrustCertificates(bool trustCertificates);
-    [[nodiscard]] bool trustCertificates() const;
+    bool trustCertificates() const;
 
 public slots:
     /// Used when forgetting credentials
