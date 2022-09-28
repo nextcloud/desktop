@@ -373,15 +373,15 @@ CmdOptions parseOptions(const QStringList &app_args)
     options.target_url = args.takeLast();
 
     options.source_dir = args.takeLast();
-    if (!options.source_dir.endsWith('/')) {
-        options.source_dir.append('/');
-    }
     QFileInfo fi(options.source_dir);
     if (!fi.exists()) {
         std::cerr << "Source dir '" << qPrintable(options.source_dir) << "' does not exist." << std::endl;
         exit(1);
     }
     options.source_dir = fi.absoluteFilePath();
+    if (!options.source_dir.endsWith('/')) {
+        options.source_dir.append('/');
+    }
 
     QStringListIterator it(args);
     // skip file name;
