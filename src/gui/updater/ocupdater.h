@@ -156,7 +156,6 @@ public:
     explicit NSISUpdater(const QUrl &url);
     bool handleStartup() override;
 private slots:
-    void slotSetSeenVersion();
     void slotDownloadFinished();
     void slotWriteFile();
 
