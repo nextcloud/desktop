@@ -259,7 +259,7 @@ bool OCUpdater::updateSucceeded() const
 
 void OCUpdater::slotVersionInfoArrived()
 {
-    qCInfo(lcUpdater()) << "received a reply";
+    qCDebug(lcUpdater) << "received a reply";
     _timeoutWatchdog->stop();
     auto *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
@@ -360,14 +360,14 @@ void NSISUpdater::versionInfoArrived(const UpdateInfo &info)
         qCInfo(lcUpdater) << "No version information available at the moment";
         setDownloadState(UpToDate);
     } else {
-        qint64 currentVer = Helper::currentVersionToInt();
-        qint64 remoteVer = Helper::stringVersionToInt(info.version());
+        const auto currentVer = Helper::currentVersionToInt();
+        const auto remoteVer = Helper::stringVersionToInt(info.version());
 
         if (info.version().isEmpty() || currentVer >= remoteVer) {
             qCInfo(lcUpdater) << "Client is on latest version!";
             setDownloadState(UpToDate);
         } else {
-            QString url = info.downloadUrl();
+            const auto url = info.downloadUrl();
             if (url.isEmpty()) {
                 showNoUrlDialog(info);
             } else {
