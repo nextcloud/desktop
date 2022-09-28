@@ -25,11 +25,8 @@
 
 #include "csync_exclude.h"
 
-#ifndef TOKEN_AUTH_ONLY
 #include <QWidget>
 #include <QHeaderView>
-#endif
-
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
@@ -192,25 +189,20 @@ void ConfigFile::setOptionalDesktopNotifications(bool show)
 
 void ConfigFile::saveGeometry(QWidget *w)
 {
-#ifndef TOKEN_AUTH_ONLY
     OC_ASSERT(!w->objectName().isNull());
     auto settings = makeQSettings();
     settings.beginGroup(w->objectName());
     settings.setValue(geometryC(), w->saveGeometry());
     settings.sync();
-#endif
 }
 
 void ConfigFile::restoreGeometry(QWidget *w)
 {
-#ifndef TOKEN_AUTH_ONLY
     w->restoreGeometry(getValue(geometryC(), w->objectName()).toByteArray());
-#endif
 }
 
 void ConfigFile::saveGeometryHeader(QHeaderView *header)
 {
-#ifndef TOKEN_AUTH_ONLY
     if (!header)
         return;
     OC_ASSERT(!header->objectName().isEmpty());
@@ -219,12 +211,10 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
     settings.beginGroup(header->objectName());
     settings.setValue(geometryC(), header->saveState());
     settings.sync();
-#endif
 }
 
 bool ConfigFile::restoreGeometryHeader(QHeaderView *header)
 {
-#ifndef TOKEN_AUTH_ONLY
     Q_ASSERT(header && !header->objectName().isNull());
 
     auto settings = makeQSettings();
@@ -233,7 +223,6 @@ bool ConfigFile::restoreGeometryHeader(QHeaderView *header)
         header->restoreState(settings.value(geometryC()).toByteArray());
         return true;
     }
-#endif
     return false;
 }
 

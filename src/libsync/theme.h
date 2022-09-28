@@ -90,7 +90,6 @@ public:
      */
     virtual QString configFileName() const;
 
-#ifndef TOKEN_AUTH_ONLY
     /**
      * Wehther we allow a fallback to a vanilla icon
      */
@@ -123,7 +122,6 @@ public:
     * Whether the branding allows the dark theme
     */
     bool allowDarkTheme() const;
-#endif
 
     virtual QString statusHeaderText(SyncResult::Status) const;
 
@@ -196,7 +194,6 @@ public:
      */
     virtual QString enforcedLocale() const { return QString(); }
 
-#ifndef TOKEN_AUTH_ONLY
     /** colored, white or black */
     QString systrayIconFlavor(bool mono, bool sysTrayMenuVisible = false) const;
 
@@ -218,7 +215,6 @@ public:
      * @return banner for the setup wizard.
      */
     [[deprecated]] virtual QPixmap wizardHeaderBanner(const QSize &size) const;
-#endif
 
     /**
      * The SHA sum of the released git commit
@@ -459,11 +455,10 @@ public:
     virtual bool wizardEnableWebfinger() const;
 
 protected:
-#ifndef TOKEN_AUTH_ONLY
     QIcon themeUniversalIcon(const QString &name, IconType iconType = IconType::BrandedIcon) const;
     QIcon themeTrayIcon(const QString &name, bool sysTrayMenuVisible = false, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
     QIcon themeIcon(const QString &name, IconType iconType = IconType::BrandedIconWithFallbackToVanillaIcon) const;
-#endif
+
     Theme();
 
 signals:
@@ -479,14 +474,12 @@ private:
 
     static Theme *_instance;
     bool _mono = false;
-#ifndef TOKEN_AUTH_ONLY
     mutable QMap<QString, QIcon> _iconCache;
     // <<is vanilla, theme name>, bool
     // caches the availability of themes for branded and unbranded themes
     mutable QMap<QPair<bool, QString>, bool> _themeCache;
     const bool _hasBrandedColored = hasTheme(IconType::BrandedIcon, QStringLiteral("colored"));
     const bool _hasBrandedDark = hasTheme(IconType::BrandedIcon, QStringLiteral("dark"));
-#endif
 };
 
 template <>

@@ -16,10 +16,8 @@
 
 #include <QString>
 #include <QVariant>
-#ifndef TOKEN_AUTH_ONLY
 #include <QPixmap>
 #include <QIcon>
-#endif
 #include <QCoreApplication>
 
 #include "common/utility.h"
@@ -33,7 +31,6 @@ ownCloudTheme::ownCloudTheme()
 {
 }
 
-#ifndef TOKEN_AUTH_ONLY
 QColor ownCloudTheme::wizardHeaderBackgroundColor() const
 {
     return QColor(4, 30, 66);
@@ -53,6 +50,4 @@ QIcon ownCloudTheme::aboutIcon() const
 {
     return themeUniversalIcon(QStringLiteral("oc-image-about"));
 }
-
-#endif
 }

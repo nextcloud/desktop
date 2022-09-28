@@ -136,7 +136,6 @@ private:
     bool _done = false;
 };
 
-#ifndef TOKEN_AUTH_ONLY
 /**
  * @brief Retrieves the account users avatar from the server using a GET request.
  *
@@ -169,7 +168,6 @@ signals:
 private slots:
     void finished() override;
 };
-#endif
 
 /**
  * @brief The MkColJob class

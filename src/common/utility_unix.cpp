@@ -124,11 +124,9 @@ bool Utility::runningInAppImage()
 }
 #endif
 
-#ifndef TOKEN_AUTH_ONLY
 bool Utility::hasDarkSystray()
 {
     return true;
 }
-#endif
 
 } // namespace OCC

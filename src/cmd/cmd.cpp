@@ -27,14 +27,10 @@
 #include <qdebug.h>
 
 #include "account.h"
-#include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
-#ifdef TOKEN_AUTH_ONLY
-# include "creds/tokencredentials.h"
-#else
-# include "creds/httpcredentials.h"
-#endif
 #include "common/syncjournaldb.h"
 #include "config.h"
+#include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
+#include "creds/httpcredentials.h"
 #include "csync_exclude.h"
 #include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/jsonjob.h"
@@ -270,7 +266,6 @@ QString queryPassword(const QString &user)
     return QString::fromStdString(s);
 }
 
-#ifndef TOKEN_AUTH_ONLY
 class HttpCredentialsText : public HttpCredentials
 {
 public:
@@ -287,7 +282,6 @@ public:
         emit asked();
     }
 };
-#endif /* TOKEN_AUTH_ONLY */
 
 [[noreturn]] void help()
 {
@@ -528,10 +522,6 @@ int main(int argc, char **argv)
         f.close();
     }
 
-#ifdef TOKEN_AUTH_ONLY
-    TokenCredentials *cred = new TokenCredentials(ctx.user, password, "");
-    account->setCredentials(cred);
-#else
     HttpCredentialsText *cred = new HttpCredentialsText(ctx.user, password);
     ctx.account->setCredentials(cred);
     if (ctx.options.trustSSL) {
@@ -549,7 +539,6 @@ int main(int argc, char **argv)
             qFatal("If you trust the certificate and want to ignore the errors, use the --trust option.");
         });
     }
-#endif
 
     ctx.account->setUrl(ctx.credentialFreeUrl);
 

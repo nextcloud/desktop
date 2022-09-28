@@ -78,10 +78,6 @@ message(STATUS "GIT_SHA1 ${GIT_SHA1}")
 
 set(SYSCONFDIR ${SYSCONF_INSTALL_DIR})
 
-# this option removes Http authentication, keychain, shibboleth etc and is intended for
-# external authentication mechanisms
-option(TOKEN_AUTH_ONLY "TOKEN_AUTH_ONLY" OFF)
-
 option(NO_MSG_HANDLER "Don't redirect QDebug outputs to the log window/file" OFF)
 
 # this option builds the shell integration

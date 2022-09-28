@@ -109,7 +109,6 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     OCSYNC_EXPORT QString durationToDescriptiveString1(quint64 msecs);
     OCSYNC_EXPORT QString durationToDescriptiveString2(quint64 msecs);
 
-#ifndef TOKEN_AUTH_ONLY
     /**
      * @brief hasDarkSystray - determines whether the systray is dark or light.
      *
@@ -121,7 +120,6 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
      * @return bool which is true for systems with dark systray.
      */
     OCSYNC_EXPORT bool hasDarkSystray();
-#endif
 
     // convenience OS detection methods
     inline bool isWindows();

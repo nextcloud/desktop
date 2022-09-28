@@ -65,11 +65,7 @@ set(libsync_SRCS
     appprovider.cpp
  )
 
-if(TOKEN_AUTH_ONLY)
-    set (libsync_SRCS ${libsync_SRCS} creds/tokencredentials.cpp)
-else()
-    set(libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
-endif()
+set(libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
 
 # These headers are installed for libowncloudsync to be used by 3rd party apps
 INSTALL(
@@ -88,9 +84,11 @@ target_link_libraries(libsync
         csync
         Qt5::Core
         Qt5::Network
+        Qt5::Widgets
     PRIVATE
         Qt5::Concurrent
         ZLIB::ZLIB
+        qt5keychain
 )
 
 apply_common_target_settings(libsync)
@@ -104,15 +102,6 @@ if ( APPLE )
          /System/Library/Frameworks/Foundation.framework
          /System/Library/Frameworks/AppKit.framework
     )
-endif()
-
-if (NOT TOKEN_AUTH_ONLY)
-    find_package(Qt5 REQUIRED COMPONENTS Widgets)
-    target_link_libraries(libsync
-        PUBLIC
-            Qt5::Widgets
-        PRIVATE
-            qt5keychain)
 endif()
 
 if(Inotify_FOUND)

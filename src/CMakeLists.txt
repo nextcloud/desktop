@@ -1,11 +1,9 @@
-find_package(Qt5 5.15 COMPONENTS Core Network Xml Concurrent REQUIRED)
+find_package(Qt5 5.15 COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
 
-if(NOT TOKEN_AUTH_ONLY)
-    find_package(Qt5Keychain REQUIRED)
-endif()
+find_package(Qt5Keychain REQUIRED)
 
 # TODO: Mingw64 7.3 might also need to be excluded here as it seems to not automatically link libssp
 if(NOT WIN32)

@@ -21,11 +21,9 @@
 #include "configfile.h"
 
 #include <QtCore>
-#ifndef TOKEN_AUTH_ONLY
 #include <QtGui>
 #include <QStyle>
 #include <QApplication>
-#endif
 #include <QSslSocket>
 
 #include "owncloudtheme.h"
@@ -145,8 +143,6 @@ QString Theme::configFileName() const
 {
     return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");
 }
-
-#ifndef TOKEN_AUTH_ONLY
 
 QIcon Theme::applicationIcon() const
 {
@@ -269,8 +265,6 @@ QString Theme::systrayIconFlavor(bool mono, bool sysTrayMenuVisible) const
     }
     return flavor;
 }
-
-#endif
 
 Theme::Theme()
     : QObject(nullptr)
@@ -471,7 +465,6 @@ bool Theme::aboutShowCopyright() const
     return true;
 }
 
-#ifndef TOKEN_AUTH_ONLY
 QIcon Theme::syncStateIcon(SyncResult::Status status, bool sysTray, bool sysTrayMenuVisible) const
 {
     return syncStateIcon(SyncResult { status }, sysTray, sysTrayMenuVisible);
@@ -562,7 +555,6 @@ QPixmap Theme::wizardHeaderBanner(const QSize &size) const
     pix.fill(c);
     return pix;
 }
-#endif
 
 QString Theme::webDavPath() const
 {

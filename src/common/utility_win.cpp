@@ -82,13 +82,11 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     }
 }
 
-#ifndef TOKEN_AUTH_ONLY
 bool Utility::hasDarkSystray()
 {
     const QSettings settings(systemThemesC(), QSettings::NativeFormat);
     return !settings.value(QStringLiteral("SystemUsesLightTheme"), false).toBool();
 }
-#endif
 
 QVariant Utility::registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName)
 {

@@ -28,12 +28,10 @@ class ownCloudTheme : public Theme
     Q_OBJECT
 public:
     ownCloudTheme();
-#ifndef TOKEN_AUTH_ONLY
     QColor wizardHeaderBackgroundColor() const override;
     QColor wizardHeaderTitleColor() const override;
     QIcon wizardHeaderLogo() const override;
     QIcon aboutIcon() const override;
-#endif
 
     // For owncloud-brandings *do* show the virtual files option.
     bool showVirtualFilesOption() const override { return true; }

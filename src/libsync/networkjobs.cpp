@@ -27,10 +27,8 @@
 #include <QStringList>
 #include <QTimer>
 #include <QXmlStreamReader>
-#ifndef TOKEN_AUTH_ONLY
 #include <QPainter>
 #include <QPainterPath>
-#endif
 
 #include "account.h"
 #include "networkjobs.h"
@@ -416,7 +414,6 @@ void PropfindJob::start()
 
 /*********************************************************************************************/
 
-#ifndef TOKEN_AUTH_ONLY
 AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, account->url(), QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)), parent)
 {
@@ -464,7 +461,6 @@ void AvatarJob::finished()
     }
     emit avatarPixmap(avImage);
 }
-#endif
 
 /*********************************************************************************************/
 

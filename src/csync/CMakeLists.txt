@@ -37,11 +37,6 @@ target_include_directories(csync
 
 apply_common_target_settings(csync)
 
-if(TOKEN_AUTH_ONLY)
-    message("Compiling with token authentication")
-    target_compile_definitions(csync PUBLIC -DTOKEN_AUTH_ONLY=1)
-endif()
-
 if(NO_MSG_HANDLER)
     target_compile_definitions(csync PUBLIC -DNO_MSG_HANDLER=1)
 endif()
