@@ -32,22 +32,15 @@
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "creds/httpcredentials.h"
 #include "csync_exclude.h"
+#include "libsync/logger.h"
+#include "libsync/theme.h"
 #include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/jsonjob.h"
 #include "syncengine.h"
 
-#include "theme.h"
+#include "httpcredentialstext.h"
 #include "netrcparser.h"
-#include "libsync/logger.h"
 
-#include "config.h"
-
-#ifdef Q_OS_WIN32
-#include <windows.h>
-#else
-#include <termios.h>
-#include <unistd.h>
-#endif
 
 using namespace OCC;
 
@@ -222,66 +215,6 @@ void sync(const SyncCTX &ctx)
 
 }
 
-class EchoDisabler
-{
-public:
-    EchoDisabler()
-    {
-#ifdef Q_OS_WIN
-        hStdin = GetStdHandle(STD_INPUT_HANDLE);
-        GetConsoleMode(hStdin, &mode);
-        SetConsoleMode(hStdin, mode & (~ENABLE_ECHO_INPUT));
-#else
-        tcgetattr(STDIN_FILENO, &tios);
-        termios tios_new = tios;
-        tios_new.c_lflag &= ~static_cast<tcflag_t>(ECHO);
-        tcsetattr(STDIN_FILENO, TCSANOW, &tios_new);
-#endif
-    }
-
-    ~EchoDisabler()
-    {
-#ifdef Q_OS_WIN
-        SetConsoleMode(hStdin, mode);
-#else
-        tcsetattr(STDIN_FILENO, TCSANOW, &tios);
-#endif
-    }
-
-private:
-#ifdef Q_OS_WIN
-    DWORD mode = 0;
-    HANDLE hStdin;
-#else
-    termios tios;
-#endif
-};
-
-QString queryPassword(const QString &user)
-{
-    EchoDisabler disabler;
-    std::cout << "Password for user " << qPrintable(user) << ": ";
-    std::string s;
-    std::getline(std::cin, s);
-    return QString::fromStdString(s);
-}
-
-class HttpCredentialsText : public HttpCredentials
-{
-public:
-    HttpCredentialsText(const QString &user, const QString &password)
-        : HttpCredentials(DetermineAuthTypeJob::AuthType::Basic, user, password)
-    {
-    }
-
-    void askFromUser() override
-    {
-        _password = ::queryPassword(user());
-        _ready = true;
-        persist();
-        emit asked();
-    }
-};
 
 [[noreturn]] void help()
 {
@@ -479,9 +412,12 @@ int main(int argc, char **argv)
             std::getline(std::cin, s);
             ctx.user = QString::fromStdString(s);
         }
+#if 0
+        // TODO: should be handled by textcedentials
         if (password.isEmpty()) {
             password = queryPassword(ctx.user);
         }
+#endif
     }
 
     if (!ctx.options.proxy.isNull()) {

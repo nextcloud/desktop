@@ -1,6 +1,7 @@
 if(NOT BUILD_LIBRARIES_ONLY)
     add_executable(cmd
         cmd.cpp
+        httpcredentialstext.cpp
         netrcparser.cpp
     )
     set_target_properties(cmd PROPERTIES OUTPUT_NAME "${APPLICATION_EXECUTABLE}cmd")
