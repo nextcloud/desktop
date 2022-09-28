@@ -23,7 +23,10 @@ class HttpCredentialsText : public OCC::HttpCredentials
 {
     Q_OBJECT
 public:
-    HttpCredentialsText(const QString &user, const QString &password);
+    static HttpCredentialsText *create(bool interactive, const QString &user, const QString &password);
 
     void askFromUser() override;
+
+private:
+    HttpCredentialsText(const QString &user, const QString &password);
 };

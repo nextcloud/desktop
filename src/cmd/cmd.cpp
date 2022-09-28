@@ -240,22 +240,6 @@ void setupCredentials(SyncCTX &ctx)
         }
     }
 
-    if (ctx.options.interactive) {
-        if (ctx.user.isEmpty()) {
-            std::cout << "Please enter user name: ";
-            std::string s;
-            std::getline(std::cin, s);
-            ctx.user = QString::fromStdString(s);
-        }
-#if 0
-         // TODO: should be handled by textcedentials
-        if (password.isEmpty())
-        {
-            password = queryPassword(ctx.user);    
-        }
-#endif
-    }
-
     if (!ctx.options.proxy.isNull()) {
         QString host;
         uint32_t port = 0;
@@ -294,8 +278,7 @@ void setupCredentials(SyncCTX &ctx)
         f.close();
     }
 
-    HttpCredentialsText *cred = new HttpCredentialsText(ctx.user, password);
-    ctx.account->setCredentials(cred);
+    ctx.account->setCredentials(HttpCredentialsText::create(ctx.options.interactive, ctx.user, password));
     if (ctx.options.trustSSL) {
         QObject::connect(ctx.account->accessManager(), &QNetworkAccessManager::sslErrors, [](QNetworkReply *reply, const QList<QSslError> &errors) {
             reply->ignoreSslErrors(errors);
