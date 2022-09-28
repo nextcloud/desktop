@@ -3777,7 +3777,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Synchronisierung wegen ungültiger Änderungszeit nicht möglich</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="918"/>
+        <location filename="../src/libsync/discovery.cpp" line="908"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fehler beim Löschen des Dateisatzes %1 aus der Datenbank</translation>
     </message>
