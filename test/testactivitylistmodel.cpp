@@ -143,7 +143,7 @@ public:
             replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
             replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
             replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
-            replyAction.insert(QStringLiteral("primary"), false);
+            replyAction.insert(QStringLiteral("primary"), true);
             actionsArray.push_back(replyAction);
 
             QJsonObject primaryAction;
@@ -236,19 +236,19 @@ public:
 
             QJsonArray actionsArray;
 
-            QJsonObject replyAction;
-            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
-            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
-            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
-            replyAction.insert(QStringLiteral("primary"), true);
-            actionsArray.push_back(replyAction);
-
             QJsonObject primaryAction;
             primaryAction.insert(QStringLiteral("label"), QStringLiteral("Call back"));
             primaryAction.insert(QStringLiteral("link"), QStringLiteral("http://cloud.example.de/call/9p4vjdzd"));
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
-            primaryAction.insert(QStringLiteral("primary"), false);
+            primaryAction.insert(QStringLiteral("primary"), true);
             actionsArray.push_back(primaryAction);
+
+            QJsonObject replyAction;
+            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
+            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
+            replyAction.insert(QStringLiteral("primary"), false);
+            actionsArray.push_back(replyAction);
 
             QJsonObject secondaryAction;
             secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
@@ -660,7 +660,7 @@ private slots:
                         index.data(OCC::ActivityListModel::ActionsLinksContextMenuRole).toList();
 
                     // context menu must be shorter than total action links
-                    QVERIFY(actionsLinks.isEmpty() || actionsLinksContextMenu.size() < actionsLinks.size());
+                    QVERIFY(actionsLinksContextMenu.isEmpty() || actionsLinksContextMenu.size() < actionsLinks.size());
 
                     // context menu must not contain the primary action
                     QVERIFY(std::find_if(std::begin(actionsLinksContextMenu), std::end(actionsLinksContextMenu),
@@ -674,13 +674,18 @@ private slots:
                         const auto actionButtonsLinks =
                             index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
 
-                        // both action links and buttons must contain a "REPLY" verb element at the beginning
-                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
-                        QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+                        auto replyActionPos = 0;
+                        if (objectType == QStringLiteral("call")) {
+                            replyActionPos = 1;
+                        }
+
+                        // both action links and buttons must contain a "REPLY" verb element as secondary action
+                        QVERIFY(actionsLinks[replyActionPos].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+                        QVERIFY(actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
 
                         // the first action button for chat must have image set
-                        QVERIFY(!actionButtonsLinks[0].value<OCC::ActivityLink>()._imageSource.isEmpty());
-                        QVERIFY(!actionButtonsLinks[0].value<OCC::ActivityLink>()._imageSourceHovered.isEmpty());
+                        QVERIFY(!actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._imageSource.isEmpty());
+                        QVERIFY(!actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._imageSourceHovered.isEmpty());
 
                         // logic for "chat" and other types of activities with multiple actions
                         if ((objectType == QStringLiteral("chat")
@@ -703,7 +708,7 @@ private slots:
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
                             QVERIFY(
-                                actionButtonsLinks[1].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
+                                actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
                         }
                     } else {
                         QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Dismiss"));
