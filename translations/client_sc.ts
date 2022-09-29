@@ -5598,7 +5598,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="510"/>
         <source>Retry all uploads</source>
         <translation>Torra a proare totu is carrigamentos</translation>
     </message>
@@ -5631,22 +5631,22 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1050"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Confirm Account Removal</source>
         <translation>Cunfirma bogada de su contu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1051"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;A beru nche cheres bogare sa connessione a su contu  &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Mira:&lt;/b&gt; custu &lt;b&gt;no at a&lt;/b&gt; cantzellare perunu archìviu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1056"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1058"/>
         <source>Remove connection</source>
         <translation>Boga connessione</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1057"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1059"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
@@ -6363,27 +6363,27 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>Cartella noa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="583"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
         <source>You deleted %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="591"/>
         <source>You changed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="612"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="614"/>
         <source>Synced %1</source>
         <translation type="unfinished"/>
     </message>

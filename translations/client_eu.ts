@@ -5599,7 +5599,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="510"/>
         <source>Retry all uploads</source>
         <translation>Saiatu dena berriro kargatzen</translation>
     </message>
@@ -5632,22 +5632,22 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1050"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Confirm Account Removal</source>
         <translation>Baieztatu kontua kentzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1051"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ziur zaude &lt;i&gt;%1&lt;/i&gt; kontura konexioa kendu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek &lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1056"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1058"/>
         <source>Remove connection</source>
         <translation>Kendu konexioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1057"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1059"/>
         <source>Cancel</source>
         <translation>Utzi</translation>
     </message>
@@ -6364,27 +6364,27 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Karpeta berria</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="583"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
         <translation>%1 berrizendatu duzu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
         <source>You deleted %1</source>
         <translation>%1 ezabatu duzu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
         <translation>%1 sortu duzu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="591"/>
         <source>You changed %1</source>
         <translation>%1 aldatu duzu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="612"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="614"/>
         <source>Synced %1</source>
         <translation>%1 sinkronizatuta</translation>
     </message>

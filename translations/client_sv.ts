@@ -5579,7 +5579,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="508"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="510"/>
         <source>Retry all uploads</source>
         <translation>Försök ladda upp igen</translation>
     </message>
@@ -5612,22 +5612,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1050"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1052"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1051"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1053"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen ta bort anslutningen till konto &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;OBS:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1056"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1058"/>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1057"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1059"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -6344,27 +6344,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Ny mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="583"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
         <source>You deleted %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="591"/>
         <source>You changed %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="612"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="614"/>
         <source>Synced %1</source>
         <translation type="unfinished"/>
     </message>
