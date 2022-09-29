@@ -782,11 +782,7 @@ QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &acti
     }
 
     for (const auto &activityLink : activity._links) {
-        if (activityLink._primary
-            || activityLink._verb == QStringLiteral("DELETE")
-            || activityLink._verb == QStringLiteral("WEB")) {
-            customList << ActivityListModel::convertLinkToActionButton(activityLink);
-        }
+        customList << ActivityListModel::convertLinkToActionButton(activityLink);
     }
 
     return customList;

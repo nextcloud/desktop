@@ -143,7 +143,7 @@ public:
             replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
             replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
             replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
-            replyAction.insert(QStringLiteral("primary"), true);
+            replyAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(replyAction);
 
             QJsonObject primaryAction;
