@@ -887,21 +887,6 @@ QColor Theme::defaultColor()
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
 }
 
-QColor Theme::errorBoxTextColor() const
-{
-    return QColor{"white"};
-}
-
-QColor Theme::errorBoxBackgroundColor() const
-{
-    return QColor{"red"};
-}
-
-QColor Theme::errorBoxBorderColor() const
-{ 
-    return QColor{"black"};
-}
-
 void Theme::connectToPaletteSignal()
 {
     if (!_paletteSignalsConnected) {
