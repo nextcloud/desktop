@@ -60,7 +60,7 @@ MouseArea {
             Layout.fillWidth: true
             Layout.minimumHeight: Style.minActivityHeight
 
-            showDismissButton: model.links.length > 0 && model.linksForActionButtons.length === 0
+            showDismissButton: model.links.length > 0
 
             activityData: model
 
