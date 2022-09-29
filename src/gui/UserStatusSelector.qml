@@ -262,7 +262,8 @@ ColumnLayout {
                     internalSpacing: statusFieldLayout.spacing + userStatusMessageTextField.leftPadding
 
                     emoji: modelData.icon
-                    text: "<b>%1</b> – %2".arg(modelData.message).arg(userStatusSelectorModel.clearAtReadable(modelData))
+                    statusText: modelData.message
+                    clearAtText: userStatusSelectorModel.clearAtReadable(modelData)
                     onClicked: userStatusSelectorModel.setPredefinedStatus(modelData)
                 }
             }
@@ -304,7 +305,7 @@ ColumnLayout {
         width: parent.width
 
         visible: userStatusSelectorModel.errorMessage != ""
-        text: "<b>Error:</b> " + userStatusSelectorModel.errorMessage
+        text: "Error: " + userStatusSelectorModel.errorMessage
     }
 
     RowLayout {

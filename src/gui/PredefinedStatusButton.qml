@@ -31,6 +31,8 @@ AbstractButton {
     property int emojiWidth: -1
     property int internalSpacing: Style.standardSpacing
     property string emoji: ""
+    property string statusText: ""
+    property string clearAtText: ""
 
     background: Rectangle {
         color: root.hovered || root.checked ? Style.lightHover : "transparent"
@@ -48,11 +50,28 @@ AbstractButton {
             verticalAlignment: Image.AlignVCenter
         }
 
-        Label {
-            text: root.text
-            textFormat: Text.PlainText
-            color: Style.ncTextColor
-            verticalAlignment: Text.AlignVCenter
+        Row {
+            spacing: Style.smallSpacing
+            Label {
+                text: root.statusText
+                textFormat: Text.PlainText
+                color: Style.ncTextColor
+                verticalAlignment: Text.AlignVCenter
+                font.bold: true
+            }
+
+            Label {
+                text: "-"
+                color: Style.ncTextColor
+                verticalAlignment: Text.AlignVCenter
+            }
+
+            Label {
+                text: root.clearAtText
+                textFormat: Text.PlainText
+                color: Style.ncTextColor
+                verticalAlignment: Text.AlignVCenter
+            }
         }
     }
 }
