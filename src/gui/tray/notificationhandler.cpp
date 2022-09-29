@@ -110,27 +110,36 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
         if (a._objectType == "chat" || a._objectType == "call" || a._objectType == "room") {
             const auto objectId = json.value("object_id").toString();
             const auto objectIdData = objectId.split("/");
+
+            ActivityLink al;
+            al._label = tr("Reply");
+            al._verb = "REPLY";
+            al._primary = true;
+
             a._talkNotificationData.conversationToken = objectIdData.first();
+
             if (a._objectType == "chat" && objectIdData.size() > 1) {
                 a._talkNotificationData.messageId = objectIdData.last();
             } else {
                 qCInfo(lcServerNotification) << "Replying directly to Talk conversation" << a._talkNotificationData.conversationToken << "will not be possible because the notification doesn't contain the message ID.";
             }
 
-            ActivityLink al;
-            al._label = tr("Reply");
-            al._verb = "REPLY";
-            al._primary = true;
-            a._links.insert(0, al);
+            if (a._subjectRichParameters.contains("user")) {
 
-            if(a._subjectRichParameters.contains("user")) {
+                // callback then it is the primary action
+                if (a._objectType == "call") {
+                    al._primary = false;
+                }
+
                 a._talkNotificationData.userAvatar = ai->account()->url().toString() + QStringLiteral("/index.php/avatar/") + a._subjectRichParameters["user"].id + QStringLiteral("/128");
             }
 
             // We want to serve incoming call dialogs to the user for calls that
-            if(a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
+            if (a._objectType == "call" && a._dateTime.secsTo(QDateTime::currentDateTime()) < 120) {
                 callList.append(a);
             }
+
+            a._links.insert(al._primary? 0 : a._links.size(), al);
         } 
 
         QUrl link(json.value("link").toString());

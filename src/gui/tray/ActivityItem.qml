@@ -15,7 +15,6 @@ ItemDelegate {
     readonly property bool isChatActivity: model.objectType === "chat" || model.objectType === "room" || model.objectType === "call"
     readonly property bool isTalkReplyPossible: model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
-    readonly property bool isCallActivity: model.objectType === "call"
 
     property color adjustedHeaderColor: Theme.darkMode ? Qt.lighter(UserModel.currentUser.headerColor, 2)
                                                        : Qt.darker(UserModel.currentUser.headerColor, 1.5)
