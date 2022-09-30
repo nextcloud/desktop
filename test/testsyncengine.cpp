@@ -13,6 +13,7 @@
 #include <QtTest>
 
 using namespace std::chrono_literals;
+using namespace OCC::FileSystem::SizeLiterals;
 using namespace OCC;
 
 bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
@@ -151,10 +152,10 @@ private slots:
 
         FakeFolder fakeFolder(FileInfo {}, vfsMode, filesAreDehydrated);
         fakeFolder.account()->setCapabilities(TestUtils::testCapabilities(CheckSums::Algorithm::SHA1));
-        fakeFolder.localModifier().insert(QStringLiteral("a1.eml"), 64, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("a2.eml"), 64, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("a3.eml"), 64, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("b3.txt"), 64, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("a1.eml"), 64_b, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("a2.eml"), 64_b, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("a3.eml"), 64_b, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("b3.txt"), 64_b, 'A');
         // Upload and calculate the checksums
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
@@ -176,9 +177,9 @@ private slots:
 
         ItemCompletedSpy completeSpy(fakeFolder);
         // Touch the file without changing the content, shouldn't upload
-        fakeFolder.localModifier().setContents(QStringLiteral("a1.eml"), 64, 'A');
+        fakeFolder.localModifier().setContents(QStringLiteral("a1.eml"), 64_b, 'A');
         // Change the content/size
-        fakeFolder.localModifier().setContents(QStringLiteral("a2.eml"), 64, 'B');
+        fakeFolder.localModifier().setContents(QStringLiteral("a2.eml"), 64_b, 'B');
         fakeFolder.localModifier().appendByte(QStringLiteral("a3.eml"), 'X');
         fakeFolder.localModifier().appendByte(QStringLiteral("b3.txt"), 'X');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -267,7 +268,7 @@ private slots:
         fakeFolder.serverErrorPaths().append(QStringLiteral("NewFolder"));
         fakeFolder.localModifier().mkdir(QStringLiteral("NewFolder"));
         // This should be aborted and would otherwise fail in FileInfo::create.
-        fakeFolder.localModifier().insert(QStringLiteral("NewFolder/NewFile"), 'n');
+        fakeFolder.localModifier().insert(QStringLiteral("NewFolder/NewFile"), FileModifier::DefaultFileSize, 'n');
 
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(finishedSpy.size(), 1);
@@ -531,22 +532,22 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().insert(QStringLiteral("A/big"), 800);
+        fakeFolder.localModifier().insert(QStringLiteral("A/big"), 800_b);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nPUT, 1);
         QCOMPARE(n507, 0);
 
         nPUT = 0;
-        fakeFolder.localModifier().insert(QStringLiteral("A/big1"), 500); // ok
-        fakeFolder.localModifier().insert(QStringLiteral("A/big2"), 1200); // 507 (quota guess now 1199)
-        fakeFolder.localModifier().insert(QStringLiteral("A/big3"), 1200); // skipped
-        fakeFolder.localModifier().insert(QStringLiteral("A/big4"), 1500); // skipped
-        fakeFolder.localModifier().insert(QStringLiteral("A/big5"), 1100); // 507 (quota guess now 1099)
-        fakeFolder.localModifier().insert(QStringLiteral("A/big6"), 900); // ok (quota guess now 199)
-        fakeFolder.localModifier().insert(QStringLiteral("A/big7"), 200); // skipped
-        fakeFolder.localModifier().insert(QStringLiteral("A/big8"), 199); // ok (quota guess now 0)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big1"), 500_b); // ok
+        fakeFolder.localModifier().insert(QStringLiteral("A/big2"), 1200_b); // 507 (quota guess now 1199)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big3"), 1200_b); // skipped
+        fakeFolder.localModifier().insert(QStringLiteral("A/big4"), 1500_b); // skipped
+        fakeFolder.localModifier().insert(QStringLiteral("A/big5"), 1100_b); // 507 (quota guess now 1099)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big6"), 900_b); // ok (quota guess now 199)
+        fakeFolder.localModifier().insert(QStringLiteral("A/big7"), 200_b); // skipped
+        fakeFolder.localModifier().insert(QStringLiteral("A/big8"), 199_b); // ok (quota guess now 0)
 
-        fakeFolder.localModifier().insert(QStringLiteral("B/big8"), 1150); // 507
+        fakeFolder.localModifier().insert(QStringLiteral("B/big8"), 1150_b); // 507
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(nPUT, 6);
         QCOMPARE(n507, 3);
@@ -781,7 +782,7 @@ private slots:
             return nullptr;
         });
 
-        fakeFolder.localModifier().insert(QStringLiteral("file"), 100, 'W');
+        fakeFolder.localModifier().insert(QStringLiteral("file"), 100_b, 'W');
         QTimer::singleShot(400ms, &fakeFolder.syncEngine(), [&]() { fakeFolder.syncEngine().abort(); });
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
 

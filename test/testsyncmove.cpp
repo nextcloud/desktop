@@ -88,7 +88,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         // Edit a file in a moved directory.
-        fakeFolder.remoteModifier().setContents(QStringLiteral("folder/folderA/file.txt"), 'a');
+        fakeFolder.remoteModifier().setContents(QStringLiteral("folder/folderA/file.txt"), FileInfo::DefaultFileSize, 'a');
         fakeFolder.remoteModifier().rename(QStringLiteral("folder/folderA"), QStringLiteral("folder/folderB/folderA"));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
@@ -207,7 +207,7 @@ private slots:
         counter.reset();
         // Move-and-change, mtime+content only
         fakeFolder.localModifier().rename(QStringLiteral("B/b1"), QStringLiteral("B/b1m"));
-        fakeFolder.localModifier().setContents(QStringLiteral("B/b1m"), 'C');
+        fakeFolder.localModifier().setContents(QStringLiteral("B/b1m"), FileModifier::DefaultFileSize, 'C');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
@@ -259,7 +259,7 @@ private slots:
             // no rename happened, remove the "original"
             fakeFolder.localModifier().remove(QStringLiteral("C/c1"));
         }
-        fakeFolder.localModifier().insert("C/c3", 13, 'E'); // 13, because c1 (and c2) have a size of 24 bytes
+        fakeFolder.localModifier().insert("C/c3", 13_b, 'E'); // 13, because c1 (and c2) have a size of 24 bytes
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
@@ -486,9 +486,9 @@ private slots:
 
         // Create new on one side, move to new on the other
         {
-            local.insert(QStringLiteral("A/a1N"), 13);
+            local.insert(QStringLiteral("A/a1N"), 13_b);
             remote.rename(QStringLiteral("A/a1mt"), QStringLiteral("A/a1N"));
-            remote.insert(QStringLiteral("B/b1N"), 13);
+            remote.insert(QStringLiteral("B/b1N"), 13_b);
             local.rename(QStringLiteral("B/b1mt"), QStringLiteral("B/b1N"));
             ItemCompletedSpy completeSpy(fakeFolder);
             QVERIFY(fakeFolder.applyLocalModificationsAndSync());

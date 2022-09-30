@@ -20,7 +20,7 @@ namespace {
 
 /* Upload a 1/3 of a file of given size.
  * fakeFolder needs to be synchronized */
-void partialUpload(FakeFolder &fakeFolder, const QString &name, qint64 size)
+void partialUpload(FakeFolder &fakeFolder, const QString &name, quint64 size)
 {
     QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     QCOMPARE(fakeFolder.uploadState().children.count(), 0); // The state should be clean
@@ -68,8 +68,8 @@ private slots:
 
     void testFileUpload() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
-        const int size = 10 * 1000 * 1000; // 10 MB
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
+        const auto size = 10_mb; // 10 MB
 
         fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -87,15 +87,15 @@ private slots:
     // Test resuming when there's a confusing chunk added
     void testResume1() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 10 * 1000 * 1000; // 10 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 10_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         partialUpload(fakeFolder, QStringLiteral("A/a0"), size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
-        QVERIFY(uploadedSize > 2 * 1000 * 1000); // at least 2 MB
+        uint64_t uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0_mb, [](uint64_t s, const FileInfo &f) { return s + f.contentSize; });
+        QVERIFY(uploadedSize > 2_mb); // at least 2 MB
 
         // Add a fake chunk to make sure it gets deleted
         fakeFolder.uploadState().children.first().insert(QStringLiteral("10000"), size);
@@ -170,15 +170,15 @@ private slots:
     // Test resuming when all chunks are already present
     void testResume3() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 30 * 1000 * 1000; // 30 MB
+        const auto size = 30_mb;
         setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
 
         partialUpload(fakeFolder, QStringLiteral("A/a0"), size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
-        QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
+        uint64_t uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
+        QVERIFY(uploadedSize > 5_mb); // at least 5 MB
 
         // Add a chunk that makes the file completely uploaded
         fakeFolder.uploadState().children.first().insert(
@@ -214,15 +214,15 @@ private slots:
     // chunk sizes being larger than the file size
     void testResume4() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 30 * 1000 * 1000; // 300 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 30_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         partialUpload(fakeFolder, QStringLiteral("A/a0"), size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
         auto chunkingId = fakeFolder.uploadState().children.first().name;
         const auto &chunkMap = fakeFolder.uploadState().children.first().children;
-        qint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
-        QVERIFY(uploadedSize > 5 * 1000 * 1000); // at least 5 MB
+        quint64 uploadedSize = std::accumulate(chunkMap.begin(), chunkMap.end(), 0LL, [](qint64 s, const FileInfo &f) { return s + f.contentSize; });
+        QVERIFY(uploadedSize > 5_mb); // at least 5 MB
 
         // Add a chunk that makes the file more than completely uploaded
         fakeFolder.uploadState().children.first().insert(
@@ -240,8 +240,8 @@ private slots:
     void testLateAbortHard()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        const int size = 15 * 1000 * 1000;
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 15_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
         QObject parent;
@@ -337,8 +337,8 @@ private slots:
     void testLateAbortRecoverable()
     {
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        const int size = 15 * 1000 * 1000;
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 15_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
         QObject parent;
@@ -366,8 +366,8 @@ private slots:
     void testRemoveStale1() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 10 * 1000 * 1000; // 10 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 10_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         partialUpload(fakeFolder, QStringLiteral("A/a0"), size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -390,8 +390,8 @@ private slots:
     void testRemoveStale2() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 10 * 1000 * 1000; // 10 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 10_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         partialUpload(fakeFolder, QStringLiteral("A/a0"), size);
         QCOMPARE(fakeFolder.uploadState().children.count(), 1);
@@ -405,8 +405,8 @@ private slots:
 
     void testCreateConflictWhileSyncing() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 10 * 1000 * 1000; // 10 MB
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const quint64 size = 10_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         // Put a file on the server and download it.
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"), size);
@@ -463,7 +463,7 @@ private slots:
     void testModifyLocalFileWhileUploading() {
 
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 10_mb;
+        const quint64 size = 10_mb;
         setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size, 'A');
@@ -535,8 +535,8 @@ private slots:
     {
         QFETCH(bool, chunking);
         FakeFolder fakeFolder{ FileInfo::A12_B12_C12_S12() };
-        const int size = chunking ? 1 * 1000 * 1000 : 300;
-        setChunkSize(fakeFolder.syncEngine(), 300 * 1000);
+        const auto size = chunking ? 1_mb : 300_b;
+        setChunkSize(fakeFolder.syncEngine(), 300_kb);
 
         // Make the MOVE never reply, but trigger a client-abort and apply the change remotely
         QByteArray checksumHeader;
@@ -588,8 +588,8 @@ private slots:
 
     void testPercentEncoding() {
         FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
-        const int size = 5 * 1000 * 1000;
-        setChunkSize(fakeFolder.syncEngine(), 1 * 1000 * 1000);
+        const auto size = 5_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
         fakeFolder.localModifier().insert("A/file % \u20ac", size);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());

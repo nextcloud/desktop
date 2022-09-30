@@ -7,6 +7,7 @@
 #pragma once
 
 #include "account.h"
+#include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
 #include "common/syncjournalfilerecord.h"
 #include "common/vfs.h"
@@ -27,6 +28,8 @@
 #include <cookiejar.h>
 
 #include <chrono>
+
+using namespace OCC::FileSystem::SizeLiterals;
 /*
  * TODO: In theory we should use QVERIFY instead of Q_ASSERT for testing, but this
  * only works when directly called from a QTest :-(
@@ -84,13 +87,23 @@ public:
 class FileModifier
 {
 public:
-    static constexpr int DefaultFileSize = 64;
+    static constexpr auto DefaultFileSize = 64_b;
     static constexpr char DefaultContentChar = 'X';
 
     virtual ~FileModifier() { }
     virtual void remove(const QString &relativePath) = 0;
     virtual void insert(const QString &relativePath, quint64 size = DefaultFileSize, char contentChar = DefaultContentChar) = 0;
+
     virtual void setContents(const QString &relativePath, quint64 newSize, char contentChar = DefaultContentChar) = 0;
+
+    // prevent implicit cast to quint64
+    template <typename T>
+    void setContents(const QString &relativePath, T newSize, char contentChar = DefaultContentChar) = delete;
+
+    // prevent implicit cast to quint64
+    template <typename T>
+    void insert(const QString &relativePath, T size, char contentChar = DefaultContentChar) = delete;
+
     virtual void appendByte(const QString &relativePath, char contentChar = DefaultContentChar) = 0;
     virtual void mkdir(const QString &relativePath) = 0;
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
@@ -132,6 +145,14 @@ public:
 
     bool applyModifications();
     Q_REQUIRED_RESULT bool applyModificationsAndSync(FakeFolder &ff, OCC::Vfs::Mode mode);
+
+    // prevent implicit cast to quint64
+    template <typename T>
+    void setContents(const QString &relativePath, T newSize, char contentChar = DefaultContentChar) = delete;
+
+    // prevent implicit cast to quint64
+    template <typename T>
+    void insert(const QString &relativePath, T size, char contentChar = DefaultContentChar) = delete;
 };
 
 static inline qint64 defaultLastModified()
@@ -282,6 +303,14 @@ public:
             << ", children:" << fi.children
             << " }";
     }
+
+    // prevent implicit cast to quint64
+    template <typename T>
+    void setContents(const QString &relativePath, T newSize, char contentChar = DefaultContentChar) = delete;
+
+    // prevent implicit cast to quint64
+    template <typename T>
+    void insert(const QString &relativePath, T size, char contentChar = DefaultContentChar) = delete;
 };
 
 class FakeReply : public QNetworkReply

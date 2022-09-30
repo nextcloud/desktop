@@ -97,7 +97,7 @@ private slots:
 
         // Create a virtual file for a new remote file
         fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"), 64);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"), 64_b);
         auto someDate = QDateTime(QDate(1984, 07, 30), QTime(1,3,2));
         fakeFolder.remoteModifier().setModTime(QStringLiteral("A/a1"), someDate);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -182,8 +182,8 @@ private slots:
         cleanup();
 
         // Edge case: Local virtual file but no db entry for some reason
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 64);
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/a3"), 64);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 64_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a3"), 64_b);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState().find("A/a2" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
@@ -217,13 +217,13 @@ private slots:
 
         // Create a virtual file for a new remote file
         fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"), 64);
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 64);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a1"), 64_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a2"), 64_b);
         fakeFolder.remoteModifier().mkdir(QStringLiteral("B"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("B/b1"), 64);
-        fakeFolder.remoteModifier().insert(QStringLiteral("B/b2"), 64);
+        fakeFolder.remoteModifier().insert(QStringLiteral("B/b1"), 64_b);
+        fakeFolder.remoteModifier().insert(QStringLiteral("B/b2"), 64_b);
         fakeFolder.remoteModifier().mkdir(QStringLiteral("C"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("C/c1"), 64);
+        fakeFolder.remoteModifier().insert(QStringLiteral("C/c1"), 64_b);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState().find("A/a1" DVSUFFIX));
         QVERIFY(fakeFolder.currentLocalState().find("B/b2" DVSUFFIX));
@@ -232,10 +232,10 @@ private slots:
         // A: the correct file and a conflicting file are added, virtual files stay
         // B: same setup, but the virtual files are deleted by the user
         // C: user adds a *directory* locally
-        fakeFolder.localModifier().insert(QStringLiteral("A/a1"), 64);
-        fakeFolder.localModifier().insert(QStringLiteral("A/a2"), 30);
-        fakeFolder.localModifier().insert(QStringLiteral("B/b1"), 64);
-        fakeFolder.localModifier().insert(QStringLiteral("B/b2"), 30);
+        fakeFolder.localModifier().insert(QStringLiteral("A/a1"), 64_b);
+        fakeFolder.localModifier().insert(QStringLiteral("A/a2"), 30_b);
+        fakeFolder.localModifier().insert(QStringLiteral("B/b1"), 64_b);
+        fakeFolder.localModifier().insert(QStringLiteral("B/b2"), 30_b);
         fakeFolder.localModifier().remove("B/b1" DVSUFFIX);
         fakeFolder.localModifier().remove("B/b2" DVSUFFIX);
         fakeFolder.localModifier().mkdir(QStringLiteral("C/c1"));
@@ -598,7 +598,7 @@ private slots:
         // file isn't made virtual the first sync run.
         fakeFolder.localModifier().rename(QStringLiteral("A/a2"), "A/rand" DVSUFFIX);
         // dangling virtual files are removed
-        fakeFolder.localModifier().insert("A/dangling" DVSUFFIX, 1, ' ');
+        fakeFolder.localModifier().insert("A/dangling" DVSUFFIX, 1_b, ' ');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(!fakeFolder.currentLocalState().find("A/a1"));
@@ -633,9 +633,9 @@ private slots:
         };
         cleanup();
 
-        fakeFolder.remoteModifier().insert(QStringLiteral("file1"), 128, 'C');
-        fakeFolder.remoteModifier().insert(QStringLiteral("file2"), 256, 'C');
-        fakeFolder.remoteModifier().insert(QStringLiteral("file3"), 256, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("file1"), 128_b, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("file2"), 256_b, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("file3"), 256_b, 'C');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         QVERIFY(fakeFolder.currentLocalState().find("file1" DVSUFFIX));
@@ -687,10 +687,10 @@ private slots:
         };
         cleanup();
 
-        fakeFolder.remoteModifier().insert(QStringLiteral("case3"), 128, 'C');
-        fakeFolder.remoteModifier().insert(QStringLiteral("case4"), 256, 'C');
-        fakeFolder.remoteModifier().insert(QStringLiteral("case5"), 256, 'C');
-        fakeFolder.remoteModifier().insert(QStringLiteral("case6"), 256, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("case3"), 128_b, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("case4"), 256_b, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("case5"), 256_b, 'C');
+        fakeFolder.remoteModifier().insert(QStringLiteral("case6"), 256_b, 'C');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
 
         triggerDownload(fakeFolder, "case4");
@@ -883,7 +883,7 @@ private slots:
 
         // Make local changes to a3
         fakeFolder.localModifier().remove("A/a3" DVSUFFIX);
-        fakeFolder.localModifier().insert("A/a3" DVSUFFIX, 100);
+        fakeFolder.localModifier().insert("A/a3" DVSUFFIX, 100_b);
         QVERIFY(fakeFolder.applyLocalModificationsWithoutSync());
 
         // Now wipe the virtuals
@@ -992,15 +992,15 @@ private slots:
         // create a bunch of local virtual files, in some instances
         // ignore remote files
         fakeFolder.remoteModifier().mkdir(QStringLiteral("A"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file1"), 30, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file2"), 40, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file3"), 60, 'A');
-        fakeFolder.remoteModifier().insert("A/file3" DVSUFFIX, 70, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file4"), 80, 'A');
-        fakeFolder.remoteModifier().insert("A/file4" DVSUFFIX, 90, 'A');
-        fakeFolder.remoteModifier().insert("A/file4" DVSUFFIX DVSUFFIX, 100, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file5"), 110, 'A');
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/file6"), 120, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file1"), 30_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file2"), 40_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file3"), 60_b, 'A');
+        fakeFolder.remoteModifier().insert("A/file3" DVSUFFIX, 70_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file4"), 80_b, 'A');
+        fakeFolder.remoteModifier().insert("A/file4" DVSUFFIX, 90_b, 'A');
+        fakeFolder.remoteModifier().insert("A/file4" DVSUFFIX DVSUFFIX, 100_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file5"), 110_b, 'A');
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/file6"), 120_b, 'A');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentLocalState().find("A/file1"));
         QVERIFY(fakeFolder.currentLocalState().find("A/file1" DVSUFFIX));
@@ -1017,11 +1017,11 @@ private slots:
         cleanup();
 
         // Create odd extra files locally and remotely
-        fakeFolder.localModifier().insert(QStringLiteral("A/file1"), 10, 'A');
-        fakeFolder.localModifier().insert("A/file2" DVSUFFIX DVSUFFIX, 10, 'A');
-        fakeFolder.remoteModifier().insert("A/file5" DVSUFFIX, 10, 'A');
-        fakeFolder.localModifier().insert(QStringLiteral("A/file6"), 10, 'A');
-        fakeFolder.remoteModifier().insert("A/file6" DVSUFFIX, 10, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("A/file1"), 10_b, 'A');
+        fakeFolder.localModifier().insert("A/file2" DVSUFFIX DVSUFFIX, 10_b, 'A');
+        fakeFolder.remoteModifier().insert("A/file5" DVSUFFIX, 10_b, 'A');
+        fakeFolder.localModifier().insert(QStringLiteral("A/file6"), 10_b, 'A');
+        fakeFolder.remoteModifier().insert("A/file6" DVSUFFIX, 10_b, 'A');
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(itemInstruction(completeSpy, "A/file1"), CSYNC_INSTRUCTION_CONFLICT);
         QCOMPARE(itemInstruction(completeSpy, "A/file1" DVSUFFIX), CSYNC_INSTRUCTION_REMOVE); // it's now a pointless real virtual file

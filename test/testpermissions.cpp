@@ -105,14 +105,14 @@ private slots:
         syncOpts._parallelNetworkJobs = 1;
         fakeFolder.syncEngine().setSyncOptions(syncOpts);
 
-        const int cannotBeModifiedSize = 133;
-        const int canBeModifiedSize = 144;
+        const auto cannotBeModifiedSize = 133_b;
+        const auto canBeModifiedSize = 144_b;
 
         //create some files
         auto insertIn = [&](const QString &dir) {
-            fakeFolder.remoteModifier().insert(dir + "normalFile_PERM_WVND_.data", 100 );
-            fakeFolder.remoteModifier().insert(dir + "cannotBeRemoved_PERM_WVN_.data", 101 );
-            fakeFolder.remoteModifier().insert(dir + "canBeRemoved_PERM_D_.data", 102 );
+            fakeFolder.remoteModifier().insert(dir + "normalFile_PERM_WVND_.data", 100_b);
+            fakeFolder.remoteModifier().insert(dir + "cannotBeRemoved_PERM_WVN_.data", 101_b);
+            fakeFolder.remoteModifier().insert(dir + "canBeRemoved_PERM_D_.data", 102_b);
             fakeFolder.remoteModifier().insert(dir + "cannotBeModified_PERM_DVN_.data", cannotBeModifiedSize , 'A');
             fakeFolder.remoteModifier().insert(dir + "canBeModified_PERM_W_.data", canBeModifiedSize );
         };
@@ -124,7 +124,7 @@ private slots:
         insertIn(QStringLiteral("readonlyDirectory_PERM_M_/"));
         fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_"));
         fakeFolder.remoteModifier().mkdir(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_"));
-        fakeFolder.remoteModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data"), 100);
+        fakeFolder.remoteModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/subdir_PERM_CK_/subsubdir_PERM_CKDNV_/normalFile_PERM_WVND_.data"), 100_b);
         applyPermissionsFromName(fakeFolder.remoteModifier());
 
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -164,7 +164,7 @@ private slots:
 
         //5. Create a new file in a read write folder
         // (should be uploaded)
-        fakeFolder.localModifier().insert(QStringLiteral("normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data"), 106);
+        fakeFolder.localModifier().insert(QStringLiteral("normalDirectory_PERM_CKDNV_/newFile_PERM_WDNV_.data"), 106_b);
         applyPermissionsFromName(fakeFolder.remoteModifier());
 
         //do the sync
@@ -213,7 +213,7 @@ private slots:
 
         //6. Create a new file in a read only folder
         // (they should not be uploaded)
-        fakeFolder.localModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"), 105);
+        fakeFolder.localModifier().insert(QStringLiteral("readonlyDirectory_PERM_M_/newFile_PERM_WDNV_.data"), 105_b);
 
         applyPermissionsFromName(fakeFolder.remoteModifier());
         // error: can't upload to readonly

@@ -90,7 +90,7 @@ private slots:
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
-        auto size = 30 * 1000 * 1000;
+        auto size = 30_mb;
         fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"), size);
 
         // First, download only the first 3 MB of the file
@@ -133,7 +133,7 @@ private slots:
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
         QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
-        auto size = 3'500'000;
+        const auto size = 3_mb + 500_kb;
         fakeFolder.remoteModifier().insert(QStringLiteral("A/broken"), size);
 
         QByteArray serverMessage = "The file was not downloaded because the tests wants so!";
@@ -273,7 +273,7 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
-        fakeFolder.remoteModifier().insert(QStringLiteral("A/resendme"), 300);
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/resendme"), 300_b);
 
         QByteArray serverMessage = "Needs to be resend on a new connection!";
         int resendActual = 0;
