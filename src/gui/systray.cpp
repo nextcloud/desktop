@@ -78,7 +78,7 @@ Systray::Systray()
     setUserNotificationCenterDelegate();
     checkNotificationAuth(MacNotificationAuthorizationOptions::Default); // No provisional auth, ask user explicitly first time
     registerNotificationCategories(QString(tr("Download")));
-#else
+#elif !defined(Q_OS_MACOS)
     connect(AccountManager::instance(), &AccountManager::accountAdded,
         this, &Systray::setupContextMenu);
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
