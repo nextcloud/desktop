@@ -30,7 +30,7 @@ void SortedActivityListModel::sortModel()
 
 ActivityListModel* SortedActivityListModel::activityListModel() const
 {
-    return static_cast<ActivityListModel*>(sourceModel());
+    return dynamic_cast<ActivityListModel*>(sourceModel());
 }
 
 void SortedActivityListModel::setActivityListModel(ActivityListModel* activityListModel)

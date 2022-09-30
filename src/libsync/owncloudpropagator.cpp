@@ -1076,7 +1076,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
 
 void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 {
-    auto *subJob = static_cast<PropagatorJob *>(sender());
+    auto *subJob = dynamic_cast<PropagatorJob *>(sender());
     ASSERT(subJob);
 
     // Delete the job and remove it from our list of jobs.

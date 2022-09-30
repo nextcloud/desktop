@@ -276,7 +276,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
-    auto *account = static_cast<Account *>(sender());
+    auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
@@ -290,7 +290,7 @@ void SettingsDialog::slotAccountAvatarChanged()
 
 void SettingsDialog::slotAccountDisplayNameChanged()
 {
-    auto *account = static_cast<Account *>(sender());
+    auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {

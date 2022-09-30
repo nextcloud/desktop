@@ -58,7 +58,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
 
-    auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
+    auto classif = dynamic_cast<const FolderStatusModel *>(index.model())->classify(index);
     if (classif == FolderStatusModel::AddButton) {
         const int margins = aliasFm.height(); // same as 2*aliasMargin of paint
         QFontMetrics fm(qApp->font("QPushButton"));
@@ -148,7 +148,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         return;
     }
 
-    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
+    if (dynamic_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
         return;
     }
     painter->save();
@@ -367,7 +367,7 @@ bool FolderStatusDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     case QEvent::MouseButtonPress:
     case QEvent::MouseMove:
         if (const auto *view = qobject_cast<const QAbstractItemView *>(option.widget)) {
-            auto *me = static_cast<QMouseEvent *>(event);
+            auto *me = dynamic_cast<QMouseEvent *>(event);
             QModelIndex index;
             if (me->buttons()) {
                 index = view->indexAt(me->pos());
