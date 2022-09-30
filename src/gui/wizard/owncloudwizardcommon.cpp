@@ -33,7 +33,7 @@ namespace WizardCommon {
         if (!label)
             return;
 
-        QPixmap pix = variant.value<QPixmap>();
+        auto pix = variant.value<QPixmap>();
         if (!pix.isNull()) {
             label->setPixmap(pix);
             label->setAlignment(Qt::AlignTop | Qt::AlignRight);
