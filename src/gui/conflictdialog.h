@@ -32,9 +32,9 @@ public:
     explicit ConflictDialog(QWidget *parent = nullptr);
     ~ConflictDialog() override;
 
-    QString baseFilename() const;
-    QString localVersionFilename() const;
-    QString remoteVersionFilename() const;
+    [[nodiscard]] QString baseFilename() const;
+    [[nodiscard]] QString localVersionFilename() const;
+    [[nodiscard]] QString remoteVersionFilename() const;
 
 public slots:
     void setBaseFilename(const QString &baseFilename);

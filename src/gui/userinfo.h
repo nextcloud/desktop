@@ -70,8 +70,8 @@ class UserInfo : public QObject
 public:
     explicit UserInfo(OCC::AccountState *accountState, bool allowDisconnectedAccountState, bool fetchAvatarImage, QObject *parent = nullptr);
 
-    qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
-    qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
+    [[nodiscard]] qint64 lastQuotaTotalBytes() const { return _lastQuotaTotalBytes; }
+    [[nodiscard]] qint64 lastQuotaUsedBytes() const { return _lastQuotaUsedBytes; }
 
     /**
      * When the quotainfo is active, it requests the quota at regular interval.
@@ -94,7 +94,7 @@ Q_SIGNALS:
     void fetchedLastInfo(UserInfo *userInfo);
 
 private:
-    bool canGetInfo() const;
+    [[nodiscard]] bool canGetInfo() const;
 
     QPointer<AccountState> _accountState;
     bool _allowDisconnectedAccountState;

@@ -28,7 +28,7 @@ class SortedActivityListModel : public QSortFilterProxyModel
 public:
     explicit SortedActivityListModel(QObject *parent = nullptr);
 
-    ActivityListModel *activityListModel() const;
+    [[nodiscard]] ActivityListModel *activityListModel() const;
 
 signals:
     void activityListModelChanged();
@@ -37,7 +37,7 @@ public slots:
     void setActivityListModel(ActivityListModel *activityListModel);
 
 protected:
-    bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
+    [[nodiscard]] bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
 
 private slots:
     void sortModel();

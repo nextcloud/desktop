@@ -321,7 +321,7 @@ namespace {
         const char *name;
         quint64 msec;
 
-        QString description(quint64 value) const
+        [[nodiscard]] QString description(quint64 value) const
         {
             return QCoreApplication::translate("Utility", name, nullptr, value);
         }

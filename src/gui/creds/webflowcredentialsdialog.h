@@ -28,7 +28,7 @@ public:
     void setInfo(const QString &msg);
     void setError(const QString &error);
 
-    bool isUsingFlow2() const {
+    [[nodiscard]] bool isUsingFlow2() const {
         return _useFlow2;
     }
 

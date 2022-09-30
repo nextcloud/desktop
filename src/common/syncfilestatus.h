@@ -43,12 +43,12 @@ public:
     SyncFileStatus(SyncFileStatusTag);
 
     void set(SyncFileStatusTag tag);
-    SyncFileStatusTag tag() const;
+    [[nodiscard]] SyncFileStatusTag tag() const;
 
     void setShared(bool isShared);
-    bool shared() const;
+    [[nodiscard]] bool shared() const;
 
-    QString toSocketAPIString() const;
+    [[nodiscard]] QString toSocketAPIString() const;
 
 private:
     SyncFileStatusTag _tag = StatusNone;

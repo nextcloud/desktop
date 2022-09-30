@@ -111,7 +111,7 @@ private:
               const QString &errorString);
 
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
-    QMap<QByteArray, QByteArray> headers(SyncFileItemPtr item) const;
+    [[nodiscard]] QMap<QByteArray, QByteArray> headers(SyncFileItemPtr item) const;
 
     void abortWithError(SyncFileItemPtr item,
                         SyncFileItem::Status status,

@@ -29,7 +29,7 @@ class ShellExtensionsServer : public QObject
         QSize size;
         QString folderAlias;
 
-        bool isValid() const { return !path.isEmpty() && !size.isEmpty() && !folderAlias.isEmpty(); }
+        [[nodiscard]] bool isValid() const { return !path.isEmpty() && !size.isEmpty() && !folderAlias.isEmpty(); }
     };
 
     Q_OBJECT

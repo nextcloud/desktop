@@ -66,7 +66,7 @@ public:
     void startSyncPartialDiscovery();
 
     /** Access list of files that shall be locally rediscovered. */
-    const std::set<QString> &localDiscoveryPaths() const;
+    [[nodiscard]] const std::set<QString> &localDiscoveryPaths() const;
 
 public slots:
     /**

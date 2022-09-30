@@ -99,8 +99,8 @@ public:
 
     QByteArray chunkDecryption(const char *input, quint64 chunkSize);
 
-    bool isInitialized() const;
-    bool isFinished() const;
+    [[nodiscard]] bool isInitialized() const;
+    [[nodiscard]] bool isFinished() const;
 
 private:
     Q_DISABLE_COPY(StreamingDecryptor)
@@ -127,7 +127,7 @@ private:
 public:
     void forgetSensitiveData(const AccountPtr &account);
 
-    bool newMnemonicGenerated() const;
+    [[nodiscard]] bool newMnemonicGenerated() const;
 
 public slots:
     void slotRequestMnemonic();
@@ -150,8 +150,8 @@ private:
 
     void fetchFromKeyChain(const AccountPtr &account);
 
-    bool checkPublicKeyValidity(const AccountPtr &account) const;
-    bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
+    [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
+    [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     void writePrivateKey(const AccountPtr &account);
     void writeCertificate(const AccountPtr &account);
     void writeMnemonic(const AccountPtr &account);
@@ -186,7 +186,7 @@ public:
     void addEncryptedFile(const EncryptedFile& f);
     void removeEncryptedFile(const EncryptedFile& f);
     void removeAllEncryptedFiles();
-    QVector<EncryptedFile> files() const;
+    [[nodiscard]] QVector<EncryptedFile> files() const;
 
 
 private:
@@ -196,11 +196,11 @@ private:
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
 
-    QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
-    QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
+    [[nodiscard]] QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
+    [[nodiscard]] QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
 
-    QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
-    QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
+    [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
+    [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
     QVector<EncryptedFile> _files;
     QMap<int, QByteArray> _metadataKeys;

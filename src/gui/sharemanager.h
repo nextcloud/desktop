@@ -70,39 +70,39 @@ public:
     /**
      * The account the share is defined on.
      */
-    AccountPtr account() const;
+    [[nodiscard]] AccountPtr account() const;
 
-    QString path() const;
+    [[nodiscard]] QString path() const;
 
     /*
      * Get the id
      */
-    QString getId() const;
+    [[nodiscard]] QString getId() const;
 
     /*
      * Get the uid_owner
      */
-    QString getUidOwner() const;
+    [[nodiscard]] QString getUidOwner() const;
 
     /*
      * Get the owner display name
      */
-    QString getOwnerDisplayName() const;
+    [[nodiscard]] QString getOwnerDisplayName() const;
 
     /*
      * Get the shareType
      */
-    ShareType getShareType() const;
+    [[nodiscard]] ShareType getShareType() const;
 
     /*
      * Get the shareWith
      */
-    QSharedPointer<Sharee> getShareWith() const;
+    [[nodiscard]] QSharedPointer<Sharee> getShareWith() const;
 
     /*
      * Get permissions
      */
-    Permissions getPermissions() const;
+    [[nodiscard]] Permissions getPermissions() const;
 
     /*
      * Set the permissions of a share
@@ -120,7 +120,7 @@ public:
      */
     void setPassword(const QString &password);
 
-    bool isPasswordSet() const;
+    [[nodiscard]] bool isPasswordSet() const;
 
     /*
      * Deletes a share
@@ -189,37 +189,37 @@ public:
     /*
      * Get the share link
      */
-    QUrl getLink() const;
+    [[nodiscard]] QUrl getLink() const;
 
     /*
      * The share's link for direct downloading.
      */
-    QUrl getDirectDownloadLink() const;
+    [[nodiscard]] QUrl getDirectDownloadLink() const;
 
     /*
      * Get the publicUpload status of this share
      */
-    bool getPublicUpload() const;
+    [[nodiscard]] bool getPublicUpload() const;
 
     /*
      * Whether directory listings are available (READ permission)
      */
-    bool getShowFileListing() const;
+    [[nodiscard]] bool getShowFileListing() const;
 
     /*
      * Returns the name of the link share. Can be empty.
      */
-    QString getName() const;
+    [[nodiscard]] QString getName() const;
 
     /*
      * Returns the note of the link share.
      */
-    QString getNote() const;
+    [[nodiscard]] QString getNote() const;
     
     /*
      * Returns the label of the link share.
      */
-    QString getLabel() const;
+    [[nodiscard]] QString getLabel() const;
 
     /*
      * Set the name of the link share.
@@ -236,12 +236,12 @@ public:
     /*
      * Returns the token of the link share.
      */
-    QString getToken() const;
+    [[nodiscard]] QString getToken() const;
 
     /*
      * Get the expiration date
      */
-    QDate getExpireDate() const;
+    [[nodiscard]] QDate getExpireDate() const;
 
     /*
      * Set the expiration date
@@ -302,13 +302,13 @@ public:
 
     void setNote(const QString &note);
 
-    QString getNote() const;
+    [[nodiscard]] QString getNote() const;
 
     void slotNoteSet(const QJsonDocument &, const QVariant &note);
 
     void setExpireDate(const QDate &date);
 
-    QDate getExpireDate() const;
+    [[nodiscard]] QDate getExpireDate() const;
 
     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
 

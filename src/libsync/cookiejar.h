@@ -32,7 +32,7 @@ public:
     explicit CookieJar(QObject *parent = nullptr);
     ~CookieJar() override;
     bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) override;
-    QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
+    [[nodiscard]] QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
 
     void clearSessionCookies();
 

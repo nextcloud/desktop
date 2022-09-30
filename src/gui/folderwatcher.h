@@ -70,7 +70,7 @@ public:
      * For example, this can happen on linux if the inotify user limit from
      * /proc/sys/fs/inotify/max_user_watches is exceeded.
      */
-    bool isReliable() const;
+    [[nodiscard]] bool isReliable() const;
 
     /**
      * Triggers a change in the path and verifies a notification arrives.
@@ -81,7 +81,7 @@ public:
     void startNotificatonTest(const QString &path);
 
     /// For testing linux behavior only
-    int testLinuxWatchCount() const;
+    [[nodiscard]] int testLinuxWatchCount() const;
 
 signals:
     /** Emitted when one of the watched directories or one

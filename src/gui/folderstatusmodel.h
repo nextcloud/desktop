@@ -45,17 +45,17 @@ public:
     ~FolderStatusModel() override;
     void setAccountState(const AccountState *accountState);
 
-    Qt::ItemFlags flags(const QModelIndex &) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] Qt::ItemFlags flags(const QModelIndex &) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
     bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
-    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
-    QModelIndex parent(const QModelIndex &child) const override;
-    bool canFetchMore(const QModelIndex &parent) const override;
+    [[nodiscard]] int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QModelIndex index(int row, int column = 0, const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QModelIndex parent(const QModelIndex &child) const override;
+    [[nodiscard]] bool canFetchMore(const QModelIndex &parent) const override;
     void fetchMore(const QModelIndex &parent) override;
     void resetAndFetch(const QModelIndex &parent);
-    bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] bool hasChildren(const QModelIndex &parent = QModelIndex()) const override;
 
     struct SubFolderInfo
     {
@@ -81,14 +81,14 @@ public:
         Qt::CheckState _checked = Qt::Checked;
 
         // Whether this has a FetchLabel subrow
-        bool hasLabel() const;
+        [[nodiscard]] bool hasLabel() const;
 
         // Reset all subfolders and fetch status
         void resetSubs(FolderStatusModel *model, QModelIndex index);
 
         struct Progress
         {
-            bool isNull() const
+            [[nodiscard]] bool isNull() const
             {
                 return _progressString.isEmpty() && _warningCount == 0 && _overallSyncString.isEmpty();
             }
@@ -106,9 +106,9 @@ public:
         SubFolder,
         AddButton,
         FetchLabel };
-    ItemType classify(const QModelIndex &index) const;
-    SubFolderInfo *infoForIndex(const QModelIndex &index) const;
-    bool isAnyAncestorEncrypted(const QModelIndex &index) const;
+    [[nodiscard]] ItemType classify(const QModelIndex &index) const;
+    [[nodiscard]] SubFolderInfo *infoForIndex(const QModelIndex &index) const;
+    [[nodiscard]] bool isAnyAncestorEncrypted(const QModelIndex &index) const;
     // If the selective sync check boxes were changed
     bool isDirty() { return _dirty; }
 
@@ -142,7 +142,7 @@ private slots:
     void slotShowFetchProgress();
 
 private:
-    QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
+    [[nodiscard]] QStringList createBlackList(const OCC::FolderStatusModel::SubFolderInfo &root,
         const QStringList &oldBlackList) const;
     const AccountState *_accountState = nullptr;
     bool _dirty = false; // If the selective sync checkboxes were changed

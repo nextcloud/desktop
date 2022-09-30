@@ -18,7 +18,7 @@ public:
   PropagateDownloadEncrypted(OwncloudPropagator *propagator, const QString &localParentPath, SyncFileItemPtr item, QObject *parent = nullptr);
   void start();
   bool decryptFile(QFile& tmpFile);
-  QString errorString() const;
+  [[nodiscard]] QString errorString() const;
 
 public slots:
   void checkFolderId(const QStringList &list);

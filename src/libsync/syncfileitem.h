@@ -115,7 +115,7 @@ public:
 
     Q_ENUM(LockOwnerType)
 
-    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
+    [[nodiscard]] SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
     /** Creates a basic SyncFileItem from a DB record
      *
@@ -177,7 +177,7 @@ public:
         return data1[prefixL] < data2[prefixL];
     }
 
-    QString destination() const
+    [[nodiscard]] QString destination() const
     {
         if (!_renameTarget.isEmpty()) {
             return _renameTarget;
@@ -185,12 +185,12 @@ public:
         return _file;
     }
 
-    bool isEmpty() const
+    [[nodiscard]] bool isEmpty() const
     {
         return _file.isEmpty();
     }
 
-    bool isDirectory() const
+    [[nodiscard]] bool isDirectory() const
     {
         return _type == ItemTypeDirectory;
     }
@@ -198,7 +198,7 @@ public:
     /**
      * True if the item had any kind of error.
      */
-    bool hasErrorStatus() const
+    [[nodiscard]] bool hasErrorStatus() const
     {
         return _status == SyncFileItem::SoftError
             || _status == SyncFileItem::NormalError
@@ -209,7 +209,7 @@ public:
     /**
      * Whether this item should appear on the issues tab.
      */
-    bool showInIssuesTab() const
+    [[nodiscard]] bool showInIssuesTab() const
     {
         return hasErrorStatus() || _status == SyncFileItem::Conflict;
     }
@@ -217,7 +217,7 @@ public:
     /**
      * Whether this item should appear on the protocol tab.
      */
-    bool showInProtocolTab() const
+    [[nodiscard]] bool showInProtocolTab() const
     {
         return (!showInIssuesTab() || _status == SyncFileItem::Restoration)
             // Don't show conflicts that were resolved as "not a conflict after all"

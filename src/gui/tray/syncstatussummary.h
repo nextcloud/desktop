@@ -39,11 +39,11 @@ class SyncStatusSummary : public QObject
 public:
     explicit SyncStatusSummary(QObject *parent = nullptr);
 
-    double syncProgress() const;
-    QUrl syncIcon() const;
-    bool syncing() const;
-    QString syncStatusString() const;
-    QString syncStatusDetailString() const;
+    [[nodiscard]] double syncProgress() const;
+    [[nodiscard]] QUrl syncIcon() const;
+    [[nodiscard]] bool syncing() const;
+    [[nodiscard]] QString syncStatusString() const;
+    [[nodiscard]] QString syncStatusDetailString() const;
 
 signals:
     void syncProgressChanged();
@@ -66,7 +66,7 @@ private:
     void setSyncStateForFolder(const Folder *folder);
     void markFolderAsError(const Folder *folder);
     void markFolderAsSuccess(const Folder *folder);
-    bool folderErrors() const;
+    [[nodiscard]] bool folderErrors() const;
     bool folderError(const Folder *folder) const;
     void clearFolderErrors();
     void setSyncStateToConnectedState();

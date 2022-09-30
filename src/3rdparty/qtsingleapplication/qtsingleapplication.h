@@ -49,9 +49,9 @@ public:
     bool isRunning(qint64 pid = -1);
 
     void setActivationWindow(QWidget* aw, bool activateOnMessage = true);
-    QWidget* activationWindow() const;
+    [[nodiscard]] QWidget* activationWindow() const;
 
-    QString applicationId() const;
+    [[nodiscard]] QString applicationId() const;
     void setBlock(bool value);
 
 public Q_SLOTS:

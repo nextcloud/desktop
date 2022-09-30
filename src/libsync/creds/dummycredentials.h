@@ -26,11 +26,11 @@ class OWNCLOUDSYNC_EXPORT DummyCredentials : public AbstractCredentials
 public:
     QString _user;
     QString _password;
-    QString authType() const override;
-    QString user() const override;
-    QString password() const override;
-    QNetworkAccessManager *createQNAM() const override;
-    bool ready() const override;
+    [[nodiscard]] QString authType() const override;
+    [[nodiscard]] QString user() const override;
+    [[nodiscard]] QString password() const override;
+    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
+    [[nodiscard]] bool ready() const override;
     bool stillValid(QNetworkReply *reply) override;
     void fetchFromKeychain() override;
     void askFromUser() override;

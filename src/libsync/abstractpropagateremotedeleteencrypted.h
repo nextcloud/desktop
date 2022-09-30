@@ -34,8 +34,8 @@ public:
     AbstractPropagateRemoteDeleteEncrypted(OwncloudPropagator *propagator, SyncFileItemPtr item, QObject *parent);
     ~AbstractPropagateRemoteDeleteEncrypted() override = default;
 
-    QNetworkReply::NetworkError networkError() const;
-    QString errorString() const;
+    [[nodiscard]] QNetworkReply::NetworkError networkError() const;
+    [[nodiscard]] QString errorString() const;
 
     virtual void start() = 0;
 

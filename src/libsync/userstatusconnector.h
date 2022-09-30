@@ -76,7 +76,7 @@ public:
     Q_REQUIRED_RESULT OnlineStatus state() const;
     Q_REQUIRED_RESULT Optional<ClearAt> clearAt() const;
 
-    QString clearAtDisplayString() const;
+    [[nodiscard]] QString clearAtDisplayString() const;
 
     void setId(const QString &id);
     void setMessage(const QString &message);
@@ -125,7 +125,7 @@ public:
 
     virtual void clearMessage() = 0;
 
-    virtual UserStatus userStatus() const = 0;
+    [[nodiscard]] virtual UserStatus userStatus() const = 0;
 
 signals:
     void userStatusFetched(const UserStatus &userStatus);

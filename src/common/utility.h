@@ -185,9 +185,9 @@ namespace Utility {
         void reset();
 
         // out helpers, return the measured times.
-        QDateTime startTime() const;
-        QDateTime timeOfLap(const QString &lapName) const;
-        quint64 durationOfLap(const QString &lapName) const;
+        [[nodiscard]] QDateTime startTime() const;
+        [[nodiscard]] QDateTime timeOfLap(const QString &lapName) const;
+        [[nodiscard]] quint64 durationOfLap(const QString &lapName) const;
     };
 
     /**

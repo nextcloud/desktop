@@ -71,11 +71,11 @@ public:
     /* Abort the sync.  Called from the main thread */
     void abort();
 
-    bool isSyncRunning() const { return _syncRunning; }
+    [[nodiscard]] bool isSyncRunning() const { return _syncRunning; }
 
-    SyncOptions syncOptions() const { return _syncOptions; }
+    [[nodiscard]] SyncOptions syncOptions() const { return _syncOptions; }
     void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
-    bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
+    [[nodiscard]] bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
     void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
     void addAcceptedInvalidFileName(const QString& filePath);
@@ -87,11 +87,11 @@ public:
     /* Returns whether another sync is needed to complete the sync */
     AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
 
-    bool wasFileTouched(const QString &fn) const;
+    [[nodiscard]] bool wasFileTouched(const QString &fn) const;
 
-    AccountPtr account() const;
-    SyncJournalDb *journal() const { return _journal; }
-    QString localPath() const { return _localPath; }
+    [[nodiscard]] AccountPtr account() const;
+    [[nodiscard]] SyncJournalDb *journal() const { return _journal; }
+    [[nodiscard]] QString localPath() const { return _localPath; }
 
     /** Duration in ms that uploads should be delayed after a file change
      *
@@ -125,10 +125,10 @@ public:
      * Example: If path is 'foo/bar' and style is DatabaseAndFilesystem and dirs contains
      *     'foo/bar/touched_file', then the result will be true.
      */
-    bool shouldDiscoverLocally(const QString &path) const;
+    [[nodiscard]] bool shouldDiscoverLocally(const QString &path) const;
 
     /** Access the last sync run's local discovery style */
-    LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
+    [[nodiscard]] LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
     /** Removes all virtual file db entries and dehydrated local placeholders.
      *
@@ -263,7 +263,7 @@ private:
      * to recover
      */
     void checkForPermission(SyncFileItemVector &syncItems);
-    RemotePermissions getPermissions(const QString &file) const;
+    [[nodiscard]] RemotePermissions getPermissions(const QString &file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server

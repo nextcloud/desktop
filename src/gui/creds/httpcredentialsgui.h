@@ -54,7 +54,7 @@ public:
      * In case of oauth, return an URL to the link to open the browser.
      * An invalid URL otherwise
      */
-    QUrl authorisationLink() const { return _asyncAuth ? _asyncAuth->authorisationLink() : QUrl(); }
+    [[nodiscard]] QUrl authorisationLink() const { return _asyncAuth ? _asyncAuth->authorisationLink() : QUrl(); }
 
 
     static QString requestAppPasswordText(const Account *account);

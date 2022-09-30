@@ -83,12 +83,12 @@ private:
     struct FileData
     {
         static FileData get(const QString &localFile);
-        SyncFileStatus syncFileStatus() const;
-        SyncJournalFileRecord journalRecord() const;
-        FileData parentFolder() const;
+        [[nodiscard]] SyncFileStatus syncFileStatus() const;
+        [[nodiscard]] SyncJournalFileRecord journalRecord() const;
+        [[nodiscard]] FileData parentFolder() const;
 
         // Relative path of the file locally, without any vfs suffix
-        QString folderRelativePathNoVfsSuffix() const;
+        [[nodiscard]] QString folderRelativePathNoVfsSuffix() const;
 
         Folder *folder;
         // Absolute path of the file locally. (May be a virtual file)

@@ -69,12 +69,12 @@ public:
 
     bool finished() override;
 
-    QString errorString() const override
+    [[nodiscard]] QString errorString() const override
     {
         return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
     }
 
-    std::chrono::milliseconds msSinceStart() const
+    [[nodiscard]] std::chrono::milliseconds msSinceStart() const
     {
         return std::chrono::milliseconds(_requestTimer.elapsed());
     }

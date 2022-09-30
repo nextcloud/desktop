@@ -92,7 +92,7 @@ public:
     /** A regular expression to match file names
      * If no pattern is provided the default is an invalid regular expression.
      */
-    QRegularExpression fileRegex() const;
+    [[nodiscard]] QRegularExpression fileRegex() const;
 
     /**
      * A pattern like *.txt, matching only file names

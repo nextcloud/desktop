@@ -318,7 +318,7 @@ public:
         return {};
     }
 
-    int startingIdLast() const { return _startingId; }
+    [[nodiscard]] int startingIdLast() const { return _startingId; }
 
 private:
     static FakeRemoteActivityStorage *_instance;

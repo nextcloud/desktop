@@ -64,13 +64,13 @@ public:
     void showHelp();
     void showHint(std::string errorHint);
     bool debugMode();
-    bool backgroundMode() const;
+    [[nodiscard]] bool backgroundMode() const;
     bool versionOnly(); // only display the version?
     void showVersion();
 
     void showMainDialog();
 
-    ownCloudGui *gui() const;
+    [[nodiscard]] ownCloudGui *gui() const;
 
     bool event(QEvent *event) override;
 

@@ -150,7 +150,7 @@ public:
         QWidget *parent = nullptr);
     ~ShareUserLine() override;
 
-    QSharedPointer<Share> share() const;
+    [[nodiscard]] QSharedPointer<Share> share() const;
 
 signals:
     void visualDeletionDone();
@@ -194,8 +194,8 @@ private:
     void setDefaultAvatar(int avatarSize);
     void customizeStyle();
 
-    QPixmap pixmapForShareeType(Sharee::Type type, const QColor &backgroundColor = QColor()) const;
-    QColor backgroundColorForShareeType(Sharee::Type type) const;
+    [[nodiscard]] QPixmap pixmapForShareeType(Sharee::Type type, const QColor &backgroundColor = QColor()) const;
+    [[nodiscard]] QColor backgroundColorForShareeType(Sharee::Type type) const;
 
   void showNoteOptions(bool show);
   void toggleNoteOptions(bool enable);
@@ -211,8 +211,8 @@ private:
   void enableProgessIndicatorAnimation(bool enable);
   void disableProgessIndicatorAnimation();
 
-  QDate maxExpirationDateForShare(const Share::ShareType type, const QDate &fallbackDate) const;
-  bool enforceExpirationDateForShare(const Share::ShareType type) const;
+  [[nodiscard]] QDate maxExpirationDateForShare(const Share::ShareType type, const QDate &fallbackDate) const;
+  [[nodiscard]] bool enforceExpirationDateForShare(const Share::ShareType type) const;
 
   Ui::ShareUserLine *_ui;
   AccountPtr _account;

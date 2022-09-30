@@ -150,7 +150,7 @@ public:
      *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
      */
     void setProperties(QList<QByteArray> properties);
-    QList<QByteArray> properties() const;
+    [[nodiscard]] QList<QByteArray> properties() const;
 
 signals:
     void directoryListingSubfolders(const QStringList &items);
@@ -192,7 +192,7 @@ public:
      *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
      */
     void setProperties(QList<QByteArray> properties);
-    QList<QByteArray> properties() const;
+    [[nodiscard]] QList<QByteArray> properties() const;
 
 signals:
     void result(const QVariantMap &values);
@@ -268,7 +268,7 @@ public:
      *    e.g. "ns:with:colons:bar", which is "bar" in the "ns:with:colons" namespace
      */
     void setProperties(QMap<QByteArray, QByteArray> properties);
-    QMap<QByteArray, QByteArray> properties() const;
+    [[nodiscard]] QMap<QByteArray, QByteArray> properties() const;
 
 signals:
     void success();
@@ -456,7 +456,7 @@ private:
 
     Verb _verb = Verb::Get;
 
-    QByteArray verbToString() const;
+    [[nodiscard]] QByteArray verbToString() const;
 };
 
 /**

@@ -56,7 +56,7 @@ class AccountSettings : public QWidget
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
-    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
+    [[nodiscard]] QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
 
 signals:
@@ -120,7 +120,7 @@ private:
     void customizeStyle();
 
     /// Returns the alias of the selected folder, empty string if none
-    QString selectedFolderAlias() const;
+    [[nodiscard]] QString selectedFolderAlias() const;
 
     Ui::AccountSettings *_ui;
 

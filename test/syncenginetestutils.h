@@ -66,11 +66,11 @@ public:
     PathComponents(const QString &path);
     PathComponents(const QStringList &pathComponents);
 
-    PathComponents parentDirComponents() const;
-    PathComponents subComponents() const &;
+    [[nodiscard]] PathComponents parentDirComponents() const;
+    [[nodiscard]] PathComponents subComponents() const &;
     PathComponents subComponents() && { removeFirst(); return std::move(*this); }
-    QString pathRoot() const { return first(); }
-    QString fileName() const { return last(); }
+    [[nodiscard]] QString pathRoot() const { return first(); }
+    [[nodiscard]] QString fileName() const { return last(); }
 };
 
 class FileModifier
@@ -146,8 +146,8 @@ public:
         return !operator==(other);
     }
 
-    QString path() const;
-    QString absolutePath() const;
+    [[nodiscard]] QString path() const;
+    [[nodiscard]] QString absolutePath() const;
 
     void fixupParentPathRecursively();
 
@@ -200,7 +200,7 @@ public:
 
     void abort() override { }
 
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
     qint64 readData(char *data, qint64 maxlen) override;
 };
 
@@ -231,7 +231,7 @@ public:
 
     void abort() override;
 
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
     qint64 readData(char *data, qint64 maxlen) override;
 
 private:
@@ -291,7 +291,7 @@ public:
     Q_INVOKABLE void respond();
 
     void abort() override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     qint64 readData(char *data, qint64 maxlen) override;
 };
@@ -310,7 +310,7 @@ public:
     Q_INVOKABLE void respond();
 
     void abort() override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     qint64 readData(char *data, qint64 maxlen) override;
 };
@@ -349,7 +349,7 @@ public:
 
     void abort() override {}
     qint64 readData(char *buf, qint64 max) override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
     QByteArray _body;
 
     QMap<QNetworkRequest::KnownHeaders, QByteArray> _additionalHeaders;
@@ -377,7 +377,7 @@ public slots:
 public:
     void abort() override { }
     qint64 readData(char *buf, qint64 max) override;
-    qint64 bytesAvailable() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
 
     QByteArray _body;
 };
@@ -474,11 +474,11 @@ class FakeCredentials : public OCC::AbstractCredentials
     QNetworkAccessManager *_qnam;
 public:
     FakeCredentials(QNetworkAccessManager *qnam) : _qnam{qnam} { }
-    QString authType() const override { return "test"; }
-    QString user() const override { return "admin"; }
-    QString password() const override { return "password"; }
-    QNetworkAccessManager *createQNAM() const override { return _qnam; }
-    bool ready() const override { return true; }
+    [[nodiscard]] QString authType() const override { return "test"; }
+    [[nodiscard]] QString user() const override { return "admin"; }
+    [[nodiscard]] QString password() const override { return "password"; }
+    [[nodiscard]] QNetworkAccessManager *createQNAM() const override { return _qnam; }
+    [[nodiscard]] bool ready() const override { return true; }
     void fetchFromKeychain() override { }
     void askFromUser() override { }
     bool stillValid(QNetworkReply *) override { return true; }
@@ -502,9 +502,9 @@ public:
 
     void switchToVfs(QSharedPointer<OCC::Vfs> vfs);
 
-    OCC::AccountPtr account() const { return _account; }
-    OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
-    OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
+    [[nodiscard]] OCC::AccountPtr account() const { return _account; }
+    [[nodiscard]] OCC::SyncEngine &syncEngine() const { return *_syncEngine; }
+    [[nodiscard]] OCC::SyncJournalDb &syncJournal() const { return *_journalDb; }
 
     FileModifier &localModifier() { return _localModifier; }
     FileInfo &remoteModifier() { return _fakeQnam->currentRemoteState(); }
@@ -512,7 +512,7 @@ public:
 
     FileInfo currentRemoteState() { return _fakeQnam->currentRemoteState(); }
     FileInfo &uploadState() { return _fakeQnam->uploadState(); }
-    FileInfo dbState() const;
+    [[nodiscard]] FileInfo dbState() const;
 
     struct ErrorList {
         FakeQNAM *_qnam;
@@ -528,7 +528,7 @@ public:
         return _fakeQnam->forEachReplyPart(outgoingData, contentType, replyFunction);
     }
 
-    QString localPath() const;
+    [[nodiscard]] QString localPath() const;
 
     void scheduleSync();
 
@@ -575,9 +575,9 @@ struct ItemCompletedSpy : QSignalSpy {
         : QSignalSpy(&folder.syncEngine(), &OCC::SyncEngine::itemCompleted)
     {}
 
-    OCC::SyncFileItemPtr findItem(const QString &path) const;
+    [[nodiscard]] OCC::SyncFileItemPtr findItem(const QString &path) const;
 
-    OCC::SyncFileItemPtr findItemWithExpectedRank(const QString &path, int rank) const;
+    [[nodiscard]] OCC::SyncFileItemPtr findItemWithExpectedRank(const QString &path, int rank) const;
 };
 
 // QTest::toString overloads
