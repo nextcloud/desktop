@@ -19,6 +19,8 @@
 
 namespace OCC {
 
+Q_LOGGING_CATEGORY(lcFileDetails, "nextcloud.gui.filedetails", QtInfoMsg)
+
 FileDetails::FileDetails(QObject *parent)
     : QObject(parent)
 {
@@ -61,7 +63,11 @@ void FileDetails::setLocalPath(const QString &localPath)
     const auto folder = FolderMan::instance()->folderForPath(_localPath);
     const auto file = _localPath.mid(folder->cleanPath().length() + 1);
 
-    folder->journalDb()->getFileRecord(file, &_fileRecord);
+    if (!folder->journalDb()->getFileRecord(file, &_fileRecord)) {
+        qCWarning(lcFileDetails) << "Invalid file record for path:"
+                                 << _localPath
+                                 << "will not load file details.";
+    }
 
     _filelockState = _fileRecord._lockstate;
     updateLockExpireString();

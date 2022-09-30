@@ -27,7 +27,7 @@ class FileActivityListModel : public ActivityListModel
 public:
     explicit FileActivityListModel(QObject *parent = nullptr);
 
-    QString localPath() const;
+    [[nodiscard]] QString localPath() const;
 
 signals:
     void localPathChanged();

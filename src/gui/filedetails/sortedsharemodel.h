@@ -27,7 +27,7 @@ class SortedShareModel : public QSortFilterProxyModel
 public:
     explicit SortedShareModel(QObject *parent = nullptr);
 
-    ShareModel *shareModel() const;
+    [[nodiscard]] ShareModel *shareModel() const;
 
 signals:
     void shareModelChanged();
@@ -36,7 +36,7 @@ public slots:
     void setShareModel(ShareModel *shareModel);
 
 protected:
-    bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
+    [[nodiscard]] bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
 
 private slots:
     void sortModel();

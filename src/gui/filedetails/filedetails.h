@@ -37,13 +37,13 @@ class FileDetails : public QObject
 public:
     explicit FileDetails(QObject *parent = nullptr);
 
-    QString localPath() const;
-    QString name() const;
-    QString sizeString() const;
-    QString lastChangedString() const;
-    QString iconUrl() const;
-    QString lockExpireString() const;
-    bool isFolder() const;
+    [[nodiscard]] QString localPath() const;
+    [[nodiscard]] QString name() const;
+    [[nodiscard]] QString sizeString() const;
+    [[nodiscard]] QString lastChangedString() const;
+    [[nodiscard]] QString iconUrl() const;
+    [[nodiscard]] QString lockExpireString() const;
+    [[nodiscard]] bool isFolder() const;
 
 public slots:
     void setLocalPath(const QString &localPath);

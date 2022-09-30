@@ -78,21 +78,21 @@ public:
 
     explicit ShareModel(QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, const int role) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, const int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    AccountState *accountState() const;
-    QString localPath() const;
+    [[nodiscard]] AccountState *accountState() const;
+    [[nodiscard]] QString localPath() const;
 
-    bool accountConnected() const;
-    bool sharingEnabled() const;
-    bool publicLinkSharesEnabled() const;
-    bool userGroupSharingEnabled() const;
-    bool canShare() const;
+    [[nodiscard]] bool accountConnected() const;
+    [[nodiscard]] bool sharingEnabled() const;
+    [[nodiscard]] bool publicLinkSharesEnabled() const;
+    [[nodiscard]] bool userGroupSharingEnabled() const;
+    [[nodiscard]] bool canShare() const;
 
-    bool fetchOngoing() const;
-    bool hasInitialShareFetchCompleted() const;
+    [[nodiscard]] bool fetchOngoing() const;
+    [[nodiscard]] bool hasInitialShareFetchCompleted() const;
 
 signals:
     void localPathChanged();
@@ -167,11 +167,11 @@ private slots:
     void slotShareExpireDateSet(const QString &shareId);
 
 private:
-    QString displayStringForShare(const SharePtr &share) const;
-    QString iconUrlForShare(const SharePtr &share) const;
-    QString avatarUrlForShare(const SharePtr &share) const;
-    long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
-    bool expireDateEnforcedForShare(const SharePtr &share) const;
+    [[nodiscard]] QString displayStringForShare(const SharePtr &share) const;
+    [[nodiscard]] QString iconUrlForShare(const SharePtr &share) const;
+    [[nodiscard]] QString avatarUrlForShare(const SharePtr &share) const;
+    [[nodiscard]] long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
+    [[nodiscard]] bool expireDateEnforcedForShare(const SharePtr &share) const;
 
     bool _fetchOngoing = false;
     bool _hasInitialShareFetchCompleted = false;

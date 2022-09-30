@@ -51,15 +51,15 @@ public:
 
     using ShareeSet = QVector<ShareePtr>; // FIXME: make it a QSet<Sharee> when Sharee can be compared
 
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QHash<int, QByteArray> roleNames() const override;
-    QVariant data(const QModelIndex &index, const int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, const int role) const override;
 
-    AccountState *accountState() const;
-    bool shareItemIsFolder() const;
-    QString searchString() const;
-    bool fetchOngoing() const;
-    LookupMode lookupMode() const;
+    [[nodiscard]] AccountState *accountState() const;
+    [[nodiscard]] bool shareItemIsFolder() const;
+    [[nodiscard]] QString searchString() const;
+    [[nodiscard]] bool fetchOngoing() const;
+    [[nodiscard]] LookupMode lookupMode() const;
 
 signals:
     void accountStateChanged();
@@ -83,7 +83,7 @@ private slots:
      void shareesFetched(const QJsonDocument &reply);
 
 private:
-    ShareePtr parseSharee(const QJsonObject &data) const;
+    [[nodiscard]] ShareePtr parseSharee(const QJsonObject &data) const;
 
     QTimer _userStoppedTypingTimer;
 
