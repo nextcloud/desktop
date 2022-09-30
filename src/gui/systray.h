@@ -91,7 +91,7 @@ public:
     Q_REQUIRED_RESULT bool syncIsPaused() const;
     Q_REQUIRED_RESULT bool isOpen() const;
 
-    Q_REQUIRED_RESULT bool raiseDialogs();
+    bool raiseDialogs();
 
 signals:
     void currentUserChanged();

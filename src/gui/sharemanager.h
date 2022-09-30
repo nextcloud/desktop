@@ -115,7 +115,10 @@ public:
      */
     [[nodiscard]] Permissions getPermissions() const;
 
-    [[nodiscard]] bool isPasswordSet() const;
+    /*
+     * Get whether the share has a password set
+     */
+    [[nodiscard]] Q_REQUIRED_RESULT bool isPasswordSet() const;
 
      /*
      * Is it a share with a user or group (local or remote)
