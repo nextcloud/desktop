@@ -198,6 +198,14 @@
     </message>
 </context>
 <context>
+    <name>ErrorBox</name>
+    <message>
+        <location filename="../src/gui/ErrorBox.qml" line="49"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FileSystem</name>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>

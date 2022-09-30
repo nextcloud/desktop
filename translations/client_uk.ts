@@ -4,18 +4,18 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="30"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити %1 на пристрої</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="45"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>У %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="194"/>
         <location filename="../src/gui/tray/ActivityItem.qml" line="197"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Показати більше дій</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="244"/>
@@ -25,12 +25,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="168"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити меню надання спільного доступу</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="172"/>
         <source>Share %1</source>
-        <translation type="unfinished"/>
+        <translation>Поділитися %1</translation>
     </message>
 </context>
 <context>
@@ -39,7 +39,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="82"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="85"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Показувати більше дій</translation>
     </message>
 </context>
 <context>
@@ -53,7 +53,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити меню надання спільного доступу</translation>
     </message>
 </context>
 <context>
@@ -61,12 +61,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Список дій</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Поки не було дій</translation>
     </message>
 </context>
 <context>
@@ -74,7 +74,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Очистити меню стану повідомлень</translation>
     </message>
 </context>
 <context>
@@ -195,6 +195,14 @@
         <location filename="../src/gui/EmojiPicker.qml" line="132"/>
         <source>No recent emojis</source>
         <translation>Немає останніх емодзі</translation>
+    </message>
+</context>
+<context>
+    <name>ErrorBox</name>
+    <message>
+        <location filename="../src/gui/ErrorBox.qml" line="49"/>
+        <source>Error</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
