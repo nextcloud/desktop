@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
         <source>Advanced configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuration avancée</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
         <source>Download everything</source>
-        <translation type="unfinished"/>
+        <translation>Tout télécharger</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
@@ -137,7 +137,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="104"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="213"/>
@@ -217,7 +217,7 @@
         <location filename="../src/common/filesystembase.cpp" line="208"/>
         <location filename="../src/common/filesystembase.cpp" line="213"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de renommer le fichier %1 car il est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
@@ -238,7 +238,7 @@
     <message>
         <location filename="../src/libsync/filesystem.cpp" line="175"/>
         <source>Could not remove folder</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de supprimer le dossier</translation>
     </message>
 </context>
 <context>
@@ -246,7 +246,7 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
         <source>&lt;b&gt;Error:&lt;/b&gt; %1</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Erreur : &lt;/b&gt; %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="56"/>
@@ -256,12 +256,12 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="62"/>
         <source>&lt;b&gt;Error:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Erreur : &lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizard.cpp" line="63"/>
         <source>&lt;b&gt;Warning:&lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Avertissement : &lt;/b&gt;&lt;ul&gt;%1&lt;/ul&gt;</translation>
     </message>
 </context>
 <context>
@@ -361,7 +361,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="71"/>
         <source>Copy URL to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copier l&apos;adresse URL dans le presse-papiers</translation>
     </message>
 </context>
 <context>
@@ -596,7 +596,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="856"/>
         <source>No connection to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune connexion à %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="860"/>
@@ -606,7 +606,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="871"/>
         <source>No connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune connexion configurée.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="893"/>
@@ -768,7 +768,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="121"/>
         <source>Local path</source>
-        <translation type="unfinished"/>
+        <translation>Chemin local</translation>
     </message>
 </context>
 <context>
@@ -965,7 +965,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="626"/>
         <source>[&lt;vfs file&gt;]</source>
-        <translation type="unfinished"/>
+        <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="642"/>
@@ -985,7 +985,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="678"/>
         <source>Available translations: %1</source>
-        <translation type="unfinished"/>
+        <translation>Traductions disponibles : %1</translation>
     </message>
 </context>
 <context>
@@ -1459,7 +1459,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderman.cpp" line="1446"/>
         <source>%1 - %2@%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2@%3</translation>
     </message>
 </context>
 <context>
@@ -1472,7 +1472,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add a space</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter un espace</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="294"/>
@@ -1593,7 +1593,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="292"/>
         <source>Local folder: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dossier local : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1019"/>
@@ -1679,7 +1679,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionner le dossier local</translation>
     </message>
 </context>
 <context>
@@ -2436,7 +2436,7 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
         <source>Login Successful</source>
-        <translation type="unfinished"/>
+        <translation>Authentification réussie</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
@@ -2525,7 +2525,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="722"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -2733,7 +2733,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
         <location filename="../src/libsync/propagatedownload.cpp" line="948"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1013"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="345"/>
@@ -2770,7 +2770,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
@@ -2794,7 +2794,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -2807,7 +2807,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de renommer le fichier %1 en %2 car il est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
@@ -2817,12 +2817,12 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de renommer le fichier</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
@@ -2876,7 +2876,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="208"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
@@ -2899,7 +2899,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1218"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
 </context>
 <context>
@@ -2927,7 +2927,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="582"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
@@ -2942,7 +2942,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
         <location filename="../src/libsync/propagateuploadng.cpp" line="98"/>
         <location filename="../src/libsync/propagateuploadng.cpp" line="368"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="485"/>
@@ -2975,7 +2975,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="65"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
@@ -2988,7 +2988,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="49"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Le fichier %1 est en cours d&apos;utilisation</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="219"/>
@@ -3075,7 +3075,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>Relancer la synchro</translation>
     </message>
 </context>
 <context>
@@ -3711,7 +3711,7 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
         <source>Subtitle</source>
-        <translation type="unfinished"/>
+        <translation>Sous titre</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="51"/>
@@ -3845,12 +3845,12 @@ L&apos;assistant de mise à jour peut vous demandez des autorisations supplémen
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
         <source>Installed version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Version installée : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
         <source>Available update: %1</source>
-        <translation type="unfinished"/>
+        <translation>Mise à jour disponible : %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="38"/>
@@ -3870,7 +3870,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Rejeter</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
@@ -3935,7 +3935,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="50"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (recommandé)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="68"/>
@@ -3950,7 +3950,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="74"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionner le dossier local</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
@@ -3989,7 +3989,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Connexion en cours à  &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4046,7 +4046,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Connexion en cours à  &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
@@ -4085,12 +4085,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="79"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>URL du serveur non valide</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="85"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Connexion non sécurisée</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="86"/>
@@ -4114,12 +4114,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="109"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Terminer</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Suivant &gt;</translation>
     </message>
 </context>
 <context>
@@ -4127,7 +4127,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Connexion en cours à  &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4332,7 +4332,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="817"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>Afficher %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="818"/>
@@ -4447,7 +4447,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter un nouveau compte</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4462,7 +4462,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; Précédent</translation>
     </message>
 </context>
 <context>
@@ -4527,7 +4527,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>Restauré</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
@@ -4537,7 +4537,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>Exclus</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
@@ -4555,7 +4555,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="700"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>Adresse e-mail</translation>
     </message>
 </context>
 <context>
@@ -4631,7 +4631,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
         <source>Please enter your username:</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez saisir votre nom d&apos;utilisateur :</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
