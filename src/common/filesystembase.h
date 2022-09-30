@@ -22,10 +22,12 @@
 
 #include "utility.h"
 
-#include <QString>
-#include <ctime>
 #include <QFileInfo>
 #include <QLoggingCategory>
+#include <QString>
+
+#include <cstdint>
+#include <ctime>
 
 
 class QFile;
@@ -174,6 +176,29 @@ namespace FileSystem {
      * Returns whether a Path is a child of another
      */
     bool OCSYNC_EXPORT isChildPathOf(const QString &child, const QString &parent);
+
+
+    namespace SizeLiterals {
+        constexpr unsigned long long operator"" _b(unsigned long long sz)
+        {
+            return sz;
+        }
+
+        constexpr unsigned long long operator"" _kb(unsigned long long sz)
+        {
+            return operator"" _b(sz) * 1024;
+        }
+
+        constexpr unsigned long long operator"" _mb(unsigned long long sz)
+        {
+            return operator"" _kb(sz) * 1024;
+        }
+
+        constexpr unsigned long long operator"" _gb(unsigned long long sz)
+        {
+            return operator"" _mb(sz) * 1024;
+        }
+    }
 }
 
 /** @} */

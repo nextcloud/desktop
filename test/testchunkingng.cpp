@@ -7,29 +7,16 @@
 #include "testutils/syncenginetestutils.h"
 #include "testutils/testutils.h"
 
-#include <syncengine.h>
+#include "common/filesystembase.h"
+#include "libsync/syncengine.h"
 
 #include <QtTest>
 
 using namespace std::chrono_literals;
+using namespace OCC::FileSystem::SizeLiterals;
 using namespace OCC;
 
 namespace {
-
-constexpr unsigned long long operator"" _kb(unsigned long long sz)
-{
-    return sz * 1024;
-}
-
-constexpr unsigned long long operator"" _mb(unsigned long long sz)
-{
-    return operator"" _kb(sz) * 1024;
-}
-
-constexpr unsigned long long operator"" _gb(unsigned long long sz)
-{
-    return operator"" _mb(sz) * 1024;
-}
 
 /* Upload a 1/3 of a file of given size.
  * fakeFolder needs to be synchronized */
