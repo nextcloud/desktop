@@ -28,6 +28,8 @@ ApplicationWindow {
 
     width: 400
     height: 500
+    minimumWidth: 300
+    minimumHeight: 300
 
     title: qsTr("File details of %1 · %2").arg(fileDetailsPage.fileDetails.name).arg(Systray.windowTitle)
 
