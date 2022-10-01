@@ -408,7 +408,7 @@
 <context>
     <name>OCC::Account</name>
     <message>
-        <location filename="../src/libsync/account.cpp" line="124"/>
+        <location filename="../src/libsync/account.cpp" line="122"/>
         <source>%1@%2</source>
         <translation>%1@%2</translation>
     </message>
@@ -3812,7 +3812,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="451"/>
+        <location filename="../src/libsync/theme.cpp" line="445"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version %1. Weitere Informationen unter &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Für bekannte Fehler und die Hilfe, besuchen Sie bitte: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Von Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz, Jan-Christoph Borchardt,  Thomas Müller, Dominik Schmidt, Michael Stingl, Hannah von Reth und anderen.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Lizenziert unter den Bedingungen der GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 und das %5 Logo sind eingetragene Warenzeichen von %4 in den USA, anderen Ländern, oder beidem.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4560,12 +4560,12 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="698"/>
+        <location filename="../src/libsync/theme.cpp" line="690"/>
         <source>Username</source>
         <translation>Benutzername</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="700"/>
+        <location filename="../src/libsync/theme.cpp" line="692"/>
         <source>E-mail address</source>
         <translation>E-mail Adresse</translation>
     </message>
@@ -4668,7 +4668,7 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="429"/>
+        <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
         <translation>%1 %2 %7%%8Qt Bibliotheken %3, %4%7verwenden das Virtual Files plugin: %5%7%6</translation>
     </message>
@@ -4676,7 +4676,7 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="419"/>
+        <location filename="../src/libsync/theme.cpp" line="413"/>
         <source>%1 (Built against Qt %1)</source>
         <translation>%1 (Mit Qt %1 gebaut)</translation>
     </message>
@@ -4684,7 +4684,7 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="424"/>
+        <location filename="../src/libsync/theme.cpp" line="418"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
@@ -4792,52 +4792,52 @@ Möchten Sie fortfahren?</translation>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="101"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Status undefined</source>
         <translation>Status nicht definiert</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="104"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Waiting to start sync</source>
         <translation>Warte, um mit der Synchronistation zu beginnen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="107"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync is running</source>
         <translation>Synchronisation läuft</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="110"/>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Sync Success</source>
         <translation>Synchronisation erfolgreich</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="113"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Synchronisation abgeschlossen, einige Dateien wurden ignoriert.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="116"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Sync Error</source>
         <translation>Synchronisationsfehler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="119"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Setup Error</source>
         <translation>Installationsfehler</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="122"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Preparing to sync</source>
         <translation>Synchronisation wird vorbereitet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="125"/>
+        <location filename="../src/libsync/theme.cpp" line="123"/>
         <source>Aborting...</source>
         <translation>Abbruch …</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="128"/>
+        <location filename="../src/libsync/theme.cpp" line="126"/>
         <source>Sync is paused</source>
         <translation>Synchronisation wird angehalten</translation>
     </message>
