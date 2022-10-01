@@ -115,8 +115,6 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
             const auto startOfExpireDayUTC = linkShare->getExpireDate().startOfDay(QTimeZone::utc());
             return startOfExpireDayUTC.toMSecsSinceEpoch();
         }
-        default:
-            break;
         }
 
     } else if (const auto userGroupShare = share.objectCast<UserGroupShare>()) {
@@ -132,8 +130,6 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
             const auto startOfExpireDayUTC = userGroupShare->getExpireDate().startOfDay(QTimeZone::utc());
             return startOfExpireDayUTC.toMSecsSinceEpoch();
         }
-        default:
-            break;
         }
     }
 
@@ -178,12 +174,12 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
     case NoteRole:
     case ExpireDateRole:
         return {};
-    default:
-        qCWarning(lcShareModel) << "Got unknown role" << role
-                                << "for share of type" << share->getShareType()
-                                << "so returning null value.";
-        return {};
     }
+
+    qCWarning(lcShareModel) << "Got unknown role" << role
+                            << "for share of type" << share->getShareType()
+                            << "so returning null value.";
+    return {};
 }
 
 // ---------------------- Internal model data methods ---------------------- //

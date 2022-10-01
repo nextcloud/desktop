@@ -72,10 +72,10 @@ QVariant ShareeModel::data(const QModelIndex &index, const int role) const
         return QString(sharee->displayName() + " (" + sharee->shareWith() + ")");
     case ShareeRole:
         return QVariant::fromValue(sharee);
-    default:
-        qCWarning(lcShareeModel) << "Got unknown role -- returning null value.";
-        return {};
     }
+
+    qCWarning(lcShareeModel) << "Got unknown role" << role << "returning null value.";
+    return {};
 }
 
 // --------------------------- QPROPERTY methods --------------------------- //
