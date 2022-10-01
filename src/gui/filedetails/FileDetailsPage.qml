@@ -168,9 +168,10 @@ Page {
 
             property int swipeIndex: SwipeView.index
 
+            delegateHorizontalPadding: root.intendedPadding
+
             accountState: root.accountState
             localPath: root.localPath
-            horizontalPadding: root.intendedPadding
             iconSize: root.iconSize
         }
 

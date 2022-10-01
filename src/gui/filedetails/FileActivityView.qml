@@ -20,28 +20,14 @@ import com.nextcloud.desktopclient 1.0
 import Style 1.0
 import "../tray"
 
-Item {
+ActivityList {
     id: root
 
-    property string localPath: ""
-    property var accountState: ({})
-    property int horizontalPadding: 0
-    property int iconSize: 32
-    property alias model: activityModel
+    property alias localPath: activityListModel.localPath
+    property alias accountState: activityListModel.accountState
 
-    FileActivityListModel {
-        id: activityModel
-        localPath: root.localPath
-        accountState: root.accountState
-    }
-
-    ActivityList {
-        anchors.fill: parent
-        anchors.leftMargin: root.horizontalPadding
-        anchors.rightMargin: root.horizontalPadding
-
-        iconSize: root.iconSize
-        isFileActivityList: true
-        model: root.model
+    isFileActivityList: true
+    model: FileActivityListModel {
+        id: activityListModel
     }
 }
