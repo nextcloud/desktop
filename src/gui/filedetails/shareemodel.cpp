@@ -54,9 +54,7 @@ QHash<int, QByteArray> ShareeModel::roleNames() const
 
 QVariant ShareeModel::data(const QModelIndex &index, const int role) const
 {
-    if (index.row() < 0 || index.row() > _sharees.size()) {
-        return {};
-    }
+    Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
     const auto sharee = _sharees.at(index.row());
 

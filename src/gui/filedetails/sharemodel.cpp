@@ -85,9 +85,7 @@ QHash<int, QByteArray> ShareModel::roleNames() const
 
 QVariant ShareModel::data(const QModelIndex &index, const int role) const
 {
-    if (!index.isValid()) {
-        return {};
-    }
+    Q_ASSERT(checkIndex(index, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid));
 
     const auto share = _shares.at(index.row());
 
@@ -419,7 +417,7 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     _shareIdRecentlySetPasswords.remove(shareId);
     const auto shareIndex = _shareIdIndexHash.take(shareId);
 
-    if (!shareIndex.isValid()) {
+    if (!checkIndex(shareIndex, QAbstractItemModel::CheckIndexOption::IndexIsValid | QAbstractItemModel::CheckIndexOption::ParentIsInvalid)) {
         qCWarning(lcShareModel) << "Won't remove share with id:" << shareId
                                 << ", invalid share index: " << shareIndex;
         return;
