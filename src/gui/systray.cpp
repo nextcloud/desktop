@@ -291,13 +291,13 @@ bool Systray::raiseDialogs()
         return false;
     }
 
-    QVector<QSharedPointer<QQuickWindow>> liveDialogs;
+    QVector<QQuickWindow*> liveDialogs;
 
-    for(const auto &dialog : _dialogs) {
-        if(dialog.isNull()) {
+    for(const auto dialog : _dialogs) {
+        if(!dialog) {
             continue;
         } else if(!dialog->isVisible()) {
-            destroyDialog(dialog.data());
+            destroyDialog(dialog);
             continue;
         }
 
@@ -334,13 +334,13 @@ void Systray::createFileDetailsDialog(const QString &localPath)
         {"localPath", localPath},
     };
 
-    const auto fileDetailsDialog = new QQmlComponent(_trayEngine, QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
+    QQmlComponent fileDetailsDialog(_trayEngine, QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
 
-    if (fileDetailsDialog && !fileDetailsDialog->isError()) {
-        const auto createdDialog = fileDetailsDialog->createWithInitialProperties(initialProperties);
-        const QSharedPointer<QQuickWindow> dialog(qobject_cast<QQuickWindow*>(createdDialog));
+    if (!fileDetailsDialog.isError()) {
+        const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+        const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
 
-        if(dialog.isNull()) {
+        if(!dialog) {
             qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
             return;
         }
@@ -351,10 +351,8 @@ void Systray::createFileDetailsDialog(const QString &localPath)
         dialog->raise();
         dialog->requestActivate();
 
-    } else if (fileDetailsDialog) {
-        qCWarning(lcSystray) << fileDetailsDialog->errorString();
     } else {
-        qCWarning(lcSystray) << "Unable to open share dialog for unknown reasons...";
+        qCWarning(lcSystray) << fileDetailsDialog.errorString();
     }
 }
 

@@ -173,7 +173,7 @@ private:
 
     QSet<qlonglong> _callsAlreadyNotified;
     QPointer<QObject> _editFileLocallyLoadingDialog;
-    QVector<QSharedPointer<QQuickWindow>> _dialogs;
+    QVector<QQuickWindow*> _dialogs;
 };
 
 } // namespace OCC
