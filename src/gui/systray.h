@@ -144,6 +144,8 @@ private slots:
     void slotPauseAllFolders();
 
 private:
+    // Argument allows user to specify a specific dialog to be raised
+    bool raiseFileDetailDialogs(const QString &localPath = {});
     void setPauseOnAllFoldersHelper(bool pause);
 
     static Systray *_instance;
@@ -173,7 +175,7 @@ private:
 
     QSet<qlonglong> _callsAlreadyNotified;
     QPointer<QObject> _editFileLocallyLoadingDialog;
-    QVector<QQuickWindow*> _dialogs;
+    QVector<QQuickWindow*> _fileDetailDialogs;
 };
 
 } // namespace OCC

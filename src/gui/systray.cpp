@@ -287,38 +287,52 @@ void Systray::destroyEditFileLocallyLoadingDialog()
 
 bool Systray::raiseDialogs()
 {
-    if(_dialogs.empty()) {
+    return raiseFileDetailDialogs();
+}
+
+bool Systray::raiseFileDetailDialogs(const QString &localPath)
+{
+    if(_fileDetailDialogs.empty()) {
         return false;
     }
 
-    QVector<QQuickWindow*> liveDialogs;
+    auto it = _fileDetailDialogs.begin();
+    while (it != _fileDetailDialogs.end()) {
+        const auto dialog = *it;
+        auto liveDialog = dialog != nullptr;
 
-    for(const auto dialog : _dialogs) {
-        if(!dialog) {
-            continue;
-        } else if(!dialog->isVisible()) {
+        if (liveDialog && !dialog->isVisible()) {
             destroyDialog(dialog);
+            liveDialog = false;
+        }
+
+        if (liveDialog && (localPath.isEmpty() || dialog->property("localPath").toString() == localPath)) {
+            dialog->show();
+            dialog->raise();
+            dialog->requestActivate();
+
+            ++it;
             continue;
         }
 
-        liveDialogs.append(dialog);
-
-        dialog->show();
-        dialog->raise();
-        dialog->requestActivate();
+        it = _fileDetailDialogs.erase(it);
+        continue;
     }
 
-    _dialogs = liveDialogs;
-
     // If it is empty then we have raised no dialogs, so return false (and viceversa)
-    return !liveDialogs.empty();
+    return !_fileDetailDialogs.empty();
 }
 
 void Systray::createFileDetailsDialog(const QString &localPath)
 {
+    if (raiseFileDetailDialogs(localPath)) {
+        qCDebug(lcSystray) << "Reopening an existing file details dialog for " << localPath;
+        return;
+    }
+
     qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
 
-    if(!_trayEngine) {
+    if (!_trayEngine) {
         qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
         return;
     }
@@ -345,7 +359,7 @@ void Systray::createFileDetailsDialog(const QString &localPath)
             return;
         }
 
-        _dialogs.append(dialog);
+        _fileDetailDialogs.append(dialog);
 
         dialog->show();
         dialog->raise();
