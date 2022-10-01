@@ -37,7 +37,7 @@ class ShareeModel : public QAbstractListModel
 public:
     enum class LookupMode {
         LocalSearch = 0,
-        GlobalSearch = 1
+        GlobalSearch = 1,
     };
     Q_ENUM(LookupMode);
 
