@@ -27,9 +27,9 @@ Q_LOGGING_CATEGORY(lcShareeModel, "com.nextcloud.shareemodel")
 ShareeModel::ShareeModel(QObject *parent)
     : QAbstractListModel(parent)
 {
-    _userStoppedTypingTimer.setSingleShot(true);
-    _userStoppedTypingTimer.setInterval(500);
-    connect(&_userStoppedTypingTimer, &QTimer::timeout, this, &ShareeModel::fetch);
+    _searchRateLimitingTimer.setSingleShot(true);
+    _searchRateLimitingTimer.setInterval(500);
+    connect(&_searchRateLimitingTimer, &QTimer::timeout, this, &ShareeModel::fetch);
 }
 
 // ---------------------- QAbstractListModel methods ---------------------- //
@@ -122,7 +122,7 @@ void ShareeModel::setSearchString(const QString &searchString)
     _searchString = searchString;
     Q_EMIT searchStringChanged();
 
-    _userStoppedTypingTimer.start();
+    _searchRateLimitingTimer.start();
 }
 
 bool ShareeModel::fetchOngoing() const

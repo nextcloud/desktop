@@ -85,7 +85,7 @@ private slots:
 private:
     [[nodiscard]] ShareePtr parseSharee(const QJsonObject &data) const;
 
-    QTimer _userStoppedTypingTimer;
+    QTimer _searchRateLimitingTimer;
 
     AccountState *_accountState;
     QString _searchString;
