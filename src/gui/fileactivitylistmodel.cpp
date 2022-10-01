@@ -34,6 +34,10 @@ QString FileActivityListModel::localPath() const
 
 void FileActivityListModel::setLocalPath(const QString &localPath)
 {
+    if(localPath == _localPath) {
+        return;
+    }
+
     _localPath = localPath;
     Q_EMIT localPathChanged();
 

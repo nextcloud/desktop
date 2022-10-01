@@ -87,7 +87,7 @@ private:
 
     QTimer _userStoppedTypingTimer;
 
-    AccountStatePtr _accountState;
+    AccountState *_accountState;
     QString _searchString;
     bool _shareItemIsFolder = false;
     bool _fetchOngoing = false;
