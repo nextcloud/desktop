@@ -232,7 +232,7 @@ void ShareModel::updateData()
     _sharePath = _folder->remotePathTrailingSlash() + relPath;
 
     SyncJournalFileRecord fileRecord;
-    bool resharingAllowed = true; // lets assume the good
+    auto resharingAllowed = true; // lets assume the good
 
     if(_folder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid()) {
         if (!fileRecord._remotePerm.isNull() &&
@@ -495,10 +495,10 @@ QString ShareModel::iconUrlForShare(const SharePtr &share) const
 QString ShareModel::avatarUrlForShare(const SharePtr &share) const
 {
     if (share->getShareWith() && share->getShareWith()->type() == Sharee::User && _accountState && _accountState->account()) {
-        const QString provider = QStringLiteral("image://tray-image-provider/");
-        const QString userId = share->getShareWith()->shareWith();
-        const QString avatarUrl = Utility::concatUrlPath(_accountState->account()->url(),
-                                                         QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(64))).toString();
+        const auto provider = QStringLiteral("image://tray-image-provider/");
+        const auto userId = share->getShareWith()->shareWith();
+        const auto avatarUrl = Utility::concatUrlPath(_accountState->account()->url(),
+                                                      QString("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(64))).toString();
         return QString(provider + avatarUrl);
     }
 
