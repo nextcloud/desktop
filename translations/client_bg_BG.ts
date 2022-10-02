@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation>Покажи в web browser</translation>
+        <translation>Показване в уеб браузър</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="242"/>
         <source>Connection timed out</source>
-        <translation>Връзката се провали</translation>
+        <translation>Времето за изчакване на връзката изтече</translation>
     </message>
     <message>
         <location filename="../src/libsync/abstractnetworkjob.cpp" line="244"/>
