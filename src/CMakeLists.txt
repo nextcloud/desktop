@@ -60,6 +60,19 @@ if (${QT_MAJOR_VERSION} STREQUAL "5")
     endif()
 endif()
 
+find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)
+if(APPLE)
+    set_package_properties(Qt${QT_VERSION_MAJOR}WebEngineCore PROPERTIES
+        DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngineCore component."
+        TYPE RECOMMENDED
+    )
+else()
+    set_package_properties(Qt${QT_VERSION_MAJOR}WebEngine PROPERTIES
+        DESCRIPTION "Qt${QT_VERSION_MAJOR} WebEngine component."
+        TYPE REQUIRED
+    )
+endif()
+
 if(Qt${QT_MAJOR_VERSION}WebEngine_FOUND AND Qt${QT_MAJOR_VERSION}WebEngineWidgets_FOUND)
   add_compile_definitions(WITH_WEBENGINE=1)
 endif()

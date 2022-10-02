@@ -16,7 +16,7 @@ if(QUICK_COMPILER)
 endif()
 
 if (NOT TARGET Qt::GuiPrivate)
-    message(FATAL_ERROR "Could not find GuiPrivate component of Qt5. It might be shipped as a separate package, please check that.")
+    message(FATAL_ERROR "Could not find GuiPrivate component of Qt. It might be shipped as a separate package, please check that.")
 endif()
 
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -336,7 +336,7 @@ IF( APPLE )
         list(APPEND updater_DEPS ${SPARKLE_LIBRARY})
 
         # Sparkle.framework is installed from here because macdeployqt's CopyFramework breaks on this bundle
-        # as its logic is tightly tailored around Qt5 frameworks
+        # as its logic is tightly tailored around Qt frameworks
         install(DIRECTORY "${SPARKLE_LIBRARY}"
                 DESTINATION "${OWNCLOUD_OSX_BUNDLE}/Contents/Frameworks" USE_SOURCE_PERMISSIONS)
 
@@ -381,7 +381,7 @@ else()
    set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_win.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endif()
 
-find_package(Qt6 COMPONENTS LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS LinguistTools)
 if(Qt${QT_MAJOR_VERSION}LinguistTools_FOUND)
     qt_add_translation(client_I18N ${TRANSLATIONS})
 endif()
@@ -709,12 +709,7 @@ endif()
 
 ## handle DBUS for Fdo notifications
 if( UNIX AND NOT APPLE )
-    if (Qt6_FOUND)
-        find_package(Qt6 COMPONENTS DBus)
-    else()
-        set(REQUIRED_QT_VERSION "5.15.0")
-        find_package(Qt5 ${REQUIRED_QT_VERSION} COMPONENTS DBus)
-    endif()
+    find_package(Qt${QT_VERSION_MAJOR} ${REQUIRED_QT_VERSION} COMPONENTS DBus)
     target_link_libraries(nextcloudCore PUBLIC Qt::DBus)
     target_compile_definitions(nextcloudCore PUBLIC "USE_FDO_NOTIFICATIONS")
 endif()

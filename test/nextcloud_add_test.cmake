@@ -1,9 +1,4 @@
-if (Qt6_FOUND)
-    find_package(Qt6 COMPONENTS REQUIRED Core Test Xml Network Qml Quick)
-else()
-    set(REQUIRED_QT_VERSION "5.15.0")
-    find_package(Qt5 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick)
-endif()
+find_package(Qt6 ${REQUIRED_QT_VERSION} COMPONENTS REQUIRED Core Test Xml Network Qml Quick)
 
 macro(nextcloud_build_test test_class)
     set(CMAKE_AUTOMOC TRUE)
