@@ -26,7 +26,7 @@ import socket
 import tempfile
 import time
 
-from repository import GObject, Nautilus
+from gi.repository import GObject, Nautilus
 
 # Note: setappname.sh will search and replace 'ownCloud' on this file to update this line and other
 # occurrences of the name
