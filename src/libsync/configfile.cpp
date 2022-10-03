@@ -51,6 +51,55 @@
 
 namespace {
 static constexpr char showMainDialogAsNormalWindowC[] = "showMainDialogAsNormalWindow";
+
+static constexpr char remotePollIntervalC[] = "remotePollInterval";
+static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
+static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
+static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
+static constexpr char monoIconsC[] = "monoIcons";
+static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
+static constexpr char crashReporterC[] = "crashReporter";
+static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
+static constexpr char showCallNotificationsC[] = "showCallNotifications";
+static constexpr char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
+static constexpr char skipUpdateCheckC[] = "skipUpdateCheck";
+static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
+static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
+static constexpr char updateSegmentC[] = "updateSegment";
+static constexpr char updateChannelC[] = "updateChannel";
+static constexpr char geometryC[] = "geometry";
+static constexpr char timeoutC[] = "timeout";
+static constexpr char chunkSizeC[] = "chunkSize";
+static constexpr char minChunkSizeC[] = "minChunkSize";
+static constexpr char maxChunkSizeC[] = "maxChunkSize";
+static constexpr char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
+static constexpr char automaticLogDirC[] = "logToTemporaryLogDir";
+static constexpr char logDirC[] = "logDir";
+static constexpr char logDebugC[] = "logDebug";
+static constexpr char logExpireC[] = "logExpire";
+static constexpr char logFlushC[] = "logFlush";
+static constexpr char showExperimentalOptionsC[] = "showExperimentalOptions";
+static constexpr char clientVersionC[] = "clientVersion";
+
+static constexpr char proxyHostC[] = "Proxy/host";
+static constexpr char proxyTypeC[] = "Proxy/type";
+static constexpr char proxyPortC[] = "Proxy/port";
+static constexpr char proxyUserC[] = "Proxy/user";
+static constexpr char proxyPassC[] = "Proxy/pass";
+static constexpr char proxyNeedsAuthC[] = "Proxy/needsAuth";
+
+static constexpr char useUploadLimitC[] = "BWLimit/useUploadLimit";
+static constexpr char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
+static constexpr char uploadLimitC[] = "BWLimit/uploadLimit";
+static constexpr char downloadLimitC[] = "BWLimit/downloadLimit";
+
+static constexpr char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
+static constexpr char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
+static constexpr char confirmExternalStorageC[] = "confirmExternalStorage";
+static constexpr char moveToTrashC[] = "moveToTrash";
+
+static constexpr char certPath[] = "http_certificatePath";
+static constexpr char certPasswd[] = "http_certificatePasswd";
 }
 
 namespace OCC {
@@ -59,55 +108,6 @@ namespace chrono = std::chrono;
 
 Q_LOGGING_CATEGORY(lcConfigFile, "nextcloud.sync.configfile", QtInfoMsg)
 
-//static const char caCertsKeyC[] = "CaCertificates"; only used from account.cpp
-static const char remotePollIntervalC[] = "remotePollInterval";
-static const char forceSyncIntervalC[] = "forceSyncInterval";
-static const char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
-static const char notificationRefreshIntervalC[] = "notificationRefreshInterval";
-static const char monoIconsC[] = "monoIcons";
-static const char promptDeleteC[] = "promptDeleteAllFiles";
-static const char crashReporterC[] = "crashReporter";
-static const char optionalServerNotificationsC[] = "optionalServerNotifications";
-static const char showCallNotificationsC[] = "showCallNotifications";
-static const char showInExplorerNavigationPaneC[] = "showInExplorerNavigationPane";
-static const char skipUpdateCheckC[] = "skipUpdateCheck";
-static const char autoUpdateCheckC[] = "autoUpdateCheck";
-static const char updateCheckIntervalC[] = "updateCheckInterval";
-static const char updateSegmentC[] = "updateSegment";
-static const char updateChannelC[] = "updateChannel";
-static const char geometryC[] = "geometry";
-static const char timeoutC[] = "timeout";
-static const char chunkSizeC[] = "chunkSize";
-static const char minChunkSizeC[] = "minChunkSize";
-static const char maxChunkSizeC[] = "maxChunkSize";
-static const char targetChunkUploadDurationC[] = "targetChunkUploadDuration";
-static const char automaticLogDirC[] = "logToTemporaryLogDir";
-static const char logDirC[] = "logDir";
-static const char logDebugC[] = "logDebug";
-static const char logExpireC[] = "logExpire";
-static const char logFlushC[] = "logFlush";
-static const char showExperimentalOptionsC[] = "showExperimentalOptions";
-static const char clientVersionC[] = "clientVersion";
-
-static const char proxyHostC[] = "Proxy/host";
-static const char proxyTypeC[] = "Proxy/type";
-static const char proxyPortC[] = "Proxy/port";
-static const char proxyUserC[] = "Proxy/user";
-static const char proxyPassC[] = "Proxy/pass";
-static const char proxyNeedsAuthC[] = "Proxy/needsAuth";
-
-static const char useUploadLimitC[] = "BWLimit/useUploadLimit";
-static const char useDownloadLimitC[] = "BWLimit/useDownloadLimit";
-static const char uploadLimitC[] = "BWLimit/uploadLimit";
-static const char downloadLimitC[] = "BWLimit/downloadLimit";
-
-static const char newBigFolderSizeLimitC[] = "newBigFolderSizeLimit";
-static const char useNewBigFolderSizeLimitC[] = "useNewBigFolderSizeLimit";
-static const char confirmExternalStorageC[] = "confirmExternalStorage";
-static const char moveToTrashC[] = "moveToTrash";
-
-const char certPath[] = "http_certificatePath";
-const char certPasswd[] = "http_certificatePasswd";
 QString ConfigFile::_confDir = QString();
 bool ConfigFile::_askedUser = false;
 
