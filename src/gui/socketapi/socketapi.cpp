@@ -338,7 +338,7 @@ void SocketApi::onLostConnection()
 
 void SocketApi::slotSocketDestroyed(QObject *obj)
 {
-    auto *socket = static_cast<QIODevice *>(obj);
+    auto *socket = dynamic_cast<QIODevice *>(obj);
     _listeners.remove(socket);
 }
 

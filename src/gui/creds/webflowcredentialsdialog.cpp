@@ -61,7 +61,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 #endif // WITH_WEBENGINE
     }
 
-    auto app = static_cast<Application *>(qApp);
+    auto app = dynamic_cast<Application *>(qApp);
     connect(app, &Application::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
 
     _errorLabel = new QLabel();

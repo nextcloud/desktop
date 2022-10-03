@@ -159,7 +159,7 @@ void OwncloudAdvancedSetupPage::initializePage()
     // ensure "next" gets the focus, not obSelectLocalFolder
     QTimer::singleShot(0, wizard()->button(QWizard::FinishButton), qOverload<>(&QWidget::setFocus));
 
-    auto acc = static_cast<OwncloudWizard *>(wizard())->account();
+    auto acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
     auto quotaJob = new PropfindJob(acc, _remoteFolder, this);
     quotaJob->setProperties(QList<QByteArray>() << "http://owncloud.org/ns:size");
 
@@ -331,8 +331,8 @@ void OwncloudAdvancedSetupPage::stopSpinner()
 
 QUrl OwncloudAdvancedSetupPage::serverUrl() const
 {
-    const QString urlString = static_cast<OwncloudWizard *>(wizard())->ocUrl();
-    const QString user = static_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
+    const QString urlString = dynamic_cast<OwncloudWizard *>(wizard())->ocUrl();
+    const QString user = dynamic_cast<OwncloudWizard *>(wizard())->getCredentials()->user();
 
     QUrl url(urlString);
     url.setUserName(user);
@@ -447,7 +447,7 @@ void OwncloudAdvancedSetupPage::slotSelectFolder()
 
 void OwncloudAdvancedSetupPage::slotSelectiveSyncClicked()
 {
-    AccountPtr acc = static_cast<OwncloudWizard *>(wizard())->account();
+    AccountPtr acc = dynamic_cast<OwncloudWizard *>(wizard())->account();
     auto *dlg = new SelectiveSyncDialog(acc, _remoteFolder, _selectiveSyncBlacklist, this);
     dlg->setAttribute(Qt::WA_DeleteOnClose);
 

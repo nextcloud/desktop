@@ -896,7 +896,7 @@ void Application::tryTrayAgain()
 bool Application::event(QEvent *event)
 {
     if (event->type() == QEvent::FileOpen) {
-        const auto openEvent = static_cast<QFileOpenEvent *>(event);
+        const auto openEvent = dynamic_cast<QFileOpenEvent *>(event);
         qCDebug(lcApplication) << "macOS: Received a QFileOpenEvent";
 
         if(!openEvent->file().isEmpty()) {

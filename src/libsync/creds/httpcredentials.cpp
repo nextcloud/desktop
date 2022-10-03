@@ -357,7 +357,7 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
 {
-    auto *job = static_cast<QKeychain::ReadPasswordJob *>(incoming);
+    auto *job = dynamic_cast<QKeychain::ReadPasswordJob *>(incoming);
     QKeychain::Error error = job->error();
 
     // If we can't find the credentials at the keys that include the account id,
