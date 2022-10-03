@@ -26,7 +26,7 @@ import socket
 import tempfile
 import time
 
-from gi.repository import GObject, Nautilus
+from repository import GObject, Nautilus
 
 # Note: setappname.sh will search and replace 'ownCloud' on this file to update this line and other
 # occurrences of the name
@@ -200,8 +200,11 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
                 break
         return (topLevelFolder, internalFile)
 
-    def get_file_items(self, window, files):
+    def get_file_items(self, *args):
         # Show the menu extension to share a file or folder
+        
+        # Nautilus 3.0 API passes args (window, files), 4.0 API just passes files
+        files = args[0] if len(args) == 1 else args[1]
 
         # Get usable file paths from the uris
         all_internal_files = True
