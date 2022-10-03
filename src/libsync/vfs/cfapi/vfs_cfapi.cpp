@@ -211,6 +211,11 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
 {
+    if (item._type != ItemTypeDirectory && OCC::FileSystem::isLnkFile(filename)) {
+        qCInfo(lcCfApi) << "File \"" << filename << "\" is a Windows shortcut. Not converting it to a placeholder.";
+        return Vfs::ConvertToPlaceholderResult::Ok;
+    }
+
     const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
