@@ -521,6 +521,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
     }
 
+    // We need to make sure that we update the info in the database if the lockstate has changed
+    const auto checkFileLockState = [&item, &dbEntry, &serverEntry] {
+        const bool isServerEntryLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem;
+
+        if(isServerEntryLocked != dbEntry._lockstate._locked) {
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        }
+    };
+
     // The file is known in the db already
     if (dbEntry.isValid()) {
         const bool isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
@@ -528,7 +537,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         const bool isVirtualE2EePlaceholder = isDbEntryAnE2EePlaceholder && serverEntry.size >= Constants::e2EeTagSize;
         const qint64 sizeOnServer = isVirtualE2EePlaceholder ? serverEntry.size - Constants::e2EeTagSize : serverEntry.size;
         const bool metaDataSizeNeedsUpdateForE2EeFilePlaceholder = isVirtualE2EePlaceholder && dbEntry._fileSize == serverEntry.size;
-        const bool isServerEntryLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem;
 
         if (serverEntry.isDirectory != dbEntry.isDirectory()) {
             // If the type of the entity changed, it's like NEW, but
@@ -575,8 +583,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             }
             item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
             item->_direction = SyncFileItem::Down;
-        } else if(isServerEntryLocked != dbEntry._lockstate._locked) {
-            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
         } else {
             // if (is virtual mode enabled and folder is encrypted - check if the size is the same as on the server and then - trigger server query
             // to update a placeholder with corrected size (-16 Bytes)
@@ -605,10 +611,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 return ParentNotChanged;
             }();
 
+            checkFileLockState();
             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
 
+        checkFileLockState();
         processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
         return;
     }
