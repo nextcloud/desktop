@@ -599,7 +599,10 @@ GridLayout {
                         // https://invent.kde.org/pim/kalendar/-/blob/release/22.08/src/contents/ui/KalendarUtils/dateutils.js
                         function parseDateString(dateString) {
                             function defaultParse() {
-                                return Date.fromLocaleDateString(Qt.locale(), dateString, Locale.NarrowFormat);
+                                const defaultParsedDate = Date.fromLocaleDateString(Qt.locale(), dateString, Locale.NarrowFormat);
+                                // JS always generates date in system locale, eliminate timezone difference to UTC
+                                const msecsSinceEpoch = defaultParsedDate.getTime() - (defaultParsedDate.getTimezoneOffset() * 60 * 1000);
+                                return new Date(msecsSinceEpoch);
                             }
 
                             const dateStringDelimiterMatches = dateString.match(/\D/);
@@ -626,6 +629,7 @@ GridLayout {
                             if(splitDateString.length === 0 ||
                                     splitDateString.length > 3 ||
                                     userProvidedYear.length >= stringifiedCurrentYear.length) {
+
                                 return defaultParse();
                             }
 
@@ -640,12 +644,15 @@ GridLayout {
                             const monthIndexNum = Number(splitDateString[localisedDateMonthPosition]) - 1;
                             const dayNum = Number(splitDateString[localisedDateDayPosition]);
 
+                            console.log(dayNum, monthIndexNum, fixedYearNum);
+
                             // Modification: return date in UTC
                             return new Date(Date.UTC(fixedYearNum, monthIndexNum, dayNum));
                         }
 
                         Layout.fillWidth: true
                         height: visible ? implicitHeight : 0
+
 
                         // We want all the internal benefits of the spinbox but don't actually want the
                         // buttons, so set an empty item as a dummy
@@ -680,6 +687,10 @@ GridLayout {
                                  !root.waitingForExpireDateEnabledChange
 
                         onValueModified: {
+                            if (!enabled || !activeFocus) {
+                                return;
+                            }
+
                             root.setExpireDate(value * dayInMSecs);
                             root.waitingForExpireDateChange = true;
                         }
