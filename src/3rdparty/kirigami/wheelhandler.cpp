@@ -37,12 +37,12 @@ void GlobalWheelFilter::setItemHandlerAssociation(QQuickItem *item, WheelHandler
     m_handlersForItem.insert(item, handler);
 
     connect(item, &QObject::destroyed, this, [this](QObject *obj) {
-        auto item = static_cast<QQuickItem *>(obj);
+        auto item = dynamic_cast<QQuickItem *>(obj);
         m_handlersForItem.remove(item);
     });
 
     connect(handler, &QObject::destroyed, this, [this](QObject *obj) {
-        auto handler = static_cast<WheelHandler *>(obj);
+        auto handler = dynamic_cast<WheelHandler *>(obj);
         removeItemHandlerAssociation(handler->target(), handler);
     });
 }
@@ -65,7 +65,7 @@ bool GlobalWheelFilter::eventFilter(QObject *watched, QEvent *event)
         if (!item || !item->isEnabled()) {
             return QObject::eventFilter(watched, event);
         }
-        auto we = static_cast<QWheelEvent *>(event);
+        auto we = dynamic_cast<QWheelEvent *>(event);
         m_wheelEvent.initializeFromEvent(we);
 
         bool shouldBlock = false;

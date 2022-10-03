@@ -906,7 +906,7 @@ bool ClientSideEncryption::checkServerPublicKeyValidity(const QByteArray &server
 
 void ClientSideEncryption::publicKeyFetched(Job *incoming)
 {
-    auto *readJob = static_cast<ReadPasswordJob *>(incoming);
+    auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
     auto account = readJob->property(accountProperty).value<AccountPtr>();
     Q_ASSERT(account);
 
@@ -943,7 +943,7 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming)
 
 void ClientSideEncryption::privateKeyFetched(Job *incoming)
 {
-    auto *readJob = static_cast<ReadPasswordJob *>(incoming);
+    auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
     auto account = readJob->property(accountProperty).value<AccountPtr>();
     Q_ASSERT(account);
 
@@ -981,7 +981,7 @@ void ClientSideEncryption::privateKeyFetched(Job *incoming)
 
 void ClientSideEncryption::mnemonicKeyFetched(QKeychain::Job *incoming)
 {
-    auto *readJob = static_cast<ReadPasswordJob *>(incoming);
+    auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
     auto account = readJob->property(accountProperty).value<AccountPtr>();
     Q_ASSERT(account);
 
