@@ -24,7 +24,7 @@ jobs:
         mkdir clang-tidy-result
     - name: Analyze
       run: |
-        git diff -U0 HEAD^ | clang-tidy-diff -p1 -path build -export-fixes clang-tidy-result/fixes.yml
+        git diff -U0 HEAD^ | clang-tidy-diff -checks='-*,modernize-use-auto,modernize-use-using,modernize-use-nodiscard,modernize-use-nullptr,modernize-use-override,cppcoreguidelines-pro-type-static-cast-downcast' -p1 -path build -export-fixes clang-tidy-result/fixes.yml
     - name: Run clang-tidy-pr-comments action
       uses: platisd/clang-tidy-pr-comments@master
       with:
