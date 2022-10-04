@@ -4,12 +4,17 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
-    - uses: DoozyX/clang-format-lint-action@v0.14
+    - uses: cpp-linter/cpp-linter-action@v2.1.1
+      id: linter
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        source: '.'
-        extensions: 'h,cpp,c'
-        clangFormatVersion: 14
+        style: file
+        lines-changed-only: true
+        version: 14
+    - name: Fail fast?!
+      if: steps.linter.outputs.checks-failed > 0
+      run: echo "Some files failed the linting checks!"
