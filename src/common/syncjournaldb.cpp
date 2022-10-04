@@ -956,6 +956,29 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     return {};
 }
 
+Result<void, QString> SyncJournalDb::updateMovedFolderRecords(const QString &originalPath, const QString &renamedTarget)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return;
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::UpdateMovedFolderRecordsQuery, QByteArrayLiteral("UPDATE metadata SET path = REPLACE(path, ?1, ?2) WHERE path LIKE '%?3%'"), _db);
+    if (!query) {
+        return;
+    }
+
+    query->bindValue(1, originalPath);
+    query->bindValue(2, renamedTarget);
+    query->bindValue(3, originalPath);
+
+    if (!query->exec()) {
+        return query->error();
+    }
+
+    return {};
+}
+
 void SyncJournalDb::keyValueStoreSet(const QString &key, QVariant value)
 {
     QMutexLocker locker(&_mutex);

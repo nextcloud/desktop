@@ -67,6 +67,7 @@ public:
         GetAllFilesQuery,
         ListFilesInPathQuery,
         SetFileRecordQuery,
+        UpdateMovedFolderRecordsQuery,
         SetFileRecordChecksumQuery,
         SetFileRecordLocalMetadataQuery,
         GetDownloadInfoQuery,
