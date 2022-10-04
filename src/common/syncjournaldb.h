@@ -78,7 +78,7 @@ public:
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
     [[nodiscard]] bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, qint64 size, quint64 inode);
+        qint64 modtime, qint64 size, quint64 inode, const SyncJournalFileLockInfo &lockInfo);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated

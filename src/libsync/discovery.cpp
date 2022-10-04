@@ -394,6 +394,29 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     if (item->_type == ItemTypeVirtualFileDehydration)
         item->_type = ItemTypeFile;
 
+    // We want to check the lock state of this file after the lock time has expired
+    if(serverEntry.locked == SyncFileItem::LockStatus::LockedItem) {
+        const auto lockExpirationTime = serverEntry.lockTime + serverEntry.lockTimeout;
+        const auto timeRemaining = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+        // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
+        const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
+
+        qCInfo(lcDisco) << "File:" << path._original << "is locked."
+                        << "Lock expires in:" << lockExpirationTimeout << "seconds."
+                        << "A sync run will be scheduled for around that time.";
+
+        _discoveryData->_anotherSyncNeeded = true;
+        _discoveryData->_filesNeedingScheduledSync.insert(path._original, lockExpirationTimeout);
+
+    } else if (serverEntry.locked == SyncFileItem::LockStatus::UnlockedItem && dbEntry._lockstate._locked) {
+        // We have received data that this file has been unlocked remotely, so let's notify the sync engine
+        // that we no longer need a scheduled sync run for this file
+        qCInfo(lcDisco) << "File:" << path._original << "is unlocked and a scheduled sync is no longer needed."
+                        << "Will remove scheduled sync if there is one.";
+
+        _discoveryData->_filesUnscheduleSync.append(path._original);
+    }
+
     // VFS suffixed files on the server are ignored
     if (isVfsWithSuffix()) {
         if (hasVirtualFileSuffix(serverEntry.name)
@@ -498,6 +521,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
     }
 
+    // We need to make sure that we update the info in the database if the lockstate has changed
+    const auto checkFileLockState = [&item, &dbEntry, &serverEntry] {
+        const bool isServerEntryLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem;
+
+        if(isServerEntryLocked != dbEntry._lockstate._locked) {
+            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        }
+    };
+
     // The file is known in the db already
     if (dbEntry.isValid()) {
         const bool isDbEntryAnE2EePlaceholder = dbEntry.isVirtualFile() && !dbEntry.e2eMangledName().isEmpty();
@@ -579,10 +611,12 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 return ParentNotChanged;
             }();
 
+            checkFileLockState();
             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
 
+        checkFileLockState();
         processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
         return;
     }
@@ -815,7 +849,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
 
     bool serverModified = item->_instruction == CSYNC_INSTRUCTION_NEW || item->_instruction == CSYNC_INSTRUCTION_SYNC
         || item->_instruction == CSYNC_INSTRUCTION_RENAME || item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
-    
+
     qCDebug(lcDisco) << "File" << item->_file << "- servermodified:" << serverModified
                      << "noServerEntry:" << noServerEntry;
 
@@ -1029,7 +1063,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             item->_size = localEntry.size;
             item->_modtime = localEntry.modtime;
             _childModified = true;
-            
+
             qCDebug(lcDisco) << "Local file was changed: File" << item->_file
                              << "item->_instruction:" << item->_instruction
                              << "noServerEntry:" << noServerEntry
@@ -1316,7 +1350,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             chopVirtualFileSuffix(serverOriginalPath);
         auto job = new RequestEtagJob(_discoveryData->_account, serverOriginalPath, this);
         connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
-            
+
 
             if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)
                 || (isAnyParentBeingRestored(originalPath) && !isRename(originalPath))) {
@@ -1382,7 +1416,7 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
                          << "localEntry.modtime:" << localEntry.modtime;
         return;
     }
-    
+
     if (!serverEntry.checksumHeader.isEmpty()) {
         qCDebug(lcDisco) << "CSYNC_INSTRUCTION_CONFLICT: File" << item->_file << "if (!serverEntry.checksumHeader.isEmpty())";
         qCDebug(lcDisco) << "CSYNC_INSTRUCTION_CONFLICT: serverEntry.size:" << serverEntry.size
@@ -1425,7 +1459,7 @@ void ProcessDirectoryJob::processFileConflict(const SyncFileItemPtr &item, Proce
         }
         return;
     }
-    
+
     if (!up._valid || up._contentChecksum != serverEntry.checksumHeader) {
         qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: File" << item->_file << "if (!up._valid && up._contentChecksum != serverEntry.checksumHeader)";
         qCDebug(lcDisco) << "CSYNC_INSTRUCTION_SYNC: up._valid:" << up._valid
@@ -1636,7 +1670,7 @@ bool ProcessDirectoryJob::isRename(const QString &originalPath) const
 
     /* TODO: This was needed at some point to cover an edge case which I am no longer to reproduce and it might no longer be the case.
     *  Still, leaving this here just in case the edge case is caught at some point in future.
-    * 
+    *
     OCC::SyncJournalFileRecord base;
     // are we allowed to rename?
     if (!_discoveryData || !_discoveryData->_statedb || !_discoveryData->_statedb->getFileRecord(originalPath, &base)) {

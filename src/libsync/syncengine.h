@@ -213,7 +213,50 @@ private slots:
     void slotInsufficientLocalStorage();
     void slotInsufficientRemoteStorage();
 
+    void slotScheduleFilesDelayedSync();
+    void slotUnscheduleFilesDelayedSync();
+    void slotCleanupScheduledSyncTimers();
+
 private:
+    // Some files need a sync run to be executed at a specified time after
+    // their status is scheduled to change (e.g. lock status will expire in
+    // 20 minutes.)
+    //
+    // Rather than execute a sync run for each file that needs one, we want
+    // to schedule as few sync runs as possible, trying to have the state of
+    // these files updated in a timely manner without scheduling runs too
+    // frequently. We can therefore group files into a bucket.
+    //
+    // A bucket contains a group of files requiring a sync run in close
+    // proximity to each other, with an assigned sync timer interval that can
+    // be used to schedule a sync run which will update all the files in the
+    // bucket at the time their state is scheduled to change.
+    //
+    // In the pair, first is the actual time at which the bucket is going to
+    // have its sync scheduled. Second is the vector of all the (paths of)
+    // files that fall into this bucket.
+    //
+    // See SyncEngine::groupNeededScheduledSyncRuns and
+    // SyncEngine::slotScheduleFilesDelayedSync for usage.
+    struct ScheduledSyncBucket {
+        qint64 scheduledSyncTimerSecs;
+        QVector<QString> files;
+    };
+
+    // Sometimes we schedule a timer for, say, 10 files. But we receive updated
+    // data from an earlier sync run and we no longer need a scheduled sync.
+    //
+    // E.g. we had a scheduled sync timer going for a file with a lock state
+    // scheduled to expire, but someone already unlocked the file on the web UI
+    //
+    // By keeping a counter of the files depending on this timer we can
+    // perform "garbage collection", by killing the timer if there are no
+    // longer any files depending on the scheduled sync run.
+    class ScheduledSyncTimer : public QTimer {
+    public:
+        QSet<QString> files;
+    };
+
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
@@ -231,6 +274,24 @@ private:
 
     // cleanup and emit the finished signal
     void finalize(bool success);
+
+    // Aggregate scheduled sync runs into interval buckets. Can be used to
+    // schedule a sync run per bucket instead of per file, reducing load.
+    //
+    // Bucket classification is done by simply dividing the seconds until
+    // scheduled sync time by the interval (note -- integer division!)
+    QHash<qint64, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const qint64 interval) const;
+
+    // Checks if there is already a scheduled sync run timer active near the
+    // time provided as the parameter.
+    //
+    // If this timer will expire within the interval provided, the return is
+    // true.
+    //
+    // If this expiration occurs before the scheduled sync run provided as the
+    // parameter, it is rescheduled to expire at the time of the parameter.
+    QSharedPointer<SyncEngine::ScheduledSyncTimer> nearbyScheduledSyncTimer(const qint64 scheduledSyncTimerSecs,
+                                                                            const qint64 intervalSecs) const;
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
@@ -303,6 +364,16 @@ private:
     std::set<QString> _localDiscoveryPaths;
 
     QStringList _leadingAndTrailingSpacesFilesAllowed;
+
+    // Hash of files we have scheduled for later sync runs, along with a
+    // pointer to the timer which will trigger the sync run for it.
+    //
+    // NOTE: these sync timers are not unique and will likely be shared
+    // between several files
+    QHash<QString, QSharedPointer<ScheduledSyncTimer>> _filesScheduledForLaterSync;
+
+    // A vector of all the (unique) scheduled sync timers
+    QVector<QSharedPointer<ScheduledSyncTimer>> _scheduledSyncTimers;
 };
 }
 
