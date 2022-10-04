@@ -520,6 +520,29 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         files.push_back(item->_file);
     }
 
+    QMap<QString, QVector<SyncFileItemPtr>> remoteMoveGroups;
+
+    for (const SyncFileItemPtr &item : items) {
+        const auto itemRenameTargetSplit = item->_renameTarget.split('/', Qt::SkipEmptyParts);
+
+        bool isWithinMovedRootFolder = false;
+
+        for (auto it = std::begin(remoteMoveGroups); it != std::end(remoteMoveGroups); ++it) {
+            if (item->_file.startsWith(it.key())) {
+                it.value().push_back(item);
+                isWithinMovedRootFolder = true;
+            }
+        }
+
+        if (isWithinMovedRootFolder) {
+            continue;
+        }
+
+        if (item->isDirectory() && item->_instruction == SyncInstructions::CSYNC_INSTRUCTION_RENAME && item->_direction == SyncFileItem::Up) {
+            remoteMoveGroups.insert(item->_renameTarget, {});
+        }
+    }
+
     // process each item that is new and is a directory and make sure every parent in its tree has the instruction NEW instead of REMOVE
     adjustDeletedFoldersWithNewChildren(items);
 
@@ -530,7 +553,8 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     QVector<PropagatorJob *> directoriesToRemove;
     QString removedDirectory;
     QString maybeConflictDirectory;
-    foreach (const SyncFileItemPtr &item, items) {
+    for (int i = 0; i < items.size(); ++i) {
+        const auto &item = items[i];
         if (!removedDirectory.isEmpty() && item->_file.startsWith(removedDirectory)) {
             // this is an item in a directory which is going to be removed.
             auto *delDirJob = qobject_cast<PropagateDirectory *>(directoriesToRemove.first());
@@ -579,6 +603,20 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
         }
 
         if (item->isDirectory()) {
+            SyncFileItemVector nestedItems;
+            // check if its a renamed directory and if the next item is also renamed and is inside it
+            int j = i + 1;
+            if (item->_instruction == SyncInstructions::CSYNC_INSTRUCTION_RENAME && item->_direction == SyncFileItem::Up
+                && j < items.size() - 1 && items[j]->_instruction == SyncInstructions::CSYNC_INSTRUCTION_RENAME
+                && items[j]->_direction == SyncFileItem::Up && items[j]->_file.startsWith(item->_renameTarget)) {
+                while (j < items.size() - 1 && items[j]->_instruction == SyncInstructions::CSYNC_INSTRUCTION_RENAME
+                    && items[j]->_direction == SyncFileItem::Up && items[j]->_file.startsWith(item->_renameTarget)) {
+                    i = j;
+                    nestedItems.push_back(items[j]);
+                    ++j;
+                }
+            }
+
             startDirectoryPropagation(item,
                                       directories,
                                       directoriesToRemove,

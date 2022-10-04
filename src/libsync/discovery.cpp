@@ -1153,9 +1153,17 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             if (isFolderPinStateOnlineOnly && folderPinState.isValid()) {
                 qCInfo(lcDisco) << "*folderPinState:" << *folderPinState;
             }
+            QStringList filesBelowPath;
+            _discoveryData->_statedb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
+                filesBelowPath.push_back(record.path());
+            });
             emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local);
         } else {
             qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
+            QStringList filesBelowPath;
+            _discoveryData->_statedb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
+                filesBelowPath.push_back(record.path());
+            }); 
             emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local);
         }
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
