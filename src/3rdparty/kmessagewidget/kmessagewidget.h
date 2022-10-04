@@ -138,7 +138,7 @@ public:
      * Get the text of this message widget.
      * @see setText()
      */
-    QString text() const;
+    [[nodiscard]] QString text() const;
 
     /**
      * Check whether word wrap is enabled.
@@ -149,14 +149,14 @@ public:
      *
      * @see setWordWrap()
      */
-    bool wordWrap() const;
+    [[nodiscard]] bool wordWrap() const;
 
     /**
      * Check whether the close button is visible.
      *
      * @see setCloseButtonVisible()
      */
-    bool isCloseButtonVisible() const;
+    [[nodiscard]] bool isCloseButtonVisible() const;
 
     /**
      * Get the type of this message.
@@ -164,7 +164,7 @@ public:
      *
      * @see KMessageWidget::MessageType, setMessageType()
      */
-    MessageType messageType() const;
+    [[nodiscard]] MessageType messageType() const;
 
     /**
      * Add @p action to the message widget.
@@ -187,24 +187,24 @@ public:
     /**
      * Returns the preferred size of the message widget.
      */
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
     /**
      * Returns the minimum size of the message widget.
      */
-    QSize minimumSizeHint() const override;
+    [[nodiscard]] QSize minimumSizeHint() const override;
 
     /**
      * Returns the required height for @p width.
      * @param width the width in pixels
      */
-    int heightForWidth(int width) const override;
+    [[nodiscard]] int heightForWidth(int width) const override;
 
     /**
      * The icon shown on the left of the text. By default, no icon is shown.
      * @since 4.11
      */
-    QIcon icon() const;
+    [[nodiscard]] QIcon icon() const;
 
     /**
      * Check whether the hide animation started by calling animatedHide()
@@ -214,7 +214,7 @@ public:
      * @see animatedHide(), hideAnimationFinished()
      * @since 5.0
      */
-    bool isHideAnimationRunning() const;
+    [[nodiscard]] bool isHideAnimationRunning() const;
 
     /**
      * Check whether the show animation started by calling animatedShow()
@@ -224,7 +224,7 @@ public:
      * @see animatedShow(), showAnimationFinished()
      * @since 5.0
      */
-    bool isShowAnimationRunning() const;
+    [[nodiscard]] bool isShowAnimationRunning() const;
 
 public Q_SLOTS:
     /**

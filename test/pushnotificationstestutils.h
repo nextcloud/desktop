@@ -36,13 +36,13 @@ public:
 
     void close();
 
-    bool waitForTextMessages() const;
+    [[nodiscard]] bool waitForTextMessages() const;
 
-    uint32_t textMessagesCount() const;
+    [[nodiscard]] uint32_t textMessagesCount() const;
 
-    QString textMessage(int messageNumber) const;
+    [[nodiscard]] QString textMessage(int messageNumber) const;
 
-    QWebSocket *socketForTextMessage(int messageNumber) const;
+    [[nodiscard]] QWebSocket *socketForTextMessage(int messageNumber) const;
 
     void clearTextMessages();
 
@@ -70,11 +70,11 @@ class CredentialsStub : public OCC::AbstractCredentials
 
 public:
     CredentialsStub(const QString &user, const QString &password);
-    QString authType() const override;
-    QString user() const override;
-    QString password() const override;
-    QNetworkAccessManager *createQNAM() const override;
-    bool ready() const override;
+    [[nodiscard]] QString authType() const override;
+    [[nodiscard]] QString user() const override;
+    [[nodiscard]] QString password() const override;
+    [[nodiscard]] QNetworkAccessManager *createQNAM() const override;
+    [[nodiscard]] bool ready() const override;
     void fetchFromKeychain() override;
     void askFromUser() override;
 

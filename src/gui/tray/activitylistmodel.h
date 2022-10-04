@@ -83,25 +83,25 @@ public:
     explicit ActivityListModel(AccountState *accountState,
         QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    bool canFetchMore(const QModelIndex &) const override;
+    [[nodiscard]] bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
     ActivityList activityList() { return _finalList; }
     ActivityList errorsList() { return _notificationErrorsLists; }
 
-    AccountState *accountState() const;
+    [[nodiscard]] AccountState *accountState() const;
 
-    int currentItem() const;
+    [[nodiscard]] int currentItem() const;
 
     static constexpr quint32 maxActionButtons()
     {
         return MaxActionButtons;
     }
 
-    QString replyMessageSent(const Activity &activity) const;
+    [[nodiscard]] QString replyMessageSent(const Activity &activity) const;
 
 public slots:
     void slotRefreshActivity();
@@ -127,11 +127,11 @@ signals:
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 protected:
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
-    bool currentlyFetching() const;
+    [[nodiscard]] bool currentlyFetching() const;
 
-    const ActivityList &finalList() const; // added for unit tests
+    [[nodiscard]] const ActivityList &finalList() const; // added for unit tests
 
 protected slots:
     void activitiesReceived(const QJsonDocument &json, int statusCode);
@@ -151,7 +151,7 @@ private:
     static QVariantList convertLinksToActionButtons(const Activity &activity);
     static QVariant convertLinkToActionButton(const ActivityLink &activityLink);
 
-    bool canFetchActivities() const;
+    [[nodiscard]] bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);
     void appendMoreActivitiesAvailableEntry();

@@ -50,10 +50,10 @@ public:
         const QString displayName,
         const Type type);
 
-    QString format() const;
-    QString shareWith() const;
-    QString displayName() const;
-    Type type() const;
+    [[nodiscard]] QString format() const;
+    [[nodiscard]] QString shareWith() const;
+    [[nodiscard]] QString displayName() const;
+    [[nodiscard]] Type type() const;
 
 private:
     QString _shareWith;
@@ -75,12 +75,12 @@ public:
 
     using ShareeSet = QVector<QSharedPointer<Sharee>>; // FIXME: make it a QSet<Sharee> when Sharee can be compared
     void fetch(const QString &search, const ShareeSet &blacklist, LookupMode lookupMode);
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
 
     QSharedPointer<Sharee> getSharee(int at);
 
-    QString currentSearch() const { return _search; }
+    [[nodiscard]] QString currentSearch() const { return _search; }
 
 signals:
     void shareesReady();

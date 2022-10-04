@@ -61,7 +61,7 @@ struct RemoteInfo
     bool isE2eEncrypted = false;
     QString e2eMangledName;
 
-    bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isValid() const { return !name.isNull(); }
 
     QString directDownloadUrl;
     QString directDownloadCookies;
@@ -88,7 +88,7 @@ struct LocalInfo
     bool isHidden = false;
     bool isVirtualFile = false;
     bool isSymLink = false;
-    bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 
 /**
@@ -222,7 +222,7 @@ class DiscoveryPhase : public QObject
      * Useful for avoiding processing of items that have already been claimed in
      * a rename (would otherwise be discovered as deletions).
      */
-    bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+    [[nodiscard]] bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
 
     int _currentlyActiveJobs = 0;
 
@@ -232,7 +232,7 @@ class DiscoveryPhase : public QObject
 
     void scheduleMoreJobs();
 
-    bool isInSelectiveSyncBlackList(const QString &path) const;
+    [[nodiscard]] bool isInSelectiveSyncBlackList(const QString &path) const;
 
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
@@ -244,7 +244,7 @@ class DiscoveryPhase : public QObject
      * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
      * checking A/B/file would yield C/D/file, but checking A/B would yield A/B.
      */
-    QString adjustRenamedPath(const QString &original, SyncFileItem::Direction) const;
+    [[nodiscard]] QString adjustRenamedPath(const QString &original, SyncFileItem::Direction) const;
 
     /** If the db-path is scheduled for deletion, abort it.
      *

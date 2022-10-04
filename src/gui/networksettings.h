@@ -35,7 +35,7 @@ class NetworkSettings : public QWidget
 public:
     explicit NetworkSettings(QWidget *parent = nullptr);
     ~NetworkSettings() override;
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
 private slots:
     void saveProxySettings();

@@ -111,13 +111,13 @@ public:
 
     void initializeFromEvent(QWheelEvent *event);
 
-    qreal x() const;
-    qreal y() const;
-    QPointF angleDelta() const;
-    QPointF pixelDelta() const;
-    int buttons() const;
-    int modifiers() const;
-    bool inverted() const;
+    [[nodiscard]] qreal x() const;
+    [[nodiscard]] qreal y() const;
+    [[nodiscard]] QPointF angleDelta() const;
+    [[nodiscard]] QPointF pixelDelta() const;
+    [[nodiscard]] int buttons() const;
+    [[nodiscard]] int modifiers() const;
+    [[nodiscard]] bool inverted() const;
     bool isAccepted();
     void setAccepted(bool accepted);
 
@@ -192,7 +192,7 @@ public:
     explicit WheelHandler(QObject *parent = nullptr);
     ~WheelHandler() override;
 
-    QQuickItem *target() const;
+    [[nodiscard]] QQuickItem *target() const;
     void setTarget(QQuickItem *target);
 
 Q_SIGNALS:

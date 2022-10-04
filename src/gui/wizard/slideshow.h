@@ -37,15 +37,15 @@ public:
 
     void addSlide(const QPixmap &pixmap, const QString &label);
 
-    bool isActive() const;
+    [[nodiscard]] bool isActive() const;
 
-    int interval() const;
+    [[nodiscard]] int interval() const;
     void setInterval(int interval);
 
-    int currentSlide() const;
+    [[nodiscard]] int currentSlide() const;
     void setCurrentSlide(int index);
 
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
 public slots:
     void startShow(int interval = 0);

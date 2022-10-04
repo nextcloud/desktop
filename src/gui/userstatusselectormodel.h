@@ -89,11 +89,11 @@ public:
     Q_REQUIRED_RESULT QString userStatusEmoji() const;
     void setUserStatusEmoji(const QString &emoji);
 
-    QVector<UserStatus> predefinedStatuses() const;
+    [[nodiscard]] QVector<UserStatus> predefinedStatuses() const;
 
     Q_REQUIRED_RESULT QVariantList clearStageTypes() const;
     Q_REQUIRED_RESULT QString clearAtDisplayString() const;
-    Q_INVOKABLE QString clearAtReadable(const UserStatus &status) const;
+    Q_INVOKABLE [[nodiscard]] QString clearAtReadable(const UserStatus &status) const;
 
     Q_REQUIRED_RESULT QString errorMessage() const;
 

@@ -34,7 +34,7 @@ public:
     explicit OcsProfileConnector(AccountPtr account, QObject *parent = nullptr);
 
     void fetchHovercard(const QString &userId);
-    const Hovercard &hovercard() const;
+    [[nodiscard]] const Hovercard &hovercard() const;
 
 signals:
     void error();

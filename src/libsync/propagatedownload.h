@@ -97,7 +97,7 @@ public:
     void giveBandwidthQuota(qint64 q);
     qint64 currentDownloadPosition();
 
-    QString errorString() const override;
+    [[nodiscard]] QString errorString() const override;
     void setErrorString(const QString &s) { _errorString = s; }
 
     SyncFileItem::Status errorStatus() { return _errorStatus; }
@@ -109,8 +109,8 @@ public:
     qint64 resumeStart() { return _resumeStart; }
     time_t lastModified() { return _lastModified; }
 
-    qint64 contentLength() const { return _contentLength; }
-    qint64 expectedContentLength() const { return _expectedContentLength; }
+    [[nodiscard]] qint64 contentLength() const { return _contentLength; }
+    [[nodiscard]] qint64 expectedContentLength() const { return _expectedContentLength; }
     void setExpectedContentLength(qint64 size) { _expectedContentLength = size; }
 
 protected:
@@ -202,7 +202,7 @@ public:
     {
     }
     void start() override;
-    qint64 committedDiskSpace() const override;
+    [[nodiscard]] qint64 committedDiskSpace() const override;
 
     // We think it might finish quickly because it is a small file.
     bool isLikelyFinishedQuickly() override { return _item->_size < propagator()->smallFileSize(); }

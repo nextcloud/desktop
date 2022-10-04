@@ -51,7 +51,7 @@ public:
     void start();
     void openBrowser();
     void copyLinkToClipboard();
-    QUrl authorisationLink() const;
+    [[nodiscard]] QUrl authorisationLink() const;
 
 signals:
     /**

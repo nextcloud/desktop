@@ -45,16 +45,16 @@ public:
 
     virtual void start();
 
-    AccountPtr account() const { return _account; }
+    [[nodiscard]] AccountPtr account() const { return _account; }
 
     void setPath(const QString &path);
-    QString path() const { return _path; }
+    [[nodiscard]] QString path() const { return _path; }
 
     void setReply(QNetworkReply *reply);
-    QNetworkReply *reply() const { return _reply; }
+    [[nodiscard]] QNetworkReply *reply() const { return _reply; }
 
     void setIgnoreCredentialFailure(bool ignore);
-    bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
+    [[nodiscard]] bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
     /** Whether to handle redirects transparently.
      *
@@ -67,17 +67,17 @@ public:
      * requests where custom handling is necessary.
      */
     void setFollowRedirects(bool follow);
-    bool followRedirects() const { return _followRedirects; }
+    [[nodiscard]] bool followRedirects() const { return _followRedirects; }
 
     QByteArray responseTimestamp();
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
 
-    qint64 timeoutMsec() const { return _timer.interval(); }
-    bool timedOut() const { return _timedout; }
+    [[nodiscard]] qint64 timeoutMsec() const { return _timer.interval(); }
+    [[nodiscard]] bool timedOut() const { return _timedout; }
 
     /** Returns an error message, if any. */
-    virtual QString errorString() const;
+    [[nodiscard]] virtual QString errorString() const;
 
     /** Like errorString, but also checking the reply body for information.
      *
@@ -159,12 +159,12 @@ protected:
     virtual void newReplyHook(QNetworkReply *) {}
 
     /// Creates a url for the account from a relative path
-    QUrl makeAccountUrl(const QString &relativePath) const;
+    [[nodiscard]] QUrl makeAccountUrl(const QString &relativePath) const;
 
     /// Like makeAccountUrl() but uses the account's dav base path
-    QUrl makeDavUrl(const QString &relativePath) const;
+    [[nodiscard]] QUrl makeDavUrl(const QString &relativePath) const;
 
-    int maxRedirects() const { return 10; }
+    [[nodiscard]] int maxRedirects() const { return 10; }
 
     /** Called at the end of QNetworkReply::finished processing.
      *

@@ -69,7 +69,7 @@ public:
         }
     }
 
-    OCC::UserStatus userStatus() const override
+    [[nodiscard]] OCC::UserStatus userStatus() const override
     {
         return {}; // Not implemented
     }
@@ -85,9 +85,9 @@ public:
         _predefinedStatuses = statuses;
     }
 
-    OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
+    [[nodiscard]] OCC::UserStatus userStatusSetByCallerOfSetUserStatus() const { return _userStatusSetByCallerOfSetUserStatus; }
 
-    bool messageCleared() const { return _isMessageCleared; }
+    [[nodiscard]] bool messageCleared() const { return _isMessageCleared; }
 
     void setErrorCouldNotFetchPredefinedUserStatuses(bool value)
     {
@@ -137,9 +137,9 @@ class FakeDateTimeProvider : public OCC::DateTimeProvider
 public:
     void setCurrentDateTime(const QDateTime &dateTime) { _dateTime = dateTime; }
 
-    QDateTime currentDateTime() const override { return _dateTime; }
+    [[nodiscard]] QDateTime currentDateTime() const override { return _dateTime; }
 
-    QDate currentDate() const override { return _dateTime.date(); }
+    [[nodiscard]] QDate currentDate() const override { return _dateTime.date(); }
 
 private:
     QDateTime _dateTime;

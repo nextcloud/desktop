@@ -43,7 +43,7 @@ public:
     /** Returns the oldBlackList passed into setFolderInfo(), except that
      *  a "/" entry is expanded to all top-level folder names.
      */
-    QStringList oldBlackList() const;
+    [[nodiscard]] QStringList oldBlackList() const;
 
     // Estimates the total size of checked items (recursively)
     qint64 estimatedSize(QTreeWidgetItem *root = nullptr);
@@ -52,7 +52,7 @@ public:
     void setFolderInfo(const QString &folderPath, const QString &rootName,
         const QStringList &oldBlackList = QStringList());
 
-    QSize sizeHint() const override;
+    [[nodiscard]] QSize sizeHint() const override;
 
 private slots:
     void slotUpdateDirectories(QStringList);
@@ -102,8 +102,8 @@ public:
 
     void accept() override;
 
-    QStringList createBlackList() const;
-    QStringList oldBlackList() const;
+    [[nodiscard]] QStringList createBlackList() const;
+    [[nodiscard]] QStringList oldBlackList() const;
 
     // Estimate the size of the total of sync'ed files from the server
     qint64 estimatedSize();

@@ -61,7 +61,7 @@ public:
     void slotTimeLineChanged(qreal);
     void slotTimeLineFinished();
 
-    int bestContentHeight() const;
+    [[nodiscard]] int bestContentHeight() const;
 };
 
 void KMessageWidgetPrivate::init(KMessageWidget *q_ptr)

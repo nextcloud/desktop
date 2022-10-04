@@ -22,7 +22,7 @@ public:
     using FakeGetReply::FakeGetReply;
     int fakeSize = stopAfter;
 
-    qint64 bytesAvailable() const override
+    [[nodiscard]] qint64 bytesAvailable() const override
     {
         if (aborted)
             return 0;

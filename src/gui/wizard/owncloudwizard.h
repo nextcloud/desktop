@@ -56,20 +56,20 @@ public:
     OwncloudWizard(QWidget *parent = nullptr);
 
     void setAccount(AccountPtr account);
-    AccountPtr account() const;
+    [[nodiscard]] AccountPtr account() const;
     void setOCUrl(const QString &);
     bool registration();
     void setRegistration(bool registration);
 
     void setupCustomMedia(QVariant, QLabel *);
-    QString ocUrl() const;
-    QString localFolder() const;
-    QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
-    bool isConfirmBigFolderChecked() const;
+    [[nodiscard]] QString ocUrl() const;
+    [[nodiscard]] QString localFolder() const;
+    [[nodiscard]] QStringList selectiveSyncBlacklist() const;
+    [[nodiscard]] bool useVirtualFileSync() const;
+    [[nodiscard]] bool isConfirmBigFolderChecked() const;
 
     void displayError(const QString &, bool retryHTTPonly);
-    AbstractCredentials *getCredentials() const;
+    [[nodiscard]] AbstractCredentials *getCredentials() const;
 
     void bringToTop();
     void centerWindow();
@@ -115,8 +115,8 @@ protected:
 
 private:
     void customizeStyle();
-    QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
-    QList<QSize> calculateWizardPageSizes() const;
+    [[nodiscard]] QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
+    [[nodiscard]] QList<QSize> calculateWizardPageSizes() const;
 
     AccountPtr _account;
     WelcomePage *_welcomePage;

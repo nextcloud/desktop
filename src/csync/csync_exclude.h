@@ -94,7 +94,7 @@ public:
      * @param filePath     the absolute path to the file
      * @param basePath     folder path from which to apply exclude rules, ends with a /
      */
-    bool isExcluded(
+    [[nodiscard]] bool isExcluded(
         const QString &filePath,
         const QString &basePath,
         bool excludeHidden) const;
@@ -168,7 +168,7 @@ private:
      *
      * Would enable the "myexclude" pattern only for versions before 2.5.0.
      */
-    bool versionDirectiveKeepNextLine(const QByteArray &directive) const;
+    [[nodiscard]] bool versionDirectiveKeepNextLine(const QByteArray &directive) const;
 
     /**
      * @brief Match the exclude pattern against the full path.
@@ -178,7 +178,7 @@ private:
      * Note that this only matches patterns. It does not check whether the file
      * or directory pointed to is hidden (or whether it even exists).
      */
-    CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
+    [[nodiscard]] CSYNC_EXCLUDE_TYPE fullPatternMatch(const QString &path, ItemType filetype) const;
 
     // Our BasePath need to end with '/'
     class BasePathString : public QString

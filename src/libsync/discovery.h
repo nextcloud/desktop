@@ -96,7 +96,7 @@ public:
         _isInsideEncryptedTree = isInsideEncryptedTree;
     }
 
-    bool isInsideEncryptedTree() const
+    [[nodiscard]] bool isInsideEncryptedTree() const
     {
         return _isInsideEncryptedTree;
     }
@@ -135,7 +135,7 @@ private:
         {
             return base.isEmpty() ? name : base + QLatin1Char('/') + name;
         }
-        PathTuple addName(const QString &name) const
+        [[nodiscard]] PathTuple addName(const QString &name) const
         {
             PathTuple result;
             result._original = pathAppend(_original, name);
@@ -190,9 +190,9 @@ private:
      */
     bool checkPermissions(const SyncFileItemPtr &item);
 
-    bool isAnyParentBeingRestored(const QString &file) const;
+    [[nodiscard]] bool isAnyParentBeingRestored(const QString &file) const;
 
-    bool isRename(const QString &originalPath) const;
+    [[nodiscard]] bool isRename(const QString &originalPath) const;
 
     struct MovePermissionResult
     {
@@ -217,11 +217,11 @@ private:
     void dbError();
 
     void addVirtualFileSuffix(QString &str) const;
-    bool hasVirtualFileSuffix(const QString &str) const;
+    [[nodiscard]] bool hasVirtualFileSuffix(const QString &str) const;
     void chopVirtualFileSuffix(QString &str) const;
 
     /** Convenience to detect suffix-vfs modes */
-    bool isVfsWithSuffix() const;
+    [[nodiscard]] bool isVfsWithSuffix() const;
 
     /** Start a remote discovery network job
      *

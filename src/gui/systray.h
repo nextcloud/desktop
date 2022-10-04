@@ -140,16 +140,16 @@ private:
 
     void setupContextMenu();
 
-    QScreen *currentScreen() const;
-    QRect currentScreenRect() const;
-    QPoint computeWindowReferencePoint() const;
-    QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
-    QPoint calcTrayIconCenter() const;
-    TaskBarPosition taskbarOrientation() const;
-    QRect taskbarGeometry() const;
-    QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
-    QPoint computeWindowPosition(int width, int height) const;
-    QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
+    [[nodiscard]] QScreen *currentScreen() const;
+    [[nodiscard]] QRect currentScreenRect() const;
+    [[nodiscard]] QPoint computeWindowReferencePoint() const;
+    [[nodiscard]] QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
+    [[nodiscard]] QPoint calcTrayIconCenter() const;
+    [[nodiscard]] TaskBarPosition taskbarOrientation() const;
+    [[nodiscard]] QRect taskbarGeometry() const;
+    [[nodiscard]] QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
+    [[nodiscard]] QPoint computeWindowPosition(int width, int height) const;
+    [[nodiscard]] QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
 
     bool _isOpen = false;
     bool _syncIsPaused = true;

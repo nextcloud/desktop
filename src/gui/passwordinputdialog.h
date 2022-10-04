@@ -30,7 +30,7 @@ public:
     explicit PasswordInputDialog(const QString &description, const QString &error, QWidget *parent = nullptr);
     ~PasswordInputDialog() override;
 
-    QString password() const;
+    [[nodiscard]] QString password() const;
 
 private:
     std::unique_ptr<Ui::PasswordInputDialog> _ui;
