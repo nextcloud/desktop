@@ -44,10 +44,10 @@ int oc_mkdir(const QString &path)
 
 static mbchar_t wd_buffer[WD_BUFFER_SIZE];
 
-typedef struct {
+using statevar = struct {
     QByteArray result;
     QByteArray ignored_dir;
-} statevar;
+};
 
 /* remove the complete test dir */
 static int wipe_testdir()
