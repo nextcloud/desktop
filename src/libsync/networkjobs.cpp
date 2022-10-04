@@ -378,7 +378,7 @@ void LsColJob::startImpl(const QNetworkRequest &req)
                 stream << QByteArrayLiteral("<d:") << prop << QByteArrayLiteral("/>");
             }
         }
-        stream << QByteArrayLiteral("</d:prop>M"
+        stream << QByteArrayLiteral("</d:prop>"
                                     "</d:propfind>\n");
     }
 
