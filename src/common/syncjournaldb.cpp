@@ -960,12 +960,13 @@ Result<void, QString> SyncJournalDb::updateMovedFolderRecords(const QString &ori
 {
     QMutexLocker locker(&_mutex);
     if (!checkConnect()) {
-        return;
+        qCWarning(lcDb) << "Failed to connect database.";
+        return tr("Failed to connect database."); // checkConnect failed.
     }
 
     const auto query = _queryManager.get(PreparedSqlQueryManager::UpdateMovedFolderRecordsQuery, QByteArrayLiteral("UPDATE metadata SET path = REPLACE(path, ?1, ?2) WHERE path LIKE '%?3%'"), _db);
     if (!query) {
-        return;
+        return query->error();
     }
 
     query->bindValue(1, originalPath);
