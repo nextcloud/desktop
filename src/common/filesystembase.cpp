@@ -233,7 +233,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
     }
     const BOOL ok = MoveFileEx(reinterpret_cast<const wchar_t *>(orig.utf16()),
         reinterpret_cast<const wchar_t *>(dest.utf16()),
-        MOVEFILE_REPLACE_EXISTING + MOVEFILE_COPY_ALLOWED + MOVEFILE_WRITE_THROUGH);
+        MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED | MOVEFILE_WRITE_THROUGH);
     if (!ok) {
         *errorString = Utility::formatWinError(GetLastError());
         qCWarning(lcFileSystem) << "Renaming temp file to final failed: " << *errorString;
