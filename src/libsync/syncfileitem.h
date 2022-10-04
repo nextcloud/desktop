@@ -308,6 +308,9 @@ public:
     QString _lockEditorApp;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
+
+    bool _isShared = false;
+    time_t _lastShareStateFetchedTimestmap = 0;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

@@ -48,6 +48,8 @@
 #include <shlwapi.h>
 #include <QSize>
 
+extern long dllObjectsCount;
+
 namespace VfsShellExtensions {
 
 std::pair<HBITMAP, WTS_ALPHATYPE> hBitmapAndAlphaTypeFromData(const QByteArray &thumbnailData)
@@ -93,8 +95,13 @@ std::pair<HBITMAP, WTS_ALPHATYPE> hBitmapAndAlphaTypeFromData(const QByteArray &
 ThumbnailProvider::ThumbnailProvider()
     : _referenceCount(1)
 {
+    InterlockedIncrement(&dllObjectsCount);
 }
 
+ThumbnailProvider::~ThumbnailProvider()
+{
+    InterlockedDecrement(&dllObjectsCount);
+}
 IFACEMETHODIMP ThumbnailProvider::QueryInterface(REFIID riid, void **ppv)
 {
     static const QITAB qit[] = {

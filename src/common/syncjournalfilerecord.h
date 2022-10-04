@@ -81,6 +81,8 @@ public:
     QByteArray _e2eMangledName;
     bool _isE2eEncrypted = false;
     SyncJournalFileLockInfo _lockstate;
+    bool _isShared = false;
+    qint64 _lastShareStateFetchedTimestmap = 0;
 };
 
 bool OCSYNC_EXPORT
