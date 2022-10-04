@@ -39,8 +39,6 @@ class SyncFileItem;
 /** Collection of parameters for initializing a Vfs instance. */
 struct OCSYNC_EXPORT VfsSetupParams
 {
-    VfsSetupParams() = default;
-
     explicit VfsSetupParams(const AccountPtr &account, const QUrl &baseUrl, bool groupInSidebar)
         : account(account)
         , _baseUrl(baseUrl)
@@ -157,7 +155,7 @@ public:
     virtual QString underlyingFileName(const QString &fileName) const;
 
     /// Access to the parameters the instance was start()ed with.
-    const VfsSetupParams &params() const { return _setupParams; }
+    const VfsSetupParams &params() const { return *_setupParams.get(); }
 
     /** Initializes interaction with the VFS provider.
      *
@@ -272,8 +270,9 @@ protected:
     Optional<PinState> pinStateInDb(const QString &folderPath);
     AvailabilityResult availabilityInDb(const QString &folderPath);
 
+private:
     // the parameters passed to start()
-    VfsSetupParams _setupParams;
+    std::unique_ptr<VfsSetupParams> _setupParams;
 
     friend class OwncloudPropagator;
 };
