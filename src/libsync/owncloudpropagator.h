@@ -309,7 +309,7 @@ public:
 
     PropagatorCompositeJob _subJobs;
 
-    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
+    explicit PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item, const SyncFileItemVector &nestedItems = {});
 
     void appendJob(PropagatorJob *job)
     {
@@ -351,7 +351,6 @@ private slots:
 
     void slotFirstJobFinished(SyncFileItem::Status status);
     virtual void slotSubJobsFinished(SyncFileItem::Status status);
-
 };
 
 /**
@@ -445,7 +444,8 @@ public:
                                    QStack<QPair<QString, PropagateDirectory*>> &directories,
                                    QVector<PropagatorJob *> &directoriesToRemove,
                                    QString &removedDirectory,
-                                   const SyncFileItemVector &items);
+                                   const SyncFileItemVector &items,
+                                   const SyncFileItemVector &nestedItems = {});
 
     void startFilePropagation(const SyncFileItemPtr &item,
                               QStack<QPair<QString, PropagateDirectory*>> &directories,
@@ -529,7 +529,7 @@ public:
 
     /** Creates the job for an item.
      */
-    PropagateItemJob *createJob(const SyncFileItemPtr &item);
+    PropagateItemJob *createJob(const SyncFileItemPtr &item, const SyncFileItemVector &nestedItems = {});
 
     void scheduleNextJob();
     void reportProgress(const SyncFileItem &, qint64 bytes);

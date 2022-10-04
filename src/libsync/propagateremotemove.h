@@ -51,8 +51,9 @@ class PropagateRemoteMove : public PropagateItemJob
     QPointer<MoveJob> _job;
 
 public:
-    PropagateRemoteMove(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+    PropagateRemoteMove(OwncloudPropagator *propagator, const SyncFileItemPtr &item, const SyncFileItemVector &nestedItems)
         : PropagateItemJob(propagator, item)
+        , _nestedItems(nestedItems)
     {
     }
     void start() override;
@@ -67,5 +68,8 @@ public:
 private slots:
     void slotMoveJobFinished();
     void finalize();
+
+private:
+    SyncFileItemVector _nestedItems;
 };
 }

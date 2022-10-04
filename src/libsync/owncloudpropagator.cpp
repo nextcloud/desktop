@@ -336,7 +336,7 @@ bool PropagateItemJob::hasEncryptedAncestor() const
 
 // ================================================================================
 
-PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
+PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item, const SyncFileItemVector &nestedItems)
 {
     bool deleteExisting = item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE;
     switch (item->_instruction) {
@@ -376,7 +376,7 @@ PropagateItemJob *OwncloudPropagator::createJob(const SyncFileItemPtr &item)
         }
     case CSYNC_INSTRUCTION_RENAME:
         if (item->_direction == SyncFileItem::Up) {
-            return new PropagateRemoteMove(this, item);
+            return new PropagateRemoteMove(this, item, nestedItems);
         } else {
             return new PropagateLocalRename(this, item);
         }
@@ -621,7 +621,8 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                                       directories,
                                       directoriesToRemove,
                                       removedDirectory,
-                                      items);
+                                      items,
+                                      nestedItems);
         } else {
             startFilePropagation(item,
                                  directories,
@@ -645,9 +646,10 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
                                                    QStack<QPair<QString, PropagateDirectory *>> &directories,
                                                    QVector<PropagatorJob *> &directoriesToRemove,
                                                    QString &removedDirectory,
-                                                   const SyncFileItemVector &items)
+                                                   const SyncFileItemVector &items,
+                                                   const SyncFileItemVector &nestedItems)
 {
-    auto directoryPropagationJob = std::make_unique<PropagateDirectory>(this, item);
+    auto directoryPropagationJob = std::make_unique<PropagateDirectory>(this, item, nestedItems);
 
     if (item->_instruction == CSYNC_INSTRUCTION_TYPE_CHANGE
         && item->_direction == SyncFileItem::Up) {
@@ -1162,10 +1164,10 @@ qint64 PropagatorCompositeJob::committedDiskSpace() const
 
 // ================================================================================
 
-PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
+PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const SyncFileItemPtr &item, const SyncFileItemVector &nestedItems)
     : PropagatorJob(propagator)
     , _item(item)
-    , _firstJob(propagator->createJob(item))
+    , _firstJob(propagator->createJob(item, nestedItems))
     , _subJobs(propagator)
 {
     if (_firstJob) {
