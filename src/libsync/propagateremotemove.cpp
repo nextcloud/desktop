@@ -133,9 +133,9 @@ void PropagateRemoteMove::start()
 
 void PropagateRemoteMove::abort(PropagatorJob::AbortType abortType)
 {
-    if (_job && _job->reply())
-        _job->reply()->abort();
-
+    if (_job) {
+        _job->abort();
+    }
     if (abortType == AbortType::Asynchronous) {
         emit abortFinished();
     }

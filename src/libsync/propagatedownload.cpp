@@ -174,14 +174,14 @@ void GETFileJob::slotMetaDataChanged()
         qCWarning(lcGetJob) << "No E-Tag reply by server, considering it invalid";
         _errorString = tr("No E-Tag received from server, check Proxy/Gateway");
         _errorStatus = SyncFileItem::NormalError;
-        reply()->abort();
+        abort();
         return;
     } else if (!_expectedEtagForResume.isEmpty() && _expectedEtagForResume != _etag) {
         qCWarning(lcGetJob) << "We received a different E-Tag for resuming!"
                             << _expectedEtagForResume << "vs" << _etag;
         _errorString = tr("We received a different E-Tag for resuming. Retrying next time.");
         _errorStatus = SyncFileItem::NormalError;
-        reply()->abort();
+        abort();
         return;
     }
 
@@ -192,7 +192,7 @@ void GETFileJob::slotMetaDataChanged()
                             << _expectedContentLength << "vs" << _contentLength;
         _errorString = tr("We received an unexpected download Content-Length.");
         _errorStatus = SyncFileItem::NormalError;
-        reply()->abort();
+        abort();
         return;
     }
 
@@ -213,14 +213,14 @@ void GETFileJob::slotMetaDataChanged()
             if (!_device->open(QIODevice::WriteOnly)) {
                 _errorString = _device->errorString();
                 _errorStatus = SyncFileItem::NormalError;
-                reply()->abort();
+                abort();
                 return;
             }
             _resumeStart = 0;
         } else {
             _errorString = tr("Server returned wrong content-range");
             _errorStatus = SyncFileItem::NormalError;
-            reply()->abort();
+            abort();
             return;
         }
     }
@@ -299,7 +299,7 @@ void GETFileJob::slotReadyRead()
             _errorString = networkReplyErrorString(*reply());
             _errorStatus = SyncFileItem::NormalError;
             qCWarning(lcGetJob) << "Error while reading from device: " << _errorString;
-            reply()->abort();
+            abort();
             return;
         }
 
@@ -308,7 +308,7 @@ void GETFileJob::slotReadyRead()
             _errorString = _device->errorString();
             _errorStatus = SyncFileItem::NormalError;
             qCWarning(lcGetJob) << "Error while writing to file" << written << read << _errorString;
-            reply()->abort();
+            abort();
             return;
         }
     }
@@ -1048,9 +1048,9 @@ void PropagateDownloadFile::slotDownloadProgress(qint64 received, qint64)
 
 void PropagateDownloadFile::abort(PropagatorJob::AbortType abortType)
 {
-    if (_job && _job->reply())
-        _job->reply()->abort();
-
+    if (_job) {
+        _job->abort();
+    }
     if (abortType == AbortType::Asynchronous) {
         emit abortFinished();
     }

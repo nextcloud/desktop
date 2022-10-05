@@ -365,8 +365,8 @@ void DiscoverySingleDirectoryJob::start()
 
 void DiscoverySingleDirectoryJob::abort()
 {
-    if (_lsColJob && _lsColJob->reply()) {
-        _lsColJob->reply()->abort();
+    if (_lsColJob) {
+        _lsColJob->abort();
     }
 }
 
