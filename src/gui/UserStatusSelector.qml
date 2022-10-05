@@ -92,7 +92,8 @@ ColumnLayout {
                 Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
             }
             UserStatusSelectorButton {
-                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible ||
+                         userStatusSelectorModel.onlineStatus === NC.UserStatus.Offline
                 checkable: true
                 icon.source: userStatusSelectorModel.invisibleIcon
                 icon.color: "transparent"
