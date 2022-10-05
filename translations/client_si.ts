@@ -212,26 +212,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="141"/>
-        <location filename="../src/common/filesystembase.cpp" line="143"/>
-        <location filename="../src/common/filesystembase.cpp" line="208"/>
-        <location filename="../src/common/filesystembase.cpp" line="213"/>
+        <location filename="../src/common/filesystembase.cpp" line="158"/>
+        <location filename="../src/common/filesystembase.cpp" line="160"/>
+        <location filename="../src/common/filesystembase.cpp" line="225"/>
+        <location filename="../src/common/filesystembase.cpp" line="230"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
         <translation>&apos;t %1නැවත නම් කළ හැක, ගොනුව දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="398"/>
+        <location filename="../src/common/filesystembase.cpp" line="415"/>
         <source>Could not make directories in trash</source>
         <translation>කුණු කූඩයේ නාමාවලි සෑදිය නොහැක</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="412"/>
-        <location filename="../src/common/filesystembase.cpp" line="418"/>
+        <location filename="../src/common/filesystembase.cpp" line="429"/>
+        <location filename="../src/common/filesystembase.cpp" line="435"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>&apos;%1&apos; සිට &apos;%2&apos;දක්වා ගෙන යාමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="452"/>
+        <location filename="../src/common/filesystembase.cpp" line="469"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>කුණු කූඩයට ගෙන යාම මෙම වේදිකාවේ ක්‍රියාත්මක නොවේ</translation>
     </message>
@@ -390,17 +390,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="242"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="243"/>
         <source>Connection timed out</source>
         <translation>සම්බන්ධතාවය කල් ඉකුත් විය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="244"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="245"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>නොදන්නා දෝෂය: ජාල පිළිතුර මකා ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="341"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="342"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>සේවාදායකය &quot;%1 %2&quot; සිට &quot;%3 %4&quot;දක්වා පිළිතුරු දුන්නේය</translation>
     </message>
@@ -2525,7 +2525,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="722"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="720"/>
         <source>File %1 is currently in use</source>
         <translation>ගොනුව %1 දැනට භාවිතා වේ</translation>
     </message>
@@ -2666,12 +2666,12 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1063"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1061"/>
         <source>Error updating metadata: %1</source>
         <translation>පාරදත්ත යාවත්කාලීන කිරීමේ දෝෂයකි: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1066"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1064"/>
         <source>%1 the folder is currently in use</source>
         <translation>%1 ෆෝල්ඩරය දැනට භාවිතා වේ</translation>
     </message>
@@ -2679,67 +2679,67 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="350"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>ඉඩ නිදහස් කිරීමට අපොහොසත් විය, ගොනු %1 දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="365"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="451"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="455"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>%2සමඟ දේශීය ගොනු නාමය ගැටුමක් නිසා ගොනුව %1 බාගත නොහැක!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="509"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>බාගත කිරීම සීමාවට වඩා අඩු දේශීය තැටි ඉඩ අඩු කරයි</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="517"/>
         <source>Free space on disk is less than %1</source>
         <translation>තැටියේ නිදහස් ඉඩ %1ට වඩා අඩුය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="637"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
         <source>File was deleted from server</source>
         <translation>ගොනුව සේවාදායකයෙන් මකා ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="697"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>බිඳුණු වෙබ් සේවාදායකය නැවත ආරම්භයේ හිස් නොවන ගොනුවක් සඳහා හිස් අන්තර්ගත දිග ලබා දුන්නේය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="704"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="708"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ගොනුව සම්පූර්ණයෙන්ම බාගත කළ නොහැක.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="711"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>බාගත කළ ගොනුව %1විය යුතු බව සේවාදායකය නිවේදනය කළද එය හිස්ය.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="891"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>%2සමඟ දේශීය ගොනු නාමය ගැටුමක් නිසා %1 ගොනුව සුරැකිය නොහැක!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1010"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
         <translation>පාරදත්ත යාවත්කාලීන කිරීමේ දෝෂයකි: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="459"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="915"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="948"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1013"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="919"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1017"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 ගොනුව දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="345"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="940"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="349"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File has changed since discovery</source>
         <translation>සොයාගැනීමේ සිට ගොනුව වෙනස් වී ඇත</translation>
     </message>
@@ -2747,7 +2747,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateItemJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="243"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="241"/>
         <source>; Restoration Failed: %1</source>
         <translation>; ප්‍රතිසාධනය අසාර්ථක විය: %1</translation>
     </message>
@@ -2894,12 +2894,12 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateUpdateMetaDataJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1215"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1213"/>
         <source>Could not update file : %1</source>
         <translation>ගොනුව යාවත්කාලීන කළ නොහැක : %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1218"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1216"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 ගොනුව දැනට භාවිතා වේ</translation>
     </message>
@@ -2922,18 +2922,18 @@ for additional privileges during the process.</source>
         <translation>සමමුහුර්ත කිරීමේදී දේශීය ගොනුව වෙනස් විය. එය නැවත ආරම්භ වනු ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="579"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
         <source>Error updating metadata: %1</source>
         <translation>පාරදත්ත යාවත්කාලීන කිරීමේ දෝෂයකි: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="582"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="586"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 ගොනුව දැනට භාවිතා වේ</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="466"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="470"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>%1 උඩුගත කිරීම ෆෝල්ඩරය සඳහා කෝටාව ඉක්මවයි</translation>
     </message>
@@ -3749,12 +3749,12 @@ for additional privileges during the process.</source>
         <translation>දේශීය සමමුහුර්ත දත්ත සමුදාය විවෘත කිරීමට හෝ නිර්මාණය කිරීමට නොහැකි විය. ඔබට සමමුහුර්ත ෆෝල්ඩරය තුළ ලිවීමේ ප්‍රවේශය ඇති බවට වග බලා ගන්න.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1001"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>තැටි ඉඩ අඩුයි: %1 ට වඩා අඩු ඉඩ අඩු කරන බාගැනීම් මඟ හරින ලදී.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1008"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1012"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>සමහර උඩුගත කිරීම් සඳහා සේවාදායකයේ ප්‍රමාණවත් ඉඩක් නොමැත.</translation>
     </message>
@@ -3784,7 +3784,7 @@ for additional privileges during the process.</source>
         <translation>සමමුහුර්ත ජර්නලය විවෘත කළ නොහැක</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="983"/>
+        <location filename="../src/libsync/syncengine.cpp" line="987"/>
         <source>Aborted</source>
         <translation>ගබ්සා කළා</translation>
     </message>
