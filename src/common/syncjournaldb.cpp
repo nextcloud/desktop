@@ -964,17 +964,14 @@ Result<void, QString> SyncJournalDb::updateMovedFolderRecords(const QString &ori
         return tr("Failed to connect database."); // checkConnect failed.
     }
 
-    const auto query = _queryManager.get(PreparedSqlQueryManager::UpdateMovedFolderRecordsQuery, QByteArrayLiteral("UPDATE metadata SET path = REPLACE(path, ?1, ?2) WHERE path LIKE ?3"), _db);
-    if (!query) {
-        return query->error();
+    SqlQuery query(_db);
+    if (query.prepare(QStringLiteral("UPDATE metadata SET path = REPLACE(path, '%1', '%2') WHERE path LIKE %3").arg(originalPath).arg(renamedTarget).arg(QStringLiteral("'%") + originalPath + QStringLiteral("%'")).toUtf8()) != 0) {
+        qCWarning(lcDb) << "Failed to prepare SQL query.";
+        return query.error();
     }
 
-    query->bindValue(1, originalPath);
-    query->bindValue(2, renamedTarget);
-    query->bindValue(3, QString('%%1%').arg(originalPath));
-
-    if (!query->exec()) {
-        return query->error();
+    if (!query.exec()) {
+        return query.error();
     }
 
     return {};
