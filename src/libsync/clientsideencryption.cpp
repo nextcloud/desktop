@@ -1190,11 +1190,6 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
             _publicKey = _certificate.publicKey();
 
-            const auto publicKeyString = cert.toLocal8Bit();
-            Bio serverPublicKeyBio;
-            BIO_write(serverPublicKeyBio, publicKeyString.constData(), publicKeyString.size());
-            const auto serverPublicKey = PKey::readPrivateKey(serverPublicKeyBio);
-
             Bio certificateBio;
             const auto certificatePem = _certificate.toPem();
             BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
