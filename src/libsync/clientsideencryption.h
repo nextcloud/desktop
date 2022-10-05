@@ -114,18 +114,20 @@ private:
 }
 
 namespace {
-class PKey;
 }
 
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
+    class PKey;
+
     ClientSideEncryption();
     void initialize(const AccountPtr &account);
 
 private:
     void generateKeyPair(const AccountPtr &account);
     void generateCSR(const AccountPtr &account, PKey keyPair);
+    void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
     void encryptPrivateKey(const AccountPtr &account);
 
 public:

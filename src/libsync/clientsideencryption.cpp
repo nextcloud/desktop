@@ -196,7 +196,9 @@ namespace {
         EVP_PKEY_CTX* _ctx = nullptr;
     };
 
-    class PKey {
+    }
+
+    class ClientSideEncryption::PKey {
     public:
         ~PKey()
         {
@@ -255,6 +257,8 @@ namespace {
         EVP_PKEY* _pkey = nullptr;
     };
 
+    namespace
+    {
     class X509Certificate {
     public:
         ~X509Certificate()
@@ -619,7 +623,7 @@ QByteArray decryptStringSymmetric(const QByteArray& key, const QByteArray& data)
 QByteArray privateKeyToPem(const QByteArray key) {
     Bio privateKeyBio;
     BIO_write(privateKeyBio, key.constData(), key.size());
-    auto pkey = PKey::readPrivateKey(privateKeyBio);
+    auto pkey = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
 
     Bio pemBio;
     PEM_write_bio_PKCS8PrivateKey(pemBio, pkey, nullptr, nullptr, 0, nullptr, nullptr);
@@ -1181,12 +1185,17 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
     qCInfo(lcCse()) << "Returning the certificate";
     qCInfo(lcCse()) << output;
 
+    sendSignRequestCSR(account, std::move(keyPair), output);
+}
+
+void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent)
+{
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
-    job->setCsr(output);
+    job->setCsr(csrContent);
 
     connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, int retCode) {
         if (retCode == 200) {
-            QString cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
+            const auto cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
             _publicKey = _certificate.publicKey();
 
@@ -1195,22 +1204,15 @@ void ClientSideEncryption::generateCSR(const AccountPtr &account, PKey keyPair)
             BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
             const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
 
-            if (auto certificateCheckResult = X509_check_private_key(x509Certificate, keyPair) ; !certificateCheckResult) {
-                std::array<char, 512> buffer;
-                qCInfo(lcCse()) << "X509_check_private_key" << certificateCheckResult;
-
-                unsigned long lastError = 1;
-                while (lastError) {
-                    lastError = ERR_get_error();
-                    qCInfo(lcCse()) << ERR_error_string(lastError, buffer.data());
+            if (const auto certificateCheckResult = X509_check_private_key(x509Certificate, keyPair) ; !certificateCheckResult) {
+                auto lastError = 1;
+                while ((lastError= ERR_get_error())) {
+                    qCInfo(lcCse()) << ERR_lib_error_string(lastError);
                 }
-
                 forgetSensitiveData(account);
                 return;
             }
-
             qCInfo(lcCse()) << "received a valid certificate";
-
             fetchAndValidatePublicKeyFromServer(account);
         }
         qCInfo(lcCse()) << retCode;
@@ -1497,7 +1499,7 @@ QByteArray FolderMetadata::encryptMetadataKey(const QByteArray& data) const
     Bio publicKeyBio;
     QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
-    auto publicKey = PKey::readPublicKey(publicKeyBio);
+    auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
 
     // The metadata key is binary so base64 encode it first
     return EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
@@ -1508,7 +1510,7 @@ QByteArray FolderMetadata::decryptMetadataKey(const QByteArray& encryptedMetadat
     Bio privateKeyBio;
     QByteArray privateKeyPem = _account->e2e()->_privateKey;
     BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
-    auto key = PKey::readPrivateKey(privateKeyBio);
+    auto key = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
 
     // Also base64 decode the result
     QByteArray decryptResult = EncryptionHelper::decryptStringAsymmetric(
