@@ -1198,14 +1198,12 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
             const auto cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
             _publicKey = _certificate.publicKey();
-
             Bio certificateBio;
             const auto certificatePem = _certificate.toPem();
             BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
             const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
-
             if (const auto certificateCheckResult = X509_check_private_key(x509Certificate, keyPair) ; !certificateCheckResult) {
-                auto lastError = 1ul;
+                auto lastError = 1UL;
                 while ((lastError= ERR_get_error())) {
                     qCInfo(lcCse()) << ERR_lib_error_string(lastError);
                 }
