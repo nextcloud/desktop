@@ -113,9 +113,6 @@ private:
 };
 }
 
-namespace {
-}
-
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
