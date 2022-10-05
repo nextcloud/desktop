@@ -967,7 +967,7 @@ Result<void, QString> SyncJournalDb::setFileRecords(const QVector<SyncJournalFil
     QVector<SyncJournalFileRecord> recordsCopy = records;
     QMutexLocker locker(&_mutex);
 
-    QString queryString = QStringLiteral(R"("INSERT OR REPLACE INTO metadata " "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, lockOwnerEditor, lockTime, lockTimeout)" " VALUES )");
+    QString queryString = QStringLiteral("INSERT OR REPLACE INTO metadata (phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, lockOwnerEditor, lockTime, lockTimeout) VALUES ");
 
     int i = 0;
     for (int i = 0; i < recordsCopy.size(); ++i) {
@@ -1001,30 +1001,34 @@ Result<void, QString> SyncJournalDb::setFileRecords(const QVector<SyncJournalFil
         parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
         int contentChecksumTypeId = mapChecksumType(checksumType);
 
+        const auto nonEmptyOrNull = [](const QString &value) -> QString {
+            return value.isEmpty() ? QStringLiteral("NULL") : QStringLiteral("'") + value + QStringLiteral("'");
+        };
+
         QString values = QString(QStringLiteral("("));
         values += QString::number(phash) + QStringLiteral(", ");
         values += QString::number(plen) + QStringLiteral(", ");
-        values += QString::fromUtf8(record._path) + QStringLiteral(", ");
+        values += nonEmptyOrNull(QString::fromUtf8(record._path)) + QStringLiteral(", ");
         values += QString::number(record._inode) + QStringLiteral(", ");
         values += QString::number(0) + QStringLiteral(", ");
         values += QString::number(0) + QStringLiteral(", ");
         values += QString::number(0) + QStringLiteral(", ");
         values += QString::number(record._modtime) + QStringLiteral(", ");
         values += QString::number(record._type) + QStringLiteral(", ");
-        values += QString::fromUtf8(etag) + QStringLiteral(", ");
-        values += QString::fromUtf8(fileId) + QStringLiteral(", ");
-        values += QString::fromUtf8(remotePerm) + QStringLiteral(", ");
+        values += nonEmptyOrNull(QString::fromUtf8(etag)) + QStringLiteral(", ");
+        values += nonEmptyOrNull(QString::fromUtf8(fileId)) + QStringLiteral(", ");
+        values += nonEmptyOrNull(QString::fromUtf8(remotePerm)) + QStringLiteral(", ");
         values += QString::number(record._fileSize) + QStringLiteral(", ");
         values += QString::number(record._serverHasIgnoredFiles ? 1 : 0) + QStringLiteral(", ");
-        values += QString::fromUtf8(checksum) + QStringLiteral(", ");
+        values += nonEmptyOrNull(QString::fromUtf8(checksum)) + QStringLiteral(", ");
         values += QString::number(contentChecksumTypeId) + QStringLiteral(", ");
-        values += QString::fromUtf8(record._e2eMangledName) + QStringLiteral(", ");
+        values += nonEmptyOrNull(QString::fromUtf8(record._e2eMangledName)) + QStringLiteral(", ");
         values += QString::number(record._isE2eEncrypted ? 1 : 0) + QStringLiteral(", ");
         values += QString::number(record._lockstate._locked ? 1 : 0) + QStringLiteral(", ");
         values += QString::number(record._lockstate._lockOwnerType) + QStringLiteral(", ");
-        values += record._lockstate._lockOwnerDisplayName + QStringLiteral(", ");
-        values += record._lockstate._lockOwnerId + QStringLiteral(", ");
-        values += record._lockstate._lockEditorApp + QStringLiteral(", ");
+        values += nonEmptyOrNull(record._lockstate._lockOwnerDisplayName) + QStringLiteral(", ");
+        values += nonEmptyOrNull(record._lockstate._lockOwnerId) + QStringLiteral(", ");
+        values += nonEmptyOrNull(record._lockstate._lockEditorApp) + QStringLiteral(", ");
         values += QString::number(record._lockstate._lockTime) + QStringLiteral(", ");
         values += QString::number(record._lockstate._lockTimeout);
         values += QString(QStringLiteral(")"));
@@ -1034,7 +1038,7 @@ Result<void, QString> SyncJournalDb::setFileRecords(const QVector<SyncJournalFil
         if (i + 1 < recordsCopy.size()) {
             queryString += QStringLiteral(", ");
         } else {
-            queryString += QStringLiteral(R"("; ")");
+            queryString += QStringLiteral(";");
         }
     }
 
@@ -1043,8 +1047,6 @@ Result<void, QString> SyncJournalDb::setFileRecords(const QVector<SyncJournalFil
         qCWarning(lcDb) << "Failed to prepare SQL query.";
         return query.error();
     }
-
-    
 
     if (!query.exec()) {
         return query.error();
