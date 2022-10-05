@@ -32,6 +32,7 @@ Summary
 * Change - Add "open in web editor" feature: [#9724](https://github.com/owncloud/client/issues/9724)
 * Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
 * Enhancement - Add a prefer: minimal header to PROPFINDs: [#10104](https://github.com/owncloud/client/pull/10104)
+* Enhancement - Windows add longPath awareness: [#10136](https://github.com/owncloud/client/pull/10136)
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Don't query private links if disabled on the server: [#8998](https://github.com/owncloud/client/issues/8998)
@@ -197,6 +198,13 @@ Details
    the amount of transfered data significantely.
 
    https://github.com/owncloud/client/pull/10104
+
+* Enhancement - Windows add longPath awareness: [#10136](https://github.com/owncloud/client/pull/10136)
+
+   Requires Windows 10 newer than 1607 and the registry key to be enabled see:
+   https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
+
+   https://github.com/owncloud/client/pull/10136
 
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 
