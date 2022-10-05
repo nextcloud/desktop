@@ -67,6 +67,7 @@ public:
     [[nodiscard]] bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     [[nodiscard]] bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     [[nodiscard]] Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
+    [[nodiscard]] Result<void, QString> setFileRecords(const QVector <SyncJournalFileRecord> &records);
     [[nodiscard]] Result<void, QString> updateMovedFolderRecords(const QString &originalPath, const QString &renamedTarget);
 
     void keyValueStoreSet(const QString &key, QVariant value);

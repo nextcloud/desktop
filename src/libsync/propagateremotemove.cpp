@@ -307,7 +307,12 @@ void PropagateRemoteMove::finalize()
         }
 
         if (!_nestedItems.isEmpty()) {
-            if (!propagator()->_journal->updateMovedFolderRecords(_item->_originalFile, _item->_renameTarget)) {
+            QVector<SyncJournalFileRecord> records;
+            for (const auto &nestedItem : _nestedItems) {
+                const QString fsPath = propagator()->localPath() + nestedItem->destination();
+                records.push_back(nestedItem->toSyncJournalFileRecordWithInode(fsPath));
+            }
+            if (!propagator()->_journal->setFileRecords(records)) {
                 done(SyncFileItem::FatalError, tr("Error writing metadata to the database"));
                 return;
             }

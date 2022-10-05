@@ -956,6 +956,106 @@ Result<void, QString> SyncJournalDb::setFileRecord(const SyncJournalFileRecord &
     return {};
 }
 
+
+Result<void, QString> SyncJournalDb::setFileRecords(const QVector<SyncJournalFileRecord> &records)
+{
+    if (!checkConnect()) {
+        qCWarning(lcDb) << "Failed to connect database.";
+        return tr("Failed to connect database."); // checkConnect failed.
+    }
+
+    QVector<SyncJournalFileRecord> recordsCopy = records;
+    QMutexLocker locker(&_mutex);
+
+    QString queryString = QStringLiteral(R"("INSERT OR REPLACE INTO metadata " "(phash, pathlen, path, inode, uid, gid, mode, modtime, type, md5, fileid, remotePerm, filesize, ignoredChildrenRemote, contentChecksum, contentChecksumTypeId, e2eMangledName, isE2eEncrypted, lock, lockType, lockOwnerDisplayName, lockOwnerId, lockOwnerEditor, lockTime, lockTimeout)" " VALUES )");
+
+    int i = 0;
+    for (int i = 0; i < recordsCopy.size(); ++i) {
+        auto &record = recordsCopy[i];
+        if (!_etagStorageFilter.isEmpty()) {
+            // If we are a directory that should not be read from db next time, don't write the etag
+            QByteArray prefix = record._path + "/";
+            foreach (const QByteArray &it, _etagStorageFilter) {
+                if (it.startsWith(prefix)) {
+                    qCInfo(lcDb) << "Filtered writing the etag of" << prefix << "because it is a prefix of" << it;
+                    record._etag = "_invalid_";
+                    break;
+                }
+            }
+        }
+
+        const qint64 phash = getPHash(record._path);
+
+        int plen = record._path.length();
+
+        QByteArray etag(record._etag);
+        if (etag.isEmpty()) {
+            etag = "";
+        }
+        QByteArray fileId(record._fileId);
+        if (fileId.isEmpty()) {
+            fileId = "";
+        }
+        QByteArray remotePerm = record._remotePerm.toDbValue();
+        QByteArray checksumType, checksum;
+        parseChecksumHeader(record._checksumHeader, &checksumType, &checksum);
+        int contentChecksumTypeId = mapChecksumType(checksumType);
+
+        QString values = QString(QStringLiteral("("));
+        values += QString::number(phash) + QStringLiteral(", ");
+        values += QString::number(plen) + QStringLiteral(", ");
+        values += QString::fromUtf8(record._path) + QStringLiteral(", ");
+        values += QString::number(record._inode) + QStringLiteral(", ");
+        values += QString::number(0) + QStringLiteral(", ");
+        values += QString::number(0) + QStringLiteral(", ");
+        values += QString::number(0) + QStringLiteral(", ");
+        values += QString::number(record._modtime) + QStringLiteral(", ");
+        values += QString::number(record._type) + QStringLiteral(", ");
+        values += QString::fromUtf8(etag) + QStringLiteral(", ");
+        values += QString::fromUtf8(fileId) + QStringLiteral(", ");
+        values += QString::fromUtf8(remotePerm) + QStringLiteral(", ");
+        values += QString::number(record._fileSize) + QStringLiteral(", ");
+        values += QString::number(record._serverHasIgnoredFiles ? 1 : 0) + QStringLiteral(", ");
+        values += QString::fromUtf8(checksum) + QStringLiteral(", ");
+        values += QString::number(contentChecksumTypeId) + QStringLiteral(", ");
+        values += QString::fromUtf8(record._e2eMangledName) + QStringLiteral(", ");
+        values += QString::number(record._isE2eEncrypted ? 1 : 0) + QStringLiteral(", ");
+        values += QString::number(record._lockstate._locked ? 1 : 0) + QStringLiteral(", ");
+        values += QString::number(record._lockstate._lockOwnerType) + QStringLiteral(", ");
+        values += record._lockstate._lockOwnerDisplayName + QStringLiteral(", ");
+        values += record._lockstate._lockOwnerId + QStringLiteral(", ");
+        values += record._lockstate._lockEditorApp + QStringLiteral(", ");
+        values += QString::number(record._lockstate._lockTime) + QStringLiteral(", ");
+        values += QString::number(record._lockstate._lockTimeout);
+        values += QString(QStringLiteral(")"));
+
+        queryString += values;
+
+        if (i + 1 < recordsCopy.size()) {
+            queryString += QStringLiteral(", ");
+        } else {
+            queryString += QStringLiteral(R"("; ")");
+        }
+    }
+
+    SqlQuery query(_db);
+    if (query.prepare(queryString.toUtf8()) != 0) {
+        qCWarning(lcDb) << "Failed to prepare SQL query.";
+        return query.error();
+    }
+
+    
+
+    if (!query.exec()) {
+        return query.error();
+    }
+
+    // Can't be true anymore.
+    _metadataTableIsEmpty = false;
+
+    return {};
+}
+
 Result<void, QString> SyncJournalDb::updateMovedFolderRecords(const QString &originalPath, const QString &renamedTarget)
 {
     QMutexLocker locker(&_mutex);
