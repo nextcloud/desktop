@@ -1193,7 +1193,7 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
     auto job = new SignPublicKeyApiJob(account, e2eeBaseUrl() + "public-key", this);
     job->setCsr(csrContent);
 
-    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, int retCode) {
+    connect(job, &SignPublicKeyApiJob::jsonReceived, [this, account, keyPair = std::move(keyPair)](const QJsonDocument& json, const int retCode) {
         if (retCode == 200) {
             const auto cert = json.object().value("ocs").toObject().value("data").toObject().value("public-key").toString();
             _certificate = QSslCertificate(cert.toLocal8Bit(), QSsl::Pem);
@@ -1205,7 +1205,7 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
             const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
 
             if (const auto certificateCheckResult = X509_check_private_key(x509Certificate, keyPair) ; !certificateCheckResult) {
-                auto lastError = 1;
+                auto lastError = 1ul;
                 while ((lastError= ERR_get_error())) {
                     qCInfo(lcCse()) << ERR_lib_error_string(lastError);
                 }
