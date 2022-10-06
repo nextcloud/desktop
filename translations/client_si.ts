@@ -212,26 +212,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="158"/>
-        <location filename="../src/common/filesystembase.cpp" line="160"/>
-        <location filename="../src/common/filesystembase.cpp" line="225"/>
-        <location filename="../src/common/filesystembase.cpp" line="230"/>
+        <location filename="../src/common/filesystembase.cpp" line="168"/>
+        <location filename="../src/common/filesystembase.cpp" line="170"/>
+        <location filename="../src/common/filesystembase.cpp" line="235"/>
+        <location filename="../src/common/filesystembase.cpp" line="240"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
         <translation>&apos;t %1නැවත නම් කළ හැක, ගොනුව දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="415"/>
+        <location filename="../src/common/filesystembase.cpp" line="425"/>
         <source>Could not make directories in trash</source>
         <translation>කුණු කූඩයේ නාමාවලි සෑදිය නොහැක</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="429"/>
-        <location filename="../src/common/filesystembase.cpp" line="435"/>
+        <location filename="../src/common/filesystembase.cpp" line="439"/>
+        <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>&apos;%1&apos; සිට &apos;%2&apos;දක්වා ගෙන යාමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="469"/>
+        <location filename="../src/common/filesystembase.cpp" line="479"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>කුණු කූඩයට ගෙන යාම මෙම වේදිකාවේ ක්‍රියාත්මක නොවේ</translation>
     </message>
@@ -1450,7 +1450,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>%1 කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1374"/>
+        <location filename="../src/gui/folderman.cpp" line="1378"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1459,7 +1459,7 @@ Please consider removing this folder from the account and adding it again.</sour
 කරුණාකර මෙම ෆෝල්ඩරය ගිණුමෙන් ඉවත් කර එය නැවත එක් කිරීමට සලකා බලන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"/>
     </message>
@@ -3692,7 +3692,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Spaces::SpacesDelegate</name>
     <message>
-        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="165"/>
+        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="162"/>
         <source>Open in Web</source>
         <translation type="unfinished"/>
     </message>

@@ -212,26 +212,26 @@
 <context>
     <name>FileSystem</name>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="158"/>
-        <location filename="../src/common/filesystembase.cpp" line="160"/>
-        <location filename="../src/common/filesystembase.cpp" line="225"/>
-        <location filename="../src/common/filesystembase.cpp" line="230"/>
+        <location filename="../src/common/filesystembase.cpp" line="168"/>
+        <location filename="../src/common/filesystembase.cpp" line="170"/>
+        <location filename="../src/common/filesystembase.cpp" line="235"/>
+        <location filename="../src/common/filesystembase.cpp" line="240"/>
         <source>Can&apos;t rename %1, the file is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="415"/>
+        <location filename="../src/common/filesystembase.cpp" line="425"/>
         <source>Could not make directories in trash</source>
         <translation>Non foi posíbel crear directorios no lixo</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="429"/>
-        <location filename="../src/common/filesystembase.cpp" line="435"/>
+        <location filename="../src/common/filesystembase.cpp" line="439"/>
+        <location filename="../src/common/filesystembase.cpp" line="445"/>
         <source>Could not move &apos;%1&apos; to &apos;%2&apos;</source>
         <translation>Non foi posíbel mover «%1» a «%2»</translation>
     </message>
     <message>
-        <location filename="../src/common/filesystembase.cpp" line="469"/>
+        <location filename="../src/common/filesystembase.cpp" line="479"/>
         <source>Moving to the trash is not implemented on this platform</source>
         <translation>Moving to the trash is not implemented on this platform</translation>
     </message>
@@ -1450,14 +1450,14 @@ Se fose un accidente e decide manter os seus ficheiros, volverán ser sincroniza
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1374"/>
+        <location filename="../src/gui/folderman.cpp" line="1378"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1446"/>
+        <location filename="../src/gui/folderman.cpp" line="1450"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"/>
     </message>
@@ -3690,7 +3690,7 @@ actualización pode pedir privilexios adicionais durante o procedemento.</transl
 <context>
     <name>OCC::Spaces::SpacesDelegate</name>
     <message>
-        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="165"/>
+        <location filename="../src/gui/spaces/spacesdelegate.cpp" line="162"/>
         <source>Open in Web</source>
         <translation type="unfinished"/>
     </message>
