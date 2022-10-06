@@ -94,7 +94,8 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
         }
     }
 
-    if (Theme::instance()->forceVirtualFilesOption()) {
+    // vfsIsAvailable is false when experimental features are not enabled and the mode is experimental even if a plugin is found
+    if (vfsIsAvailable && Theme::instance()->forceVirtualFilesOption()) {
         // this has no visual effect, but is needed for syncMode()
         _ui->useVfsRadioButton->setChecked(true);
 
