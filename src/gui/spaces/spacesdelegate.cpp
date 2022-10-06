@@ -35,7 +35,7 @@ void SpacesDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     const auto *style = option.widget->style();
     if (index.column() == static_cast<int>(SpacesModel::Columns::Sync)) {
         QStyleOptionButton opt;
-        static_cast<QStyleOption &>(opt) = option;
+        static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
 
         opt.rect.setSize(sizeHint(option, index));
         opt.rect.moveCenter(option.rect.center());
@@ -157,7 +157,7 @@ bool SpacesDelegate::editorEvent(QEvent *event, QAbstractItemModel *model, const
 QStyleOptionButton SpacesDelegate::openBrowserButtonRect(const QStyleOptionViewItem &option)
 {
     QStyleOptionButton opt;
-    static_cast<QStyleOption &>(opt) = option;
+    static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
 
     opt.text = tr("Open in Web");
 

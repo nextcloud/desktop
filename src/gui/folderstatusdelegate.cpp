@@ -61,7 +61,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
         const int margins = aliasFm.height(); // same as 2*aliasMargin of paint
         QFontMetrics fm(qApp->font("QPushButton"));
         QStyleOptionButton opt;
-        static_cast<QStyleOption &>(opt) = option;
+        static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
         opt.text = addFolderText(index.data(FolderStatusDelegate::IsUsingSpaces).toBool());
         return QApplication::style()->sizeFromContents(
                                         QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text))
@@ -129,7 +129,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     if (index.data(AddButton).toBool()) {
         QSize hint = sizeHint(option, index);
         QStyleOptionButton opt;
-        static_cast<QStyleOption &>(opt) = option;
+        static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
         opt.state &= ~QStyle::State_Selected;
         opt.state |= QStyle::State_Raised;
         opt.text = addFolderText(useSpaces);
