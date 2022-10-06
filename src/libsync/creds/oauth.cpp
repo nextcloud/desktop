@@ -637,9 +637,9 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
                     _clientSecret = clientSecret;
                     refresh();
                 });
-                connect(registerJob, &RegisterClientJob::errorOccured, this, [this](const QString &error) {
+                connect(registerJob, &RegisterClientJob::errorOccured, this, [refresh, this](const QString &error) {
                     qCWarning(lcOauth) << "Failed to dynamically register the client, try the default client id" << error;
-                    Q_EMIT refreshFinished(QString(), QString());
+                    refresh();
                 });
                 registerJob->start();
             } else {
