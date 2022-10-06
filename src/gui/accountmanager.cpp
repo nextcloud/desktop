@@ -32,6 +32,7 @@ namespace {
 static const char urlC[] = "url";
 static const char authTypeC[] = "authType";
 static const char userC[] = "user";
+static const char displayNameC[] = "displayName";
 static const char httpUserC[] = "http_user";
 static const char davUserC[] = "dav_user";
 static const char caCertsKeyC[] = "CaCertificates";
@@ -222,7 +223,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
     settings.setValue(QLatin1String(urlC), acc->_url.toString());
     settings.setValue(QLatin1String(davUserC), acc->_davUser);
+    settings.setValue(QLatin1String(displayNameC), acc->_displayName);
     settings.setValue(QLatin1String(serverVersionC), acc->_serverVersion);
+
     if (acc->_credentials) {
         if (saveCredentials) {
             // Only persist the credentials if the parameter is set, on migration from 1.8.x
@@ -321,6 +324,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 
     // We want to only restore settings for that auth type and the user value
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
+    acc->_displayName = settings.value(QLatin1String(displayNameC), "").toString();
     QString authTypePrefix = authType + "_";
     for (const auto &key : settings.childKeys()) {
         if (!key.startsWith(authTypePrefix))
