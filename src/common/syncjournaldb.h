@@ -78,7 +78,7 @@ public:
         const QByteArray &contentChecksum,
         const QByteArray &contentChecksumType);
     [[nodiscard]] bool updateLocalMetadata(const QString &filename,
-        qint64 modtime, qint64 size, quint64 inode);
+        qint64 modtime, qint64 size, quint64 inode, const SyncJournalFileLockInfo &lockInfo);
 
     /// Return value for hasHydratedOrDehydratedFiles()
     struct HasHydratedDehydrated
@@ -93,7 +93,7 @@ public:
     bool exists();
     void walCheckpoint();
 
-    QString databaseFilePath() const;
+    [[nodiscard]] QString databaseFilePath() const;
 
     static qint64 getPHash(const QByteArray &);
 
@@ -124,7 +124,7 @@ public:
          * (As opposed to a small file transfer which is stored in the db so we can detect the case
          * when the upload succeeded, but the connection was dropped before we got the answer)
          */
-        bool isChunked() const { return _transferid != 0; }
+        [[nodiscard]] bool isChunked() const { return _transferid != 0; }
     };
 
     struct PollInfo

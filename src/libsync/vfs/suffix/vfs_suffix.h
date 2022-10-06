@@ -29,14 +29,14 @@ public:
     explicit VfsSuffix(QObject *parent = nullptr);
     ~VfsSuffix() override;
 
-    Mode mode() const override;
-    QString fileSuffix() const override;
+    [[nodiscard]] Mode mode() const override;
+    [[nodiscard]] QString fileSuffix() const override;
 
     void stop() override;
     void unregisterFolder() override;
 
-    bool socketApiPinStateActionsShown() const override { return true; }
-    bool isHydrating() const override;
+    [[nodiscard]] bool socketApiPinStateActionsShown() const override { return true; }
+    [[nodiscard]] bool isHydrating() const override;
 
     Result<void, QString> updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId) override;
 

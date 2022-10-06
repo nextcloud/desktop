@@ -50,7 +50,7 @@ public:
     bool transaction();
     bool commit();
     void close();
-    QString error() const;
+    [[nodiscard]] QString error() const;
     sqlite3 *sqliteDb();
 
 private:
@@ -111,8 +111,8 @@ public:
     int prepare(const QByteArray &sql, bool allow_failure = false);
 
     ~SqlQuery();
-    QString error() const;
-    int errorId() const;
+    [[nodiscard]] QString error() const;
+    [[nodiscard]] int errorId() const;
 
     /// Checks whether the value at the given column index is NULL
     bool nullValue(int index);
@@ -152,7 +152,7 @@ public:
         bindValueInternal(pos, value);
     }
 
-    const QByteArray &lastQuery() const;
+    [[nodiscard]] const QByteArray &lastQuery() const;
     int numRowsAffected();
     void reset_and_clear_bindings();
 

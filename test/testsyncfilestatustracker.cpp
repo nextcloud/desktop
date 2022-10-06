@@ -20,7 +20,7 @@ public:
         , _syncEngine(syncEngine)
     { }
 
-    SyncFileStatus statusOf(const QString &relativePath) const {
+    [[nodiscard]] SyncFileStatus statusOf(const QString &relativePath) const {
         QFileInfo file(_syncEngine.localPath(), relativePath);
         auto locPath = _syncEngine.localPath();
         // Start from the end to get the latest status
@@ -31,7 +31,7 @@ public:
         return {};
     }
 
-    bool statusEmittedBefore(const QString &firstPath, const QString &secondPath) const {
+    [[nodiscard]] bool statusEmittedBefore(const QString &firstPath, const QString &secondPath) const {
         QFileInfo firstFile(_syncEngine.localPath(), firstPath);
         QFileInfo secondFile(_syncEngine.localPath(), secondPath);
         // Start from the end to get the latest status

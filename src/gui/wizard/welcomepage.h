@@ -33,7 +33,7 @@ class WelcomePage : public QWizardPage
 public:
     explicit WelcomePage(OwncloudWizard *ocWizard);
     ~WelcomePage() override;
-    int nextId() const override;
+    [[nodiscard]] int nextId() const override;
     void initializePage() override;
     void setLoginButtonDefault();
 

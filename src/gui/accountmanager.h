@@ -58,7 +58,7 @@ public:
      * Return a list of all accounts.
      * (this is a list of QSharedPointer for internal reasons, one should normally not keep a copy of them)
      */
-    QList<AccountStatePtr> accounts() const;
+    [[nodiscard]] QList<AccountStatePtr> accounts() const;
 
     /**
      * Return the account state pointer for an account identified by its display name
@@ -89,8 +89,8 @@ private:
 
     bool restoreFromLegacySettings();
 
-    bool isAccountIdAvailable(const QString &id) const;
-    QString generateFreeAccountId() const;
+    [[nodiscard]] bool isAccountIdAvailable(const QString &id) const;
+    [[nodiscard]] QString generateFreeAccountId() const;
 
     // Adds an account to the tracked list, emitting accountAdded()
     void addAccountState(AccountState *accountState);

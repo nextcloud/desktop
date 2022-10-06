@@ -47,13 +47,13 @@ public:
 
     ~Job() override;
 
-    QKeychain::Error error() const;
-    QString errorString() const;
+    [[nodiscard]] QKeychain::Error error() const;
+    [[nodiscard]] QString errorString() const;
 
-    QByteArray binaryData() const;
-    QString textData() const;
+    [[nodiscard]] QByteArray binaryData() const;
+    [[nodiscard]] QString textData() const;
 
-    bool insecureFallback() const;
+    [[nodiscard]] bool insecureFallback() const;
 
 // If we use it but don't support insecure fallback, give us nice compilation errors ;p
 #if defined(KEYCHAINCHUNK_ENABLE_INSECURE_FALLBACK)
@@ -64,7 +64,7 @@ public:
      * @return Whether this job autodeletes itself once finished() has been emitted. Default is true.
      * @see setAutoDelete()
      */
-    bool autoDelete() const;
+    [[nodiscard]] bool autoDelete() const;
 
     /**
      * Set whether this job should autodelete itself once finished() has been emitted.

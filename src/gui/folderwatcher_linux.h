@@ -39,7 +39,7 @@ public:
     FolderWatcherPrivate(FolderWatcher *p, const QString &path);
     ~FolderWatcherPrivate() override;
 
-    int testWatchCount() const { return _pathToWatch.size(); }
+    [[nodiscard]] int testWatchCount() const { return _pathToWatch.size(); }
 
     /// On linux the watcher is ready when the ctor finished.
     bool _ready = true;

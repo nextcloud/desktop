@@ -131,13 +131,13 @@ public:
     explicit Vfs(QObject* parent = nullptr);
     ~Vfs() override;
 
-    virtual Mode mode() const = 0;
+    [[nodiscard]] virtual Mode mode() const = 0;
 
     /// For WithSuffix modes: the suffix (including the dot)
-    virtual QString fileSuffix() const = 0;
+    [[nodiscard]] virtual QString fileSuffix() const = 0;
 
     /// Access to the parameters the instance was start()ed with.
-    const VfsSetupParams &params() const { return _setupParams; }
+    [[nodiscard]] const VfsSetupParams &params() const { return _setupParams; }
 
 
     /** Initializes interaction with the VFS provider.
@@ -158,13 +158,13 @@ public:
      * Some plugins might provide alternate shell integration, making the normal
      * context menu actions redundant.
      */
-    virtual bool socketApiPinStateActionsShown() const = 0;
+    [[nodiscard]] virtual bool socketApiPinStateActionsShown() const = 0;
 
     /** Return true when download of a file's data is currently ongoing.
      *
      * See also the beginHydrating() and doneHydrating() signals.
      */
-    virtual bool isHydrating() const = 0;
+    [[nodiscard]] virtual bool isHydrating() const = 0;
 
     /** Update placeholder metadata during discovery.
      *
@@ -296,15 +296,15 @@ public:
     VfsOff(QObject* parent = nullptr);
     ~VfsOff() override;
 
-    Mode mode() const override { return Vfs::Off; }
+    [[nodiscard]] Mode mode() const override { return Vfs::Off; }
 
-    QString fileSuffix() const override { return QString(); }
+    [[nodiscard]] QString fileSuffix() const override { return QString(); }
 
     void stop() override {}
     void unregisterFolder() override {}
 
-    bool socketApiPinStateActionsShown() const override { return false; }
-    bool isHydrating() const override { return false; }
+    [[nodiscard]] bool socketApiPinStateActionsShown() const override { return false; }
+    [[nodiscard]] bool isHydrating() const override { return false; }
 
     Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }

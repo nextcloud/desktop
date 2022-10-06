@@ -46,54 +46,54 @@ class OWNCLOUDSYNC_EXPORT Capabilities
 public:
     Capabilities(const QVariantMap &capabilities);
 
-    bool shareAPI() const;
-    bool shareEmailPasswordEnabled() const;
-    bool shareEmailPasswordEnforced() const;
-    bool sharePublicLink() const;
-    bool sharePublicLinkAllowUpload() const;
-    bool sharePublicLinkSupportsUploadOnly() const;
-    bool sharePublicLinkAskOptionalPassword() const;
-    bool sharePublicLinkEnforcePassword() const;
-    bool sharePublicLinkEnforceExpireDate() const;
-    int sharePublicLinkExpireDateDays() const;
-    bool shareInternalEnforceExpireDate() const;
-    int shareInternalExpireDateDays() const;
-    bool shareRemoteEnforceExpireDate() const;
-    int shareRemoteExpireDateDays() const;
-    bool sharePublicLinkMultiple() const;
-    bool shareResharing() const;
-    int shareDefaultPermissions() const;
-    bool chunkingNg() const;
-    bool bulkUpload() const;
-    bool filesLockAvailable() const;
-    bool userStatus() const;
-    bool userStatusSupportsEmoji() const;
-    QColor serverColor() const;
-    QColor serverTextColor() const;
+    [[nodiscard]] bool shareAPI() const;
+    [[nodiscard]] bool shareEmailPasswordEnabled() const;
+    [[nodiscard]] bool shareEmailPasswordEnforced() const;
+    [[nodiscard]] bool sharePublicLink() const;
+    [[nodiscard]] bool sharePublicLinkAllowUpload() const;
+    [[nodiscard]] bool sharePublicLinkSupportsUploadOnly() const;
+    [[nodiscard]] bool sharePublicLinkAskOptionalPassword() const;
+    [[nodiscard]] bool sharePublicLinkEnforcePassword() const;
+    [[nodiscard]] bool sharePublicLinkEnforceExpireDate() const;
+    [[nodiscard]] int sharePublicLinkExpireDateDays() const;
+    [[nodiscard]] bool shareInternalEnforceExpireDate() const;
+    [[nodiscard]] int shareInternalExpireDateDays() const;
+    [[nodiscard]] bool shareRemoteEnforceExpireDate() const;
+    [[nodiscard]] int shareRemoteExpireDateDays() const;
+    [[nodiscard]] bool sharePublicLinkMultiple() const;
+    [[nodiscard]] bool shareResharing() const;
+    [[nodiscard]] int shareDefaultPermissions() const;
+    [[nodiscard]] bool chunkingNg() const;
+    [[nodiscard]] bool bulkUpload() const;
+    [[nodiscard]] bool filesLockAvailable() const;
+    [[nodiscard]] bool userStatus() const;
+    [[nodiscard]] bool userStatusSupportsEmoji() const;
+    [[nodiscard]] QColor serverColor() const;
+    [[nodiscard]] QColor serverTextColor() const;
 
     /// Returns which kind of push notfications are available
-    PushNotificationTypes availablePushNotifications() const;
+    [[nodiscard]] PushNotificationTypes availablePushNotifications() const;
 
     /// Websocket url for files push notifications if available
-    QUrl pushNotificationsWebSocketUrl() const;
+    [[nodiscard]] QUrl pushNotificationsWebSocketUrl() const;
 
     /// disable parallel upload in chunking
-    bool chunkingParallelUploadDisabled() const;
+    [[nodiscard]] bool chunkingParallelUploadDisabled() const;
 
     /// Whether the "privatelink" DAV property is available
-    bool privateLinkPropertyAvailable() const;
+    [[nodiscard]] bool privateLinkPropertyAvailable() const;
 
     /// returns true if the capabilities report notifications
-    bool notificationsAvailable() const;
+    [[nodiscard]] bool notificationsAvailable() const;
 
     /// returns true if the server supports client side encryption
-    bool clientSideEncryptionAvailable() const;
+    [[nodiscard]] bool clientSideEncryptionAvailable() const;
 
     /// returns true if the capabilities are loaded already.
-    bool isValid() const;
+    [[nodiscard]] bool isValid() const;
 
     /// return true if the activity app is enabled
-    bool hasActivities() const;
+    [[nodiscard]] bool hasActivities() const;
 
     /**
      * Returns the checksum types the server understands.
@@ -106,7 +106,7 @@ public:
      * Default: []
      * Possible entries: "Adler32", "MD5", "SHA1"
      */
-    QList<QByteArray> supportedChecksumTypes() const;
+    [[nodiscard]] QList<QByteArray> supportedChecksumTypes() const;
 
     /**
      * The checksum algorithm that the server recommends for file uploads.
@@ -116,14 +116,14 @@ public:
      * Default: empty, meaning "no preference"
      * Possible values: empty or any of the supportedTypes
      */
-    QByteArray preferredUploadChecksumType() const;
+    [[nodiscard]] QByteArray preferredUploadChecksumType() const;
 
     /**
      * Helper that returns the preferredUploadChecksumType() if set, or one
      * of the supportedChecksumTypes() if it isn't. May return an empty
      * QByteArray if no checksum types are supported.
      */
-    QByteArray uploadChecksumType() const;
+    [[nodiscard]] QByteArray uploadChecksumType() const;
 
     /**
      * List of HTTP error codes should be guaranteed to eventually reset
@@ -142,7 +142,7 @@ public:
      * Default: []
      * Example: [503, 500]
      */
-    QList<int> httpErrorCodesThatResetFailingChunkedUploads() const;
+    [[nodiscard]] QList<int> httpErrorCodesThatResetFailingChunkedUploads() const;
 
     /**
      * Regex that, if contained in a filename, will result in it not being uploaded.
@@ -153,17 +153,17 @@ public:
      *
      * Note that it just needs to be contained. The regex [ab] is contained in "car".
      */
-    QString invalidFilenameRegex() const;
+    [[nodiscard]] QString invalidFilenameRegex() const;
 
     /**
      * return the list of filename that should not be uploaded
      */
-    QStringList blacklistedFiles() const;
+    [[nodiscard]] QStringList blacklistedFiles() const;
 
     /**
      * Whether conflict files should remain local (default) or should be uploaded.
      */
-    bool uploadConflictFiles() const;
+    [[nodiscard]] bool uploadConflictFiles() const;
 
     // Direct Editing
     void addDirectEditor(DirectEditor* directEditor);
@@ -171,7 +171,7 @@ public:
     DirectEditor* getDirectEditorForOptionalMimetype(const QMimeType &mimeType);
 
 private:
-    QMap<QString, QVariant> serverThemingMap() const;
+    [[nodiscard]] QMap<QString, QVariant> serverThemingMap() const;
 
     QVariantMap _capabilities;
 
@@ -192,11 +192,11 @@ public:
     bool hasMimetype(const QMimeType &mimeType);
     bool hasOptionalMimetype(const QMimeType &mimeType);
 
-    QString id() const;
-    QString name() const;
+    [[nodiscard]] QString id() const;
+    [[nodiscard]] QString name() const;
 
-    QList<QByteArray> mimeTypes() const;
-    QList<QByteArray> optionalMimeTypes() const;
+    [[nodiscard]] QList<QByteArray> mimeTypes() const;
+    [[nodiscard]] QList<QByteArray> optionalMimeTypes() const;
 
 private:
     QString _id;

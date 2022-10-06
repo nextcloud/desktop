@@ -40,12 +40,16 @@ const auto rootKey = HKEY_CURRENT_USER;
 
 bool registerShellExtension()
 {
+    const QList<QPair<QString, QString>> listExtensions = {
+        {CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME, CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG},
+        {CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_DISPLAY_NAME, CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID_REG}
+    };
+    // assume CFAPI_SHELL_EXTENSIONS_LIB_NAME is always in the same folder as the main executable
     // assume CFAPI_SHELL_EXTENSIONS_LIB_NAME is always in the same folder as the main executable
     const auto shellExtensionDllPath = QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath() + QStringLiteral("/") + CFAPI_SHELL_EXTENSIONS_LIB_NAME + QStringLiteral(".dll")));
     if (!QFileInfo::exists(shellExtensionDllPath)) {
         Q_ASSERT(false);
-        qCWarning(lcCfApi) << "Register CfAPI shell extensions failed. Dll does not exist in "
-                           << QCoreApplication::applicationDirPath();
+        qCWarning(lcCfApi) << "Register CfAPI shell extensions failed. Dll does not exist in " << QCoreApplication::applicationDirPath();
         return false;
     }
 
@@ -57,20 +61,22 @@ bool registerShellExtension()
         return false;
     }
 
-    const QString clsidPath = QString() % clsIdRegKey % CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG;
-    const QString clsidServerPath = clsidPath % R"(\InprocServer32)";
+    for (const auto extension : listExtensions) {
+        const QString clsidPath = QString() % clsIdRegKey % extension.second;
+        const QString clsidServerPath = clsidPath % R"(\InprocServer32)";
 
-    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, QStringLiteral("AppID"), REG_SZ, CFAPI_SHELLEXT_APPID_REG)) {
-        return false;
-    }
-    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, {}, REG_SZ, CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME)) {
-        return false;
-    }
-    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, {}, REG_SZ, shellExtensionDllPath)) {
-        return false;
-    }
-    if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, QStringLiteral("ThreadingModel"), REG_SZ, QStringLiteral("Apartment"))) {
-        return false;
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, QStringLiteral("AppID"), REG_SZ, CFAPI_SHELLEXT_APPID_REG)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, {}, REG_SZ, extension.first)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, {}, REG_SZ, shellExtensionDllPath)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, QStringLiteral("ThreadingModel"), REG_SZ, QStringLiteral("Apartment"))) {
+            return false;
+        }
     }
 
     return true;
@@ -83,9 +89,16 @@ void unregisterShellExtensions()
         OCC::Utility::registryDeleteKeyTree(rootKey, appIdPath);
     }
 
-    const QString clsidPath = QString() % clsIdRegKey % CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG;
-    if (OCC::Utility::registryKeyExists(rootKey, clsidPath)) {
-        OCC::Utility::registryDeleteKeyTree(rootKey, clsidPath);
+    const QStringList listExtensions = {
+        CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID_REG,
+        CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG
+    };
+
+    for (const auto extension : listExtensions) {
+        const QString clsidPath = QString() % clsIdRegKey % extension;
+        if (OCC::Utility::registryKeyExists(rootKey, clsidPath)) {
+            OCC::Utility::registryDeleteKeyTree(rootKey, clsidPath);
+        }
     }
 }
 

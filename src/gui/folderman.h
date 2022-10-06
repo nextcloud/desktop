@@ -83,7 +83,7 @@ public:
      */
     static void backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys);
 
-    const Folder::Map &map() const;
+    [[nodiscard]] const Folder::Map &map() const;
 
     /** Adds a folder for an account, ensures the journal is gone and saves it in the settings.
       */
@@ -144,7 +144,7 @@ public:
      *
      * @returns an empty string and PathValidityResult::Valid if it is allowed, or an error if it is not allowed
      */
-    QPair<PathValidityResult, QString> checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl()) const;
+    [[nodiscard]] QPair<PathValidityResult, QString> checkPathValidityForNewFolder(const QString &path, const QUrl &serverUrl = QUrl()) const;
 
     /**
      * Attempts to find a non-existing, acceptable path for creating a new sync folder.
@@ -155,7 +155,7 @@ public:
      * subfolder of ~ would be a good candidate. When that happens \a basePath
      * is returned.
      */
-    QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const;
+    [[nodiscard]] QString findGoodPathForNewSyncFolder(const QString &basePath, const QUrl &serverUrl) const;
 
     /**
      * While ignoring hidden files can theoretically be switched per folder,
@@ -163,13 +163,13 @@ public:
      * at once.
      * These helper functions can be removed once it's properly per-folder.
      */
-    bool ignoreHiddenFiles() const;
+    [[nodiscard]] bool ignoreHiddenFiles() const;
     void setIgnoreHiddenFiles(bool ignore);
 
     /**
      * Access to the current queue of scheduled folders.
      */
-    QQueue<Folder *> scheduleQueue() const;
+    [[nodiscard]] QQueue<Folder *> scheduleQueue() const;
 
     /**
      * Access to the currently syncing folder.
@@ -179,7 +179,7 @@ public:
      *
      * See also isAnySyncRunning()
      */
-    Folder *currentSyncFolder() const;
+    [[nodiscard]] Folder *currentSyncFolder() const;
 
     /**
      * Returns true if any folder is currently syncing.
@@ -187,7 +187,7 @@ public:
      * This might be a FolderMan-scheduled sync, or a externally
      * managed sync like a placeholder hydration.
      */
-    bool isAnySyncRunning() const;
+    [[nodiscard]] bool isAnySyncRunning() const;
 
     /** Removes all folders */
     int unloadAndDeleteAllFolders();
@@ -324,7 +324,7 @@ private:
 
     // finds all folder configuration files
     // and create the folders
-    QString getBackupName(QString fullPathName) const;
+    [[nodiscard]] QString getBackupName(QString fullPathName) const;
 
     // makes the folder known to the socket api
     void registerFolderWithSocketApi(Folder *folder);
@@ -339,7 +339,7 @@ private:
 
     bool pushNotificationsFilesReady(Account *account);
 
-    bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
+    [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;

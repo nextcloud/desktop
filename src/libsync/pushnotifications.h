@@ -52,7 +52,7 @@ public:
      *
      * Ready to use means connected and authenticated.
      */
-    bool isReady() const;
+    [[nodiscard]] bool isReady() const;
 
     /**
      * Set the interval in which the websocket will ping the server if it is still alive.

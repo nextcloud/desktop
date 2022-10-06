@@ -55,7 +55,7 @@ public:
     Q_ENUM(Result);
     void start();
     bool openBrowser();
-    QUrl authorisationLink() const;
+    [[nodiscard]] QUrl authorisationLink() const;
 
 signals:
     /**

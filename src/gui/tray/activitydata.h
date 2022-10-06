@@ -158,7 +158,7 @@ public:
      */
 
 
-    Identifier ident() const;
+    [[nodiscard]] Identifier ident() const;
 };
 
 bool operator==(const Activity &rhs, const Activity &lhs);

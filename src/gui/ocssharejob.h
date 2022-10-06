@@ -46,7 +46,7 @@ public:
      *
      * @param path Path to request shares for (default all shares)
      */
-    void getShares(const QString &path = "");
+    void getShares(const QString &path = "", const QMap<QString, QString> &params = {});
 
     /**
      * Delete the current Share
@@ -130,6 +130,8 @@ public:
      * Returns information on the items shared with the current user.
      */
     void getSharedWithMe();
+
+    static const QString _pathForSharesRequest;
 
 signals:
     /**

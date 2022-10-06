@@ -92,7 +92,7 @@ public:
     static QString prepareTargetPath(const QString &path);
 
     /// journalPath relative to localPath.
-    QString absoluteJournalPath() const;
+    [[nodiscard]] QString absoluteJournalPath() const;
 
     /// Returns the relative journal path that's appropriate for this folder and account.
     QString defaultJournalPath(AccountPtr account);

@@ -169,8 +169,8 @@ public:
      */
     void start(std::unique_ptr<QIODevice> device, const QByteArray &checksumHeader);
 
-    QByteArray calculatedChecksumType() const;
-    QByteArray calculatedChecksum() const;
+    [[nodiscard]] QByteArray calculatedChecksumType() const;
+    [[nodiscard]] QByteArray calculatedChecksum() const;
 
 signals:
     void validated(const QByteArray &checksumType, const QByteArray &checksum);

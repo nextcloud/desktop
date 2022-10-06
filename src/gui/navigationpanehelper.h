@@ -29,7 +29,7 @@ class NavigationPaneHelper : public QObject
 public:
     NavigationPaneHelper(FolderMan *folderMan);
 
-    bool showInExplorerNavigationPane() const { return _showInExplorerNavigationPane; }
+    [[nodiscard]] bool showInExplorerNavigationPane() const { return _showInExplorerNavigationPane; }
     void setShowInExplorerNavigationPane(bool show);
 
     void scheduleUpdateCloudStorageRegistry();

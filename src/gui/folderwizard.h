@@ -41,7 +41,7 @@ class FormatWarningsWizardPage : public QWizardPage
 {
     Q_OBJECT
 protected:
-    QString formatWarnings(const QStringList &warnings) const;
+    [[nodiscard]] QString formatWarnings(const QStringList &warnings) const;
 };
 
 /**
@@ -55,7 +55,7 @@ public:
     explicit FolderWizardLocalPath(const AccountPtr &account);
     ~FolderWizardLocalPath() override;
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
     void initializePage() override;
     void cleanupPage() override;
 
@@ -88,7 +88,7 @@ public:
     explicit FolderWizardRemotePath(const AccountPtr &account);
     ~FolderWizardRemotePath() override;
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
 
     void initializePage() override;
     void cleanupPage() override;

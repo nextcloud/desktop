@@ -113,7 +113,7 @@ private:
     void confirmAndDeleteShare();
 
     /** Retrieve a share's name, accounting for _namesSupported */
-    QString shareName() const;
+    [[nodiscard]] QString shareName() const;
 
     void customizeStyle();
     

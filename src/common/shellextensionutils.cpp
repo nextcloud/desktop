@@ -29,7 +29,6 @@ namespace Protocol {
         if (!valid) {
             qCWarning(lcShellExtensionUtils) << "Invalid shell extensions IPC protocol: " << message.value(QStringLiteral("version")) << " vs " << Version;
         }
-        Q_ASSERT(valid);
         return valid;
     }
 }

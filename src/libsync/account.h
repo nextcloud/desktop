@@ -91,7 +91,7 @@ public:
 
     AccountPtr sharedFromThis();
 
-    AccountPtr sharedFromThis() const;
+    [[nodiscard]] AccountPtr sharedFromThis() const;
 
     /**
      * The user that can be used in dav url.
@@ -99,30 +99,30 @@ public:
      * This can very well be different frome the login user that's
      * stored in credentials()->user().
      */
-    QString davUser() const;
+    [[nodiscard]] QString davUser() const;
     void setDavUser(const QString &newDavUser);
 
-    QString davDisplayName() const;
+    [[nodiscard]] QString davDisplayName() const;
     void setDavDisplayName(const QString &newDisplayName);
 
 #ifndef TOKEN_AUTH_ONLY
-    QImage avatar() const;
+    [[nodiscard]] QImage avatar() const;
     void setAvatar(const QImage &img);
 #endif
 
     /// The name of the account as shown in the toolbar
-    QString displayName() const;
+    [[nodiscard]] QString displayName() const;
 
-    QColor accentColor() const;
-    QColor headerColor() const;
-    QColor headerTextColor() const;
+    [[nodiscard]] QColor accentColor() const;
+    [[nodiscard]] QColor headerColor() const;
+    [[nodiscard]] QColor headerTextColor() const;
 
     /// The internal id of the account.
-    QString id() const;
+    [[nodiscard]] QString id() const;
 
     /** Server url of the account */
     void setUrl(const QUrl &url);
-    QUrl url() const { return _url; }
+    [[nodiscard]] QUrl url() const { return _url; }
 
     /// Adjusts _userVisibleUrl once the host to use is discovered.
     void setUserVisibleHost(const QString &host);
@@ -132,20 +132,20 @@ public:
      *        a trailing slash.
      * @returns the (themeable) dav path for the account.
      */
-    QString davPath() const;
+    [[nodiscard]] QString davPath() const;
 
     /** Returns webdav entry URL, based on url() */
-    QUrl davUrl() const;
+    [[nodiscard]] QUrl davUrl() const;
 
     /** Returns the legacy permalink url for a file.
      *
      * This uses the old way of manually building the url. New code should
      * use the "privatelink" property accessible via PROPFIND.
      */
-    QUrl deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const;
+    [[nodiscard]] QUrl deprecatedPrivateLinkUrl(const QByteArray &numericFileId) const;
 
     /** Holds the accounts credentials */
-    AbstractCredentials *credentials() const;
+    [[nodiscard]] AbstractCredentials *credentials() const;
     void setCredentials(AbstractCredentials *cred);
 
     /** Create a network request on the account's QNAM.
@@ -176,7 +176,7 @@ public:
 
     /** The ssl configuration during the first connection */
     QSslConfiguration getOrCreateSslConfig();
-    QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
+    [[nodiscard]] QSslConfiguration sslConfiguration() const { return _sslConfiguration; }
     void setSslConfiguration(const QSslConfiguration &config);
     // Because of bugs in Qt, we use this to store info needed for the SSL Button
     QSslCipher _sessionCipher;
@@ -185,7 +185,7 @@ public:
 
 
     /** The certificates of the account */
-    QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
+    [[nodiscard]] QList<QSslCertificate> approvedCerts() const { return _approvedCerts; }
     void setApprovedCerts(const QList<QSslCertificate> certs);
     void addApprovedCerts(const QList<QSslCertificate> certs);
 
@@ -198,14 +198,14 @@ public:
     void setSslErrorHandler(AbstractSslErrorHandler *handler);
 
     // To be called by credentials only, for storing username and the like
-    QVariant credentialSetting(const QString &key) const;
+    [[nodiscard]] QVariant credentialSetting(const QString &key) const;
     void setCredentialSetting(const QString &key, const QVariant &value);
 
     /** Assign a client certificate */
     void setCertificate(const QByteArray certficate = QByteArray(), const QString privateKey = QString());
 
     /** Access the server capabilities */
-    const Capabilities &capabilities() const;
+    [[nodiscard]] const Capabilities &capabilities() const;
     void setCapabilities(const QVariantMap &caps);
 
     /** Access the server version
@@ -213,7 +213,7 @@ public:
      * For servers >= 10.0.0, this can be the empty string until capabilities
      * have been received.
      */
-    QString serverVersion() const;
+    [[nodiscard]] QString serverVersion() const;
 
     /** Server version for easy comparison.
      *
@@ -221,7 +221,7 @@ public:
      *
      * Will be 0 if the version is not available yet.
      */
-    int serverVersionInt() const;
+    [[nodiscard]] int serverVersionInt() const;
 
     static constexpr int makeServerVersion(const int majorVersion, const int minorVersion, const int patchVersion) {
         return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
@@ -239,13 +239,13 @@ public:
      *
      * This function returns true if the server is beyond the weak limit.
      */
-    bool serverVersionUnsupported() const;
+    [[nodiscard]] bool serverVersionUnsupported() const;
 
-    bool isUsernamePrefillSupported() const;
+    [[nodiscard]] bool isUsernamePrefillSupported() const;
 
-    bool isChecksumRecalculateRequestSupported() const;
+    [[nodiscard]] bool isChecksumRecalculateRequestSupported() const;
 
-    int checksumRecalculateServerVersionMinSupportedMajor() const;
+    [[nodiscard]] int checksumRecalculateServerVersionMinSupportedMajor() const;
 
     /** True when the server connection is using HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }
@@ -277,10 +277,10 @@ public:
 
     void setupUserStatusConnector();
     void trySetupPushNotifications();
-    PushNotifications *pushNotifications() const;
+    [[nodiscard]] PushNotifications *pushNotifications() const;
     void setPushNotificationsReconnectInterval(int interval);
 
-    std::shared_ptr<UserStatusConnector> userStatusConnector() const;
+    [[nodiscard]] std::shared_ptr<UserStatusConnector> userStatusConnector() const;
 
     void setLockFileState(const QString &serverRelativePath,
                           SyncJournalDb * const journal,

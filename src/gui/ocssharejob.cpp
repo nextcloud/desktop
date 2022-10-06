@@ -24,16 +24,21 @@ namespace OCC {
 OcsShareJob::OcsShareJob(AccountPtr account)
     : OcsJob(account)
 {
-    setPath("ocs/v2.php/apps/files_sharing/api/v1/shares");
+    setPath(_pathForSharesRequest);
     connect(this, &OcsJob::jobFinished, this, &OcsShareJob::jobDone);
 }
 
-void OcsShareJob::getShares(const QString &path)
+void OcsShareJob::getShares(const QString &path, const QMap<QString, QString> &params)
 {
     setVerb("GET");
 
     addParam(QString::fromLatin1("path"), path);
     addParam(QString::fromLatin1("reshares"), QString("true"));
+
+    for (auto it = std::cbegin(params); it != std::cend(params); ++it) {
+        addParam(it.key(), it.value());
+    }
+
     addPassStatusCode(404);
 
     start();
@@ -181,4 +186,6 @@ void OcsShareJob::jobDone(QJsonDocument reply)
 {
     emit shareJobFinished(reply, _value);
 }
+
+QString const OcsShareJob::_pathForSharesRequest = QStringLiteral("ocs/v2.php/apps/files_sharing/api/v1/shares");
 }

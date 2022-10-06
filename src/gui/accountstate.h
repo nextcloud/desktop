@@ -271,10 +271,10 @@ public:
         const QString &id, const QUrl &iconUrl,
         QObject* parent = nullptr);
 
-    QString name() const;
-    QUrl url() const;
-    QString id() const;
-    QUrl iconUrl() const;
+    [[nodiscard]] QString name() const;
+    [[nodiscard]] QUrl url() const;
+    [[nodiscard]] QString id() const;
+    [[nodiscard]] QUrl iconUrl() const;
 
 private:
     QString _name;

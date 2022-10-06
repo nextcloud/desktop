@@ -42,7 +42,7 @@ public:
     QtSingleCoreApplication(const QString &id, int &argc, char **argv);
 
     bool isRunning();
-    QString id() const;
+    [[nodiscard]] QString id() const;
     void setBlock(bool value);
 
 public Q_SLOTS:

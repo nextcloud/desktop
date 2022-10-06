@@ -38,14 +38,14 @@ class OwncloudAdvancedSetupPage : public QWizardPage
 public:
     OwncloudAdvancedSetupPage(OwncloudWizard *wizard);
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
     void initializePage() override;
-    int nextId() const override;
+    [[nodiscard]] int nextId() const override;
     bool validatePage() override;
-    QString localFolder() const;
-    QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
-    bool isConfirmBigFolderChecked() const;
+    [[nodiscard]] QString localFolder() const;
+    [[nodiscard]] QStringList selectiveSyncBlacklist() const;
+    [[nodiscard]] bool useVirtualFileSync() const;
+    [[nodiscard]] bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
     void directoriesCreated();
@@ -72,9 +72,9 @@ private:
     bool dataChanged();
     void startSpinner();
     void stopSpinner();
-    QUrl serverUrl() const;
-    qint64 availableLocalSpace() const;
-    QString checkLocalSpace(qint64 remoteSize) const;
+    [[nodiscard]] QUrl serverUrl() const;
+    [[nodiscard]] qint64 availableLocalSpace() const;
+    [[nodiscard]] QString checkLocalSpace(qint64 remoteSize) const;
     void customizeStyle();
     void setServerAddressLabelUrl(const QUrl &url);
     void styleSyncLogo();

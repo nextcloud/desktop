@@ -70,20 +70,20 @@ public:
 
     explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    bool isSearchInProgress() const;
+    [[nodiscard]] bool isSearchInProgress() const;
 
-    QString currentFetchMoreInProgressProviderId() const;
-    QString searchTerm() const;
-    QString errorString() const;
-    bool waitingForSearchTermEditEnd() const;
+    [[nodiscard]] QString currentFetchMoreInProgressProviderId() const;
+    [[nodiscard]] QString searchTerm() const;
+    [[nodiscard]] QString errorString() const;
+    [[nodiscard]] bool waitingForSearchTermEditEnd() const;
 
     Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
 
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
 private:
     void startSearch();
