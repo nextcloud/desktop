@@ -84,16 +84,17 @@ QString TlsErrorDialog::describeCertificateHtml(const QSslCertificate &certifica
         "<p>"
         "Fingerprint (MD5): <tt>%5</tt><br/>"
         "Fingerprint (SHA1): <tt>%6</tt><br/>"
+        "Fingerprint (SHA256): <tt>%7</tt><br/>"
         "<br/>"
-        "Effective Date: %7"
-        "Expiration Date: %8"
+        "Effective Date: %8"
+        "Expiration Date: %9"
         "</div>"
-        "<h3>Issuer: %9</h3>"
+        "<h3>Issuer: %10</h3>"
         "<div id=\"issuer\">"
         "<p>"
-        "Organization: %10<br/>"
-        "Unit: %11<br/>"
-        "Country: %12"
+        "Organization: %11<br/>"
+        "Unit: %12<br/>"
+        "Country: %13"
         "</p>"
         "</div>"
         "</div>")
@@ -104,6 +105,7 @@ QString TlsErrorDialog::describeCertificateHtml(const QSslCertificate &certifica
                           escapeValueOrNotSpecified(certificate.subjectInfo(QSslCertificate::CountryName)),
                           formatFingerprint(QCryptographicHash::Md5),
                           formatFingerprint(QCryptographicHash::Sha1),
+                          formatFingerprint(QCryptographicHash::Sha256),
                           certificate.effectiveDate().toString(),
                           certificate.expiryDate().toString(),
                           formatInfo(certificate.issuerInfo(QSslCertificate::CommonName)),
