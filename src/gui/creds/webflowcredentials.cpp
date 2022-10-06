@@ -164,7 +164,7 @@ void WebFlowCredentials::askFromUser() {
         }
 
         QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
-                          .arg(_account->davUser(), _account->url().toDisplayString());
+                          .arg(_account->prettyName(), _account->url().toDisplayString());
         _askDialog->setInfo(msg);
 
         _askDialog->show();
@@ -188,7 +188,7 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
 
         QString msg = tr("Please login with the account: %1")
-                .arg(_account->davUser());
+                .arg(_account->prettyName());
         _askDialog->setError(msg);
 
         if (!_askDialog->isUsingFlow2()) {

@@ -131,6 +131,7 @@ void Account::setDavUser(const QString &newDavUser)
         return;
     _davUser = newDavUser;
     emit wantsAccountSaved(this);
+    emit prettyNameChanged();
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -165,6 +166,19 @@ void Account::setDavDisplayName(const QString &newDisplayName)
 {
     _displayName = newDisplayName;
     emit accountChangedDisplayName();
+    emit prettyNameChanged();
+}
+
+QString Account::prettyName() const
+{
+    // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
+    auto name = davDisplayName();
+
+    if (name.isEmpty()) {
+        name = davUser();
+    }
+
+    return name;
 }
 
 QColor Account::headerColor() const
