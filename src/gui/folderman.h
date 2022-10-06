@@ -27,6 +27,7 @@
 
 class TestFolderMan;
 class TestCfApiShellExtensionsIPC;
+class TestShareModel;
 
 namespace OCC {
 
@@ -379,6 +380,7 @@ private:
     friend class OCC::Application;
     friend class ::TestFolderMan;
     friend class ::TestCfApiShellExtensionsIPC;
+    friend class ::TestShareModel;
 };
 
 } // namespace OCC

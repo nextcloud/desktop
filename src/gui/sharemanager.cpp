@@ -478,6 +478,7 @@ void ShareManager::fetchShares(const QString &path)
 
 void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 {
+    qDebug() << reply;
     auto tmpShares = reply.object().value("ocs").toObject().value("data").toArray();
     const QString versionString = _account->serverVersion();
     qCDebug(lcSharing) << versionString << "Fetched" << tmpShares.count() << "shares";

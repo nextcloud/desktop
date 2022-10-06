@@ -196,6 +196,7 @@ void ShareModel::resetData()
     _hasInitialShareFetchCompleted = false;
     _sharees.clear();
 
+    Q_EMIT sharePermissionsChanged();
     Q_EMIT fetchOngoingChanged();
     Q_EMIT hasInitialShareFetchCompletedChanged();
     Q_EMIT shareesChanged();
@@ -362,8 +363,10 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
 
 void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
 {
-    _hasInitialShareFetchCompleted = true;
-    Q_EMIT hasInitialShareFetchCompletedChanged();
+    if(!_hasInitialShareFetchCompleted) {
+        _hasInitialShareFetchCompleted = true;
+        Q_EMIT hasInitialShareFetchCompletedChanged();
+    }
 
     qCInfo(lcSharing) << "Fetched" << shares.count() << "shares";
 
