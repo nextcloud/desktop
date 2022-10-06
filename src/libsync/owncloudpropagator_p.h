@@ -59,6 +59,11 @@ inline SyncFileItem::Status classifyError(QNetworkReply::NetworkError nerror,
             *anotherSyncNeeded = true;
         }
         return SyncFileItem::Message;
+    case 425:
+        // "Too Early"
+        // The file is currently post processed after an upload
+        // once the post processing finished we get a new etag and retry
+        return SyncFileItem::Message;
     case 502:
         // "Bad Gateway"
         // Should be temporary.
