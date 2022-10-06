@@ -398,6 +398,13 @@ public:
     virtual QString openIdConnectPrompt() const;
 
     /**
+     * Defines whether the client attempts danamic registration with the IdP or uses the
+     * oauthClientId() and oauthClientSecret()
+     * Default: True
+     */
+    virtual bool oidcEnableDynamicRegistration() const;
+
+    /**
      * @brief What should be output for the --version command line switch.
      *
      * By default, it's a combination of appName(), version(), the GIT SHA1 and some

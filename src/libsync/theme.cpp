@@ -637,6 +637,11 @@ QString Theme::openIdConnectPrompt() const
     return QStringLiteral("select_account consent");
 }
 
+bool Theme::oidcEnableDynamicRegistration() const
+{
+    return true;
+}
+
 QString Theme::versionSwitchOutput() const
 {
     return aboutVersions(Theme::VersionFormat::Url);

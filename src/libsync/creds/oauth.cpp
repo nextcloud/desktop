@@ -248,7 +248,7 @@ void OAuth::startAuthentication()
     _state = generateRandomString(8);
 
     connect(this, &OAuth::fetchWellKnownFinished, this, [this] {
-        if (_registrationEndpoint.isValid()) {
+        if (Theme::instance()->oidcEnableDynamicRegistration() && _registrationEndpoint.isValid()) {
             auto job = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
             connect(job, &RegisterClientJob::finished, this, [this](const QString &clientId, const QString &clientSecret, const QVariantMap &dynamicRegistrationData) {
                 _clientId = clientId;
@@ -629,8 +629,8 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
                 Q_EMIT refreshFinished(accessToken, newRefreshToken);
             });
         };
-        connect(this, &OAuth::fetchWellKnownFinished, this, [this, refresh] {
-            if (_registrationEndpoint.isValid()) {
+        connect(this, &OAuth::fetchWellKnownFinished, this, [refresh, this] {
+            if (Theme::instance()->oidcEnableDynamicRegistration() && _registrationEndpoint.isValid()) {
                 auto registerJob = new RegisterClientJob(_networkAccessManager, _dynamicRegistrationData, _registrationEndpoint, this);
                 connect(registerJob, &RegisterClientJob::finished, this, [this, refresh](const QString &clientId, const QString &clientSecret) {
                     _clientId = clientId;
