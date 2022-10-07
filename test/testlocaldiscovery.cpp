@@ -621,15 +621,7 @@ private slots:
 
         fakeFolder.remoteModifier().insert(fooFileRootFolder);
         fakeFolder.remoteModifier().insert(barFileRootFolder);
-
-        const auto lockedFileDavProps = QByteArray("<nc:lock>1</nc:lock>"
-                                                   "<nc:lock-owner-type>0</nc:lock-owner-type>"
-                                                   "<nc:lock-owner>user1</nc:lock-owner>"
-                                                   "<nc:lock-owner-displayname>user1</nc:lock-owner-displayname>"
-                                                   "<nc:lock-owner-editor>user1</nc:lock-owner-editor>"
-                                                   "<nc:lock-time>1648046707</nc:lock-time>");
-
-        fakeFolder.remoteModifier().find("bar")->extraDavProperties = lockedFileDavProps;
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("bar"), FileInfo::LockState::FileLocked, 0, QStringLiteral("user1"), {}, QStringLiteral("user1"), 1648046707, 0);
 
         fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
         fakeFolder.remoteModifier().insert(fooFileSubFolder);
@@ -648,8 +640,7 @@ private slots:
         QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("bar"), &fileRecordBefore));
         QVERIFY(fileRecordBefore._lockstate._locked);
 
-        const auto unlockedFileDavProps = QByteArray("<nc:lock>0</nc:lock>");
-        fakeFolder.remoteModifier().find("bar")->extraDavProperties = unlockedFileDavProps;
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("bar"), FileInfo::LockState::FileUnlocked, {}, {}, {}, {}, {}, {});
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
 

@@ -103,6 +103,10 @@ void DiskFileModifier::setModTime(const QString &relativePath, const QDateTime &
     OCC::FileSystem::setModTime(_rootDir.filePath(relativePath), OCC::Utility::qDateTimeToTime_t(modTime));
 }
 
+void DiskFileModifier::modifyLockState([[maybe_unused]] const QString &relativePath, [[maybe_unused]] LockState lockState, [[maybe_unused]] int lockType, [[maybe_unused]] const QString &lockOwner, [[maybe_unused]] const QString &lockOwnerId, [[maybe_unused]] const QString &lockEditorId, [[maybe_unused]] quint64 lockTime, [[maybe_unused]] quint64 lockTimeout)
+{
+}
+
 FileInfo FileInfo::A12_B12_C12_S12()
 {
     FileInfo fi { QString {}, {
@@ -193,6 +197,19 @@ void FileInfo::setModTimeKeepEtag(const QString &relativePath, const QDateTime &
     FileInfo *file = find(relativePath);
     Q_ASSERT(file);
     file->lastModified = modTime;
+}
+
+void FileInfo::modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout)
+{
+    FileInfo *file = findInvalidatingEtags(relativePath);
+    Q_ASSERT(file);
+    file->lockState = lockState;
+    file->lockType = lockType;
+    file->lockOwner = lockOwner;
+    file->lockOwnerId = lockOwnerId;
+    file->lockEditorId = lockEditorId;
+    file->lockTime = lockTime;
+    file->lockTimeout = lockTimeout;
 }
 
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
@@ -334,6 +351,13 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock"), fileInfo.lockState == FileInfo::LockState::FileLocked ? QStringLiteral("1") : QStringLiteral("0"));
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner-type"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner-displayname"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
+        xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
         buffer.write(fileInfo.extraDavProperties);
         xml.writeEndElement(); // prop
         xml.writeTextElement(davUri, QStringLiteral("status"), QStringLiteral("HTTP/1.1 200 OK"));
