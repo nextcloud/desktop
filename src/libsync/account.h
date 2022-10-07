@@ -291,6 +291,9 @@ public:
 
     bool fileCanBeUnlocked(SyncJournalDb * const journal, const QString &folderRelativePath) const;
 
+    void setTrustCertificates(bool trustCertificates);
+    [[nodiscard]] bool trustCertificates() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -342,6 +345,8 @@ private:
     void setSharedThis(AccountPtr sharedThis);
 
     static QString davPathBase();
+
+    bool _trustCertificates = false;
 
     QWeakPointer<Account> _sharedThis;
     QString _id;

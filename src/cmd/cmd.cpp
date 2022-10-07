@@ -440,6 +440,7 @@ int main(int argc, char **argv)
 
     account->setUrl(hostUrl);
     account->setSslErrorHandler(sslErrorHandler);
+    account->setTrustCertificates(options.trustSSL);
 
     QEventLoop loop;
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
