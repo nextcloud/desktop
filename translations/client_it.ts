@@ -4440,6 +4440,34 @@ Are you sure you want to proceed?</source>
     </message>
 </context>
 <context>
+    <name>SetupWizardState</name>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="29"/>
+        <source>Server URL</source>
+        <translation>URL del server</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="31"/>
+        <source>Welcome</source>
+        <translation>Benvenuto</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
+        <source>WebFinger</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
+        <source>Credentials</source>
+        <translation>Credenziali</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
+        <source>Sync Options</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>SetupWizardWindow</name>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>

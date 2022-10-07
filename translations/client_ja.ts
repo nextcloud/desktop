@@ -2493,7 +2493,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 available. Please use the system&apos;s update tool to install it.</source>
-        <translation type="unfinished"/>
+        <translation>新しい %1 が利用可能です。インストールするには、システムのアップデートツールを利用してください。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
@@ -2521,7 +2521,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="720"/>
         <source>File %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
 </context>
 <context>
@@ -2579,47 +2579,47 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="299"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
-        <translation type="unfinished"/>
+        <translation>コンフリクト：サーバ側のバージョンをダウンロードしました。ローカル側は名前を変更してコピーされ、サーバへアップロードされませんでした。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="303"/>
         <source>The filename cannot be encoded on your file system.</source>
-        <translation type="unfinished"/>
+        <translation>ファイルシステムでファイル名をエンコードできません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="306"/>
         <source>The filename is blacklisted on the server.</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名がサーバーのブラックリストに登録されている。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="409"/>
         <source>size</source>
-        <translation type="unfinished"/>
+        <translation>サイズ</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>permissions</source>
-        <translation type="unfinished"/>
+        <translation>許可</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="413"/>
         <source>etag</source>
-        <translation type="unfinished"/>
+        <translation>Eタグ</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="415"/>
         <source>file id</source>
-        <translation type="unfinished"/>
+        <translation>ファイルID</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>サーバは %1 がないことを報告しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1249"/>
         <source>Moved to invalid target, restoring</source>
-        <translation type="unfinished"/>
+        <translation>無効なターゲットに移動し、復元する</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1262"/>
@@ -2649,7 +2649,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1372"/>
         <source>Error while reading the database</source>
-        <translation type="unfinished"/>
+        <translation>データベース読み込み時のエラー</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1432"/>
@@ -4432,6 +4432,34 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>SetupWizardState</name>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="29"/>
+        <source>Server URL</source>
+        <translation>サーバーURL</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="31"/>
+        <source>Welcome</source>
+        <translation>へようこそ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
+        <source>WebFinger</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
+        <source>Credentials</source>
+        <translation>資格情報</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
+        <source>Sync Options</source>
         <translation type="unfinished"/>
     </message>
 </context>

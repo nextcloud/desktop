@@ -3846,7 +3846,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;me Dëshmi %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Ent: %2&lt;br/&gt;Njësi: %3&lt;br/&gt;Vend: %4&lt;/p&gt;&lt;p&gt;Shenja gishtash (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Shenja gishtash (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Shenja gishtash (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Datë Hyrjeje Në Fuqi: %8Datë Skadimi: %9&lt;/div&gt;&lt;h3&gt;Lëshues: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Ent: %11&lt;br/&gt;Njësi: %12&lt;br/&gt;Vend: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -4458,6 +4458,34 @@ Jeni i sigurt se doni të ecet më tej?</translation>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
         <translation>Cila është adresa e shërbyesit tuaj?</translation>
+    </message>
+</context>
+<context>
+    <name>SetupWizardState</name>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="29"/>
+        <source>Server URL</source>
+        <translation>URL shërbyesi</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="31"/>
+        <source>Welcome</source>
+        <translation>Mirë se vini</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
+        <source>WebFinger</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
+        <source>Credentials</source>
+        <translation>Kredenciale</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
+        <source>Sync Options</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
