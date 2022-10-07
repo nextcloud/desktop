@@ -34,6 +34,7 @@ Summary
 * Enhancement - Add a prefer: minimal header to PROPFINDs: [#10104](https://github.com/owncloud/client/pull/10104)
 * Enhancement - Allow creation of sync roots with long paths: [#10135](https://github.com/owncloud/client/pull/10135/)
 * Enhancement - Windows add longPath awareness: [#10136](https://github.com/owncloud/client/pull/10136)
+* Enhancement - Estimate duration of network requests in httplogger: [#10142](https://github.com/owncloud/client/pull/10142)
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 * Enhancement - Built-in AppImage self-updater: [#8923](https://github.com/owncloud/client/issues/8923)
 * Enhancement - Don't query private links if disabled on the server: [#8998](https://github.com/owncloud/client/issues/8998)
@@ -213,6 +214,12 @@ Details
    https://learn.microsoft.com/en-us/windows/win32/fileio/maximum-file-path-limitation?tabs=registry#enable-long-paths-in-windows-10-version-1607-and-later
 
    https://github.com/owncloud/client/pull/10136
+
+* Enhancement - Estimate duration of network requests in httplogger: [#10142](https://github.com/owncloud/client/pull/10142)
+
+   We now include an estimated duration in the httploger.
+
+   https://github.com/owncloud/client/pull/10142
 
 * Enhancement - Display `Show ownCloud` instead of `Settings` in systray: [#8234](https://github.com/owncloud/client/issues/8234)
 
