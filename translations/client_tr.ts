@@ -3462,37 +3462,37 @@ for additional privileges during the process.</source>
         <translation>Kullanıcı ve gruplarla paylaş...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="93"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
         <translation>Kişileri bu paylaşılan dosyaya veya %1 klasörüne özel bir bağlantı vererek yönlendirebilirsiniz</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="215"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>The item is not shared with any users or groups</source>
         <translation>Bu öge hiçbir kullanıcı veya grupla paylaşılmıyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="246"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
         <source>Open link in browser</source>
         <translation>Bağlantıyı tarayıcıda aç</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>Copy link to clipboard</source>
         <translation>Linki panoya kopyala</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="250"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
         <source>Send link by email</source>
         <translation>Bağlantıyı e-posta ile gönder</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="260"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="261"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>&apos;%1&apos; için sonuç yok</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="336"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
         <translation>Seninle bir şey paylaştım</translation>
     </message>
@@ -3526,17 +3526,17 @@ for additional privileges during the process.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
         <source>create</source>
         <translation>oluştur</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="360"/>
         <source>change</source>
         <translation>değiştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="362"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="363"/>
         <source>delete</source>
         <translation>sil</translation>
     </message>
@@ -3844,8 +3844,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
-        <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %7Expiration Date: %8&lt;/div&gt;&lt;h3&gt;Issuer: %9&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %10&lt;br/&gt;Unit: %11&lt;br/&gt;Country: %12&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;Sertifikalı %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organizasyon: %2&lt;br/&gt;Birim: %3&lt;br/&gt;Ülke: %4&lt;/p&gt;&lt;p&gt; Parmak İzi (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Parmak İzi (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Geçerlilik Tarihi: %7 Bitiş Tarihi: %8&lt;/div&gt;&lt;h3&gt;İhraç Eden: %9&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organizasyon: %10&lt;br/&gt;Birim: %11&lt;br/&gt;Ülke: %12&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
+        <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3963,12 +3963,12 @@ Güncelleme arka planda gerçekleştirilecek ve mevcut AppImage dosyasının üz
         <translation>Yerel klasörü seçin</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
         <source>Enable experimental feature?</source>
         <translation>Deneysel özellik etkinleştirilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="116"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -3985,12 +3985,12 @@ Bu moda geçmek, o anda çalışan eşlemeyi iptal edecektir.
 Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıkan sorunları bildirin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Deneysel yer tutucu modunu etkinleştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="132"/>
         <source>Stay safe</source>
         <translation>Güvenli kal</translation>
     </message>
@@ -4565,12 +4565,12 @@ Devam etmek istediğinizden emin misiniz?</translation>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="690"/>
+        <location filename="../src/libsync/theme.cpp" line="695"/>
         <source>Username</source>
         <translation>Kullanıcı adı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="692"/>
+        <location filename="../src/libsync/theme.cpp" line="697"/>
         <source>E-mail address</source>
         <translation>E-posta adresi</translation>
     </message>

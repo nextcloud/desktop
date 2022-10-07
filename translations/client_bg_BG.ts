@@ -3463,37 +3463,37 @@ for additional privileges during the process.</source>
         <translation>Споделяне с потребители и групи...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="93"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
         <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите лична връзка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="215"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>The item is not shared with any users or groups</source>
         <translation>Елементът не се споделя с никакви потребители или групи</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="246"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
         <source>Open link in browser</source>
         <translation>Отвори линка в браузър</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="248"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="249"/>
         <source>Copy link to clipboard</source>
         <translation>Копирайте връзката в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="250"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="251"/>
         <source>Send link by email</source>
         <translation>Изпрати връзката по имейл</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="260"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="261"/>
         <source>No results for &apos;%1&apos;</source>
         <translation>Няма резултати за &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="336"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
         <translation>Споделиха нещо с теб</translation>
     </message>
@@ -3527,17 +3527,17 @@ for additional privileges during the process.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="356"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="357"/>
         <source>create</source>
         <translation>създаване</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="359"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="360"/>
         <source>change</source>
         <translation>промяна</translation>
     </message>
     <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="362"/>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="363"/>
         <source>delete</source>
         <translation>изтриване</translation>
     </message>
@@ -3845,8 +3845,8 @@ for additional privileges during the process.</source>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
-        <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %7Expiration Date: %8&lt;/div&gt;&lt;h3&gt;Issuer: %9&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %10&lt;br/&gt;Unit: %11&lt;br/&gt;Country: %12&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;с Удостоверение %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Организация: %2&lt;br/&gt;Отдел: %3&lt;br/&gt;Държава: %4&lt;/p&gt;&lt;p&gt;Отпечатък (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Първичен отпечатък (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Дата на влизане в сила: %7Дата на изтичане на валидността: %8&lt;/div&gt;&lt;h3&gt;Издател: %9&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Организация: %10&lt;br/&gt;Отдел: %11&lt;br/&gt;Държава: %12&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
+        <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3964,12 +3964,12 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation>Изберете локална папка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="114"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
         <source>Enable experimental feature?</source>
         <translation>Да се активира експерименталната функция?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="116"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -3986,12 +3986,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 Това е нов, експериментален режим. Ако решите да го използвате, моля съобщавайте за всички възникнали проблеми.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="130"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Активиране на експериментален режим на заместване</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="132"/>
         <source>Stay safe</source>
         <translation>Само безопасно</translation>
     </message>
@@ -4566,12 +4566,12 @@ Are you sure you want to proceed?</source>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="690"/>
+        <location filename="../src/libsync/theme.cpp" line="695"/>
         <source>Username</source>
         <translation>Потребителско име</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="692"/>
+        <location filename="../src/libsync/theme.cpp" line="697"/>
         <source>E-mail address</source>
         <translation>Имейл адрес</translation>
     </message>
