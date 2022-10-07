@@ -345,7 +345,7 @@ void ProcessDirectoryJob::processFile(PathTuple path,
 {
     const char *hasServer = serverEntry.isValid() ? "true" : _queryServer == ParentNotChanged ? "db" : "false";
     const char *hasLocal = localEntry.isValid() ? "true" : _queryLocal == ParentNotChanged ? "db" : "false";
-    const auto serverFileIsLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked";
+    const auto serverFileIsLocked = (serverEntry.isValid() ? (serverEntry.locked == SyncFileItem::LockStatus::LockedItem ? "locked" : "not locked")  : "");
     const auto localFileIsLocked = dbEntry._lockstate._locked ? "locked" : "not locked";
     qCInfo(lcDisco).nospace() << "Processing " << path._original
                               << " | (db/local/remote)"
@@ -393,29 +393,6 @@ void ProcessDirectoryJob::processFile(PathTuple path,
     // until the request is processed.
     if (item->_type == ItemTypeVirtualFileDehydration)
         item->_type = ItemTypeFile;
-
-    // We want to check the lock state of this file after the lock time has expired
-    if(serverEntry.locked == SyncFileItem::LockStatus::LockedItem) {
-        const auto lockExpirationTime = serverEntry.lockTime + serverEntry.lockTimeout;
-        const auto timeRemaining = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
-        // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
-        const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
-
-        qCInfo(lcDisco) << "File:" << path._original << "is locked."
-                        << "Lock expires in:" << lockExpirationTimeout << "seconds."
-                        << "A sync run will be scheduled for around that time.";
-
-        _discoveryData->_anotherSyncNeeded = true;
-        _discoveryData->_filesNeedingScheduledSync.insert(path._original, lockExpirationTimeout);
-
-    } else if (serverEntry.locked == SyncFileItem::LockStatus::UnlockedItem && dbEntry._lockstate._locked) {
-        // We have received data that this file has been unlocked remotely, so let's notify the sync engine
-        // that we no longer need a scheduled sync run for this file
-        qCInfo(lcDisco) << "File:" << path._original << "is unlocked and a scheduled sync is no longer needed."
-                        << "Will remove scheduled sync if there is one.";
-
-        _discoveryData->_filesUnscheduleSync.append(path._original);
-    }
 
     // VFS suffixed files on the server are ignored
     if (isVfsWithSuffix()) {
@@ -523,14 +500,28 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
         }
     }
 
-    // We need to make sure that we update the info in the database if the lockstate has changed
-    const auto checkFileLockState = [&item, &dbEntry, &serverEntry] {
-        const bool isServerEntryLocked = serverEntry.locked == SyncFileItem::LockStatus::LockedItem;
+    // We want to check the lock state of this file after the lock time has expired
+    if(serverEntry.locked == SyncFileItem::LockStatus::LockedItem) {
+        const auto lockExpirationTime = serverEntry.lockTime + serverEntry.lockTimeout;
+        const auto timeRemaining = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+        // Add on a second as a precaution, sometimes we catch the server before it has had a chance to update
+        const auto lockExpirationTimeout = qMax(5LL, timeRemaining + 1);
 
-        if(isServerEntryLocked != dbEntry._lockstate._locked) {
-            item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
-        }
-    };
+        qCInfo(lcDisco) << "File:" << path._original << "is locked."
+                        << "Lock expires in:" << lockExpirationTimeout << "seconds."
+                        << "A sync run will be scheduled for around that time.";
+
+        _discoveryData->_anotherSyncNeeded = true;
+        _discoveryData->_filesNeedingScheduledSync.insert(path._original, lockExpirationTimeout);
+
+    } else if (serverEntry.locked == SyncFileItem::LockStatus::UnlockedItem && dbEntry._lockstate._locked) {
+        // We have received data that this file has been unlocked remotely, so let's notify the sync engine
+        // that we no longer need a scheduled sync run for this file
+        qCInfo(lcDisco) << "File:" << path._original << "is unlocked and a scheduled sync is no longer needed."
+                        << "Will remove scheduled sync if there is one.";
+
+        _discoveryData->_filesUnscheduleSync.append(path._original);
+    }
 
     // The file is known in the db already
     if (dbEntry.isValid()) {
@@ -613,12 +604,10 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
                 return ParentNotChanged;
             }();
 
-            checkFileLockState();
             processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, serverQueryMode);
             return;
         }
 
-        checkFileLockState();
         processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
         return;
     }
