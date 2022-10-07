@@ -20,26 +20,22 @@
 
 using namespace OCC::Wizard;
 
-namespace {
-const char contextC[] = "SetupWizardState";
-}
-
 template <>
 QString OCC::Utility::enumToDisplayName(SetupWizardState state)
 {
     switch (state) {
     case SetupWizardState::ServerUrlState:
         if (Theme::instance()->overrideServerUrlV2().isEmpty()) {
-            return QApplication::translate(contextC, "Server URL");
+            return QApplication::translate("SetupWizardState", "Server URL");
         } else {
-            return QApplication::translate(contextC, "Welcome");
+            return QApplication::translate("SetupWizardState", "Welcome");
         }
     case SetupWizardState::WebFingerState:
-        return QApplication::translate(contextC, "WebFinger");
+        return QApplication::translate("SetupWizardState", "WebFinger");
     case SetupWizardState::CredentialsState:
-        return QApplication::translate(contextC, "Credentials");
+        return QApplication::translate("SetupWizardState", "Credentials");
     case SetupWizardState::AccountConfiguredState:
-        return QApplication::translate(contextC, "Sync Options");
+        return QApplication::translate("SetupWizardState", "Sync Options");
     default:
         Q_UNREACHABLE();
     }
