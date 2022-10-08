@@ -4471,7 +4471,7 @@ Möchtest du fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
         <source>Credentials</source>
-        <translation type="unfinished"/>
+        <translation>Zugangsdaten</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
