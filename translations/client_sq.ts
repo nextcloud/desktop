@@ -4485,7 +4485,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation type="unfinished"/>
+        <translation>Mundësi Njëkohësimi</translation>
     </message>
 </context>
 <context>
