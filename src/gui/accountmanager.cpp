@@ -29,16 +29,16 @@
 #include "ui_mnemonicdialog.h"
 
 namespace {
-static const char urlC[] = "url";
-static const char authTypeC[] = "authType";
-static const char userC[] = "user";
-static const char displayNameC[] = "displayName";
-static const char httpUserC[] = "http_user";
-static const char davUserC[] = "dav_user";
-static const char caCertsKeyC[] = "CaCertificates";
-static const char accountsC[] = "Accounts";
-static const char versionC[] = "version";
-static const char serverVersionC[] = "serverVersion";
+constexpr auto urlC = "url";
+constexpr auto authTypeC = "authType";
+constexpr auto userC = "user";
+constexpr auto displayNameC = "displayName";
+constexpr auto httpUserC = "http_user";
+constexpr auto davUserC = "dav_user";
+constexpr auto caCertsKeyC = "CaCertificates";
+constexpr auto accountsC = "Accounts";
+constexpr auto versionC = "version";
+constexpr auto serverVersionC = "serverVersion";
 
 // The maximum versions that this client can read
 static const int maxAccountsVersion = 2;
