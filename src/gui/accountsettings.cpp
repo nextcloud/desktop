@@ -819,7 +819,7 @@ void AccountSettings::slotAccountStateChanged()
                 });
 
                 contentWidget->setEnabled(false);
-                connect(cred, &HttpCredentialsGui::authorisationLinkChanged, this, [contentWidget]() {
+                connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget, [contentWidget]() {
                     contentWidget->setEnabled(true);
                 });
 
