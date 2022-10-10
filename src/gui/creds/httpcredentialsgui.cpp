@@ -113,12 +113,15 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
 
 void HttpCredentialsGui::showDialog()
 {
-    auto *contentWidget = new BasicLoginWidget();
-    contentWidget->forceUsername(_account->davUser());
+    auto *dialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::Basic, ocApp()->gui()->settingsDialog());
 
-    auto *dialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());
-    dialog->setAttribute(Qt::WA_DeleteOnClose, true);
+    // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
+    dialog->setAttribute(Qt::WA_DeleteOnClose);
+
     dialog->setTopLabelText(tr("Please enter your password to log in to your account."));
+
+    auto *contentWidget = qobject_cast<BasicLoginWidget *>(dialog->contentWidget());
+    contentWidget->forceUsername(_account->davUser());
 
     // in this case, we want to use the login button
     dialog->addLogInButton();

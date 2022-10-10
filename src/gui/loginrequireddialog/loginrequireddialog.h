@@ -33,7 +33,16 @@ class LoginRequiredDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit LoginRequiredDialog(AbstractLoginWidget *contentWidget, QWidget *parent = nullptr);
+    /**
+     * Defines which form is shown to the user.
+     * The form widgets are already initialized by the content widget (a stacked widget), we just need to bring the right one to the front.
+     */
+    enum class Mode {
+        Basic,
+        OAuth,
+    };
+
+    explicit LoginRequiredDialog(Mode mode, QWidget *parent = nullptr);
     ~LoginRequiredDialog() override;
 
     void setTopLabelText(const QString &newText);
@@ -43,6 +52,12 @@ public:
      * For use with HTTP basic authentication.
      */
     void addLogInButton();
+
+    /**
+     * Form widget currently shown to the user.
+     * @return form widget
+     */
+    [[nodiscard]] QWidget *contentWidget() const;
 
 private:
     ::Ui::LoginRequiredDialog *_ui;

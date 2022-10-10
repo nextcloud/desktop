@@ -804,9 +804,14 @@ void AccountSettings::slotAccountStateChanged()
 
                 qCDebug(lcAccountSettings) << "showing modal dialog asking user to log in again via OAuth2";
 
-                auto *contentWidget = new OAuthLoginWidget();
+                _askForOAuthLoginDialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::OAuth, ocApp()->gui()->settingsDialog());
 
-                _askForOAuthLoginDialog = new LoginRequiredDialog(contentWidget, ocApp()->gui()->settingsDialog());
+                // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
+                _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
+
+                _askForOAuthLoginDialog->setTopLabelText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(account->displayName()));
+
+                auto *contentWidget = qobject_cast<OAuthLoginWidget *>(_askForOAuthLoginDialog->contentWidget());
 
                 connect(contentWidget, &OAuthLoginWidget::copyUrlToClipboardButtonClicked, _askForOAuthLoginDialog, [account]() {
                     // TODO: use authorisationLinkAsync
@@ -822,11 +827,6 @@ void AccountSettings::slotAccountStateChanged()
                 connect(cred, &HttpCredentialsGui::authorisationLinkChanged, contentWidget, [contentWidget]() {
                     contentWidget->setEnabled(true);
                 });
-
-                // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
-                _askForOAuthLoginDialog->setAttribute(Qt::WA_DeleteOnClose);
-
-                _askForOAuthLoginDialog->setTopLabelText(tr("The account %1 is currently logged out.\n\nPlease authenticate using your browser.").arg(account->displayName()));
 
                 connect(
                     cred, &HttpCredentialsGui::authorisationLinkChanged,

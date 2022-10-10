@@ -24,7 +24,7 @@
 
 namespace OCC {
 
-LoginRequiredDialog::LoginRequiredDialog(AbstractLoginWidget *contentWidget, QWidget *parent)
+LoginRequiredDialog::LoginRequiredDialog(Mode mode, QWidget *parent)
     : QDialog(parent)
     , _ui(new ::Ui::LoginRequiredDialog)
 {
@@ -41,8 +41,16 @@ LoginRequiredDialog::LoginRequiredDialog(AbstractLoginWidget *contentWidget, QWi
 
     // using a stacked widget appears to work better than a plain widget
     // we do this in the setup wizard as well
-    _ui->contentWidget->addWidget(contentWidget);
-    _ui->contentWidget->setCurrentWidget(contentWidget);
+    _ui->contentWidget->setCurrentWidget([this, mode]() -> QWidget * {
+        switch (mode) {
+        case Mode::Basic:
+            return _ui->basicLoginWidget;
+        case Mode::OAuth:
+            return _ui->oauthLoginWidget;
+        default:
+            Q_UNREACHABLE();
+        }
+    }());
 
     Utility::setModal(this);
     setFixedSize(this->minimumSize());
@@ -61,6 +69,11 @@ void LoginRequiredDialog::setTopLabelText(const QString &newText)
 void LoginRequiredDialog::addLogInButton()
 {
     _ui->rightButtonBox->addButton(tr("Log in"), QDialogButtonBox::AcceptRole);
+}
+
+QWidget *LoginRequiredDialog::contentWidget() const
+{
+    return _ui->contentWidget->currentWidget();
 }
 
 } // OCC
