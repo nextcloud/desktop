@@ -35,14 +35,26 @@ constexpr auto userC = "user";
 constexpr auto displayNameC = "displayName";
 constexpr auto httpUserC = "http_user";
 constexpr auto davUserC = "dav_user";
+constexpr auto shibbolethUserC = "shibboleth_shib_user";
 constexpr auto caCertsKeyC = "CaCertificates";
 constexpr auto accountsC = "Accounts";
 constexpr auto versionC = "version";
 constexpr auto serverVersionC = "serverVersion";
+constexpr auto generalC = "General";
+
+constexpr auto dummyAuthTypeC = "dummy";
+constexpr auto httpAuthTypeC = "http";
+constexpr auto webflowAuthTypeC = "webflow";
+constexpr auto shibbolethAuthTypeC = "shibboleth";
+constexpr auto httpAuthPrefix = "http_";
+constexpr auto webflowAuthPrefix = "webflow_";
+
+constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
+constexpr auto legacyOcSettingsC = "ownCloud";
 
 // The maximum versions that this client can read
-static const int maxAccountsVersion = 2;
-static const int maxAccountVersion = 1;
+constexpr auto maxAccountsVersion = 2;
+constexpr auto maxAccountVersion = 1;
 }
 
 
@@ -61,7 +73,7 @@ bool AccountManager::restore()
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
 
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     if (settings->status() != QSettings::NoError || !settings->isWritable()) {
         qCWarning(lcAccountManager) << "Could not read settings from" << settings->fileName()
                                     << settings->status();
@@ -84,7 +96,7 @@ bool AccountManager::restore()
     for (const auto &accountId : settings->childGroups()) {
         settings->beginGroup(accountId);
         if (!skipSettingsKeys.contains(settings->group())) {
-            if (auto acc = loadAccountHelper(*settings)) {
+            if (const auto acc = loadAccountHelper(*settings)) {
                 acc->_id = accountId;
                 if (auto accState = AccountState::loadFromSettings(acc, *settings)) {
                     auto jar = qobject_cast<CookieJar*>(acc->_am->cookieJar());
@@ -106,12 +118,14 @@ bool AccountManager::restore()
 
 void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
 {
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
-    const int accountsVersion = settings->value(QLatin1String(versionC)).toInt();
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const auto accountsVersion = settings->value(QLatin1String(versionC)).toInt();
+
     if (accountsVersion <= maxAccountsVersion) {
-        foreach (const auto &accountId, settings->childGroups()) {
+        for (const auto &accountId : settings->childGroups()) {
             settings->beginGroup(accountId);
-            const int accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
+            const auto accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
+
             if (accountVersion > maxAccountVersion) {
                 ignoreKeys->append(settings->group());
             }
@@ -134,26 +148,26 @@ bool AccountManager::restoreFromLegacySettings()
     // then try to load settings from a very old place
     if (settings->childKeys().isEmpty()) {
         // Now try to open the original ownCloud settings to see if they exist.
-        QString oCCfgFile = QDir::fromNativeSeparators(settings->fileName());
+        auto oCCfgFile = QDir::fromNativeSeparators(settings->fileName());
         // replace the last two segments with ownCloud/owncloud.cfg
         oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
         oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
-        oCCfgFile += QLatin1String("/ownCloud/owncloud.cfg");
+        oCCfgFile += QLatin1String(legacyRelativeConfigLocationC);
 
         qCInfo(lcAccountManager) << "Migrate: checking old config " << oCCfgFile;
 
         QFileInfo fi(oCCfgFile);
         if (fi.isReadable()) {
             std::unique_ptr<QSettings> oCSettings(new QSettings(oCCfgFile, QSettings::IniFormat));
-            oCSettings->beginGroup(QLatin1String("ownCloud"));
+            oCSettings->beginGroup(QLatin1String(legacyOcSettingsC));
 
             // Check the theme url to see if it is the same url that the oC config was for
-            QString overrideUrl = Theme::instance()->overrideServerUrl();
+            auto overrideUrl = Theme::instance()->overrideServerUrl();
             if (!overrideUrl.isEmpty()) {
                 if (overrideUrl.endsWith('/')) {
                     overrideUrl.chop(1);
                 }
-                QString oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
                 if (oCUrl.endsWith('/')) {
                     oCUrl.chop(1);
                 }
@@ -171,7 +185,7 @@ bool AccountManager::restoreFromLegacySettings()
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
-        if (auto acc = loadAccountHelper(*settings)) {
+        if (const auto acc = loadAccountHelper(*settings)) {
             addAccount(acc);
             return true;
         }
@@ -181,7 +195,7 @@ bool AccountManager::restoreFromLegacySettings()
 
 void AccountManager::save(bool saveCredentials)
 {
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->setValue(QLatin1String(versionC), maxAccountsVersion);
     for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
@@ -197,7 +211,7 @@ void AccountManager::save(bool saveCredentials)
 void AccountManager::saveAccount(Account *a)
 {
     qCDebug(lcAccountManager) << "Saving account" << a->url().toString();
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->id());
     saveAccountHelper(a, *settings, false); // don't save credentials they might not have been loaded yet
     settings->endGroup();
@@ -209,7 +223,7 @@ void AccountManager::saveAccount(Account *a)
 void AccountManager::saveAccountState(AccountState *a)
 {
     qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
     a->writeToSettings(*settings);
     settings->endGroup();
@@ -234,7 +248,9 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
             // re-persisting them)
             acc->_credentials->persist();
         }
-        for (const auto &key : acc->_settingsMap.keys()) {
+
+        const auto settingsMapKeys = acc->_settingsMap.keys();
+        for (const auto &key : settingsMapKeys) {
             settings.setValue(key, acc->_settingsMap.value(key));
         }
         settings.setValue(QLatin1String(authTypeC), acc->_credentials->authType());
@@ -245,7 +261,7 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     }
 
     // Save accepted certificates.
-    settings.beginGroup(QLatin1String("General"));
+    settings.beginGroup(QLatin1String(generalC));
     qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
     for (const auto &cert : acc->approvedCerts()) {
@@ -271,29 +287,29 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
 
 AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
 {
-    auto urlConfig = settings.value(QLatin1String(urlC));
+    const auto urlConfig = settings.value(QLatin1String(urlC));
     if (!urlConfig.isValid()) {
         // No URL probably means a corrupted entry in the account settings
         qCWarning(lcAccountManager) << "No URL for account " << settings.group();
         return AccountPtr();
     }
 
-    auto acc = createAccount();
+    const auto acc = createAccount();
 
-    QString authType = settings.value(QLatin1String(authTypeC)).toString();
+    auto authType = settings.value(QLatin1String(authTypeC)).toString();
 
     // There was an account-type saving bug when 'skip folder config' was used
     // See #5408. This attempts to fix up the "dummy" authType
-    if (authType == QLatin1String("dummy")) {
-        if (settings.contains(QLatin1String("http_user"))) {
-            authType = "http";
-        } else if (settings.contains(QLatin1String("shibboleth_shib_user"))) {
-            authType = "shibboleth";
+    if (authType == QLatin1String(dummyAuthTypeC)) {
+        if (settings.contains(QLatin1String(httpUserC))) {
+            authType = httpAuthTypeC;
+        } else if (settings.contains(QLatin1String(shibbolethUserC))) {
+            authType = shibbolethAuthTypeC;
         }
     }
 
-    QString overrideUrl = Theme::instance()->overrideServerUrl();
-    QString forceAuth = Theme::instance()->forceConfigAuthType();
+    const auto overrideUrl = Theme::instance()->overrideServerUrl();
+    const auto forceAuth = Theme::instance()->forceConfigAuthType();
     if (!forceAuth.isEmpty() && !overrideUrl.isEmpty()) {
         // If forceAuth is set, this might also mean the overrideURL has changed.
         // See enterprise issues #1126
@@ -304,14 +320,15 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     }
 
     // Migrate to webflow
-    if (authType == QLatin1String("http")) {
-        authType = "webflow";
+    if (authType == QLatin1String(httpAuthTypeC)) {
+        authType = webflowAuthTypeC;
         settings.setValue(QLatin1String(authTypeC), authType);
 
-        for (const QString &key : settings.childKeys()) {
-            if (!key.startsWith("http_"))
+        const auto settingsChildKeys = settings.childKeys();
+        for (const auto &key : settingsChildKeys) {
+            if (!key.startsWith(httpAuthPrefix))
                 continue;
-            auto newkey = QString::fromLatin1("webflow_").append(key.mid(5));
+            const auto newkey = QString::fromLatin1(webflowAuthPrefix).append(key.mid(5));
             settings.setValue(newkey, settings.value((key)));
             settings.remove(key);
         }
@@ -335,7 +352,7 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->setCredentials(CredentialsFactory::create(authType));
 
     // now the server cert, it is in the general group
-    settings.beginGroup(QLatin1String("General"));
+    settings.beginGroup(QLatin1String(generalC));
     const auto certs = QSslCertificate::fromData(settings.value(caCertsKeyC).toByteArray());
     qCInfo(lcAccountManager) << "Restored: " << certs.count() << " unknown certs.";
     acc->setApprovedCerts(certs);
@@ -360,25 +377,25 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
     }
     newAccount->_id = id;
 
-    auto newAccountState = new AccountState(newAccount);
+    const auto newAccountState = new AccountState(newAccount);
     addAccountState(newAccountState);
     return newAccountState;
 }
 
 void AccountManager::deleteAccount(AccountState *account)
 {
-    auto it = std::find(_accounts.begin(), _accounts.end(), account);
+    const auto it = std::find(_accounts.begin(), _accounts.end(), account);
     if (it == _accounts.end()) {
         return;
     }
-    auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
+    const auto copy = *it; // keep a reference to the shared pointer so it does not delete it just yet
     _accounts.erase(it);
 
     // Forget account credentials, cookies
     account->account()->credentials()->forgetSensitiveData();
     QFile::remove(account->account()->cookieJarPath());
 
-    auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
+    const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->remove(account->account()->id());
 
     // Forget E2E keys
@@ -392,7 +409,7 @@ void AccountManager::deleteAccount(AccountState *account)
 
 AccountPtr AccountManager::createAccount()
 {
-    AccountPtr acc = Account::create();
+    const auto acc = Account::create();
     acc->setSslErrorHandler(new SslDialogErrorHandler);
     connect(acc.data(), &Account::proxyAuthenticationRequired,
         ProxyAuthHandler::instance(), &ProxyAuthHandler::handleProxyAuthenticationRequired);
@@ -404,7 +421,7 @@ AccountPtr AccountManager::createAccount()
 
 void AccountManager::displayMnemonic(const QString& mnemonic)
 {
-    auto *widget = new QDialog;
+    const auto widget = new QDialog;
     Ui_Dialog ui;
     ui.setupUi(widget);
     widget->setWindowTitle(tr("End-to-End encryption mnemonic"));
@@ -446,9 +463,9 @@ bool AccountManager::isAccountIdAvailable(const QString &id) const
 
 QString AccountManager::generateFreeAccountId() const
 {
-    int i = 0;
+    auto i = 0;
     forever {
-        QString id = QString::number(i);
+        const auto id = QString::number(i);
         if (isAccountIdAvailable(id)) {
             return id;
         }
