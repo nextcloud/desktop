@@ -3944,32 +3944,32 @@ The update will be performed in the background, and overwrite the current AppIma
         <translation>Използване на &amp;виртуални файлове вместо незабавно да се изтегля съдържанието</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="50"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="55"/>
         <source>%1 (recommended)</source>
         <translation>%1 (препоръчително)</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="68"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="73"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
         <translation>Функцията Виртуална файлова система не е налична за тази инсталация.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="70"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
         <translation>Функцията Виртуална файлова система все още не е стабилна. Използвайте я с повишено внимание.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="74"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
         <source>Select the local folder</source>
         <translation>Изберете локална папка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
         <source>Enable experimental feature?</source>
         <translation>Да се активира експерименталната функция?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="116"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="121"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -3986,12 +3986,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 Това е нов, експериментален режим. Ако решите да го използвате, моля съобщавайте за всички възникнали проблеми.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Активиране на експериментален режим на заместване</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="132"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="137"/>
         <source>Stay safe</source>
         <translation>Само безопасно</translation>
     </message>

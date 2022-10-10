@@ -3940,32 +3940,32 @@ Das Update wird im Hintergrund durchgeführt und überschreibt die aktuelle AppI
         <translation>&amp;Virtuelle Dateien verwenden, anstatt die Dateien gleich herunter zu laden</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="50"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="55"/>
         <source>%1 (recommended)</source>
         <translation>%1 (empfohlen)</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="68"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="73"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
         <translation>Die virtuellen Dateisystems Funktion ist für diese Installation nicht verfügbar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="70"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
         <translation>Das virtuelle Filesystem Feature ist derzeit noch nicht stabil. Bitte mit Vorsicht zu benutzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="74"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
         <source>Select the local folder</source>
         <translation>Lokalen Ordner auswählen</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="115"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
         <source>Enable experimental feature?</source>
         <translation>Experimentelle Funktion aktivieren?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="116"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="121"/>
         <source>When the &quot;virtual files&quot; mode is enabled no files will be downloaded initially. Instead, a tiny file will be created for each file that exists on the server. The contents can be downloaded by running these files or by using their context menu.
 
 The virtual files mode is mutually exclusive with selective sync. Currently unselected folders will be translated to online-only folders and your selective sync settings will be reset.
@@ -3980,12 +3980,12 @@ Der Modus virtuelle Dateien schließt sich mit dem Modus &quot;Selective Sync&qu
 Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, berichten sie bitte alle Probleme, die auftreten.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="131"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
         <source>Enable experimental placeholder mode</source>
         <translation>Experimentellen Platzhalter Modus freischalten</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="132"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="137"/>
         <source>Stay safe</source>
         <translation>Sicher bleiben</translation>
     </message>
