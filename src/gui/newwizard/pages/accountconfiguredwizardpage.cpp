@@ -30,6 +30,11 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
     _ui->useVfsRadioButton->setText(tr("Use &virtual files instead of downloading content immediately"));
     if (vfsModeIsExperimental) {
         _ui->useVfsRadioButton->setIcon(Utility::getCoreIcon(QStringLiteral("warning")));
+
+        // when a feature is experimental and experimental features are disabled globally, it should be hidden
+        if (!Theme::instance()->enableExperimentalFeatures()) {
+            _ui->useVfsRadioButton->hide();
+        }
     }
 
     // just adjusting the visibility should be sufficient for these branding options
