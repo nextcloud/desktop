@@ -33,13 +33,15 @@ bool SimpleSslErrorHandler::handleErrors(QList<QSslError> errors, const QSslConf
         return true;
     }
 
+    bool allTrusted = true;
+
     for (const auto &error : qAsConst(errors)) {
         if (!account->approvedCerts().contains(error.certificate())) {
-            certs->append(error.certificate());
-            return false;
+            allTrusted = false;
         }
+        certs->append(error.certificate());
     }
 
-    return true;
+    return allTrusted;
 }
 }
