@@ -13,10 +13,13 @@ SYNC_STATUS = {
     'UPDATE': 'UPDATE_VIEW',
 }
 
-# default sync patterns for the initial sync (after adding account)
 SYNC_PATTERNS = {
+    # default sync patterns for the initial sync (after adding account)
+    # the pattern can be of TWO types depending on the available resources (files/folders)
     'initial': [
+        # when syncing empty account (hidden files are ignored)
         [SYNC_STATUS['UPDATE'], SYNC_STATUS['OK']],
+        # when syncing an account that has some files/folders
         [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
     ],
     'synced': [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
@@ -61,7 +64,7 @@ def filterSyncMessages(messages):
     return messages[start_idx:]
 
 
-def filterMessageForItem(messages, item):
+def filterMessagesForItem(messages, item):
     filteredMsg = []
     for msg in messages:
         if msg.rstrip('/').endswith(item.rstrip('/')):

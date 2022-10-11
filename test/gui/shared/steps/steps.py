@@ -11,6 +11,7 @@ import requests
 import builtins
 import shutil
 
+from objectmaphelper import RegularExpression
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 from helpers.SetupClientHelper import *
 from helpers.FilesHelper import buildConflictedRegex
@@ -28,7 +29,7 @@ from helpers.SyncHelper import (
     getSyncedPattern,
     generateSyncPatternFromMessages,
     filterSyncMessages,
-    filterMessageForItem,
+    filterMessagesForItem,
     matchPatterns,
 )
 
@@ -37,6 +38,7 @@ from helpers.SyncHelper import (
 # if the IDE fails to reference the script, add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
 sys.path.append(os.path.realpath('../../../shell_integration/nautilus/'))
 from syncstate import SocketConnect
+import functools
 
 
 socketConnect = None
@@ -67,14 +69,12 @@ def updateSocketMessages(messages):
 def clearSocketMessages(resource=''):
     global socket_messages
     if resource:
-        print('---top---')
-        print(socket_messages)
-        resource_messages = set(filterMessageForItem(socket_messages, resource))
-        socket_messages = [msg for msg in socket_messages if msg not in resource_messages]
+        resource_messages = set(filterMessagesForItem(socket_messages, resource))
+        socket_messages = [
+            msg for msg in socket_messages if msg not in resource_messages
+        ]
     else:
         socket_messages.clear()
-    print('---low---')
-    print(socket_messages)
 
 
 def listenSyncStatusForItem(item, type='FOLDER'):
@@ -108,7 +108,12 @@ def waitForSyncToComplete(context, patterns=None, resource='', resourceType='FOL
 
 
 def waitForInitialSyncToComplete(context):
-    waitForSyncToComplete(context, getInitialSyncPatterns(), context.userData['currentUserSyncPath'], 'FOLDER')
+    waitForSyncToComplete(
+        context,
+        getInitialSyncPatterns(),
+        context.userData['currentUserSyncPath'],
+        'FOLDER',
+    )
 
 
 def hasSyncPattern(patterns):
@@ -119,7 +124,9 @@ def hasSyncPattern(patterns):
         for idx, _ in enumerate(messages):
             next = idx + 1
             if next in range(len(messages)):
-                actual_pattern = generateSyncPatternFromMessages(messages[idx : next + (len(pattern) - 1)])
+                actual_pattern = generateSyncPatternFromMessages(
+                    messages[idx : next + (len(pattern) - 1)]
+                )
                 if matchPatterns(pattern, actual_pattern):
                     return True
     # 100 milliseconds polling interval
@@ -258,15 +265,23 @@ def getSocketConnection():
 # Using socket API to check file sync status
 def hasSyncStatus(itemName, status):
     sync_messages = readAndUpdateSocketMessages()
-    sync_messages = filterMessageForItem(sync_messages, itemName)
+    sync_messages = filterMessagesForItem(sync_messages, itemName)
     for line in sync_messages:
         if line.startswith(status) and line.rstrip('/').endswith(itemName.rstrip('/')):
             return True
     return False
 
 
+def folderHasSyncStatus(folderName, status):
+    return hasSyncStatus('FOLDER', folderName, status)
+
+
+def fileHasSyncStatus(fileName, status):
+    return hasSyncStatus('FILE', fileName, status)
+
+
 # useful for checking sync status such as 'error', 'ignore'
-# but not quit so reliable for checking 'ok' sync status
+# but not quite so reliable for checking 'ok' sync status
 def waitForFileOrFolderToHaveSyncStatus(
     context, resource, resourceType, status=SYNC_STATUS['OK'], timeout=None
 ):
@@ -280,7 +295,7 @@ def waitForFileOrFolderToHaveSyncStatus(
     result = waitFor(
         lambda: hasSyncStatus(resource, status),
         timeout,
-        )
+    )
 
     if not result:
         if status == SYNC_STATUS['ERROR']:
@@ -298,6 +313,53 @@ def waitForFileOrFolderToHaveSyncStatus(
             + expected
             + ", but not."
         )
+
+
+def waitForSyncToStart(context, resource, resourceType):
+    resource = join(context.userData['currentUserSyncPath'], resource)
+
+    hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
+    hasStatusSYNC = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['SYNC'])
+
+    if hasStatusSYNC:
+        return
+
+    try:
+        if hasStatusNOP:
+            waitForFileOrFolderToHaveSyncStatus(
+                context, resource, resourceType, SYNC_STATUS['SYNC']
+            )
+        else:
+            waitForFileOrFolderToHaveSyncStatus(
+                context,
+                resource,
+                resourceType,
+                SYNC_STATUS['SYNC'],
+                context.userData['minSyncTimeout'] * 1000,
+            )
+    except:
+        hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
+        if hasStatusNOP:
+            raise Exception(
+                "Expected "
+                + resourceType
+                + " '"
+                + resource
+                + "' to have sync started but not."
+            )
+
+
+def waitForFileOrFolderToSync(context, resource, resourceType):
+    waitForSyncToStart(context, resource, resourceType)
+    waitForFileOrFolderToHaveSyncStatus(
+        context, resource, resourceType, SYNC_STATUS['OK']
+    )
+
+
+def waitForRootFolderToSync(context):
+    waitForFileOrFolderToSync(
+        context, context.userData['currentUserSyncPath'], 'folder'
+    )
 
 
 def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
