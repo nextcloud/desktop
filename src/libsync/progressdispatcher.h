@@ -27,6 +27,8 @@
 
 namespace OCC {
 
+OCSYNC_EXPORT Q_NAMESPACE
+
 /**
  * @brief The ProgressInfo class
  * @ingroup libsync
@@ -252,6 +254,7 @@ enum class ErrorCategory {
     Normal,
     InsufficientRemoteStorage,
 };
+Q_ENUM_NS(OCC::ErrorCategory)
 
 /**
  * @file progressdispatcher.h
