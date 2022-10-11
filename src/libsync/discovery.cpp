@@ -18,6 +18,7 @@
 #include "common/syncjournaldb.h"
 #include "filesystem.h"
 #include "syncfileitem.h"
+#include "progressdispatcher.h"
 #include <QDebug>
 #include <algorithm>
 #include <QEventLoop>
@@ -964,7 +965,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             // Not locally, not on the server. The entry is stale!
             qCInfo(lcDisco) << "Stale DB entry";
             if (!_discoveryData->_statedb->deleteFileRecord(path._original, true)) {
-                emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original));
+                emit _discoveryData->fatalError(tr("Error while deleting file record %1 from the database").arg(path._original), ErrorCategory::GenericError);
                 qCWarning(lcDisco) << "Failed to delete a file record from the local DB" << path._original;
             }
             return;
@@ -1214,10 +1215,10 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             if (isFolderPinStateOnlineOnly && folderPinState.isValid()) {
                 qCInfo(lcDisco) << "*folderPinState:" << *folderPinState;
             }
-            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local);
+            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a folder. It's going to get cleared!"), path._local, ErrorCategory::GenericError);
         } else {
             qCInfo(lcDisco) << "Wiping virtual file without db entry for" << path._local;
-            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local);
+            emit _discoveryData->addErrorToGui(SyncFileItem::SoftError, tr("Conflict when uploading a file. It's going to get removed!"), path._local, ErrorCategory::GenericError);
         }
         item->_instruction = CSYNC_INSTRUCTION_REMOVE;
         item->_direction = SyncFileItem::Down;
@@ -1813,7 +1814,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
 
 void ProcessDirectoryJob::dbError()
 {
-    emit _discoveryData->fatalError(tr("Error while reading the database"));
+    emit _discoveryData->fatalError(tr("Error while reading the database"), ErrorCategory::GenericError);
 }
 
 void ProcessDirectoryJob::addVirtualFileSuffix(QString &str) const
@@ -1880,7 +1881,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             } else {
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
                 emit _discoveryData->fatalError(tr("Server replied with an error while reading directory \"%1\" : %2")
-                    .arg(_currentFolder._server, results.error().message));
+                    .arg(_currentFolder._server, results.error().message), ErrorCategory::NetworkError);
             }
         }
     });
@@ -1910,7 +1911,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
         if (_serverJob)
             _serverJob->abort();
 
-        emit _discoveryData->fatalError(msg);
+        emit _discoveryData->fatalError(msg, ErrorCategory::NetworkError);
     });
 
     connect(localJob, &DiscoverySingleLocalDirectoryJob::finishedNonFatalError, this, [this](const QString &msg) {
@@ -1923,7 +1924,7 @@ void ProcessDirectoryJob::startAsyncLocalQuery()
             emit this->finished();
         } else {
             // Fatal for the root job since it has no SyncFileItem
-            emit _discoveryData->fatalError(msg);
+            emit _discoveryData->fatalError(msg, ErrorCategory::GenericError);
         }
     });
 

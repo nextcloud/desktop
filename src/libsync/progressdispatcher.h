@@ -251,7 +251,9 @@ namespace Progress {
  * in IssuesWidget.
  */
 enum class ErrorCategory {
-    Normal,
+    NoError,
+    GenericError,
+    NetworkError,
     InsufficientRemoteStorage,
 };
 Q_ENUM_NS(OCC::ErrorCategory)
@@ -286,7 +288,7 @@ signals:
     /**
      * @brief: the item was completed by a job
      */
-    void itemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
+    void itemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item, const OCC::ErrorCategory category);
 
     /**
      * @brief A new folder-wide sync error was seen.
@@ -300,7 +302,7 @@ signals:
      * @param[out] full error message
      * @param[out] subject (optional)
      */
-    void addErrorToGui(const QString &folder, OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(const QString &folder, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const OCC::ErrorCategory category);
 
     /**
      * @brief Emitted for a folder when a sync is done, listing all pending conflicts

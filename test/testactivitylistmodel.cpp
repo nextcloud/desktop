@@ -456,6 +456,17 @@ public:
         QVERIFY(index.isValid());
     }
 
+    void testActivityAdd(void(OCC::ActivityListModel::*addingMethod)(const OCC::Activity&, OCC::ActivityListModel::ErrorType), OCC::Activity &activity, OCC::ActivityListModel::ErrorType type) {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        (model.data()->*addingMethod)(activity, type);
+        QCOMPARE(model->rowCount(), 1);
+
+        const auto index = model->index(0, 0);
+        QVERIFY(index.isValid());
+    }
+
 private slots:
     void initTestCase()
     {
@@ -555,7 +566,7 @@ private slots:
     };
 
     void testAddError() {
-        testActivityAdd(&TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
+        testActivityAdd(&TestingALM::addErrorToActivityList, testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
     };
 
     void testAddIgnoredFile() {
@@ -615,7 +626,7 @@ private slots:
         model->addSyncFileItemToActivityList(testSyncFileItemActivity);
         QCOMPARE(model->rowCount(), 51);
 
-        model->addErrorToActivityList(testSyncResultErrorActivity);
+        model->addErrorToActivityList(testSyncResultErrorActivity, OCC::ActivityListModel::ErrorType::SyncError);
         QCOMPARE(model->rowCount(), 52);
 
         model->addIgnoredFileToList(testFileIgnoredActivity);

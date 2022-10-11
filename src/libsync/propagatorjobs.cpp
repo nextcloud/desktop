@@ -102,7 +102,7 @@ void PropagateLocalRemove::start()
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::FileNameClash, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
+        done(SyncFileItem::FileNameClash, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)), ErrorCategory::GenericError);
         return;
     }
 
@@ -110,19 +110,19 @@ void PropagateLocalRemove::start()
     if (_moveToTrash) {
         if ((QDir(filename).exists() || FileSystem::fileExists(filename))
             && !FileSystem::moveToTrash(filename, &removeError)) {
-            done(SyncFileItem::NormalError, removeError);
+            done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
             return;
         }
     } else {
         if (_item->isDirectory()) {
             if (QDir(filename).exists() && !removeRecursively(QString())) {
-                done(SyncFileItem::NormalError, _error);
+                done(SyncFileItem::NormalError, _error, ErrorCategory::GenericError);
                 return;
             }
         } else {
             if (FileSystem::fileExists(filename)
                 && !FileSystem::remove(filename, &removeError)) {
-                done(SyncFileItem::NormalError, removeError);
+                done(SyncFileItem::NormalError, removeError, ErrorCategory::GenericError);
                 return;
             }
         }
@@ -130,11 +130,11 @@ void PropagateLocalRemove::start()
     propagator()->reportProgress(*_item, 0);
     if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, _item->isDirectory())) {
         qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
+        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
     propagator()->_journal->commit("Local remove");
-    done(SyncFileItem::Success);
+    done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 
 void PropagateLocalMkdir::start()
@@ -164,13 +164,13 @@ void PropagateLocalMkdir::startLocalMkdir()
             if (!FileSystem::remove(newDirStr, &removeError)) {
                 done(SyncFileItem::NormalError,
                     tr("could not delete file %1, error: %2")
-                        .arg(newDirStr, removeError));
+                        .arg(newDirStr, removeError), ErrorCategory::GenericError);
                 return;
             }
         } else if (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
             QString error;
             if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
-                done(SyncFileItem::SoftError, error);
+                done(SyncFileItem::SoftError, error, ErrorCategory::GenericError);
                 return;
             }
         }
@@ -178,13 +178,13 @@ void PropagateLocalMkdir::startLocalMkdir()
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
         qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
-        done(SyncFileItem::FileNameClash, tr("Folder %1 cannot be created because of a local file or folder name clash!").arg(newDirStr));
+        done(SyncFileItem::FileNameClash, tr("Folder %1 cannot be created because of a local file or folder name clash!").arg(newDirStr), ErrorCategory::GenericError);
         return;
     }
     emit propagator()->touchedFile(newDirStr);
     QDir localDir(propagator()->localPath());
     if (!localDir.mkpath(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("Could not create folder %1").arg(newDirStr));
+        done(SyncFileItem::NormalError, tr("Could not create folder %1").arg(newDirStr), ErrorCategory::GenericError);
         return;
     }
 
@@ -197,10 +197,10 @@ void PropagateLocalMkdir::startLocalMkdir()
     newItem._etag = "_invalid_";
     const auto result = propagator()->updateMetadata(newItem);
     if (!result) {
-        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+        done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
         return;
     } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file));
+        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
         return;
     }
     propagator()->_journal->commit("localMkdir");
@@ -208,7 +208,7 @@ void PropagateLocalMkdir::startLocalMkdir()
     auto resultStatus = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
         ? SyncFileItem::Conflict
         : SyncFileItem::Success;
-    done(resultStatus);
+    done(resultStatus, {}, ErrorCategory::NoError);
 }
 
 PropagateLocalRename::PropagateLocalRename(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
@@ -249,9 +249,9 @@ void PropagateLocalRename::start()
             qCInfo(lcPropagateLocalRename) << "renaming a case clashed file" << _item->_file << _item->_renameTarget;
             const auto caseClashConflictResult = propagator()->createCaseClashConflict(_item, existingFile);
             if (caseClashConflictResult) {
-                done(SyncFileItem::SoftError, *caseClashConflictResult);
+                done(SyncFileItem::SoftError, *caseClashConflictResult, ErrorCategory::GenericError);
             } else {
-                done(SyncFileItem::FileNameClash, tr("File %1 downloaded but it resulted in a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+                done(SyncFileItem::FileNameClash, tr("File %1 downloaded but it resulted in a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
             }
             return;
         }
@@ -259,7 +259,7 @@ void PropagateLocalRename::start()
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
         if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
-            done(SyncFileItem::NormalError, renameError);
+            done(SyncFileItem::NormalError, renameError, ErrorCategory::GenericError);
             return;
         }
     }
@@ -267,19 +267,20 @@ void PropagateLocalRename::start()
     SyncJournalFileRecord oldRecord;
     if (!propagator()->_journal->getFileRecord(fileAlreadyMoved ? previousNameInDb : _item->_originalFile, &oldRecord)) {
         qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(_item->_originalFile));
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(_item->_originalFile), ErrorCategory::GenericError);
         return;
     }
 
     if (fileAlreadyMoved && !deleteOldDbRecord(previousNameInDb)) {
         return;
     } else if (!deleteOldDbRecord(_item->_originalFile)) {
+        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << _item->_originalFile;
         return;
     }
 
     if (!vfs->setPinState(_item->_renameTarget, pinState)) {
         qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_renameTarget << "to old value" << pinState;
-        done(SyncFileItem::NormalError, tr("Error setting pin state"));
+        done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);
         return;
     }
 
@@ -292,10 +293,10 @@ void PropagateLocalRename::start()
         }
         const auto result = propagator()->updateMetadata(newItem);
         if (!result) {
-            done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+            done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), ErrorCategory::GenericError);
             return;
         } else if (*result == Vfs::ConvertToPlaceholderResult::Locked) {
-            done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file));
+            done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(newItem._file), ErrorCategory::GenericError);
             return;
         }
     } else {
@@ -312,12 +313,12 @@ void PropagateLocalRename::start()
             SyncJournalFileRecord oldRecord;
             if (!propagator()->_journal->getFileRecord(oldFileName, &oldRecord)) {
                 qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << oldFileName;
-                done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(oldFileNameString));
+                done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
             if (!propagator()->_journal->deleteFileRecord(oldFileName)) {
                 qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << oldFileName;
-                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(oldFileNameString));
+                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(oldFileNameString), OCC::ErrorCategory::GenericError);
                 return;
             }
 
@@ -325,36 +326,40 @@ void PropagateLocalRename::start()
             newItem->_file = newFileNameString;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
-                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
+                done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()), OCC::ErrorCategory::GenericError);
                 return;
             }
         });
         if (!dbQueryResult) {
-            done(SyncFileItem::FatalError, tr("Failed to propagate directory rename in hierarchy"));
+            done(SyncFileItem::FatalError, tr("Failed to propagate directory rename in hierarchy"), OCC::ErrorCategory::GenericError);
             return;
         }
         propagator()->_renamedDirectories.insert(oldFile, _item->_renameTarget);
         if (!PropagateRemoteMove::adjustSelectiveSync(propagator()->_journal, oldFile, _item->_renameTarget)) {
-            done(SyncFileItem::FatalError, tr("Failed to rename file"));
+            done(SyncFileItem::FatalError, tr("Failed to rename file"), ErrorCategory::GenericError);
             return;
         }
+    }
+    if (pinState != PinState::Inherited && !vfs->setPinState(_item->_renameTarget, pinState)) {
+        done(SyncFileItem::NormalError, tr("Error setting pin state"), ErrorCategory::GenericError);
+        return;
     }
 
     propagator()->_journal->commit("localRename");
 
-    done(SyncFileItem::Success);
+    done(SyncFileItem::Success, {}, ErrorCategory::NoError);
 }
 
 bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
 {
     if (SyncJournalFileRecord oldRecord; !propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
         qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << fileName;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName));
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName), OCC::ErrorCategory::GenericError);
         return false;
     }
     if (!propagator()->_journal->deleteFileRecord(fileName)) {
         qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << fileName;
-        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(fileName));
+        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(fileName), OCC::ErrorCategory::GenericError);
         return false;
     }
 
