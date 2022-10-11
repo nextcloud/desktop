@@ -15,43 +15,21 @@ SYNC_STATUS = {
 
 # default sync patterns for the initial sync (after adding account)
 SYNC_PATTERNS = {
-    'root_sync': [
-        {
-            'length': 2,
-            'pattern': {
-                SYNC_STATUS['UPDATE']: [0],
-                SYNC_STATUS['OK']: [1],
-            },
-        },
-        {
-            'length': 2,
-            'pattern': {
-                SYNC_STATUS['SYNC']: [0],
-                SYNC_STATUS['OK']: [1],
-            },
-        },
+    'initial': [
+        [SYNC_STATUS['UPDATE'], SYNC_STATUS['OK']],
+        [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
     ],
+    'synced': [SYNC_STATUS['SYNC'], SYNC_STATUS['OK']],
+    'error': [SYNC_STATUS['ERROR']],
 }
 
 
-# generate sync pattern from pattern meta data
-#
-# returns List
-# e.g: ['UPDATE_VIEW', 'STATUS:OK']
-def generateSyncPattern(pattern_meta):
-    pattern = [None] * pattern_meta['length']
-    for status in pattern_meta['pattern']:
-        for idx in pattern_meta['pattern'][status]:
-            pattern[idx] = status
-    return pattern
+def getInitialSyncPatterns():
+    return SYNC_PATTERNS['initial']
 
 
-def getRootSyncPatterns():
-    patterns = []
-    for pattern_meta in SYNC_PATTERNS['root_sync']:
-        patterns.append(generateSyncPattern(pattern_meta))
-
-    return patterns
+def getSyncedPattern():
+    return SYNC_PATTERNS['synced']
 
 
 # generate sync pattern from the socket messages
@@ -81,6 +59,14 @@ def filterSyncMessages(messages):
     if 'GET_STRINGS:END' in messages:
         start_idx = messages.index('GET_STRINGS:END') + 1
     return messages[start_idx:]
+
+
+def filterMessageForItem(messages, item):
+    filteredMsg = []
+    for msg in messages:
+        if msg.rstrip('/').endswith(item.rstrip('/')):
+            filteredMsg.append(msg)
+    return filteredMsg
 
 
 def matchPatterns(p1, p2):

@@ -24,9 +24,11 @@ from pageObjects.AccountStatus import AccountStatus
 
 from helpers.SyncHelper import (
     SYNC_STATUS,
-    getRootSyncPatterns,
+    getInitialSyncPatterns,
+    getSyncedPattern,
     generateSyncPatternFromMessages,
     filterSyncMessages,
+    filterMessageForItem,
     matchPatterns,
 )
 
@@ -42,41 +44,7 @@ socketConnect = None
 createdUsers = {}
 
 
-def waitForRootSyncToComplete(context):
-    # listen for root folder status before syncing
-    listenSyncStatusForItem(context.userData['currentUserSyncPath'])
-
-    timeout = context.userData['maxSyncTimeout'] * 1000
-
-    synced = waitFor(
-        lambda: checkRootSyncPattern(),
-        timeout,
-    )
-    if not synced:
-        raise Exception(
-            "Timeout while waiting for sync to complete for "
-            + timeout
-            + " milliseconds"
-        )
-
-
-def checkRootSyncPattern():
-    patterns = getRootSyncPatterns()
-    new_messages = getSocketMessagesDry()
-    messages = updateSocketMessages(new_messages)
-    for idx, _ in enumerate(messages):
-        next = idx + 1
-        if next in range(len(messages)):
-            actual_pattern = generateSyncPatternFromMessages(messages[idx : next + 1])
-            for pattern in patterns:
-                if matchPatterns(pattern, actual_pattern):
-                    return True
-    # 100 milliseconds polling interval
-    snooze(0.1)
-    return False
-
-
-def getSocketMessagesDry():
+def readSocketMessages():
     socket_messages = []
     socketConnect = getSocketConnection()
     socketConnect.read_socket_data_with_timeout(0.1)
@@ -85,15 +53,78 @@ def getSocketMessagesDry():
     return socket_messages
 
 
+def readAndUpdateSocketMessages():
+    messages = readSocketMessages()
+    return updateSocketMessages(messages)
+
+
 def updateSocketMessages(messages):
     global socket_messages
     socket_messages.extend(filterSyncMessages(messages))
     return socket_messages
 
 
+def clearSocketMessages(resource=''):
+    global socket_messages
+    if resource:
+        print('---top---')
+        print(socket_messages)
+        resource_messages = set(filterMessageForItem(socket_messages, resource))
+        socket_messages = [msg for msg in socket_messages if msg not in resource_messages]
+    else:
+        socket_messages.clear()
+    print('---low---')
+    print(socket_messages)
+
+
 def listenSyncStatusForItem(item, type='FOLDER'):
+    type = type.upper()
+    if type != 'FILE' and type != 'FOLDER':
+        raise Exception("type must be 'FILE' or 'FOLDER'")
     socketConnect = getSocketConnection()
-    socketConnect.sendCommand("RETRIEVE_" + type.upper() + "_STATUS:" + item + "\n")
+    socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + item + "\n")
+
+
+def waitForSyncToComplete(context, patterns=None, resource='', resourceType='FOLDER'):
+    resource = join(context.userData['currentUserSyncPath'], resource)
+    listenSyncStatusForItem(resource, resourceType)
+
+    timeout = context.userData['maxSyncTimeout'] * 1000
+
+    if patterns is None:
+        patterns = getSyncedPattern()
+
+    synced = waitFor(
+        lambda: hasSyncPattern(patterns),
+        timeout,
+    )
+    clearSocketMessages(resource)
+    if not synced:
+        raise Exception(
+            "Timeout while waiting for sync to complete for "
+            + timeout
+            + " milliseconds"
+        )
+
+
+def waitForInitialSyncToComplete(context):
+    waitForSyncToComplete(context, getInitialSyncPatterns(), context.userData['currentUserSyncPath'], 'FOLDER')
+
+
+def hasSyncPattern(patterns):
+    if isinstance(patterns[0], str):
+        patterns = [patterns]
+    messages = readAndUpdateSocketMessages()
+    for pattern in patterns:
+        for idx, _ in enumerate(messages):
+            next = idx + 1
+            if next in range(len(messages)):
+                actual_pattern = generateSyncPatternFromMessages(messages[idx : next + (len(pattern) - 1)])
+                if matchPatterns(pattern, actual_pattern):
+                    return True
+    # 100 milliseconds polling interval
+    snooze(0.1)
+    return False
 
 
 # gets all users information created in a test scenario
@@ -193,7 +224,7 @@ def step(context, username):
     enterUserPassword.enterPassword(password)
 
     # wait for files to sync
-    waitForRootSyncToComplete(context)
+    waitForInitialSyncToComplete(context)
 
 
 @Given('the user has started the client')
@@ -225,45 +256,30 @@ def getSocketConnection():
 
 
 # Using socket API to check file sync status
-def hasSyncStatus(type, itemName, status):
-    if type != 'FILE' and type != 'FOLDER':
-        raise Exception("type must be 'FILE' or 'FOLDER'")
-    socketConnect = getSocketConnection()
-    socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + itemName + "\n")
-
-    if not socketConnect.read_socket_data_with_timeout(0.1):
-        return False
-    for line in socketConnect.get_available_responses():
-        if line.startswith(status) and line.endswith(itemName):
+def hasSyncStatus(itemName, status):
+    sync_messages = readAndUpdateSocketMessages()
+    sync_messages = filterMessageForItem(sync_messages, itemName)
+    for line in sync_messages:
+        if line.startswith(status) and line.rstrip('/').endswith(itemName.rstrip('/')):
             return True
-        elif line.endswith(itemName):
-            return False
+    return False
 
 
-def folderHasSyncStatus(folderName, status):
-    return hasSyncStatus('FOLDER', folderName, status)
-
-
-def fileHasSyncStatus(fileName, status):
-    return hasSyncStatus('FILE', fileName, status)
-
-
+# useful for checking sync status such as 'error', 'ignore'
+# but not quit so reliable for checking 'ok' sync status
 def waitForFileOrFolderToHaveSyncStatus(
     context, resource, resourceType, status=SYNC_STATUS['OK'], timeout=None
 ):
+    resource = sanitizePath(join(context.userData['currentUserSyncPath'], resource))
+
+    listenSyncStatusForItem(resource, resourceType)
+
     if not timeout:
         timeout = context.userData['maxSyncTimeout'] * 1000
 
-    resource = join(context.userData['currentUserSyncPath'], resource)
-    if resourceType.lower() == "file":
-        result = waitFor(
-            lambda: fileHasSyncStatus(sanitizePath(resource), status),
-            timeout,
-        )
-    elif resourceType.lower() == "folder":
-        result = waitFor(
-            lambda: folderHasSyncStatus(sanitizePath(resource), status),
-            timeout,
+    result = waitFor(
+        lambda: hasSyncStatus(resource, status),
+        timeout,
         )
 
     if not result:
@@ -284,62 +300,13 @@ def waitForFileOrFolderToHaveSyncStatus(
         )
 
 
-def waitForSyncToStart(context, resource, resourceType):
-    resource = join(context.userData['currentUserSyncPath'], resource)
-
-    hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
-    hasStatusSYNC = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['SYNC'])
-
-    if hasStatusSYNC:
-        return
-
-    try:
-        if hasStatusNOP:
-            waitForFileOrFolderToHaveSyncStatus(
-                context, resource, resourceType, SYNC_STATUS['SYNC']
-            )
-        else:
-            waitForFileOrFolderToHaveSyncStatus(
-                context,
-                resource,
-                resourceType,
-                SYNC_STATUS['SYNC'],
-                context.userData['minSyncTimeout'] * 1000,
-            )
-    except:
-        hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
-        if hasStatusNOP:
-            raise Exception(
-                "Expected "
-                + resourceType
-                + " '"
-                + resource
-                + "' to have sync started but not."
-            )
-
-
-def waitForFileOrFolderToSync(context, resource, resourceType):
-    waitForSyncToStart(context, resource, resourceType)
-    waitForFileOrFolderToHaveSyncStatus(
-        context, resource, resourceType, SYNC_STATUS['OK']
-    )
-
-
-def waitForRootFolderToSync(context):
-    waitForFileOrFolderToSync(
-        context, context.userData['currentUserSyncPath'], 'folder'
-    )
-
-
 def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
-    waitForSyncToStart(context, resource, resourceType)
     waitForFileOrFolderToHaveSyncStatus(
         context, resource, resourceType, SYNC_STATUS['ERROR']
     )
 
 
 def waitForFileOrFolderToBeSyncIgnored(context, resource, resourceType):
-    waitForSyncToStart(context, resource, resourceType)
     waitForFileOrFolderToHaveSyncStatus(
         context, resource, resourceType, SYNC_STATUS['IGNORE']
     )
@@ -501,12 +468,12 @@ def collaboratorShouldBeListed(
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitForRootFolderToSync(context)
+    waitForSyncToComplete(context)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    waitForFileOrFolderToSync(context, resource, type)
+    waitForSyncToComplete(context, resource, type)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
@@ -521,12 +488,12 @@ def step(context, type, resource):
 
 @Given('user has waited for the files to be synced')
 def step(context):
-    waitForRootFolderToSync(context)
+    waitForSyncToComplete(context)
 
 
 @Given(r'the user has waited for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    waitForFileOrFolderToSync(context, resource, type)
+    waitForSyncToComplete(context, resource, type)
 
 
 @Given(
@@ -1029,7 +996,6 @@ def step(context, username):
 
 @Given('user "|any|" has logged out of the client-UI')
 def step(context, username):
-    waitForRootFolderToSync(context)
     accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     accountStatus.accountAction("Log out")
     isUserSignedOut(context, username)
