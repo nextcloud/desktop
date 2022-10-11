@@ -39,28 +39,28 @@
 namespace OCC {
 
 // implemented in platform_mac_deprecated.mm
-void migrateLaunchOnStartup(const QString &appDomain);
+void migrateLaunchOnStartup();
 
 class MacPlatform : public Platform
 {
 public:
-    MacPlatform(const QString &appDomain);
+    MacPlatform();
     ~MacPlatform() override;
+
+    void migrate() override;
 
 private:
     QMacAutoReleasePool _autoReleasePool;
     OwnAppDelegate *_appDelegate;
 };
 
-MacPlatform::MacPlatform(const QString &appDomain)
+MacPlatform::MacPlatform()
 {
     NSApplicationLoad();
     _appDelegate = [[OwnAppDelegate alloc] init];
     [[NSApplication sharedApplication] setDelegate:_appDelegate];
 
     signal(SIGPIPE, SIG_IGN);
-
-    migrateLaunchOnStartup(appDomain);
 }
 
 MacPlatform::~MacPlatform()
@@ -68,9 +68,14 @@ MacPlatform::~MacPlatform()
     [_appDelegate release];
 }
 
-std::unique_ptr<Platform> Platform::create(const QString &appDomain)
+void MacPlatform::migrate()
 {
-    return std::make_unique<MacPlatform>(appDomain);
+    migrateLaunchOnStartup();
+}
+
+std::unique_ptr<Platform> Platform::create()
+{
+    return std::make_unique<MacPlatform>();
 }
 
 } // namespace OCC

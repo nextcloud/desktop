@@ -223,7 +223,7 @@ ownCloudGui *Application::gui() const
     return _gui;
 }
 
-Application::Application(int &argc, char **argv)
+Application::Application(int &argc, char **argv, Platform *platform)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
     , _gui(nullptr)
     , _theme(Theme::instance())
@@ -249,6 +249,8 @@ Application::Application(int &argc, char **argv)
 
     // migrate old configuration files if necessary
     migrateConfigFile(this);
+
+    platform->migrate();
 
     // needed during commandline options parsing
     setApplicationVersion(_theme->versionSwitchOutput());

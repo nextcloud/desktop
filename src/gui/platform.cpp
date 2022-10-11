@@ -20,4 +20,8 @@ Platform::~Platform()
 {
 }
 
+void Platform::migrate()
+{
+}
+
 } // OCC namespace

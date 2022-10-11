@@ -12,6 +12,9 @@
  * for more details.
  */
 
+#ifndef PLATFORM_H
+#define PLATFORM_H
+
 #include <memory>
 
 #include <QString>
@@ -27,7 +30,11 @@ class Platform
 public:
     virtual ~Platform() = 0;
 
-    static std::unique_ptr<Platform> create(const QString &appDomain);
+    static std::unique_ptr<Platform> create();
+
+    virtual void migrate();
 };
 
 } // OCC namespace
+
+#endif // PLATFORM_H

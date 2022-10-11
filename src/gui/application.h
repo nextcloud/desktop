@@ -23,13 +23,14 @@
 
 #include "3rdparty/qtsingleapplication/qtsingleapplication.h"
 
-#include "syncresult.h"
+#include "clientproxy.h"
+#include "connectionvalidator.h"
+#include "folderman.h"
 #include "logbrowser.h"
 #include "owncloudgui.h"
-#include "connectionvalidator.h"
+#include "platform.h"
 #include "progressdispatcher.h"
-#include "clientproxy.h"
-#include "folderman.h"
+#include "syncresult.h"
 
 class QMessageBox;
 class QSystemTrayIcon;
@@ -55,7 +56,7 @@ class Application : public SharedTools::QtSingleApplication
 {
     Q_OBJECT
 public:
-    explicit Application(int &argc, char **argv);
+    explicit Application(int &argc, char **argv, Platform *platform);
     ~Application() override;
 
     bool debugMode();

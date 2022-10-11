@@ -118,9 +118,7 @@ namespace Deprecated {
 } // Deprecated namespace
 
 /// Migrate from deprecated API of "Login Items" to launchd plist files (if needed).
-///
-/// Note: we cannot use `QCoreApplication::organizationDomain()` yet, because it has not yet been set. So we need that domain passed in as parameter.
-void migrateLaunchOnStartup(const QString &appDomain)
+void migrateLaunchOnStartup()
 {
     bool hasDeprecatedLaunchOnStartup = Deprecated::hasLaunchOnStartup();
 
@@ -131,7 +129,10 @@ void migrateLaunchOnStartup(const QString &appDomain)
     //
     // So, now check if the LaunchAgents plist file is there.
 
-    bool hasLaunchAgentsPlist = QFile::exists(QStringLiteral("%1/Library/LaunchAgents/%2.plist").arg(QDir::homePath(), appDomain));
+    bool hasLaunchAgentsPlist = QFile::exists(QStringLiteral("%1/Library/LaunchAgents/%2.plist").arg(QDir::homePath(), QCoreApplication::organizationDomain()));
+
+    qCInfo(lcUtility) << "migrateLaunchOnStartup: has launch agent plist:" << hasLaunchAgentsPlist
+                      << "has deprecated launch on startup:" << hasDeprecatedLaunchOnStartup;
 
     // Simple case first:
     if (hasLaunchAgentsPlist && !hasDeprecatedLaunchOnStartup) {

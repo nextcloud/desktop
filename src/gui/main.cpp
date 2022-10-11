@@ -51,13 +51,10 @@ int main(int argc, char **argv)
 
     // Create a `Platform` instance so it can set-up/tear-down stuff for us, and do any
     // initialisation that needs to be done before creating a QApplication
-    //
-    // We pass in `APPLICATION_REV_DOMAIN`, because `QCoreApplication::organizationDomain()`
-    // has not been set yet -- it will be set in the constructor of `OCC::Application`.
-    auto platform = Platform::create(QStringLiteral(APPLICATION_REV_DOMAIN));
+    auto platform = Platform::create();
 
     // Create the (Q)Application instance:
-    OCC::Application app(argc, argv);
+    OCC::Application app(argc, argv, platform.get());
 
     Utility::tweakUIStyle();
 

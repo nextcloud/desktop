@@ -145,7 +145,7 @@ static Result<void, QString> writeNewPlistFile(NSString *plistFile, NSString *fu
     NSDictionary *plistTemplate = @{
         @"Label" : QCoreApplication::organizationDomain().toNSString(),
         @"KeepAlive" : @ {
-            @"Crashed" : @NO,
+            @"Crashed" : @NO, // To have launchd restart the client after a crash, change this to @YES
             @"SuccessfulExit" : @NO
         },
         @"Program" : fullPath,
@@ -185,53 +185,65 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
         // An error might occur in the code below, but we cannot report anything, so we just ignore them.
 
         if ([fileManager fileExistsAtPath:plistFile]) {
-            auto maybePlist = readPlistFromFile(plistFile);
-            if (!maybePlist) {
-                // broken plist, overwrite it
-                auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                if (!result) {
-                    qCWarning(lcUtility) << Q_FUNC_INFO << result.error();
+            if (enable) {
+                auto maybePlist = readPlistFromFile(plistFile);
+                if (!maybePlist) {
+                    // broken plist, overwrite it
+                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                    if (!result) {
+                        qCWarning(lcUtility) << Q_FUNC_INFO << result.error();
+                    }
+                    return;
                 }
-                return;
-            }
-            NSDictionary *plist = *maybePlist;
+                NSDictionary *plist = *maybePlist;
 
-            id programValue = plist[@"Program"];
-            if (programValue == nil) {
-                // broken plist, overwrite it
-                auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                if (!result) {
-                    qCWarning(lcUtility) << result.error();
+                id programValue = plist[@"Program"];
+                if (programValue == nil) {
+                    // broken plist, overwrite it
+                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                    if (!result) {
+                        qCWarning(lcUtility) << result.error();
+                    }
+                } else if (![fileManager fileExistsAtPath:programValue]) {
+                    // Ok, a plist from some removed program, overwrite it
+                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                    if (!result) {
+                        qCWarning(lcUtility) << result.error();
+                    }
+                } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
+                    // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
+                    // e.g. KeepAlive was changed, we leave it as-is.
+                    auto result = modifyPlist(plistFile, plist, enable);
+                    if (!result) {
+                        qCWarning(lcUtility) << result.error();
+                    }
+                } else if ([fullPath hasPrefix:@"/Applications/"]) {
+                    // ok, we seem to be an officially installed application, overwrite the file
+                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                    if (!result) {
+                        qCWarning(lcUtility) << result.error();
+                    }
+                } else {
+                    qCInfo(lcUtility) << "We're not an installed application, there is anoter executable "
+                                         "mentioned in the plist file, and that executable seems to exist, "
+                                         "so let's not touch the file.";
                 }
-            } else if (![fileManager fileExistsAtPath:programValue]) {
-                // Ok, a plist from some removed program, overwrite it
-                auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                if (!result) {
-                    qCWarning(lcUtility) << result.error();
+            } else {
+                // Disable launch-on-startup: remove the plist file
+                NSError *error = nil;
+                if (![fileManager removeItemAtPath:plistFile error:&error]) {
+                    qCWarning(lcUtility) << "Could not remove plist file:" << QString::fromNSString(error.localizedDescription);
                 }
-            } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
-                // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
-                // e.g. KeepAlive was changed, we leave it as-is.
-                auto result = modifyPlist(plistFile, plist, enable);
-                if (!result) {
-                    qCWarning(lcUtility) << result.error();
-                }
-            } else if ([fullPath hasPrefix:@"/Applications/"]) {
-                // ok, we seem to be an officially installed application, overwrite the file
+            }
+        } else {
+            if (enable) {
+                // plist doens't exist, write a new one.
                 auto result = writeNewPlistFile(plistFile, fullPath, enable);
                 if (!result) {
                     qCWarning(lcUtility) << result.error();
                 }
             } else {
-                qCInfo(lcUtility) << "We're not an installed application, there is anoter executable "
-                                     "mentioned in the plist file, and that executable seems to exist, "
-                                     "so let's not touch the file.";
-            }
-        } else {
-            // plist doens't exist, write a new one.
-            auto result = writeNewPlistFile(plistFile, fullPath, enable);
-            if (!result) {
-                qCWarning(lcUtility) << result.error();
+                // Do nothing: if the file doesn't exist, the client won't be auto-started.
             }
         }
     }
