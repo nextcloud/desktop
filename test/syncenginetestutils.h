@@ -76,6 +76,11 @@ public:
 class FileModifier
 {
 public:
+    enum class LockState {
+        FileLocked,
+        FileUnlocked,
+    };
+
     virtual ~FileModifier() = default;
     virtual void remove(const QString &relativePath) = 0;
     virtual void insert(const QString &relativePath, qint64 size = 64, char contentChar = 'W') = 0;
@@ -84,6 +89,7 @@ public:
     virtual void mkdir(const QString &relativePath) = 0;
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
     virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
+    virtual void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) = 0;
 };
 
 class DiskFileModifier : public FileModifier
@@ -99,6 +105,7 @@ public:
     void mkdir(const QString &relativePath) override;
     void rename(const QString &from, const QString &to) override;
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
+    void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 };
 
 class FileInfo : public FileModifier
@@ -129,6 +136,8 @@ public:
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
 
     void setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime);
+
+    void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
 
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
 
@@ -163,6 +172,13 @@ public:
     QByteArray extraDavProperties;
     qint64 size = 0;
     char contentChar = 'W';
+    LockState lockState = LockState::FileUnlocked;
+    int lockType = 0;
+    QString lockOwner;
+    QString lockOwnerId;
+    QString lockEditorId;
+    quint64 lockTime = 0;
+    quint64 lockTimeout = 0;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;
