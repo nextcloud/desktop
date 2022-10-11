@@ -593,13 +593,29 @@ void ActivityListModel::accountStateHasChanged()
 
 void ActivityListModel::addErrorToActivityList(const Activity &activity, const ErrorType type)
 {
-    qCDebug(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
-    auto modifiedActivity = activity;
-    if (type == ErrorType::NetworkError) {
-        modifiedActivity._subject = tr("Network error occurred: client will retry syncing.");
+    auto shouldAddError = false;
+
+    switch (type)
+    {
+    case ErrorType::NetworkError:
+        if (_durationSinceDisconnection.isValid() && _durationSinceDisconnection.hasExpired(3 * 60 *1000)) {
+            shouldAddError = true;
+        }
+        break;
+    case ErrorType::SyncError:
+        shouldAddError = true;
+        break;
     }
-    addEntriesToActivityList({modifiedActivity});
-    _notificationErrorsLists.prepend(modifiedActivity);
+
+    if (shouldAddError) {
+        qCDebug(lcActivity) << "Error successfully added to the notification list: " << type << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
+        auto modifiedActivity = activity;
+        if (type == ErrorType::NetworkError) {
+            modifiedActivity._subject = tr("Network error occurred: client will retry syncing.");
+        }
+        addEntriesToActivityList({modifiedActivity});
+        _notificationErrorsLists.prepend(modifiedActivity);
+    }
 }
 
 void ActivityListModel::addIgnoredFileToList(const Activity &newActivity)
