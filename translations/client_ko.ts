@@ -164,6 +164,14 @@
     </message>
 </context>
 <context>
+    <name>EditFileLocallyLoadingDialog</name>
+    <message>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
+        <source>Opening for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>EmojiPicker</name>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="132"/>
@@ -1508,6 +1516,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5164,7 +5177,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
-        <translation>% 1의 이름을 변경했습니다</translation>
+        <translation>%1의 이름을 변경했습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
@@ -5174,7 +5187,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
-        <translation>% 1을 생성했습니다</translation>
+        <translation>%1을(를) 생성했습니다</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="591"/>

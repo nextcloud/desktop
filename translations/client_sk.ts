@@ -164,6 +164,14 @@
     </message>
 </context>
 <context>
+    <name>EditFileLocallyLoadingDialog</name>
+    <message>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
+        <source>Opening for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>EmojiPicker</name>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="132"/>
@@ -1509,6 +1517,11 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Nepodarilo sa nájsť súbor na lokálne úpravy. Uistite sa, že jeho cesta je platná a je synchronizovaný lokálne.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <source>Could not find a folder to sync.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>

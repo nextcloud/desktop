@@ -90,7 +90,11 @@ QImage createSvgImageWithCustomColor(const QString &fileName, const QColor &cust
         }();
 
         if (iconBaseColors.contains(customColorName)) {
-            result = QImage{QString{OCC::Theme::themePrefix} + customColorName + QStringLiteral("/") + fileName};
+            if (requestedSize.width() > 0 && requestedSize.height() > 0) {
+                result = QIcon(QString{OCC::Theme::themePrefix} + customColorName + QStringLiteral("/") + fileName).pixmap(requestedSize).toImage();
+            } else {
+                result = QImage{QString{OCC::Theme::themePrefix} + customColorName + QStringLiteral("/") + fileName};
+            }
             if (!result.isNull()) {
                 return result;
             }
