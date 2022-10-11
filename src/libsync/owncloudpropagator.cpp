@@ -221,7 +221,7 @@ void blacklistUpdate(SyncJournalDb *journal, SyncFileItem &item)
     }
 }
 
-void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &errorString)
+void PropagateItemJob::done(const SyncFileItem::Status statusArg, const QString &errorString, const ErrorCategory category)
 {
     // Duplicate calls to done() are a logic error
     ENFORCE(_state != Finished);
@@ -283,7 +283,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
         qCWarning(lcPropagator) << "Could not complete propagation of" << _item->destination() << "by" << this << "with status" << _item->_status << "and error:" << _item->_errorString;
     else
         qCInfo(lcPropagator) << "Completed propagation of" << _item->destination() << "by" << this << "with status" << _item->_status;
-    emit propagator()->itemCompleted(_item);
+    emit propagator()->itemCompleted(_item, category);
     emit finished(_item->_status);
 
     if (_item->_status == SyncFileItem::FatalError) {
@@ -302,9 +302,9 @@ void PropagateItemJob::slotRestoreJobFinished(SyncFileItem::Status status)
 
     if (status == SyncFileItem::Success || status == SyncFileItem::Conflict
         || status == SyncFileItem::Restoration) {
-        done(SyncFileItem::SoftError, msg);
+        done(SyncFileItem::SoftError, msg, ErrorCategory::GenericError);
     } else {
-        done(status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(msg));
+        done(status, tr("A file or folder was removed from a read only share, but restoring failed: %1").arg(msg), ErrorCategory::GenericError);
     }
 }
 
@@ -661,7 +661,7 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
             item->_instruction = CSyncEnums::CSYNC_INSTRUCTION_ERROR;
             item->_errorString = tr("Error with the metadata. Getting unexpected metadata format.");
             item->_status = SyncFileItem::NormalError;
-            emit itemCompleted(item);
+            emit itemCompleted(item, OCC::ErrorCategory::GenericError);
         } else {
             directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
             item->_instruction = CSYNC_INSTRUCTION_NONE;
@@ -1085,6 +1085,56 @@ PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
 OwncloudPropagator *PropagatorJob::propagator() const
 {
     return qobject_cast<OwncloudPropagator *>(parent());
+}
+
+ErrorCategory PropagatorJob::errorCategoryFromNetworkError(const QNetworkReply::NetworkError error)
+{
+    auto result = ErrorCategory::NoError;
+    switch (error)
+    {
+    case QNetworkReply::NoError:
+        result = ErrorCategory::NoError;
+        break;
+    case QNetworkReply::TemporaryNetworkFailureError:
+    case QNetworkReply::RemoteHostClosedError:
+        result = ErrorCategory::NetworkError;
+        break;
+    case QNetworkReply::ConnectionRefusedError:
+    case QNetworkReply::HostNotFoundError:
+    case QNetworkReply::TimeoutError:
+    case QNetworkReply::OperationCanceledError:
+    case QNetworkReply::SslHandshakeFailedError:
+    case QNetworkReply::NetworkSessionFailedError:
+    case QNetworkReply::BackgroundRequestNotAllowedError:
+    case QNetworkReply::TooManyRedirectsError:
+    case QNetworkReply::InsecureRedirectError:
+    case QNetworkReply::UnknownNetworkError:
+    case QNetworkReply::ProxyConnectionRefusedError:
+    case QNetworkReply::ProxyConnectionClosedError:
+    case QNetworkReply::ProxyNotFoundError:
+    case QNetworkReply::ProxyTimeoutError:
+    case QNetworkReply::ProxyAuthenticationRequiredError:
+    case QNetworkReply::UnknownProxyError:
+    case QNetworkReply::ContentAccessDenied:
+    case QNetworkReply::ContentOperationNotPermittedError:
+    case QNetworkReply::ContentNotFoundError:
+    case QNetworkReply::AuthenticationRequiredError:
+    case QNetworkReply::ContentReSendError:
+    case QNetworkReply::ContentConflictError:
+    case QNetworkReply::ContentGoneError:
+    case QNetworkReply::UnknownContentError:
+    case QNetworkReply::ProtocolUnknownError:
+    case QNetworkReply::ProtocolInvalidOperationError:
+    case QNetworkReply::ProtocolFailure:
+    case QNetworkReply::InternalServerError:
+    case QNetworkReply::OperationNotImplementedError:
+    case QNetworkReply::ServiceUnavailableError:
+    case QNetworkReply::UnknownServerError:
+        result = ErrorCategory::GenericError;
+        break;
+    }
+
+    return result;
 }
 
 // ================================================================================
@@ -1521,7 +1571,7 @@ void CleanupPollsJob::slotPollFinished()
     auto *job = qobject_cast<PollJob *>(sender());
     ASSERT(job);
     if (job->_item->_status == SyncFileItem::FatalError) {
-        emit aborted(job->_item->_errorString);
+        emit aborted(job->_item->_errorString, ErrorCategory::GenericError);
         deleteLater();
         return;
     } else if (job->_item->_status != SyncFileItem::Success) {
@@ -1531,7 +1581,7 @@ void CleanupPollsJob::slotPollFinished()
             qCWarning(lcCleanupPolls) << "database error";
             job->_item->_status = SyncFileItem::FatalError;
             job->_item->_errorString = tr("Error writing metadata to the database");
-            emit aborted(job->_item->_errorString);
+            emit aborted(job->_item->_errorString, ErrorCategory::GenericError);
             deleteLater();
             return;
         }
@@ -1554,7 +1604,7 @@ QString OwncloudPropagator::remotePath() const
 
 void PropagateIgnoreJob::start()
 {
-    SyncFileItem::Status status = _item->_status;
+    auto status = _item->_status;
     if (status == SyncFileItem::NoStatus) {
         if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
             status = SyncFileItem::NormalError;
@@ -1568,7 +1618,7 @@ void PropagateIgnoreJob::start()
             _item->_file = conflictRecord.initialBasePath;
         }
     }
-    done(status, _item->_errorString);
+    done(status, _item->_errorString, ErrorCategory::NoError);
 }
 
 }

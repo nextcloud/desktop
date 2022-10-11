@@ -117,7 +117,7 @@ public slots:
     void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
     void slotProgressInfo(const QString &folder, const OCC::ProgressInfo &progress);
     void slotAddError(const QString &folderAlias, const QString &message, OCC::ErrorCategory category);
-    void slotAddErrorToGui(const QString &folderAlias, OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotAddErrorToGui(const QString &folderAlias, const OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject, const ErrorCategory category);
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
