@@ -164,6 +164,14 @@
     </message>
 </context>
 <context>
+    <name>EditFileLocallyLoadingDialog</name>
+    <message>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
+        <source>Opening for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>EmojiPicker</name>
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="132"/>
@@ -1508,6 +1516,11 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Impossible de trouver un fichier pour l&apos;édition locale. Merci de vérifier que le chemin est valide et que le fichier est synchronisé localement.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <source>Could not find a folder to sync.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
