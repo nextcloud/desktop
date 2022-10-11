@@ -355,7 +355,7 @@ OCC::CfApiWrapper::PlaceHolderInfo::PlaceHolderInfo(CF_PLACEHOLDER_BASIC_INFO *d
 {
 }
 
-OCC::Optional<OCC::PinStateEnums::PinState> OCC::CfApiWrapper::PlaceHolderInfo::pinState() const
+OCC::Optional<OCC::PinState> OCC::CfApiWrapper::PlaceHolderInfo::pinState() const
 {
     Q_ASSERT(_data);
     if (!_data) {
@@ -682,7 +682,7 @@ OCC::CfApiWrapper::PlaceHolderInfo OCC::CfApiWrapper::findPlaceholderInfo(const 
     }
 }
 
-OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::setPinState(const QString &path, OCC::PinStateEnums::PinState state, SetPinRecurseMode mode)
+OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::setPinState(const QString &path, OCC::PinState state, SetPinRecurseMode mode)
 {
     const auto cfState = pinStateToCfPinState(state);
     const auto flags = pinRecurseModeToCfSetPinFlags(mode);

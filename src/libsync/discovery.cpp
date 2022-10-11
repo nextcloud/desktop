@@ -1178,7 +1178,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         // either correct availability, or a result with error if the folder is new or otherwise has no availability set yet
         const auto folderPlaceHolderAvailability = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->availability(path._local) : Vfs::AvailabilityResult(Vfs::AvailabilityError::NoSuchItem);
 
-        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : Optional<PinStateEnums::PinState>(PinState::Unspecified);
+        const auto folderPinState = localEntry.isDirectory ? _discoveryData->_syncOptions._vfs->pinState(path._local) : Optional<PinState>(PinState::Unspecified);
 
         if (!isFilePlaceHolder && !folderPlaceHolderAvailability.isValid() && !folderPinState.isValid()) {
             // not a file placeholder and not a synced folder placeholder (new local folder)
