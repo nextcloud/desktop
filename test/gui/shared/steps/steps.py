@@ -42,15 +42,14 @@ socketConnect = None
 createdUsers = {}
 
 
-def waitForRootSyncToComplete(context, timeout=None, pool_interval=500):
+def waitForRootSyncToComplete(context):
     # listen for root folder status before syncing
     listenSyncStatusForItem(context.userData['currentUserSyncPath'])
 
-    if not timeout:
-        timeout = context.userData['maxSyncTimeout'] * 1000
+    timeout = context.userData['maxSyncTimeout'] * 1000
 
     synced = waitFor(
-        lambda: checkRootSyncPattern(pool_interval),
+        lambda: checkRootSyncPattern(),
         timeout,
     )
     if not synced:
@@ -61,7 +60,7 @@ def waitForRootSyncToComplete(context, timeout=None, pool_interval=500):
         )
 
 
-def checkRootSyncPattern(pool_interval):
+def checkRootSyncPattern():
     patterns = getRootSyncPatterns()
     new_messages = getSocketMessagesDry()
     messages = updateSocketMessages(new_messages)
@@ -72,9 +71,8 @@ def checkRootSyncPattern(pool_interval):
             for pattern in patterns:
                 if matchPatterns(pattern, actual_pattern):
                     return True
-    # snooze takes time in seconds
-    # convert to milliseconds
-    snooze(pool_interval / 1000)
+    # 100 milliseconds polling interval
+    snooze(0.1)
     return False
 
 
