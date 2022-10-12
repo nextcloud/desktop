@@ -1422,7 +1422,7 @@ void FolderMan::setDirtyNetworkLimits()
     }
 }
 
-void FolderMan::editFileLocally(const QString &accountDisplayName, const QString &relPath)
+void FolderMan::editFileLocally(const QString &accountDisplayName, const QString &relPath, const QString &token)
 {
     const auto showError = [this](const OCC::AccountStatePtr accountState, const QString &errorMessage, const QString &subject) {
         if (accountState && accountState->account()) {
@@ -1446,6 +1446,12 @@ void FolderMan::editFileLocally(const QString &accountDisplayName, const QString
         messageBox->activateWindow();
         messageBox->raise();
     };
+
+    if (token.isEmpty()) {
+        qCWarning(lcFolderMan) << "Edit locally request is missing a valid token. Impossible to open the file.";
+        showError({}, tr("Edit locally request is not valid. Opening the file is forbidden."), accountDisplayName);
+        return;
+    }
 
     const auto accountFound = AccountManager::instance()->account(accountDisplayName);
 
