@@ -73,7 +73,11 @@ public:
     void setIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
 
-    QByteArray responseTimestamp();
+    QByteArray responseTimestamp() const;
+    QDateTime responseQTimeStamp() const;
+
+    int httpStatusCode() const;
+
     /* Content of the X-Request-ID header. (Only set after the request is sent) */
     QByteArray requestId();
 

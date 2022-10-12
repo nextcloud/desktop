@@ -46,83 +46,53 @@ Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 
-QByteArray parseEtag(const QByteArray &header)
+QString parseEtag(QStringView header)
 {
-    if (header.isEmpty())
-        return QByteArray();
-    QByteArray arr = header;
+    if (header.isEmpty()) {
+        return {};
+    }
 
     // Weak E-Tags can appear when gzip compression is on, see #3946
-    if (arr.startsWith("W/"))
-        arr = arr.mid(2);
+    if (header.startsWith(QLatin1String("W/"))) {
+        header = header.mid(2);
+    }
 
     // https://github.com/owncloud/client/issues/1195
-    arr.replace("-gzip", "");
-
-    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
-        arr = arr.mid(1, arr.length() - 2);
+    const QLatin1String gzipSuffix("-gzip");
+    if (header.endsWith(gzipSuffix)) {
+        header.chop(gzipSuffix.size());
     }
-    return arr;
+
+    if (header.startsWith(QLatin1Char('"'))) {
+        header = header.mid(1);
+        if (OC_ENSURE(header.endsWith(QLatin1Char('"')))) {
+            header.chop(1);
+        }
+    }
+    return header.toString();
 }
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, rootUrl, path, parent)
+    : PropfindJob(account, rootUrl, path, PropfindJob::Depth::Zero, parent)
 {
-}
-
-void RequestEtagJob::start()
-{
-    QNetworkRequest req;
-    req.setRawHeader(QByteArrayLiteral("Depth"), QByteArrayLiteral("0"));
-    req.setRawHeader(QByteArrayLiteral("Prefer"), QByteArrayLiteral("return=minimal"));
-
-    const QByteArray xml = QByteArrayLiteral("<?xml version=\"1.0\" ?>\n"
-                                             "<d:propfind xmlns:d=\"DAV:\">\n"
-                                             "  <d:prop>\n"
-                                             "    <d:getetag/>\n"
-                                             "  </d:prop>\n"
-                                             "</d:propfind>\n");
-    QBuffer *buf = new QBuffer(this);
-    buf->setData(xml);
-    buf->open(QIODevice::ReadOnly);
-    // assumes ownership
-    sendRequest("PROPFIND", req, buf);
-    AbstractNetworkJob::start();
-}
-
-void RequestEtagJob::finished()
-{
-    qCInfo(lcEtagJob) << "Request Etag of" << reply()->request().url() << "FINISHED WITH STATUS"
-                      <<  replyStatusString();
-
-    auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpCode == 207) {
-        // Parse DAV response
-        QXmlStreamReader reader(reply());
-        reader.addExtraNamespaceDeclaration(QXmlStreamNamespaceDeclaration(QStringLiteral("d"), QStringLiteral("DAV:")));
-        QByteArray etag;
-        while (!reader.atEnd()) {
-            reader.readNextStartElement();
-            if (reader.namespaceUri() == QLatin1String("DAV:")) {
-                QString name = reader.name().toString();
-                if (name == QLatin1String("getetag")) {
-                    auto etagText = reader.readElementText();
-                    auto parsedTag = parseEtag(etagText.toUtf8());
-                    if (!parsedTag.isEmpty()) {
-                        etag += parsedTag;
-                    } else {
-                        etag += etagText.toUtf8();
-                    }
-                }
-            }
+    setProperties({ QByteArrayLiteral("getetag") });
+    connect(this, &PropfindJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &value) {
+        if (reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != 207) {
+            Q_EMIT finishedWithError(reply());
+            return;
         }
-        emit etagRetreived(etag, QDateTime::fromString(QString::fromUtf8(_responseTimestamp), Qt::RFC2822Date));
-        emit finishedWithResult(etag);
-    } else {
-        emit finishedWithResult(HttpError{ httpCode, errorString() });
-    }
+        _etag = parseEtag(value.value(QStringLiteral("getetag"))).toUtf8();
+        // the server returned a 207 but no etag, something is wrong
+        if (!OC_ENSURE(!_etag.isEmpty())) {
+            abort();
+        }
+    });
 }
 
+const QByteArray &RequestEtagJob::etag() const
+{
+    return _etag;
+}
 /*********************************************************************************************/
 
 MkColJob::MkColJob(AccountPtr account, const QUrl &url, const QString &path,

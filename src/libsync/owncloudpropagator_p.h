@@ -25,11 +25,11 @@ namespace OCC {
 
 inline QByteArray getEtagFromReply(QNetworkReply *reply)
 {
-    QByteArray ret = parseEtag(reply->rawHeader("OC-ETag"));
-    if (ret.isEmpty()) {
-        ret = parseEtag(reply->rawHeader("ETag"));
+    QByteArray rawEtag = reply->rawHeader("OC-ETag");
+    if (rawEtag.isEmpty()) {
+        rawEtag = reply->rawHeader("ETag");
     }
-    return ret;
+    return parseEtag(QString::fromUtf8(rawEtag)).toUtf8();
 }
 
 /**

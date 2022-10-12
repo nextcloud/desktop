@@ -226,10 +226,15 @@ void AbstractNetworkJob::slotFinished()
     deleteLater();
 }
 
-QByteArray AbstractNetworkJob::responseTimestamp()
+QByteArray AbstractNetworkJob::responseTimestamp() const
 {
     OC_ASSERT(!_responseTimestamp.isEmpty() || _aborted || (reply() && reply()->error() == QNetworkReply::RemoteHostClosedError));
     return _responseTimestamp;
+}
+
+QDateTime OCC::AbstractNetworkJob::responseQTimeStamp() const
+{
+    return QDateTime::fromString(QString::fromUtf8(responseTimestamp()), Qt::RFC2822Date);
 }
 
 QByteArray AbstractNetworkJob::requestId()
@@ -382,6 +387,11 @@ void AbstractNetworkJob::setPriority(QNetworkRequest::Priority priority)
 QNetworkRequest::Priority AbstractNetworkJob::priority() const
 {
     return _priority;
+}
+
+int AbstractNetworkJob::httpStatusCode() const
+{
+    return reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 }
 
 } // namespace OCC

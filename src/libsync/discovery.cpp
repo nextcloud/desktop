@@ -604,24 +604,26 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             // we need to make a request to the server to know that the original file is deleted on the server
             _pendingAsyncJobs++;
             auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_baseUrl, _discoveryData->_remoteFolder + originalPath, this);
-            connect(job, &RequestEtagJob::finishedWithResult, this, [=](const HttpResult<QByteArray> &etag) mutable {
+            connect(job, &RequestEtagJob::finishedSignal, this, [=]() mutable {
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
-                if (etag || etag.error().code != 404 ||
+                if (job->httpStatusCode() == 207 ||
                     // Somehow another item claimed this original path, consider as if it existed
                     _discoveryData->isRenamed(originalPath)) {
                     // If the file exist or if there is another error, consider it is a new file.
                     postProcessServerNew();
                     return;
+                } else if (OC_ENSURE(job->httpStatusCode() == 404)) {
+                    // The file do not exist, it is a rename
+
+                    // In case the deleted item was discovered in parallel
+                    _discoveryData->findAndCancelDeletedJob(originalPath);
+
+                    postProcessRename(path);
+                    processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
+                    return;
                 }
-
-                // The file do not exist, it is a rename
-
-                // In case the deleted item was discovered in parallel
-                _discoveryData->findAndCancelDeletedJob(originalPath);
-
-                postProcessRename(path);
-                processFileFinalize(item, path, item->isDirectory(), item->_instruction == CSYNC_INSTRUCTION_RENAME ? NormalQuery : ParentDontExist, _queryServer);
+                abort();
             });
             job->start();
             done = true; // Ideally, if the origin still exist on the server, we should continue searching...  but that'd be difficult
@@ -1002,9 +1004,9 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
             serverOriginalPath = chopVirtualFileSuffix(serverOriginalPath);
         }
         auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_baseUrl, serverOriginalPath, this);
-        connect(job, &RequestEtagJob::finishedWithResult, this,
-            [recurseQueryServer, path = path, postProcessLocalNew, processRename, base, item, originalPath, this](const HttpResult<QByteArray> &etag) {
-                if (!etag || (etag.get() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+        connect(job, &RequestEtagJob::finishedSignal, this,
+            [job, recurseQueryServer, path = path, postProcessLocalNew, processRename, base, item, originalPath, this] {
+                if (job->httpStatusCode() == 404 || (job->etag() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                     qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                     // Can't be a rename, leave it as a new.
                     postProcessLocalNew(path);
@@ -1012,7 +1014,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 } else {
                     // In case the deleted item was discovered in parallel
                     _discoveryData->findAndCancelDeletedJob(originalPath);
-                    processFileFinalize(item, processRename(path), item->isDirectory(), NormalQuery, etag.get() == base._etag ? ParentNotChanged : NormalQuery);
+                    processFileFinalize(item, processRename(path), item->isDirectory(), NormalQuery, job->etag() == base._etag ? ParentNotChanged : NormalQuery);
                 }
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);

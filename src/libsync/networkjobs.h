@@ -27,7 +27,7 @@ class QUrl;
 namespace OCC {
 
 /** Strips quotes and gzip annotations */
-OWNCLOUDSYNC_EXPORT QByteArray parseEtag(const QByteArray &header);
+OWNCLOUDSYNC_EXPORT QString parseEtag(QStringView header);
 
 struct HttpError
 {
@@ -174,19 +174,16 @@ private:
 /**
  * @brief The RequestEtagJob class
  */
-class OWNCLOUDSYNC_EXPORT RequestEtagJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT RequestEtagJob : public PropfindJob
 {
     Q_OBJECT
 public:
     explicit RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent = nullptr);
-    void start() override;
 
-signals:
-    void etagRetreived(const QByteArray &etag, const QDateTime &time);
-    void finishedWithResult(const HttpResult<QByteArray> &etag);
+    const QByteArray &etag() const;
 
-private slots:
-    void finished() override;
+private:
+    QByteArray _etag;
 };
 
 /**

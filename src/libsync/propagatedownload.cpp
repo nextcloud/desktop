@@ -663,7 +663,8 @@ void PropagateDownloadFile::slotGetFinished()
     if (!job->etag().isEmpty()) {
         // The etag will be empty if we used a direct download URL.
         // (If it was really empty by the server, the GETFileJob will have errored
-        _item->_etag = parseEtag(job->etag());
+        Q_ASSERT(job->etag() == parseEtag(QString::fromUtf8(job->etag())).toUtf8());
+        _item->_etag = job->etag();
     }
     if (job->lastModified()) {
         // It is possible that the file was modified on the server since we did the discovery phase

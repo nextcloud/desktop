@@ -73,7 +73,7 @@ private slots:
         tests.append(Test("W/\"foo\"", "foo"));
 
         for (const auto &test : qAsConst(tests)) {
-            QCOMPARE(parseEtag(test.first), QByteArray(test.second));
+            QCOMPARE(parseEtag(QString::fromUtf8(test.first)).toUtf8(), QByteArray(test.second));
         }
     }
 };
