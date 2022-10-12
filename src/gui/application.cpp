@@ -61,6 +61,7 @@
 #include <QMessageBox>
 #include <QDesktopServices>
 #include <QGuiApplication>
+#include <QUrlQuery>
 
 class QSocket;
 
@@ -764,8 +765,16 @@ void Application::handleEditLocally(const QUrl &url) const
     // for a sample URL "nc://open/admin@nextcloud.lan:8080/Photos/lovely.jpg", QUrl::path would return "admin@nextcloud.lan:8080/Photos/lovely.jpg"
     const auto accountDisplayName = pathSplit.takeFirst();
     const auto fileRemotePath = pathSplit.join('/');
+    const auto urlQuery = QUrlQuery{url};
 
-    FolderMan::instance()->editFileLocally(accountDisplayName, fileRemotePath);
+    auto token = QString{};
+    if (urlQuery.hasQueryItem(QStringLiteral("token"))) {
+        token = urlQuery.queryItemValue(QStringLiteral("token"));
+    } else {
+        qCWarning(lcApplication) << "Invalid URL for file local editing: missing token";
+    }
+
+    FolderMan::instance()->editFileLocally(accountDisplayName, fileRemotePath, token);
 }
 
 QString substLang(const QString &lang)
