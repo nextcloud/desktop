@@ -366,6 +366,17 @@ void PropfindJob::finished()
             this, &PropfindJob::finishedWithError);
         connect(&parser, &LsColXMLParser::finishedWithoutError,
             this, &PropfindJob::finishedWithoutError);
+        if (_depth == 0) {
+            connect(&parser, &LsColXMLParser::directoryListingIterated, [&parser, counter = 0, this](const QString &name, const QMap<QString, QString> &) mutable {
+                counter++;
+                // With a depths of 0 we must receive only one listing
+                if (OC_ENSURE(counter == 1)) {
+                    disconnect(&parser, &LsColXMLParser::directoryListingIterated, this, &PropfindJob::directoryListingIterated);
+                } else {
+                    qCCritical(lcPropfindJob) << "Received superfluous directory listing for depth 0 propfind" << counter << "Path:" << name;
+                }
+            });
+        }
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
         if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
