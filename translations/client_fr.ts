@@ -577,7 +577,7 @@ Cette action stoppera toute synchronisation en cours.</translation>
         <translation>Session sur %1 fermée.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2158,7 +2158,7 @@ Veuillez noter qu’utiliser les options de journalisation en ligne de commande 
         <translation>Se déconnecter</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>Se connecter</translation>
     </message>

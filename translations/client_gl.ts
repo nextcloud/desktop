@@ -577,7 +577,7 @@ Esta acción interromperá calquera sincronización que estea agora en proceso.<
         <translation>Desconectado de %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2158,7 +2158,7 @@ Teña en conta que o uso de calquera opción de rexistro por liña de ordes anul
         <translation>Desconectar</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>Acceder</translation>
     </message>

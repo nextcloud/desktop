@@ -193,7 +193,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
         <source>Sent! &lt;b&gt;Many thanks&lt;/b&gt;. Please refer to crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (click to copy) in bug reports.</source>
-        <translation>Gesendet! &lt;b&gt;Vielen Dank&lt;/b&gt;. Bitte referenzieren Sie Crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (anklicken zum Kopieren) in Ihren Bug-Reports.</translation>
+        <translation>Gesendet! &lt;b&gt;Vielen Dank&lt;/b&gt;. Bitte referenzieren Sie den Crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (anklicken zum Kopieren) in Ihren Bug-Reports.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
@@ -577,7 +577,7 @@ Diese Aktion wird gerade laufende Synchronisationen abbrechen.</translation>
         <translation>Abgemeldet von %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2165,7 +2165,7 @@ Beachten Sie, dass Kommandozeilenoptionen zum Logging diese Einstellungen übers
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>Anmelden</translation>
     </message>
@@ -3995,7 +3995,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation>Bitte ändern Sie Ihr Passwort, um wieder in Ihr Konto zu gelangen.</translation>
+        <translation>Bitte geben Sie Ihre Zugangsdaten ein, um sich in Ihrem Account anzumelden.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>

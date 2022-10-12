@@ -577,7 +577,7 @@ This action will abort any currently running synchronization.</source>
         <translation>從 %1 登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2157,7 +2157,7 @@ Note that using any logging command line options will override the settings.</so
         <translation>登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>登入</translation>
     </message>

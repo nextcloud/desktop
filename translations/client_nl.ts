@@ -577,7 +577,7 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
         <translation>Uitgelogd van %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2158,7 +2158,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
         <translation>Afmelden</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>Meld u aan</translation>
     </message>

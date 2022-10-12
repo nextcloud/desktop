@@ -577,7 +577,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%1 からサインアウトしました。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2155,7 +2155,7 @@ Note that using any logging command line options will override the settings.</so
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>ログイン</translation>
     </message>
@@ -2488,7 +2488,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>新しい %1 が利用可能です。 新しいAppImageを手動でダウンロードするには、&lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; をクリックしてください。</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
@@ -2654,7 +2654,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1432"/>
         <source>Server replied with an error while reading directory &apos;%1&apos; : %2</source>
-        <translation type="unfinished"/>
+        <translation>ディレクトリ &apos;%1&apos; の読み取り中にサーバーがエラーで応答しました。 : %2</translation>
     </message>
 </context>
 <context>
@@ -2662,12 +2662,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1061"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1064"/>
         <source>%1 the folder is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>フォルダ %1 は現在使用中です</translation>
     </message>
 </context>
 <context>
@@ -2675,18 +2675,18 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>領域解放に失敗しました。ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="455"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は、ローカルファイル名 %2 と衝突しているため、ダウンロードできません！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
         <source>The download would reduce free local disk space below the limit</source>
-        <translation type="unfinished"/>
+        <translation>ダウンロードによりローカルディスクの空き容量が制限値以下になります</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="517"/>
@@ -2716,12 +2716,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は、ローカルファイル名 %2 と衝突しているため、保存できません！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
@@ -2729,7 +2729,7 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1017"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="349"/>
@@ -2756,17 +2756,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>ローカルフォルダ %1 は、ローカルファイル名 %2 と衝突しているため作成できません。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="198"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="182"/>
@@ -2779,18 +2779,18 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="79"/>
         <source>%1 failed with: %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 で失敗しました: %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>%1 はローカルファイル名 %2 が衝突しているため削除できませんでした！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="116"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
 </context>
 <context>
@@ -2803,22 +2803,22 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>%1 を %2 に名前変更できません、ファイルは現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="275"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="281"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>ファイル名の変更に失敗しました</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
@@ -2844,12 +2844,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータのデータベースへの書き込みに失敗 : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="187"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>ファイルロックによりファイルステータスの設定に失敗しました</translation>
     </message>
 </context>
 <context>
@@ -2857,7 +2857,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="120"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation type="unfinished"/>
+        <translation>%1 を %2 に名前変更できません。エラー: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="167"/>
@@ -2867,12 +2867,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="205"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="208"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
@@ -2890,12 +2890,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1213"/>
         <source>Could not update file : %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルを更新できませんでした : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1216"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
 </context>
 <context>
@@ -2913,23 +2913,23 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="109"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>ローカルファイルが同期中に変更されました。再開されます。</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="583"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>メタデータの更新エラー: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="586"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>ファイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="137"/>
         <location filename="../src/libsync/propagateupload.cpp" line="470"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
-        <translation type="unfinished"/>
+        <translation>%1 のアップロードがフォルダのクォータを超えています</translation>
     </message>
 </context>
 <context>
@@ -2938,7 +2938,7 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/propagateuploadng.cpp" line="98"/>
         <location filename="../src/libsync/propagateuploadng.cpp" line="368"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>フォイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="485"/>
@@ -2948,7 +2948,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="532"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>サーバーは削除されたレガシー機能（ポーリング）を要求した</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="537"/>
@@ -2971,7 +2971,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="65"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>フォイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
@@ -2984,12 +2984,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="49"/>
         <source>%1 the file is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>フォイル %1 は現在使用中です</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="219"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>サーバーは削除されたレガシー機能（ポーリング）を要求した</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="239"/>
@@ -3022,7 +3022,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Issues</source>
-        <translation type="unfinished"/>
+        <translation>問題</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
@@ -3071,7 +3071,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>同期を再実行</translation>
     </message>
 </context>
 <context>
@@ -3193,7 +3193,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"/>
+        <translation>メインウィンドウ</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.ui" line="39"/>
@@ -3274,12 +3274,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="147"/>
         <source>Upload only (File Drop)</source>
-        <translation type="unfinished"/>
+        <translation>アップロードのみ（ファイルドロップ）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="160"/>
         <source>Receive files from others without revealing the contents of the folder.</source>
-        <translation type="unfinished"/>
+        <translation>フォルダの内容を公開せずに、他の人からファイルを受信することができます。</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="124"/>
@@ -3289,17 +3289,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="269"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>名前:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="276"/>
         <source>Enter name of new share...</source>
-        <translation type="unfinished"/>
+        <translation>新しい共有の名前を入力してください...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="283"/>
         <source>&amp;Create</source>
-        <translation type="unfinished"/>
+        <translation>&amp;作成</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="336"/>
@@ -3355,12 +3355,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
         <source>Link shares have been disabled</source>
-        <translation type="unfinished"/>
+        <translation>共有リンクは無効化されました</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="107"/>
         <source>Create public link share</source>
-        <translation type="unfinished"/>
+        <translation>公開リンク共有を作成</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="168"/>
@@ -3381,7 +3381,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="165"/>
         <source>Copy link to clipboard (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>リンクをクリップボードにコピーする（ダイレクトダウンロード）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="166"/>
@@ -3391,22 +3391,22 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="167"/>
         <source>Send link by email (direct download)</source>
-        <translation type="unfinished"/>
+        <translation>メールでリンクを送る（ダイレクトダウンロード）</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="284"/>
         <source>Create new...</source>
-        <translation type="unfinished"/>
+        <translation>新規作成...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="577"/>
         <source>I shared %1 with you</source>
-        <translation type="unfinished"/>
+        <translation>%1 をあなたと共有しました</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="591"/>
         <source>Confirm Link Share Deletion</source>
-        <translation type="unfinished"/>
+        <translation>共有リンクの削除を確認</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="592"/>
@@ -3422,12 +3422,12 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="62"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="615"/>
         <source>Public link</source>
-        <translation type="unfinished"/>
+        <translation>公開リンク</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="268"/>
         <source>Delete link share</source>
-        <translation type="unfinished"/>
+        <translation>共有リンクを削除</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="356"/>

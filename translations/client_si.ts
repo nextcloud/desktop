@@ -577,7 +577,7 @@ This action will abort any currently running synchronization.</source>
         <translation>%1සිට වරනය විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="829"/>
+        <location filename="../src/gui/accountsettings.cpp" line="812"/>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
@@ -2160,7 +2160,7 @@ Note that using any logging command line options will override the settings.</so
         <translation>ලොග් අවුට් වෙන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="63"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
         <source>Log in</source>
         <translation>ඇතුල් වන්න</translation>
     </message>
