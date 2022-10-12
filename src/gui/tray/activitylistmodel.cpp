@@ -547,7 +547,7 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
 
 void ActivityListModel::addErrorToActivityList(const Activity &activity)
 {
-    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._subject;
+    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._message << activity._subject;
     addEntriesToActivityList({activity});
     _notificationErrorsLists.prepend(activity);
 }
