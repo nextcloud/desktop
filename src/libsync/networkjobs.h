@@ -459,6 +459,42 @@ private:
     QByteArray verbToString() const;
 };
 
+class OWNCLOUDSYNC_EXPORT SimpleApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    enum class Verb {
+        Get,
+        Post,
+        Put,
+        Delete,
+        };
+
+    explicit SimpleApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
+
+    void setBody(const QByteArray &body);
+
+    void setVerb(Verb value);
+
+public slots:
+    void start() override;
+
+Q_SIGNALS:
+
+    void resultReceived(int statusCode);
+
+protected:
+    bool finished() override;
+
+private:
+    QByteArray _body;
+    QNetworkRequest _request;
+
+    Verb _verb = Verb::Get;
+
+    QByteArray verbToString() const;
+};
+
 /**
  * @brief Checks with auth type to use for a server
  * @ingroup libsync
