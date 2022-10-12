@@ -1202,10 +1202,11 @@ void ClientSideEncryption::sendSignRequestCSR(const AccountPtr &account, PKey ke
             const auto certificatePem = _certificate.toPem();
             BIO_write(certificateBio, certificatePem.constData(), certificatePem.size());
             const auto x509Certificate = X509Certificate::readCertificate(certificateBio);
-            if (const auto certificateCheckResult = X509_check_private_key(x509Certificate, keyPair) ; !certificateCheckResult) {
-                auto lastError = 1UL;
-                while ((lastError= ERR_get_error())) {
+            if (!X509_check_private_key(x509Certificate, keyPair)) {
+                auto lastError = ERR_get_error();
+                while (lastError) {
                     qCInfo(lcCse()) << ERR_lib_error_string(lastError);
+                    lastError = ERR_get_error();
                 }
                 forgetSensitiveData(account);
                 return;
