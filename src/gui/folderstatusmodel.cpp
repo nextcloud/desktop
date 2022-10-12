@@ -598,15 +598,15 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     if (info->_path != QLatin1String("/")) {
         path += info->_path;
     }
-    LsColJob *job = new LsColJob(_accountState->account(), info->_folder->webDavUrl(), path, 1, this);
+    PropfindJob *job = new PropfindJob(_accountState->account(), info->_folder->webDavUrl(), path, 1, this);
     info->_fetchingJob = job;
     job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size"), QByteArrayLiteral("http://owncloud.org/ns:permissions") });
     job->setTimeout(60s);
-    connect(job, &LsColJob::directoryListingSubfolders,
+    connect(job, &PropfindJob::directoryListingSubfolders,
         this, &FolderStatusModel::slotUpdateDirectories);
-    connect(job, &LsColJob::finishedWithError,
+    connect(job, &PropfindJob::finishedWithError,
         this, &FolderStatusModel::slotLscolFinishedWithError);
-    connect(job, &LsColJob::directoryListingIterated,
+    connect(job, &PropfindJob::directoryListingIterated,
         this, &FolderStatusModel::slotGatherPermissions);
 
     job->start();
@@ -642,7 +642,7 @@ void FolderStatusModel::slotGatherPermissions(const QString &href, const QMap<QS
 
 void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 {
-    auto job = qobject_cast<LsColJob *>(sender());
+    auto job = qobject_cast<PropfindJob *>(sender());
     OC_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     auto parentInfo = infoForIndex(idx);
@@ -774,7 +774,7 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
 
 void FolderStatusModel::slotLscolFinishedWithError(QNetworkReply *r)
 {
-    auto job = qobject_cast<LsColJob *>(sender());
+    auto job = qobject_cast<PropfindJob *>(sender());
     OC_ASSERT(job);
     QModelIndex idx = qvariant_cast<QPersistentModelIndex>(job->property(propertyParentIndexC));
     if (!idx.isValid()) {

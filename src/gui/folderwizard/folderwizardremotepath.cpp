@@ -128,7 +128,7 @@ void FolderWizardRemotePath::slotHandleLsColNetworkError(QNetworkReply *reply)
         showWarn(QString()); // hides the warning pane
         return;
     }
-    auto job = qobject_cast<LsColJob *>(sender());
+    auto job = qobject_cast<PropfindJob *>(sender());
     OC_ASSERT(job);
     showWarn(tr("Failed to list a folder. Error: %1")
                  .arg(job->errorStringParsingBody()));
@@ -233,7 +233,7 @@ void FolderWizardRemotePath::slotUpdateDirectories(const QStringList &list)
 
 void FolderWizardRemotePath::slotRefreshFolders()
 {
-    runLsColJob(QStringLiteral("/"));
+    runPropFindJob(QStringLiteral("/"));
     _ui->folderTreeWidget->clear();
     _ui->folderEntry->clear();
 }
@@ -244,7 +244,7 @@ void FolderWizardRemotePath::slotItemExpanded(QTreeWidgetItem *item)
     if (!dir.startsWith(QLatin1Char('/'))) {
         dir.prepend(QLatin1Char('/'));
     }
-    runLsColJob(dir);
+    runPropFindJob(dir);
 }
 
 void FolderWizardRemotePath::slotCurrentItemChanged(QTreeWidgetItem *item)
@@ -275,13 +275,13 @@ void FolderWizardRemotePath::slotLsColFolderEntry()
 {
     QString path = _ui->folderEntry->text();
 
-    LsColJob *job = runLsColJob(path);
+    PropfindJob *job = runPropFindJob(path);
     // No error handling, no updating, we do this manually
     // because of extra logic in the typed-path case.
     disconnect(job, nullptr, this, nullptr);
-    connect(job, &LsColJob::finishedWithError,
+    connect(job, &PropfindJob::finishedWithError,
         this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
-    connect(job, &LsColJob::directoryListingSubfolders,
+    connect(job, &PropfindJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotTypedPathFound);
 }
 
@@ -291,13 +291,13 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
     selectByPath(_ui->folderEntry->text());
 }
 
-LsColJob *FolderWizardRemotePath::runLsColJob(const QString &path)
+PropfindJob *FolderWizardRemotePath::runPropFindJob(const QString &path)
 {
-    LsColJob *job = new LsColJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), path, 1, this);
+    PropfindJob *job = new PropfindJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), path, 1, this);
     job->setProperties({ QByteArrayLiteral("resourcetype") });
-    connect(job, &LsColJob::directoryListingSubfolders,
+    connect(job, &PropfindJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);
-    connect(job, &LsColJob::finishedWithError,
+    connect(job, &PropfindJob::finishedWithError,
         this, &FolderWizardRemotePath::slotHandleLsColNetworkError);
     job->start();
 

@@ -345,7 +345,7 @@ private:
     bool _removeJobError = false; /// if not null, there was an error removing the job
 
     // Map chunk number with its size  from the PROPFIND on resume.
-    // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
+    // (Only used from slotPropfindIterate/slotPropfindFinished because the PropfindJob use signals to report data.)
     struct ServerChunkInfo
     {
         qint64 size;

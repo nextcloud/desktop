@@ -30,7 +30,7 @@ namespace OCC {
 Q_DECLARE_LOGGING_CATEGORY(lcFolderStatus)
 
 class Folder;
-class LsColJob;
+class PropfindJob;
 
 /**
  * @brief The FolderStatusModel class
@@ -79,7 +79,7 @@ public:
         bool _isExternal;
 
         bool _fetched; // If we did the LSCOL for this folder already
-        QPointer<LsColJob> _fetchingJob; // Currently running LsColJob
+        QPointer<PropfindJob> _fetchingJob; // Currently running PropfindJob
         bool _hasError; // If the last fetching job ended in an error
         QString _lastErrorString;
         bool _fetchingLabel; // Whether a 'fetching in progress' label is shown.

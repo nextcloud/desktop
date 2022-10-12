@@ -99,9 +99,9 @@ void QuotaInfo::slotCheckQuota()
     }
 
     const AccountPtr &account = _accountState->account();
-    _job = new LsColJob(account, account->davUrl(), quotaBaseFolder(), 0, this);
+    _job = new PropfindJob(account, account->davUrl(), quotaBaseFolder(), 0, this);
     _job->setProperties({ QByteArrayLiteral("quota-available-bytes"), QByteArrayLiteral("quota-used-bytes") });
-    connect(_job.data(), &LsColJob::directoryListingIterated, this, &QuotaInfo::slotUpdateLastQuota);
+    connect(_job.data(), &PropfindJob::directoryListingIterated, this, &QuotaInfo::slotUpdateLastQuota);
     connect(_job.data(), &AbstractNetworkJob::networkError, this, &QuotaInfo::slotRequestFailed);
     _job->start();
 }

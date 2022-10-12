@@ -108,12 +108,12 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     // do a PROPFIND to know the size of this folder
-    auto propfindJob = new LsColJob(_account, _baseUrl, _remoteFolder + path, 0, this);
+    auto propfindJob = new PropfindJob(_account, _baseUrl, _remoteFolder + path, 0, this);
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
                                                    << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &LsColJob::finishedWithError,
+    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
         this, [=] { return callback(false); });
-    QObject::connect(propfindJob, &LsColJob::directoryListingIterated, this, [=](const QString, const QMap<QString, QString> &values) {
+    QObject::connect(propfindJob, &PropfindJob::directoryListingIterated, this, [=](const QString, const QMap<QString, QString> &values) {
         auto result = values.value(QStringLiteral("size")).toLongLong();
         if (result >= limit) {
             // we tell the UI there is a new folder
@@ -333,7 +333,7 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
 void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
-    LsColJob *lsColJob = new LsColJob(_account, _baseUrl, _subPath, 1, this);
+    _proFindJob = new PropfindJob(_account, _baseUrl, _subPath, 1, this);
 
     QList<QByteArray> props {
         "resourcetype",
@@ -352,21 +352,19 @@ void DiscoverySingleDirectoryJob::start()
     }
 
 
-    lsColJob->setProperties(props);
+    _proFindJob->setProperties(props);
 
-    QObject::connect(lsColJob, &LsColJob::directoryListingIterated,
+    QObject::connect(_proFindJob, &PropfindJob::directoryListingIterated,
         this, &DiscoverySingleDirectoryJob::directoryListingIteratedSlot);
-    QObject::connect(lsColJob, &LsColJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
-    QObject::connect(lsColJob, &LsColJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
-    lsColJob->start();
-
-    _lsColJob = lsColJob;
+    QObject::connect(_proFindJob, &PropfindJob::finishedWithError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot);
+    QObject::connect(_proFindJob, &PropfindJob::finishedWithoutError, this, &DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot);
+    _proFindJob->start();
 }
 
 void DiscoverySingleDirectoryJob::abort()
 {
-    if (_lsColJob) {
-        _lsColJob->abort();
+    if (_proFindJob) {
+        _proFindJob->abort();
     }
 }
 
@@ -474,7 +472,7 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
         deleteLater();
         return;
     }
-    emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_lsColJob->responseTimestamp()), Qt::RFC2822Date));
+    emit etag(_firstEtag, QDateTime::fromString(QString::fromUtf8(_proFindJob->responseTimestamp()), Qt::RFC2822Date));
     emit finished(_results);
     deleteLater();
 }

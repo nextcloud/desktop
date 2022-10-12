@@ -24,7 +24,7 @@
 #include "libsync/accountfwd.h"
 
 namespace OCC {
-class LsColJob;
+class PropfindJob;
 
 /**
  * @brief handles getting the quota to display in the UI
@@ -83,7 +83,7 @@ private:
     QTimer _jobRestartTimer;
     QDateTime _lastQuotaRecieved; // the time at which the quota was received last
     bool _active; // if we should check at regular interval (when the UI is visible)
-    QPointer<LsColJob> _job; // the currently running job
+    QPointer<PropfindJob> _job; // the currently running job
 };
 
 

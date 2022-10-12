@@ -30,13 +30,10 @@
 #include <QPainter>
 #include <QPainterPath>
 
+#include "creds/httpcredentials.h"
+
 #include "account.h"
 #include "networkjobs.h"
-#include "owncloudpropagator.h"
-
-#include "creds/abstractcredentials.h"
-#include "creds/httpcredentials.h"
-#include "theme.h"
 
 
 using namespace std::chrono_literals;
@@ -44,7 +41,7 @@ using namespace std::chrono_literals;
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEtagJob, "sync.networkjob.etag", QtInfoMsg)
-Q_LOGGING_CATEGORY(lcLsColJob, "sync.networkjob.lscol", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcPropfindJob, "sync.networkjob.propfind", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
@@ -216,7 +213,7 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
                 // but the result will have URL encoding..
                 QString hrefString = QString::fromUtf8(QByteArray::fromPercentEncoding(reader.readElementText().toUtf8()));
                 if (!hrefString.startsWith(expectedPath)) {
-                    qCWarning(lcLsColJob) << "Invalid href" << hrefString << "expected starting with" << expectedPath;
+                    qCWarning(lcPropfindJob) << "Invalid href" << hrefString << "expected starting with" << expectedPath;
                     return false;
                 }
                 currentHref = hrefString;
@@ -279,10 +276,10 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
 
     if (reader.hasError()) {
         // XML Parser error? Whatever had been emitted before will come as directoryListingIterated
-        qCWarning(lcLsColJob) << "ERROR" << reader.errorString() << xml;
+        qCWarning(lcPropfindJob) << "ERROR" << reader.errorString() << xml;
         return false;
     } else if (!insideMultiStatus) {
-        qCWarning(lcLsColJob) << "ERROR no WebDAV response?" << xml;
+        qCWarning(lcPropfindJob) << "ERROR no WebDAV response?" << xml;
         return false;
     } else {
         emit directoryListingSubfolders(folders);
@@ -293,7 +290,7 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
 
 /*********************************************************************************************/
 
-LsColJob::LsColJob(AccountPtr account, const QUrl &url, const QString &path, int _depth, QObject *parent)
+PropfindJob::PropfindJob(AccountPtr account, const QUrl &url, const QString &path, int _depth, QObject *parent)
     : AbstractNetworkJob(account, url, path, parent)
     , _depth(_depth)
 {
@@ -303,24 +300,24 @@ LsColJob::LsColJob(AccountPtr account, const QUrl &url, const QString &path, int
     setPriority(QNetworkRequest::HighPriority);
 }
 
-void LsColJob::setProperties(const QList<QByteArray> &properties)
+void PropfindJob::setProperties(const QList<QByteArray> &properties)
 {
     _properties = properties;
 }
 
-QList<QByteArray> LsColJob::properties() const
+QList<QByteArray> PropfindJob::properties() const
 {
     return _properties;
 }
 
-void LsColJob::start()
+void PropfindJob::start()
 {
     QNetworkRequest req;
     req.setRawHeader(QByteArrayLiteral("Depth"), QByteArray::number(_depth));
     req.setRawHeader(QByteArrayLiteral("Prefer"), QByteArrayLiteral("return=minimal"));
 
     if (_properties.isEmpty()) {
-        qCWarning(lcLsColJob) << "Propfind with no properties!";
+        qCWarning(lcPropfindJob) << "Propfind with no properties!";
     }
     QByteArray data;
     {
@@ -352,23 +349,23 @@ void LsColJob::start()
 // TODO: Instead of doing all in this slot, we should iteratively parse in readyRead(). This
 // would allow us to be more asynchronous in processing while data is coming from the network,
 // not all in one big blob at the end.
-void LsColJob::finished()
+void PropfindJob::finished()
 {
-    qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
-                       << replyStatusString();
+    qCInfo(lcPropfindJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
+                          << replyStatusString();
 
     QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
     int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (httpCode == 207 && contentType.contains(QLatin1String("application/xml; charset=utf-8"))) {
         LsColXMLParser parser;
         connect(&parser, &LsColXMLParser::directoryListingSubfolders,
-            this, &LsColJob::directoryListingSubfolders);
+            this, &PropfindJob::directoryListingSubfolders);
         connect(&parser, &LsColXMLParser::directoryListingIterated,
-            this, &LsColJob::directoryListingIterated);
+            this, &PropfindJob::directoryListingIterated);
         connect(&parser, &LsColXMLParser::finishedWithError,
-            this, &LsColJob::finishedWithError);
+            this, &PropfindJob::finishedWithError);
         connect(&parser, &LsColXMLParser::finishedWithoutError,
-            this, &LsColJob::finishedWithoutError);
+            this, &PropfindJob::finishedWithoutError);
 
         QString expectedPath = reply()->request().url().path(); // something like "/owncloud/remote.php/webdav/folder"
         if (!parser.parse(reply()->readAll(), &_sizes, expectedPath)) {
@@ -384,7 +381,7 @@ void LsColJob::finished()
     }
 }
 
-const QHash<QString, qint64> &LsColJob::sizes() const
+const QHash<QString, qint64> &PropfindJob::sizes() const
 {
     return _sizes;
 }
@@ -576,10 +573,10 @@ void fetchPrivateLinkUrl(AccountPtr account, const QUrl &baseUrl, const QString 
 {
     if (account->capabilities().privateLinkPropertyAvailable()) {
         // Retrieve the new link by PROPFIND
-        auto *job = new LsColJob(account, baseUrl, remotePath, 0, target);
+        auto *job = new PropfindJob(account, baseUrl, remotePath, 0, target);
         job->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
         job->setTimeout(10s);
-        QObject::connect(job, &LsColJob::directoryListingIterated, target, [=](const QString &, const QMap<QString, QString> &result) {
+        QObject::connect(job, &PropfindJob::directoryListingIterated, target, [=](const QString &, const QMap<QString, QString> &result) {
             auto privateLinkUrl = result[QStringLiteral("privatelink")];
             if (!privateLinkUrl.isEmpty()) {
                 targetFun(QUrl(privateLinkUrl));

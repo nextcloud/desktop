@@ -107,11 +107,11 @@ QSize SelectiveSyncWidget::sizeHint() const
 void SelectiveSyncWidget::refreshFolders()
 {
     // TODO: legacy
-    LsColJob *job = new LsColJob(_account, _account->davUrl(), _folderPath, 1, this);
+    PropfindJob *job = new PropfindJob(_account, _account->davUrl(), _folderPath, 1, this);
     job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size") });
-    connect(job, &LsColJob::directoryListingSubfolders,
+    connect(job, &PropfindJob::directoryListingSubfolders,
         this, &SelectiveSyncWidget::slotUpdateDirectories);
-    connect(job, &LsColJob::finishedWithError,
+    connect(job, &PropfindJob::finishedWithError,
         this, &SelectiveSyncWidget::slotLscolFinishedWithError);
     job->start();
     _folderTree->clear();
@@ -183,7 +183,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
 
 void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
 {
-    auto job = qobject_cast<LsColJob *>(sender());
+    auto job = qobject_cast<PropfindJob *>(sender());
     QScopedValueRollback<bool> isInserting(_inserting, true);
 
     SelectiveSyncTreeViewItem *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
@@ -271,9 +271,9 @@ void SelectiveSyncWidget::slotItemExpanded(QTreeWidgetItem *item)
     if (dir.isEmpty())
         return;
     // TODO: legacy
-    LsColJob *job = new LsColJob(_account, _account->davUrl(), _folderPath + dir, 1, this);
+    PropfindJob *job = new PropfindJob(_account, _account->davUrl(), _folderPath + dir, 1, this);
     job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size") });
-    connect(job, &LsColJob::directoryListingSubfolders,
+    connect(job, &PropfindJob::directoryListingSubfolders,
         this, &SelectiveSyncWidget::slotUpdateDirectories);
     job->start();
 }

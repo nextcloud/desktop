@@ -57,7 +57,7 @@ private slots:
 };
 
 /**
- * @brief The LsColJob class
+ * @brief The PropfindJob class parser
  * @ingroup libsync
  */
 class OWNCLOUDSYNC_EXPORT LsColXMLParser : public QObject
@@ -75,11 +75,11 @@ signals:
     void finishedWithoutError();
 };
 
-class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LsColJob(AccountPtr account, const QUrl &url, const QString &path, int _depth = 1, QObject *parent = nullptr);
+    explicit PropfindJob(AccountPtr account, const QUrl &url, const QString &path, int _depth = 1, QObject *parent = nullptr);
     void start() override;
 
     /**

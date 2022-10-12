@@ -194,18 +194,18 @@ void ConnectionValidator::checkAuthentication()
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
 
     // we explicitly use a legacy dav path here
-    auto *job = new LsColJob(_account, _account->url(), Theme::instance()->webDavPath(), 0, this);
+    auto *job = new PropfindJob(_account, _account->url(), Theme::instance()->webDavPath(), 0, this);
     job->setAuthenticationJob(true); // don't retry
     job->setTimeout(timeoutToUse);
     job->setProperties({ QByteArrayLiteral("getlastmodified") });
-    connect(job, &LsColJob::finishedWithoutError, this, &ConnectionValidator::slotAuthSuccess);
-    connect(job, &LsColJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);
+    connect(job, &PropfindJob::finishedWithoutError, this, &ConnectionValidator::slotAuthSuccess);
+    connect(job, &PropfindJob::finishedWithError, this, &ConnectionValidator::slotAuthFailed);
     job->start();
 }
 
 void ConnectionValidator::slotAuthFailed(QNetworkReply *reply)
 {
-    auto job = qobject_cast<LsColJob *>(sender());
+    auto job = qobject_cast<PropfindJob *>(sender());
     Status stat = Timeout;
 
     if (reply->error() == QNetworkReply::SslHandshakeFailedError) {

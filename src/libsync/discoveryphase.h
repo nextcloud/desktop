@@ -146,7 +146,7 @@ private:
     bool _isExternalStorage;
     // If set, the discovery will finish with an error
     QString _error;
-    QPointer<LsColJob> _lsColJob;
+    QPointer<PropfindJob> _proFindJob;
 
 public:
     QByteArray _dataFingerprint;
