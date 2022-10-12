@@ -199,8 +199,9 @@ Feature: Sharing
         And user "Alice" has shared file "textfile.txt" on the server with user "Brian" with "all" permissions
         And user "Brian" has set up a client with default settings
         When the user overwrites the file "textfile.txt" with content "overwrite file in the root"
+        And the user waits for file "textfile.txt" to be synced
         And the user overwrites the file "simple-folder/textfile.txt" with content "overwrite file inside a folder"
-        And the user waits for the files to sync
+        And the user waits for file "simple-folder/textfile.txt" to be synced
         Then as "Brian" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
         And as "Brian" the file "textfile.txt" on the server should have the content "overwrite file in the root"
         And as "Alice" the file "simple-folder/textfile.txt" on the server should have the content "overwrite file inside a folder"
@@ -241,7 +242,7 @@ Feature: Sharing
         And the user removes permissions "edit" for user "Brian Murphy" of resource "FOLDER" using the client-UI
         And user "Brian" tries to overwrite the file "textfile.txt" with content "overwrite ownCloud test text file"
         And user "Brian" tries to overwrite the file "FOLDER/simple.txt" with content "overwrite some content"
-        And the user waits for the files to sync
+        And user "Brian" waits for file "textfile.txt" to have sync error
         Then as "Brian" the file "textfile.txt" on the server should have the content "ownCloud test text file"
         And as "Brian" the file "FOLDER/simple.txt" on the server should have the content "some content"
         And as "Alice" the file "textfile.txt" on the server should have the content "ownCloud test text file"

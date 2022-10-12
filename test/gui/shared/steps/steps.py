@@ -30,7 +30,7 @@ from helpers.SyncHelper import (
     generateSyncPatternFromMessages,
     filterSyncMessages,
     filterMessagesForItem,
-    matchPatterns,
+    isEqual,
 )
 
 # the script needs to use the system wide python
@@ -85,7 +85,7 @@ def listenSyncStatusForItem(item, type='FOLDER'):
     socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + item + "\n")
 
 
-def waitForSyncToComplete(context, patterns=None, resource='', resourceType='FOLDER'):
+def waitForSyncToComplete(context, resource='', resourceType='FOLDER', patterns=None):
     resource = join(context.userData['currentUserSyncPath'], resource)
     listenSyncStatusForItem(resource, resourceType)
 
@@ -95,14 +95,14 @@ def waitForSyncToComplete(context, patterns=None, resource='', resourceType='FOL
         patterns = getSyncedPattern()
 
     synced = waitFor(
-        lambda: hasSyncPattern(patterns),
+        lambda: hasSyncPattern(patterns, resource),
         timeout,
     )
     clearSocketMessages(resource)
     if not synced:
         raise Exception(
             "Timeout while waiting for sync to complete for "
-            + timeout
+            + str(timeout)
             + " milliseconds"
         )
 
@@ -110,25 +110,28 @@ def waitForSyncToComplete(context, patterns=None, resource='', resourceType='FOL
 def waitForInitialSyncToComplete(context):
     waitForSyncToComplete(
         context,
-        getInitialSyncPatterns(),
         context.userData['currentUserSyncPath'],
         'FOLDER',
+        getInitialSyncPatterns(),
     )
 
 
-def hasSyncPattern(patterns):
+def hasSyncPattern(patterns, resource=None):
     if isinstance(patterns[0], str):
         patterns = [patterns]
     messages = readAndUpdateSocketMessages()
+    if resource:
+        messages = filterMessagesForItem(messages, resource)
     for pattern in patterns:
+        pattern_len = len(pattern)
         for idx, _ in enumerate(messages):
-            next = idx + 1
-            if next in range(len(messages)):
-                actual_pattern = generateSyncPatternFromMessages(
-                    messages[idx : next + (len(pattern) - 1)]
-                )
-                if matchPatterns(pattern, actual_pattern):
-                    return True
+            actual_pattern = generateSyncPatternFromMessages(
+                messages[idx : idx + pattern_len]
+            )
+            if len(actual_pattern) < pattern_len:
+                break
+            if pattern_len == len(actual_pattern) and isEqual(pattern, actual_pattern):
+                return True
     # 100 milliseconds polling interval
     snooze(0.1)
     return False
@@ -214,7 +217,7 @@ def waitUntilConnectionIsConfigured(context):
     if not result:
         raise Exception(
             "Timeout waiting for connection to be configured for "
-            + timeout
+            + str(timeout)
             + " milliseconds"
         )
 
@@ -266,6 +269,7 @@ def getSocketConnection():
 def hasSyncStatus(itemName, status):
     sync_messages = readAndUpdateSocketMessages()
     sync_messages = filterMessagesForItem(sync_messages, itemName)
+    print(sync_messages)
     for line in sync_messages:
         if line.startswith(status) and line.rstrip('/').endswith(itemName.rstrip('/')):
             return True
@@ -540,6 +544,14 @@ def step(context, type, resource):
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
 def step(context, type, resource):
+    waitForFileOrFolderToHaveSyncError(context, resource, type)
+
+
+@When(
+    r'user "([^"]*)" waits for (file|folder) "([^"]*)" to have sync error', regexp=True
+)
+def step(context, username, type, resource):
+    resource = join(getUserSyncPath(context, username), resource)
     waitForFileOrFolderToHaveSyncError(context, resource, type)
 
 

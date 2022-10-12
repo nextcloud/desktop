@@ -52,7 +52,9 @@ def generateSyncPatternFromMessages(messages):
         match = re.search(":/.*", message)
         if match:
             (end, _) = match.span()
-            pattern.append(message[:end])
+            # shared resources will have status like "STATUS:OK+SWM"
+            status = message[:end].replace('+SWM', '')
+            pattern.append(status)
     return pattern
 
 
@@ -72,7 +74,7 @@ def filterMessagesForItem(messages, item):
     return filteredMsg
 
 
-def matchPatterns(p1, p2):
+def isEqual(p1, p2):
     if p1 == p2:
         return True
     return False
