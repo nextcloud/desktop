@@ -152,10 +152,10 @@ QString adjustRenamedPath(const QHash<QString, QString> &renamedItems, const QSt
     return original;
 }
 
-QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &originalPath)
+QPair<bool, QString> DiscoveryPhase::findAndCancelDeletedJob(const QString &originalPath)
 {
     bool result = false;
-    QByteArray oldEtag;
+    QString oldEtag;
     auto it = _deletedItem.constFind(originalPath);
     if (it != _deletedItem.cend()) {
         const auto &item = *it;
@@ -386,7 +386,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
         result.size = std::max<int64_t>(0, it->value().toLongLong());
     }
     if (auto it = Utility::optionalFind(map, QStringLiteral("getetag"))) {
-        result.etag = Utility::normalizeEtag(it->value().toUtf8());
+        result.etag = Utility::normalizeEtag(it->value());
     }
     if (auto it = Utility::optionalFind(map, QStringLiteral("id"))) {
         result.fileId = it->value().toUtf8();
@@ -454,7 +454,7 @@ void DiscoverySingleDirectoryJob::directoryListingIteratedSlot(const QString &fi
     //This works in concerto with the RequestEtagJob and the Folder object to check if the remote folder changed.
     if (_firstEtag.isEmpty()) {
         if (auto it = Utility::optionalFind(map, QStringLiteral("getetag"))) {
-            _firstEtag = parseEtag(it->value()).toUtf8(); // for directory itself
+            _firstEtag = Utility::normalizeEtag(it->value()); // for directory itself
         }
     }
 }

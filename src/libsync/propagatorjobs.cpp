@@ -189,7 +189,7 @@ void PropagateLocalMkdir::start()
     // so the database is aware that this folder exists even if the sync is aborted
     // before the correct etag is stored.
     SyncFileItem newItem(*_item);
-    newItem._etag = "_invalid_";
+    newItem._etag = QStringLiteral("_invalid_");
     const auto result = propagator()->updateMetadata(newItem);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));

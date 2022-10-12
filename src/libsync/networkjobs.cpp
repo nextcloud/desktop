@@ -46,32 +46,6 @@ Q_LOGGING_CATEGORY(lcAvatarJob, "sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype", QtInfoMsg)
 
-QString parseEtag(QStringView header)
-{
-    if (header.isEmpty()) {
-        return {};
-    }
-
-    // Weak E-Tags can appear when gzip compression is on, see #3946
-    if (header.startsWith(QLatin1String("W/"))) {
-        header = header.mid(2);
-    }
-
-    // https://github.com/owncloud/client/issues/1195
-    const QLatin1String gzipSuffix("-gzip");
-    if (header.endsWith(gzipSuffix)) {
-        header.chop(gzipSuffix.size());
-    }
-
-    if (header.startsWith(QLatin1Char('"'))) {
-        header = header.mid(1);
-        if (OC_ENSURE(header.endsWith(QLatin1Char('"')))) {
-            header.chop(1);
-        }
-    }
-    return header.toString();
-}
-
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent)
     : PropfindJob(account, rootUrl, path, PropfindJob::Depth::Zero, parent)
 {
@@ -81,7 +55,7 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QS
             Q_EMIT finishedWithError(reply());
             return;
         }
-        _etag = parseEtag(value.value(QStringLiteral("getetag"))).toUtf8();
+        _etag = Utility::normalizeEtag(value.value(QStringLiteral("getetag")));
         // the server returned a 207 but no etag, something is wrong
         if (!OC_ENSURE_NOT(_etag.isEmpty())) {
             abort();
@@ -89,7 +63,7 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QS
     });
 }
 
-const QByteArray &RequestEtagJob::etag() const
+const QString &RequestEtagJob::etag() const
 {
     return _etag;
 }

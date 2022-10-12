@@ -257,11 +257,10 @@ private slots:
 
     void testNormalizeEtag()
     {
-        QByteArray str;
+        ;
 
 #define CHECK_NORMALIZE_ETAG(TEST, EXPECT) \
-    str = OCC::Utility::normalizeEtag(TEST); \
-    QCOMPARE(str.constData(), EXPECT); \
+    QCOMPARE(OCC::Utility::normalizeEtag(QStringLiteral(TEST)), QStringLiteral(EXPECT));
 
         CHECK_NORMALIZE_ETAG("foo", "foo");
         CHECK_NORMALIZE_ETAG("\"foo\"", "foo");

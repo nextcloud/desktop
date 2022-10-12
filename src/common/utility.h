@@ -170,7 +170,7 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
 
     OCSYNC_EXPORT QString fileNameForGuiUse(const QString &fName);
 
-    OCSYNC_EXPORT QByteArray normalizeEtag(QByteArray etag);
+    OCSYNC_EXPORT QString normalizeEtag(QStringView etag);
 
     /**
      * @brief timeAgoInWords - human readable time span

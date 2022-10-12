@@ -523,13 +523,13 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
         headers["OC-Tag"] = ".sys.admin#recall#";
     }
 
-    if (!_item->_etag.isEmpty() && _item->_etag != "empty_etag"
+    if (!_item->_etag.isEmpty() && _item->_etag != QLatin1String("empty_etag")
         && _item->_instruction != CSYNC_INSTRUCTION_NEW // On new files never send a If-Match
         && _item->_instruction != CSYNC_INSTRUCTION_TYPE_CHANGE
         && !_deleteExisting) {
         // We add quotes because the owncloud server always adds quotes around the etag, and
         //  csync_owncloud.c's owncloud_file_id always strips the quotes.
-        headers[QByteArrayLiteral("If-Match")] = '"' + _item->_etag + '"';
+        headers[QByteArrayLiteral("If-Match")] = QStringLiteral("\"%1\"").arg(_item->_etag).toUtf8();
     }
 
     // Set up a conflict file header pointing to the original file

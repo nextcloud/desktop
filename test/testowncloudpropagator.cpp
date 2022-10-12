@@ -62,20 +62,6 @@ private slots:
             QVERIFY( tmpFileName.length() <= 254);
         }
     }
-
-    void testParseEtag()
-    {
-        typedef QPair<const char*, const char*> Test;
-        QList<Test> tests;
-        tests.append(Test("\"abcd\"", "abcd"));
-        tests.append(Test("\"\"", ""));
-        tests.append(Test("\"fii\"-gzip", "fii"));
-        tests.append(Test("W/\"foo\"", "foo"));
-
-        for (const auto &test : qAsConst(tests)) {
-            QCOMPARE(parseEtag(QString::fromUtf8(test.first)).toUtf8(), QByteArray(test.second));
-        }
-    }
 };
 
 QTEST_APPLESS_MAIN(TestOwncloudPropagator)

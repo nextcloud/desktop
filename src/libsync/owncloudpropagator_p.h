@@ -23,13 +23,13 @@
 
 namespace OCC {
 
-inline QByteArray getEtagFromReply(QNetworkReply *reply)
+inline QString getEtagFromReply(QNetworkReply *reply)
 {
     QByteArray rawEtag = reply->rawHeader("OC-ETag");
     if (rawEtag.isEmpty()) {
         rawEtag = reply->rawHeader("ETag");
     }
-    return parseEtag(QString::fromUtf8(rawEtag)).toUtf8();
+    return Utility::normalizeEtag(QString::fromUtf8(rawEtag));
 }
 
 /**

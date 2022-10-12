@@ -26,9 +26,6 @@ class QUrl;
 
 namespace OCC {
 
-/** Strips quotes and gzip annotations */
-OWNCLOUDSYNC_EXPORT QString parseEtag(QStringView header);
-
 struct HttpError
 {
     int code; // HTTP error code
@@ -180,10 +177,10 @@ class OWNCLOUDSYNC_EXPORT RequestEtagJob : public PropfindJob
 public:
     explicit RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QString &path, QObject *parent = nullptr);
 
-    const QByteArray &etag() const;
+    const QString &etag() const;
 
 private:
-    QByteArray _etag;
+    QString _etag;
 };
 
 /**

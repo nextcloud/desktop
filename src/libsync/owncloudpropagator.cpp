@@ -150,7 +150,7 @@ static SyncJournalErrorBlacklistRecord createBlacklistEntry(
     entry._file = item._file;
     entry._errorString = item._errorString;
     entry._lastTryModtime = item._modtime;
-    entry._lastTryEtag = item._etag;
+    entry._lastTryEtag = item._etag.toUtf8();
     entry._lastTryTime = Utility::qDateTimeToTime_t(QDateTime::currentDateTimeUtc());
     entry._renameTarget = item._renameTarget;
     entry._retryCount = old._retryCount + 1;

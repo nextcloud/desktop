@@ -166,7 +166,7 @@ bool SyncEngine::checkErrorBlacklisting(SyncFileItem &item)
         if (item._etag.isEmpty() || entry._lastTryEtag.isEmpty()) {
             qCInfo(lcEngine) << item._file << "one ETag is empty, no blacklisting";
             return false;
-        } else if (item._etag != entry._lastTryEtag) {
+        } else if (item._etag.toUtf8() != entry._lastTryEtag) {
             qCInfo(lcEngine) << item._file << " is blacklisted, but has changed etag!";
             return false;
         }
@@ -529,7 +529,7 @@ void SyncEngine::slotFolderDiscovered(bool local, const QString &folder)
     emit transmissionProgress(*_progressInfo);
 }
 
-void SyncEngine::slotRootEtagReceived(const QByteArray &e, const QDateTime &time)
+void SyncEngine::slotRootEtagReceived(const QString &e, const QDateTime &time)
 {
     if (_remoteRootEtag.isEmpty()) {
         qCDebug(lcEngine) << "Root etag:" << e;

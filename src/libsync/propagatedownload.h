@@ -31,7 +31,7 @@ class OWNCLOUDSYNC_EXPORT GETFileJob : public AbstractNetworkJob
     Q_OBJECT
     QIODevice *_device;
     QMap<QByteArray, QByteArray> _headers;
-    QByteArray _expectedEtagForResume;
+    QString _expectedEtagForResume;
     qint64 _expectedContentLength;
     qint64 _contentLength;
     qint64 _resumeStart;
@@ -40,7 +40,7 @@ public:
     // DOES NOT take ownership of the device.
     // For directDownloadUrl:
     explicit GETFileJob(AccountPtr account, const QUrl &url, const QString &path, QIODevice *device,
-        const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+        const QMap<QByteArray, QByteArray> &headers, const QString &expectedEtagForResume,
         qint64 resumeStart, QObject *parent = nullptr);
     virtual ~GETFileJob();
 
@@ -65,7 +65,7 @@ public:
     void giveBandwidthQuota(qint64 q);
     void setBandwidthManager(BandwidthManager *bwm);
 
-    QByteArray &etag() { return _etag; }
+    QString &etag() { return _etag; }
     time_t lastModified() { return _lastModified; }
 
     void setErrorString(const QString &s) { _errorString = s; }
@@ -83,7 +83,7 @@ signals:
 protected:
     bool restartDevice();
 
-    QByteArray _etag;
+    QString _etag;
     time_t _lastModified = 0;
     QString _errorString;
     SyncFileItem::Status _errorStatus = SyncFileItem::NoStatus;
@@ -140,7 +140,7 @@ protected:
 class PropagateDownloadFile : public PropagateItemJob
 {
     Q_OBJECT
-    QByteArray _expectedEtagForResume;
+    QString _expectedEtagForResume;
 
 public:
     PropagateDownloadFile(OwncloudPropagator *propagator, const SyncFileItemPtr &item)

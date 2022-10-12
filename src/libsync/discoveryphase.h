@@ -49,7 +49,7 @@ struct RemoteInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
-    QByteArray etag;
+    QString etag;
     QByteArray fileId;
     QByteArray checksumHeader;
     OCC::RemotePermissions remotePerm;
@@ -123,7 +123,7 @@ public:
     // This is not actually a network job, it is just a job
 signals:
     void firstDirectoryPermissions(RemotePermissions);
-    void etag(const QByteArray &, const QDateTime &time);
+    void etag(const QString &, const QDateTime &time);
     void finished(const HttpResult<QVector<RemoteInfo>> &result);
 
 private slots:
@@ -134,7 +134,7 @@ private slots:
 private:
     QVector<RemoteInfo> _results;
     QString _subPath;
-    QByteArray _firstEtag;
+    QString _firstEtag;
     AccountPtr _account;
     const QUrl _baseUrl;
     // The first result is for the directory itself and need to be ignored.
@@ -235,7 +235,7 @@ class DiscoveryPhase : public QObject
      *
      * See _deletedItem and _queuedDeletedDirectories.
      */
-    QPair<bool, QByteArray> findAndCancelDeletedJob(const QString &originalPath);
+    QPair<bool, QString> findAndCancelDeletedJob(const QString &originalPath);
 
 public:
     // input

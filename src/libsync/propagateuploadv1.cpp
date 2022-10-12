@@ -229,7 +229,7 @@ void PropagateUploadFileV1::slotPutFinished()
     // But if the upload is ongoing, because not all chunks were uploaded
     // yet, the upload can be stopped and an error can be displayed, because
     // the server hasn't registered the new file yet.
-    QByteArray etag = getEtagFromReply(job->reply());
+    QString etag = getEtagFromReply(job->reply());
     _finished = etag.length() > 0;
 
     // Check if the file still exists

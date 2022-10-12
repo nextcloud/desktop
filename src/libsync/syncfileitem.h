@@ -265,7 +265,7 @@ public:
     // Variables used by the propagator
     SyncInstructions _instruction;
     time_t _modtime;
-    QByteArray _etag;
+    QString _etag;
     qint64 _size;
     quint64 _inode;
     QByteArray _fileId;

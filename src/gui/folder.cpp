@@ -120,7 +120,11 @@ Folder::Folder(const FolderDefinition &definition,
         }
 
         connect(_accountState.data(), &AccountState::isConnectedChanged, this, &Folder::canSyncChanged);
-        connect(_engine.data(), &SyncEngine::rootEtag, this, &Folder::etagRetrievedFromSyncEngine);
+        connect(_engine.data(), &SyncEngine::rootEtag, this, [this](const QString &etag, const QDateTime &time) {
+            qCInfo(lcFolder) << "Root etag from during sync:" << etag;
+            this->accountState()->tagLastSuccessfullETagRequest(time);
+            _lastEtag = etag;
+        });
 
         connect(_engine.data(), &SyncEngine::started, this, &Folder::slotSyncStarted, Qt::QueuedConnection);
         connect(_engine.data(), &SyncEngine::finished, this, &Folder::slotSyncFinished, Qt::QueuedConnection);
@@ -451,14 +455,6 @@ void Folder::slotRunEtagJob()
     FolderMan::instance()->slotScheduleETagJob(_requestEtagJob);
     // The _requestEtagJob is auto deleting itself on finish. Our guard pointer _requestEtagJob will then be null.
 }
-
-void Folder::etagRetrievedFromSyncEngine(const QByteArray &etag, const QDateTime &time)
-{
-    qCInfo(lcFolder) << "Root etag from during sync:" << etag;
-    accountState()->tagLastSuccessfullETagRequest(time);
-    _lastEtag = etag;
-}
-
 
 void Folder::showSyncResultPopup()
 {

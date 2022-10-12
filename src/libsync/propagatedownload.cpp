@@ -73,7 +73,7 @@ QString OWNCLOUDSYNC_EXPORT createDownloadTmpFileName(const QString &previous)
 
 // DOES NOT take ownership of the device.
 GETFileJob::GETFileJob(AccountPtr account, const QUrl &url, const QString &path, QIODevice *device,
-    const QMap<QByteArray, QByteArray> &headers, const QByteArray &expectedEtagForResume,
+    const QMap<QByteArray, QByteArray> &headers, const QString &expectedEtagForResume,
     qint64 resumeStart, QObject *parent)
     : AbstractNetworkJob(account, url, path, parent)
     , _device(device)
@@ -469,12 +469,12 @@ void PropagateDownloadFile::startDownload()
     const SyncJournalDb::DownloadInfo progressInfo = propagator()->_journal->getDownloadInfo(_item->_file);
     if (progressInfo._valid) {
         // if the etag has changed meanwhile, remove the already downloaded part.
-        if (progressInfo._etag != _item->_etag) {
+        if (progressInfo._etag != _item->_etag.toUtf8()) {
             FileSystem::remove(propagator()->fullLocalPath(progressInfo._tmpfile));
             propagator()->_journal->setDownloadInfo(_item->_file, SyncJournalDb::DownloadInfo());
         } else {
             tmpFileName = progressInfo._tmpfile;
-            _expectedEtagForResume = progressInfo._etag;
+            _expectedEtagForResume = QString::fromUtf8(progressInfo._etag);
         }
     }
 
@@ -527,7 +527,7 @@ void PropagateDownloadFile::startDownload()
 
     {
         SyncJournalDb::DownloadInfo pi;
-        pi._etag = _item->_etag;
+        pi._etag = _item->_etag.toUtf8();
         pi._tmpfile = tmpFileName;
         pi._valid = true;
         propagator()->_journal->setDownloadInfo(_item->_file, pi);
@@ -663,7 +663,7 @@ void PropagateDownloadFile::slotGetFinished()
     if (!job->etag().isEmpty()) {
         // The etag will be empty if we used a direct download URL.
         // (If it was really empty by the server, the GETFileJob will have errored
-        Q_ASSERT(job->etag() == parseEtag(QString::fromUtf8(job->etag())).toUtf8());
+        Q_ASSERT(job->etag() == Utility::normalizeEtag(job->etag()));
         _item->_etag = job->etag();
     }
     if (job->lastModified()) {

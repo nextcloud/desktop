@@ -226,7 +226,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
     }
 
     // ==== handling when the upload is finished:
-    const QByteArray etag = getEtagFromReply(job->reply());
+    const QString etag = getEtagFromReply(job->reply());
     const QByteArray remPerms = job->reply()->rawHeader("OC-Perm");
     if (!remPerms.isEmpty()) {
         _item->_remotePerm = RemotePermissions::fromServerString(QString::fromUtf8(remPerms));
@@ -242,7 +242,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
         connect(check, &PropfindJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &map) {
             _finished = true;
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
-            finalize(Utility::normalizeEtag(map.value(QStringLiteral("getetag")).toUtf8()), map.value(QStringLiteral("fileid")).toUtf8());
+            finalize(Utility::normalizeEtag(map.value(QStringLiteral("getetag"))), map.value(QStringLiteral("fileid")).toUtf8());
         });
         check->start();
         return;
@@ -252,7 +252,7 @@ void PropagateUploadFileTUS::slotChunkFinished()
     finalize(etag, job->reply()->rawHeader("OC-FileID"));
 }
 
-void PropagateUploadFileTUS::finalize(const QByteArray &etag, const QByteArray &fileId)
+void PropagateUploadFileTUS::finalize(const QString &etag, const QByteArray &fileId)
 {
     OC_ASSERT(_finished);
     qCDebug(lcPropagateUploadTUS) << _item->_etag << etag << fileId;

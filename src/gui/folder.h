@@ -447,8 +447,6 @@ private slots:
 
     void slotItemCompleted(const SyncFileItemPtr &);
 
-    void etagRetrievedFromSyncEngine(const QByteArray &, const QDateTime &time);
-
     void slotEmitFinishedDelayed();
 
     void slotNewBigFolderDiscovered(const QString &, bool isExternal);
@@ -503,7 +501,7 @@ private:
     SyncResult _syncResult;
     QScopedPointer<SyncEngine> _engine;
     QPointer<RequestEtagJob> _requestEtagJob;
-    QByteArray _lastEtag;
+    QString _lastEtag;
     QElapsedTimer _timeSinceLastEtagCheckDone;
     QElapsedTimer _timeSinceLastSyncDone;
     QElapsedTimer _timeSinceLastSyncStart;

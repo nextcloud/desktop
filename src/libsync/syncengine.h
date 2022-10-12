@@ -149,7 +149,7 @@ public:
 
 signals:
     // During update, before reconcile
-    void rootEtag(const QByteArray &, const QDateTime &);
+    void rootEtag(const QString &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
     void aboutToPropagate(const SyncFileItemSet &items);
@@ -184,7 +184,7 @@ signals:
 
 private slots:
     void slotFolderDiscovered(bool local, const QString &folder);
-    void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
+    void slotRootEtagReceived(const QString &, const QDateTime &time);
 
     /** When the discovery phase discovers an item */
     void slotItemDiscovered(const SyncFileItemPtr &item);
@@ -243,7 +243,7 @@ private:
     bool _syncRunning;
     QString _localPath;
     QString _remotePath;
-    QByteArray _remoteRootEtag;
+    QString _remoteRootEtag;
     SyncJournalDb *_journal;
     QScopedPointer<DiscoveryPhase> _discoveryPhase;
     QSharedPointer<OwncloudPropagator> _propagator;

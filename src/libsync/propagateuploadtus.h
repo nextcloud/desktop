@@ -30,7 +30,7 @@ private:
 
     void startNextChunk();
     void slotChunkFinished();
-    void finalize(const QByteArray &etag, const QByteArray &fileId);
+    void finalize(const QString &etag, const QByteArray &fileId);
 
     quint64 _currentOffset = 0;
     QUrl _location;

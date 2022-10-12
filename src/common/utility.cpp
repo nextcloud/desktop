@@ -316,24 +316,34 @@ QString Utility::fileNameForGuiUse(const QString &fName)
     return fName;
 }
 
-QByteArray Utility::normalizeEtag(QByteArray etag)
+QString Utility::normalizeEtag(QStringView etag)
 {
-    /* strip "XXXX-gzip" */
-    if(etag.startsWith('"') && etag.endsWith("-gzip\"")) {
-        etag.chop(6);
-        etag.remove(0, 1);
+    if (etag.isEmpty()) {
+        return {};
     }
-    /* strip trailing -gzip */
-    if(etag.endsWith("-gzip")) {
-        etag.chop(5);
+
+    const auto unQuote = [&] {
+        if (etag.startsWith(QLatin1Char('"')) && etag.endsWith(QLatin1Char('"'))) {
+            etag = etag.mid(1);
+            etag.chop(1);
+        }
+    };
+
+    // Weak E-Tags can appear when gzip compression is on, see #3946
+    if (etag.startsWith(QLatin1String("W/"))) {
+        etag = etag.mid(2);
+    }
+    /* strip normal quotes and quotes around "XXXX-gzip" */
+    unQuote();
+
+    // https://github.com/owncloud/client/issues/1195
+    const QLatin1String gzipSuffix("-gzip");
+    if (etag.endsWith(gzipSuffix)) {
+        etag.chop(gzipSuffix.size());
     }
     /* strip normal quotes */
-    if (etag.startsWith('"') && etag.endsWith('"')) {
-        etag.chop(1);
-        etag.remove(0, 1);
-    }
-    etag.squeeze();
-    return etag;
+    unQuote();
+    return etag.toString();
 }
 
 QString Utility::platformName()

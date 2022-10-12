@@ -38,7 +38,7 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     if (rec._type == ItemTypeVirtualFileDehydration)
         rec._type = ItemTypeVirtualFile;
 
-    rec._etag = _etag;
+    rec._etag = _etag.toUtf8();
     rec._fileId = _fileId;
     rec._fileSize = _size;
     rec._remotePerm = _remotePerm;
@@ -66,7 +66,7 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_inode = rec._inode;
     item->_modtime = rec._modtime;
     item->_type = rec._type;
-    item->_etag = rec._etag;
+    item->_etag = QString::fromUtf8(rec._etag);
     item->_fileId = rec._fileId;
     item->_size = rec._fileSize;
     item->_remotePerm = rec._remotePerm;

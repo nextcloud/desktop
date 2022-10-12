@@ -438,7 +438,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             item->_direction = SyncFileItem::Down;
             item->_instruction = CSYNC_INSTRUCTION_SYNC;
             item->_type = ItemTypeVirtualFileDownload;
-        } else if (dbEntry._etag != serverEntry.etag) {
+        } else if (dbEntry._etag != serverEntry.etag.toUtf8()) {
             item->_direction = SyncFileItem::Down;
             item->_modtime = serverEntry.modtime;
             item->_size = serverEntry.size;
@@ -539,7 +539,7 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
             done = true;
             return;
         }
-        if (!serverEntry.isDirectory && base._etag != serverEntry.etag) {
+        if (!serverEntry.isDirectory && base._etag != serverEntry.etag.toUtf8()) {
             /* File with different etag, don't do a rename, but download the file again */
             qCInfo(lcDisco, "file etag different, not a rename");
             done = true;
@@ -980,7 +980,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         item->_direction = SyncFileItem::Up;
         item->_fileId = base._fileId;
         item->_remotePerm = base._remotePerm;
-        item->_etag = base._etag;
+        item->_etag = QString::fromUtf8(base._etag);
         item->_type = base._type;
 
         // Discard any download/dehydrate tags on the base file.
@@ -995,7 +995,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return path;
     };
     if (wasDeletedOnClient.first) {
-        finalize(processRename(path), wasDeletedOnClient.second == base._etag ? ParentNotChanged : NormalQuery);
+        finalize(processRename(path), wasDeletedOnClient.second.toUtf8() == base._etag ? ParentNotChanged : NormalQuery);
     } else {
         // We must query the server to know if the etag has not changed
         _pendingAsyncJobs++;
@@ -1006,7 +1006,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         auto job = new RequestEtagJob(_discoveryData->_account, _discoveryData->_baseUrl, serverOriginalPath, this);
         connect(job, &RequestEtagJob::finishedSignal, this,
             [job, recurseQueryServer, path = path, postProcessLocalNew, processRename, base, item, originalPath, this] {
-                if (job->httpStatusCode() == 404 || (job->etag() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
+                if (job->httpStatusCode() == 404 || (job->etag().toUtf8() != base._etag && !item->isDirectory()) || _discoveryData->isRenamed(originalPath)) {
                     qCInfo(lcDisco) << "Can't rename because the etag has changed or the directory is gone" << originalPath;
                     // Can't be a rename, leave it as a new.
                     postProcessLocalNew(path);
@@ -1014,7 +1014,7 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                 } else {
                     // In case the deleted item was discovered in parallel
                     _discoveryData->findAndCancelDeletedJob(originalPath);
-                    processFileFinalize(item, processRename(path), item->isDirectory(), NormalQuery, job->etag() == base._etag ? ParentNotChanged : NormalQuery);
+                    processFileFinalize(item, processRename(path), item->isDirectory(), NormalQuery, job->etag().toUtf8() == base._etag ? ParentNotChanged : NormalQuery);
                 }
                 _pendingAsyncJobs--;
                 QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
