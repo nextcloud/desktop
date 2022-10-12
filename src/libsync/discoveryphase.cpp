@@ -108,12 +108,12 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
     }
 
     // do a PROPFIND to know the size of this folder
-    auto propfindJob = new PropfindJob(_account, _baseUrl, _remoteFolder + path, this);
+    auto propfindJob = new LsColJob(_account, _baseUrl, _remoteFolder + path, 0, this);
     propfindJob->setProperties(QList<QByteArray>() << "resourcetype"
                                                    << "http://owncloud.org/ns:size");
-    QObject::connect(propfindJob, &PropfindJob::finishedWithError,
+    QObject::connect(propfindJob, &LsColJob::finishedWithError,
         this, [=] { return callback(false); });
-    QObject::connect(propfindJob, &PropfindJob::result, this, [=](const QMap<QString, QString> &values) {
+    QObject::connect(propfindJob, &LsColJob::directoryListingIterated, this, [=](const QString, const QMap<QString, QString> &values) {
         auto result = values.value(QStringLiteral("size")).toLongLong();
         if (result >= limit) {
             // we tell the UI there is a new folder
@@ -333,7 +333,7 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
 void DiscoverySingleDirectoryJob::start()
 {
     // Start the actual HTTP job
-    LsColJob *lsColJob = new LsColJob(_account, _baseUrl, _subPath, this);
+    LsColJob *lsColJob = new LsColJob(_account, _baseUrl, _subPath, 1, this);
 
     QList<QByteArray> props {
         "resourcetype",

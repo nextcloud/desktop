@@ -79,7 +79,7 @@ class OWNCLOUDSYNC_EXPORT LsColJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit LsColJob(AccountPtr account, const QUrl &url, const QString &path, QObject *parent = nullptr);
+    explicit LsColJob(AccountPtr account, const QUrl &url, const QString &path, int _depth = 1, QObject *parent = nullptr);
     void start() override;
 
     /**
@@ -93,6 +93,7 @@ public:
     void setProperties(const QList<QByteArray> &properties);
     QList<QByteArray> properties() const;
 
+    // TODO: document...
     const QHash<QString, qint64> &sizes() const;
 
 signals:
@@ -104,37 +105,12 @@ signals:
 private slots:
     void finished() override;
 
-protected:
-    void startImpl(const QNetworkRequest &req);
-
 private:
     QList<QByteArray> _properties;
     QHash<QString, qint64> _sizes;
+    int _depth = -1;
 };
 
-/**
- * @brief The PropfindJob class
- *
- * Setting the desired properties with setProperties() is mandatory.
- *
- * Note that this job is only for querying one item.
- * There is also the LsColJob which can be used to list collections
- *
- * @ingroup libsync
- */
-class OWNCLOUDSYNC_EXPORT PropfindJob : public LsColJob
-{
-    Q_OBJECT
-public:
-    using LsColJob::LsColJob;
-    void start() override;
-
-signals:
-    void result(const QMap<QString, QString> &values);
-
-private:
-    bool _done = false;
-};
 
 /**
  * @brief Retrieves the account users avatar from the server using a GET request.

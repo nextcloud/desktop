@@ -562,10 +562,10 @@ void PropagateUploadFileCommon::finalize()
 
     if (_item->_remotePerm.isNull()) {
         qCWarning(lcPropagateUpload) << "PropagateUploadFileCommon::finalize: Missing permissions for" << propagator()->fullRemotePath(_item->_file);
-        auto permCheck = new PropfindJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file));
+        auto permCheck = new LsColJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file), 0, this);
         addChildJob(permCheck);
         permCheck->setProperties({ "http://owncloud.org/ns:permissions" });
-        connect(permCheck, &PropfindJob::result, this, [this](const QMap<QString, QString> &map) {
+        connect(permCheck, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &map) {
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             finalize();
         });

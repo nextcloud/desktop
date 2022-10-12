@@ -99,14 +99,14 @@ void QuotaInfo::slotCheckQuota()
     }
 
     const AccountPtr &account = _accountState->account();
-    _job = new PropfindJob(account, account->davUrl(), quotaBaseFolder(), this);
+    _job = new LsColJob(account, account->davUrl(), quotaBaseFolder(), 0, this);
     _job->setProperties({ QByteArrayLiteral("quota-available-bytes"), QByteArrayLiteral("quota-used-bytes") });
-    connect(_job.data(), &PropfindJob::result, this, &QuotaInfo::slotUpdateLastQuota);
+    connect(_job.data(), &LsColJob::directoryListingIterated, this, &QuotaInfo::slotUpdateLastQuota);
     connect(_job.data(), &AbstractNetworkJob::networkError, this, &QuotaInfo::slotRequestFailed);
     _job->start();
 }
 
-void QuotaInfo::slotUpdateLastQuota(const QMap<QString, QString> &result)
+void QuotaInfo::slotUpdateLastQuota(const QString &, const QMap<QString, QString> &result)
 {
     // The server can return fractional bytes (#1374)
     // <d:quota-available-bytes>1374532061.2</d:quota-available-bytes>

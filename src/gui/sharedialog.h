@@ -52,7 +52,7 @@ public:
     QSize minimumSizeHint() const override;
 
 private slots:
-    void slotPropfindReceived(const QMap<QString, QString> &result);
+    void slotPropfindReceived(const QString &, const QMap<QString, QString> &result);
     void slotPropfindError();
     void slotThumbnailFetched(const int &statusCode, const QPixmap &reply);
     void slotAccountStateChanged(int state);

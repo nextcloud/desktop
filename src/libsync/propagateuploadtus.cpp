@@ -236,10 +236,10 @@ void PropagateUploadFileTUS::slotChunkFinished()
     if (!_finished) {
         // Either the ETag or the remote Permissions were not in the headers of the reply.
         // Start a PROPFIND to fetch these data from the server.
-        auto check = new PropfindJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file));
+        auto check = new LsColJob(propagator()->account(), propagator()->webDavUrl(), propagator()->fullRemotePath(_item->_file), 0, this);
         addChildJob(check);
         check->setProperties({ "http://owncloud.org/ns:fileid", "http://owncloud.org/ns:permissions", "getetag" });
-        connect(check, &PropfindJob::result, this, [this](const QMap<QString, QString> &map) {
+        connect(check, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &map) {
             _finished = true;
             _item->_remotePerm = RemotePermissions::fromServerString(map.value(QStringLiteral("permissions")));
             finalize(Utility::normalizeEtag(map.value(QStringLiteral("getetag")).toUtf8()), map.value(QStringLiteral("fileid")).toUtf8());

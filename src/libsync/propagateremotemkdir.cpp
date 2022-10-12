@@ -114,14 +114,14 @@ void PropagateRemoteMkdir::slotMkcolJobFinished()
     _item->_fileId = _job->reply()->rawHeader("OC-FileId");
 
     propagator()->_activeJobList.append(this);
-    auto propfindJob = new PropfindJob(_job->account(), _job->baseUrl(), _job->path(), this);
+    auto propfindJob = new LsColJob(_job->account(), _job->baseUrl(), _job->path(), 0, this);
     propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
-    connect(propfindJob, &PropfindJob::result, this, [this](const QMap<QString, QString> &result) {
+    connect(propfindJob, &LsColJob::directoryListingIterated, this, [this](const QString &, const QMap<QString, QString> &result) {
         propagator()->_activeJobList.removeOne(this);
         _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")));
         success();
     });
-    connect(propfindJob, &PropfindJob::finishedWithError, this, [this]{
+    connect(propfindJob, &LsColJob::finishedWithError, this, [this] {
         // ignore the PROPFIND error
         propagator()->_activeJobList.removeOne(this);
         done(SyncFileItem::NormalError);
