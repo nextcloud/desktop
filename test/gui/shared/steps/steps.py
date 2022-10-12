@@ -269,7 +269,6 @@ def getSocketConnection():
 def hasSyncStatus(itemName, status):
     sync_messages = readAndUpdateSocketMessages()
     sync_messages = filterMessagesForItem(sync_messages, itemName)
-    print(sync_messages)
     for line in sync_messages:
         if line.startswith(status) and line.rstrip('/').endswith(itemName.rstrip('/')):
             return True
@@ -1209,12 +1208,22 @@ def step(context, resource, content):
 @When('the user tries to overwrite the file "|any|" with content "|any|"')
 def step(context, resource, content):
     resource = context.userData['currentUserSyncPath'] + resource
+    # overwriting the file immediately after it has been synced from the server seems to have some problem.
+    # The client does not see the change although the changes have already been made thus we are having a race condition
+    # So for now we add 5sec static wait
+    # an issue https://github.com/owncloud/client/issues/8832 has been created for it
+    snooze(context.userData['minSyncTimeout'])
     tryToOverwriteFile(context, resource, content)
 
 
 @When('user "|any|" tries to overwrite the file "|any|" with content "|any|"')
 def step(context, user, resource, content):
     resource = getResourcePath(context, resource, user)
+    # overwriting the file immediately after it has been synced from the server seems to have some problem.
+    # The client does not see the change although the changes have already been made thus we are having a race condition
+    # So for now we add 5sec static wait
+    # an issue https://github.com/owncloud/client/issues/8832 has been created for it
+    snooze(context.userData['minSyncTimeout'])
     tryToOverwriteFile(context, resource, content)
 
 
