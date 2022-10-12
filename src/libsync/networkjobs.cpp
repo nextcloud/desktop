@@ -54,6 +54,7 @@ Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSimpleApiJob, "nextcloud.sync.networkjob.simpleapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
 const int notModifiedStatusCode = 304;
@@ -1181,6 +1182,62 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
         targetFun(oldUrl);
     });
     job->start();
+}
+
+SimpleApiJob::SimpleApiJob(const AccountPtr &account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+}
+
+void SimpleApiJob::setBody(const QByteArray &body)
+{
+    _body = body;
+    qCDebug(lcSimpleApiJob) << "Set body for request:" << _body;
+}
+
+
+void SimpleApiJob::setVerb(Verb value)
+{
+    _verb = value;
+}
+
+
+QByteArray SimpleApiJob::verbToString() const
+{
+    switch (_verb) {
+    case Verb::Get:
+        return "GET";
+    case Verb::Post:
+        return "POST";
+    case Verb::Put:
+        return "PUT";
+    case Verb::Delete:
+        return "DELETE";
+    }
+    return "GET";
+}
+
+void SimpleApiJob::start()
+{
+    qCDebug(lcSimpleApiJob) << "send: " << path() << _body;
+
+    _request.setRawHeader("OCS-APIREQUEST", "true");
+    const auto url = Utility::concatUrlPath(account()->url(), path());
+    const auto httpVerb = verbToString();
+    if (!_body.isEmpty()) {
+        sendRequest(httpVerb, url, _request, _body);
+    } else {
+        sendRequest(httpVerb, url, _request);
+    }
+    AbstractNetworkJob::start();
+}
+
+bool SimpleApiJob::finished()
+{
+    const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    qCDebug(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
+    emit resultReceived(httpStatusCode);
+    return true;
 }
 
 } // namespace OCC
