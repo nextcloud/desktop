@@ -58,24 +58,15 @@ void HttpCredentialsGui::askFromUser()
 
 void HttpCredentialsGui::askFromUserAsync()
 {
-    const auto updateOAuth = [this] {
-        _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));
-        connect(_asyncAuth.data(), &OAuth::result,
-            this, &HttpCredentialsGui::asyncAuthResult);
-        connect(_asyncAuth.data(), &OAuth::destroyed,
-            this, &HttpCredentialsGui::authorisationLinkChanged);
-        _asyncAuth->startAuthentication();
-        emit authorisationLinkChanged();
-    };
     if (isUsingOAuth()) {
-        updateOAuth();
+        restartOAuth();
     } else {
         // First, we will check what kind of auth we need.
         auto job = new DetermineAuthTypeJob(_account->sharedFromThis(), this);
-        QObject::connect(job, &DetermineAuthTypeJob::authType, this, [updateOAuth, this](DetermineAuthTypeJob::AuthType type) {
+        QObject::connect(job, &DetermineAuthTypeJob::authType, this, [this](DetermineAuthTypeJob::AuthType type) {
             _authType = type;
             if (type == DetermineAuthTypeJob::AuthType::OAuth) {
-                updateOAuth();
+                restartOAuth();
             } else if (type == DetermineAuthTypeJob::AuthType::Basic) {
                 showDialog();
             } else {
@@ -159,6 +150,17 @@ QUrl HttpCredentialsGui::authorisationLink() const
         }
     }
     return {};
+}
+
+void HttpCredentialsGui::restartOAuth()
+{
+    _asyncAuth.reset(new AccountBasedOAuth(_account->sharedFromThis(), this));
+    connect(_asyncAuth.data(), &OAuth::result,
+        this, &HttpCredentialsGui::asyncAuthResult);
+    connect(_asyncAuth.data(), &OAuth::destroyed,
+        this, &HttpCredentialsGui::authorisationLinkChanged);
+    _asyncAuth->startAuthentication();
+    emit authorisationLinkChanged();
 }
 
 } // namespace OCC

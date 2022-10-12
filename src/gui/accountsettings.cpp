@@ -838,6 +838,19 @@ void AccountSettings::slotAccountStateChanged()
                     _accountState->signOutByUi();
                 });
 
+                connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, this, [contentWidget, accountPtr = account]() {
+                    auto creds = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials());
+                    creds->restartOAuth();
+                    contentWidget->hideRetryFrame();
+                });
+
+                connect(cred, &HttpCredentialsGui::asked, this, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
+                    if (!cred->ready()) {
+                        ocApp()->gui()->raiseDialog(loginDialog);
+                        contentWidget->showRetryFrame();
+                    }
+                });
+
                 showConnectionLabel(tr("Reauthorization required."));
 
                 _askForOAuthLoginDialog->show();

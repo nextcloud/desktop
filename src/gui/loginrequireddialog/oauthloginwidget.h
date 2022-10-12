@@ -41,6 +41,12 @@ public:
 
     void setOpenBrowserButtonText(const QString &newText);
 
+    void showRetryFrame();
+    void hideRetryFrame();
+
+Q_SIGNALS:
+    void retryButtonClicked();
+
 Q_SIGNALS:
     void openBrowserButtonClicked();
     void copyUrlToClipboardButtonClicked();

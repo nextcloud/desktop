@@ -53,7 +53,6 @@ LoginRequiredDialog::LoginRequiredDialog(Mode mode, QWidget *parent)
     }());
 
     Utility::setModal(this);
-    setFixedSize(this->minimumSize());
 }
 
 LoginRequiredDialog::~LoginRequiredDialog()
