@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
         <source>Opening for local editing</source>
-        <translation type="unfinished"/>
+        <translation>開啟本機編輯</translation>
     </message>
 </context>
 <context>
@@ -1521,7 +1521,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1480"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>找不到要同步的資料夾。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
@@ -3220,7 +3220,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>由於修改時間無效，因此無法同步</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="948"/>
+        <location filename="../src/libsync/discovery.cpp" line="937"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>從資料庫刪除紀錄 %1 時發生錯誤</translation>
     </message>
