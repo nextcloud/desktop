@@ -293,7 +293,7 @@ void FolderWizardRemotePath::slotTypedPathFound(const QStringList &subpaths)
 
 PropfindJob *FolderWizardRemotePath::runPropFindJob(const QString &path)
 {
-    PropfindJob *job = new PropfindJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), path, 1, this);
+    PropfindJob *job = new PropfindJob(folderWizardPrivate()->accountState()->account(), folderWizardPrivate()->davUrl(), path, PropfindJob::Depth::One, this);
     job->setProperties({ QByteArrayLiteral("resourcetype") });
     connect(job, &PropfindJob::directoryListingSubfolders,
         this, &FolderWizardRemotePath::slotUpdateDirectories);

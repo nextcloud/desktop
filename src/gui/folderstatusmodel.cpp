@@ -598,7 +598,7 @@ void FolderStatusModel::fetchMore(const QModelIndex &parent)
     if (info->_path != QLatin1String("/")) {
         path += info->_path;
     }
-    PropfindJob *job = new PropfindJob(_accountState->account(), info->_folder->webDavUrl(), path, 1, this);
+    PropfindJob *job = new PropfindJob(_accountState->account(), info->_folder->webDavUrl(), path, PropfindJob::Depth::One, this);
     info->_fetchingJob = job;
     job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("http://owncloud.org/ns:size"), QByteArrayLiteral("http://owncloud.org/ns:permissions") });
     job->setTimeout(60s);

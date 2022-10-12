@@ -79,7 +79,11 @@ class OWNCLOUDSYNC_EXPORT PropfindJob : public AbstractNetworkJob
 {
     Q_OBJECT
 public:
-    explicit PropfindJob(AccountPtr account, const QUrl &url, const QString &path, int _depth = 1, QObject *parent = nullptr);
+    enum class Depth {
+        Zero,
+        One
+    } Q_ENUMS(Depth);
+    explicit PropfindJob(AccountPtr account, const QUrl &url, const QString &path, Depth depth, QObject *parent = nullptr);
     void start() override;
 
     /**
@@ -108,7 +112,7 @@ private slots:
 private:
     QList<QByteArray> _properties;
     QHash<QString, qint64> _sizes;
-    int _depth = -1;
+    Depth _depth;
 };
 
 

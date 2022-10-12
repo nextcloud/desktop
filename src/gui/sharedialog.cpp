@@ -132,7 +132,7 @@ ShareDialog::ShareDialog(AccountStatePtr accountState,
 
     // Server versions >= 9.1 support the "share-permissions" property
     // older versions will just return share-permissions: ""
-    auto job = new PropfindJob(accountState->account(), _baseUrl, _sharePath, 0, this);
+    auto job = new PropfindJob(accountState->account(), _baseUrl, _sharePath, PropfindJob::Depth::Zero, this);
     QList<QByteArray> properties = { QByteArrayLiteral("http://open-collaboration-services.org/ns:share-permissions") };
     if (accountState->account()->capabilities().privateLinkPropertyAvailable()) {
         properties.append(QByteArrayLiteral("http://owncloud.org/ns:privatelink"));

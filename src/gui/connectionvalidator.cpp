@@ -194,7 +194,7 @@ void ConnectionValidator::checkAuthentication()
     qCDebug(lcConnectionValidator) << "# Check whether authenticated propfind works.";
 
     // we explicitly use a legacy dav path here
-    auto *job = new PropfindJob(_account, _account->url(), Theme::instance()->webDavPath(), 0, this);
+    auto *job = new PropfindJob(_account, _account->url(), Theme::instance()->webDavPath(), PropfindJob::Depth::Zero, this);
     job->setAuthenticationJob(true); // don't retry
     job->setTimeout(timeoutToUse);
     job->setProperties({ QByteArrayLiteral("getlastmodified") });

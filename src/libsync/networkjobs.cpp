@@ -290,9 +290,9 @@ bool LsColXMLParser::parse(const QByteArray &xml, QHash<QString, qint64> *sizes,
 
 /*********************************************************************************************/
 
-PropfindJob::PropfindJob(AccountPtr account, const QUrl &url, const QString &path, int _depth, QObject *parent)
+PropfindJob::PropfindJob(AccountPtr account, const QUrl &url, const QString &path, Depth depth, QObject *parent)
     : AbstractNetworkJob(account, url, path, parent)
-    , _depth(_depth)
+    , _depth(depth)
 {
     // Always have a higher priority than the propagator because we use this from the UI
     // and really want this to be done first (no matter what internal scheduling QNAM uses).
@@ -313,7 +313,7 @@ QList<QByteArray> PropfindJob::properties() const
 void PropfindJob::start()
 {
     QNetworkRequest req;
-    req.setRawHeader(QByteArrayLiteral("Depth"), QByteArray::number(_depth));
+    req.setRawHeader(QByteArrayLiteral("Depth"), QByteArray::number(static_cast<int>(_depth)));
     req.setRawHeader(QByteArrayLiteral("Prefer"), QByteArrayLiteral("return=minimal"));
 
     if (_properties.isEmpty()) {
@@ -366,7 +366,7 @@ void PropfindJob::finished()
             this, &PropfindJob::finishedWithError);
         connect(&parser, &LsColXMLParser::finishedWithoutError,
             this, &PropfindJob::finishedWithoutError);
-        if (_depth == 0) {
+        if (_depth == Depth::Zero) {
             connect(&parser, &LsColXMLParser::directoryListingIterated, [&parser, counter = 0, this](const QString &name, const QMap<QString, QString> &) mutable {
                 counter++;
                 // With a depths of 0 we must receive only one listing
@@ -584,7 +584,7 @@ void fetchPrivateLinkUrl(AccountPtr account, const QUrl &baseUrl, const QString 
 {
     if (account->capabilities().privateLinkPropertyAvailable()) {
         // Retrieve the new link by PROPFIND
-        auto *job = new PropfindJob(account, baseUrl, remotePath, 0, target);
+        auto *job = new PropfindJob(account, baseUrl, remotePath, PropfindJob::Depth::Zero, target);
         job->setProperties({ QByteArrayLiteral("http://owncloud.org/ns:privatelink") });
         job->setTimeout(10s);
         QObject::connect(job, &PropfindJob::directoryListingIterated, target, [=](const QString &, const QMap<QString, QString> &result) {

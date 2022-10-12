@@ -114,7 +114,7 @@ void PropagateUploadFileNG::doStartUploadNext()
     if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
             && progressInfo._size == _item->_size) {
         _transferId = progressInfo._transferid;
-        auto job = new PropfindJob(propagator()->account(), propagator()->account()->url(), chunkPath(), 1, this);
+        auto job = new PropfindJob(propagator()->account(), propagator()->account()->url(), chunkPath(), PropfindJob::Depth::One, this);
         addChildJob(job);
         job->setProperties({ QByteArrayLiteral("resourcetype"), QByteArrayLiteral("getcontentlength") });
         connect(job, &PropfindJob::finishedWithoutError, this, &PropagateUploadFileNG::slotPropfindFinished);
