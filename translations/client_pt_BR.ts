@@ -168,7 +168,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
         <source>Opening for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Abrir para editar localmente</translation>
     </message>
 </context>
 <context>
@@ -1519,7 +1519,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1480"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível encontrar uma pasta para sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
@@ -3218,7 +3218,7 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <translation>Não é possível sincronizar devido ao horário de modificação inválido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="948"/>
+        <location filename="../src/libsync/discovery.cpp" line="937"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Erro ao excluir o registro de arquivo %1 do banco de dados</translation>
     </message>
