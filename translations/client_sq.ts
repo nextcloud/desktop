@@ -74,14 +74,14 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="53"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="66"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="78"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="91"/>
         <source>Username</source>
         <translation>Emër përdoruesi</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="73"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="89"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="98"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="114"/>
         <source>Password</source>
         <translation>Fjalëkalim</translation>
     </message>
@@ -318,7 +318,7 @@
 <context>
     <name>LoginRequiredDialog</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="14"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="20"/>
         <source>Login required</source>
         <translation>Lypset kryerja e hyrjes</translation>
     </message>
@@ -349,19 +349,24 @@
 <context>
     <name>OAuthLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="14"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="20"/>
         <source>OAuthLoginWidget</source>
         <translation>OAuthLoginWidget</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="58"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="66"/>
         <source>Open Browser</source>
         <translation>Hap Shfletues</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="71"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="79"/>
         <source>Copy URL to clipboard</source>
         <translation>Kopjoja URL në të papastër</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="179"/>
+        <source>Retry</source>
+        <translation>Riprovo</translation>
     </message>
 </context>
 <context>
@@ -459,7 +464,7 @@
         <location filename="../src/gui/accountsettings.ui" line="249"/>
         <location filename="../src/gui/accountsettings.cpp" line="477"/>
         <location filename="../src/gui/accountsettings.cpp" line="580"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1033"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
@@ -586,68 +591,68 @@ Please authenticate using your browser.</source>
 Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="841"/>
+        <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Reauthorization required.</source>
         <translation>Lypset riautorizim.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>Connecting to %1...</source>
         <translation>Po lidhet te %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="856"/>
+        <location filename="../src/gui/accountsettings.cpp" line="869"/>
         <source>No connection to %1.</source>
         <translation>S’ka lidhje te %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="860"/>
+        <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>Server configuration error: %1.</source>
         <translation>Gabim formësimi shërbyesi: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="871"/>
+        <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>No connection configured.</source>
         <translation>S’ka lidhje të formësuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="893"/>
+        <location filename="../src/gui/accountsettings.cpp" line="906"/>
         <source>Log in</source>
         <translation>Hyni</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Ka dosje që s’u njëkohësuan, ngaqë janë shumë të mëdha: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="992"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1005"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Ka dosje që s’u njëkohësuan, ngaqë janë depozita të jashtme: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Ka dosje që s’u njëkohësuan, ngaqë janë shumë të mëdha ose janë depozita të jashtme: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1026"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1039"/>
         <source>Confirm Account Removal</source>
         <translation>Ripohoni Heqjen e Llogarisë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1040"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Doni vërtet të hiqet lidhja për te llogaria &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Shënim:&lt;/b&gt; Kjo &lt;b&gt;nuk&lt;/b&gt; do të fshijë ndonjë kartelë.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1032"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
         <source>Remove connection</source>
         <translation>Hiqe lidhjen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
-        <location filename="../src/gui/accountsettings.cpp" line="895"/>
+        <location filename="../src/gui/accountsettings.cpp" line="908"/>
         <source>Log out</source>
         <translation>Dilni</translation>
     </message>
@@ -1106,8 +1111,8 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="469"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="490"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="467"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="488"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Gabim shërbyesi: përgjigja PROPFIND s’është e formatuar si XML!</translation>
     </message>
@@ -1975,7 +1980,7 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
         <source>Please enter your password to log in to your account.</source>
         <translation>Ju lutemi, që të hyni te llogaria juaj, jepni fjalëkalimin tuaj.</translation>
     </message>
@@ -2168,7 +2173,7 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
         <translation>Dilni</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="70"/>
         <source>Log in</source>
         <translation>Hyni</translation>
     </message>
@@ -3124,7 +3129,7 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="440"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="438"/>
         <source>Choose What to Sync</source>
         <translation>Zgjidhni Çfarë të Njëkohësohet</translation>
     </message>
@@ -3152,13 +3157,13 @@ Gjatë procesit përditësuesi mund të kërkojë privilegje shtesë.</translati
         <translation>Madhësi</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="262"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="213"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="261"/>
         <source>No subfolders currently on the server.</source>
         <translation>Hëpërhë s’ka nëndosje te shërbyesi.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="264"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="263"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Ndodhi një gabim teksa ngarkohej lista e nëndosjeve.</translation>
     </message>

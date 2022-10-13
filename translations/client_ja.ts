@@ -74,14 +74,14 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="53"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="66"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="78"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="91"/>
         <source>Username</source>
         <translation>ユーザー名</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="73"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="89"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="98"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="114"/>
         <source>Password</source>
         <translation>パスワード</translation>
     </message>
@@ -318,7 +318,7 @@
 <context>
     <name>LoginRequiredDialog</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="14"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="20"/>
         <source>Login required</source>
         <translation>ログインが必要です</translation>
     </message>
@@ -349,19 +349,24 @@
 <context>
     <name>OAuthLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="14"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="20"/>
         <source>OAuthLoginWidget</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="58"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="66"/>
         <source>Open Browser</source>
         <translation>ブラウザを開く</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="71"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="79"/>
         <source>Copy URL to clipboard</source>
         <translation>クリップボードにURLをコピーしました</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="179"/>
+        <source>Retry</source>
+        <translation>リトライ</translation>
     </message>
 </context>
 <context>
@@ -459,7 +464,7 @@
         <location filename="../src/gui/accountsettings.ui" line="249"/>
         <location filename="../src/gui/accountsettings.cpp" line="477"/>
         <location filename="../src/gui/accountsettings.cpp" line="580"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1033"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
@@ -586,68 +591,68 @@ Please authenticate using your browser.</source>
 ブラウザで認証してください。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="841"/>
+        <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Reauthorization required.</source>
         <translation>再認証が必要です。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="850"/>
+        <location filename="../src/gui/accountsettings.cpp" line="863"/>
         <source>Connecting to %1...</source>
         <translation>%1 に接続中...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="856"/>
+        <location filename="../src/gui/accountsettings.cpp" line="869"/>
         <source>No connection to %1.</source>
         <translation>%1 への接続がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="860"/>
+        <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>Server configuration error: %1.</source>
         <translation>サーバ設定エラー: %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="871"/>
+        <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>No connection configured.</source>
         <translation>接続設定がありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="893"/>
+        <location filename="../src/gui/accountsettings.cpp" line="906"/>
         <source>Log in</source>
         <translation>ログイン</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="990"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>大きすぎるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="992"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1005"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="993"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1006"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>大きすぎたか、外部ストレージにあるため同期されなかったフォルダーがあります:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1026"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1039"/>
         <source>Confirm Account Removal</source>
         <translation>アカウント削除確認</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1027"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1040"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt; アカウント &lt;i&gt;%1&lt;/i&gt; を本当に削除しますか?&lt;/p&gt;&lt;p&gt;&lt;b&gt;注意:&lt;/b&gt; これによりファイルが一切削除されることはありません。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1032"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
         <source>Remove connection</source>
         <translation>接続削除</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="203"/>
-        <location filename="../src/gui/accountsettings.cpp" line="895"/>
+        <location filename="../src/gui/accountsettings.cpp" line="908"/>
         <source>Log out</source>
         <translation>ログアウト</translation>
     </message>
@@ -1099,8 +1104,8 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="469"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="490"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="467"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="488"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>サーバーエラー: PROPFIND の応答が XML フォーマットではありません！</translation>
     </message>
@@ -1962,7 +1967,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="121"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
         <source>Please enter your password to log in to your account.</source>
         <translation>パスワードを入力してログインしてください。</translation>
     </message>
@@ -2155,7 +2160,7 @@ Note that using any logging command line options will override the settings.</so
         <translation>ログアウト</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="71"/>
+        <location filename="../src/gui/loginrequireddialog/loginrequireddialog.cpp" line="70"/>
         <source>Log in</source>
         <translation>ログイン</translation>
     </message>
@@ -3110,7 +3115,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="440"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="438"/>
         <source>Choose What to Sync</source>
         <translation>同期フォルダーを選択</translation>
     </message>
@@ -3138,13 +3143,13 @@ for additional privileges during the process.</source>
         <translation>サイズ</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="214"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="262"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="213"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="261"/>
         <source>No subfolders currently on the server.</source>
         <translation>現在サーバーにサブフォルダーはありません。</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="264"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="263"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>サーバーからフォルダーのリスト取得時にエラーが発生しました。</translation>
     </message>
@@ -3451,12 +3456,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>プライベートリンクを提供することで、この共有ファイルまたはフォルダ %1 に他のユーザを誘導できます。</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
         <source>The item is not shared with any users or groups</source>
-        <translation type="unfinished"/>
+        <translation>アイテムはどのユーザーやグループとも共有されていません。</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="247"/>
@@ -3481,7 +3486,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="337"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>あなたと何かを共有しました</translation>
     </message>
 </context>
 <context>
@@ -3548,32 +3553,32 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="539"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>コンテキストメニュー共有</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="544"/>
         <source>Context menu share %1</source>
-        <translation type="unfinished"/>
+        <translation>コンテキストメニュー共有 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="713"/>
         <source>Confirm deletion</source>
-        <translation type="unfinished"/>
+        <translation>削除の確認</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="715"/>
         <source>Do you want to delete the directory &lt;i&gt;%1&lt;/i&gt; and all its contents permanently?</source>
-        <translation type="unfinished"/>
+        <translation>ディレクトリ &lt;i&gt;%1&lt;/i&gt; とその内容をすべて完全に削除しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="716"/>
         <source>Do you want to delete the file &lt;i&gt;%1&lt;/i&gt; permanently?</source>
-        <translation type="unfinished"/>
+        <translation>ファイル &lt;i&gt;%1&lt;/i&gt; を完全に削除しますか？</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="758"/>
         <source>Select new location...</source>
-        <translation type="unfinished"/>
+        <translation>新しい場所を選択...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="768"/>
@@ -3585,54 +3590,56 @@ for additional privileges during the process.</source>
         <source>Moving file failed:
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>ファイルの移動に失敗:
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="843"/>
         <source>I shared something with you</source>
-        <translation type="unfinished"/>
+        <translation>あなたと何かを共有しました</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="856"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="886"/>
         <source>Share...</source>
-        <translation type="unfinished"/>
+        <translation>共有...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="858"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="903"/>
         <source>Copy private link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>クリップボードにプライベートリンクをコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="859"/>
         <source>Send private link by email...</source>
-        <translation type="unfinished"/>
+        <translation>メールでプライベートリンクを送信</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="884"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>このファイルの再共有は許可されていません</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="884"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>このフォルダの再共有は許可されていません</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="896"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>公開リンクを作成しクリップボードにコピーする</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="898"/>
         <source>Copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>クリップボードに公開リンクをコピー</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="975"/>
         <source>Open in %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 を開く</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="983"/>
@@ -3642,33 +3649,33 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="990"/>
         <source>Show file versions in browser</source>
-        <translation type="unfinished"/>
+        <translation>ブラウザでファイルのバージョンを表示</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1013"/>
         <source>Rename...</source>
-        <translation type="unfinished"/>
+        <translation>名前の変更...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1016"/>
         <source>Rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>名前の変更とアップロード...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1021"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1025"/>
         <source>Move and rename...</source>
-        <translation type="unfinished"/>
+        <translation>移動と名前の変更...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1028"/>
         <source>Move, rename and upload...</source>
-        <translation type="unfinished"/>
+        <translation>移動, 名前の変更とアップロード...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1031"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>ローカルでの変更を削除する</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1036"/>
