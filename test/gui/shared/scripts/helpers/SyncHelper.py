@@ -3,11 +3,11 @@ import re
 
 # File syncing in client has the following status
 SYNC_STATUS = {
-    'SYNC': 'STATUS:SYNC',  # sync in process
+    'SYNC': 'STATUS:SYNC',  # sync in progress
     'OK': 'STATUS:OK',  # sync completed
-    'ERROR': 'STATUS:ERROR',  # file sync has error
-    'IGNORE': 'STATUS:IGNORE',  # file is igored
-    'NOP': 'STATUS:NOP',  # file yet to be synced
+    'ERROR': 'STATUS:ERROR',  # sync error
+    'IGNORE': 'STATUS:IGNORE',  # sync ignored
+    'NOP': 'STATUS:NOP',  # not in sync yet
     'REGISTER': 'REGISTER_PATH',
     'UNREGISTER': 'UNREGISTER_PATH',
     'UPDATE': 'UPDATE_VIEW',
