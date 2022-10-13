@@ -1450,8 +1450,8 @@ void FolderMan::editFileLocally(const QString &accountDisplayName, const QString
     const auto accountFound = AccountManager::instance()->account(accountDisplayName);
 
     if (!accountFound) {
-        qCWarning(lcFolderMan) << "Could not find an account " << accountDisplayName << " to edit file " << relPath << " locally.";
-        showError(accountFound, tr("Could not find an account for local editing"), accountDisplayName);
+        qCWarning(lcFolderMan) << "Could not find an account " << userId << " to edit file " << relPath << " locally.";
+        showError(accountFound, tr("Could not find an account for local editing"), userId);
         return;
     }
 

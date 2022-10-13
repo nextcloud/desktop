@@ -762,7 +762,7 @@ void Application::handleEditLocally(const QUrl &url) const
     }
 
     // for a sample URL "nc://open/admin@nextcloud.lan:8080/Photos/lovely.jpg", QUrl::path would return "admin@nextcloud.lan:8080/Photos/lovely.jpg"
-    const auto accountDisplayName = pathSplit.takeFirst();
+    const auto userId = pathSplit.takeFirst();
     const auto fileRemotePath = pathSplit.join('/');
 
     FolderMan::instance()->editFileLocally(accountDisplayName, fileRemotePath);
