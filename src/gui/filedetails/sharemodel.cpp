@@ -245,13 +245,13 @@ void ShareModel::updateData()
 
     _numericFileId = fileRecord.numericFileId();
 
+    // Will get added when shares are fetched if no link shares are fetched
     _placeholderLinkShare.reset(new Share(_accountState->account(),
                                           placeholderLinkShareId,
                                           _accountState->account()->id(),
                                           _accountState->account()->davDisplayName(),
                                           _sharePath,
                                           Share::TypePlaceholderLink));
-    slotAddShare(_placeholderLinkShare);
 
     auto job = new PropfindJob(_accountState->account(), _sharePath);
     job->setProperties(
@@ -261,10 +261,11 @@ void ShareModel::updateData()
         << "https://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
     connect(job, &PropfindJob::result, this, &ShareModel::slotPropfindReceived);
-    connect(job, &PropfindJob::finishedWithError, this, [&]{
+    connect(job, &PropfindJob::finishedWithError, this, [&](const QNetworkReply *reply) {
         qCWarning(lcShareModel) << "Propfind for" << _sharePath << "failed";
         _fetchOngoing = false;
         Q_EMIT fetchOngoingChanged();
+        Q_EMIT serverError(reply->error(), reply->errorString());
     });
 
     _fetchOngoing = true;
@@ -295,8 +296,41 @@ void ShareModel::initShareManager()
         connect(_manager.data(), &ShareManager::shareCreated, this, [&]{ _manager->fetchShares(_sharePath); });
         connect(_manager.data(), &ShareManager::linkShareCreated, this, &ShareModel::slotAddShare);
         connect(_manager.data(), &ShareManager::linkShareRequiresPassword, this, &ShareModel::requestPasswordForLinkShare);
+        connect(_manager.data(), &ShareManager::serverError, this, [this](const int code, const QString &message){
+            _hasInitialShareFetchCompleted = true;
+            Q_EMIT hasInitialShareFetchCompletedChanged();
+            serverError(code, message);
+        });
 
         _manager->fetchShares(_sharePath);
+    }
+}
+
+void ShareModel::handlePlaceholderLinkShare()
+{
+    // We want to add the placeholder if there are no link shares and
+    // if we are not already showing the placeholder link share
+    auto linkSharePresent = false;
+    auto placeholderLinkSharePresent = false;
+
+    for (const auto &share : _shares) {
+        const auto shareType = share->getShareType();
+
+        if (!linkSharePresent && shareType == Share::TypeLink) {
+            linkSharePresent = true;
+        } else if (!placeholderLinkSharePresent && shareType == Share::TypePlaceholderLink) {
+            placeholderLinkSharePresent = true;
+        }
+
+        if(linkSharePresent && placeholderLinkSharePresent) {
+            break;
+        }
+    }
+
+    if (linkSharePresent && placeholderLinkSharePresent) {
+        slotRemoveShareWithId(placeholderLinkShareId);
+    } else if (!linkSharePresent && !placeholderLinkSharePresent) {
+        slotAddShare(_placeholderLinkShare);
     }
 }
 
@@ -341,6 +375,8 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
 
         slotAddShare(share);
     }
+
+    handlePlaceholderLinkShare();
 }
 
 void ShareModel::slotAddShare(const SharePtr &share)
@@ -350,12 +386,6 @@ void ShareModel::slotAddShare(const SharePtr &share)
     }
 
     const auto shareId = share->getId();
-
-    // Remove placeholder link share if this is a link share
-    if(share->getShareType() == Share::TypeLink) {
-        slotRemoveShareWithId(placeholderLinkShareId);
-    }
-
     QModelIndex shareModelIndex;
 
     if (_shareIdIndexHash.contains(shareId)) {
@@ -405,6 +435,7 @@ void ShareModel::slotAddShare(const SharePtr &share)
         connect(_manager.data(), &ShareManager::serverError, this, &ShareModel::slotServerError);
     }
 
+    handlePlaceholderLinkShare();
     Q_EMIT sharesChanged();
 }
 
@@ -427,18 +458,7 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     _shares.removeAt(shareIndex.row());
     endRemoveRows();
 
-    // If no link shares then re-add placeholder link share
-    if (shareIndex.data(ShareModel::ShareTypeRole).toInt() == Share::TypeLink) {
-
-        // Early return if we find another link share
-        for(const auto &share : _shares) {
-            if(share->getShareType() == Share::TypeLink) {
-                return;
-            }
-        }
-
-        slotAddShare(_placeholderLinkShare);
-    }
+    handlePlaceholderLinkShare();
 
     Q_EMIT sharesChanged();
 }

@@ -56,6 +56,7 @@ ColumnLayout {
             }
 
             errorBox.visible = true;
+            root.waitingForSharesToChange = false;
         }
 
         onPasswordSetError: if(root.stopWaitingForSharesToChangeOnPasswordError) {

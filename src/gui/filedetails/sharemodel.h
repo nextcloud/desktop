@@ -152,6 +152,7 @@ private slots:
     void resetData();
     void updateData();
     void initShareManager();
+    void handlePlaceholderLinkShare();
 
     void slotPropfindReceived(const QVariantMap &result);
     void slotServerError(const int code, const QString &message);
