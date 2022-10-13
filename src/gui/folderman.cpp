@@ -1422,7 +1422,7 @@ void FolderMan::setDirtyNetworkLimits()
     }
 }
 
-void FolderMan::editFileLocally(const QString &accountDisplayName, const QString &relPath, const QString &token)
+void FolderMan::editFileLocally(const QString &userId, const QString &relPath, const QString &token)
 {
     const auto showError = [this](const OCC::AccountStatePtr accountState, const QString &errorMessage, const QString &subject) {
         if (accountState && accountState->account()) {
@@ -1449,15 +1449,27 @@ void FolderMan::editFileLocally(const QString &accountDisplayName, const QString
 
     if (token.isEmpty()) {
         qCWarning(lcFolderMan) << "Edit locally request is missing a valid token. Impossible to open the file.";
-        showError({}, tr("Edit locally request is not valid. Opening the file is forbidden."), accountDisplayName);
+        showError({}, tr("Edit locally request is not valid. Opening the file is forbidden."), userId);
         return;
     }
 
-    const auto accountFound = AccountManager::instance()->account(accountDisplayName);
+    const auto accountFound = [&userId]() {
+        for (const auto &account : AccountManager::instance()->accounts()) {
+            const auto isUserIdWithPort = userId.split(QLatin1Char(':')).size() > 1;
+            const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
+            const auto portString = (port > 0 && port != 80 && port != 443) ? QStringLiteral(":%1").arg(port) : QStringLiteral("");
+            const QString davUserId = QStringLiteral("%1@%2").arg(account->account()->davUser(), account->account()->url().host()) + portString;
+
+            if (davUserId == userId) {
+                return account;
+            }
+        }
+        return AccountStatePtr{};
+    }();
 
     if (!accountFound) {
-        qCWarning(lcFolderMan) << "Could not find an account " << accountDisplayName << " to edit file " << relPath << " locally.";
-        showError(accountFound, tr("Could not find an account for local editing"), accountDisplayName);
+        qCWarning(lcFolderMan) << "Could not find an account " << userId << " to edit file " << relPath << " locally.";
+        showError(accountFound, tr("Could not find an account for local editing"), userId);
         return;
     }
 
