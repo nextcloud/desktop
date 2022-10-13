@@ -83,7 +83,7 @@ RequestEtagJob::RequestEtagJob(AccountPtr account, const QUrl &rootUrl, const QS
         }
         _etag = parseEtag(value.value(QStringLiteral("getetag"))).toUtf8();
         // the server returned a 207 but no etag, something is wrong
-        if (!OC_ENSURE(!_etag.isEmpty())) {
+        if (!OC_ENSURE_NOT(_etag.isEmpty())) {
             abort();
         }
     });

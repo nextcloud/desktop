@@ -46,6 +46,7 @@
     return true;
 }
 #define OC_ENSURE(cond) Q_LIKELY(__OC_ENSURE(cond, #cond, __FILE__, __LINE__, Q_FUNC_INFO))
+#define OC_ENSURE_NOT(cond) OC_ENSURE(!cond)
 // An assert that is only present in debug builds: typically used for
 // asserts that are too expensive for release mode.
 //
