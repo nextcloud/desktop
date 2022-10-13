@@ -823,64 +823,23 @@ bool EntityExistsJob::finished()
 /*********************************************************************************************/
 
 JsonApiJob::JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+    : SimpleApiJob(account, path, parent)
 {
-}
-
-void JsonApiJob::addQueryParams(const QUrlQuery &params)
-{
-    _additionalParams = params;
-}
-
-void JsonApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
-{
-   _request.setRawHeader(headerName, value);
 }
 
 void JsonApiJob::setBody(const QJsonDocument &body)
 {
-    _body = body.toJson();
-    qCDebug(lcJsonApiJob) << "Set body for request:" << _body;
-    if (!_body.isEmpty()) {
-        _request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    SimpleApiJob::setBody(body.toJson());
+    qCDebug(lcJsonApiJob) << "Set body for request:" << SimpleApiJob::body();
+    if (!SimpleApiJob::body().isEmpty()) {
+        request().setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     }
-}
-
-
-void JsonApiJob::setVerb(Verb value)
-{
-    _verb = value;
-}
-
-
-QByteArray JsonApiJob::verbToString() const
-{
-    switch (_verb) {
-    case Verb::Get:
-        return "GET";
-    case Verb::Post:
-        return "POST";
-    case Verb::Put:
-        return "PUT";
-    case Verb::Delete:
-        return "DELETE";
-    }
-    return "GET";
 }
 
 void JsonApiJob::start()
 {
-    addRawHeader("OCS-APIREQUEST", "true");
-    auto query = _additionalParams;
-    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
-    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
-    const auto httpVerb = verbToString();
-    if (!_body.isEmpty()) {
-        sendRequest(httpVerb, url, _request, _body);
-    } else {
-        sendRequest(httpVerb, url, _request);
-    }
-    AbstractNetworkJob::start();
+    additionalParams().addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    SimpleApiJob::start();
 }
 
 bool JsonApiJob::finished()
@@ -1219,15 +1178,14 @@ QByteArray SimpleApiJob::verbToString() const
 
 void SimpleApiJob::start()
 {
-    qCDebug(lcSimpleApiJob) << "send: " << path() << _body;
-
-    _request.setRawHeader("OCS-APIREQUEST", "true");
-    const auto url = Utility::concatUrlPath(account()->url(), path());
+    addRawHeader("OCS-APIREQUEST", "true");
+    auto query = _additionalParams;
+    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
     const auto httpVerb = verbToString();
-    if (!_body.isEmpty()) {
-        sendRequest(httpVerb, url, _request, _body);
+    if (!SimpleApiJob::body().isEmpty()) {
+        sendRequest(httpVerb, url, request(), SimpleApiJob::body());
     } else {
-        sendRequest(httpVerb, url, _request);
+        sendRequest(httpVerb, url, request());
     }
     AbstractNetworkJob::start();
 }
@@ -1238,6 +1196,31 @@ bool SimpleApiJob::finished()
     qCDebug(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
     emit resultReceived(httpStatusCode);
     return true;
+}
+
+QNetworkRequest& SimpleApiJob::request()
+{
+    return _request;
+}
+
+QByteArray& SimpleApiJob::body()
+{
+    return _body;
+}
+
+QUrlQuery &SimpleApiJob::additionalParams()
+{
+    return _additionalParams;
+}
+
+void SimpleApiJob::addQueryParams(const QUrlQuery &params)
+{
+    _additionalParams = params;
+}
+
+void SimpleApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
+{
+    request().setRawHeader(headerName, value);
 }
 
 } // namespace OCC
