@@ -26,7 +26,6 @@
 #include <QNetworkAccessManager>
 #include <QMessageBox>
 #include "clientsideencryption.h"
-#include "ui_mnemonicdialog.h"
 
 namespace {
 static const char urlC[] = "url";
