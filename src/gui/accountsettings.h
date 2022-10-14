@@ -104,20 +104,26 @@ protected slots:
     void slotLinkActivated(const QString &link);
 
     // Encryption Related Stuff.
-    void slotShowMnemonic(const QString &mnemonic);
-    void slotNewMnemonicGenerated();
+    void slotE2eEncryptionMnemonicReady();
+    void slotE2eEncryptionGenerateKeys();
+    void slotE2eEncryptionInitializationFinished(bool isNewMnemonicGenerated);
     void slotEncryptFolderFinished(int status);
 
     void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
                                   const QVector<int> &roles);
 
 private:
+    void displayMnemonic(const QString &mnemonic);
     void showConnectionLabel(const QString &message,
         QStringList errors = QStringList());
     bool event(QEvent *) override;
     void createAccountToolbox();
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
+
+    void initializeE2eEncryption();
+    void removeActionFromEncryptionMessage(const QString &actionId);
+    QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
     /// Returns the alias of the selected folder, empty string if none
     QString selectedFolderAlias() const;

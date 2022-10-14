@@ -138,9 +138,7 @@ private slots:
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
 signals:
-    void initializationFinished();
-    void mnemonicGenerated(const QString& mnemonic);
-    void showMnemonic(const QString& mnemonic);
+    void initializationFinished(bool isNewMnemonicGenerated = false);
 
 private:
     void getPrivateKeyFromServer(const AccountPtr &account);
