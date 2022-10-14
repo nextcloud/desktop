@@ -65,6 +65,7 @@ bool OAuthCredentialsSetupWizardPage::validateInput()
 void OAuthCredentialsSetupWizardPage::setButtonsEnabled(bool enabled)
 {
     _ui->oauthLoginWidget->setEnabled(enabled);
+    _ui->oauthLoginWidget->setFocus();
 }
 
 } // namespace OCC::Wizard
