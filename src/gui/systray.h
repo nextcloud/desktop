@@ -82,15 +82,6 @@ public:
     enum class WindowPosition { Default, Center };
     Q_ENUM(WindowPosition);
 
-    void setTrayEngine(QQmlApplicationEngine *trayEngine);
-    void create();
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
-    void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
-    void setToolTip(const QString &tip);
-    void createCallDialog(const Activity &callNotification, const AccountStatePtr accountState);
-    void createEditFileLocallyLoadingDialog(const QString &fileName);
-    void destroyEditFileLocallyLoadingDialog();
-
     Q_REQUIRED_RESULT QString windowTitle() const;
     Q_REQUIRED_RESULT bool useNormalWindow() const;
 
@@ -113,6 +104,17 @@ signals:
     void isOpenChanged();
 
 public slots:
+    void setTrayEngine(QQmlApplicationEngine *trayEngine);
+    void create();
+
+    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
+    void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
+    void setToolTip(const QString &tip);
+
+    void createCallDialog(const Activity &callNotification, const AccountStatePtr accountState);
+    void createEditFileLocallyLoadingDialog(const QString &fileName);
+    void destroyEditFileLocallyLoadingDialog();
+
     void slotCurrentUserChanged();
 
     void forceWindowInit(QQuickWindow *window) const;
