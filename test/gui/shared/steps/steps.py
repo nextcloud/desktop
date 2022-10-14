@@ -85,7 +85,9 @@ def listenSyncStatusForItem(item, type='FOLDER'):
     socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + item + "\n")
 
 
-def waitForSyncToComplete(context, resource='', resourceType='FOLDER', patterns=None):
+def waitForFileOrFolderToSync(
+    context, resource='', resourceType='FOLDER', patterns=None
+):
     resource = join(context.userData['currentUserSyncPath'], resource)
     listenSyncStatusForItem(resource, resourceType)
 
@@ -108,7 +110,7 @@ def waitForSyncToComplete(context, resource='', resourceType='FOLDER', patterns=
 
 
 def waitForInitialSyncToComplete(context):
-    waitForSyncToComplete(
+    waitForFileOrFolderToSync(
         context,
         context.userData['currentUserSyncPath'],
         'FOLDER',
@@ -275,14 +277,6 @@ def hasSyncStatus(itemName, status):
     return False
 
 
-def folderHasSyncStatus(folderName, status):
-    return hasSyncStatus('FOLDER', folderName, status)
-
-
-def fileHasSyncStatus(fileName, status):
-    return hasSyncStatus('FILE', fileName, status)
-
-
 # useful for checking sync status such as 'error', 'ignore'
 # but not quite so reliable for checking 'ok' sync status
 def waitForFileOrFolderToHaveSyncStatus(
@@ -316,53 +310,6 @@ def waitForFileOrFolderToHaveSyncStatus(
             + expected
             + ", but not."
         )
-
-
-def waitForSyncToStart(context, resource, resourceType):
-    resource = join(context.userData['currentUserSyncPath'], resource)
-
-    hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
-    hasStatusSYNC = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['SYNC'])
-
-    if hasStatusSYNC:
-        return
-
-    try:
-        if hasStatusNOP:
-            waitForFileOrFolderToHaveSyncStatus(
-                context, resource, resourceType, SYNC_STATUS['SYNC']
-            )
-        else:
-            waitForFileOrFolderToHaveSyncStatus(
-                context,
-                resource,
-                resourceType,
-                SYNC_STATUS['SYNC'],
-                context.userData['minSyncTimeout'] * 1000,
-            )
-    except:
-        hasStatusNOP = hasSyncStatus(resourceType.upper(), resource, SYNC_STATUS['NOP'])
-        if hasStatusNOP:
-            raise Exception(
-                "Expected "
-                + resourceType
-                + " '"
-                + resource
-                + "' to have sync started but not."
-            )
-
-
-def waitForFileOrFolderToSync(context, resource, resourceType):
-    waitForSyncToStart(context, resource, resourceType)
-    waitForFileOrFolderToHaveSyncStatus(
-        context, resource, resourceType, SYNC_STATUS['OK']
-    )
-
-
-def waitForRootFolderToSync(context):
-    waitForFileOrFolderToSync(
-        context, context.userData['currentUserSyncPath'], 'folder'
-    )
 
 
 def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
@@ -533,12 +480,12 @@ def collaboratorShouldBeListed(
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitForSyncToComplete(context)
+    waitForFileOrFolderToSync(context)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    waitForSyncToComplete(context, resource, type)
+    waitForFileOrFolderToSync(context, resource, type)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
@@ -561,12 +508,12 @@ def step(context, type, resource):
 
 @Given('user has waited for the files to be synced')
 def step(context):
-    waitForSyncToComplete(context)
+    waitForFileOrFolderToSync(context)
 
 
 @Given(r'the user has waited for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    waitForSyncToComplete(context, resource, type)
+    waitForFileOrFolderToSync(context, resource, type)
 
 
 @Given(
