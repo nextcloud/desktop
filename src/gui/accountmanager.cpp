@@ -26,7 +26,6 @@
 #include <QNetworkAccessManager>
 #include <QMessageBox>
 #include "clientsideencryption.h"
-#include "ui_mnemonicdialog.h"
 
 namespace {
 static const char urlC[] = "url";
@@ -411,23 +410,6 @@ AccountPtr AccountManager::createAccount()
         Systray::instance(), &Systray::showErrorMessageDialog);
 
     return acc;
-}
-
-void AccountManager::displayMnemonic(const QString& mnemonic)
-{
-    auto *widget = new QDialog;
-    Ui_Dialog ui;
-    ui.setupUi(widget);
-    widget->setWindowTitle(tr("End-to-End encryption mnemonic"));
-    ui.label->setText(tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
-                         "Please note these down and keep them safe. "
-                         "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
-    ui.textEdit->setText(mnemonic);
-    ui.textEdit->focusWidget();
-    ui.textEdit->selectAll();
-    ui.textEdit->setAlignment(Qt::AlignCenter);
-    widget->exec();
-    widget->resize(widget->sizeHint());
 }
 
 void AccountManager::shutdown()

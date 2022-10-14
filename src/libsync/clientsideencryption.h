@@ -127,20 +127,13 @@ private:
 public:
     void forgetSensitiveData(const AccountPtr &account);
 
-    bool newMnemonicGenerated() const;
-
-public slots:
-    void slotRequestMnemonic();
-
 private slots:
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
 signals:
-    void initializationFinished();
-    void mnemonicGenerated(const QString& mnemonic);
-    void showMnemonic(const QString& mnemonic);
+    void initializationFinished(bool isNewMnemonicGenerated = false);
 
 private:
     void getPrivateKeyFromServer(const AccountPtr &account);
