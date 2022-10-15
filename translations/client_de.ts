@@ -1971,7 +1971,7 @@ Beachten Sie, das dies nur bestimmt von welchem Bereich Sie Aktualisierungen erh
     <message>
         <location filename="../src/libsync/graphapi/drives.cpp" line="66"/>
         <source>Shares</source>
-        <translation>Geteiltes</translation>
+        <translation>Geteilt</translation>
     </message>
 </context>
 <context>
