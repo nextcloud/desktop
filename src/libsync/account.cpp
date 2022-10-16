@@ -909,4 +909,14 @@ bool Account::fileCanBeUnlocked(SyncJournalDb * const journal,
     return false;
 }
 
+void Account::setTrustCertificates(bool trustCertificates)
+{
+    _trustCertificates = trustCertificates;
+}
+
+bool Account::trustCertificates() const
+{
+    return _trustCertificates;
+}
+
 } // namespace OCC
