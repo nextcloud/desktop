@@ -214,7 +214,7 @@ public:
     void setDirtyNetworkLimits();
 
     /** opens a file with default app, if the file is present **/
-    void editFileLocally(const QString &accountDisplayName, const QString &relPath);
+    void editFileLocally(const QString &accountDisplayName, const QString &relPath, const QString &token);
 
 signals:
     /**
