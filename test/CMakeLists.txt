@@ -65,6 +65,7 @@ nextcloud_add_test(ActivityData)
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
 nextcloud_add_test(ShareModel)
+nextcloud_add_test(ShareeModel)
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)
