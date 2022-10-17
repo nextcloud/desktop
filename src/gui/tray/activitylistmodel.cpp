@@ -740,27 +740,10 @@ void ActivityListModel::slotTriggerDismiss(const int activityIndex)
         return;
     }
 
-    const auto activityLinks = _finalList[activityIndex]._links;
+    constexpr auto deleteVerb = "DELETE";
+    const auto activity = _finalList[activityIndex];
 
-    const auto foundActivityLinkIt = std::find_if(std::cbegin(activityLinks), std::cend(activityLinks), [](const ActivityLink &link) {
-        return link._verb == QStringLiteral("DELETE");
-    });
-
-    if (foundActivityLinkIt == std::cend(activityLinks)) {
-        qCWarning(lcActivity) << "Couldn't find dismiss action in activity at index" << activityIndex
-                              << " links.size() " << activityLinks.size();
-        return;
-    }
-
-    const auto actionIndex = static_cast<int>(std::distance(activityLinks.begin(), foundActivityLinkIt));
-
-    if (actionIndex < 0 || actionIndex > activityLinks.size()) {
-        qCWarning(lcActivity) << "Couldn't find dismiss action in activity at index" << activityIndex
-                              << " actionIndex found " << actionIndex;
-        return;
-    }
-
-    slotTriggerAction(activityIndex, actionIndex);
+    emit sendNotificationRequest(activity._accName, Utility::concatUrlPath(accountState()->account()->url(), "ocs/v2.php/apps/notifications/api/v2/notifications/" + QString::number(activity._id)).toString(), deleteVerb, activityIndex);
 }
 
 AccountState *ActivityListModel::accountState() const

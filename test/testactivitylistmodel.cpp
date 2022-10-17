@@ -109,17 +109,6 @@ public:
             activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
             activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/calendar.svg"));
 
-            QJsonArray actionsArray;
-
-            QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
-            secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
-            secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
-            secondaryAction.insert(QStringLiteral("primary"), false);
-            actionsArray.push_back(secondaryAction);
-
             _activityData.push_back(activity);
 
             _startingId++;
@@ -152,15 +141,6 @@ public:
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
             primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
-
-            QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
-            secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
-            secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
-            secondaryAction.insert(QStringLiteral("primary"), false);
-            actionsArray.push_back(secondaryAction);
 
             QJsonObject additionalAction;
             additionalAction.insert(QStringLiteral("label"), QStringLiteral("Additional 1"));
@@ -206,15 +186,6 @@ public:
             primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
 
-            QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
-            secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
-            secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
-            secondaryAction.insert(QStringLiteral("primary"), false);
-            actionsArray.push_back(secondaryAction);
-
             activity.insert(QStringLiteral("actions"), actionsArray);
 
             _activityData.push_back(activity);
@@ -250,11 +221,37 @@ public:
             replyAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(replyAction);
 
+            activity.insert(QStringLiteral("actions"), actionsArray);
+
+            _activityData.push_back(activity);
+
+            _startingId++;
+        }
+
+        // Insert notification data
+        for (quint32 i = 0; i < _numItemsToInsert; i++) {
+            QJsonObject activity;
+            activity.insert(QStringLiteral("activity_id"), _startingId);
+            activity.insert(QStringLiteral("object_type"), "2fa_id");
+            activity.insert(QStringLiteral("subject"), QStringLiteral("Login attempt from 127.0.0.1"));
+            activity.insert(QStringLiteral("message"), QStringLiteral("Please apporve or deny the login attempt."));
+            activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+            activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
+            activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/password.svg"));
+
+            QJsonArray actionsArray;
+
+            QJsonObject primaryAction;
+            primaryAction.insert(QStringLiteral("label"), QStringLiteral("Approve"));
+            primaryAction.insert(QStringLiteral("link"), QStringLiteral("/ocs/v2.php/apps/twofactor_nextcloud_notification/api/v1/attempt/39"));
+            primaryAction.insert(QStringLiteral("type"), QStringLiteral("POST"));
+            primaryAction.insert(QStringLiteral("primary"), true);
+            actionsArray.push_back(primaryAction);
+
             QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
+            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Cancel"));
             secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
+                QString(QStringLiteral("/ocs/v2.php/apps/twofactor_nextcloud_notification/api/v1/attempt/39")));
             secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
             secondaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(secondaryAction);
@@ -669,10 +666,19 @@ private slots:
 
                     const auto objectType = index.data(OCC::ActivityListModel::ObjectTypeRole).toString();
 
+                    const auto actionButtonsLinks =
+                        index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
+
+                    // Login attempt notification
+                    if (objectType == QStringLiteral("2fa_id")) {
+                        QVERIFY(actionsLinks.size() == 2);
+                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._primary);
+                        QVERIFY(!actionsLinks[1].value<OCC::ActivityLink>()._primary);
+                        QVERIFY(actionsLinksContextMenu.isEmpty());
+                    }
+
                     if ((objectType == QStringLiteral("chat") || objectType == QStringLiteral("call")
                             || objectType == QStringLiteral("room"))) {
-                        const auto actionButtonsLinks =
-                            index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
 
                         auto replyActionPos = 0;
                         if (objectType == QStringLiteral("call")) {
@@ -700,25 +706,17 @@ private slots:
                                 const auto actionButtonsAndContextMenuEntries = actionButtonsLinks + actionsLinksContextMenu;
                                 // in case total actions is longer than ActivityListModel::maxActionButtons, then a sum of action buttons and action menu entries must be equal to a total of action links
                                 QVERIFY(actionButtonsLinks.size() + actionsLinksContextMenu.size() == actionsLinks.size());
-                            } else {
-                                // in case a total of actions is less or equal to than ActivityListModel::maxActionButtons, then the length of action buttons must be greater than 1 and should contain "Dismiss" button at the end
-                                QVERIFY(actionButtonsLinks.size() > 1);
-                                QVERIFY(actionButtonsLinks[1].value<OCC::ActivityLink>()._label
-                                    == QObject::tr("Dismiss"));
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
                             QVERIFY(
                                 actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
                         }
-                    } else {
-                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Dismiss"));
                     }
                 }
             }
 
         } while (prevModelRowCount < model->rowCount());
     };
-
 };
 
 QTEST_MAIN(TestActivityListModel)
