@@ -28,10 +28,12 @@ TextField {
 
     property var accountState: ({})
     property bool shareItemIsFolder: false
+    property var shareeBlocklist: ({})
     property ShareeModel shareeModel: ShareeModel {
         accountState: root.accountState
         shareItemIsFolder: root.shareItemIsFolder
         searchString: root.text
+        shareeBlocklist: root.shareeBlocklist
     }
 
     readonly property int horizontalPaddingOffset: Style.trayHorizontalMargin

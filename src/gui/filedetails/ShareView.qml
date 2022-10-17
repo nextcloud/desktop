@@ -158,6 +158,7 @@ ColumnLayout {
 
         accountState: root.accountState
         shareItemIsFolder: root.fileDetails && root.fileDetails.isFolder
+        shareeBlocklist: root.shareModel.sharees
 
         onShareeSelected: {
             root.waitingForSharesToChange = true;

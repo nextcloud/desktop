@@ -145,6 +145,26 @@ void ShareeModel::setLookupMode(const ShareeModel::LookupMode lookupMode)
     Q_EMIT lookupModeChanged();
 }
 
+QVariantList ShareeModel::shareeBlocklist() const
+{
+    QVariantList returnSharees;
+    for (const auto &sharee : _shareeBlocklist) {
+        returnSharees.append(QVariant::fromValue(sharee));
+    }
+    return returnSharees;
+}
+
+void ShareeModel::setShareeBlocklist(const QVariantList shareeBlocklist)
+{
+    _shareeBlocklist.clear();
+    for (const auto &sharee : shareeBlocklist) {
+        _shareeBlocklist.append(sharee.value<ShareePtr>());
+    }
+    Q_EMIT shareeBlocklistChanged();
+
+    filterSharees();
+}
+
 // ------------------------- Internal data methods ------------------------- //
 
 void ShareeModel::fetch()
@@ -176,7 +196,7 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
     _fetchOngoing = false;
     Q_EMIT fetchOngoingChanged();
 
-    qCInfo(lcShareeModel) << "SearchString: " << _searchString << "resulted in reply: " << reply;
+    qCInfo(lcShareeModel) << "Reply: " << reply;
 
     QVector<ShareePtr> newSharees;
 
@@ -190,15 +210,14 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
                 const auto shareeJsonObject = sharee.toObject();
                 const auto parsedSharee = parseSharee(shareeJsonObject);
 
-                // Filter sharees that we have already shared with
-                const auto shareeInBlacklistIt = std::find_if(_shareeBlacklist.cbegin(),
-                                                              _shareeBlacklist.cend(),
+                const auto shareeInBlacklistIt = std::find_if(_shareeBlocklist.cbegin(),
+                                                              _shareeBlocklist.cend(),
                                                               [&parsedSharee](const ShareePtr &blacklistSharee) {
                     return parsedSharee->type() == blacklistSharee->type() &&
                            parsedSharee->shareWith() == blacklistSharee->shareWith();
                 });
 
-                if (shareeInBlacklistIt != _shareeBlacklist.cend()) {
+                if (shareeInBlacklistIt != _shareeBlocklist.cend()) {
                     continue;
                 }
 
@@ -230,6 +249,30 @@ ShareePtr ShareeModel::parseSharee(const QJsonObject &data) const
     }
 
     return ShareePtr(new Sharee(shareWith, displayName, type));
+}
+
+void ShareeModel::filterSharees()
+{
+    auto it = _sharees.begin();
+
+    while (it != _sharees.end()) {
+        const auto sharee = *it;
+        const auto shareeInBlacklistIt = std::find_if(_shareeBlocklist.cbegin(), _shareeBlocklist.cend(), [&sharee](const ShareePtr &blacklistSharee) {
+            return sharee->type() == blacklistSharee->type() &&
+                   sharee->shareWith() == blacklistSharee->shareWith();
+        });
+
+        if (shareeInBlacklistIt != _shareeBlocklist.end()) {
+            const auto row = it - _sharees.begin();
+            beginRemoveRows({}, row, row);
+            it = _sharees.erase(it);
+            endRemoveRows();
+        } else {
+            ++it;
+        }
+    }
+
+    Q_EMIT shareesReady();
 }
 
 }

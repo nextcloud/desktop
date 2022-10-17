@@ -35,6 +35,7 @@ class ShareModel : public QAbstractListModel
     Q_PROPERTY(bool canShare READ canShare NOTIFY sharePermissionsChanged)
     Q_PROPERTY(bool fetchOngoing READ fetchOngoing NOTIFY fetchOngoingChanged)
     Q_PROPERTY(bool hasInitialShareFetchCompleted READ hasInitialShareFetchCompleted NOTIFY hasInitialShareFetchCompletedChanged)
+    Q_PROPERTY(QVariantList sharees READ sharees NOTIFY shareesChanged)
 
 public:
     enum Roles {
@@ -94,6 +95,8 @@ public:
     [[nodiscard]] bool fetchOngoing() const;
     [[nodiscard]] bool hasInitialShareFetchCompleted() const;
 
+    [[nodiscard]] QVariantList sharees() const;
+
 signals:
     void localPathChanged();
     void accountStateChanged();
@@ -105,6 +108,7 @@ signals:
     void lockExpireStringChanged();
     void fetchOngoingChanged();
     void hasInitialShareFetchCompletedChanged();
+    void shareesChanged();
 
     void serverError(const int code, const QString &message);
     void passwordSetError(const QString &shareId, const int code, const QString &message);
@@ -159,6 +163,8 @@ private slots:
     void slotAddShare(const SharePtr &share);
     void slotRemoveShareWithId(const QString &shareId);
     void slotSharesFetched(const QList<SharePtr> &shares);
+    void slotAddSharee(const ShareePtr &sharee);
+    void slotRemoveSharee(const ShareePtr &sharee);
 
     void slotSharePermissionsSet(const QString &shareId);
     void slotSharePasswordSet(const QString &shareId);
@@ -201,6 +207,7 @@ private:
     QVector<SharePtr> _shares;
     QHash<QString, QPersistentModelIndex> _shareIdIndexHash;
     QHash<QString, QString> _shareIdRecentlySetPasswords;
+    QVector<ShareePtr> _sharees;
 };
 
 } // namespace OCC

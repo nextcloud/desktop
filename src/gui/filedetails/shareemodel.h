@@ -33,6 +33,7 @@ class ShareeModel : public QAbstractListModel
     Q_PROPERTY(QString searchString READ searchString WRITE setSearchString NOTIFY searchStringChanged)
     Q_PROPERTY(bool fetchOngoing READ fetchOngoing NOTIFY fetchOngoingChanged)
     Q_PROPERTY(LookupMode lookupMode READ lookupMode WRITE setLookupMode NOTIFY lookupModeChanged)
+    Q_PROPERTY(QVariantList shareeBlocklist READ shareeBlocklist WRITE setShareeBlocklist NOTIFY shareeBlocklistChanged)
 
 public:
     enum class LookupMode {
@@ -60,6 +61,7 @@ public:
     [[nodiscard]] QString searchString() const;
     [[nodiscard]] bool fetchOngoing() const;
     [[nodiscard]] LookupMode lookupMode() const;
+    [[nodiscard]] QVariantList shareeBlocklist() const;
 
 signals:
     void accountStateChanged();
@@ -67,20 +69,23 @@ signals:
     void searchStringChanged();
     void fetchOngoingChanged();
     void lookupModeChanged();
+    void shareeBlocklistChanged();
 
     void shareesReady();
-    void displayErrorMessage(int code, const QString &);
+    void displayErrorMessage(const int code, const QString &message);
 
 public slots:
     void setAccountState(AccountState *accountState);
     void setShareItemIsFolder(const bool shareItemIsFolder);
     void setSearchString(const QString &searchString);
     void setLookupMode(const LookupMode lookupMode);
+    void setShareeBlocklist(const QVariantList shareeBlocklist);
 
     void fetch();
 
 private slots:
-     void shareesFetched(const QJsonDocument &reply);
+    void shareesFetched(const QJsonDocument &reply);
+    void filterSharees();
 
 private:
     [[nodiscard]] ShareePtr parseSharee(const QJsonObject &data) const;
@@ -94,7 +99,7 @@ private:
     LookupMode _lookupMode = LookupMode::LocalSearch;
 
     QVector<ShareePtr> _sharees;
-    QVector<ShareePtr> _shareeBlacklist;
+    QVector<ShareePtr> _shareeBlocklist;
 };
 
 }

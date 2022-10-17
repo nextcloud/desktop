@@ -194,9 +194,11 @@ void ShareModel::resetData()
     _shares.clear();
     _fetchOngoing = false;
     _hasInitialShareFetchCompleted = false;
+    _sharees.clear();
 
     Q_EMIT fetchOngoingChanged();
     Q_EMIT hasInitialShareFetchCompletedChanged();
+    Q_EMIT shareesChanged();
 
     endResetModel();
 }
@@ -403,6 +405,8 @@ void ShareModel::slotAddShare(const SharePtr &share)
         _shares.append(share);
         endInsertRows();
 
+        slotAddSharee(share->getShareWith());
+
         shareModelIndex = index(shareIndex);
     }
 
@@ -454,6 +458,10 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
         return;
     }
 
+    const auto share = shareIndex.data(ShareModel::ShareRole).value<SharePtr>();
+    const auto sharee = share->getShareWith();
+    slotRemoveSharee(sharee);
+
     beginRemoveRows({}, shareIndex.row(), shareIndex.row());
     _shares.removeAt(shareIndex.row());
     endRemoveRows();
@@ -467,6 +475,22 @@ void ShareModel::slotServerError(const int code, const QString &message)
 {
     qCWarning(lcShareModel) << "Error from server" << code << message;
     Q_EMIT serverError(code, message);
+}
+
+void ShareModel::slotAddSharee(const ShareePtr &sharee)
+{
+    if(!sharee) {
+        return;
+    }
+
+    _sharees.append(sharee);
+    Q_EMIT shareesChanged();
+}
+
+void ShareModel::slotRemoveSharee(const ShareePtr &sharee)
+{
+    _sharees.removeAll(sharee);
+    Q_EMIT shareesChanged();
 }
 
 QString ShareModel::displayStringForShare(const SharePtr &share) const
@@ -989,6 +1013,15 @@ bool ShareModel::hasInitialShareFetchCompleted() const
 bool ShareModel::canShare() const
 {
     return _maxSharingPermissions & SharePermissionShare;
+}
+
+QVariantList ShareModel::sharees() const
+{
+    QVariantList returnSharees;
+    for (const auto &sharee : _sharees) {
+        returnSharees.append(QVariant::fromValue(sharee));
+    }
+    return returnSharees;
 }
 
 } // namespace OCC
