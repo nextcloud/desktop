@@ -74,6 +74,10 @@ void ServerUrlSetupWizardState::evaluatePage()
         return QUrl::fromUserInput(userProvidedUrl);
     }();
 
+    // (ab)use the account builder as temporary storage for the URL we are about to probe (after sanitation)
+    // in case of errors, the user can just edit the previous value
+    _context->accountBuilder().setServerUrl(serverUrl, DetermineAuthTypeJob::AuthType::Unknown);
+
     // TODO: perform some better validation
     if (!serverUrl.isValid()) {
         Q_EMIT evaluationFailed(tr("Invalid server URL"));
