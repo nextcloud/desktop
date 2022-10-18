@@ -382,6 +382,58 @@ private slots:
     bool finished() override;
 };
 
+class OWNCLOUDSYNC_EXPORT SimpleApiJob : public AbstractNetworkJob
+{
+    Q_OBJECT
+public:
+    enum class Verb {
+        Get,
+        Post,
+        Put,
+        Delete,
+        };
+
+    explicit SimpleApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
+
+    void setBody(const QByteArray &body);
+
+    void setVerb(Verb value);
+
+    /**
+     * @brief addQueryParams - add more parameters to the ocs call
+     * @param params: list pairs of strings containing the parameter name and the value.
+     *
+     * All parameters from the passed list are appended to the query. Note
+     * that the format=json parameter is added automatically and does not
+     * need to be set this way.
+     *
+     * This function needs to be called before start() obviously.
+     */
+    void addQueryParams(const QUrlQuery &params);
+    void addRawHeader(const QByteArray &headerName, const QByteArray &value);
+
+public slots:
+    void start() override;
+
+Q_SIGNALS:
+
+    void resultReceived(int statusCode);
+
+protected:
+    bool finished() override;
+
+    QNetworkRequest& request();
+    QByteArray& body();
+    QUrlQuery& additionalParams();
+    QByteArray verbToString() const;
+
+private:
+    QByteArray _body;
+    QUrlQuery _additionalParams;
+    QNetworkRequest _request;
+    Verb _verb = Verb::Get;
+};
+
 /**
  * @brief Job to check an API that return JSON
  *
@@ -397,35 +449,13 @@ private slots:
  *
  * @ingroup libsync
  */
-class OWNCLOUDSYNC_EXPORT JsonApiJob : public AbstractNetworkJob
+class OWNCLOUDSYNC_EXPORT JsonApiJob : public SimpleApiJob
 {
     Q_OBJECT
 public:
-    enum class Verb {
-        Get,
-        Post,
-        Put,
-        Delete,
-    };
-
     explicit JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent = nullptr);
 
-    /**
-     * @brief addQueryParams - add more parameters to the ocs call
-     * @param params: list pairs of strings containing the parameter name and the value.
-     *
-     * All parameters from the passed list are appended to the query. Note
-     * that the format=json parameter is added automatically and does not
-     * need to be set this way.
-     *
-     * This function needs to be called before start() obviously.
-     */
-    void addQueryParams(const QUrlQuery &params);
-    void addRawHeader(const QByteArray &headerName, const QByteArray &value);
-
     void setBody(const QJsonDocument &body);
-
-    void setVerb(Verb value);
 
 public slots:
     void start() override;
@@ -448,15 +478,6 @@ signals:
      * @param statusCode - the OCS status code: 100 (!) for success
      */
     void etagResponseHeaderReceived(const QByteArray &value, int statusCode);
-
-private:
-    QByteArray _body;
-    QUrlQuery _additionalParams;
-    QNetworkRequest _request;
-
-    Verb _verb = Verb::Get;
-
-    QByteArray verbToString() const;
 };
 
 /**
