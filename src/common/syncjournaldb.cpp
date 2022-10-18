@@ -1477,20 +1477,20 @@ void SyncJournalDb::setUploadInfo(const QString &file, const SyncJournalDb::Uplo
 QVector<uint> SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
 {
     QMutexLocker locker(&_mutex);
-    QVector<uint> ids;
 
     if (!checkConnect()) {
-        return ids;
+        return {};
     }
 
     SqlQuery query(_db);
     query.prepare("SELECT path,transferid FROM uploadinfo");
 
     if (!query.exec()) {
-        return ids;
+        return {};
     }
 
     QStringList superfluousPaths;
+    QVector<uint> ids;
 
     while (query.next().hasData) {
         const QString file = query.stringValue(0);
@@ -1499,7 +1499,7 @@ QVector<uint> SyncJournalDb::deleteStaleUploadInfos(const QSet<QString> &keep)
             ids.append(query.intValue(1));
         }
     }
-
+    qCDebug(lcDb) << Q_FUNC_INFO << "Keep:" << keep << "Removing Stale:" << superfluousPaths;
     const auto deleteUploadInfoQuery = _queryManager.get(PreparedSqlQueryManager::DeleteUploadInfoQuery);
     deleteBatch(*deleteUploadInfoQuery, superfluousPaths, QStringLiteral("uploadinfo"));
     return ids;
