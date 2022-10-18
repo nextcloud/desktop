@@ -1505,6 +1505,11 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>(copia di sicurezza %1)</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find an account for local editing</source>
         <translation>Impossibile trovare un account per modificare in locale</translation>
@@ -1520,7 +1525,7 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Impossibile trovare un file per modificare in locale. Assicurati che il percorso sia valido e che sia sincronizzato in locale.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Impossibile trovare una cartella da sincronizzare.</translation>
     </message>
@@ -1528,6 +1533,11 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Stato non definito.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1578"/>
