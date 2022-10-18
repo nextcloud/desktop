@@ -28,7 +28,7 @@ OC_CI_CLIENT_FEDORA = "owncloudci/client:fedora-36-amd64"
 OC_CI_SQUISH = "owncloudci/squish:fedora-36-6.7-20220106-1008-qt515x-linux64"
 
 OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
-OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.6.0"
+OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.2"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
 PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
