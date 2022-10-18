@@ -229,7 +229,8 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 || a._status == SyncFileItem::Conflict
                 || a._status == SyncFileItem::Restoration
                 || a._status == SyncFileItem::FileLocked
-                || a._status == SyncFileItem::FileNameInvalid) {
+                || a._status == SyncFileItem::FileNameInvalid
+                || a._status == SyncFileItem::FileNameClash) {
                 colorIconPath.append("state-warning.svg");
                 return colorIconPath;
             } else if (a._status == SyncFileItem::FileIgnored) {
@@ -698,6 +699,22 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         });
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
+        return;
+    } else if (activity._status == SyncFileItem::FileNameClash) {
+        const auto folder = FolderMan::instance()->folder(activity._folder);
+        const auto relPath = activity._fileAction == QStringLiteral("file_renamed") ? activity._renamedFile : activity._file;
+        SyncJournalFileRecord record;
+
+        if (!folder || !folder->journalDb()->getFileRecord(relPath, &record)) {
+            return;
+        }
+
+        fetchPrivateLinkUrl(folder->accountState()->account(),
+                            relPath,
+                            record.numericFileId(),
+                            this,
+                            [](const QString &link) { Utility::openBrowser(link); }
+        );
         return;
     }
 
