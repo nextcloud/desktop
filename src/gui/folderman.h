@@ -375,6 +375,8 @@ private:
 
     bool _appRestartRequired = false;
 
+    QMap<QString, QMetaObject::Connection> _localFileEditingSyncFinishedConnections;
+
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
     friend class OCC::Application;
