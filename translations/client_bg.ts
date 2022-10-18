@@ -1504,6 +1504,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>(архивиране %1)</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find an account for local editing</source>
         <translation>Не можа да се намери профил за локално редактиране</translation>
@@ -1519,7 +1524,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Не можа да се намери файл за локално редактиране. Уверете се, че пътят му е валиден и е синхронизиран локално.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
     </message>
@@ -1527,6 +1532,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Неопределено състояние.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1578"/>
@@ -3220,7 +3230,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизира поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="948"/>
+        <location filename="../src/libsync/discovery.cpp" line="937"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Грешка при изтриване на запис на файл %1 от базата данни</translation>
     </message>
@@ -5399,42 +5409,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Заглушаване на всички известия</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Невидим</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation>Показване като офлайн</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Съобщение за състояние</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="208"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Какъв е вашият статус?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="281"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="282"/>
         <source>Clear status message after</source>
         <translation>Изчистване на съобщение за състоянието след това</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="320"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="327"/>
         <source>Clear status message</source>
         <translation>Изчистване на съобщението за състоянието</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="334"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="335"/>
         <source>Set status message</source>
         <translation>Задаване на съобщение за състоянието</translation>
     </message>

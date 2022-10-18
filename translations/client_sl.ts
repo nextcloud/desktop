@@ -1504,6 +1504,11 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>(varnostna kopija %1)</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find an account for local editing</source>
         <translation type="unfinished"/>
@@ -1519,7 +1524,7 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
     </message>
@@ -1527,6 +1532,11 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Nedoločeno stanje.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1578"/>
@@ -3220,7 +3230,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="948"/>
+        <location filename="../src/libsync/discovery.cpp" line="937"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
@@ -5399,42 +5409,42 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Drugim nevidno</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Sporočilo stanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="208"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Kako želite nastaviti stanje?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="281"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="282"/>
         <source>Clear status message after</source>
         <translation>Počisti sporočilo stanja po</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="320"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="327"/>
         <source>Clear status message</source>
         <translation>Počisti sporočilo stanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="334"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="335"/>
         <source>Set status message</source>
         <translation>Nastavi sporočilo stanja</translation>
     </message>

@@ -1503,6 +1503,11 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <translation>(sauvegarde %1)</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find an account for local editing</source>
         <translation>Impossible de trouver un compte pour l&apos;édition locale</translation>
@@ -1518,7 +1523,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <translation>Impossible de trouver un fichier pour l&apos;édition locale. Merci de vérifier que le chemin est valide et que le fichier est synchronisé localement.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Impossible de trouver un dossier à synchroniser.</translation>
     </message>
@@ -1526,6 +1531,11 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Statut indéfini.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1578"/>

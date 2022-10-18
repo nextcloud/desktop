@@ -1504,6 +1504,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>(Резервна копія %1)</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1454"/>
         <source>Could not find an account for local editing</source>
         <translation>Неможливо знайти обліковий запис для редагування на пристрої</translation>
@@ -1519,7 +1524,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Не вдалося знайти файл для редагування на вашому пристрої. Перевірте, чи шлях є дійсним та його було синхронізовано з пристроєм.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
     </message>
@@ -1527,6 +1532,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Невизначений стан.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1578"/>
@@ -4072,7 +4082,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1019"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
         <source>Share options</source>
-        <translation>Параметри спільного доступу</translation>
+        <translation>Поділитися</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1020"/>
@@ -5858,7 +5868,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation>Зробити завжди доступним на пристрої</translation>
+        <translation>Зберігати на пристрої</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
