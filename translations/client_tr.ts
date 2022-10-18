@@ -892,106 +892,106 @@ Lütfen tarayıcınızı kullanarak kimliğinizi doğrulayın.</translation>
         <translation>Devam et</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="324"/>
+        <location filename="../src/gui/application.cpp" line="326"/>
         <source>Error accessing the configuration file</source>
         <translation>Konfigürasyon dosyasına erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="325"/>
+        <location filename="../src/gui/application.cpp" line="327"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>Konfigürasyon dosyası %1 satırına erişimde hata</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="328"/>
+        <location filename="../src/gui/application.cpp" line="330"/>
         <source>Quit %1</source>
         <translation>%1&apos;tan çık</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="595"/>
+        <location filename="../src/gui/application.cpp" line="597"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 sürüm %2&lt;byte value=&quot;xd&quot;/&gt;
 Dosya senkronizasyonu masaüstü yardımcı programı.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="600"/>
+        <location filename="../src/gui/application.cpp" line="602"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
         <translation>Daha fazla bilgi için, bkz: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="614"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>Show the settings dialog while starting.</source>
         <translation>Başlatırken ayarlar iletişim kutusunu göster.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="617"/>
         <source>Quit the running instance.</source>
         <translation>Çalışan örnekten çık.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>Dosyaya günlük yaz (stdout&apos;a yazmak için - kullanın).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="619"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>Her senkronize günlüğü çıktısını klasördeki yeni bir dosyaya yazın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="620"/>
         <source>Flush the log file after every write.</source>
         <translation>Her yazma işleminden sonra günlük dosyasını temizleyin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="619"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>Output debug-level messages in the log.</source>
         <translation>Günlükte hata ayıklama düzeyindeki mesajların çıktısını alın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="620"/>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="622"/>
+        <location filename="../src/gui/application.cpp" line="623"/>
         <source>Override UI language.</source>
         <translation>UI dilini geçersiz kıl.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
+        <location filename="../src/gui/application.cpp" line="624"/>
         <source>Use the given configuration folder.</source>
         <translation>Verilen yapılandırma klasörünü kullanın.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="623"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>Enable debug mode.</source>
         <translation>Hata ayıklama modunu etkinleştirin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="626"/>
+        <location filename="../src/gui/application.cpp" line="628"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>Açılacak sanal dosya sistemi dosyası (isteğe bağlı).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="626"/>
+        <location filename="../src/gui/application.cpp" line="628"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="642"/>
+        <location filename="../src/gui/application.cpp" line="644"/>
         <source>--logfile and --logdir are mutually exclusive</source>
         <translation>--logfile ve --logdir birbirini dışlar</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="656"/>
+        <location filename="../src/gui/application.cpp" line="658"/>
         <source>Invalid path passed to --confdir</source>
         <translation>--confdir&apos;e geçersiz yol iletildi</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="669"/>
+        <location filename="../src/gui/application.cpp" line="671"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>Hata: bilinmeyen dil &quot;%1&quot; (desteklenen çevirilerin tam listesini almak için --list-languages kullanın)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="678"/>
+        <location filename="../src/gui/application.cpp" line="680"/>
         <source>Available translations: %1</source>
         <translation>Kullanılabilir çeviri: %1</translation>
     </message>
@@ -2934,12 +2934,12 @@ for additional privileges during the process.</source>
         <translation>Senkronizasyon sırasında yerel dosya değişti. Yeniden başlatılacaktır.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="583"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="581"/>
         <source>Error updating metadata: %1</source>
         <translation>Metadata güncellenirken hata oluştu: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="586"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="584"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 dosyası şu anda kullanımda</translation>
     </message>
