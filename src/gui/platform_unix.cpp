@@ -68,7 +68,9 @@ void UnixPlatform::setApplication(Application *application)
     Platform::setApplication(application);
 
 #if defined(OC_PLUGIN_DIR)
-    application->addLibraryPath(QDir(application::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)));
+    const QString pluginDirPath = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
+    qCDebug(lcPlatform) << "adding plugin directory" << pluginDirPath;
+    application->addLibraryPath(pluginDirPath);
 #endif
 }
 
