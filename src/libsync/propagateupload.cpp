@@ -509,8 +509,6 @@ QMap<QByteArray, QByteArray> PropagateUploadFileCommon::headers()
     QMap<QByteArray, QByteArray> headers;
     headers[QByteArrayLiteral("Content-Type")] = QByteArrayLiteral("application/octet-stream");
     headers[QByteArrayLiteral("X-OC-Mtime")] = QByteArray::number(qint64(_item->_modtime));
-    if (qEnvironmentVariableIntValue("OWNCLOUD_LAZYOPS"))
-        headers[QByteArrayLiteral("OC-LazyOps")] = QByteArrayLiteral("true");
 
     if (_item->_file.contains(QLatin1String(".sys.admin#recall#"))) {
         // This is a file recall triggered by the admin.  Note: the
