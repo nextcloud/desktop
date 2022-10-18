@@ -28,6 +28,8 @@ public:
     }
 
     ~WinPlatform() override;
+
+    void setApplication(Application *application) override;
 };
 
 WinPlatform::~WinPlatform()
@@ -37,6 +39,13 @@ WinPlatform::~WinPlatform()
 std::unique_ptr<Platform> Platform::create()
 {
     return std::make_unique<WinPlatform>();
+}
+
+void Platform::setApplication(OCC::Application *application)
+{
+    // Ensure OpenSSL config file is only loaded from app directory
+    const QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
+    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
 }
 
 } // namespace OCC

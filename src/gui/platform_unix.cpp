@@ -12,14 +12,15 @@
  * for more details.
  */
 
+#include "application.h"
+#include "guiutility.h"
+#include "platform.h"
+
+#include <QDir>
 #include <QLoggingCategory>
 
 #include <signal.h>
 #include <sys/resource.h>
-#include <sys/time.h>
-
-#include "guiutility.h"
-#include "platform.h"
 
 namespace OCC {
 
@@ -35,6 +36,8 @@ public:
     }
 
     ~UnixPlatform() override;
+
+    void setApplication(Application *application) override;
 
 private:
     void setLimitsForCoreDumps();
@@ -58,6 +61,15 @@ void UnixPlatform::setLimitsForCoreDumps()
             qCInfo(lcPlatform) << "Core dumps enabled";
         }
     }
+}
+
+void UnixPlatform::setApplication(Application *application)
+{
+    Platform::setApplication(application);
+
+#if defined(OC_PLUGIN_DIR)
+    application->addLibraryPath(QDir(application::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)));
+#endif
 }
 
 std::unique_ptr<Platform> Platform::create()

@@ -13,6 +13,7 @@
  */
 
 #include "platform.h"
+#include "application.h"
 
 namespace OCC {
 
@@ -22,6 +23,11 @@ Platform::~Platform()
 
 void Platform::migrate()
 {
+}
+
+void Platform::setApplication(Application *application)
+{
+    Q_UNUSED(application);
 }
 
 } // OCC namespace
