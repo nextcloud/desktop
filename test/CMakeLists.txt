@@ -10,6 +10,7 @@ add_library(testutils
   pushnotificationstestutils.cpp
   themeutils.cpp
   testhelper.cpp
+  sharetestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
