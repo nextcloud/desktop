@@ -128,6 +128,7 @@ ColumnLayout {
 
         Label {
             id: placeholderMessage
+            width: parent.width * 0.8
             anchors.centerIn: parent
             text: qsTr("No recent emojis")
             color: Style.ncSecondaryTextColor
