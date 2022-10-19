@@ -889,6 +889,13 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     _localDiscoveryStyle = style;
     _localDiscoveryPaths = std::move(paths);
 
+
+    // add running upload to the local discovery
+    const auto info = _journal->getUploadInfos();
+    for (const auto &i : info) {
+        _localDiscoveryPaths.insert(QString::fromUtf8(i._path));
+    }
+
     // Normalize to make sure that no path is a contained in another.
     // Note: for simplicity, this code consider anything less than '/' as a path separator, so for
     // example, this will remove "foo.bar" if "foo" is in the list. This will mean we might have
@@ -908,8 +915,9 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
 
 bool SyncEngine::shouldDiscoverLocally(const QString &path) const
 {
-    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly)
+    if (_localDiscoveryStyle == LocalDiscoveryStyle::FilesystemOnly) {
         return true;
+    }
 
     // The intention is that if "A/X" is in _localDiscoveryPaths:
     // - parent folders like "/", "A" will be discovered (to make sure the discovery reaches the

@@ -1,0 +1,4 @@
+Bugfix: Properly resume upload with a partial local discovery
+
+https://github.com/owncloud/enterprise/issues/5382
+https://github.com/owncloud/client/pull/10200

@@ -71,6 +71,7 @@ public:
         SetDownloadInfoQuery,
         DeleteDownloadInfoQuery,
         GetUploadInfoQuery,
+        GetAllUploadInfoQuery,
         SetUploadInfoQuery,
         DeleteUploadInfoQuery,
         DeleteFileRecordPhash,

@@ -108,21 +108,14 @@ public:
     };
     struct UploadInfo
     {
-        UploadInfo()
-            : _chunk(0)
-            , _transferid(0)
-            , _size(0)
-            , _errorCount(0)
-            , _valid(false)
-        {
-        }
-        int _chunk;
-        uint _transferid;
-        qint64 _size;
-        qint64 _modtime;
-        int _errorCount;
-        bool _valid;
+        int _chunk = 0;
+        uint _transferid = 0;
+        qint64 _size = 0;
+        qint64 _modtime = 0;
+        int _errorCount = 0;
+        bool _valid = false;
         QByteArray _contentChecksum;
+        QByteArray _path;
         /**
          * Returns true if this entry refers to a chunked upload that can be continued.
          * (As opposed to a small file transfer which is stored in the db so we can detect the case
@@ -137,6 +130,8 @@ public:
     int downloadInfoCount();
 
     UploadInfo getUploadInfo(const QString &file);
+    std::vector<UploadInfo> getUploadInfos();
+
     void setUploadInfo(const QString &file, const UploadInfo &i);
     // Return the list of transfer ids that were removed.
     QVector<uint> deleteStaleUploadInfos(const QSet<QString> &keep);

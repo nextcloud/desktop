@@ -1407,31 +1407,63 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
 {
     QMutexLocker locker(&_mutex);
 
+
+    if (!checkConnect()) {
+        return {};
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetUploadInfoQuery,
+        QByteArrayLiteral("SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM uploadinfo WHERE path=?1"),
+        _db);
+    if (!query) {
+        return {};
+    }
+    query->bindValue(1, file);
+
+    if (!query->exec()) {
+        return {};
+    }
+
     UploadInfo res;
+    if (query->next().hasData) {
+        res._chunk = query->intValue(0);
+        res._transferid = query->intValue(1);
+        res._errorCount = query->intValue(2);
+        res._size = query->int64Value(3);
+        res._modtime = query->int64Value(4);
+        res._contentChecksum = query->baValue(5);
+        res._valid = true;
+    }
+    return res;
+}
 
-    if (checkConnect()) {
-        const auto query = _queryManager.get(PreparedSqlQueryManager::GetUploadInfoQuery, QByteArrayLiteral("SELECT chunk, transferid, errorcount, size, modtime, contentChecksum FROM "
-                                                                                                            "uploadinfo WHERE path=?1"),
-            _db);
-        if (!query) {
-            return res;
-        }
-        query->bindValue(1, file);
+std::vector<SyncJournalDb::UploadInfo> SyncJournalDb::getUploadInfos()
+{
+    QMutexLocker locker(&_mutex);
 
-        if (!query->exec()) {
-            return res;
-        }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetAllUploadInfoQuery,
+        QByteArrayLiteral("SELECT chunk, transferid, errorcount, size, modtime, contentChecksum, path FROM uploadinfo"),
+        _db);
+    if (!query) {
+        return {};
+    }
 
-        if (query->next().hasData) {
-            bool ok = true;
-            res._chunk = query->intValue(0);
-            res._transferid = query->intValue(1);
-            res._errorCount = query->intValue(2);
-            res._size = query->int64Value(3);
-            res._modtime = query->int64Value(4);
-            res._contentChecksum = query->baValue(5);
-            res._valid = ok;
-        }
+    if (!query->exec()) {
+        return {};
+    }
+
+    std::vector<UploadInfo> res;
+    while (query->next().hasData) {
+        UploadInfo info;
+        info._chunk = query->intValue(0);
+        info._transferid = query->intValue(1);
+        info._errorCount = query->intValue(2);
+        info._size = query->int64Value(3);
+        info._modtime = query->int64Value(4);
+        info._contentChecksum = query->baValue(5);
+        info._path = query->baValue(6);
+        info._valid = true;
+        res.push_back(std::move(info));
     }
     return res;
 }

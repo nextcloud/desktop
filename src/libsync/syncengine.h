@@ -300,6 +300,8 @@ private:
     /** The kind of local discovery the last sync run used */
     LocalDiscoveryStyle _lastLocalDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
     LocalDiscoveryStyle _localDiscoveryStyle = LocalDiscoveryStyle::FilesystemOnly;
+
+    // must be ordered
     std::set<QString> _localDiscoveryPaths;
 
     // destructor called

@@ -654,6 +654,7 @@ private slots:
         fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
+        QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
         QCOMPARE(counter.nMOVE, 1);
 
         counter.reset();
@@ -666,6 +667,7 @@ private slots:
         QCOMPARE(counter.nPUT, 0);
         QCOMPARE(counter.nMOVE, 1);
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QVERIFY(!fakeFolder.syncEngine().isAnotherSyncNeeded());
     }
 };
 
