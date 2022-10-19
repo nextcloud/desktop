@@ -29,7 +29,7 @@ public:
 
     ~WinPlatform() override;
 
-    void setApplication(Application *application) override;
+    void setApplication(QCoreApplication *application) override;
 };
 
 WinPlatform::~WinPlatform()
@@ -41,8 +41,10 @@ std::unique_ptr<Platform> Platform::create()
     return std::make_unique<WinPlatform>();
 }
 
-void Platform::setApplication(OCC::Application *application)
+void Platform::setApplication(QCoreApplication *application)
 {
+    Q_UNUSED(application)
+
     // Ensure OpenSSL config file is only loaded from app directory
     const QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
     qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());

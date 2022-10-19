@@ -12,8 +12,6 @@
  * for more details.
  */
 
-#include "application.h"
-#include "guiutility.h"
 #include "platform.h"
 
 #include <QDir>
@@ -37,7 +35,7 @@ public:
 
     ~UnixPlatform() override;
 
-    void setApplication(Application *application) override;
+    void setApplication(QCoreApplication *application) override;
 
 private:
     void setLimitsForCoreDumps();
@@ -63,7 +61,7 @@ void UnixPlatform::setLimitsForCoreDumps()
     }
 }
 
-void UnixPlatform::setApplication(Application *application)
+void UnixPlatform::setApplication(QCoreApplication *application)
 {
     Platform::setApplication(application);
 

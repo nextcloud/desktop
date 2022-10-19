@@ -13,18 +13,18 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-#include "httpcredentialstext.h"
-#include "netrcparser.h"
 
 #include "account.h"
 #include "common/syncjournaldb.h"
 #include "common/version.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
-#include "csync_exclude.h"
+#include "httpcredentialstext.h"
 #include "libsync/logger.h"
 #include "libsync/theme.h"
+#include "netrcparser.h"
 #include "networkjobs/checkserverjobfactory.h"
 #include "networkjobs/jsonjob.h"
+#include "platform.h"
 #include "syncengine.h"
 
 #include <QCommandLineParser>
@@ -39,6 +39,7 @@
 #include <QUrl>
 
 #include <iostream>
+#include <memory>
 #include <random>
 
 
@@ -414,14 +415,15 @@ CmdOptions parseOptions(const QStringList &app_args)
 
 int main(int argc, char **argv)
 {
+    auto platform = OCC::Platform::create();
+
     QCoreApplication app(argc, argv);
     app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
-#ifdef Q_OS_WIN
-    // Ensure OpenSSL config file is only loaded from app directory
-    QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
-    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
-#endif
+    platform->migrate();
+
+    platform->setApplication(&app);
+
     SyncCTX ctx { parseOptions(app.arguments()) };
 
     if (ctx.options.silent) {

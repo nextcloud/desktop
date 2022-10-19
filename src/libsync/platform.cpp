@@ -12,35 +12,21 @@
  * for more details.
  */
 
-#ifndef PLATFORM_H
-#define PLATFORM_H
-
-#include <QCoreApplication>
-#include <QString>
-
-#include <memory>
+#include "platform.h"
 
 namespace OCC {
 
-// forward declaration to avoid cyclic dependency
-class Application;
-
-/**
- * @brief The Platform is the baseclass for all platform classes, which in turn implement platform
- *        specific functionality for the GUI.
- */
-class Platform
+Platform::~Platform()
 {
-public:
-    virtual ~Platform() = 0;
+}
 
-    static std::unique_ptr<Platform> create();
+void Platform::migrate()
+{
+}
 
-    virtual void migrate();
-
-    virtual void setApplication(Application *application);
-};
+void Platform::setApplication(QCoreApplication *application)
+{
+    Q_UNUSED(application);
+}
 
 } // OCC namespace
-
-#endif // PLATFORM_H

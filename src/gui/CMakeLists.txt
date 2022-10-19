@@ -67,7 +67,6 @@ set(client_SRCS
     quotainfo.cpp
     accountstate.cpp
     authenticationdialog.cpp
-    platform.cpp
     proxyauthhandler.cpp
     proxyauthdialog.cpp
     tooltipupdater.cpp
@@ -153,7 +152,7 @@ elseif( WIN32 )
             folderwatcher_win.cpp
             navigationpanehelper.cpp)
     target_link_libraries(owncloudCore PUBLIC Qt5::WinExtras)
-elseif(UNIX AND NOT APPLE )
+elseif(UNIX AND NOT APPLE)
     ## handle DBUS for Fdo notifications
     find_package(Qt5 COMPONENTS DBus)
     if (TARGET Qt5::DBus)
@@ -162,7 +161,6 @@ elseif(UNIX AND NOT APPLE )
     endif()
     target_sources(owncloudCore PRIVATE
             folderwatcher_linux.cpp
-            platform_unix.cpp
             guiutility_unix.cpp)
 endif()
 

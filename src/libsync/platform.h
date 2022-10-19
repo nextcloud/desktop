@@ -12,22 +12,35 @@
  * for more details.
  */
 
-#include "platform.h"
-#include "application.h"
+#ifndef PLATFORM_H
+#define PLATFORM_H
+
+#include <QCoreApplication>
+#include <QString>
+
+#include <QCoreApplication>
+#include <memory>
+
+#include "owncloudlib.h"
 
 namespace OCC {
 
-Platform::~Platform()
+/**
+ * @brief The Platform is the baseclass for all platform classes, which in turn implement platform
+ *        specific functionality for the GUI.
+ */
+class OWNCLOUDSYNC_EXPORT Platform
 {
-}
+public:
+    virtual ~Platform() = 0;
 
-void Platform::migrate()
-{
-}
+    static std::unique_ptr<Platform> create();
 
-void Platform::setApplication(Application *application)
-{
-    Q_UNUSED(application);
-}
+    virtual void migrate();
+
+    virtual void setApplication(QCoreApplication *application);
+};
 
 } // OCC namespace
+
+#endif // PLATFORM_H
