@@ -701,10 +701,13 @@ class CleanupPollsJob : public QObject
     QSharedPointer<Vfs> _vfs;
 
 public:
-    explicit CleanupPollsJob(const QVector<SyncJournalDb::PollInfo> &pollInfos, AccountPtr account, SyncJournalDb *journal, const QString &localPath,
-                             const QSharedPointer<Vfs> &vfs, QObject *parent = nullptr)
+    explicit CleanupPollsJob(AccountPtr account,
+                             SyncJournalDb *journal,
+                             const QString &localPath,
+                             const QSharedPointer<Vfs> &vfs,
+                             QObject *parent = nullptr)
         : QObject(parent)
-        , _pollInfos(pollInfos)
+        , _pollInfos(journal->getPollInfos())
         , _account(account)
         , _journal(journal)
         , _localPath(localPath)
