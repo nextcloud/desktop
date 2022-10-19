@@ -4104,29 +4104,29 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::Wizard::ServerUrlSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="79"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
         <source>Invalid server URL</source>
         <translation>Geçersiz sunucu URL&apos;i</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="85"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
         <source>Insecure connection</source>
         <translation>Güvensiz bağlantı</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="86"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
         <translation>%1 bağlantısı güvenli değil.
 Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="93"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
         <source>Confirm</source>
         <translation>Onayla</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
         <source>Insecure server rejected by user</source>
         <translation>Güvensiz sunucu, kullanıcı tarafından reddedildi</translation>
     </message>

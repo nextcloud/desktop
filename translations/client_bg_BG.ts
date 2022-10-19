@@ -4105,29 +4105,29 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Wizard::ServerUrlSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="79"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
         <source>Invalid server URL</source>
         <translation>Невалиден URL адрес на сървъра</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="85"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
         <source>Insecure connection</source>
         <translation>Незащитена връзка</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="86"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
         <translation>Връзката с %1 е незащитена.
 Сигурни ли сте, че искате да продължите?</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="93"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
         <source>Confirm</source>
         <translation>Потвърди</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
         <source>Insecure server rejected by user</source>
         <translation>Несигурният сървър е отхвърлен от потребителя</translation>
     </message>

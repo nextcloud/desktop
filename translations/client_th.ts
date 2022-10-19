@@ -4085,28 +4085,28 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Wizard::ServerUrlSetupWizardState</name>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="79"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
         <source>Invalid server URL</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="85"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
         <source>Insecure connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="86"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="93"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
         <source>Confirm</source>
         <translation>ยืนยัน</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="96"/>
+        <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
         <source>Insecure server rejected by user</source>
         <translation type="unfinished"/>
     </message>
