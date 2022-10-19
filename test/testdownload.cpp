@@ -19,7 +19,7 @@
 using namespace std::chrono_literals;
 using namespace OCC;
 
-static constexpr qint64 stopAfter = 3'123'668;
+static constexpr auto stopAfter = 3_mb;
 
 /** A FakeGetReply that sends max 'fakeSize' bytes, but whose ContentLength has the corect size */
 class BrokenFakeGetReply : public FakeGetReply
@@ -82,6 +82,7 @@ private slots:
             QWARN("Skipping Vfs::WindowsCfApi");
         }
     }
+
     void testResume()
     {
         QFETCH_GLOBAL(Vfs::Mode, vfsMode);
@@ -132,6 +133,53 @@ private slots:
             QCOMPARE(rangeReply, QByteArrayLiteral("bytes ") + QByteArray::number(stopAfter) + '-');
             QCOMPARE(counter.nGET, 1);
 
+            QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        }
+    }
+
+
+    void testResumeInNextSync()
+    {
+        /*
+         * Same as testResume but we simulate a new sync from the Folder class, with a partial discovery.
+         */
+        QFETCH_GLOBAL(Vfs::Mode, vfsMode);
+        QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
+        fakeFolder.syncEngine().setIgnoreHiddenFiles(true);
+        QSignalSpy completeSpy(&fakeFolder.syncEngine(), &SyncEngine::itemCompleted);
+        constexpr auto size = 30_mb;
+        fakeFolder.remoteModifier().insert(QStringLiteral("A/a0"), size);
+
+        // First, download only the first 3 MB of the file
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith(QLatin1String("A/a0"))) {
+                return new BrokenFakeGetReply(fakeFolder.remoteModifier(), op, request, this);
+            }
+            return nullptr;
+        });
+
+        if (filesAreDehydrated) {
+            QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // The sync should succeed, because there are no downloads, and only the placeholders get created
+        } else {
+            QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // The sync should fail because not all the files were downloaded
+            QCOMPARE(getItem(completeSpy, "A/a0")->_status, SyncFileItem::SoftError);
+            QCOMPARE(getItem(completeSpy, "A/a0")->_errorString, QString("The file could not be downloaded completely."));
+            QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
+
+            QByteArray ranges;
+            fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+                if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a0")) {
+                    ranges = request.rawHeader("Range");
+                }
+                return nullptr;
+            });
+            fakeFolder.syncJournal().wipeErrorBlacklist();
+            // perform a partial sync
+            fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem, {});
+            QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // now this should succeed
+            QCOMPARE(ranges, QByteArray("bytes=" + QByteArray::number(stopAfter) + "-"));
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         }
     }
