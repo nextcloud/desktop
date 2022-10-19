@@ -775,20 +775,22 @@ struct OperationCounter
         nDELETE = 0;
     }
 
+    QNetworkReply *serverOverride(QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *)
+    {
+        if (op == QNetworkAccessManager::GetOperation) {
+            ++nGET;
+        } else if (op == QNetworkAccessManager::PutOperation) {
+            ++nPUT;
+        } else if (op == QNetworkAccessManager::DeleteOperation) {
+            ++nDELETE;
+        } else if (req.attribute(QNetworkRequest::CustomVerbAttribute) == QLatin1String("MOVE")) {
+            ++nMOVE;
+        }
+        return nullptr;
+    }
     auto functor()
     {
-        return [&](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *) {
-            if (op == QNetworkAccessManager::GetOperation) {
-                ++nGET;
-            } else if (op == QNetworkAccessManager::PutOperation) {
-                ++nPUT;
-            } else if (op == QNetworkAccessManager::DeleteOperation) {
-                ++nDELETE;
-            } else if (req.attribute(QNetworkRequest::CustomVerbAttribute) == QLatin1String("MOVE")) {
-                ++nMOVE;
-            }
-            return nullptr;
-        };
+        return [this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) { return serverOverride(op, req, device); };
     }
 
     OperationCounter(FakeFolder &fakeFolder)

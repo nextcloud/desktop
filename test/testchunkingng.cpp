@@ -628,7 +628,45 @@ private slots:
         QCOMPARE(fakeFolder.currentRemoteState().find("A/a0")->contentSize, size + 1);
     }
 
+    // the final move fails but the succeeding sync recovers and finishes the upload
+    void testFinalMoveLocked()
+    {
+        FakeFolder fakeFolder { FileInfo::A12_B12_C12_S12() };
+        const auto size = 15_mb;
+        setChunkSize(fakeFolder.syncEngine(), 1_mb);
 
+        OperationCounter counter;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
+            counter.serverOverride(op, request, device);
+            if (request.attribute(QNetworkRequest::CustomVerbAttribute) == "MOVE") {
+                return new FakeErrorReply(op, request, this, 423, {});
+            }
+            return nullptr;
+        });
+
+        /* Insert a file.
+         * The file will be uploaded in chunks.
+         * in order to finish the upload the final file need to be moved to is destination.
+         * This move fails with a 423.
+         * Similar to the Folder class we will trigger a new sync but without the local discovery.
+         * The test ensures that we properly continue the download and only perform the final move.
+         */
+        fakeFolder.localModifier().insert(QStringLiteral("A/a0"), size);
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+        QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());
+        QCOMPARE(counter.nMOVE, 1);
+
+        counter.reset();
+        fakeFolder.setServerOverride(counter.functor());
+
+        // do a partial discovery, don't actually list the local files
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem, {});
+        QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+        QCOMPARE(counter.nDELETE, 0);
+        QCOMPARE(counter.nPUT, 0);
+        QCOMPARE(counter.nMOVE, 1);
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestChunkingNG)
