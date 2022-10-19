@@ -65,31 +65,20 @@ public:
 
     ~SyncEngine() override;
 
-    Q_INVOKABLE void startSync();
-    void setNetworkLimits(int upload, int download);
-
-    /* Abort the sync.  Called from the main thread */
-    void abort();
-
     [[nodiscard]] bool isSyncRunning() const { return _syncRunning; }
 
     [[nodiscard]] SyncOptions syncOptions() const { return _syncOptions; }
-    void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
     [[nodiscard]] bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
-    void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
-    void addAcceptedInvalidFileName(const QString& filePath);
-
-    ExcludedFiles &excludedFiles() { return *_excludedFiles; }
-    Utility::StopWatch &stopWatch() { return _stopWatch; }
-    SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
+    [[nodiscard]] ExcludedFiles &excludedFiles() const { return *_excludedFiles; }
+    [[nodiscard]] SyncFileStatusTracker &syncFileStatusTracker() const { return *_syncFileStatusTracker; }
 
     /* Returns whether another sync is needed to complete the sync */
-    AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+    [[nodiscard]] AnotherSyncNeeded isAnotherSyncNeeded() const { return _anotherSyncNeeded; }
 
     [[nodiscard]] bool wasFileTouched(const QString &fn) const;
 
-    [[nodiscard]] AccountPtr account() const;
+    [[nodiscard]] AccountPtr account() const { return _account; };
     [[nodiscard]] SyncJournalDb *journal() const { return _journal; }
     [[nodiscard]] QString localPath() const { return _localPath; }
 
@@ -104,19 +93,6 @@ public:
      * current time is less than this duration are skipped.
      */
     static std::chrono::milliseconds minimumFileAgeForUpload;
-
-    /**
-     * Control whether local discovery should read from filesystem or db.
-     *
-     * If style is DatabaseAndFilesystem, paths a set of file paths relative to
-     * the synced folder. All the parent directories of these paths will not
-     * be read from the db and scanned on the filesystem.
-     *
-     * Note, the style and paths are only retained for the next sync and
-     * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
-     * sync's style.
-     */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
 
     /**
      * Returns whether the given folder-relative path should be locally discovered
@@ -142,7 +118,32 @@ public:
 
     static void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
-    auto getPropagator() { return _propagator; } // for the test
+    [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
+
+public slots:
+    void startSync();
+
+    /* Abort the sync.  Called from the main thread */
+    void abort();
+
+    void setNetworkLimits(int upload, int download);
+    void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
+    void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
+
+    /**
+     * Control whether local discovery should read from filesystem or db.
+     *
+     * If style is DatabaseAndFilesystem, paths a set of file paths relative to
+     * the synced folder. All the parent directories of these paths will not
+     * be read from the db and scanned on the filesystem.
+     *
+     * Note, the style and paths are only retained for the next sync and
+     * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
+     * sync's style.
+     */
+    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
+
+    void addAcceptedInvalidFileName(const QString& filePath);
 
 signals:
     // During update, before reconcile
