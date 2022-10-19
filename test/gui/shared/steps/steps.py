@@ -85,10 +85,17 @@ def listenSyncStatusForItem(item, type='FOLDER'):
     socketConnect.sendCommand("RETRIEVE_" + type + "_STATUS:" + item + "\n")
 
 
+def getCurrentSyncStatus(resource, resourceType):
+    listenSyncStatusForItem(resource, resourceType)
+    messages = filterMessagesForItem(readSocketMessages(), resource)
+    # return the last message from the list
+    return messages[-1]
+
+
 def waitForFileOrFolderToSync(
     context, resource='', resourceType='FOLDER', patterns=None
 ):
-    resource = join(context.userData['currentUserSyncPath'], resource)
+    resource = join(context.userData['currentUserSyncPath'], resource).rstrip('/')
     listenSyncStatusForItem(resource, resourceType)
 
     timeout = context.userData['maxSyncTimeout'] * 1000
@@ -102,11 +109,26 @@ def waitForFileOrFolderToSync(
     )
     clearSocketMessages(resource)
     if not synced:
-        raise Exception(
-            "Timeout while waiting for sync to complete for "
-            + str(timeout)
-            + " milliseconds"
-        )
+        # if the sync pattern doesn't match then check the last sync status
+        # and pass the step if the last sync status is STATUS:OK
+        status = getCurrentSyncStatus(resource, resourceType)
+        if status.startswith(SYNC_STATUS['OK']):
+            test.log(
+                "[WARN] Failed to match sync pattern for resource: "
+                + resource
+                + "\nBut its last status is "
+                + "'"
+                + SYNC_STATUS['OK']
+                + "'"
+                + ". So passing the step."
+            )
+            return
+        else:
+            raise Exception(
+                "Timeout while waiting for sync to complete for "
+                + str(timeout)
+                + " milliseconds"
+            )
 
 
 def waitForInitialSyncToComplete(context):
