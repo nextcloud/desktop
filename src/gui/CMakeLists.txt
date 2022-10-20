@@ -147,7 +147,6 @@ IF( APPLE )
             folderwatcher_mac.cpp)
 elseif( WIN32 )
     target_sources(owncloudCore PRIVATE
-            platform_win.cpp
             guiutility_win.cpp
             folderwatcher_win.cpp
             navigationpanehelper.cpp)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Erik Verbruggen <erik@verbruggen.consulting>
+ * Copyright (C) by Fabian Müller <fmueller@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,34 +12,20 @@
  * for more details.
  */
 
+#pragma once
+
 #include "platform.h"
-#include "platform_unix.h"
-#include "platform_win.h"
 
 namespace OCC {
 
-Platform::~Platform()
+class WinPlatform : public Platform
 {
-}
+public:
+    WinPlatform();
 
-void Platform::migrate()
-{
-}
+    ~WinPlatform() override;
 
-void Platform::setApplication(QCoreApplication *application)
-{
-    Q_UNUSED(application);
-}
+    void setApplication(QCoreApplication *application) override;
+};
 
-std::unique_ptr<Platform> Platform::create()
-{
-#if defined(Q_OS_WIN)
-    return std::make_unique<WinPlatform>();
-#elif defined(Q_OS_LINUX)
-    return std::make_unique<UnixPlatform>();
-#else
-    Q_UNREACHABLE();
-#endif
-}
-
-} // OCC namespace
+} // namespace OCC

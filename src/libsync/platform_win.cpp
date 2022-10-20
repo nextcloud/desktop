@@ -12,36 +12,22 @@
  * for more details.
  */
 
-#include "application.h"
-#include "platform.h"
+#include "platform_win.h"
 
 #include <QCoreApplication>
 
 namespace OCC {
 
-class WinPlatform : public Platform
+WinPlatform::WinPlatform()
 {
-public:
-    WinPlatform()
-    {
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-    }
-
-    ~WinPlatform() override;
-
-    void setApplication(QCoreApplication *application) override;
-};
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+}
 
 WinPlatform::~WinPlatform()
 {
 }
 
-std::unique_ptr<Platform> Platform::create()
-{
-    return std::make_unique<WinPlatform>();
-}
-
-void Platform::setApplication(QCoreApplication *application)
+void WinPlatform::setApplication(QCoreApplication *application)
 {
     Q_UNUSED(application)
 

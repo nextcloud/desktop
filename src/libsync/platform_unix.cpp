@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include "platform.h"
+#include "platform_unix.h"
 
 #include <QDir>
 #include <QLoggingCategory>
@@ -24,22 +24,11 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcPlatform, "gui.platform")
 
-class UnixPlatform : public Platform
+UnixPlatform::UnixPlatform()
 {
-public:
-    UnixPlatform()
-    {
-        signal(SIGPIPE, SIG_IGN);
-        setLimitsForCoreDumps();
-    }
-
-    ~UnixPlatform() override;
-
-    void setApplication(QCoreApplication *application) override;
-
-private:
-    void setLimitsForCoreDumps();
-};
+    signal(SIGPIPE, SIG_IGN);
+    setLimitsForCoreDumps();
+}
 
 UnixPlatform::~UnixPlatform()
 {
@@ -70,11 +59,6 @@ void UnixPlatform::setApplication(QCoreApplication *application)
     qCDebug(lcPlatform) << "adding plugin directory" << pluginDirPath;
     application->addLibraryPath(pluginDirPath);
 #endif
-}
-
-std::unique_ptr<Platform> Platform::create()
-{
-    return std::make_unique<UnixPlatform>();
 }
 
 } // namespace OCC
