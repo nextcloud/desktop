@@ -33,6 +33,10 @@ void Platform::setApplication(QCoreApplication *application)
 
 std::unique_ptr<Platform> Platform::create()
 {
+    // we need to make sure the platform class is initialized before a Q(Core)Application has been set up
+    // the constructors run some initialization code that affects Qt's initialization
+    Q_ASSERT(QCoreApplication::instance() == nullptr);
+
 #if defined(Q_OS_WIN)
     return std::make_unique<WinPlatform>();
 #elif defined(Q_OS_LINUX)
