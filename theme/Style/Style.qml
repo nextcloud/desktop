@@ -18,6 +18,11 @@ QtObject {
     readonly property color backgroundColor: Theme.systemPalette.base
     readonly property color buttonBackgroundColor: Theme.systemPalette.button
 
+    readonly property color currentUserHeaderColor: UserModel.currentUser ? UserModel.currentUser.headerColor : ncBlue
+    readonly property color currentUserHeaderTextColor: UserModel.currentUser ? UserModel.currentUser.headerTextColor : ncHeaderTextColor
+    readonly property color adjustedCurrentUserHeaderColor: Theme.darkMode ? Qt.lighter(currentUserHeaderColor, 2)
+                                                                           : Qt.darker(currentUserHeaderColor, 1.5)
+
     // ErrorBox colors
     readonly property color errorBoxTextColor:       Theme.errorBoxTextColor
     readonly property color errorBoxBackgroundColor: Theme.errorBoxBackgroundColor

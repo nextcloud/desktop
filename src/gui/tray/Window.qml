@@ -172,7 +172,7 @@ ApplicationWindow {
             anchors.right:  trayWindowMainItem.right
             anchors.top:    trayWindowMainItem.top
             height:         Style.trayWindowHeaderHeight
-            color:          UserModel.currentUser.headerColor
+            color:          Style.currentUserHeaderColor
 
             RowLayout {
                 id: trayWindowHeaderLayout
@@ -383,7 +383,7 @@ ApplicationWindow {
                     }
 
                     background: Rectangle {
-                        color: parent.hovered || parent.visualFocus ? UserModel.currentUser.headerTextColor : "transparent"
+                        color: parent.hovered || parent.visualFocus ? Style.currentUserHeaderTextColor : "transparent"
                         opacity: 0.2
                     }
 
@@ -415,7 +415,7 @@ ApplicationWindow {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: UserModel.currentUser.headerColor
+                                color: Style.currentUserHeaderColor
                                 radius: width*0.5
                             }
 
@@ -427,7 +427,7 @@ ApplicationWindow {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: currentAccountButton.hovered ? UserModel.currentUser.headerTextColor : "transparent"
+                                color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                             }
@@ -463,7 +463,7 @@ ApplicationWindow {
                                 text: UserModel.currentUser.name
                                 textFormat: Text.PlainText
                                 elide: Text.ElideRight
-                                color: UserModel.currentUser.headerTextColor
+                                color: Style.currentUserHeaderTextColor
 
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
@@ -494,7 +494,7 @@ ApplicationWindow {
                                           : UserModel.currentUser.server
                                     textFormat: Text.PlainText
                                     elide: Text.ElideRight
-                                    color: UserModel.currentUser.headerTextColor
+                                    color: Style.currentUserHeaderTextColor
                                     font.pixelSize: Style.subLinePixelSize
                                 }
                             }
@@ -502,7 +502,7 @@ ApplicationWindow {
 
                         ColorOverlay {
                             cached: true
-                            color: UserModel.currentUser.headerTextColor
+                            color: Style.currentUserHeaderTextColor
                             width: source.width
                             height: source.height
                             source: Image {
@@ -538,7 +538,7 @@ ApplicationWindow {
                         id: openLocalFolderButton
                         visible: UserModel.currentUser.hasLocalFolder
                         icon.source: "qrc:///client/theme/white/folder.svg"
-                        icon.color: UserModel.currentUser.headerTextColor
+                        icon.color: Style.currentUserHeaderTextColor
                         onClicked: UserModel.openCurrentAccountLocalFolder()
 
                         Image {
@@ -563,7 +563,7 @@ ApplicationWindow {
                                 width: Style.folderStateIndicatorSize + 2
                                 height: width
                                 anchors.centerIn: parent
-                                color: UserModel.currentUser.headerColor
+                                color: Style.currentUserHeaderColor
                                 radius: width*0.5
                                 z: -2
                             }
@@ -573,7 +573,7 @@ ApplicationWindow {
                                 width: Style.folderStateIndicatorSize + 2
                                 height: width
                                 anchors.centerIn: parent
-                                color: openLocalFolderButton.hovered ? UserModel.currentUser.headerTextColor : "transparent"
+                                color: openLocalFolderButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                                 z: -1
@@ -587,7 +587,7 @@ ApplicationWindow {
 
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
-                    icon.color: UserModel.currentUser.headerTextColor
+                    icon.color: Style.currentUserHeaderTextColor
                     onClicked: UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
@@ -598,7 +598,7 @@ ApplicationWindow {
                 HeaderButton {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.color: UserModel.currentUser.headerTextColor
+                    icon.color: Style.currentUserHeaderTextColor
 
                     onClicked: {
                         if(appsMenuListView.count <= 0) {

@@ -64,8 +64,6 @@ MouseArea {
 
             activityData: model
 
-            adjustedHeaderColor: root.adjustedHeaderColor
-
             onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.path)
 
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.index)

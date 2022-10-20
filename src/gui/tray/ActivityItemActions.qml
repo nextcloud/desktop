@@ -16,7 +16,6 @@ RowLayout {
     property bool displayActions: false
 
     property color moreActionsButtonColor: "transparent"
-    property color adjustedHeaderColor: "transparent"
 
     property int maxActionButtons: 0
 
