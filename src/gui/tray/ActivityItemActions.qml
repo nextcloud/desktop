@@ -16,7 +16,6 @@ RowLayout {
     property bool displayActions: false
 
     property color moreActionsButtonColor: "transparent"
-    property color adjustedHeaderColor: "transparent"
 
     property int maxActionButtons: 0
 
@@ -43,10 +42,10 @@ RowLayout {
 
             text: model.modelData.label
 
-            adjustedHeaderColor: root.adjustedHeaderColor
+            adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
 
-            imageSource: model.modelData.imageSource ? model.modelData.imageSource + root.adjustedHeaderColor : ""
-            imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
+            imageSource: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
+            imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + Style.currentUserHeaderTextColor : ""
 
             onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
         }

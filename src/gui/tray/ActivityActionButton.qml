@@ -13,16 +13,16 @@ AbstractButton {
     property string imageSource: ""
     property string imageSourceHover: ""
 
-    property color adjustedHeaderColor: Style.ncBlue
+    property color adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
     property color textColor: primaryButton ? adjustedHeaderColor : Style.ncTextColor
-    property color textColorHovered: primaryButton ? UserModel.currentUser.headerTextColor : Style.ncTextColor
+    property color textColorHovered: primaryButton ? Style.currentUserHeaderTextColor : Style.ncTextColor
 
     property string verb: ""
     property bool isTalkReplyButton: false
 
 
     background: NCButtonBackground {
-        color: UserModel.currentUser.headerColor
+        color: Style.currentUserHeaderColor
         hovered: root.hovered
         visible: root.primaryButton
     }

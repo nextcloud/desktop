@@ -28,6 +28,7 @@ Button {
 
     leftPadding: root.text === "" ? 5 : 10
     rightPadding: root.text === "" ? 5 : 10
+    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
     NCToolTip {
         text: root.toolTipText
