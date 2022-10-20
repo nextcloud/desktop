@@ -3751,12 +3751,12 @@ for additional privileges during the process.</source>
         <translation>تعذّر فتح قاعد بيانات المزامنة المحلية أو إنشاؤها. تأكد أن لديك حق وصول للكتابة في مجلد المزامنة.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>مساحة القرص منخفضة: تم تجاوز التنزيلات التي تقلل المساحة الفارغة عن %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1012"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1020"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>لا تتوفر مساحة كافية على الخادم لبعض التحميلات.</translation>
     </message>
@@ -3786,7 +3786,7 @@ for additional privileges during the process.</source>
         <translation>لا يمكن فتح دفتر يومية المزامنة</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="987"/>
+        <location filename="../src/libsync/syncengine.cpp" line="995"/>
         <source>Aborted</source>
         <translation>تم الإلغاء</translation>
     </message>

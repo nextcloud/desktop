@@ -3748,12 +3748,12 @@ for additional privileges during the process.</source>
         <translation>ローカルの同期データベースを開けないか作成ができません。同期フォルダーに書き込み権限があることを確認してください。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>ディスクの空き容量が少なくなっています: 空き領域を %1 以下にするようなダウンロードはスキップされました。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1012"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1020"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>サーバーの空き容量が不足しているため、一部のアップロードができません。</translation>
     </message>
@@ -3783,7 +3783,7 @@ for additional privileges during the process.</source>
         <translation>同期ジャーナルを開くことができません</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="987"/>
+        <location filename="../src/libsync/syncengine.cpp" line="995"/>
         <source>Aborted</source>
         <translation>中止しました</translation>
     </message>

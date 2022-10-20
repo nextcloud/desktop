@@ -14,7 +14,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
         <source>Advanced configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configurazione avanzata</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
         <source>Download everything</source>
-        <translation type="unfinished"/>
+        <translation>Scarica tutto</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
@@ -34,12 +34,12 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="163"/>
         <source>Configure synchronization manually</source>
-        <translation type="unfinished"/>
+        <translation>Configura la sincronizzazione manualmente</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="210"/>
         <source>Choose local download directory:</source>
-        <translation type="unfinished"/>
+        <translation>Scegli dove verranno scaricati i file:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation type="unfinished"/>
+        <translation>Mostra nel browser</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -222,7 +222,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="425"/>
         <source>Could not make directories in trash</source>
-        <translation>Non posso creare cartelle nel cestino</translation>
+        <translation>Impossibile creare cartelle nel cestino</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="439"/>
@@ -320,7 +320,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="20"/>
         <source>Login required</source>
-        <translation type="unfinished"/>
+        <translation>Login richiesto</translation>
     </message>
 </context>
 <context>
@@ -356,12 +356,12 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="66"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Apri Browser</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="79"/>
         <source>Copy URL to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia indirizzo nella clipboard</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="179"/>
@@ -586,7 +586,7 @@ Questa azione interromperà qualsiasi sincronizzazione in corso.</translation>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;account %1 è stato disconnesso. Accedi nuovamente tramite il browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
@@ -601,17 +601,17 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="869"/>
         <source>No connection to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Nessuna connessione a %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="873"/>
         <source>Server configuration error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Errore di configurazione server: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="884"/>
         <source>No connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Nessuna configurazione di connessione.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="906"/>
@@ -3750,12 +3750,12 @@ for additional privileges during the process.</source>
         <translation>Non posso aprire o creare il database locale di sincronizzazione. Assicurarsi di avere il i permessi di scrittura nella cartella di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Lo spazio su disco è scarso: I downloads che ridurranno lo spazio libero al di sotto di %1 verranno saltati.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1012"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1020"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Non c&apos;è spazio disponibile sul server per effettuare caricamenti.</translation>
     </message>
@@ -3785,7 +3785,7 @@ for additional privileges during the process.</source>
         <translation>Impossibile aprire il registro di sincronizzazione</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="987"/>
+        <location filename="../src/libsync/syncengine.cpp" line="995"/>
         <source>Aborted</source>
         <translation>Interrotto</translation>
     </message>

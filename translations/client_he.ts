@@ -3751,12 +3751,12 @@ for additional privileges during the process.</source>
         <translation>לא ניתן היה לפתוח או ליצור את מסד הנתונים המומי לסנכרון. יש לוודא שיש לך הרשאת כתיבה לתיקיית הסנכרון.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1005"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>זיכרון נמוך: הורדות שיקטינו את הזיכרון הפנוי מתחת ל- %1 ידולגו.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1012"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1020"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>קיים זיכרון לא מספק על השרת למספר העלאות.</translation>
     </message>
@@ -3786,7 +3786,7 @@ for additional privileges during the process.</source>
         <translation>לא ניתן לפתוח את יומן הסנכרון</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="987"/>
+        <location filename="../src/libsync/syncengine.cpp" line="995"/>
         <source>Aborted</source>
         <translation>בוטל</translation>
     </message>
