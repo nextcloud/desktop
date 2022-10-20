@@ -108,6 +108,7 @@ public slots:
     void setNotificationRefreshInterval(std::chrono::milliseconds interval);
     void slotRebuildNavigationAppList();
     void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
+    void forceSyncNow() const;
 
 private:
     void slotPushNotificationsReady();
