@@ -4,6 +4,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.1] - 2022-10-18
+
+### Added
+
+### Changed
+* Improve 'Handle local file editing' feature by @mgallien in https://github.com/nextcloud/desktop/pull/5054
+* Update after tx migrate by @tobiasKaminsky in https://github.com/nextcloud/desktop/pull/5019
+* Bring back .lnk files on Windows and always treat them as non-virtual files by @allexzander in https://github.com/nextcloud/desktop/pull/4968
+
+### Fixed
+* Fix two factor auth notification: activity item was disabled by @camilasan in https://github.com/nextcloud/desktop/pull/5057
+* Fix account not found when doing local file editing by @mgallien in https://github.com/nextcloud/desktop/pull/5056
+* Check token for edit locally requests by @mgallien in https://github.com/nextcloud/desktop/pull/5055
+* Fix command-line client: do not trust SSL certificates by default, unless '--trust' option is set by @allexzander in https://github.com/nextcloud/desktop/pull/5022
+* Fix invisible user status selector button not being checked when user is in Offline mode by @claucambra in https://github.com/nextcloud/desktop/pull/5012
+* Fix the dismiss button: display it whenever possible by @camilasan in https://github.com/nextcloud/desktop/pull/4989
+* Fix predefined status text formatting by @claucambra in https://github.com/nextcloud/desktop/pull/4987
+* Fix sync progress bar colours in dark mode by @claucambra in https://github.com/nextcloud/desktop/pull/4986
+* Fix 'Reply' primary property. by @camilasan in https://github.com/nextcloud/desktop/pull/4985
+* Fix link shares default expire date being enforced as maximum expire date even when maximum date enforcement is disabled on the server by @claucambra in https://github.com/nextcloud/desktop/pull/4982
+* Use correct version copmparison on NSIS updater: fix update from rc by @mgallien in https://github.com/nextcloud/desktop/pull/4979
+* Ensure strings in main window QML are presented as plain text and not HTML by @claucambra in https://github.com/nextcloud/desktop/pull/4972
+* Improve handling of file name clashes by @claucambra in https://github.com/nextcloud/desktop/pull/4970
+* Ensure placeholder message in emoji picker wraps correctly by @claucambra in https://github.com/nextcloud/desktop/pull/4960
+* Do not format text in QML components as HTML by @claucambra in https://github.com/nextcloud/desktop/pull/4944
+* Ensure that the file being processed has had its etag properly sanitised, log etag more by @claucambra in https://github.com/nextcloud/desktop/pull/4940
+* Deallocate call notification dialog objects when closed by @claucambra in https://github.com/nextcloud/desktop/pull/4939
+* Fix low-resolution file changed overlay icons in activities by @claucambra in https://github.com/nextcloud/desktop/pull/4930
+* Accept valid lsColJob reply XML content types by @claucambra in https://github.com/nextcloud/desktop/pull/4919
+* Fix menu bar height calculation on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/4917
+* Bugfix/conflict resolution when selecting folder by @allexzander in https://github.com/nextcloud/desktop/pull/4914
+* Fix add account window text clipping, enlarge text by @claucambra in https://github.com/nextcloud/desktop/pull/4910
+* Fix selective sync abort error by @allexzander in https://github.com/nextcloud/desktop/pull/4903
+* Fix wrong estimated time when doing sync by @allexzander in https://github.com/nextcloud/desktop/pull/4902
+
 ## [3.6.0] - 2022-09-06
 
 ### Added
@@ -264,7 +299,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
-
+[3.6.1]: https://github.com/nextcloud/desktop/compare/v3.6.0...v3.6.1
 [3.6.0]: https://github.com/nextcloud/desktop/compare/v3.6.0-rc1...v3.6.0
 [3.6.0-rc1]: https://github.com/nextcloud/desktop/compare/v3.5.0...v3.6.0-rc1
 [legacy]: https://github.com/nextcloud/desktop/blob/master/ChangeLog%20-%20Legacy
