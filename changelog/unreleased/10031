@@ -1,0 +1,5 @@
+Enhancement: Windows VFS download speed improvement
+
+We improved the performance of downloads performed on virtual files in the Windows Explorer.
+
+https://github.com/owncloud/client/issues/10031
