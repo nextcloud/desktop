@@ -7,7 +7,7 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
 
 RowLayout {
-    id: layout
+    id: root
 
     property alias model: syncStatus
 
@@ -49,7 +49,7 @@ RowLayout {
 
         Text {
             id: syncProgressText
-            
+
             Layout.fillWidth: true
 
             text: syncStatus.syncStatusString
@@ -64,7 +64,7 @@ RowLayout {
 
             active: syncStatus.syncing
             visible: syncStatus.syncing
-            
+
             sourceComponent: ProgressBar {
                 id: syncProgressBar
 
@@ -96,6 +96,32 @@ RowLayout {
             visible: syncStatus.syncStatusDetailString !== ""
             color: Style.ncSecondaryTextColor
             font.pixelSize: Style.subLinePixelSize
+        }
+    }
+
+    CustomButton {
+        FontMetrics {
+            id: syncNowFm
+            font.bold: true
+        }
+
+        Layout.preferredWidth: syncNowFm.boundingRect(text).width + leftPadding + rightPadding
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        FontMetrics { font.bold: true }
+
+        text: qsTr("Sync now")
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        bold: true
+        bgColor: Style.currentUserHeaderColor
+
+        visible: !syncStatus.syncing && NC.UserModel.currentUser.hasLocalFolder
+        enabled: visible
+        onClicked: {
+            if(!syncStatus.syncing) {
+                NC.UserModel.currentUser.forceSyncNow();
+            }
         }
     }
 }
