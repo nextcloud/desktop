@@ -19,7 +19,8 @@ Button {
 
     property bool bold: false
 
-    property real bgOpacity: 0.3
+    property alias bgNormalOpacity: bgRectangle.normalOpacity
+    property alias bgHoverOpacity: bgRectangle.hoverOpacity
 
     background: Rectangle {
         id: bgRectangle

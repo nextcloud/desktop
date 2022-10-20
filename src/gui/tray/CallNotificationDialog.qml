@@ -222,7 +222,7 @@ Window {
                         text: modelData.label
                         bold: true
                         bgColor: Style.ncBlue
-                        bgOpacity: 0.8
+                        bgNormalOpacity: 0.8
 
                         textColor: Style.ncHeaderTextColor
 
@@ -249,7 +249,7 @@ Window {
                     text: qsTr("Decline")
                     bold: true
                     bgColor: Style.errorBoxBackgroundColor
-                    bgOpacity: 0.8
+                    bgNormalOpacity: 0.8
 
                     textColor: Style.ncHeaderTextColor
 
