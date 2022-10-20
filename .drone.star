@@ -143,7 +143,7 @@ def unit_test_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, tri
         "steps": skipIfUnchanged(ctx, "unit-tests") +
                  gitSubModules() +
                  build_client(c_compiler, cxx_compiler, build_type, generator, build_command, build_dir) +
-                 unit_tests(build_dir, [build_command]),
+                 unit_tests(build_dir),
         "trigger": trigger,
     }]
 
@@ -188,7 +188,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
                      build_dir,
                      OC_CI_CLIENT_FEDORA,
                  ) +
-                 gui_tests(squish_parameters, [build_config["build_command"]]) +
+                 gui_tests(squish_parameters) +
                  # GUI test result has been disabled for now, as we squish can not produce the result in both html and json format.
                  # Disabled untill the feature to generate json result is implemented in squish, or some other method to reuse the log parser is implemented.
                  #  showGuiTestResult() +
@@ -231,11 +231,10 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
                 'cd "' + build_dir + '"',
                 build_command + " -j4",
             ],
-            "depends_on": ["generate"],
         },
     ]
 
-def unit_tests(build_dir, depends_on = []):
+def unit_tests(build_dir):
     return [{
         "name": "ctest",
         "image": OC_CI_CLIENT,
@@ -248,10 +247,9 @@ def unit_tests(build_dir, depends_on = []):
             "chown -R tester:tester .",
             "su-exec tester ctest --output-on-failure -LE nodrone",
         ],
-        "depends_on": depends_on,
     }]
 
-def gui_tests(squish_parameters = "", depends_on = []):
+def gui_tests(squish_parameters = ""):
     return [{
         "name": "GUItests",
         "image": OC_CI_SQUISH,
@@ -266,7 +264,6 @@ def gui_tests(squish_parameters = "", depends_on = []):
             "SQUISH_PARAMETERS": squish_parameters,
             "STACKTRACE_FILE": STACKTRACE_FILE,
         },
-        "depends_on": depends_on,
     }]
 
 def gui_tests_format(trigger):
@@ -402,7 +399,6 @@ def notification(name, trigger = {}):
                     "channel": "desktop-internal",
                     "template": "file:%s/template.md" % NOTIFICATION_TEMPLATE_DIR,
                 },
-                "depends_on": ["create-template"],
             },
         ],
         "trigger": trigger,
@@ -449,7 +445,6 @@ def setupServerAndApp(logLevel = 2):
             "php occ config:system:set skeletondirectory --value=/var/www/owncloud/server/apps/testing/data/tinySkeleton",
             "php occ config:system:set sharing.federation.allowHttpFallback --value=true --type=bool",
         ],
-        "depends_on": stepDependsOn(installCore()),
     }]
 
 def owncloudService():
@@ -496,7 +491,6 @@ def owncloudLog():
         "commands": [
             "tail -f /drone/src/server/data/owncloud.log",
         ],
-        "depends_on": stepDependsOn(installCore()),
     }]
 
 def fixPermissions():
@@ -507,7 +501,6 @@ def fixPermissions():
             "cd /drone/src/server",
             "chown www-data * -R",
         ],
-        "depends_on": stepDependsOn(setupServerAndApp()),
     }]
 
 def gitSubModules():
@@ -567,7 +560,6 @@ def uploadGuiTestLogs():
                 "from_secret": "cache_public_s3_secret_key",
             },
         },
-        "depends_on": stepDependsOn(gui_tests()),
         "when": {
             "status": [
                 "failure",
@@ -591,7 +583,6 @@ def buildGithubComment(suite = ""):
                 "from_secret": "cache_public_s3_bucket",
             },
         },
-        "depends_on": stepDependsOn(uploadGuiTestLogs()),
         "when": {
             "status": [
                 "failure",
@@ -618,7 +609,6 @@ def githubComment(alternateSuiteName):
         "commands": [
             "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (GUI_TEST_REPORT_DIR, prefix, GUI_TEST_REPORT_DIR, GUI_TEST_REPORT_DIR),
         ],
-        "depends_on": stepDependsOn(buildGithubComment()),
         "when": {
             "status": [
                 "failure",
