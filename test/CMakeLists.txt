@@ -11,6 +11,7 @@ add_library(testutils
   themeutils.cpp
   testhelper.cpp
   sharetestutils.cpp
+  endtoendtestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
