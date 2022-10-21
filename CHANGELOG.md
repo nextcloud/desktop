@@ -32,6 +32,7 @@ Summary
 * Change - We removed the TLS certificate button from the account page: [#9675](https://github.com/owncloud/client/pull/9675)
 * Change - Add "open in web editor" feature: [#9724](https://github.com/owncloud/client/issues/9724)
 * Change - Don't display error state when server is unreachable: [#9790](https://github.com/owncloud/client/issues/9790)
+* Enhancement - Windows VFS download speed improvement: [#10031](https://github.com/owncloud/client/issues/10031)
 * Enhancement - Add a prefer: minimal header to PROPFINDs: [#10104](https://github.com/owncloud/client/pull/10104)
 * Enhancement - Allow creation of sync roots with long paths: [#10135](https://github.com/owncloud/client/pull/10135/)
 * Enhancement - Windows add longPath awareness: [#10136](https://github.com/owncloud/client/pull/10136)
@@ -199,6 +200,12 @@ Details
    We no longer display a network error if the server is currently unavailable.
 
    https://github.com/owncloud/client/issues/9790
+
+* Enhancement - Windows VFS download speed improvement: [#10031](https://github.com/owncloud/client/issues/10031)
+
+   We improved the performance of downloads performed on virtual files in the Windows Explorer.
+
+   https://github.com/owncloud/client/issues/10031
 
 * Enhancement - Add a prefer: minimal header to PROPFINDs: [#10104](https://github.com/owncloud/client/pull/10104)
 
