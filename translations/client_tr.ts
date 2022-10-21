@@ -2396,76 +2396,76 @@ Günlüğe kaydetme komut satırı seçeneklerinin kullanılmasının bu ayarlar
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="355"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Sunucudan hata döndü: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="328"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="358"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>&apos;token&apos; uç noktası erişimi sırasında hata meydana geldi: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Sunucudan gelen JSON ayrıştırılamadı: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
         <translation>Unsupported token type: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
         <translation>The reply from the server did not contain all expected fields
 :%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="338"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
         <translation>Unknown Error</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>Login Error</source>
         <translation>Oturum Açma Hatası</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Yanlış kullanıcı &lt;/h1&gt;&lt;p&gt;&lt;em&gt;%1&lt;/em&gt; kullanıcısıyla oturum açtınız, ancak &lt;em&gt;%2&lt;/em&gt; kullanıcısıyla oturum açmanız gerekiyor. &lt;br&gt;Lütfen %3 istemcisine dönün ve kimlik doğrulamayı yeniden başlatın.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
         <source>Wrong user</source>
         <translation>Yanlış kullanıcı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="409"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Giriş Başarılı&lt;/h1&gt;&lt;p&gt; Bu pencereyi kapatabilirsiniz.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="410"/>
         <source>Login Successful</source>
         <translation>Giriş Başarılı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="564"/>
         <source>Oauth2 Error</source>
         <translation>Oauth2 Hatası</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="522"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="565"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>Oauth2 kimlik doğrulaması, güvenli bir bağlantı gerektirir.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Sisteme Giriş Hatası&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>

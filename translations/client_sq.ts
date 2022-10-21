@@ -2396,76 +2396,76 @@ Kini parasysh se përdorimi i çfarëdo mundësie regjistrimi që nga rresht urd
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="355"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Gabim i kthyer nga shërbyesi: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="328"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="358"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Pati një gabim në përdorimin e pikëmbarimit të &apos;tokenit&apos;: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>S’u përtyp dot JSON-i i kthyer nga shërbyesi: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
         <translation>Lloj token-i i pambuluar: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
         <translation>Përgjigja prej shërbyesit s’përmbante krejt fushat e pritura
 :%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="338"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
         <translation>Gabim i Panjohur</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>Login Error</source>
         <translation>Gabim Hyrjeje</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Përdoruesi i gabuar&lt;/h1&gt;&lt;p&gt;Bëtë hyrjen si përdoruesi &lt;em&gt;%1&lt;/em&gt;, por duhet të hyni si përdoruesi &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Ju lutemi, kthehuni te klienti %3 dhe rinisni mirëfilltësimin.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
         <source>Wrong user</source>
         <translation>Përdorues i gabuar</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="409"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Hyrje e Suksesshme&lt;/h1&gt;&lt;p&gt;Mund ta mbyllni këtë dritare.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="410"/>
         <source>Login Successful</source>
         <translation>Hyrje e Suksesshme</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="564"/>
         <source>Oauth2 Error</source>
         <translation>Gabim OAuth2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="522"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="565"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>Mirëfilltësimi Oauth2 lyp një lidhje të siguruar.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Gabim Hyrjeje&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>

@@ -2388,75 +2388,75 @@ Tenga en cuenta que el uso de cualquier opción de línea de comando de registro
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="355"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Error devuelto desde el servidor: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="328"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="358"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Ha ocurrido un error accediendo al Token endpoint:: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>No puedo procesar el código JSON recibido del servidor: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
         <translation>Tipo de token no soportado</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
         <translation>La respuesta del servidor no contiene todos los campos esperados</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="338"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
         <translation>Error desconocido</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>Login Error</source>
         <translation>Error al iniciar sesión</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
         <source>Wrong user</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="409"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="410"/>
         <source>Login Successful</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="564"/>
         <source>Oauth2 Error</source>
         <translation>Error en Oauth2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="522"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="565"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>La autenticación mediante Oauth2 requiere una conexión segura.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;Error de Login&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</translation>
     </message>

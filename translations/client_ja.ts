@@ -2383,76 +2383,76 @@ Note that using any logging command line options will override the settings.</so
 <context>
     <name>OCC::OAuth</name>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="325"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="355"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>サーバからエラーが返されました: &lt;em&gt;%1&lt;/em&gt; </translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="328"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="358"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>&apos;token&apos; エンドポイントへのアクセスにエラーが発生しました: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="331"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>サーバから返された JSON をパースできませんでした: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="334"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
         <translation>サポートされていない形式のトークン: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="336"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
         <source>The reply from the server did not contain all expected fields
 :%1</source>
         <translation>サーバからの応答には、期待されたフィールドがすべて含まれていません。
 :%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="338"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
         <source>Unknown Error</source>
         <translation>不明なエラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>Login Error</source>
         <translation>ログインエラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="371"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="375"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
         <source>Wrong user</source>
         <translation>間違ったユーザー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="379"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="409"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
         <translation>&lt;h1&gt;ログイン成功&lt;/h1&gt;&lt;p&gt;このウィンドウを閉じることができます。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="380"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="410"/>
         <source>Login Successful</source>
         <translation>ログイン成功</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="521"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="564"/>
         <source>Oauth2 Error</source>
         <translation>Oauth2 エラー</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="522"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="565"/>
         <source>Oauth2 authentication requires a secured connection.</source>
         <translation>Oauth2認証には、セキュリティで保護された接続が必要です。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/creds/oauth.cpp" line="342"/>
-        <location filename="../src/libsync/creds/oauth.cpp" line="352"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
+        <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>&lt;h1&gt;Login Error&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt;</source>
         <translation>&lt;h1&gt;ログインエラー&lt;/h1&gt;&lt;p&gt;%1&lt;/p&gt; </translation>
     </message>
@@ -3984,12 +3984,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>認証情報を入力してログインして下さい。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation> &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;に接続中</translation>
     </message>
 </context>
 <context>
@@ -3997,22 +3997,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>無効な資格情報</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
         <source>Failed to fetch user display name</source>
-        <translation type="unfinished"/>
+        <translation>ユーザー表示名の取得に失敗しました</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation type="unfinished"/>
+        <translation>ログイン失敗: ユーザー名またはパスワードが正しくありません</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
         <source>Login failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>ログイン失敗: %1</translation>
     </message>
 </context>
 <context>
@@ -4020,7 +4020,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="53"/>
         <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
+        <translation>サーバーから無効な応答を受信しました</translation>
     </message>
 </context>
 <context>
@@ -4028,17 +4028,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="61"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 で互換性のあるサーバーを検出できませんでした。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="90"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーは %1 から %2 へのリダイレクトを拒否しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="118"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーが無効なSSL証明書を拒否しました</translation>
     </message>
 </context>
 <context>
@@ -4046,17 +4046,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation> &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;に接続中</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>ブラウザを再度開く</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>ブラウザで %1 にログインしてください。</translation>
     </message>
 </context>
 <context>
@@ -4127,7 +4127,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation> &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;に接続中</translation>
     </message>
 </context>
 <context>
