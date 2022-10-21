@@ -327,13 +327,13 @@
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>端到端加密助記詞</translation>
+        <source>End to end encryption mnemonic</source>
+        <translation>端到端加密助記碼</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>端到端加密助記碼</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation>端到端加密助記詞</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
