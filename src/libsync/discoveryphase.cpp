@@ -451,6 +451,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 // if we are the owner or not.
                 // Piggy back on the persmission field
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
+                result.sharedByMe = true;
             }
         } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
             result.isE2eEncrypted = true;

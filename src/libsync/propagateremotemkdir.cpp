@@ -140,12 +140,13 @@ void PropagateRemoteMkdir::finalizeMkColJob(QNetworkReply::NetworkError err, con
 
     propagator()->_activeJobList.append(this);
     auto propfindJob = new PropfindJob(propagator()->account(), jobPath, this);
-    propfindJob->setProperties({"http://owncloud.org/ns:permissions"});
+    propfindJob->setProperties({QByteArrayLiteral("http://owncloud.org/ns:share-types"), QByteArrayLiteral("http://owncloud.org/ns:permissions")});
     connect(propfindJob, &PropfindJob::result, this, [this, jobPath](const QVariantMap &result){
         propagator()->_activeJobList.removeOne(this);
         _item->_remotePerm = RemotePermissions::fromServerString(result.value(QStringLiteral("permissions")).toString());
-        _item->_isShared = _item->_remotePerm.hasPermission(RemotePermissions::IsShared);
-        _item->_lastShareStateFetchedTimestmap = QDateTime::currentMSecsSinceEpoch();
+        _item->_sharedByMe = !result.value(QStringLiteral("share-types")).toString().isEmpty();
+        _item->_isShared = _item->_remotePerm.hasPermission(RemotePermissions::IsShared) || _item->_sharedByMe;
+        _item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
         if (!_uploadEncryptedHelper && !_item->_isEncrypted) {
             success();

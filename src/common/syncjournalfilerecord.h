@@ -82,7 +82,8 @@ public:
     bool _isE2eEncrypted = false;
     SyncJournalFileLockInfo _lockstate;
     bool _isShared = false;
-    qint64 _lastShareStateFetchedTimestmap = 0;
+    qint64 _lastShareStateFetchedTimestamp = 0;
+    bool _sharedByMe = false;
 };
 
 bool OCSYNC_EXPORT

@@ -13,7 +13,9 @@
 #include "folderman.h"
 #include "account.h"
 #include "accountstate.h"
+#include <accountmanager.h>
 #include "configfile.h"
+#include "syncenginetestutils.h"
 #include "testhelper.h"
 
 using namespace OCC;
@@ -24,7 +26,105 @@ class TestFolderMan: public QObject
 
     FolderMan _fm;
 
+signals:
+    void incomingShareDeleted();
+
 private slots:
+    void testLeaveShare()
+    {
+        constexpr auto firstSharePath = "A/sharedwithme_A.txt";
+        constexpr auto secondSharePath = "A/B/sharedwithme_B.data";
+
+        QScopedPointer<FakeQNAM> fakeQnam(new FakeQNAM({}));
+        OCC::AccountPtr account = OCC::Account::create();
+        account->setCredentials(new FakeCredentials{fakeQnam.data()});
+        account->setUrl(QUrl(("http://example.de")));
+        OCC::AccountManager::instance()->addAccount(account);
+
+        FakeFolder fakeFolder{FileInfo{}};
+        fakeFolder.remoteModifier().mkdir("A");
+
+        fakeFolder.remoteModifier().insert(firstSharePath, 100);
+        const auto firstShare = fakeFolder.remoteModifier().find(firstSharePath);
+        QVERIFY(firstShare);
+        firstShare->permissions.setPermission(OCC::RemotePermissions::IsShared);
+
+        fakeFolder.remoteModifier().mkdir("A/B");
+
+        fakeFolder.remoteModifier().insert(secondSharePath, 100);
+        const auto secondShare = fakeFolder.remoteModifier().find(secondSharePath);
+        QVERIFY(secondShare);
+        secondShare->permissions.setPermission(OCC::RemotePermissions::IsShared);
+
+        FolderMan *folderman = FolderMan::instance();
+        QCOMPARE(folderman, &_fm);
+        OCC::AccountState *accountState = OCC::AccountManager::instance()->accounts().first().data();
+        const auto folder = folderman->addFolder(accountState, folderDefinition(fakeFolder.localPath()));
+        QVERIFY(folder);
+
+        auto realFolder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
+        QVERIFY(realFolder);
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeQnam->setOverride([this, accountState, &fakeFolder](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
+            Q_UNUSED(device);
+            QNetworkReply *reply = nullptr;
+
+            if (op != QNetworkAccessManager::DeleteOperation) {
+                reply = new FakeErrorReply(op, req, this, 405);
+                return reply;
+            }
+
+            if (req.url().path().isEmpty()) {
+                reply = new FakeErrorReply(op, req, this, 404);
+                return reply;
+            }
+
+            const auto filePathRelative = req.url().path().remove(accountState->account()->davPath());
+
+            const auto foundFileInRemoteFolder = fakeFolder.remoteModifier().find(filePathRelative);
+
+            if (filePathRelative.isEmpty() || !foundFileInRemoteFolder) {
+                reply = new FakeErrorReply(op, req, this, 404);
+                return reply;
+            }
+
+           fakeFolder.remoteModifier().remove(filePathRelative);
+           reply = new FakePayloadReply(op, req, {}, nullptr);
+
+           emit incomingShareDeleted();
+           
+           return reply;
+        });
+
+        QSignalSpy incomingShareDeletedSignal(this, &TestFolderMan::incomingShareDeleted);
+
+        // verify first share gets deleted
+        folderman->leaveShare(fakeFolder.localPath() + firstSharePath);
+        QCOMPARE(incomingShareDeletedSignal.count(), 1);
+        QVERIFY(!fakeFolder.remoteModifier().find(firstSharePath));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // verify no share gets deleted
+        folderman->leaveShare(fakeFolder.localPath() + "A/B/notsharedwithme_B.data");
+        QCOMPARE(incomingShareDeletedSignal.count(), 1);
+        QVERIFY(fakeFolder.remoteModifier().find("A/B/sharedwithme_B.data"));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // verify second share gets deleted
+        folderman->leaveShare(fakeFolder.localPath() + secondSharePath);
+        QCOMPARE(incomingShareDeletedSignal.count(), 2);
+        QVERIFY(!fakeFolder.remoteModifier().find(secondSharePath));
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        OCC::AccountManager::instance()->deleteAccount(accountState);
+    }
+
     void testCheckPathValidityForNewFolder()
     {
 #ifdef Q_OS_WIN
@@ -210,5 +310,5 @@ private slots:
     }
 };
 
-QTEST_APPLESS_MAIN(TestFolderMan)
+QTEST_GUILESS_MAIN(TestFolderMan)
 #include "testfolderman.moc"

@@ -42,7 +42,8 @@ SyncJournalFileRecord SyncFileItem::toSyncJournalFileRecordWithInode(const QStri
     rec._fileSize = _size;
     rec._remotePerm = _remotePerm;
     rec._isShared = _isShared;
-    rec._lastShareStateFetchedTimestmap = _lastShareStateFetchedTimestmap;
+    rec._sharedByMe = _sharedByMe;
+    rec._lastShareStateFetchedTimestamp = _lastShareStateFetchedTimestamp;
     rec._serverHasIgnoredFiles = _serverHasIgnoredFiles;
     rec._checksumHeader = _checksumHeader;
     rec._e2eMangledName = _encryptedFileName.toUtf8();
@@ -91,8 +92,9 @@ SyncFileItemPtr SyncFileItem::fromSyncJournalFileRecord(const SyncJournalFileRec
     item->_lockEditorApp = rec._lockstate._lockEditorApp;
     item->_lockTime = rec._lockstate._lockTime;
     item->_lockTimeout = rec._lockstate._lockTimeout;
+    item->_sharedByMe = rec._sharedByMe;
     item->_isShared = rec._isShared;
-    item->_lastShareStateFetchedTimestmap = rec._lastShareStateFetchedTimestmap;
+    item->_lastShareStateFetchedTimestamp = rec._lastShareStateFetchedTimestamp;
     return item;
 }
 

@@ -310,7 +310,9 @@ public:
     qint64 _lockTimeout = 0;
 
     bool _isShared = false;
-    time_t _lastShareStateFetchedTimestmap = 0;
+    time_t _lastShareStateFetchedTimestamp = 0;
+
+    bool _sharedByMe = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

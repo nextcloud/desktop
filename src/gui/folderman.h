@@ -215,6 +215,9 @@ public:
     void setDirtyProxy();
     void setDirtyNetworkLimits();
 
+    /** removes current user from the share **/
+    void leaveShare(const QString &localFile);
+
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
