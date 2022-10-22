@@ -200,9 +200,12 @@ class MenuExtension_ownCloud(GObject.GObject, Nautilus.MenuProvider):
                 break
         return (topLevelFolder, internalFile)
 
-    def get_file_items(self, window, files):
-        # Show the menu extension to share a file or folder
+    def get_file_items(self, *args):
+        # `args` will be `[files: List[Nautilus.FileInfo]]` in Nautilus 4.0 API,
+        # and `[window: Gtk.Widget, files: List[Nautilus.FileInfo]]` in Nautilus 3.0 API.
+        files = args[-1]
 
+        # Show the menu extension to share a file or folder
         # Get usable file paths from the uris
         all_internal_files = True
         for i, file_uri in enumerate(files):
