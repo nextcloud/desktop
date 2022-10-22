@@ -1503,7 +1503,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>Edit locally request is not valid. Opening the file is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>A solicitação de edição local não é válida. É proibido abrir o arquivo.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1472"/>
@@ -1534,7 +1534,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível validar a solicitação para abrir um arquivo do servidor.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1638"/>
