@@ -24,13 +24,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -168,13 +167,13 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
         <source>Opening for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Öppnar för lokal redigering</translation>
     </message>
 </context>
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="133"/>
         <source>No recent emojis</source>
         <translation type="unfinished"/>
     </message>
@@ -328,13 +327,13 @@
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>End to end krypteringsord</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>End to end krypteringsord</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -746,7 +745,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="470"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="471"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Öppna Aktivitetsappen för fler aktiviteter.</translation>
     </message>
@@ -756,12 +755,12 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="493"/>
         <source>Fetching activities …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="563"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Filer från ignorerings-listan och symboliska länkar synkroniseras inte.</translation>
     </message>
@@ -812,32 +811,32 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="148"/>
+        <location filename="../src/gui/application.cpp" line="149"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
+        <location filename="../src/gui/application.cpp" line="151"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="156"/>
+        <location filename="../src/gui/application.cpp" line="157"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="163"/>
+        <location filename="../src/gui/application.cpp" line="164"/>
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="164"/>
+        <location filename="../src/gui/application.cpp" line="165"/>
         <source>Continue</source>
         <translation>Fortsätt</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="338"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>Error accessing the configuration file</source>
         <translation>Kunde inte komma åt konfigurationsfilen</translation>
     </message>
@@ -847,12 +846,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Ett fel uppstod vid läsning av konfigurationsfil vid %1. Kontrollera att filen kan nås av din användare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="339"/>
+        <location filename="../src/gui/application.cpp" line="340"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="342"/>
+        <location filename="../src/gui/application.cpp" line="343"/>
         <source>Quit %1</source>
         <translation>Avsluta %1</translation>
     </message>
@@ -947,7 +946,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error writing metadata to the database</source>
         <translation>Fel vid skrivning av metadata till databasen</translation>
     </message>
@@ -1495,22 +1494,28 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>(säkerhetkopia %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation>Begäran om att redigera lokalt är inte giltig. Det är förbjudet att öppna filen.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find an account for local editing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1466"/>
+        <location filename="../src/gui/folderman.cpp" line="1484"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1472"/>
+        <location filename="../src/gui/folderman.cpp" line="1490"/>
+        <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att hitta en fil för lokal redigering. Se till att sökvägen är giltig och att den är synkroniserad lokalt.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
     </message>
@@ -1520,27 +1525,32 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Okänt tillstånd.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1638"/>
         <source>Undefined state.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1581"/>
+        <location filename="../src/gui/folderman.cpp" line="1641"/>
         <source>Waiting to start syncing.</source>
         <translation>Väntar på att starta synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1644"/>
         <source>Preparing for sync.</source>
         <translation>Förbereder synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1647"/>
         <source>Sync is running.</source>
         <translation>Synkronisering pågår.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1592"/>
+        <location filename="../src/gui/folderman.cpp" line="1652"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synkroniseringen lyckades, men olösta konflikter uppstod.</translation>
     </message>
@@ -1560,62 +1570,62 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Användare Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1594"/>
+        <location filename="../src/gui/folderman.cpp" line="1654"/>
         <source>Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1600"/>
+        <location filename="../src/gui/folderman.cpp" line="1660"/>
         <source>Setup error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1603"/>
+        <location filename="../src/gui/folderman.cpp" line="1663"/>
         <source>Sync request was cancelled.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1606"/>
+        <location filename="../src/gui/folderman.cpp" line="1666"/>
         <source>Sync is paused.</source>
         <translation>Synkronisering är pausad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1612"/>
+        <location filename="../src/gui/folderman.cpp" line="1672"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (synkronisering pausad)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>No valid folder selected!</source>
         <translation>Ingen giltig mapp markerad!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1632"/>
+        <location filename="../src/gui/folderman.cpp" line="1692"/>
         <source>The selected path does not exist!</source>
         <translation>Den valda sökvägen existerar inte!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1636"/>
+        <location filename="../src/gui/folderman.cpp" line="1696"/>
         <source>The selected path is not a folder!</source>
         <translation>Den markerade sökvägen är inte en mapp!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1640"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Du har inga skrivrättigheter till den valda mappen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 innehåller redan en mapp som synkroniseras. Vänligen välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1760"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Den lokala mappen %1 finns redan inuti en mapp som synkroniseras. Vänligen välj en annan!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1716"/>
+        <location filename="../src/gui/folderman.cpp" line="1776"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Det pågår redan en synkronisering från servern till denna lokala mappen. Vänligen välj en annan lokal mapp.</translation>
     </message>
@@ -2454,12 +2464,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="409"/>
         <source>New Version Available</source>
         <translation>Ny version tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;En ny version av %1 klienten är tillgänglig.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; är tillgänglig för hämtning. Den installerade versionen är %3.&lt;/p&gt;</translation>
     </message>
@@ -2470,37 +2480,37 @@ Note that using any logging command line options will override this setting.</so
         <translation>Hoppa över denna version</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Skip this time</source>
         <translation>Hoppa över denna gång</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
         <source>Get update</source>
         <translation>Hämta uppdatering</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Update Failed</source>
         <translation>Uppdateringen misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Ask again later</source>
         <translation>Fråga igen senare</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="478"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Restart and update</source>
         <translation>Starta om och uppdatera</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="479"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
         <source>Update manually</source>
         <translation>Uppdatera manuellt</translation>
     </message>
@@ -2853,7 +2863,7 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="847"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation type="unfinished"/>
     </message>
@@ -3200,7 +3210,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="948"/>
+        <location filename="../src/libsync/discovery.cpp" line="937"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
@@ -3263,17 +3273,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1207"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1222"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1223"/>
         <source>Error updating metadata: %1</source>
         <translation>Ett fel uppstod när metadata skulle uppdateras: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1226"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>File is currently in use</source>
         <translation>Filen används</translation>
     </message>
@@ -3368,7 +3378,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>; Återställning misslyckades: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="306"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>En fil eller mapp togs bort från en skrivskyddad delning, men återställning misslyckades: %1</translation>
     </message>
@@ -3724,7 +3734,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="168"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
         <source>Dismiss</source>
         <translation>Avfärda</translation>
     </message>
@@ -4559,7 +4569,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Återuppta synkronisering för alla</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="393"/>
+        <location filename="../src/gui/systray.cpp" line="421"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5379,42 +5389,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Osynlig</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Statusmeddelande</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="208"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Vad är din status?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="281"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>Rensa status efter</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>Rensa status</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="334"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>Välj status</translation>
     </message>

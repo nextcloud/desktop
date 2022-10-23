@@ -24,13 +24,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation>Odmietnuť</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
         <translation>Otvoriť dialógové okno zdieľania</translation>
     </message>
@@ -174,7 +173,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="133"/>
         <source>No recent emojis</source>
         <translation>Žiadne nedávne emotikony</translation>
     </message>
@@ -328,12 +327,12 @@
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-End encryption mnemonic</source>
+        <source>End to end encryption mnemonic</source>
         <translation>Mnemonické šifrovanie medzi koncovými bodmi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
+        <source>End-to-End encryption mnemonic</source>
         <translation>Mnemonické šifrovanie medzi koncovými bodmi</translation>
     </message>
     <message>
@@ -750,7 +749,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="470"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="471"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Pre viac aktivít otvorte aplikáciu Aktivity.</translation>
     </message>
@@ -760,12 +759,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Získavam aktivity...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="493"/>
         <source>Fetching activities …</source>
         <translation>Nahrávam aktivity ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="563"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Súbory zo zoznamu ignorovaných ako aj symbolické linky sa nesynchronizujú.</translation>
     </message>
@@ -816,32 +815,32 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="148"/>
+        <location filename="../src/gui/application.cpp" line="149"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Pokračovanie bude znamenať &lt;b&gt;zmazanie týchto nastavení &lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
+        <location filename="../src/gui/application.cpp" line="151"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Pokračovanie bude znamenať &lt;b&gt;ignorovanie týchto nastavení &lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="156"/>
+        <location filename="../src/gui/application.cpp" line="157"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Niektoré nastavenia boli nakonfigurované v novších verziách tohto klienta a používajú funkcie, ktoré v tejto verzii nie sú k dispozícii.&lt;br&gt;&lt;br&gt;% 1&lt;br&gt;&lt;br&gt;Aktuálny konfiguračný súbor bol už zálohovaný do &lt;i&gt;% 2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="163"/>
+        <location filename="../src/gui/application.cpp" line="164"/>
         <source>Quit</source>
         <translation>Ukončiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="164"/>
+        <location filename="../src/gui/application.cpp" line="165"/>
         <source>Continue</source>
         <translation>Pokračovať</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="338"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>Error accessing the configuration file</source>
         <translation>Chyba pri prístupe ku konfiguračnému súboru</translation>
     </message>
@@ -851,12 +850,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Pri prístupe ku konfiguračnému súboru na %1 sa vyskytla chyba. Uistite sa, že váš používateľ má prístup k súboru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="339"/>
+        <location filename="../src/gui/application.cpp" line="340"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Pri prístupe ku konfiguračnému súboru na %1 sa vyskytla chyba. Uistite sa, že váš používateľ má prístup k súboru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="342"/>
+        <location filename="../src/gui/application.cpp" line="343"/>
         <source>Quit %1</source>
         <translation>Ukončiť %1</translation>
     </message>
@@ -951,7 +950,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error writing metadata to the database</source>
         <translation>Chyba pri zápise metadát do databázy</translation>
     </message>
@@ -1504,22 +1503,28 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation> (záloha %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find an account for local editing</source>
         <translation>Nepodarilo sa nájsť účet pre miestne úpravy</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1466"/>
+        <location filename="../src/gui/folderman.cpp" line="1484"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Nepodarilo sa nájsť súbor pre lokálne úpravy. Uistite sa, že nie je vylúčený prostredníctvom selektívnej synchronizácie.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1472"/>
+        <location filename="../src/gui/folderman.cpp" line="1490"/>
+        <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Nepodarilo sa nájsť súbor na lokálne úpravy. Uistite sa, že jeho cesta je platná a je synchronizovaný lokálne.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Nemôžem nájisť priečinok pre synchronizáciu.</translation>
     </message>
@@ -1529,27 +1534,32 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1638"/>
         <source>Undefined state.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1581"/>
+        <location filename="../src/gui/folderman.cpp" line="1641"/>
         <source>Waiting to start syncing.</source>
         <translation>Čaká sa na začiatok synchronizácie</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1644"/>
         <source>Preparing for sync.</source>
         <translation>Príprava na synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1647"/>
         <source>Sync is running.</source>
         <translation>Synchronizácia prebieha.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1592"/>
+        <location filename="../src/gui/folderman.cpp" line="1652"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synchronizácia skončila s nevyriešenými konfliktami.</translation>
     </message>
@@ -1569,62 +1579,62 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
         <translation>Zrušené používateľom.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1594"/>
+        <location filename="../src/gui/folderman.cpp" line="1654"/>
         <source>Last sync was successful.</source>
         <translation>Posledná synchronizácia bola úspešná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1600"/>
+        <location filename="../src/gui/folderman.cpp" line="1660"/>
         <source>Setup error.</source>
         <translation>Chyba pri inštalácii.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1603"/>
+        <location filename="../src/gui/folderman.cpp" line="1663"/>
         <source>Sync request was cancelled.</source>
         <translation>Žiadosť o synchronizáciu bola zrušená.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1606"/>
+        <location filename="../src/gui/folderman.cpp" line="1666"/>
         <source>Sync is paused.</source>
         <translation>Synchronizácia je pozastavená.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1612"/>
+        <location filename="../src/gui/folderman.cpp" line="1672"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Synchronizácia je pozastavená)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>No valid folder selected!</source>
         <translation>Nebol zvolený platný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1632"/>
+        <location filename="../src/gui/folderman.cpp" line="1692"/>
         <source>The selected path does not exist!</source>
         <translation>Zvolená cesta neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1636"/>
+        <location filename="../src/gui/folderman.cpp" line="1696"/>
         <source>The selected path is not a folder!</source>
         <translation>Zvolená cesta nie je priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1640"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnenia pre zápis do daného priečinka!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokálny priečinok %1  už obsahuje podpriečinok použitý pre synchronizáciu. Vyberte prosím iný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1760"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Lokálny priečinok %1 už obsahuje podpriečinok použitý pre synchronizáciu. Vyberte prosím iný priečinok.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1716"/>
+        <location filename="../src/gui/folderman.cpp" line="1776"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Do tohto lokálneho priečinka sa už synchronizuje. Vyberte prosím iný priečinok.</translation>
     </message>
@@ -2468,12 +2478,12 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="409"/>
         <source>New Version Available</source>
         <translation>Nová verzia je k dispozícii</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Je dostupná nová verzia klienta %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je dostupná na stiahnutie. Nainštalovaná verzia je %3.&lt;/p&gt;</translation>
     </message>
@@ -2484,37 +2494,37 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
         <translation>Preskočiť túto verziu</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Skip this time</source>
         <translation>Tentoraz preskočiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
         <source>Get update</source>
         <translation>Aktualizovať teraz</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Update Failed</source>
         <translation>Aktualizácia sa nepodarila</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation>&lt;p&gt;K dispozícii je nová verzia klienta %1, ale proces aktualizácie zlyhal. &lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; bolo stiahnuté. Nainštalovaná verzia je %3. Ak potvrdíte reštart a aktualizáciu, váš počítač sa môže reštartovať a dokončiť inštaláciu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Ask again later</source>
         <translation>Opýtať sa neskôr</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="478"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Restart and update</source>
         <translation>Reštart a aktualizácia</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="479"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
         <source>Update manually</source>
         <translation>Aktualizovať manuálne</translation>
     </message>
@@ -2867,7 +2877,7 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="847"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>Nie je možné získať čas poslednej zmeny pre súbor v konflikte %1</translation>
     </message>
@@ -3283,17 +3293,17 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>nie je možné vymazať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1207"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Chyba pri aktualizácii metadát z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1222"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1223"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1226"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>File is currently in use</source>
         <translation>Súbor sa v súčasnosti používa</translation>
     </message>
@@ -3388,7 +3398,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>; Obnovenie zlyhalo: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="306"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Súbor alebo adresár bol odobratý zo sprístupnenia len na čítanie, ale jeho obnovenie zlyhalo: %1</translation>
     </message>
@@ -3744,7 +3754,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Odpovedať</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="168"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
         <source>Dismiss</source>
         <translation>Odmietnuť</translation>
     </message>
@@ -4579,7 +4589,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Pokračovať v synchronizácii pre všetky účty</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="393"/>
+        <location filename="../src/gui/systray.cpp" line="421"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5419,22 +5429,22 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Aký je váš stav?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="282"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>Vyčistiť správu o stave po</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="320"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="327"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>Vyčistiť správu o stave</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="335"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>Nastaviť správu o stave</translation>
     </message>

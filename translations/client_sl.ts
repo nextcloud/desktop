@@ -24,13 +24,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
         <translation type="unfinished"/>
     </message>
@@ -174,7 +173,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="133"/>
         <source>No recent emojis</source>
         <translation type="unfinished"/>
     </message>
@@ -328,13 +327,13 @@
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>Mnemonika celostnega šifriranja</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Mnemonika celostnega šifriranja</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -750,7 +749,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="470"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="471"/>
         <source>For more activities please open the Activity app.</source>
         <translation>Za izpis več dejavnosti odprite program Dejavnost</translation>
     </message>
@@ -760,12 +759,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="493"/>
         <source>Fetching activities …</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="563"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>Datoteke, ki so na seznamu neusklajevanja, in simbolne povezave se ne usklajujejo.</translation>
     </message>
@@ -816,32 +815,32 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="148"/>
+        <location filename="../src/gui/application.cpp" line="149"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Nadaljevanje pomeni &lt;b&gt;brisanje teh nastavitev&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
+        <location filename="../src/gui/application.cpp" line="151"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Nadaljevanje pomeni, da bodo &lt;b&gt;nastavitve prezrte&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="156"/>
+        <location filename="../src/gui/application.cpp" line="157"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Nekatere nastavitve so bile nastavljene v novejši različici programa in vključujejo možnosti, ki v trenutni različici niso na voljo.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Za trenutno uporabljeno nastavitveno datoteko je varnostna kopija že shranjena na &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="163"/>
+        <location filename="../src/gui/application.cpp" line="164"/>
         <source>Quit</source>
         <translation>Končaj</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="164"/>
+        <location filename="../src/gui/application.cpp" line="165"/>
         <source>Continue</source>
         <translation>Nadaljuj</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="338"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>Error accessing the configuration file</source>
         <translation>Napaka dostopa do nastavitvene datoteke</translation>
     </message>
@@ -851,12 +850,12 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <translation>Med dostopom do nastavitvene datoteke na %1 je prišlo do napake. Preverite, ali je dostopna z uporabniškim računom.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="339"/>
+        <location filename="../src/gui/application.cpp" line="340"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="342"/>
+        <location filename="../src/gui/application.cpp" line="343"/>
         <source>Quit %1</source>
         <translation>Končaj %1</translation>
     </message>
@@ -951,7 +950,7 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error writing metadata to the database</source>
         <translation>Napaka zapisovanja metapodatkov v podatkovno zbirko</translation>
     </message>
@@ -1504,22 +1503,28 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>(varnostna kopija %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
-        <source>Could not find an account for local editing</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1466"/>
-        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1472"/>
+        <source>Could not find an account for local editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1484"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1490"/>
+        <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
     </message>
@@ -1529,27 +1534,32 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1638"/>
         <source>Undefined state.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1581"/>
+        <location filename="../src/gui/folderman.cpp" line="1641"/>
         <source>Waiting to start syncing.</source>
         <translation>Čakanje začetek usklajevanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1644"/>
         <source>Preparing for sync.</source>
         <translation>Poteka priprava na usklajevanje.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1647"/>
         <source>Sync is running.</source>
         <translation>Usklajevanje je v teku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1592"/>
+        <location filename="../src/gui/folderman.cpp" line="1652"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Usklajevanje je končano z zaznanimi nerešenimi spori.</translation>
     </message>
@@ -1569,62 +1579,62 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation>Uporabniška prekinitev.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1594"/>
+        <location filename="../src/gui/folderman.cpp" line="1654"/>
         <source>Last sync was successful.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1600"/>
+        <location filename="../src/gui/folderman.cpp" line="1660"/>
         <source>Setup error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1603"/>
+        <location filename="../src/gui/folderman.cpp" line="1663"/>
         <source>Sync request was cancelled.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1606"/>
+        <location filename="../src/gui/folderman.cpp" line="1666"/>
         <source>Sync is paused.</source>
         <translation>Usklajevanje je začasno v premoru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1612"/>
+        <location filename="../src/gui/folderman.cpp" line="1672"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (usklajevanje je v premoru)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>No valid folder selected!</source>
         <translation>Ni izbrane veljavne mape!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1632"/>
+        <location filename="../src/gui/folderman.cpp" line="1692"/>
         <source>The selected path does not exist!</source>
         <translation>Izbrana pot ne obstaja!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1636"/>
+        <location filename="../src/gui/folderman.cpp" line="1696"/>
         <source>The selected path is not a folder!</source>
         <translation>Izbrana pot ni mapa!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1640"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ni ustreznih dovoljenj za pisanje v izbrano mapo!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 že vključuje mapo, ki je določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1760"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Krajevna mapa %1 je že v določena za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1716"/>
+        <location filename="../src/gui/folderman.cpp" line="1776"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Za to krajevno pot je že ustvarjeno mesto za usklajevanje. Izbrati je treba drugo.</translation>
     </message>
@@ -2468,12 +2478,12 @@ Uporaba kateregakoli argumenta z ukazom v ukazni vrstici prepiše to nastavitev.
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="409"/>
         <source>New Version Available</source>
         <translation>Na voljo je novejša različica</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Na voljo je nova različica odjemalca %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; je na voljo za prejem. Trenutno je nameščena različica %3.&lt;/p&gt;</translation>
     </message>
@@ -2484,37 +2494,37 @@ Uporaba kateregakoli argumenta z ukazom v ukazni vrstici prepiše to nastavitev.
         <translation>Preskoči to različico</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Skip this time</source>
         <translation>Posodobitev tokrat preskoči</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
         <source>Get update</source>
         <translation>Pridobi posodobitve</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Update Failed</source>
         <translation>Posodobitev je spodletela</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Na voljo je nova različica programa %1, vendar je posodobitev spodletela.&lt;/p&gt;&lt;p&gt;Program &lt;b&gt;%2&lt;/b&gt; je sicer že prejet. Trenutno nameščeno različico %3 je morda mogoče namestiti, če potrdite ponovni zagon sistema.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Ask again later</source>
         <translation>Znova vprašaj kasneje</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="478"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Restart and update</source>
         <translation>Ponovno zaženi in posodobi</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="479"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
         <source>Update manually</source>
         <translation>Posodobi ročno</translation>
     </message>
@@ -2867,7 +2877,7 @@ Uporaba kateregakoli argumenta z ukazom v ukazni vrstici prepiše to nastavitev.
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="847"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation type="unfinished"/>
     </message>
@@ -3220,7 +3230,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="948"/>
+        <location filename="../src/libsync/discovery.cpp" line="937"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
@@ -3283,17 +3293,17 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1207"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1222"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1223"/>
         <source>Error updating metadata: %1</source>
         <translation>Prišlo je do napake posodabljanja metapodatkov: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1226"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>File is currently in use</source>
         <translation>Datoteka je trenutno v uporabi.</translation>
     </message>
@@ -3388,7 +3398,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>; obnovitev je spodletela: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="306"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>Datoteka ali mapa je bila odstranjena iz mesta v souporabi, ki je nastavljeno le za branje, obnavljanje pa je spodletelo: %1</translation>
     </message>
@@ -3744,7 +3754,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="168"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
         <source>Dismiss</source>
         <translation>Opusti</translation>
     </message>
@@ -4579,7 +4589,7 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation>Nadaljuj z usklajevanjem za vse</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="393"/>
+        <location filename="../src/gui/systray.cpp" line="421"/>
         <source>%1: %2</source>
         <translation>%1: %2</translation>
     </message>
@@ -5399,42 +5409,42 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Drugim nevidno</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Sporočilo stanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="208"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Kako želite nastaviti stanje?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="281"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>Počisti sporočilo stanja po</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>Počisti sporočilo stanja</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="334"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>Nastavi sporočilo stanja</translation>
     </message>

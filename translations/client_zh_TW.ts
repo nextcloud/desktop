@@ -24,13 +24,12 @@
 <context>
     <name>ActivityItemContent</name>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="195"/>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="198"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
         <translation>忽略</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityItemContent.qml" line="229"/>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
         <translation>開啟分享對話方塊</translation>
     </message>
@@ -174,7 +173,7 @@
 <context>
     <name>EmojiPicker</name>
     <message>
-        <location filename="../src/gui/EmojiPicker.qml" line="132"/>
+        <location filename="../src/gui/EmojiPicker.qml" line="133"/>
         <source>No recent emojis</source>
         <translation>無最近的表情符號</translation>
     </message>
@@ -328,13 +327,13 @@
     <name>OCC::AccountManager</name>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>端到端加密助記詞</translation>
+        <source>End to end encryption mnemonic</source>
+        <translation>端到端加密助記碼</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>端到端加密助記碼</translation>
+        <source>End-to-End encryption mnemonic</source>
+        <translation>端到端加密助記詞</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
@@ -750,7 +749,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ActivityListModel</name>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="470"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="471"/>
         <source>For more activities please open the Activity app.</source>
         <translation>請開啟活動應用程式以檢視更多活動。</translation>
     </message>
@@ -760,12 +759,12 @@ This action will abort any currently running synchronization.</source>
         <translation>正在擷取活動紀錄……</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="492"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="493"/>
         <source>Fetching activities …</source>
         <translation>正在擷取活動紀錄……</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/activitylistmodel.cpp" line="563"/>
+        <location filename="../src/gui/tray/activitylistmodel.cpp" line="564"/>
         <source>Files from the ignore list as well as symbolic links are not synced.</source>
         <translation>忽略列表中的檔案與符號連結不會同步。</translation>
     </message>
@@ -816,32 +815,32 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="148"/>
+        <location filename="../src/gui/application.cpp" line="149"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>繼續代表了&lt;b&gt;刪除這些設定&lt;/b&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="150"/>
+        <location filename="../src/gui/application.cpp" line="151"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>繼續代表了&lt;b&gt;忽略這些設定&lt;/b&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="156"/>
+        <location filename="../src/gui/application.cpp" line="157"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>部份設定是在此客戶端的較新版本中設定的，且使用了此版本不提供的功能。&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;目前的設定檔已備份至 &lt;i&gt;%2&lt;/i&gt;。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="163"/>
+        <location filename="../src/gui/application.cpp" line="164"/>
         <source>Quit</source>
         <translation>離開</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="164"/>
+        <location filename="../src/gui/application.cpp" line="165"/>
         <source>Continue</source>
         <translation>繼續</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="338"/>
+        <location filename="../src/gui/application.cpp" line="339"/>
         <source>Error accessing the configuration file</source>
         <translation>存取設定檔時發生錯誤</translation>
     </message>
@@ -851,12 +850,12 @@ This action will abort any currently running synchronization.</source>
         <translation>存取位於 %1 的設定檔時發生錯誤。請確保您的使用者可以存取該檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="339"/>
+        <location filename="../src/gui/application.cpp" line="340"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>存取位於 %1 的設定檔時發生錯誤。請確保您的系統帳號可以存取該檔案。</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="342"/>
+        <location filename="../src/gui/application.cpp" line="343"/>
         <source>Quit %1</source>
         <translation>離開 %1</translation>
     </message>
@@ -951,7 +950,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1386"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1387"/>
         <source>Error writing metadata to the database</source>
         <translation>將詮釋資料寫入到資料庫時發生錯誤</translation>
     </message>
@@ -1504,22 +1503,28 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>（備份 %1）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1454"/>
+        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
+        <translation>本機編輯請求無效。禁止開啟檔案。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find an account for local editing</source>
         <translation>找不到用於本機編輯的帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1466"/>
+        <location filename="../src/gui/folderman.cpp" line="1484"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>找不到用於本機編輯的檔案。請確保其沒有被選擇性同步排除。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1472"/>
+        <location filename="../src/gui/folderman.cpp" line="1490"/>
+        <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>找不到用於本機編輯的檔案。請確保其路徑有效且在本機同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1480"/>
+        <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>找不到要同步的資料夾。</translation>
     </message>
@@ -1529,27 +1534,32 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>未定義狀態。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1578"/>
+        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation>無法驗證從伺服器開啟檔案的請求。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1638"/>
         <source>Undefined state.</source>
         <translation>未定義狀態。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1581"/>
+        <location filename="../src/gui/folderman.cpp" line="1641"/>
         <source>Waiting to start syncing.</source>
         <translation>正在等待同步開始。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1584"/>
+        <location filename="../src/gui/folderman.cpp" line="1644"/>
         <source>Preparing for sync.</source>
         <translation>正在準備同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1587"/>
+        <location filename="../src/gui/folderman.cpp" line="1647"/>
         <source>Sync is running.</source>
         <translation>正在執行同步。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1592"/>
+        <location filename="../src/gui/folderman.cpp" line="1652"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>同步完成，但有未解決的衝突。</translation>
     </message>
@@ -1569,62 +1579,62 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>使用者中斷。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1594"/>
+        <location filename="../src/gui/folderman.cpp" line="1654"/>
         <source>Last sync was successful.</source>
         <translation>上次同步成功。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1600"/>
+        <location filename="../src/gui/folderman.cpp" line="1660"/>
         <source>Setup error.</source>
         <translation>設定錯誤。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1603"/>
+        <location filename="../src/gui/folderman.cpp" line="1663"/>
         <source>Sync request was cancelled.</source>
         <translation>同步請求已取消。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1606"/>
+        <location filename="../src/gui/folderman.cpp" line="1666"/>
         <source>Sync is paused.</source>
         <translation>同步已暫停。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1612"/>
+        <location filename="../src/gui/folderman.cpp" line="1672"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1（同步已暫停）</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1620"/>
+        <location filename="../src/gui/folderman.cpp" line="1680"/>
         <source>No valid folder selected!</source>
         <translation>未選取有效的資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1632"/>
+        <location filename="../src/gui/folderman.cpp" line="1692"/>
         <source>The selected path does not exist!</source>
         <translation>所選的路徑不存在！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1636"/>
+        <location filename="../src/gui/folderman.cpp" line="1696"/>
         <source>The selected path is not a folder!</source>
         <translation>所選的路徑並非資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1640"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>您沒有權限來寫入被選取的資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1752"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>本地資料夾 %1 裡已經有被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1760"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>本地資料夾 %1 是被包含在一個已經被資料夾同步功能使用的資料夾，請選擇其他資料夾！</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1716"/>
+        <location filename="../src/gui/folderman.cpp" line="1776"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>此本機資料夾已設定為從伺服器同步。請挑選其他本機資料夾！</translation>
     </message>
@@ -2468,12 +2478,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="407"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="409"/>
         <source>New Version Available</source>
         <translation>有新版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="413"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1 客戶端有新版本了。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 可供下載，目前安裝的版本是 %3。&lt;/p&gt;</translation>
     </message>
@@ -2484,37 +2494,37 @@ Note that using any logging command line options will override this setting.</so
         <translation>跳過這個版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Skip this time</source>
         <translation>跳過這次更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
         <source>Get update</source>
         <translation>取得更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="457"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Update Failed</source>
         <translation>更新失敗</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="463"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation>&lt;p&gt;%1  客戶端有新版本可用，但更新過程失敗。&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; 已下載。 目前安裝的版本是 %3。如果您確認重新啟動和更新，您的電腦可能會重新啟動以完成安裝。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Ask again later</source>
         <translation>稍後再問</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="478"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Restart and update</source>
         <translation>重新啟動並更新</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="479"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
         <source>Update manually</source>
         <translation>手動更新</translation>
     </message>
@@ -2867,7 +2877,7 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudPropagator</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="846"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="847"/>
         <source>Impossible to get modification time for file in conflict %1</source>
         <translation>無法取得衝突 %1 檔案的修改時間</translation>
     </message>
@@ -3283,17 +3293,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>無法從本機資料庫中刪除檔案 %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1206"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1207"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>因為修改時間無效，所以更新詮釋資料時發生錯誤</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1222"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1223"/>
         <source>Error updating metadata: %1</source>
         <translation>更新詮釋資料時發生錯誤：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1226"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>File is currently in use</source>
         <translation>檔案目前正在使用中</translation>
     </message>
@@ -3388,7 +3398,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>；復原失敗：%1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="305"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="306"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
         <translation>檔案或資料夾已被從唯讀分享移除，但復原失敗：%1</translation>
     </message>
@@ -3744,7 +3754,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>回覆</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/notificationhandler.cpp" line="168"/>
+        <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
         <source>Dismiss</source>
         <translation>我已了解</translation>
     </message>
@@ -4579,7 +4589,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>恢復所有同步</translation>
     </message>
     <message>
-        <location filename="../src/gui/systray.cpp" line="393"/>
+        <location filename="../src/gui/systray.cpp" line="421"/>
         <source>%1: %2</source>
         <translation>%1：%2</translation>
     </message>
@@ -5399,42 +5409,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>靜音所有通知</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="99"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>隱藏</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation>顯示為離線</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="124"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>狀態訊息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="208"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>您目前的狀態是什麼呢？</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="281"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>在這個時間後清除狀態訊息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="319"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="326"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>清除狀態訊息</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="334"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>設定狀態訊息</translation>
     </message>

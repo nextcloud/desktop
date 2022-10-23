@@ -1422,7 +1422,7 @@ void FolderMan::setDirtyNetworkLimits()
     }
 }
 
-void FolderMan::editFileLocally(const QString &accountDisplayName, const QString &relPath)
+void FolderMan::editFileLocally(const QString &userId, const QString &relPath, const QString &token)
 {
     const auto showError = [this](const OCC::AccountStatePtr accountState, const QString &errorMessage, const QString &subject) {
         if (accountState && accountState->account()) {
@@ -1447,11 +1447,29 @@ void FolderMan::editFileLocally(const QString &accountDisplayName, const QString
         messageBox->raise();
     };
 
-    const auto accountFound = AccountManager::instance()->account(accountDisplayName);
+    if (token.isEmpty()) {
+        qCWarning(lcFolderMan) << "Edit locally request is missing a valid token. Impossible to open the file.";
+        showError({}, tr("Edit locally request is not valid. Opening the file is forbidden."), userId);
+        return;
+    }
+
+    const auto accountFound = [&userId]() {
+        for (const auto &account : AccountManager::instance()->accounts()) {
+            const auto isUserIdWithPort = userId.split(QLatin1Char(':')).size() > 1;
+            const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
+            const auto portString = (port > 0 && port != 80 && port != 443) ? QStringLiteral(":%1").arg(port) : QStringLiteral("");
+            const QString davUserId = QStringLiteral("%1@%2").arg(account->account()->davUser(), account->account()->url().host()) + portString;
+
+            if (davUserId == userId) {
+                return account;
+            }
+        }
+        return AccountStatePtr{};
+    }();
 
     if (!accountFound) {
-        qCWarning(lcFolderMan) << "Could not find an account " << accountDisplayName << " to edit file " << relPath << " locally.";
-        showError(accountFound, tr("Could not find an account for local editing"), accountDisplayName);
+        qCWarning(lcFolderMan) << "Could not find an account " << userId << " to edit file " << relPath << " locally.";
+        showError(accountFound, tr("Could not find an account for local editing"), userId);
         return;
     }
 
@@ -1488,23 +1506,38 @@ void FolderMan::editFileLocally(const QString &accountDisplayName, const QString
         showError(accountFound, tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), relPath);
         return;
     }
-    folderForFile->startSync();
-    _localFileEditingSyncFinishedConnections.insert(localFilePath, QObject::connect(folderForFile, &Folder::syncFinished, this,
-        [this, localFilePath](const OCC::SyncResult &result) {
-        Q_UNUSED(result);
-        const auto foundConnectionIt = _localFileEditingSyncFinishedConnections.find(localFilePath);
-        if (foundConnectionIt != std::end(_localFileEditingSyncFinishedConnections) && foundConnectionIt.value()) {
-            QObject::disconnect(foundConnectionIt.value());
-            _localFileEditingSyncFinishedConnections.erase(foundConnectionIt);
-        }
-        // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
-        // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
-        // if the VFS is enabled - we just always call it from a separate thread.
-        QtConcurrent::run([localFilePath]() {
-            QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath));
+
+    const auto checkTokenForEditLocally = new SimpleApiJob(accountFound->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(token));
+    checkTokenForEditLocally->setVerb(SimpleApiJob::Verb::Post);
+    checkTokenForEditLocally->setBody(QByteArray{"path=/"}.append(relPath.toUtf8()));
+    connect(checkTokenForEditLocally, &SimpleApiJob::resultReceived, checkTokenForEditLocally, [this, folderForFile, localFilePath, showError, accountFound, relPath] (int statusCode) {
+        constexpr auto HTTP_OK_CODE = 200;
+        if (statusCode != HTTP_OK_CODE) {
             Systray::instance()->destroyEditFileLocallyLoadingDialog();
-        });
-    }));
+            showError(accountFound, tr("Could not validate the request to open a file from server."), relPath);
+            qCInfo(lcFolderMan()) << "token check result" << statusCode;
+            return;
+        }
+
+        folderForFile->startSync();
+        _localFileEditingSyncFinishedConnections.insert(localFilePath, QObject::connect(folderForFile, &Folder::syncFinished, this,
+                                                                                        [this, localFilePath](const OCC::SyncResult &result) {
+                                                                                            Q_UNUSED(result);
+                                                                                            const auto foundConnectionIt = _localFileEditingSyncFinishedConnections.find(localFilePath);
+                                                                                            if (foundConnectionIt != std::end(_localFileEditingSyncFinishedConnections) && foundConnectionIt.value()) {
+                                                                                                QObject::disconnect(foundConnectionIt.value());
+                                                                                                _localFileEditingSyncFinishedConnections.erase(foundConnectionIt);
+                                                                                            }
+                                                                                            // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
+                                                                                            // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
+                                                                                            // if the VFS is enabled - we just always call it from a separate thread.
+                                                                                            QtConcurrent::run([localFilePath]() {
+                                                                                                QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath));
+                                                                                                Systray::instance()->destroyEditFileLocallyLoadingDialog();
+                                                                                            });
+                                                                                        }));
+    });
+    checkTokenForEditLocally->start();
 }
 
 void FolderMan::trayOverallStatus(const QList<Folder *> &folders,

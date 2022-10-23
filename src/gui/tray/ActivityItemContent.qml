@@ -180,37 +180,20 @@ RowLayout {
         }
     }
 
-    Button {
+    CustomButton {
         id: dismissActionButton
 
-        Layout.preferredWidth: Style.trayListItemIconSize * 0.6
-        Layout.preferredHeight: Style.trayListItemIconSize * 0.6
-
-        Layout.alignment: Qt.AlignCenter
-
-        Layout.margins: Style.roundButtonBackgroundVerticalMargins
-
-        NCToolTip {
-            visible: parent.hovered
-            text: qsTr("Dismiss")
-        }
-
-        Accessible.name: qsTr("Dismiss")
+        Layout.preferredWidth: Style.trayListItemIconSize
+        Layout.preferredHeight: Style.trayListItemIconSize
 
         visible: root.showDismissButton && !shareButton.visible
 
-        background: Rectangle {
-            color: "transparent"
-        }
+        imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+        imageSourceHover: "image://svgimage-custom-color/clear.svg" + "/" + UserModel.currentUser.headerTextColor
 
-        contentItem: Image {
-            anchors.fill: parent
-            source: parent.hovered ? Theme.darkMode ?
-                "image://svgimage-custom-color/clear.svg/white" : "image://svgimage-custom-color/clear.svg/black" :
-                "image://svgimage-custom-color/clear.svg/grey"
-            sourceSize.width: 24
-            sourceSize.height: 24
-        }
+        toolTipText: qsTr("Dismiss")
+
+        bgColor: Style.menuBorder
 
         onClicked: root.dismissButtonClicked()
     }

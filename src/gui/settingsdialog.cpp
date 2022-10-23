@@ -57,10 +57,7 @@ const float buttonSizeRatio = 1.618f; // golden ratio
  */
 QString shortDisplayNameForSettings(OCC::Account *account, int width)
 {
-    QString user = account->davDisplayName();
-    if (user.isEmpty()) {
-        user = account->credentials()->user();
-    }
+    QString user = account->prettyName();
     QString host = account->url().host();
     int port = account->url().port();
     if (port > 0 && port != 80 && port != 443) {

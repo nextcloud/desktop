@@ -46,7 +46,7 @@ ItemDelegate {
             Layout.fillWidth: true
             Layout.minimumHeight: Style.minActivityHeight
 
-            showDismissButton: model.links.length > 0 && model.linksForActionButtons.length === 0
+            showDismissButton: model.links.length > 0
 
             activityData: model
 
@@ -94,7 +94,7 @@ ItemDelegate {
 
             adjustedHeaderColor: root.adjustedHeaderColor
 
-            onTriggerAction: activityModel.slotTriggerAction(model.index, actionIndex)
+            onTriggerAction: activityModel.slotTriggerAction(model.activityIndex, actionIndex)
             onShowReplyField: root.isTalkReplyOptionVisible = true
         }
     }

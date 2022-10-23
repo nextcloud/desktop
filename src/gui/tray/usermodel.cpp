@@ -733,12 +733,7 @@ void User::logout() const
 
 QString User::name() const
 {
-    // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
-    QString name = _account->account()->davDisplayName();
-    if (name == "") {
-        name = _account->account()->credentials()->user();
-    }
-    return name;
+    return _account->account()->prettyName();
 }
 
 QString User::server(bool shortened) const
