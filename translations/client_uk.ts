@@ -4019,7 +4019,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
         <source>Note to recipient</source>
-        <translation>Нотатка для отримувача</translation>
+        <translation>Примітка для отримувача</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
@@ -4893,7 +4893,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="69"/>
         <source>Secure collaboration &amp; file exchange</source>
-        <translation>Безпечна співпраця й обмін файлами</translation>
+        <translation>Підтримуйте співпрацю та обмінюйтеся файлами безпечно</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="70"/>
