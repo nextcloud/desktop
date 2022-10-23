@@ -15,12 +15,10 @@ with your computer.
 
 #### :memo: Step by step instructions
 
-##### Clone the repo and create build directory
+##### Clone the repo
 ```
 $ git clone https://github.com/nextcloud/desktop.git
 $ cd desktop
-$ mkdir build
-$ cd build
 ```
 ##### Compile and install
 
@@ -33,14 +31,14 @@ $ cd build
 ##### Linux & Mac OS
 
 ```
-$ cmake .. -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
-$ make install
+$ cmake -S . -B build -DCMAKE_INSTALL_PREFIX=~/nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
+$ cmake --build build --target install
 ```
 
 ##### Windows
 
 ```
-$ cmake -G "Visual Studio 15 2017 Win64" .. -DCMAKE_INSTALL_PREFIX=$USERPROFILE\nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
+$ cmake -S . -B build -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$USERPROFILE\nextcloud-desktop-client -DCMAKE_BUILD_TYPE=Debug
 $ cmake --build . --config Debug --target install
 ```
 
