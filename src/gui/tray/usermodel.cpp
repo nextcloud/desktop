@@ -966,8 +966,8 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
 
         _users << u;
-        if (isCurrent) {
-            _currentUserId = _users.indexOf(_users.last());
+        if (isCurrent || _currentUserId < 0) {
+            setCurrentUserId(_users.size() - 1);
         }
 
         endInsertRows();
@@ -1018,12 +1018,31 @@ void UserModel::openCurrentAccountServer()
 
 void UserModel::setCurrentUserId(const int id)
 {
-    if (_currentUserId == id || _currentUserId < 0 || _currentUserId >= _users.size())
+    if (_currentUserId == id) {
+        // order has changed, index remained the same
+        if (id >= 0 && id < _users.size() && !_users[id]->isCurrentUser()) {
+            for (auto &user : _users) {
+                user->setCurrentUser(false);
+            }
+            _users[id]->setCurrentUser(true);
+            emit currentUserChanged();
+        }
         return;
-    
-    _users[_currentUserId]->setCurrentUser(false);
-    _users[id]->setCurrentUser(true);
+    }
     _currentUserId = id;
+
+    if (_users.isEmpty()) {
+        emit currentUserChanged();
+        return;
+    }
+
+    if (id >= 0 && id < _users.size()) {
+        for (auto &user : _users) {
+            user->setCurrentUser(false);
+        }
+        _users[id]->setCurrentUser(true);
+    }
+
     emit currentUserChanged();
 }
 
@@ -1045,26 +1064,21 @@ void UserModel::logout(const int id)
 
 void UserModel::removeAccount(const int id)
 {
-    if (id < 0 || id >= _users.size())
+    if (id < 0 || id >= _users.size()) {
         return;
+    }
 
     QMessageBox messageBox(QMessageBox::Question,
         tr("Confirm Account Removal"),
         tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
            "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-            .arg(_users[id]->name()),
-        QMessageBox::NoButton);
-    QPushButton *yesButton =
-        messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+            .arg(_users[id]->name()), QMessageBox::NoButton);
+    QPushButton *yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
     messageBox.exec();
     if (messageBox.clickedButton() != yesButton) {
         return;
-    }
-
-    if (_users[id]->isCurrentUser() && _users.count() > 1) {
-        id == 0 ? setCurrentUserId(1) : setCurrentUserId(0);
     }
 
     _users[id]->logout();
@@ -1073,6 +1087,17 @@ void UserModel::removeAccount(const int id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
+
+    if (_users.isEmpty()) {
+        setCurrentUserId(-1);
+    } else if (_users.size() == 1) {
+        setCurrentUserId(0);
+    } else {
+        if (currentUserId() != id && currentUserId() < id) {
+            return;
+        }
+        setCurrentUserId(id < _users.size() ? id : id - 1);
+    }
 }
 
 std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
