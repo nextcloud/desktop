@@ -30,6 +30,10 @@ previousErrorResultCount = 0
 # socket messages
 socket_messages = []
 
+# Whether wait has been made or not after account is set up
+# This is useful for waiting only for the first time
+waitedAfterSync = False
+
 
 @OnScenarioStart
 def hook(context):
@@ -143,6 +147,8 @@ def hook(context):
 
 
 # determines if the test scenario failed or not
+# Currently, this workaround is needed because we cannot find out a way to determine the pass/fail status of currently running test scenario.
+# And, resultCount("errors")  and resultCount("fails") return the total number of error/failed test scenarios of a test suite.
 def scenarioFailed():
     global previousFailResultCount
     global previousErrorResultCount
@@ -152,19 +158,39 @@ def scenarioFailed():
     )
 
 
+def isAppKilled(pid):
+    if os.path.isdir('/proc/{}'.format(pid)):
+        # process is still running
+        # wait 100ms before checking again
+        snooze(0.1)
+        return False
+    return True
+
+
+def waitUntilAppIsKilled(context, pid=0):
+    timeout = context.userData['minSyncTimeout'] * 1000
+    killed = waitFor(
+        lambda: isAppKilled(pid),
+        timeout,
+    )
+    if not killed:
+        test.log(
+            "Application was not terminated within {} milliseconds".format(timeout)
+        )
+
+
 @OnScenarioEnd
 def hook(context):
+    global socketConnect, socket_messages, waitedAfterSync, previousFailResultCount, previousErrorResultCount, waitedAfterSync
+
+    # reset waited after sync flag
+    waitedAfterSync = False
+
     # close socket connection and clear messages
-    global socketConnect, socket_messages
     socket_messages.clear()
     if socketConnect:
         socketConnect.connected = False
         socketConnect._sock.close()
-
-    # Currently, this workaround is needed because we cannot find out a way to determine the pass/fail status of currently running test scenario.
-    # And, resultCount("errors")  and resultCount("fails") return the total number of error/failed test scenarios of a test suite.
-    global previousFailResultCount
-    global previousErrorResultCount
 
     # capture a screenshot if there is error or test failure in the current scenario execution
     if scenarioFailed() and os.getenv('CI'):
@@ -191,9 +217,10 @@ def hook(context):
 
     # Detach (i.e. potentially terminate) all AUTs at the end of a scenario
     for ctx in applicationContextList():
+        # get pid before detaching
+        pid = ctx.pid
         ctx.detach()
-        # ToDo wait smarter till the app died
-        snooze(context.userData['minSyncTimeout'])
+        waitUntilAppIsKilled(context, pid)
 
     # delete local files/folders
     for filename in os.listdir(context.userData['clientRootSyncPath']):

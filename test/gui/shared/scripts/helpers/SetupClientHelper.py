@@ -72,8 +72,6 @@ def startClient(context):
         + context.userData['clientConfigDir']
     )
 
-    squish.snooze(1)
-
 
 def getPollingInterval():
     pollingInterval = '''[ownCloud]

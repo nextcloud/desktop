@@ -538,35 +538,13 @@ def step(context, type, resource):
     waitForFileOrFolderToSync(context, resource, type)
 
 
-@Given(
-    'user "|any|" has created a file "|any|" with the following content inside the sync folder'
-)
-def step(context, username, filename):
-    createFile(context, filename, username)
-
-
 @When(
     'user "|any|" creates a file "|any|" with the following content inside the sync folder'
 )
 def step(context, username, filename):
-    createFile(context, filename, username)
-
-
-def createFile(context, filename, username=None):
     fileContent = "\n".join(context.multiLineText)
-    syncPath = None
-    if username:
-        syncPath = getUserSyncPath(context, username)
-    else:
-        syncPath = context.userData['currentUserSyncPath']
-
-    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
-    # https://github.com/owncloud/client/issues/9325
-    snooze(context.userData['minSyncTimeout'])
-
-    f = open(join(syncPath, filename), "w")
-    f.write(fileContent)
-    f.close()
+    syncPath = getUserSyncPath(context, username)
+    waitAndWriteFile(context, join(syncPath, filename), fileContent)
 
 
 @When('user "|any|" creates a folder "|any|" inside the sync folder')
@@ -714,9 +692,9 @@ def step(context):
 @Given('the user has changed the content of local file "|any|" to:')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
-    f = open(context.userData['currentUserSyncPath'] + filename, "w")
-    f.write(fileContent)
-    f.close()
+    waitAndWriteFile(
+        join(context.userData['currentUserSyncPath'], filename), fileContent
+    )
 
 
 @When('the user resumes the file sync on the client')
@@ -1051,12 +1029,12 @@ def step(context, username):
     enterUserPassword = EnterPassword()
     enterUserPassword.enterPassword(password)
 
+    # wait for files to sync
+    waitForInitialSyncToComplete(context)
+
 
 @Then('user "|any|" should be connect to the client-UI')
 def step(context, username):
-    # TODO: find some way to dynamically to check if files are synced
-    # It might take some time for all files to sync and connect to ther server
-    snooze(context.userData['minSyncTimeout'])
     isUserSignedIn(context, username)
 
 
@@ -1145,15 +1123,31 @@ def step(context, resource, group):
     sharingDialog.selectCollaborator(group, True)
 
 
-def overwriteFile(resource, content):
+# performing actions immediately after completing the sync from the server does not work
+# The test should wait for a while before performing the action
+# issue: https://github.com/owncloud/client/issues/8832
+def waitForClientToBeReady(context):
+    global waitedAfterSync
+    if not waitedAfterSync:
+        snooze(context.userData['minSyncTimeout'])
+        waitedAfterSync = True
+
+
+def writeFile(resource, content):
     f = open(resource, "w")
     f.write(content)
     f.close()
 
 
-def tryToOverwriteFile(context, resource, content):
+def waitAndWriteFile(context, path, content):
+    waitForClientToBeReady(context)
+    writeFile(path, content)
+
+
+def waitAndTryToWriteFile(context, resource, content):
+    waitForClientToBeReady(context)
     try:
-        overwriteFile(resource, content)
+        writeFile(resource, content)
     except:
         pass
 
@@ -1162,38 +1156,20 @@ def tryToOverwriteFile(context, resource, content):
 def step(context, resource, content):
     print("starting file overwrite")
     resource = join(context.userData['currentUserSyncPath'], resource)
-
-    # overwriting the file immediately after it has been synced from the server seems to have some problem.
-    # The client does not see the change although the changes have already been made thus we are having a race condition
-    # So for now we add 5sec static wait
-    # an issue https://github.com/owncloud/client/issues/8832 has been created for it
-    snooze(context.userData['minSyncTimeout'])
-
-    overwriteFile(resource, content)
-
+    waitAndWriteFile(context, resource, content)
     print("file has been overwritten")
 
 
 @When('the user tries to overwrite the file "|any|" with content "|any|"')
 def step(context, resource, content):
     resource = context.userData['currentUserSyncPath'] + resource
-    # overwriting the file immediately after it has been synced from the server seems to have some problem.
-    # The client does not see the change although the changes have already been made thus we are having a race condition
-    # So for now we add 5sec static wait
-    # an issue https://github.com/owncloud/client/issues/8832 has been created for it
-    snooze(context.userData['minSyncTimeout'])
-    tryToOverwriteFile(context, resource, content)
+    waitAndTryToWriteFile(context, resource, content)
 
 
 @When('user "|any|" tries to overwrite the file "|any|" with content "|any|"')
 def step(context, user, resource, content):
     resource = getResourcePath(context, resource, user)
-    # overwriting the file immediately after it has been synced from the server seems to have some problem.
-    # The client does not see the change although the changes have already been made thus we are having a race condition
-    # So for now we add 5sec static wait
-    # an issue https://github.com/owncloud/client/issues/8832 has been created for it
-    snooze(context.userData['minSyncTimeout'])
-    tryToOverwriteFile(context, resource, content)
+    waitAndTryToWriteFile(context, resource, content)
 
 
 def enableVFSSupport(vfsBtnText):
@@ -1278,9 +1254,7 @@ def step(context, errorMsg):
 
 @When(r'the user deletes the (file|folder) "([^"]*)"', regexp=True)
 def step(context, itemType, resource):
-    # deleting the file immediately after it has been synced from the server seems to have some problem.
-    # issue: https://github.com/owncloud/client/issues/8832
-    snooze(context.userData['minSyncTimeout'])
+    waitForClientToBeReady(context)
 
     resourcePath = sanitizePath(context.userData['currentUserSyncPath'] + resource)
     if itemType == 'file':
@@ -1530,35 +1504,15 @@ def step(context):
     test.xvp("VP_VFS_enabled")
 
 
-@Given('user "|any|" has created the following files inside the sync folder:')
-def step(context, username):
-    '''
-    Create files without any content
-    '''
-    syncPath = getUserSyncPath(context, username)
-
-    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
-    # https://github.com/owncloud/client/issues/9325
-    snooze(context.userData['minSyncTimeout'])
-
-    for row in context.table[1:]:
-        filename = syncPath + row[0]
-        f = open(join(syncPath, filename), "w")
-        f.close()
-
-
 @When('user "|any|" creates the following files inside the sync folder:')
 def step(context, username):
     syncPath = getUserSyncPath(context, username)
 
-    # A file is scheduled to be synced but is marked as ignored for 5 seconds. And if we try to sync it, it will fail. So we need to wait for 5 seconds.
-    # https://github.com/owncloud/client/issues/9325
-    snooze(context.userData['minSyncTimeout'])
+    waitForClientToBeReady(context)
 
     for row in context.table[1:]:
         filename = syncPath + row[0]
-        f = open(join(syncPath, filename), "w")
-        f.close()
+        writeFile(join(syncPath, filename), '')
 
 
 @Given(
