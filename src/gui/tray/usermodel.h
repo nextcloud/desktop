@@ -212,7 +212,7 @@ private:
     static UserModel *_instance;
     UserModel(QObject *parent = nullptr);
     QList<User*> _users;
-    int _currentUserId = 0;
+    int _currentUserId = -1;
     bool _init = true;
 
     void buildUserList();
