@@ -92,7 +92,8 @@ bool AccountManager::restore()
         return true;
     }
 
-    for (const auto &accountId : settings->childGroups()) {
+    const auto settingsChildGroups = settings->childGroups();
+    for (const auto &accountId : settingsChildGroups) {
         settings->beginGroup(accountId);
         if (!skipSettingsKeys.contains(settings->group())) {
             if (const auto acc = loadAccountHelper(*settings)) {
@@ -121,7 +122,8 @@ void AccountManager::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStr
     const auto accountsVersion = settings->value(QLatin1String(versionC)).toInt();
 
     if (accountsVersion <= maxAccountsVersion) {
-        for (const auto &accountId : settings->childGroups()) {
+        const auto settingsChildGroups = settings->childGroups();
+        for (const auto &accountId : settingsChildGroups) {
             settings->beginGroup(accountId);
             const auto accountVersion = settings->value(QLatin1String(versionC), 1).toInt();
 
@@ -263,7 +265,8 @@ void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool s
     settings.beginGroup(QLatin1String(generalC));
     qCInfo(lcAccountManager) << "Saving " << acc->approvedCerts().count() << " unknown certs.";
     QByteArray certs;
-    for (const auto &cert : acc->approvedCerts()) {
+    const auto approvedCerts = acc->approvedCerts();
+    for (const auto &cert : approvedCerts) {
         certs += cert.toPem() + '\n';
     }
     if (!certs.isEmpty()) {
@@ -342,7 +345,8 @@ AccountPtr AccountManager::loadAccountHelper(QSettings &settings)
     acc->_settingsMap.insert(QLatin1String(userC), settings.value(userC));
     acc->_displayName = settings.value(QLatin1String(displayNameC), "").toString();
     QString authTypePrefix = authType + "_";
-    for (const auto &key : settings.childKeys()) {
+    const auto settingsChildKeys = settings.childKeys();
+    for (const auto &key : settingsChildKeys) {
         if (!key.startsWith(authTypePrefix))
             continue;
         acc->_settingsMap.insert(key, settings.value(key));
@@ -370,7 +374,8 @@ AccountStatePtr AccountManager::account(const QString &name)
 
 AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
 {
-    for (const auto &account : accounts()) {
+    const auto accountsList = accounts();
+    for (const auto &account : accountsList) {
         const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
         const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
         const auto portString = (port > 0 && port != 80 && port != 443) ? QStringLiteral(":%1").arg(port) : QStringLiteral("");

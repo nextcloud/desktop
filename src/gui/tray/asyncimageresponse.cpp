@@ -76,7 +76,8 @@ void AsyncImageResponse::processNextImage()
 
     OCC::AccountPtr accountInRequestedServer;
 
-    for (const auto &account : OCC::AccountManager::instance()->accounts()) {
+    const auto accountsList = OCC::AccountManager::instance()->accounts();
+    for (const auto &account : accountsList) {
         if (account && account->account() && imagePath.startsWith(account->account()->url().toString())) {
            accountInRequestedServer = account->account();
         }

@@ -1476,7 +1476,8 @@ void AccountSettings::removeActionFromEncryptionMessage(const QString &actionId)
 
 QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId)
 {
-    for (const auto &action : _ui->encryptionMessage->actions()) {
+    const auto encryptionActions = _ui->encryptionMessage->actions();
+    for (const auto &action : encryptionActions) {
         if (action->property(e2eUiActionIdKey) == actionId) {
             return action;
         }

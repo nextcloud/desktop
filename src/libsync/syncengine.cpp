@@ -1182,7 +1182,7 @@ void SyncEngine::slotScheduleFilesDelayedSync()
         newTimer->callOnTimeout(this, [this, newTimer] {
             qCInfo(lcEngine) << "Rescanning now that delayed sync run is scheduled for:" << newTimer->files;
 
-            for (const auto &file : newTimer->files) {
+            for (const auto &file : qAsConst(newTimer->files)) {
                 this->_filesScheduledForLaterSync.remove(file);
             }
 
@@ -1308,7 +1308,7 @@ void SyncEngine::slotUnscheduleFilesDelayedSync()
         return;
     }
 
-    for (const auto &file : _discoveryPhase->_filesUnscheduleSync) {
+    for (const auto &file : qAsConst(_discoveryPhase->_filesUnscheduleSync)) {
         const auto fileSyncRunTimer = _filesScheduledForLaterSync.value(file);
 
         if (fileSyncRunTimer) {
