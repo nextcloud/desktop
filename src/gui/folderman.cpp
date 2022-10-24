@@ -599,6 +599,21 @@ void FolderMan::scheduleAllFolders()
     }
 }
 
+void FolderMan::forceSyncForFolder(Folder *folder)
+{
+    // Terminate and reschedule any running sync
+    for (const auto folderInMap : map()) {
+        if (folderInMap->isSyncRunning()) {
+            folderInMap->slotTerminateSync();
+            scheduleFolder(folderInMap);
+        }
+    }
+
+    folder->slotWipeErrorBlacklist(); // issue #6757
+    // Insert the selected folder at the front of the queue
+    scheduleFolderNext(folder);
+}
+
 void FolderMan::slotScheduleAppRestart()
 {
     _appRestartRequired = true;

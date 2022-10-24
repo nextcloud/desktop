@@ -1091,20 +1091,8 @@ void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
 void AccountSettings::slotForceSyncCurrentFolder()
 {
     FolderMan *folderMan = FolderMan::instance();
-    if (auto selectedFolder = folderMan->folder(selectedFolderAlias())) {
-        // Terminate and reschedule any running sync
-        for (auto f : folderMan->map()) {
-            if (f->isSyncRunning()) {
-                f->slotTerminateSync();
-                folderMan->scheduleFolder(f);
-            }
-        }
-
-        selectedFolder->slotWipeErrorBlacklist(); // issue #6757
-
-        // Insert the selected folder at the front of the queue
-        folderMan->scheduleFolderNext(selectedFolder);
-    }
+    auto selectedFolder = folderMan->folder(selectedFolderAlias());
+    folderMan->forceSyncForFolder(selectedFolder);
 }
 
 void AccountSettings::slotOpenOC()
