@@ -362,7 +362,7 @@ public:
 
     void doStartUpload() override;
 public slots:
-    void abort(PropagatorJob::AbortType abortType) override;
+    void abort(OCC::PropagatorJob::AbortType abortType) override;
 private slots:
     void startNextChunk();
     void slotPutFinished();
@@ -412,7 +412,7 @@ private:
     void startNewUpload();
     void startNextChunk();
 public slots:
-    void abort(AbortType abortType) override;
+    void abort(OCC::PropagateUploadFileNG::AbortType abortType) override;
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();

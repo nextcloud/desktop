@@ -147,7 +147,7 @@ public slots:
      * On success the permissionsSet signal is emitted
      * In case of a server error the serverError signal is emitted.
      */
-    void setPermissions(Permissions permissions);
+    void setPermissions(OCC::Share::Permissions permissions);
 
     /*
      * Set the password for remote share
@@ -403,9 +403,9 @@ public:
     void fetchShares(const QString &path);
 
 signals:
-    void shareCreated(const SharePtr &share);
-    void linkShareCreated(const QSharedPointer<LinkShare> &share);
-    void sharesFetched(const QList<SharePtr> &shares);
+    void shareCreated(const OCC::SharePtr &share);
+    void linkShareCreated(const QSharedPointer<OCC::LinkShare> &share);
+    void sharesFetched(const QList<OCC::SharePtr> &shares);
     void serverError(int code, const QString &message);
 
     /** Emitted when creating a link share with password fails.

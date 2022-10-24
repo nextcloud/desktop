@@ -90,9 +90,9 @@ public:
     QList<QSslCertificate> _clientSslCaCertificates;
 
 public slots:
-    void setAuthType(DetermineAuthTypeJob::AuthType type);
+    void setAuthType(OCC::DetermineAuthTypeJob::AuthType type);
     void setRemoteFolder(const QString &);
-    void appendToConfigurationLog(const QString &msg, LogType type = LogParagraph);
+    void appendToConfigurationLog(const QString &msg, OCC::OwncloudWizard::LogType type = LogParagraph);
     void slotCurrentPageChanged(int);
     void successfulStep();
     void slotCustomButtonClicked(const int which);

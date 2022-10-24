@@ -58,10 +58,10 @@ signals:
      * The state has changed.
      * when logged in, appPassword has the value of the app password.
      */
-    void result(Flow2Auth::Result result, const QString &errorString = QString(),
+    void result(OCC::Flow2Auth::Result result, const QString &errorString = QString(),
                 const QString &user = QString(), const QString &appPassword = QString());
 
-    void statusChanged(const PollStatus status, int secondsLeft);
+    void statusChanged(const OCC::Flow2Auth::PollStatus status, int secondsLeft);
 
 public slots:
     void slotPollNow();

@@ -72,17 +72,17 @@ signals:
     /**
      * Will be emitted if files on the server changed
      */
-    void filesChanged(Account *account);
+    void filesChanged(OCC::Account *account);
 
     /**
      * Will be emitted if activities have been changed on the server
      */
-    void activitiesChanged(Account *account);
+    void activitiesChanged(OCC::Account *account);
 
     /**
      * Will be emitted if notifications have been changed on the server
      */
-    void notificationsChanged(Account *account);
+    void notificationsChanged(OCC::Account *account);
 
     /**
      * Will be emitted if push notifications are unable to authenticate

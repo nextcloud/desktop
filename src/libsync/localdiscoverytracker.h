@@ -73,7 +73,7 @@ public slots:
      * Success and failure of sync items adjust what the next sync is
      * supposed to do.
      */
-    void slotItemCompleted(const SyncFileItemPtr &item);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
 
     /**
      * When a sync finishes, the lists must be updated

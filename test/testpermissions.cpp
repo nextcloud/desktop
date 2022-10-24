@@ -336,7 +336,7 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
-    static void setAllPerm(FileInfo *fi, RemotePermissions perm)
+    static void setAllPerm(FileInfo *fi, OCC::RemotePermissions perm)
     {
         fi->permissions = perm;
         for (auto &subFi : fi->children)
