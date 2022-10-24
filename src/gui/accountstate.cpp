@@ -369,6 +369,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
                                << _connectionStatus << "->"
                                << status;
         _connectionStatus = status;
+        emit stateChanged(_state);
     }
     _connectionErrors = errors;
 
