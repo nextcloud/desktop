@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
         <source>Opening for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Відкрити для редагування на пристрої</translation>
     </message>
 </context>
 <context>
@@ -875,7 +875,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation>&amp;ім&apos;я користувача:</translation>
+        <translation>та ім&apos;я користувача:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1505,7 +1505,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>Edit locally request is not valid. Opening the file is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Запит на редагування на пристрої не є чинним. Відкриття файлу заборонено.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1472"/>
@@ -1526,7 +1526,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося знайти каталог для синхронізації.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
@@ -1536,7 +1536,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Не вдалося перевірити запит на відкриття файлу з сервера.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1638"/>
@@ -5119,7 +5119,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="73"/>
         <source>&amp;Username</source>
-        <translation>&amp;Ім&apos;я користувача</translation>
+        <translation>та ім&apos;я користувача</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudhttpcredspage.ui" line="83"/>
