@@ -1519,10 +1519,12 @@ void FolderMan::editFileLocally(const QString &userId, const QString &relPath, c
     }
 
     // Sanitise the token
-    const auto encodedToken = QString(QUrl::toPercentEncoding(token));
+    const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(token));
+    // Sanitise the relPath
+    const auto encodedRelPath = QUrl::toPercentEncoding(relPath);
     const auto checkTokenForEditLocally = new SimpleApiJob(accountFound->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
     checkTokenForEditLocally->setVerb(SimpleApiJob::Verb::Post);
-    checkTokenForEditLocally->setBody(QByteArray{"path=/"}.append(relPath.toUtf8()));
+    checkTokenForEditLocally->setBody(QByteArray{"path=/"}.append(encodedRelPath));
     connect(checkTokenForEditLocally, &SimpleApiJob::resultReceived, checkTokenForEditLocally, [this, folderForFile, localFilePath, showError, accountFound, relPath] (int statusCode) {
         constexpr auto HTTP_OK_CODE = 200;
         if (statusCode != HTTP_OK_CODE) {
