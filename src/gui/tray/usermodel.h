@@ -159,7 +159,7 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    QImage avatarById(const int id);
+    [[nodiscard]]  QImage avatarById(const int id) const;
 
     User *currentUser() const;
 
