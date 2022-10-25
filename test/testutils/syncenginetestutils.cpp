@@ -685,16 +685,23 @@ FakeGetWithDataReply::FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const Q
     QString fileName = getFilePathFromUrl(request.url());
     Q_ASSERT(!fileName.isEmpty());
     fileInfo = remoteRootFileInfo.find(fileName);
-    QMetaObject::invokeMethod(this, "respond", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, &FakeGetWithDataReply::respond, Qt::QueuedConnection);
 
     if (request.hasRawHeader("Range")) {
         const QString range = QString::fromUtf8(request.rawHeader("Range"));
-        const QRegularExpression bytesPattern(QStringLiteral("bytes=(?<start>\\d+)-(?<end>\\d+)"));
+        const QRegularExpression bytesPattern(QStringLiteral(R"(bytes=(?P<start>\d+)-(?P<end>\d*))"));
         const QRegularExpressionMatch match = bytesPattern.match(range);
         if (match.hasMatch()) {
             const int start = match.captured(QStringLiteral("start")).toInt();
-            const int end = match.captured(QStringLiteral("end")).toInt();
-            payload = payload.mid(start, end - start + 1);
+            const QString end = match.captured(QStringLiteral("end"));
+            if (end.isEmpty()) {
+                // until the end
+                payload = payload.mid(start);
+            } else {
+                // to the end of the range
+                const int endInt = end.toInt();
+                payload = payload.mid(start, endInt - start + 1);
+            }
         }
     }
 }
