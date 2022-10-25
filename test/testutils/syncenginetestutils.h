@@ -437,6 +437,7 @@ public:
     const FileInfo *fileInfo;
     QByteArray payload;
     quint64 offset = 0;
+    quint64 contentRange = 0;
     bool aborted = false;
 
     FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const QByteArray &data, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);

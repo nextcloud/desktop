@@ -702,6 +702,7 @@ FakeGetWithDataReply::FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const Q
                 const int endInt = end.toInt();
                 payload = payload.mid(start, endInt - start + 1);
             }
+            contentRange = payload.size();
         }
     }
 }
@@ -720,6 +721,9 @@ void FakeGetWithDataReply::respond()
     setRawHeader("ETag", fileInfo->etag);
     setRawHeader("OC-FileId", fileInfo->fileId);
     setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
+    if (contentRange != 0) {
+        setRawHeader("Content-Range", QByteArrayLiteral("byte ") + QByteArray::number(contentRange));
+    }
     emit metaDataChanged();
     if (bytesAvailable())
         emit readyRead();
