@@ -970,11 +970,6 @@ bool SyncEngine::wasFileTouched(const QString &fn) const
     return false;
 }
 
-AccountPtr SyncEngine::account() const
-{
-    return _account;
-}
-
 void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths)
 {
     _localDiscoveryStyle = style;
