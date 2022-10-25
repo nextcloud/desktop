@@ -110,16 +110,28 @@ private slots:
             QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded());
 
             // Now, we need to restart, this time, it should resume.
-            QByteArray ranges;
-            fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *) -> QNetworkReply * {
+            QByteArray rangeRequest;
+            QByteArray rangeReply;
+            OperationCounter counter;
+
+            fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *device) -> QNetworkReply * {
+                counter.serverOverride(op, request, device);
                 if (op == QNetworkAccessManager::GetOperation && request.url().path().endsWith("A/a0")) {
-                    ranges = request.rawHeader("Range");
+                    rangeRequest = request.rawHeader("Range");
+                    auto reply = new FakeGetReply(fakeFolder.remoteModifier(), op, request, this);
+                    connect(reply, &FakeGetReply::metaDataChanged, reply, [&, reply] {
+                        rangeReply = reply->rawHeader("Content-Range");
+                    });
+                    return reply;
                 }
                 return nullptr;
             });
             fakeFolder.syncJournal().wipeErrorBlacklist();
             QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // now this should succeed
-            QCOMPARE(ranges, QByteArray("bytes=" + QByteArray::number(stopAfter) + "-"));
+            QCOMPARE(rangeRequest, QByteArrayLiteral("bytes=") + QByteArray::number(stopAfter) + '-');
+            QCOMPARE(rangeReply, QByteArrayLiteral("bytes ") + QByteArray::number(stopAfter) + '-');
+            QCOMPARE(counter.nGET, 1);
+
             QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         }
     }
