@@ -69,6 +69,7 @@ signals:
 
 private:
     QScopedPointer<AccountBasedOAuth, QScopedPointerObjectDeleteLater<AccountBasedOAuth>> _asyncAuth;
+    QPointer<QWidget> _loginRequiredDialog;
 };
 
 } // namespace OCC

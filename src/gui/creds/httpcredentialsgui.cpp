@@ -104,6 +104,10 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
 
 void HttpCredentialsGui::showDialog()
 {
+    if (_loginRequiredDialog != nullptr) {
+        return;
+    }
+
     auto *dialog = new LoginRequiredDialog(LoginRequiredDialog::Mode::Basic, ocApp()->gui()->settingsDialog());
 
     // make sure it's cleaned up since it's not owned by the account settings (also prevents memory leaks)
@@ -136,6 +140,8 @@ void HttpCredentialsGui::showDialog()
     QTimer::singleShot(0, [contentWidget]() {
         contentWidget->setFocus(Qt::OtherFocusReason);
     });
+
+    _loginRequiredDialog = dialog;
 }
 
 QUrl HttpCredentialsGui::authorisationLink() const
