@@ -453,7 +453,7 @@ void SyncEngine::startSync()
         QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
         if (!pollInfos.isEmpty()) {
             qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
-            auto *job = new CleanupPollsJob(pollInfos, _account,
+            auto *job = new CleanupPollsJob(_account,
                 _journal, _localPath, _syncOptions._vfs, this);
             connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
             connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
