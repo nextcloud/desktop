@@ -915,12 +915,17 @@ bool UserModel::isUserConnected(const int id)
     return _users[id]->isConnected();
 }
 
-QImage UserModel::avatarById(const int id)
+QImage UserModel::avatarById(const int id) const
 {
-    if (id < 0 || id >= _users.size())
-        return {};
+    const auto foundUserByIdIter = std::find_if(std::cbegin(_users), std::cend(_users), [&id](const OCC::User* const user) {
+        return user->account()->id() == QString::number(id);
+    });
 
-    return _users[id]->avatar();
+    if (foundUserByIdIter == std::cend(_users)) {
+        return {};
+    }
+
+    return (*foundUserByIdIter)->avatar();
 }
 
 QString UserModel::currentUserServer()
@@ -1018,32 +1023,31 @@ void UserModel::openCurrentAccountServer()
 
 void UserModel::setCurrentUserId(const int id)
 {
-    if (_currentUserId == id) {
-        // order has changed, index remained the same
-        if (id >= 0 && id < _users.size() && !_users[id]->isCurrentUser()) {
-            for (auto &user : _users) {
-                user->setCurrentUser(false);
-            }
-            _users[id]->setCurrentUser(true);
+    Q_ASSERT(id < _users.size());
+
+    if (id < 0 || id >= _users.size()) {
+        if (id < 0 && _currentUserId != id) {
+            _currentUserId = id;
             emit currentUserChanged();
         }
         return;
     }
-    _currentUserId = id;
 
-    if (_users.isEmpty()) {
-        emit currentUserChanged();
-        return;
-    }
-
-    if (id >= 0 && id < _users.size()) {
-        for (auto &user : _users) {
+    const auto isCurrentUserChanged = !_users[id]->isCurrentUser();
+    if (isCurrentUserChanged) {
+        for (const auto user : _users) {
             user->setCurrentUser(false);
         }
         _users[id]->setCurrentUser(true);
     }
 
-    emit currentUserChanged();
+    if (_currentUserId == id && isCurrentUserChanged) {
+        // order has changed, index remained the same
+        emit currentUserChanged();
+    } else if (_currentUserId != id) {
+        _currentUserId = id;
+        emit currentUserChanged();
+    }
 }
 
 void UserModel::login(const int id)
@@ -1069,11 +1073,12 @@ void UserModel::removeAccount(const int id)
     }
 
     QMessageBox messageBox(QMessageBox::Question,
-        tr("Confirm Account Removal"),
-        tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
-           "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-            .arg(_users[id]->name()), QMessageBox::NoButton);
-    QPushButton *yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+                           tr("Confirm Account Removal"),
+                           tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+                              "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+                               .arg(_users[id]->name()),
+                           QMessageBox::NoButton);
+    const auto * const yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
     messageBox.exec();
@@ -1088,14 +1093,12 @@ void UserModel::removeAccount(const int id)
     _users.removeAt(id);
     endRemoveRows();
 
-    if (_users.isEmpty()) {
-        setCurrentUserId(-1);
-    } else if (_users.size() == 1) {
-        setCurrentUserId(0);
-    } else {
-        if (currentUserId() != id && currentUserId() < id) {
-            return;
-        }
+    if (_users.size() <= 1) {
+        setCurrentUserId(_users.size() - 1);
+    } else if (currentUserId() > id) {
+        // an account was removed from the in-between 0 and the current one, the index of the current one needs a decrement
+        setCurrentUserId(currentUserId() - 1);
+    } else if (currentUserId() == id) {
         setCurrentUserId(id < _users.size() ? id : id - 1);
     }
 }
