@@ -17,8 +17,6 @@ RowLayout {
 
     property bool childHovered: shareButton.hovered || dismissActionButton.hovered
 
-    property color adjustedHeaderColor: "transparent"
-
     signal dismissButtonClicked()
     signal shareButtonClicked()
 
@@ -206,12 +204,12 @@ RowLayout {
 
         visible: root.activityData.isShareable
 
-        imageSource: "image://svgimage-custom-color/share.svg" + "/" + root.adjustedHeaderColor
-        imageSourceHover: "image://svgimage-custom-color/share.svg" + "/" + UserModel.currentUser.headerTextColor
+        imageSource: "image://svgimage-custom-color/share.svg" + "/" + Style.adjustedCurrentUserHeaderColor
+        imageSourceHover: "image://svgimage-custom-color/share.svg" + "/" + Style.currentUserHeaderTextColor
 
         toolTipText: qsTr("Open share dialog")
 
-        bgColor: UserModel.currentUser.headerColor
+        bgColor: Style.currentUserHeaderColor
 
         onClicked: root.shareButtonClicked()
     }

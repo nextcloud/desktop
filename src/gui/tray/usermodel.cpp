@@ -856,6 +856,11 @@ void User::slotSendReplyMessage(const int activityIndex, const QString &token, c
     });
 }
 
+void User::forceSyncNow() const
+{
+    FolderMan::instance()->forceSyncForFolder(getFolder());
+}
+
 /*-------------------------------------------------------------------------------------*/
 
 UserModel *UserModel::_instance = nullptr;

@@ -266,6 +266,8 @@ public slots:
     /** Wipe folder */
     void slotWipeFolderForAccount(AccountState *accountState);
 
+    void forceSyncForFolder(Folder *folder);
+
 private slots:
     void slotFolderSyncPaused(Folder *, bool paused);
     void slotFolderCanSyncChanged();

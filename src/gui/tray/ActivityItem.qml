@@ -16,9 +16,6 @@ ItemDelegate {
     readonly property bool isTalkReplyPossible: model.conversationToken !== ""
     property bool isTalkReplyOptionVisible: model.messageSent !== ""
 
-    property color adjustedHeaderColor: Theme.darkMode ? Qt.lighter(UserModel.currentUser.headerColor, 2)
-                                                       : Qt.darker(UserModel.currentUser.headerColor, 1.5)
-
     enabled: (model.path !== "" || model.link !== "" || model.links.length > 0 ||  model.isCurrentUserFileActivity === true)
     padding: Style.standardSpacing
 
@@ -49,8 +46,6 @@ ItemDelegate {
             showDismissButton: model.links.length > 0
 
             activityData: model
-
-            adjustedHeaderColor: root.adjustedHeaderColor
 
             onShareButtonClicked: Systray.openShareDialog(model.displayPath, model.path)
 
@@ -92,9 +87,8 @@ ItemDelegate {
 
             flickable: root.flickable
 
-            adjustedHeaderColor: root.adjustedHeaderColor
-
             onTriggerAction: activityModel.slotTriggerAction(model.activityIndex, actionIndex)
+
             onShowReplyField: root.isTalkReplyOptionVisible = true
         }
     }
