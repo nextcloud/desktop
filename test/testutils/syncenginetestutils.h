@@ -417,37 +417,20 @@ public:
 
     const FileInfo *fileInfo;
     char payload;
-    int size;
+    qint64 size;
     State state = State::Ok;
+    const std::pair<qint64, qint64> _range;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
 
     Q_INVOKABLE void respond();
 
     void abort() override;
-    qint64 bytesAvailable() const override;
+    virtual qint64 bytesAvailable() const override;
 
-    qint64 readData(char *data, qint64 maxlen) override;
-};
+    virtual qint64 readData(char *data, qint64 maxlen) override;
 
-class FakeGetWithDataReply : public FakeReply
-{
-    Q_OBJECT
-public:
-    const FileInfo *fileInfo;
-    QByteArray payload;
-    quint64 offset = 0;
-    quint64 contentRange = 0;
-    bool aborted = false;
-
-    FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const QByteArray &data, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);
-
-    Q_INVOKABLE void respond();
-
-    void abort() override;
-    qint64 bytesAvailable() const override;
-
-    qint64 readData(char *data, qint64 maxlen) override;
+    static std::pair<qint64, qint64> parseRange(const QNetworkRequest &request);
 };
 
 class FakeChunkMoveReply : public FakeReply

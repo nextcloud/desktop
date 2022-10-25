@@ -601,6 +601,7 @@ void FakeMoveReply::respond()
 
 FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
     : FakeReply { parent }
+    , _range(parseRange(request))
 {
     setRequest(request);
     setUrl(request.url());
@@ -617,6 +618,27 @@ FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::
     QMetaObject::invokeMethod(this, &FakeGetReply::respond, Qt::QueuedConnection);
 }
 
+std::pair<qint64, qint64> FakeGetReply::parseRange(const QNetworkRequest &request)
+{
+    if (request.hasRawHeader("Range")) {
+        const QString range = QString::fromUtf8(request.rawHeader("Range"));
+        const QRegularExpression bytesPattern(QStringLiteral(R"(bytes=(?P<start>\d+)-(?P<end>\d*))"));
+        const QRegularExpressionMatch match = bytesPattern.match(range);
+        if (match.hasMatch()) {
+            const int start = match.captured(QStringLiteral("start")).toInt();
+            const QString end = match.captured(QStringLiteral("end"));
+            if (end.isEmpty()) {
+                // until the end
+                return { start, -1 };
+            } else {
+                // to the end of the range
+                return { start, end.toLongLong() };
+            }
+        }
+    }
+    return { 0, 0 };
+}
+
 void FakeGetReply::respond()
 {
     switch (state) {
@@ -630,13 +652,23 @@ void FakeGetReply::respond()
         break;
     case State::Ok:
         payload = fileInfo->contentChar;
-        size = fileInfo->contentSize;
+        if (_range.second != 0) {
+            if (_range.second == -1) {
+                size = fileInfo->contentSize - _range.first;
+            } else {
+                size = _range.second - _range.first;
+            }
+            setRawHeader("Content-Range", QByteArrayLiteral("bytes ") + QByteArray::number(_range.first) + '-');
+        } else {
+            size = fileInfo->contentSize;
+        }
         setHeader(QNetworkRequest::ContentLengthHeader, size);
         setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
         setRawHeader("OC-ETag", fileInfo->etag);
         setRawHeader("ETag", fileInfo->etag);
         setRawHeader("OC-FileId", fileInfo->fileId);
         setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
+
         emit metaDataChanged();
         if (bytesAvailable()) {
             emit readyRead();
@@ -669,85 +701,6 @@ qint64 FakeGetReply::readData(char *data, qint64 maxlen)
     qint64 len = std::min(qint64 { size }, maxlen);
     std::fill_n(data, len, payload);
     size -= len;
-    return len;
-}
-
-FakeGetWithDataReply::FakeGetWithDataReply(FileInfo &remoteRootFileInfo, const QByteArray &data, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent)
-    : FakeReply { parent }
-{
-    setRequest(request);
-    setUrl(request.url());
-    setOperation(op);
-    open(QIODevice::ReadOnly);
-
-    Q_ASSERT(!data.isEmpty());
-    payload = data;
-    QString fileName = getFilePathFromUrl(request.url());
-    Q_ASSERT(!fileName.isEmpty());
-    fileInfo = remoteRootFileInfo.find(fileName);
-    QMetaObject::invokeMethod(this, &FakeGetWithDataReply::respond, Qt::QueuedConnection);
-
-    if (request.hasRawHeader("Range")) {
-        const QString range = QString::fromUtf8(request.rawHeader("Range"));
-        const QRegularExpression bytesPattern(QStringLiteral(R"(bytes=(?P<start>\d+)-(?P<end>\d*))"));
-        const QRegularExpressionMatch match = bytesPattern.match(range);
-        if (match.hasMatch()) {
-            const int start = match.captured(QStringLiteral("start")).toInt();
-            const QString end = match.captured(QStringLiteral("end"));
-            if (end.isEmpty()) {
-                // until the end
-                payload = payload.mid(start);
-            } else {
-                // to the end of the range
-                const int endInt = end.toInt();
-                payload = payload.mid(start, endInt - start + 1);
-            }
-            contentRange = payload.size();
-        }
-    }
-}
-
-void FakeGetWithDataReply::respond()
-{
-    if (aborted) {
-        setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-        emit metaDataChanged();
-        emit finished();
-        return;
-    }
-    setHeader(QNetworkRequest::ContentLengthHeader, payload.size());
-    setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
-    setRawHeader("OC-ETag", fileInfo->etag);
-    setRawHeader("ETag", fileInfo->etag);
-    setRawHeader("OC-FileId", fileInfo->fileId);
-    setRawHeader("X-OC-Mtime", QByteArray::number(fileInfo->lastModifiedInSecondsUTC()));
-    if (contentRange != 0) {
-        setRawHeader("Content-Range", QByteArrayLiteral("byte ") + QByteArray::number(contentRange));
-    }
-    emit metaDataChanged();
-    if (bytesAvailable())
-        emit readyRead();
-    emit finished();
-}
-
-void FakeGetWithDataReply::abort()
-{
-    setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
-    aborted = true;
-}
-
-qint64 FakeGetWithDataReply::bytesAvailable() const
-{
-    if (aborted)
-        return 0;
-    return payload.size() - offset + QIODevice::bytesAvailable();
-}
-
-qint64 FakeGetWithDataReply::readData(char *data, qint64 maxlen)
-{
-    qint64 len = std::min(payload.size() - offset, quint64(maxlen));
-    std::memcpy(data, payload.constData() + offset, len);
-    offset += len;
     return len;
 }
 

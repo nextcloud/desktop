@@ -27,7 +27,7 @@ class BrokenFakeGetReply : public FakeGetReply
     Q_OBJECT
 public:
     using FakeGetReply::FakeGetReply;
-    int fakeSize = stopAfter;
+    qint64 fakeSize = stopAfter;
 
     qint64 bytesAvailable() const override
     {
