@@ -833,18 +833,18 @@ void AccountSettings::slotAccountStateChanged()
                     this, &AccountSettings::slotAccountStateChanged,
                     Qt::UniqueConnection);
 
-                connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, [this]() {
+                connect(_askForOAuthLoginDialog, &LoginRequiredDialog::rejected, this, [this]() {
                     // if a user dismisses the dialog, we have no choice but signing them out
                     _accountState->signOutByUi();
                 });
 
-                connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, this, [contentWidget, accountPtr = account]() {
+                connect(contentWidget, &OAuthLoginWidget::retryButtonClicked, _askForOAuthLoginDialog, [contentWidget, accountPtr = account]() {
                     auto creds = qobject_cast<HttpCredentialsGui *>(accountPtr->credentials());
                     creds->restartOAuth();
                     contentWidget->hideRetryFrame();
                 });
 
-                connect(cred, &HttpCredentialsGui::asked, this, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
+                connect(cred, &HttpCredentialsGui::asked, _askForOAuthLoginDialog, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
                     if (!cred->ready()) {
                         ocApp()->gui()->raiseDialog(loginDialog);
                         contentWidget->showRetryFrame();

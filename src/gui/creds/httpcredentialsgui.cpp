@@ -137,7 +137,7 @@ void HttpCredentialsGui::showDialog()
     dialog->open();
     ownCloudGui::raiseDialog(dialog);
 
-    QTimer::singleShot(0, [contentWidget]() {
+    QTimer::singleShot(0, contentWidget, [contentWidget]() {
         contentWidget->setFocus(Qt::OtherFocusReason);
     });
 
