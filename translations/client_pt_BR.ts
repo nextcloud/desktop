@@ -1516,6 +1516,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Não foi possível encontrar um arquivo para edição local. Certifique-se de que não seja excluído por meio de sincronização seletiva.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>Estado indefinido.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1490"/>
         <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
@@ -1525,11 +1530,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Não foi possível encontrar uma pasta para sincronizar</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Estado indefinido.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
@@ -5272,6 +5272,14 @@ Este é um novo modo experimental. Se você decidir usá-lo, relate quaisquer pr
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
         <source>Failed to connect database.</source>
         <translation>Falha ao conectar banco de dados</translation>
+    </message>
+</context>
+<context>
+    <name>SyncStatus</name>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <source>Sync now</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

@@ -1518,6 +1518,11 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>Nedoločeno stanje.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1490"/>
         <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
@@ -1527,11 +1532,6 @@ Ali ste prepričani, da želite posodobiti spremembe s strežnikom?
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Nedoločeno stanje.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
@@ -5274,6 +5274,14 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
         <source>Failed to connect database.</source>
         <translation>Vzpostavljanje povezave s podatkovno zbirko je spodletelo.</translation>
+    </message>
+</context>
+<context>
+    <name>SyncStatus</name>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <source>Sync now</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

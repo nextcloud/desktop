@@ -1517,6 +1517,11 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>Nedefinovaný stav.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1490"/>
         <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
@@ -1526,11 +1531,6 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Nedaří se najít složku pro synchronizaci.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
@@ -5273,6 +5273,14 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
         <source>Failed to connect database.</source>
         <translation>Nepodařilo se připojit k databázi.</translation>
+    </message>
+</context>
+<context>
+    <name>SyncStatus</name>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <source>Sync now</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

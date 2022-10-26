@@ -1518,6 +1518,11 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Ezin izan da fitxategi bat aurkitu editatze lokalerako. Ziurtatu ez dagoela ezikusia sinkronizazio hautakorraren bidez.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>Definitu gabeko egoera.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1490"/>
         <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
@@ -1527,11 +1532,6 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Ezin izan da sinkronizatzeko karpeta aurkitu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
@@ -5274,6 +5274,14 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
         <source>Failed to connect database.</source>
         <translation>Datu-basera konektatzeak huts egin du</translation>
+    </message>
+</context>
+<context>
+    <name>SyncStatus</name>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <source>Sync now</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

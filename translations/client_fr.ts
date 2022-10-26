@@ -1517,6 +1517,11 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <translation>Impossible de trouver un fichier pour l&apos;édition locale. Merci de vérifier qu&apos;il n&apos;est pas exclus par un filtre de synchronisation.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>Statut indéfini.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1490"/>
         <location filename="../src/gui/folderman.cpp" line="1506"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
@@ -1526,11 +1531,6 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
         <translation>Impossible de trouver un dossier à synchroniser.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Statut indéfini.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
@@ -5274,6 +5274,14 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
         <source>Failed to connect database.</source>
         <translation>Impossible de connecter la base de données.</translation>
+    </message>
+</context>
+<context>
+    <name>SyncStatus</name>
+    <message>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <source>Sync now</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
