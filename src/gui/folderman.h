@@ -311,6 +311,27 @@ private slots:
     void slotProcessFilesPushNotification(Account *account);
     void slotConnectToPushNotifications(Account *account);
 
+    void showEditLocallyError(const AccountStatePtr &accountState, const QString &message, const QString &informativeText) const;
+    void showEditLocallyErrorNotification(const AccountStatePtr &accountState, const QString &message, const QString &informativeText) const;
+    void showEditLocallyErrorMessageBox(const QString &message, const QString &informativeText) const;
+
+    void startEditLocally(const AccountStatePtr &accountState,
+                          const QString &relPath,
+                          const QString &token,
+                          const QString &fileName,
+                          const QString &localFilePath,
+                          Folder *folderForFile);
+
+    void editLocallyTokenCheckFinished(const AccountStatePtr &accountState,
+                                       const QString &relPath,
+                                       const QString &localFilePath,
+                                       Folder *folderForFile,
+                                       const int statusCode);
+
+    void disconnectEditLocallySyncFinishedConnections(const QString &localFilePath);
+    void editLocallyFolderSyncFinished(const QString &localFilePath);
+    void openEditLocallyFile(const QString &localFilePath) const;
+
 private:
     /** Adds a new folder, does not add it to the account settings and
      *  does not set an account on the new folder.
@@ -342,6 +363,11 @@ private:
     bool pushNotificationsFilesReady(Account *account);
 
     [[nodiscard]] bool isSwitchToVfsNeeded(const FolderDefinition &folderDefinition) const;
+
+    [[nodiscard]] bool isEditLocallyTokenValid(const QString &token) const;
+    [[nodiscard]] bool isEditLocallyRelPathValid(const QString &relPath) const;
+    [[nodiscard]] bool isEditLocallyRelPathExcluded(const QString &relPath) const;
+    [[nodiscard]] bool editLocallyAccount(const AccountStatePtr &acountState) const;
 
     QSet<Folder *> _disabledFolders;
     Folder::Map _folderMap;
@@ -377,7 +403,7 @@ private:
 
     bool _appRestartRequired = false;
 
-    QMap<QString, QMetaObject::Connection> _localFileEditingSyncFinishedConnections;
+    QHash<QString, QMetaObject::Connection> _editLocallySyncFinishedConnections;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);
