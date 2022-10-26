@@ -61,7 +61,7 @@ public:
 
     bool debugMode();
 
-    void showSettingsDialog();
+    Q_INVOKABLE void showSettingsDialog();
 
     ownCloudGui *gui() const;
 

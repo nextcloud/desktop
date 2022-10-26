@@ -68,8 +68,12 @@ set(libsync_SRCS
 
 if(WIN32)
     list(APPEND libsync_SRCS platform_win.cpp)
-elseif(UNIX AND NOT APPLE)
-    list(APPEND libsync_SRCS platform_unix.cpp)
+elseif(UNIX)
+    if (APPLE)
+        list(APPEND libsync_SRCS platform_mac.mm platform_mac_deprecated.mm)
+    else()
+        list(APPEND libsync_SRCS platform_unix.cpp)
+    endif()
 endif()
 
 set(libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)

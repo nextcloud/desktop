@@ -13,12 +13,19 @@
  * for more details.
  */
 
-#include "application.h"
-#include "platform.h"
+#include "platform_mac.h"
+
+#include <QApplication>
+#include <QLoggingCategory>
 
 #import <AppKit/NSApplication.h>
 
-#include <QProcess>
+// defined in platform_mac_deprecated.mm
+namespace OCC {
+
+void migrateLaunchOnStartup();
+
+}
 
 @interface OwnAppDelegate : NSObject <NSApplicationDelegate>
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag;
@@ -29,8 +36,11 @@
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
 {
-    if (auto app = qobject_cast<OCC::Application *>(QApplication::instance()))
-        app->showSettingsDialog();
+    if (auto *app = QApplication::instance()) {
+        QMetaObject::invokeMethod(app, "showSettingsWindow", Qt::QueuedConnection);
+    } else {
+        qDebug() << "Failed to call showSettingsWindow slot";
+    }
     return YES;
 }
 
@@ -38,44 +48,34 @@
 
 namespace OCC {
 
-// implemented in platform_mac_deprecated.mm
-void migrateLaunchOnStartup();
-
-class MacPlatform : public Platform
+class MacPlatformPrivate
 {
 public:
-    MacPlatform();
-    ~MacPlatform() override;
-
-    void migrate() override;
-
-private:
-    QMacAutoReleasePool _autoReleasePool;
-    OwnAppDelegate *_appDelegate;
+    QMacAutoReleasePool autoReleasePool;
+    OwnAppDelegate *appDelegate;
 };
 
 MacPlatform::MacPlatform()
+    : d_ptr(new MacPlatformPrivate)
 {
+    Q_D(MacPlatform);
+
     NSApplicationLoad();
-    _appDelegate = [[OwnAppDelegate alloc] init];
-    [[NSApplication sharedApplication] setDelegate:_appDelegate];
+    d->appDelegate = [[OwnAppDelegate alloc] init];
+    [[NSApplication sharedApplication] setDelegate:d->appDelegate];
 
     signal(SIGPIPE, SIG_IGN);
 }
 
 MacPlatform::~MacPlatform()
 {
-    [_appDelegate release];
+    Q_D(MacPlatform);
+    [d->appDelegate release];
 }
 
 void MacPlatform::migrate()
 {
-    migrateLaunchOnStartup();
-}
-
-std::unique_ptr<Platform> Platform::create()
-{
-    return std::make_unique<MacPlatform>();
+    Platform::migrate();
 }
 
 } // namespace OCC

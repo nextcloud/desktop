@@ -13,8 +13,13 @@
  */
 
 #include "platform.h"
+
 #include "platform_unix.h"
 #include "platform_win.h"
+
+#if defined(Q_OS_MAC)
+#include "platform_mac.h"
+#endif
 
 namespace OCC {
 
@@ -41,6 +46,8 @@ std::unique_ptr<Platform> Platform::create()
     return std::make_unique<WinPlatform>();
 #elif defined(Q_OS_LINUX)
     return std::make_unique<UnixPlatform>();
+#elif defined(Q_OS_MAC)
+    return std::make_unique<MacPlatform>();
 #else
     Q_UNREACHABLE();
 #endif
