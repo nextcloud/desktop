@@ -22,6 +22,7 @@
 #include "config.h"
 #include "account.h"
 #include "accountstate.h"
+#include "editlocallyhandler.h"
 #include "connectionvalidator.h"
 #include "folder.h"
 #include "folderman.h"
@@ -774,7 +775,14 @@ void Application::handleEditLocally(const QUrl &url) const
         qCWarning(lcApplication) << "Invalid URL for file local editing: missing token";
     }
 
-    FolderMan::instance()->editFileLocally(userId, fileRemotePath, token);
+    // We need to make sure the handler sticks around until it is finished
+    const auto editLocallyHandler = new EditLocallyHandler(userId, fileRemotePath, token);
+    if (editLocallyHandler->ready()) {
+        connect(editLocallyHandler, &EditLocallyHandler::finished, this, [&editLocallyHandler] { delete editLocallyHandler; });
+        editLocallyHandler->startEditLocally();
+    } else {
+        delete editLocallyHandler;
+    }
 }
 
 QString substLang(const QString &lang)
