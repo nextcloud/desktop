@@ -616,6 +616,7 @@ void FakeGetReply::respond()
         emit metaDataChanged();
         break;
     case State::FileNotFound:
+        setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 404);
         setError(ContentNotFoundError, QStringLiteral("File Not Found"));
         emit metaDataChanged();
         break;
@@ -1091,6 +1092,11 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
 {
     const auto infoList = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
     for (const auto &diskChild : infoList) {
+        if (diskChild.isHidden() || diskChild.fileName().startsWith(QStringLiteral(".sync_"))) {
+            // Skip system files, sqlite db files, sync log, etc.
+            continue;
+        }
+
         if (diskChild.isDir()) {
             QDir subDir = dir;
             subDir.cd(diskChild.fileName());
@@ -1112,9 +1118,10 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
                 auto content = f.read(1);
                 if (content.size() == 0) {
                     qWarning() << "Empty file at:" << diskChild.filePath();
-                    continue;
+                    fi.contentChar = FileInfo::DefaultContentChar;
+                } else {
+                    fi.contentChar = content.at(0);
                 }
-                fi.contentChar = content.at(0);
                 fi.contentSize = fi.fileSize;
             }
 

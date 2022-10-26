@@ -275,9 +275,12 @@ private slots:
         QCOMPARE(finishedSpy.first().first().toBool(), false);
     }
 
-    /** Verify that an incompletely propagated directory doesn't have the server's
-     * etag stored in the database yet. */
-    void testDirEtagAfterIncompleteSync() {
+    /**
+     * Verify that an incompletely propagated directory doesn't have the server's
+     * etag stored in the database yet.
+     */
+    void testDirEtagAfterIncompleteSync()
+    {
         QFETCH_GLOBAL(Vfs::Mode, vfsMode);
         QFETCH_GLOBAL(bool, filesAreDehydrated);
 
@@ -286,18 +289,33 @@ private slots:
         fakeFolder.serverErrorPaths().append(QStringLiteral("NewFolder/foo"));
         fakeFolder.remoteModifier().mkdir(QStringLiteral("NewFolder"));
         fakeFolder.remoteModifier().insert(QStringLiteral("NewFolder/foo"));
-        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+        bool syncSuccess = fakeFolder.applyLocalModificationsAndSync();
+        if (filesAreDehydrated) {
+            QVERIFY(syncSuccess);
+        } else {
+            QVERIFY(!syncSuccess);
+        }
 
         SyncJournalFileRecord rec;
         fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec);
         QVERIFY(rec.isValid());
-        QCOMPARE(rec._etag, QByteArrayLiteral("_invalid_"));
+        if (filesAreDehydrated) {
+            // No error, failure occurs only with a GET, so etag should be valid (i.e. NOT invalid):
+            QVERIFY(rec._etag != QByteArrayLiteral("_invalid_"));
+        } else {
+            // Download failed, check for invalid etag:
+            QCOMPARE(rec._etag, QByteArrayLiteral("_invalid_"));
+        }
         QVERIFY(!rec._fileId.isEmpty());
     }
 
     void testDirDownloadWithError() {
         QFETCH_GLOBAL(Vfs::Mode, vfsMode);
         QFETCH_GLOBAL(bool, filesAreDehydrated);
+
+        if (filesAreDehydrated) {
+            QSKIP("Nothing gets downloaded, so no error, so skip this test");
+        }
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         ItemCompletedSpy completeSpy(fakeFolder);
@@ -338,41 +356,48 @@ private slots:
     {
         QTest::addColumn<bool>("sameMtime");
         QTest::addColumn<QByteArray>("checksums");
-
-        QTest::addColumn<int>("expectedGET");
+        QTest::addColumn<int>("expectedGEThydrated");
+        QTest::addColumn<int>("expectedGETdehydrated");
 
         QTest::newRow("Same mtime, but no server checksum -> ignored in reconcile")
             << true << QByteArray()
-            << 0;
+            << 0 // hydrated
+            << 1; // dehydrated
 
         QTest::newRow("Same mtime, weak server checksum differ -> downloaded")
             << true << QByteArray("Adler32:bad")
-            << 1;
+            << 1 // hydrated
+            << 1; // dehydrated;
 
         QTest::newRow("Same mtime, matching weak checksum -> skipped")
             << true << QByteArray("Adler32:2a2010d")
-            << 0;
+            << 0 // hydrated
+            << 1; // dehydrated;
 
         QTest::newRow("Same mtime, strong server checksum differ -> downloaded")
             << true << QByteArray("SHA1:bad")
-            << 1;
+            << 1 // hydrated
+            << 1; // dehydrated;
 
         QTest::newRow("Same mtime, matching strong checksum -> skipped")
             << true << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
-            << 0;
-
+            << 0 // hydrated
+            << 1; // dehydrated;
 
         QTest::newRow("mtime changed, but no server checksum -> download")
             << false << QByteArray()
-            << 1;
+            << 1 // hydrated
+            << 1; // dehydrated;
 
         QTest::newRow("mtime changed, weak checksum match -> download anyway")
             << false << QByteArray("Adler32:2a2010d")
-            << 1;
+            << 1 // hydrated
+            << 1; // dehydrated;
 
         QTest::newRow("mtime changed, strong checksum match -> skip")
             << false << QByteArray("SHA1:56900fb1d337cf7237ff766276b9c1e8ce507427")
-            << 0;
+            << 0 // hydrated
+            << 1; // dehydrated;
     }
 
     void testFakeConflict()
@@ -381,7 +406,10 @@ private slots:
         QFETCH_GLOBAL(bool, filesAreDehydrated);
         QFETCH(bool, sameMtime);
         QFETCH(QByteArray, checksums);
-        QFETCH(int, expectedGET);
+        QFETCH(int, expectedGEThydrated);
+        QFETCH(int, expectedGETdehydrated);
+
+        int expectedGET = filesAreDehydrated ? expectedGETdehydrated : expectedGEThydrated;
 
         FakeFolder fakeFolder(FileInfo::A12_B12_C12_S12(), vfsMode, filesAreDehydrated);
         OperationCounter counter(fakeFolder);
@@ -393,8 +421,11 @@ private slots:
         auto mtime = QDateTime::currentDateTimeUtc().addDays(-4);
         mtime.setMSecsSinceEpoch(mtime.toMSecsSinceEpoch() / 1000 * 1000);
 
-        const auto a1size = fakeFolder.currentLocalState().find("A/a1")->contentSize;
+        const auto a1size = fakeFolder.currentRemoteState().find("A/a1")->contentSize;
+
+        // In the dehydrated case, executing this `setContents` will cause a hydration of the file, so there will always be 1 GET request.
         fakeFolder.localModifier().setContents(QStringLiteral("A/a1"), a1size, 'C');
+
         fakeFolder.localModifier().setModTime(QStringLiteral("A/a1"), mtime);
         fakeFolder.remoteModifier().setContents(QStringLiteral("A/a1"), a1size, 'C');
         if (!sameMtime) {
@@ -585,7 +616,14 @@ private slots:
         // Bad OC-Checksum
         checksumValue = "SHA1:bad";
         fakeFolder.remoteModifier().create(QStringLiteral("A/a4"), 16, 'A');
-        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+        bool syncSucceeded = fakeFolder.applyLocalModificationsAndSync();
+        if (filesAreDehydrated) {
+            // In the dehydrated case, files are never downloaded, so checksums are not computed. Only placeholders are created.
+            QVERIFY(syncSucceeded);
+        } else {
+            // Any case where files are actually downloaded (no vfs, local files are hydrated, etc), the checksum calculation should fail.
+            QVERIFY(!syncSucceeded);
+        }
 
         // Good OC-Checksum
         checksumValue = "SHA1:19b1928d58a2030d08023f3d7054516dbc186f20"; // printf 'A%.0s' {1..16} | sha1sum -
@@ -597,7 +635,14 @@ private slots:
         // Bad Content-MD5
         contentMd5Value = "bad";
         fakeFolder.remoteModifier().create(QStringLiteral("A/a5"), 16, 'A');
-        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+        syncSucceeded = fakeFolder.applyLocalModificationsAndSync();
+        if (filesAreDehydrated) {
+            // In the dehydrated case, files are never downloaded, so checksums are not computed. Only placeholders are created.
+            QVERIFY(syncSucceeded);
+        } else {
+            // Any case where files are actually downloaded (no vfs, local files are hydrated, etc), the checksum calculation should fail.
+            QVERIFY(!syncSucceeded);
+        }
 
         // Good Content-MD5
         contentMd5Value = "d8a73157ce10cd94a91c2079fc9a92c8"; // printf 'A%.0s' {1..16} | md5sum -
@@ -612,7 +657,14 @@ private slots:
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         contentMd5Value = "bad";
         fakeFolder.remoteModifier().create(QStringLiteral("A/a7"), 16, 'A');
-        QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+        syncSucceeded = fakeFolder.applyLocalModificationsAndSync();
+        if (filesAreDehydrated) {
+            // In the dehydrated case, files are never downloaded, so checksums are not computed. Only placeholders are created.
+            QVERIFY(syncSucceeded);
+        } else {
+            // Any case where files are actually downloaded (no vfs, local files are hydrated, etc), the checksum calculation should fail.
+            QVERIFY(!syncSucceeded);
+        }
         contentMd5Value.clear();
         fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
@@ -621,7 +673,14 @@ private slots:
         // OC-Checksum contains Unsupported checksums
         checksumValue = "Unsupported:XXXX SHA1:invalid Invalid:XxX";
         fakeFolder.remoteModifier().create(QStringLiteral("A/a8"), 16, 'A');
-        QVERIFY(!fakeFolder.applyLocalModificationsAndSync()); // Since the supported SHA1 checksum is invalid, no download
+        syncSucceeded = fakeFolder.applyLocalModificationsAndSync();
+        if (filesAreDehydrated) {
+            // In the dehydrated case, files are never downloaded, so checksums are not computed. Only placeholders are created.
+            QVERIFY(syncSucceeded);
+        } else {
+            // Since the supported SHA1 checksum is invalid, no download
+            QVERIFY(!syncSucceeded);
+        }
         checksumValue =  "Unsupported:XXXX SHA1:19b1928d58a2030d08023f3d7054516dbc186f20 Invalid:XxX";
         fakeFolder.syncJournal().wipeErrorBlacklist();
         QVERIFY(fakeFolder.applyLocalModificationsAndSync()); // The supported SHA1 checksum is valid now, so the file are downloaded

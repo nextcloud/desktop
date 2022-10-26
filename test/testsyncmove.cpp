@@ -225,12 +225,10 @@ private slots:
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         if (vfsMode == Vfs::Off) {
             QCOMPARE(counter.nGET, 0); // b2m is detected as a *new* file, so we don't need to fetch the contents
-            QCOMPARE(counter.nMOVE, 0); // content differs, so not a move
         } else {
-            // with winvfs, we don't implement the CF_CALLBACK_TYPE_NOTIFY_RENAME callback, so:
-            QCOMPARE(counter.nGET, 1); // callback to get the metadata/contents of b2m
-            QCOMPARE(counter.nMOVE, 0); // no callback, contents differ, so not a move
+            QCOMPARE(counter.nGET, 1); // b2 is accessed, so we get a callback to download the file
         }
+        QCOMPARE(counter.nMOVE, 0); // content differs, so not a move
         QCOMPARE(counter.nPUT, 1); // upload b2m
         QCOMPARE(counter.nDELETE, 1); // delete b2
         counter.reset();
@@ -247,26 +245,26 @@ private slots:
             QVERIFY(fakeFolder.applyLocalModificationsAndSync());
             QCOMPARE(counter.nPUT, 0);
             QCOMPARE(counter.nDELETE, 0);
-            QVERIFY(!(fakeFolder.currentLocalState() == remoteInfo));
+            QVERIFY(fakeFolder.currentLocalState() != remoteInfo);
             counter.reset();
+
+            // cleanup, and upload a file that will have a checksum in the db
+            fakeFolder.localModifier().remove(QStringLiteral("C/c1m"));
+            QVERIFY(fakeFolder.applyLocalModificationsAndSync());
+            QCOMPARE(counter.nDELETE, 1);
+            counter.reset();
+        } else {
+            // no rename happened, nothing to clean up
         }
 
-        // cleanup, and upload a file that will have a checksum in the db
-        if (vfsMode == Vfs::Off) {
-            // rename happened in the previous test
-            fakeFolder.localModifier().remove(QStringLiteral("C/c1m"));
-        } else {
-            // no rename happened, remove the "original"
-            fakeFolder.localModifier().remove(QStringLiteral("C/c1"));
-        }
-        fakeFolder.localModifier().insert("C/c3", 13_b, 'E'); // 13, because c1 (and c2) have a size of 24 bytes
+        fakeFolder.localModifier().insert("C/c3", 13_b, 'E'); // 13, because c1 (and c2) have a size of 24 bytes, so this file is clearly different
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), remoteInfo);
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(remoteInfo));
         QCOMPARE(counter.nGET, 0);
         QCOMPARE(counter.nMOVE, 0);
         QCOMPARE(counter.nPUT, 1);
-        QCOMPARE(counter.nDELETE, 1);
+        QCOMPARE(counter.nDELETE, 0);
         counter.reset();
 
         // Move-and-change, content only, this time while having a checksum
@@ -422,24 +420,22 @@ private slots:
         remote.setContents(QStringLiteral("A/a1m"), FileModifier::DefaultFileSize, 'B');
         remote.rename(QStringLiteral("B/b1m"), QStringLiteral("B/b1m2"));
         local.setContents(QStringLiteral("B/b1m"), FileModifier::DefaultFileSize, 'B');
+
+        if (filesAreDehydrated) {
+            // When a placeholder is accessed, a hydration request is made. This will fail, because
+            // the file (b1m) is no longer available on the server. We then return an error, so the
+            // helper will fail to do the local modifications.
+            QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
+            QSKIP("Behaviour for dehydrated files is different at this point compared to no-VFS");
+        }
+
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
-        if (vfsMode == Vfs::Off) {
-            QCOMPARE(counter.nGET, 2);
-            QCOMPARE(counter.nPUT, 2);
-            QCOMPARE(counter.nMOVE, 0);
-            QCOMPARE(counter.nDELETE, 0);
-        } else {
-            QCOMPARE(counter.nGET, 0);
-            QCOMPARE(counter.nPUT, 1); // the setContents for the "new" file b1m
-            QCOMPARE(counter.nMOVE, 1); // the rename of a1m to a1m2
-            QCOMPARE(counter.nDELETE, 0);
-        }
-
-        if (vfsMode != Vfs::Off) {
-            QSKIP("Behaviour for any VFS is different at this point compared to no-VFS");
-        }
+        QCOMPARE(counter.nGET, 2);
+        QCOMPARE(counter.nPUT, 2);
+        QCOMPARE(counter.nMOVE, 0);
+        QCOMPARE(counter.nDELETE, 0);
 
         // All these files existing afterwards is debatable. Should we propagate
         // the rename in one direction and grab the new contents in the other?
