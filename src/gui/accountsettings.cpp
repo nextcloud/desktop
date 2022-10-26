@@ -128,9 +128,9 @@ protected:
             Qt::CursorShape shape = Qt::ArrowCursor;
             const auto pos = folderList->mapFromGlobal(QCursor::pos());
             const auto index = folderList->indexAt(pos);
-            if (model->classify(index) == FolderStatusModel::RootFolder
-                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
-                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
+            if (model->classify(index) == FolderStatusModel::RootFolder &&
+                (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos) ||
+                    FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
             folderList->setCursor(shape);
@@ -283,8 +283,9 @@ void AccountSettings::slotEncryptFolderFinished(int status)
 QString AccountSettings::selectedFolderAlias() const
 {
     const auto selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid())
+    if (!selected.isValid()) {
         return "";
+    }
     return _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
 }
 
@@ -303,8 +304,9 @@ void AccountSettings::doExpand()
     // Make sure at least the root items are expanded
     for (int i = 0; i < _model->rowCount(); ++i) {
         const auto idx = _model->index(i);
-        if (!_ui->_folderList->isExpanded(idx))
+        if (!_ui->_folderList->isExpanded(idx)) {
             _ui->_folderList->setExpanded(idx, true);
+        }
     }
 }
 
@@ -366,8 +368,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         job->start();
     };
 
-    if (folder->virtualFilesEnabled()
-        && folder->vfs().mode() == Vfs::WindowsCfApi) {
+    if (folder->virtualFilesEnabled() && folder->vfs().mode() == Vfs::WindowsCfApi) {
         showEnableE2eeWithVirtualFilesWarningDialog(encryptFolder);
         return;
     }
@@ -377,8 +378,9 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
 void AccountSettings::slotEditCurrentIgnoredFiles()
 {
     const auto folder = FolderMan::instance()->folder(selectedFolderAlias());
-    if (!folder)
+    if (!folder) {
         return;
+    }
     openIgnoredFilesDialog(folder->path());
 }
 
@@ -425,8 +427,9 @@ void AccountSettings::slotOpenMakeFolderDialog()
 void AccountSettings::slotEditCurrentLocalIgnoredFiles()
 {
     const auto selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
+    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder) {
         return;
+    }
     const auto fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
     openIgnoredFilesDialog(fileName);
 }
@@ -448,12 +451,12 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
     dialog->setLayout(layout);
 
     connect(buttonBox, &QDialogButtonBox::clicked, [=](QAbstractButton * button) {
-        if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+        if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
             ignoreListWidget->slotWriteIgnoreFile(ignoreFile);
+        }
         dialog->close();
     });
-    connect(buttonBox, &QDialogButtonBox::rejected,
-            dialog,    &QDialog::close);
+    connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
 
     dialog->open();
 }
@@ -601,8 +604,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         ac->setDisabled(Theme::instance()->enforceVirtualFilesSyncFolder());
     }
 
-    if (Theme::instance()->showVirtualFilesOption()
-        && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
+    if (Theme::instance()->showVirtualFilesOption() && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
         const auto mode = bestAvailableVfsMode();
         if (mode == Vfs::WindowsCfApi || ConfigFile().showExperimentalOptions()) {
             ac = menu->addAction(tr("Enable virtual file support %1 …").arg(mode == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
@@ -628,8 +630,9 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
         const auto btnRect = treeView->visualRect(indx);
         const auto btnSize = treeView->itemDelegate(indx)->sizeHint(opt, indx);
         const auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
-        if (!actual.contains(pos))
+        if (!actual.contains(pos)) {
             return;
+        }
 
         if (indx.flags() & Qt::ItemIsEnabled) {
             slotAddFolder();
@@ -714,8 +717,9 @@ void AccountSettings::slotFolderWizardAccepted()
      */
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
-    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
+    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
         definition.navigationPaneClsid = QUuid::createUuid();
+    }
 
     const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
@@ -723,8 +727,9 @@ void AccountSettings::slotFolderWizardAccepted()
 
     const auto folder = folderMan->addFolder(_accountState, definition);
     if (folder) {
-        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool())
+        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool()) {
             folder->setRootPinState(PinState::OnlineOnly);
+        }
 
         folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
@@ -788,8 +793,9 @@ void AccountSettings::slotOpenCurrentFolder()
 void AccountSettings::slotOpenCurrentLocalSubFolder()
 {
     const auto selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
+    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder) {
         return;
+    }
     const auto fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
     const auto url = QUrl::fromLocalFile(fileName);
     QDesktopServices::openUrl(url);
@@ -806,8 +812,9 @@ void AccountSettings::slotEnableVfsCurrentFolder()
     }
 
     OwncloudWizard::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
-        if (!enable || !folder)
+        if (!enable || !folder) {
             return;
+        }
 
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
         FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
@@ -815,8 +822,9 @@ void AccountSettings::slotEnableVfsCurrentFolder()
         // It is unsafe to switch on vfs while a sync is running - wait if necessary.
         const auto connection = std::make_shared<QMetaObject::Connection>();
         const auto switchVfsOn = [folder, connection, this]() {
-            if (*connection)
+            if (*connection) {
                 QObject::disconnect(*connection);
+            }
 
             qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
 
@@ -881,8 +889,9 @@ void AccountSettings::slotDisableVfsCurrentFolder()
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
         msgBox->deleteLater();
-        if (msgBox->clickedButton() != acceptButton|| !folder)
+        if (msgBox->clickedButton() != acceptButton|| !folder) {
             return;
+        }
 
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
         FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
@@ -890,8 +899,9 @@ void AccountSettings::slotDisableVfsCurrentFolder()
         // It is unsafe to switch off vfs while a sync is running - wait if necessary.
         const auto connection = std::make_shared<QMetaObject::Connection>();
         const auto switchVfsOff = [folder, connection, this]() {
-            if (*connection)
+            if (*connection) {
                 QObject::disconnect(*connection);
+            }
 
             qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
 
@@ -1174,8 +1184,9 @@ void AccountSettings::slotAccountStateChanged()
     if (state != AccountState::Connected) {
         /* check if there are expanded root items, if so, close them */
         for (auto i = 0; i < _model->rowCount(); ++i) {
-            if (_ui->_folderList->isExpanded(_model->index(i)))
+            if (_ui->_folderList->isExpanded(_model->index(i))) {
                 _ui->_folderList->setExpanded(_model->index(i), false);
+            }
         }
     } else if (_model->isDirty()) {
         // If we connect and have pending changes, show the list.
@@ -1208,8 +1219,9 @@ void AccountSettings::slotLinkActivated(const QString &link)
     if (li.count() > 1) {
         auto myFolder = li[0];
         const auto alias = li[1];
-        if (myFolder.endsWith(QLatin1Char('/')))
+        if (myFolder.endsWith(QLatin1Char('/'))) {
             myFolder.chop(1);
+        }
 
         // Make sure the folder itself is expanded
         const auto folder = FolderMan::instance()->folder(alias);
