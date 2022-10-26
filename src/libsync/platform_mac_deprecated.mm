@@ -120,6 +120,8 @@ namespace Deprecated {
 /// Migrate from deprecated API of "Login Items" to launchd plist files (if needed).
 void migrateLaunchOnStartup()
 {
+    Q_ASSERT(QCoreApplication::instance() != nullptr);
+
     bool hasDeprecatedLaunchOnStartup = Deprecated::hasLaunchOnStartup();
 
     // Three possibilities here for `hasDeprecatedLaunchOnStartup`:
