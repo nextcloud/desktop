@@ -272,7 +272,7 @@ void AccountSettings::slotEncryptFolderFinished(int status)
 
     const auto folder = job->property(propertyFolder).value<Folder *>();
     Q_ASSERT(folder);
-    const auto path = job->property(propertyPath).value<QString>();
+    const auto path = job->property(propertyPath).toString();
     const auto index = _model->indexForPath(folder, path);
     Q_ASSERT(index.isValid());
     _model->resetAndFetch(index.parent());
@@ -438,7 +438,7 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
 {
     Q_ASSERT(QFileInfo(absFolderPath).isAbsolute());
 
-    const QString ignoreFile(absFolderPath + ".sync-exclude.lst");
+    const QString ignoreFile{absFolderPath + ".sync-exclude.lst"};
     const auto layout = new QVBoxLayout();
     const auto ignoreListWidget = new IgnoreListTableWidget(this);
     ignoreListWidget->readIgnoreFile(ignoreFile);
@@ -1086,7 +1086,7 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         _ui->quotaProgressBar->setToolTip(toolTip);
     } else {
         _ui->quotaProgressBar->setVisible(false);
-        _ui->quotaInfoLabel->setToolTip(QString());
+        _ui->quotaInfoLabel->setToolTip({});
 
         /* -1 means not computed; -2 means unknown; -3 means unlimited  (#owncloud/client/issues/3940)*/
         if (total == 0 || total == -1) {
@@ -1105,7 +1105,7 @@ void AccountSettings::slotAccountStateChanged()
         _ui->sslButton->updateAccountState(_accountState);
         const auto account = _accountState->account();
         auto safeUrl = account->url();
-        safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+        safeUrl.setPassword({}); // Remove the password from the URL to avoid showing it in the UI
         const auto folders = FolderMan::instance()->map().values();
         for (const auto folder : folders) {
             _model->slotUpdateFolderState(folder);
