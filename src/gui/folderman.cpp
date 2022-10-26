@@ -1488,6 +1488,27 @@ void FolderMan::editFileLocally(const QString &userId, const QString &relPath, c
         return;
     }
 
+    // We want to check that the path is canonical and not relative
+    // (i.e. that it doesn't contain ../../) but we always receive
+    // a relative path, so let's make it absolute by prepending a
+    // slash
+
+    auto slashPrefixedPath = relPath;
+    if (!slashPrefixedPath.startsWith('/')) {
+        slashPrefixedPath.prepend('/');
+    }
+
+    // Let's check that the filepath is canonical, and that the request
+    // contains no funny behaviour regarding paths
+    const auto cleanedPath = QDir::cleanPath(slashPrefixedPath);
+
+    if (cleanedPath != slashPrefixedPath) {
+        qCWarning(lcFolderMan) << "Provided relPath was:" << relPath
+                               << "which is not canonical (cleaned path was:" << cleanedPath << ")";
+        showError(accountFound, tr("Invalid file path was provided."), tr("Please try again."));
+        return;
+    }
+
     const auto foundFiles = findFileInLocalFolders(relPath, accountFound->account());
 
     if (foundFiles.isEmpty()) {
