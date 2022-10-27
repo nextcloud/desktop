@@ -43,7 +43,7 @@ FolderStatusDelegate::FolderStatusDelegate()
 
 QString FolderStatusDelegate::addFolderText(bool useSpaces)
 {
-    return !useSpaces ? tr("Add Folder Sync Connection") : tr("Add a space");
+    return !useSpaces ? tr("Add Folder Sync Connection") : tr("Add a Space");
 }
 
 // allocate each item size in listview.
