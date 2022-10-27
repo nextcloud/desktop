@@ -35,7 +35,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDisco, "nextcloud.sync.discovery", QtInfoMsg)
 
 void ProcessDirectoryJob::start()
 {
