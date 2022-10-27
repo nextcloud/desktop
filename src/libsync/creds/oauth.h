@@ -61,8 +61,6 @@ public:
     OAuth(const QUrl &serverUrl, const QString &davUser, QNetworkAccessManager *networkAccessManager, const QVariantMap &dynamicRegistrationData, QObject *parent);
     ~OAuth() override;
 
-    // TODO: consider deleting default copy/move constructors
-
     virtual void startAuthentication();
     void openBrowser();
     QUrl authorisationLink() const;
