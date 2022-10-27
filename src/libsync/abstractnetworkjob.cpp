@@ -184,7 +184,7 @@ void AbstractNetworkJob::slotFinished()
     _finished = true;
     if (_reply->error() != QNetworkReply::NoError) {
         if (_account->jobQueue()->retry(this)) {
-            qCDebug(lcNetworkJob) << "Queuing: " << _reply->url() << " for retry";
+            qCDebug(lcNetworkJob) << "Queued:" << this << "for retry";
             return;
         }
 
