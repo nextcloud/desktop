@@ -5281,7 +5281,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Jetzt synchronisieren</translation>
     </message>
 </context>
 <context>

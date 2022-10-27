@@ -5280,7 +5280,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizovat nyní</translation>
     </message>
 </context>
 <context>
