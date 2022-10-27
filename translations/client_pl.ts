@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
         <source>Opening for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Otwarcie do lokalnej edycji</translation>
     </message>
 </context>
 <context>
@@ -1505,7 +1505,7 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>Edit locally request is not valid. Opening the file is forbidden.</source>
-        <translation type="unfinished"/>
+        <translation>Żądanie edycji lokalnej jest nieprawidłowe. Otwieranie pliku jest zabronione.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1472"/>
@@ -1531,12 +1531,12 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
     <message>
         <location filename="../src/gui/folderman.cpp" line="1498"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się znaleźć katalogu do synchronizacji.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1517"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można zweryfikować żądania otwarcia pliku z serwera.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1638"/>
@@ -5281,7 +5281,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Zsynchronizuj teraz</translation>
     </message>
 </context>
 <context>
