@@ -262,20 +262,27 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
-    if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
+    const auto updater = Updater::instance();
+    if (ConfigFile().skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesGroupBox->setVisible(false);
         return;
     }
 
+    if (updater) {
+        connect(_ui->updateButton, &QAbstractButton::clicked, this,
+                &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
+                &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
+        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
+    }
+
     // Note: the sparkle-updater is not an OCUpdater
-    auto *ocupdater = qobject_cast<OCUpdater *>(Updater::instance());
+    auto *ocupdater = qobject_cast<OCUpdater *>(updater);
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
-        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
-        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleAutoUpdateCheck);
 
         QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
@@ -291,14 +298,11 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer &&
                                       ocupdater->downloadState() != OCUpdater::Downloading &&
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
-
-        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
     }
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+    else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
-        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
     }
 #endif
 
