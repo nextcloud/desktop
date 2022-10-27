@@ -1980,7 +1980,7 @@ Bunun yalnızca hangi güncelleme kanalından alınacağını seçtiğini ve her
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
         <translation>Hesabınıza giriş yapmak için lütfen şifrenizi giriniz.</translation>
     </message>

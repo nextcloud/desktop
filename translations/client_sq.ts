@@ -1980,7 +1980,7 @@ Kini parasysh që kjo përzgjedh vetëm se nga cili thes merren përmirësimet, 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
         <translation>Ju lutemi, që të hyni te llogaria juaj, jepni fjalëkalimin tuaj.</translation>
     </message>

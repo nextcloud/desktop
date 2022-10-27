@@ -1980,7 +1980,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
         <translation>Моля, въведете вашата парола за да влезете в профила си.</translation>
     </message>

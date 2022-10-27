@@ -1969,7 +1969,7 @@ Let op dat dit alleen selecteert uit welke pool upgrades worden gehaald, en dat 
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
         <translation type="unfinished"/>
     </message>

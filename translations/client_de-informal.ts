@@ -1975,7 +1975,7 @@ Beachte, das dies nur bestimmt von welchem Bereich Sie Aktualisierungen erhalten
 <context>
     <name>OCC::HttpCredentialsGui</name>
     <message>
-        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="112"/>
+        <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
         <translation>Bitte das Passwort eingeben um sich in den Account einzuloggen.</translation>
     </message>
