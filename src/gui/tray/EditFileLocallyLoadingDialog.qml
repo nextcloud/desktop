@@ -65,13 +65,14 @@ Window {
             font.pixelSize: root.fontPixelSize
             color: Style.ncTextColor
             horizontalAlignment: Text.AlignHCenter
+            visible: root.fileName !== ""
         }
         Label {
             id: labelMessage
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.bottomMargin: Style.standardSpacing
-            text: qsTr("Opening for local editing")
+            text: qsTr("Opening file for local editing")
             elide: Text.ElideRight
             font.pixelSize: root.fontPixelSize
             color: Style.ncTextColor

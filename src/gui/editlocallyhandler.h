@@ -49,9 +49,9 @@ signals:
 public slots:
     void startSetup();
     void startEditLocally();
-    void startTokenRemoteCheck();
 
 private slots:
+    void startTokenRemoteCheck();
     void proceedWithSetup();
 
     void showError(const QString &message, const QString &informativeText);
