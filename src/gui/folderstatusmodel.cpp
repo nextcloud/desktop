@@ -110,7 +110,7 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
         _folders[i]._pathIdx << i;
     }
 
-    endResetModel();
+    Q_EMIT endResetModel();
     emit dirtyChanged();
 }
 
@@ -753,13 +753,13 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
     }
 
     if (!newSubs.isEmpty()) {
-        beginInsertRows(idx, 0, newSubs.size() - 1);
+        Q_EMIT beginInsertRows(idx, 0, newSubs.size() - 1);
         parentInfo->_subs = std::move(newSubs);
-        endInsertRows();
+        Q_EMIT endInsertRows();
     }
 
     for (auto it = undecidedIndexes.begin(); it != undecidedIndexes.end(); ++it) {
-        suggestExpand(index(*it, 0, idx));
+        Q_EMIT suggestExpand(index(*it, 0, idx));
     }
     /* Try to remove the the undecided lists the items that are not on the server. */
     auto it = std::remove_if(selectiveSyncUndecidedList.begin(), selectiveSyncUndecidedList.end(),
