@@ -70,7 +70,7 @@ void EditLocallyHandler::startSetup()
 
     if (!_accountState) {
         qCWarning(lcEditLocallyHandler) << "Could not find an account " << _userId << " to edit file " << _relPath << " locally.";
-        showError(tr("Could not find an account for local editing."), _userId);
+        showError(tr("Could not find an account for local editing."), tr("Please try again."));
         return;
     }
 
@@ -110,7 +110,7 @@ void EditLocallyHandler::remoteTokenCheckResultReceived(const int statusCode)
     _tokenVerified = statusCode == HTTP_OK_CODE;
 
     if (!_tokenVerified) {
-        showError(tr("Could not validate the request to open a file from server."), _relPath);
+        showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
     }
 
     proceedWithSetup();
