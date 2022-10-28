@@ -16,10 +16,15 @@
 
 #include <QObject>
 
-#include "accountmanager.h"
-#include "folder.h"
+#include "accountstate.h"
 
 namespace OCC {
+
+class EditLocallyHandler;
+using EditLocallyHandlerPtr = QSharedPointer<EditLocallyHandler>;
+
+class Folder;
+class SyncResult;
 
 class EditLocallyHandler : public QObject
 {
