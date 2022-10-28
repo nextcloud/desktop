@@ -19,6 +19,7 @@
 #include <QtConcurrent>
 
 #include "accountmanager.h"
+#include "editlocallymanager.h"
 #include "folder.h"
 #include "folderman.h"
 #include "syncengine.h"
@@ -27,8 +28,6 @@
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEditLocallyHandler, "nextcloud.gui.editlocallyhandler", QtInfoMsg)
-
-static QHash<QString, QMetaObject::Connection> editLocallySyncFinishedConnections;
 
 EditLocallyHandler::EditLocallyHandler(const QString &userId,
                                        const QString &relPath,
@@ -277,7 +276,9 @@ void EditLocallyHandler::startEditLocally()
     _folderForFile->startSync();
     const auto syncFinishedConnection = connect(_folderForFile, &Folder::syncFinished,
                                                 this, &EditLocallyHandler::folderSyncFinished);
-    editLocallySyncFinishedConnections.insert(_localFilePath, syncFinishedConnection);
+
+    EditLocallyManager::instance()->folderSyncFinishedConnections.insert(_localFilePath,
+                                                                         syncFinishedConnection);
 }
 
 void EditLocallyHandler::folderSyncFinished(const OCC::SyncResult &result)
@@ -293,9 +294,11 @@ void EditLocallyHandler::disconnectSyncFinished() const
         return;
     }
 
-    if (const auto existingConnection = editLocallySyncFinishedConnections.value(_localFilePath)) {
+    const auto manager = EditLocallyManager::instance();
+
+    if (const auto existingConnection = manager->folderSyncFinishedConnections.value(_localFilePath)) {
         disconnect(existingConnection);
-        editLocallySyncFinishedConnections.remove(_localFilePath);
+        manager->folderSyncFinishedConnections.remove(_localFilePath);
     }
 }
 

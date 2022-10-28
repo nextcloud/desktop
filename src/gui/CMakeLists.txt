@@ -82,6 +82,8 @@ set(client_SRCS
     connectionvalidator.cpp
     editlocallyhandler.h
     editlocallyhandler.cpp
+    editlocallymanager.h
+    editlocallymanager.cpp
     folder.h
     folder.cpp
     foldercreationdialog.h

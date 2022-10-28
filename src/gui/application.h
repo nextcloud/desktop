@@ -87,8 +87,6 @@ public slots:
     /// Attempt to show() the tray icon again. Used if no systray was available initially.
     void tryTrayAgain();
 
-    void handleEditLocally(const QUrl &url) const;
-
 protected:
     void parseOptions(const QStringList &);
     void setupTranslations();
