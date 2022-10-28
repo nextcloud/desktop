@@ -93,15 +93,17 @@ void EditLocallyHandler::startTokenRemoteCheck()
 
     const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(_token)); // Sanitise the token
     const auto encodedRelPath = QUrl::toPercentEncoding(_relPath); // Sanitise the relPath
-    const auto checkEditLocallyToken = new SimpleApiJob(_accountState->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
+
+    _checkTokenJob.reset(new SimpleApiJob(_accountState->account(),
+                                          QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken)));
 
     QUrlQuery params;
     params.addQueryItem(QStringLiteral("path"), prefixSlashToPath(encodedRelPath));
-    checkEditLocallyToken->addQueryParams(params);
-    checkEditLocallyToken->setVerb(SimpleApiJob::Verb::Post);
-    connect(checkEditLocallyToken, &SimpleApiJob::resultReceived, this, &EditLocallyHandler::remoteTokenCheckResultReceived);
+    _checkTokenJob->addQueryParams(params);
+    _checkTokenJob->setVerb(SimpleApiJob::Verb::Post);
+    connect(_checkTokenJob.get(), &SimpleApiJob::resultReceived, this, &EditLocallyHandler::remoteTokenCheckResultReceived);
 
-    checkEditLocallyToken->start();
+    _checkTokenJob->start();
 }
 
 void EditLocallyHandler::remoteTokenCheckResultReceived(const int statusCode)

@@ -75,6 +75,7 @@ private:
     QString _fileName;
     QString _localFilePath;
     Folder *_folderForFile = nullptr;
+    std::unique_ptr<SimpleApiJob> _checkTokenJob;
 };
 
 }
