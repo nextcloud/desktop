@@ -338,12 +338,6 @@ def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
     )
 
 
-def waitForFileOrFolderToBeSyncIgnored(context, resource, resourceType):
-    waitForFileOrFolderToHaveSyncStatus(
-        context, resource, resourceType, SYNC_STATUS['IGNORE']
-    )
-
-
 def folderExists(folderPath, timeout=1000):
     return waitFor(
         lambda: isdir(sanitizePath(folderPath)),
@@ -521,21 +515,6 @@ def step(context, username, type, resource):
     waitForFileOrFolderToHaveSyncError(context, resource, type)
 
 
-@When(r'the user waits for (file|folder) "([^"]*)" to be sync ignored', regexp=True)
-def step(context, type, resource):
-    waitForFileOrFolderToBeSyncIgnored(context, resource, type)
-
-
-@Given('user has waited for the files to be synced')
-def step(context):
-    waitForFileOrFolderToSync(context)
-
-
-@Given(r'the user has waited for (file|folder) "([^"]*)" to be synced', regexp=True)
-def step(context, type, resource):
-    waitForFileOrFolderToSync(context, resource, type)
-
-
 @When(
     'user "|any|" creates a file "|any|" with the following content inside the sync folder'
 )
@@ -699,18 +678,6 @@ def step(context, filename):
 def step(context):
     syncWizard = SyncWizard()
     syncWizard.performAction("Resume sync")
-
-
-@When('the user triggers force sync on the client')
-def step(context):
-    mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
-        720,
-        36,
-        Qt.NoModifier,
-        Qt.LeftButton,
-    )
-    activateItem(waitForObjectItem(names.settings_QMenu, "Force sync now"))
 
 
 @Then(
@@ -1304,28 +1271,6 @@ def step(context):
     newAccount.addServer(context)
 
 
-@Given('the user has added the following user credentials:')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.addUserCreds(context)
-    test.compare(
-        waitForObjectExists(newAccount.ADVANCE_SETUP_PAGE).visible,
-        True,
-        "Assert setup page is visible",
-    )
-
-
-@Given('the user has opened chose_what_to_sync dialog')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.openSyncDialog()
-    test.compare(
-        waitForObjectExists(newAccount.SELECTIVE_SYNC_DIALOG).visible,
-        True,
-        "Assert selective sync dialog is visible",
-    )
-
-
 @When('the user opens chose_what_to_sync dialog')
 def step(context):
     newAccount = AccountConnectionWizard()
@@ -1337,18 +1282,6 @@ def step(context):
     newAccount = AccountConnectionWizard()
     newAccount.selectFoldersToSync(context)
     clickButton(waitForObject(newAccount.ADD_SYNC_CONNECTION_BUTTON))
-
-
-@When('the user selects manual sync folder option')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.selectManualSyncFolder()
-
-
-@When('the user connects the account')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.connectAccount()
 
 
 @When('the user sorts the folder list by "|any|"')
