@@ -37,12 +37,6 @@ class SharingDialog:
         "visible": 1,
         "window": names.sharingDialog_OCC_ShareDialog,
     }
-    SHARED_WITH_ = {
-        "container": names.sharingDialogUG_scrollArea_QScrollArea,
-        "name": "sharedWith",
-        "type": "QLabel",
-        "visible": 1,
-    }
     SHARING_DIALOG = {
         "type": "QLabel",
         "unnamed": 1,

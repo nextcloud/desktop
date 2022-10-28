@@ -11,7 +11,6 @@ import requests
 import builtins
 import shutil
 
-from objectmaphelper import RegularExpression
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 from helpers.SetupClientHelper import *
 from helpers.FilesHelper import buildConflictedRegex
@@ -38,7 +37,6 @@ from helpers.SyncHelper import (
 # if the IDE fails to reference the script, add the folder in Edit->Preferences->PyDev->Interpreters->Libraries
 sys.path.append(os.path.realpath('../../../shell_integration/nautilus/'))
 from syncstate import SocketConnect
-import functools
 
 
 socketConnect = None
@@ -721,8 +719,6 @@ def step(context):
 def step(context, filename):
     expected = "\n".join(context.multiLineText)
 
-    namepart = filename.split('.')[0]
-    extpart = filename.split('.')[1]
     onlyfiles = [
         f
         for f in listdir(context.userData['currentUserSyncPath'])
@@ -1476,7 +1472,6 @@ def step(context):
 
 @Then('the collaborators should be listed in the following order:')
 def step(context):
-    shareItem = SharingDialog()
     for index, collaborator in enumerate(context.table[1:], start=1):
         test.compare(
             str(
