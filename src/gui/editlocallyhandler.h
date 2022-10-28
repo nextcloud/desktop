@@ -36,30 +36,34 @@ public:
     [[nodiscard]] static bool isRelPathExcluded(const QString &relPath);
     [[nodiscard]] static QString prefixSlashToPath(const QString &path);
 
-    [[nodiscard]] bool ready() const;
-
 signals:
-    void finished();
+    void setupFinished();
+    void error(const QString &message, const QString &informativeText);
+    void fileOpened();
 
 public slots:
+    void startSetup();
     void startEditLocally();
     void startTokenRemoteCheck();
 
 private slots:
-    void showError(const QString &message, const QString &informativeText) const;
+    void proceedWithSetup();
+
+    void showError(const QString &message, const QString &informativeText);
     void showErrorNotification(const QString &message, const QString &informativeText) const;
     void showErrorMessageBox(const QString &message, const QString &informativeText) const;
 
-    void remoteTokenCheckFinished(const int statusCode);
+    void remoteTokenCheckResultReceived(const int statusCode);
     void folderSyncFinished(const OCC::SyncResult &result);
 
     void disconnectSyncFinished() const;
     void openFile();
 
 private:
-    bool _ready = false;
+    bool _tokenVerified = false;
 
     AccountStatePtr _accountState;
+    QString _userId;
     QString _relPath;
     QString _token;
 

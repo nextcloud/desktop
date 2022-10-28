@@ -35,36 +35,101 @@ EditLocallyHandler::EditLocallyHandler(const QString &userId,
                                        const QString &token,
                                        QObject *parent)
     : QObject{parent}
+    , _userId(userId)
     , _relPath(relPath)
     , _token(token)
 {
-    _accountState = AccountManager::instance()->accountFromUserId(userId);
+}
 
-    if (!_accountState) {
-        qCWarning(lcEditLocallyHandler) << "Could not find an account " << userId << " to edit file " << relPath << " locally.";
-        showError(tr("Could not find an account for local editing"), userId);
+void EditLocallyHandler::startSetup()
+{
+    if (_token.isEmpty() || _relPath.isEmpty() || _userId.isEmpty()) {
+        qCWarning(lcEditLocallyHandler) << "Could not start setup."
+                                        << "token:" << _token
+                                        << "relPath:" << _relPath
+                                        << "userId" << _userId;
         return;
     }
 
-    if (!isTokenValid(token)) {
-        qCWarning(lcEditLocallyHandler) << "Edit locally request is missing a valid token, will not open file. Token received was:" << token;
+    // We check the input data locally first, without modifying any state or
+    // showing any potentially misleading data to the user
+    if (!isTokenValid(_token)) {
+        qCWarning(lcEditLocallyHandler) << "Edit locally request is missing a valid token, will not open file. "
+                                        << "Token received was:" << _token;
         showError(tr("Invalid token received."), tr("Please try again."));
         return;
     }
 
-    if (!isRelPathValid(relPath)) {
-        qCWarning(lcEditLocallyHandler) << "Provided relPath was:" << relPath << "which is not canonical.";
+    if (!isRelPathValid(_relPath)) {
+        qCWarning(lcEditLocallyHandler) << "Provided relPath was:" << _relPath << "which is not canonical.";
         showError(tr("Invalid file path was provided."), tr("Please try again."));
         return;
     }
 
-    const auto foundFiles = FolderMan::instance()->findFileInLocalFolders(relPath, _accountState->account());
+    _accountState = AccountManager::instance()->accountFromUserId(_userId);
+
+    if (!_accountState) {
+        qCWarning(lcEditLocallyHandler) << "Could not find an account " << _userId << " to edit file " << _relPath << " locally.";
+        showError(tr("Could not find an account for local editing."), _userId);
+        return;
+    }
+
+    // We now ask the server to verify the token, before we again modify any
+    // state or look at local files
+    startTokenRemoteCheck();
+}
+
+void EditLocallyHandler::startTokenRemoteCheck()
+{
+    if (!_accountState || _relPath.isEmpty() || _token.isEmpty()) {
+        qCWarning(lcEditLocallyHandler) << "Could not start token check."
+                                        << "accountState:" << _accountState
+                                        << "relPath:" << _relPath
+                                        << "token:" << _token;
+        return;
+    }
+
+    const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(_token)); // Sanitise the token
+    const auto encodedRelPath = QUrl::toPercentEncoding(_relPath); // Sanitise the relPath
+    const auto checkEditLocallyToken = new SimpleApiJob(_accountState->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
+
+    QUrlQuery params;
+    params.addQueryItem(QStringLiteral("path"), prefixSlashToPath(encodedRelPath));
+    checkEditLocallyToken->addQueryParams(params);
+    checkEditLocallyToken->setVerb(SimpleApiJob::Verb::Post);
+    connect(checkEditLocallyToken, &SimpleApiJob::resultReceived, this, &EditLocallyHandler::remoteTokenCheckResultReceived);
+
+    checkEditLocallyToken->start();
+}
+
+void EditLocallyHandler::remoteTokenCheckResultReceived(const int statusCode)
+{
+    qCInfo(lcEditLocallyHandler) << "token check result" << statusCode;
+
+    constexpr auto HTTP_OK_CODE = 200;
+    _tokenVerified = statusCode == HTTP_OK_CODE;
+
+    if (!_tokenVerified) {
+        showError(tr("Could not validate the request to open a file from server."), _relPath);
+    }
+
+    proceedWithSetup();
+}
+
+void EditLocallyHandler::proceedWithSetup()
+{
+    if (!_tokenVerified) {
+        qCWarning(lcEditLocallyHandler) << "Could not proceed with setup as token is not verified.";
+        return;
+    }
+
+    const auto foundFiles = FolderMan::instance()->findFileInLocalFolders(_relPath, _accountState->account());
 
     if (foundFiles.isEmpty()) {
-        if (isRelPathExcluded(relPath)) {
-            showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), relPath);
+        if (isRelPathExcluded(_relPath)) {
+            showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
         } else {
-            showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), relPath);
+            showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
         }
         return;
     }
@@ -73,24 +138,19 @@ EditLocallyHandler::EditLocallyHandler(const QString &userId,
     _folderForFile = FolderMan::instance()->folderForPath(_localFilePath);
 
     if (!_folderForFile) {
-        showError(tr("Could not find a folder to sync."), relPath);
+        showError(tr("Could not find a folder to sync."), _relPath);
         return;
     }
 
-    const auto relPathSplit = relPath.split(QLatin1Char('/'));
-    if (relPathSplit.size() == 0) {
-        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), relPath);
+    const auto relPathSplit = _relPath.split(QLatin1Char('/'));
+    if (relPathSplit.isEmpty()) {
+        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
         return;
     }
 
     _fileName = relPathSplit.last();
 
-    _ready = true;
-}
-
-bool EditLocallyHandler::ready() const
-{
-    return _ready;
+    Q_EMIT setupFinished();
 }
 
 QString EditLocallyHandler::prefixSlashToPath(const QString &path)
@@ -165,11 +225,12 @@ bool EditLocallyHandler::isRelPathExcluded(const QString &relPath)
     return true;
 }
 
-void EditLocallyHandler::showError(const QString &message, const QString &informativeText) const
+void EditLocallyHandler::showError(const QString &message, const QString &informativeText)
 {
     showErrorNotification(message, informativeText);
     // to make sure the error is not missed, show a message box in addition
     showErrorMessageBox(message, informativeText);
+    Q_EMIT error(message, informativeText);
 }
 
 void EditLocallyHandler::showErrorNotification(const QString &message, const QString &informativeText) const
@@ -203,35 +264,15 @@ void EditLocallyHandler::showErrorMessageBox(const QString &message, const QStri
 
 void EditLocallyHandler::startEditLocally()
 {
-    if (!_ready) {
+    if (_fileName.isEmpty() || _localFilePath.isEmpty() || !_folderForFile) {
+        qCWarning(lcEditLocallyHandler) << "Could not start to edit locally."
+                                        << "fileName:" << _fileName
+                                        << "localFilePath:" << _localFilePath
+                                        << "folderForFile:" << _folderForFile;
         return;
     }
 
     Systray::instance()->createEditFileLocallyLoadingDialog(_fileName);
-
-    const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(_token)); // Sanitise the token
-    const auto encodedRelPath = QUrl::toPercentEncoding(_relPath); // Sanitise the relPath
-    const auto checkEditLocallyToken = new SimpleApiJob(_accountState->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
-
-    QUrlQuery params;
-    params.addQueryItem(QStringLiteral("path"), prefixSlashToPath(_relPath));
-    checkEditLocallyToken->addQueryParams(params);
-    checkEditLocallyToken->setVerb(SimpleApiJob::Verb::Post);
-    connect(checkEditLocallyToken, &SimpleApiJob::resultReceived, this, &EditLocallyHandler::remoteTokenCheckFinished);
-
-    checkEditLocallyToken->start();
-}
-
-void EditLocallyHandler::remoteTokenCheckFinished(const int statusCode)
-{
-    constexpr auto HTTP_OK_CODE = 200;
-    if (statusCode != HTTP_OK_CODE) {
-        Systray::instance()->destroyEditFileLocallyLoadingDialog();
-
-        showError(tr("Could not validate the request to open a file from server."), _relPath);
-        qCInfo(lcEditLocallyHandler) << "token check result" << statusCode;
-        return;
-    }
 
     _folderForFile->startSync();
     const auto syncFinishedConnection = connect(_folderForFile, &Folder::syncFinished,
@@ -248,6 +289,10 @@ void EditLocallyHandler::folderSyncFinished(const OCC::SyncResult &result)
 
 void EditLocallyHandler::disconnectSyncFinished() const
 {
+    if(_localFilePath.isEmpty()) {
+        return;
+    }
+
     if (const auto existingConnection = editLocallySyncFinishedConnections.value(_localFilePath)) {
         disconnect(existingConnection);
         editLocallySyncFinishedConnections.remove(_localFilePath);
@@ -256,6 +301,11 @@ void EditLocallyHandler::disconnectSyncFinished() const
 
 void EditLocallyHandler::openFile()
 {
+    if(_localFilePath.isEmpty()) {
+        qCWarning(lcEditLocallyHandler) << "Could not edit locally. Invalid local file path.";
+        return;
+    }
+
     const auto localFilePath = _localFilePath;
     // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
     // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
@@ -265,7 +315,7 @@ void EditLocallyHandler::openFile()
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
     });
 
-    Q_EMIT finished();
+    Q_EMIT fileOpened();
 }
 
 }
