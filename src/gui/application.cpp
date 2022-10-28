@@ -777,12 +777,14 @@ void Application::handleEditLocally(const QUrl &url) const
 
     // We need to make sure the handler sticks around until it is finished
     const auto editLocallyHandler = new EditLocallyHandler(userId, fileRemotePath, token);
-    if (editLocallyHandler->ready()) {
-        connect(editLocallyHandler, &EditLocallyHandler::finished, this, [&editLocallyHandler] { delete editLocallyHandler; });
-        editLocallyHandler->startEditLocally();
-    } else {
-        delete editLocallyHandler;
-    }
+    const auto editLocallyHandlerDeleter = [editLocallyHandler]{ delete editLocallyHandler; };
+    connect(editLocallyHandler, &EditLocallyHandler::error, this, editLocallyHandlerDeleter);
+    connect(editLocallyHandler, &EditLocallyHandler::fileOpened, this, editLocallyHandlerDeleter);
+
+    connect(editLocallyHandler, &EditLocallyHandler::setupFinished,
+            editLocallyHandler, [editLocallyHandler]{ editLocallyHandler->startEditLocally(); });
+    editLocallyHandler->startSetup();
+
 }
 
 QString substLang(const QString &lang)
