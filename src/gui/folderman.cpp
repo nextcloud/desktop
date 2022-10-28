@@ -1441,7 +1441,9 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
 
 Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config)
 {
-    return addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
+    auto f = addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
+    f->setPriority(config.priority);
+    return f;
 }
 
 QString FolderMan::suggestSyncFolder(const QUrl &server, const QString &displayName)

@@ -76,6 +76,11 @@ auto deployedC()
     return QStringLiteral("deployed");
 }
 
+auto priorityC()
+{
+    return QStringLiteral("priority");
+}
+
 constexpr int SettingsVersionC = 5;
 }
 
@@ -1321,6 +1326,16 @@ FolderDefinition::FolderDefinition(const QByteArray &id, const QUrl &davUrl, con
 {
 }
 
+void FolderDefinition::setPriority(uint32_t newPriority)
+{
+    _priority = newPriority;
+}
+
+uint32_t FolderDefinition::priority() const
+{
+    return _priority;
+}
+
 void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
 {
     settings.setValue(QStringLiteral("localPath"), folder.localPath());
@@ -1331,6 +1346,7 @@ void FolderDefinition::save(QSettings &settings, const FolderDefinition &folder)
     settings.setValue(QStringLiteral("paused"), folder.paused);
     settings.setValue(QStringLiteral("ignoreHiddenFiles"), folder.ignoreHiddenFiles);
     settings.setValue(deployedC(), folder.isDeployed());
+    settings.setValue(priorityC(), folder.priority());
 
     settings.setValue(QStringLiteral("virtualFilesMode"), Vfs::modeToString(folder.virtualFilesMode));
 
@@ -1354,6 +1370,7 @@ FolderDefinition FolderDefinition::load(QSettings &settings, const QByteArray &i
     folder.ignoreHiddenFiles = settings.value(QStringLiteral("ignoreHiddenFiles"), QVariant(true)).toBool();
     folder.navigationPaneClsid = settings.value(QStringLiteral("navigationPaneClsid")).toUuid();
     folder._deployed = settings.value(deployedC(), false).toBool();
+    folder._priority = settings.value(priorityC(), 0).toInt();
 
     folder.virtualFilesMode = Vfs::Off;
     QString vfsModeString = settings.value(QStringLiteral("virtualFilesMode")).toString();

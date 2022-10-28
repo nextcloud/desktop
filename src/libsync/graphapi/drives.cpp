@@ -67,3 +67,13 @@ QString Drives::getDriveDisplayName(const OpenAPI::OAIDrive &drive)
     }
     return drive.getName();
 }
+
+uint32_t Drives::getDrivePriority(const OpenAPI::OAIDrive &drive)
+{
+    if (drive.getDriveType() == personalC) {
+        return 100;
+    } else if (drive.getDriveType() == shareC) {
+        return 50;
+    }
+    return 0;
+}

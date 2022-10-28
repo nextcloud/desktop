@@ -114,6 +114,14 @@ QString FolderWizardPrivate::remotePath() const
     return _folderWizardTargetPage ? _folderWizardTargetPage->targetPath() : QString();
 }
 
+uint32_t FolderWizardPrivate::priority() const
+{
+    if (_account->supportsSpaces()) {
+        _spacesPage->selectedSpace(Spaces::SpacesModel::Columns::Priority).toInt();
+    };
+    return 0;
+}
+
 QUrl FolderWizardPrivate::davUrl() const
 {
     if (_account->supportsSpaces()) {
@@ -203,12 +211,14 @@ FolderWizard::Result FolderWizard::result()
             d->_account->account()->setDefaultSyncRoot(d->defaultSyncRoot());
         }
     }
+
     return {
         d->davUrl(),
         localPath,
         d->remotePath(),
         d->displayName(),
         d->useVirtualFiles(),
+        d->priority(),
         d->_folderWizardSelectiveSyncPage ? d->_folderWizardSelectiveSyncPage->selectiveSyncBlackList() : QStringList()
     };
 }

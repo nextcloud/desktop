@@ -32,6 +32,7 @@ public:
         Subtitle,
         WebUrl,
         WebDavUrl,
+        Priority,
 
         ColumnCount
     };

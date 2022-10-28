@@ -53,6 +53,8 @@ QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int r
                 return tr("Web Dav URL");
             case Columns::Image:
                 return tr("Image");
+            case Columns::Priority:
+                return tr("Priority");
             case Columns::ColumnCount:
                 Q_UNREACHABLE();
                 break;
@@ -101,6 +103,8 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             return item.getRoot().getWebDavUrl();
         case Columns::Image:
             return {};
+        case Columns::Priority:
+            return GraphApi::Drives::getDrivePriority(item);
         case Columns::ColumnCount:
             Q_UNREACHABLE();
             break;

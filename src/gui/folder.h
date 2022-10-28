@@ -122,6 +122,14 @@ public:
     bool isDeployed() const;
 
 
+    /**
+     * Higher values mean more imortant
+     * Used for sorting
+     */
+    uint32_t priority() const;
+
+    void setPriority(uint32_t newPriority);
+
 private:
     FolderDefinition(const QByteArray &id, const QUrl &davUrl, const QString &displayName);
 
@@ -134,6 +142,8 @@ private:
     /// path on remote (usually no trailing /, exception "/")
     QString _targetPath;
     bool _deployed = false;
+
+    uint32_t _priority;
 
     friend class FolderMan;
 };
@@ -360,6 +370,16 @@ public:
      * We will hide the remove option and the disable/enable vfs option.
      */
     bool isDeployed() const;
+
+    auto priority()
+    {
+        return _definition.priority();
+    }
+
+    void setPriority(uint32_t p)
+    {
+        return _definition.setPriority(p);
+    }
 
 signals:
     void syncStateChange();

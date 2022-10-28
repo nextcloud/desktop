@@ -59,7 +59,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
 
     // saves a bit of duplicate code
     auto addFolder = [folderMan, accountStatePtr, useVfs](const QString &localFolder, const QString &remotePath, const QUrl &webDavUrl, const QString &displayName = {}) {
-        folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, displayName, useVfs);
+        return folderMan->addFolderFromWizard(accountStatePtr, localFolder, remotePath, webDavUrl, displayName, useVfs);
     };
 
     auto finalize = [accountStatePtr] {
@@ -81,7 +81,8 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                     for (const auto &d : drives) {
                         const QString name = GraphApi::Drives::getDriveDisplayName(d);
                         const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(name));
-                        addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
+                        auto folder = addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
+                        folder->setPriority(GraphApi::Drives::getDrivePriority(d));
                     }
                     finalize();
                 }

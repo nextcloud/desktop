@@ -73,6 +73,8 @@ public:
          */
         bool useVirtualFiles;
 
+        uint32_t priority;
+
         QStringList selectiveSyncBlackList;
     };
 

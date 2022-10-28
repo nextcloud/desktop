@@ -17,9 +17,11 @@
 #include "spacesdelegate.h"
 #include "spacesmodel.h"
 
+
 #include "graphapi/drives.h"
 
 #include "gui/models/expandingheaderview.h"
+#include "gui/models/models.h"
 
 #include <QCursor>
 #include <QMenu>
@@ -34,8 +36,9 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     ui->setupUi(this);
     _model = new SpacesModel(this);
 
-    auto *sortModel = new QSortFilterProxyModel(this);
+    auto *sortModel = new OCC::Models::WeightedQSortFilterProxyModel(this);
     sortModel->setSourceModel(_model);
+    sortModel->setWeightedColumn(static_cast<int>(SpacesModel::Columns::Priority));
 
     ui->tableView->setModel(sortModel);
 
@@ -51,6 +54,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     header->hideSection(static_cast<int>(SpacesModel::Columns::WebDavUrl));
     // part of the name (see the delegate)
     header->hideSection(static_cast<int>(SpacesModel::Columns::Subtitle));
+    header->hideSection(static_cast<int>(SpacesModel::Columns::Priority));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         auto menu = new QMenu(this);

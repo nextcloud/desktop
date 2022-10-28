@@ -38,6 +38,8 @@ public:
 
     QString remotePath() const;
 
+    uint32_t priority() const;
+
     QString defaultSyncRoot() const;
 
     QUrl davUrl() const;

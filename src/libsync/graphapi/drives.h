@@ -34,6 +34,11 @@ namespace GraphApi {
          */
         static QString getDriveDisplayName(const OpenAPI::OAIDrive &drive);
 
+        /***
+         * Asign a priority to a drive, used for sorting
+         */
+        static uint32_t getDrivePriority(const OpenAPI::OAIDrive &drive);
+
         const QList<OpenAPI::OAIDrive> &drives() const;
 
     private:
