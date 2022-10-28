@@ -2030,13 +2030,13 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="326"/>
         <source>stable</source>
         <translation>kararlı</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="324"/>
+        <location filename="../src/gui/generalsettings.cpp" line="328"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -2088,7 +2088,7 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Create Debug Archive</source>
         <translation>Hata ayıklama arşivi oluştur</translation>
     </message>
@@ -2108,12 +2108,12 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <translation>Otomatik başlatma sistem genelinde etkinleştirilmiş olduğundan, otomatik başlatma devre dışı bırakılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>Change update channel?</source>
         <translation>Güncelleme kanalı değiştirilsin mi?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2122,27 +2122,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Bu seçenek yalnızca güncellemelerin hangi havuzdan alınacağını belirler. Güncelleme sonrası önceki sürüme geri dönülemeyeceğini unutmayın. Bu nedenle, genellikle beta kanalından kararlı kanala geri dönmek için kurulu olan beta sürümünden daha yeni bir kararlı sürümün yayınlanmasını beklemeniz gerekeceğinden bu işlem hemen gerçekleşmez.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="374"/>
         <source>Change update channel</source>
         <translation>Güncelleme kanalını değiştir</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="371"/>
+        <location filename="../src/gui/generalsettings.cpp" line="375"/>
         <source>Cancel</source>
         <translation>İptal</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Zip Archives</source>
         <translation>Zip arşivleri</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug Archive Created</source>
         <translation>Hata ayıklama arşivi oluşturuldu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug archive is created at %1</source>
         <translation>%1 üzerinde hata ayıklama arşivi oluşturuldu</translation>
     </message>

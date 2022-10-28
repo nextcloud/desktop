@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Tyhjennä tilaviestien valikko</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
         <source>Opening for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Avataan paikallista muokkausta varten</translation>
     </message>
 </context>
 <context>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="49"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Virhe</translation>
     </message>
 </context>
 <context>
@@ -310,7 +310,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="871"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>Tiedosto %1 on jo lukitty käyttäjän %2 toimesta.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="873"/>
@@ -399,7 +399,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Älä salaa kansiota</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -415,7 +415,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
         <location filename="../src/gui/accountsettings.cpp" line="254"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Tämä tili tukee päästä päähän -salausta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -869,12 +869,12 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="32"/>
         <source>Enter username and password for &quot;%1&quot; at %2.</source>
-        <translation type="unfinished"/>
+        <translation>Anna käyttäjätunnus ja salasana kohteeseen &quot;%1&quot; osoitteessa %2.</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Käyttäjätunnus:</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1571,7 +1571,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1654"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>Viimeisin synkronointi suoritettiin onnistuneesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1660"/>
@@ -1761,7 +1761,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>Muutama sekunti jäljellä, %1/%2, tiedosto %3/%4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
@@ -2021,13 +2021,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="326"/>
         <source>stable</source>
         <translation>vakaa</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="324"/>
+        <location filename="../src/gui/generalsettings.cpp" line="328"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -2079,7 +2079,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Create Debug Archive</source>
         <translation>Koosta vianetsintätiedot</translation>
     </message>
@@ -2099,39 +2099,39 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>Change update channel?</source>
         <translation>Vaihdetaanko päivityskanavaa?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="374"/>
         <source>Change update channel</source>
         <translation>Vaihda päivityskanava</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="371"/>
+        <location filename="../src/gui/generalsettings.cpp" line="375"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Zip Archives</source>
         <translation>Zip-arkistot</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug Archive Created</source>
         <translation>Vianetsintätiedot koostettu</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug archive is created at %1</source>
         <translation>Vianetsintätietodot koostettu kohteeseen %1</translation>
     </message>
@@ -2334,12 +2334,12 @@ Kohteet, joissa poisto on sallittu, poistetaan, jos ne estävät kansion poistam
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions …</source>
-        <translation type="unfinished"/>
+        <translation>Tarkistetaan oikeudet nimetä uudelleen…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions...</source>
-        <translation type="unfinished"/>
+        <translation>Tarkistetaan oikeudet nimetä uudelleen…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
@@ -2670,7 +2670,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1-päivitys on valmiina asennettavaksi. Päivitysohjelma saattaa pyytää lisäoikeuksia päivityksen aikana. Tietokone saattaa käynnistyä uudelleen asennuksen päätteeksi.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
@@ -2685,7 +2685,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
-        <translation type="unfinished"/>
+        <translation>Päivityksen lataaminen epäonnistui. Avaa &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; ladataksesi päivityksen manuaalisesti.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
@@ -2700,7 +2700,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
-        <translation type="unfinished"/>
+        <translation>Uusi %1 on saatavilla. Avaa &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; ladataksesi päivityksen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
@@ -4550,7 +4550,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="215"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>Ohje</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="216"/>
@@ -4702,7 +4702,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Tilatietoa ei voitu asettaa. Varmista, että olet yhdistettynä palvelimeen.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
@@ -4828,7 +4828,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu tilillä: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
@@ -4846,13 +4846,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Kirjaudu palveluun %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -5024,7 +5024,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>Käyttäjätunnus</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
@@ -5039,7 +5039,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>Valitse eri kansio</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
@@ -5163,27 +5163,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Nimesit uudelleen %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Poistit %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Loit %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="591"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Muutit %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="614"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoitu %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -5244,7 +5244,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Merkitse luetuksi</translation>
     </message>
 </context>
 <context>
@@ -5260,7 +5260,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Synkronoi nyt</translation>
     </message>
 </context>
 <context>
@@ -5268,12 +5268,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="17"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>Vastaa…</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="53"/>
         <source>Send reply to chat message</source>
-        <translation type="unfinished"/>
+        <translation>Lähetä vastaus keskusteluviestiin</translation>
     </message>
 </context>
 <context>
@@ -5393,7 +5393,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>Mykistä kaikki ilmoitukset</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
@@ -5423,7 +5423,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Peruuta</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>

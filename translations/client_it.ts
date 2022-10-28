@@ -2032,13 +2032,13 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="326"/>
         <source>stable</source>
         <translation>stabile</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="324"/>
+        <location filename="../src/gui/generalsettings.cpp" line="328"/>
         <source>beta</source>
         <translation>beta</translation>
     </message>
@@ -2090,7 +2090,7 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Create Debug Archive</source>
         <translation>Crea archivio di debug</translation>
     </message>
@@ -2110,39 +2110,39 @@ Se è stato un errore e decidi di tenere i file, saranno sincronizzati nuovament
         <translation>Non puoi disabilitare l&apos;avvio automatico poiché è abilitato l&apos;avvio automatico a livello di sistema.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>Change update channel?</source>
         <translation>Vuoi cambiare il canale di aggiornamento?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
         <translation>Il canale di aggiornamento determina quali aggiornamenti del client saranno offerti per l&apos;installazione. Il canale &quot;stabile&quot; contiene solo aggiornamenti considerati affidabili, mentre le versioni nel canale &quot;beta&quot; possono contenere nuove funzionalità e correzioni di bug, ma non sono state ancora provate a fondo. Nota che questo seleziona solo da quale pool vengono prelevati gli aggiornamenti e che non ci sono downgrade: per cui tornare dal canale beta al canale stabile di solito non può essere fatto immediatamente e significa aspettare una versione stabile che sia più recente della versione beta attualmente installata.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="374"/>
         <source>Change update channel</source>
         <translation>Cambia il canale di aggiornamento</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="371"/>
+        <location filename="../src/gui/generalsettings.cpp" line="375"/>
         <source>Cancel</source>
         <translation>Annulla</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Zip Archives</source>
         <translation>Archivi zip</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug Archive Created</source>
         <translation>Archivio di debug creato</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug archive is created at %1</source>
         <translation>L&apos;archivio di debug è stato creato in %1</translation>
     </message>

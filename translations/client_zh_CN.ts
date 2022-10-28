@@ -2027,13 +2027,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="326"/>
         <source>stable</source>
         <translation>稳定版</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="324"/>
+        <location filename="../src/gui/generalsettings.cpp" line="328"/>
         <source>beta</source>
         <translation>测试版</translation>
     </message>
@@ -2085,7 +2085,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Create Debug Archive</source>
         <translation>创建调试存档</translation>
     </message>
@@ -2105,12 +2105,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>你不能禁用自启动，因为系统级的自启动处于启用状态。</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>Change update channel?</source>
         <translation>更改更新频道？</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2119,27 +2119,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 请注意，这只会选择从何种中池升级，并且没有降级：因此，通常无法立即从测试版通道返回到稳定版通道，这意味着您需要等待比当前安装的测试版更新的稳定版。 </translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="374"/>
         <source>Change update channel</source>
         <translation>更改更新频道</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="371"/>
+        <location filename="../src/gui/generalsettings.cpp" line="375"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Zip Archives</source>
         <translation>Zip 归档</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug Archive Created</source>
         <translation>调试存档已创建</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug archive is created at %1</source>
         <translation>调试存档已创建于 %1</translation>
     </message>

@@ -2031,13 +2031,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
-        <location filename="../src/gui/generalsettings.cpp" line="322"/>
+        <location filename="../src/gui/generalsettings.cpp" line="326"/>
         <source>stable</source>
         <translation>Стабільний</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="156"/>
-        <location filename="../src/gui/generalsettings.cpp" line="324"/>
+        <location filename="../src/gui/generalsettings.cpp" line="328"/>
         <source>beta</source>
         <translation>Бета-версія</translation>
     </message>
@@ -2089,7 +2089,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="319"/>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Create Debug Archive</source>
         <translation>Створити архів зневадження</translation>
     </message>
@@ -2109,12 +2109,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Неможливо вимкнути автостарт, оскільки увімкнено автоматичний запуск на рівні системи.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="356"/>
+        <location filename="../src/gui/generalsettings.cpp" line="360"/>
         <source>Change update channel?</source>
         <translation>Чи змінити канал оновлень?</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="357"/>
+        <location filename="../src/gui/generalsettings.cpp" line="361"/>
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
@@ -2123,27 +2123,27 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Зауважте, що таким чином ви виберете набір оновлень, які буде застосовувано, і що неможливо буде повернутися до попередніх версій. Відтак повернення з &quot;бета&quot; до &quot;стабільного&quot; каналу зазвичай неможливо буде виконати одразу, натомість ви матимете зачекати на нову стабільну версію порівняно зі встановленою бета-версією.</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="370"/>
+        <location filename="../src/gui/generalsettings.cpp" line="374"/>
         <source>Change update channel</source>
         <translation>Змінити оновлення каналу</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="371"/>
+        <location filename="../src/gui/generalsettings.cpp" line="375"/>
         <source>Cancel</source>
         <translation>Скасувати</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="475"/>
+        <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Zip Archives</source>
         <translation>Zip-архіви</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug Archive Created</source>
         <translation>Архів зневадження створено</translation>
     </message>
     <message>
-        <location filename="../src/gui/generalsettings.cpp" line="481"/>
+        <location filename="../src/gui/generalsettings.cpp" line="485"/>
         <source>Debug archive is created at %1</source>
         <translation>Архів зневадження створено у %1</translation>
     </message>
