@@ -89,7 +89,7 @@ public:
     }
 
     QTreeView *folderList;
-    FolderStatusModel *model;
+    QAbstractItemModel *model;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
@@ -98,9 +98,9 @@ protected:
             Qt::CursorShape shape = Qt::ArrowCursor;
             auto pos = folderList->mapFromGlobal(QCursor::pos());
             auto index = folderList->indexAt(pos);
-            if (model->classify(index) == FolderStatusModel::RootFolder
+            if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>() == FolderStatusModel::RootFolder
                 && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index), index).contains(pos)
-                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
+                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index), folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
             folderList->setCursor(shape);
@@ -117,15 +117,16 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 {
     ui->setupUi(this);
 
-    _model = new FolderStatusModel;
+    _model = new FolderStatusModel(this);
     _model->setAccountState(_accountState);
-    _model->setParent(this);
-    FolderStatusDelegate *delegate = new FolderStatusDelegate;
-    delegate->setParent(this);
-
-    ui->_folderList->header()->hide();
-    ui->_folderList->setItemDelegate(delegate);
     ui->_folderList->setModel(_model);
+    ui->_folderList->setItemDelegate(new FolderStatusDelegate(this));
+
+    for (int i = 1; i <= _model->columnCount(); ++i) {
+        ui->_folderList->header()->hideSection(i);
+    }
+    ui->_folderList->header()->setStretchLastSection(true);
+    ui->_folderList->header()->hide();
 #if defined(Q_OS_MAC)
     ui->_folderList->setMinimumWidth(400);
 #else
@@ -252,13 +253,13 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return menu->addAction(tr("Remove folder sync connection"), this, &AccountSettings::slotRemoveCurrentFolder);
     };
 
-    auto classification = _model->classify(index);
+    auto classification = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
     if (classification != FolderStatusModel::RootFolder && classification != FolderStatusModel::SubFolder) {
         return;
     }
 
     // Only allow removal if the item isn't in "ready" state.
-    if (classification == FolderStatusModel::RootFolder && !_model->data(index, FolderStatusDelegate::IsReady).toBool() && !_model->folder(index)->isDeployed()) {
+    if (classification == FolderStatusModel::RootFolder && !index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsReady)).data().toBool() && !_model->folder(index)->isDeployed()) {
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
         removeFolderAction(menu);
@@ -273,7 +274,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     QUrl folderUrl;
     if (classification == FolderStatusModel::SubFolder) {
-        QString fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
+        const QString fileName = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderPathRole)).data().toString();
         folderUrl = QUrl::fromLocalFile(fileName);
     } else {
         // the root folder
@@ -314,7 +315,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     // For sub-folders we're now done.
 
-    if (_model->classify(index) == FolderStatusModel::SubFolder) {
+    if (index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>() == FolderStatusModel::SubFolder) {
         menu->popup(QCursor::pos());
         return;
     }
@@ -324,8 +325,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     menu->addSeparator();
 
     tv->setCurrentIndex(index);
-    bool folderPaused = _model->data(index, FolderStatusDelegate::FolderSyncPaused).toBool();
-    bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
+    bool folderPaused = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderSyncPaused)).data().toBool();
+    bool folderConnected = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderAccountConnected)).data().toBool();
 
     // qpointer for the async context menu
     QPointer<Folder> folder = selectedFolder();
@@ -373,7 +374,8 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
 void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
-    if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
+    const auto itemType = indx.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
+    if (itemType == FolderStatusModel::AddButton) {
         // "Add Folder Sync Connection"
         QTreeView *tv = ui->_folderList;
         auto pos = tv->mapFromGlobal(QCursor::pos());
@@ -395,7 +397,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
         }
         return;
     }
-    if (_model->classify(indx) == FolderStatusModel::RootFolder) {
+    if (itemType == FolderStatusModel::RootFolder) {
         // tries to find if we clicked on the '...' button.
         QTreeView *tv = ui->_folderList;
         auto pos = tv->mapFromGlobal(QCursor::pos());

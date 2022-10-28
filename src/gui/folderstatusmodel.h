@@ -40,6 +40,33 @@ class FolderStatusModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
+    enum class Columns {
+        HeaderRole, // must be 0 as it is also used from the default delegate
+        FolderPathRole, // for a SubFolder it's the complete path
+        FolderSecondPathRole,
+        FolderConflictMsg,
+        FolderErrorMsg,
+        FolderInfoMsg,
+        FolderSyncPaused,
+        FolderStatusIconRole,
+        FolderAccountConnected,
+
+        SyncProgressOverallPercent,
+        SyncProgressOverallString,
+        SyncProgressItemString,
+        WarningCount,
+        SyncRunning,
+
+        FolderSyncText,
+        IsReady, // boolean
+        IsUsingSpaces, // boolean
+
+        ItemType, // ItemType
+
+        ColumnCount
+    };
+    Q_ENUMS(Columns);
+
     FolderStatusModel(QObject *parent = nullptr);
     ~FolderStatusModel() override;
     void setAccountState(const AccountStatePtr &accountState);
@@ -115,6 +142,11 @@ public:
 
         std::chrono::steady_clock::time_point _lastProgressUpdated = std::chrono::steady_clock::now();
         ProgressInfo::Status _lastProgressUpdateStatus = ProgressInfo::None;
+
+        /**
+         * Integer indicating priority higher value has higher priority
+         */
+        uint32_t _priority = 0;
     };
 
 
@@ -126,7 +158,6 @@ public:
     };
     Q_ENUM(ItemType);
 
-    ItemType classify(const QModelIndex &index) const;
     SubFolderInfo *infoForIndex(const QModelIndex &index) const;
 
     // If the selective sync check boxes were changed
@@ -165,6 +196,8 @@ private:
         const QStringList &oldBlackList) const;
     void computeProgress(const ProgressInfo &progress, SubFolderInfo::Progress *pi);
     int indexOf(Folder *f) const;
+
+    ItemType classify(const QModelIndex &index) const;
 
     AccountStatePtr _accountState;
     bool _dirty; // If the selective sync checkboxes were changed

@@ -16,6 +16,7 @@
 
 #include "folderstatusdelegate.h"
 #include "folderstatusmodel.h"
+
 #include "folderman.h"
 #include "accountstate.h"
 #include "theme.h"
@@ -36,8 +37,8 @@ inline static QFont makeAliasFont(const QFont &normalFont)
 
 namespace OCC {
 
-FolderStatusDelegate::FolderStatusDelegate()
-    : QStyledItemDelegate()
+FolderStatusDelegate::FolderStatusDelegate(QObject *parent)
+    : QStyledItemDelegate(parent)
 {
 }
 
@@ -56,13 +57,13 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
 
-    auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
+    const auto classif = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
     if (classif == FolderStatusModel::AddButton) {
         const int margins = aliasFm.height(); // same as 2*aliasMargin of paint
         QFontMetrics fm(qApp->font("QPushButton"));
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
-        opt.text = addFolderText(index.data(FolderStatusDelegate::IsUsingSpaces).toBool());
+        opt.text = addFolderText(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsUsingSpaces)).data().toBool());
         return QApplication::style()->sizeFromContents(
                                         QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text))
                    .expandedTo(QApplication::globalStrut())
@@ -79,8 +80,8 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
 
     // add some space for the message boxes.
     int margin = fm.height() / 4;
-    for (auto role : {FolderConflictMsg, FolderErrorMsg, FolderInfoMsg}) {
-        auto msgs = qvariant_cast<QStringList>(index.data(role));
+    for (auto column : { FolderStatusModel::Columns::FolderConflictMsg, FolderStatusModel::Columns::FolderErrorMsg, FolderStatusModel::Columns::FolderInfoMsg }) {
+        auto msgs = index.siblingAtColumn(static_cast<int>(column)).data().toStringList();
         if (!msgs.isEmpty()) {
             h += margin + 2 * margin + msgs.count() * fm.height();
         }
@@ -107,9 +108,11 @@ int FolderStatusDelegate::rootFolderHeightWithoutErrors(const QFontMetrics &fm, 
 void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
     const QModelIndex &index) const
 {
-    QStyledItemDelegate::paint(painter, option, index);
+    if (index.column() != 0) {
+        return;
+    }
 
-    const bool useSpaces = index.data(FolderStatusDelegate::IsUsingSpaces).toBool();
+    const bool useSpaces = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsUsingSpaces)).data().toBool();
 
     auto textAlign = Qt::AlignLeft;
 
@@ -126,7 +129,8 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int aliasMargin = aliasFm.height() / 2;
     int margin = subFm.height() / 4;
 
-    if (index.data(AddButton).toBool()) {
+    const auto itemType = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
+    if (itemType == FolderStatusModel::AddButton) {
         QSize hint = sizeHint(option, index);
         QStyleOptionButton opt;
         static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
@@ -143,24 +147,24 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         return;
     }
 
-    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
-        return;
+    if (itemType != FolderStatusModel::RootFolder) {
+        return QStyledItemDelegate::paint(painter, option, index);
     }
     painter->save();
 
-    const QIcon statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
-    const QString aliasText = qvariant_cast<QString>(index.data(HeaderRole));
-    const QStringList conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
-    const QStringList errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
-    const QStringList infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
+    const QIcon statusIcon = qvariant_cast<QIcon>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderStatusIconRole)).data());
+    const QString aliasText = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::HeaderRole)).data());
+    const QStringList conflictTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderConflictMsg)).data());
+    const QStringList errorTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderErrorMsg)).data());
+    const QStringList infoTexts = qvariant_cast<QStringList>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderInfoMsg)).data());
 
-    const int overallPercent = qvariant_cast<int>(index.data(SyncProgressOverallPercent));
-    const QString overallString = qvariant_cast<QString>(index.data(SyncProgressOverallString));
-    const QString itemString = qvariant_cast<QString>(index.data(SyncProgressItemString));
-    const int warningCount = qvariant_cast<int>(index.data(WarningCount));
-    const bool syncOngoing = qvariant_cast<bool>(index.data(SyncRunning));
-    const bool syncEnabled = qvariant_cast<bool>(index.data(FolderAccountConnected));
-    const QString syncText = qvariant_cast<QString>(index.data(FolderSyncText));
+    const int overallPercent = qvariant_cast<int>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressOverallPercent)).data());
+    const QString overallString = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressOverallString)).data());
+    const QString itemString = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncProgressItemString)).data());
+    const int warningCount = qvariant_cast<int>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::WarningCount)).data());
+    const bool syncOngoing = qvariant_cast<bool>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::SyncRunning)).data());
+    const bool syncEnabled = qvariant_cast<bool>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderAccountConnected)).data());
+    const QString syncText = qvariant_cast<QString>(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::FolderSyncText)).data());
 
     QRect iconRect = option.rect;
     QRect aliasRect = option.rect;
@@ -376,8 +380,8 @@ QRect FolderStatusDelegate::errorsListRect(QRect within, const QModelIndex &inde
     within.setTop(within.top() + FolderStatusDelegate::rootFolderHeightWithoutErrors(fm, aliasFm));
     int margin = fm.height() / 4;
     int h = 0;
-    for (auto role : {FolderConflictMsg, FolderErrorMsg}) {
-        auto msgs = qvariant_cast<QStringList>(index.data(role));
+    for (auto column : { FolderStatusModel::Columns::FolderConflictMsg, FolderStatusModel::Columns::FolderErrorMsg }) {
+        const auto msgs = index.siblingAtColumn(static_cast<int>(column)).data().toStringList();
         if (!msgs.isEmpty()) {
             h += margin + 2 * margin + msgs.count() * fm.height();
         }
