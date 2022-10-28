@@ -121,3 +121,20 @@ std::function<void()> OCC::Models::addFilterMenuItems(QMenu *menu, const QString
     };
     return resetFunction;
 }
+
+void OCC::Models::WeightedQSortFilterProxyModel::setWeightedColumn(int i)
+{
+    _weightedColumn = i;
+}
+
+bool OCC::Models::WeightedQSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
+{
+    Q_ASSERT(_weightedColumn < source_left.model()->columnCount());
+    const uint32_t w1 = source_left.siblingAtColumn(_weightedColumn).data().toInt();
+    const uint32_t w2 = source_right.siblingAtColumn(_weightedColumn).data().toInt();
+    if (w1 != w2) {
+        // always disply on top
+        return sortOrder() == Qt::SortOrder::DescendingOrder ? w1 < w2 : w1 > w2;
+    }
+    return QSortFilterProxyModel::lessThan(source_left, source_right);
+}
