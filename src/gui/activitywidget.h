@@ -113,7 +113,7 @@ private:
     int _notificationRequestsRunning;
 
     ActivityListModel *_model;
-    SignalledQSortFilterProxyModel *_sortModel;
+    Models::SignalledQSortFilterProxyModel *_sortModel;
     QVBoxLayout *_notificationsLayout;
 };
 

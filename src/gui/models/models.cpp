@@ -22,12 +22,7 @@
 
 #include <functional>
 
-OCC::SignalledQSortFilterProxyModel::SignalledQSortFilterProxyModel(QObject *parent)
-    : QSortFilterProxyModel(parent)
-{
-}
-
-void OCC::SignalledQSortFilterProxyModel::setFilterFixedStringSignalled(const QString &pattern)
+void OCC::Models::SignalledQSortFilterProxyModel::setFilterFixedStringSignalled(const QString &pattern)
 {
     setFilterFixedString(pattern);
     emit filterChanged();

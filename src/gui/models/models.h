@@ -23,19 +23,6 @@ class QMenu;
 
 namespace OCC {
 
-class SignalledQSortFilterProxyModel : public QSortFilterProxyModel
-{
-    Q_OBJECT
-
-public:
-    SignalledQSortFilterProxyModel(QObject *parent = nullptr);
-
-    void setFilterFixedStringSignalled(const QString &pattern);
-
-signals:
-    void filterChanged();
-};
-
 namespace Models {
     Q_NAMESPACE
 
@@ -44,6 +31,19 @@ namespace Models {
         StringFormatWidthRole // The width for a cvs formated column
     };
     Q_ENUM_NS(DataRoles)
+
+    class SignalledQSortFilterProxyModel : public QSortFilterProxyModel
+    {
+        Q_OBJECT
+
+    public:
+        using QSortFilterProxyModel::QSortFilterProxyModel;
+
+        void setFilterFixedStringSignalled(const QString &pattern);
+
+    signals:
+        void filterChanged();
+    };
 
     /**
      * Returns a cvs representation of a table

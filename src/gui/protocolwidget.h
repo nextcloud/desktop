@@ -51,7 +51,7 @@ public:
     ~ProtocolWidget() override;
 
     static void showContextMenu(QWidget *parent, ProtocolItemModel *model, const QModelIndexList &items);
-    static QMenu *showFilterMenu(QWidget *parent, SignalledQSortFilterProxyModel *model, int role, const QString &columnName);
+    static QMenu *showFilterMenu(QWidget *parent, Models::SignalledQSortFilterProxyModel *model, int role, const QString &columnName);
 
 public slots:
     void slotItemCompleted(Folder *folder, const SyncFileItemPtr &item);
@@ -62,7 +62,7 @@ private slots:
 
 private:
     ProtocolItemModel *_model;
-    SignalledQSortFilterProxyModel *_sortModel;
+    Models::SignalledQSortFilterProxyModel *_sortModel;
     Ui::ProtocolWidget *_ui;
 };
 }

@@ -67,7 +67,7 @@ private:
     std::function<void()> addStatusFilter(QMenu *menu);
 
     ProtocolItemModel *_model;
-    SignalledQSortFilterProxyModel *_sortModel;
+    Models::SignalledQSortFilterProxyModel *_sortModel;
     SyncFileItemStatusSetSortFilterProxyModel *_statusSortModel;
 
     Ui::IssuesWidget *_ui;

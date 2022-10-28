@@ -50,13 +50,13 @@ bool persistsUntilLocalDiscovery(const OCC::ProtocolItem &data)
 }
 namespace OCC {
 
-class SyncFileItemStatusSetSortFilterProxyModel : public SignalledQSortFilterProxyModel
+class SyncFileItemStatusSetSortFilterProxyModel : public Models::SignalledQSortFilterProxyModel
 {
 public:
     using StatusSet = std::array<bool, SyncFileItem::StatusCount>;
 
     explicit SyncFileItemStatusSetSortFilterProxyModel(QObject *parent = nullptr)
-        : SignalledQSortFilterProxyModel(parent)
+        : Models::SignalledQSortFilterProxyModel(parent)
     {
         resetFilter();
     }
@@ -180,11 +180,11 @@ IssuesWidget::IssuesWidget(QWidget *parent)
     });
 
     _model = new ProtocolItemModel(20000, true, this);
-    _sortModel = new SignalledQSortFilterProxyModel(this);
-    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
+    _sortModel = new Models::SignalledQSortFilterProxyModel(this);
+    connect(_sortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
     _sortModel->setSourceModel(_model);
     _statusSortModel = new SyncFileItemStatusSetSortFilterProxyModel(this);
-    connect(_statusSortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
+    connect(_statusSortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, &IssuesWidget::filterDidChange);
     _statusSortModel->setSourceModel(_sortModel);
     _statusSortModel->setSortRole(Qt::DisplayRole); // Sorting should be done based on the text in the column cells, but...
     _statusSortModel->setFilterRole(Models::UnderlyingDataRole); // ... filtering should be done on the underlying enum value.

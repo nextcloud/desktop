@@ -61,7 +61,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     _ui->setupUi(this);
 
     _model = new ActivityListModel(this);
-    _sortModel = new SignalledQSortFilterProxyModel(this);
+    _sortModel = new Models::SignalledQSortFilterProxyModel(this);
     _sortModel->setSourceModel(_model);
     _ui->_activityList->setModel(_sortModel);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
@@ -112,7 +112,7 @@ ActivityWidget::ActivityWidget(QWidget *parent)
     connect(_ui->_filterButton, &QAbstractButton::clicked, this, [this] {
         ProtocolWidget::showFilterMenu(_ui->_filterButton, _sortModel, static_cast<int>(ActivityListModel::ActivityRole::Account), tr("Account"));
     });
-    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, this, [this]() {
+    connect(_sortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, [this]() {
         _ui->_filterButton->setText(CommonStrings::filterButtonText(_sortModel->filterRegExp().isEmpty() ? 0 : 1));
     });
 

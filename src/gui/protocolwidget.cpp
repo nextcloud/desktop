@@ -51,8 +51,8 @@ ProtocolWidget::ProtocolWidget(QWidget *parent)
     // Build the model-view "stack":
     //  _model <- _sortModel <- _statusSortModel <- _tableView
     _model = new ProtocolItemModel(2000, false, this);
-    _sortModel = new SignalledQSortFilterProxyModel(this);
-    connect(_sortModel, &SignalledQSortFilterProxyModel::filterChanged, this, &ProtocolWidget::filterDidChange);
+    _sortModel = new Models::SignalledQSortFilterProxyModel(this);
+    connect(_sortModel, &Models::SignalledQSortFilterProxyModel::filterChanged, this, &ProtocolWidget::filterDidChange);
     _sortModel->setSourceModel(_model);
     _sortModel->setSortRole(Models::UnderlyingDataRole);
     _ui->_tableView->setModel(_sortModel);
@@ -95,7 +95,7 @@ ProtocolWidget::~ProtocolWidget()
  * @param columnName the name column on which the filter is done
  * @return
  */
-QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, SignalledQSortFilterProxyModel *model, int role, const QString &columnName)
+QMenu *ProtocolWidget::showFilterMenu(QWidget *parent, Models::SignalledQSortFilterProxyModel *model, int role, const QString &columnName)
 {
     auto menu = new QMenu(parent);
     menu->setAttribute(Qt::WA_DeleteOnClose);
