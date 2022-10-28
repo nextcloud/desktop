@@ -18,7 +18,6 @@
 #include <QDesktopServices>
 #include <QtConcurrent>
 
-#include "accountmanager.h"
 #include "editlocallymanager.h"
 #include "folder.h"
 #include "folderman.h"
@@ -49,6 +48,10 @@ void EditLocallyHandler::startSetup()
                                         << "userId" << _userId;
         return;
     }
+
+    // Show the loading dialog but don't show the filename until we have
+    // verified the token
+    Systray::instance()->createEditFileLocallyLoadingDialog({});
 
     // We check the input data locally first, without modifying any state or
     // showing any potentially misleading data to the user
@@ -110,6 +113,7 @@ void EditLocallyHandler::remoteTokenCheckResultReceived(const int statusCode)
 
     if (!_tokenVerified) {
         showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
+        return;
     }
 
     proceedWithSetup();
@@ -149,17 +153,13 @@ void EditLocallyHandler::proceedWithSetup()
 
     _fileName = relPathSplit.last();
 
+    Systray::instance()->destroyEditFileLocallyLoadingDialog();
     Q_EMIT setupFinished();
 }
 
 QString EditLocallyHandler::prefixSlashToPath(const QString &path)
 {
-    auto slashPrefixedPath = path;
-    if (!slashPrefixedPath.startsWith('/')) {
-        slashPrefixedPath.prepend('/');
-    }
-
-    return slashPrefixedPath;
+    return path.startsWith('/') ? path : QChar::fromLatin1('/') + path;
 }
 
 bool EditLocallyHandler::isTokenValid(const QString &token)
@@ -173,12 +173,7 @@ bool EditLocallyHandler::isTokenValid(const QString &token)
     const QRegularExpression tokenRegex("^[a-zA-Z0-9]{128}$");
     const auto regexMatch = tokenRegex.match(token);
 
-    // Means invalid token type received, be cautious with bad token
-    if(!regexMatch.hasMatch()) {
-        return false;
-    }
-
-    return true;
+    return regexMatch.hasMatch();
 }
 
 bool EditLocallyHandler::isRelPathValid(const QString &relPath)
@@ -207,7 +202,7 @@ bool EditLocallyHandler::isRelPathValid(const QString &relPath)
 bool EditLocallyHandler::isRelPathExcluded(const QString &relPath)
 {
     if (relPath.isEmpty()) {
-        return true;
+        return false;
     }
 
     const auto folderMap = FolderMan::instance()->map();
@@ -216,16 +211,17 @@ bool EditLocallyHandler::isRelPathExcluded(const QString &relPath)
         const auto excludedThroughSelectiveSync = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &result);
         for (const auto &excludedPath : excludedThroughSelectiveSync) {
             if (relPath.startsWith(excludedPath)) {
-                return false;
+                return true;
             }
         }
     }
 
-    return true;
+    return false;
 }
 
 void EditLocallyHandler::showError(const QString &message, const QString &informativeText)
 {
+    Systray::instance()->destroyEditFileLocallyLoadingDialog();
     showErrorNotification(message, informativeText);
     // to make sure the error is not missed, show a message box in addition
     showErrorMessageBox(message, informativeText);
