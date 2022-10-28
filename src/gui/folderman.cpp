@@ -1488,6 +1488,27 @@ void FolderMan::editFileLocally(const QString &userId, const QString &relPath, c
         return;
     }
 
+    // We want to check that the path is canonical and not relative
+    // (i.e. that it doesn't contain ../../) but we always receive
+    // a relative path, so let's make it absolute by prepending a
+    // slash
+
+    auto slashPrefixedPath = relPath;
+    if (!slashPrefixedPath.startsWith('/')) {
+        slashPrefixedPath.prepend('/');
+    }
+
+    // Let's check that the filepath is canonical, and that the request
+    // contains no funny behaviour regarding paths
+    const auto cleanedPath = QDir::cleanPath(slashPrefixedPath);
+
+    if (cleanedPath != slashPrefixedPath) {
+        qCWarning(lcFolderMan) << "Provided relPath was:" << relPath
+                               << "which is not canonical (cleaned path was:" << cleanedPath << ")";
+        showError(accountFound, tr("Invalid file path was provided."), tr("Please try again."));
+        return;
+    }
+
     const auto foundFiles = findFileInLocalFolders(relPath, accountFound->account());
 
     if (foundFiles.isEmpty()) {
@@ -1513,7 +1534,18 @@ void FolderMan::editFileLocally(const QString &userId, const QString &relPath, c
         showError(accountFound, tr("Could not find a folder to sync."), relPath);
         return;
     }
-    
+
+    // Token is an alphanumeric string 128 chars long.
+    // Ensure that is what we received and what we are sending to the server.
+    const QRegularExpression tokenRegex("^[a-zA-Z0-9]{128}$");
+    const auto regexMatch = tokenRegex.match(token);
+
+    // Means invalid token type received, be cautious with bad token
+    if(!regexMatch.hasMatch()) {
+        showError(accountFound, tr("Invalid token received."), tr("Please try again."));
+        return;
+    }
+
     const auto relPathSplit = relPath.split(QLatin1Char('/'));
     if (relPathSplit.size() > 0) {
         Systray::instance()->createEditFileLocallyLoadingDialog(relPathSplit.last());
@@ -1522,9 +1554,14 @@ void FolderMan::editFileLocally(const QString &userId, const QString &relPath, c
         return;
     }
 
-    const auto checkTokenForEditLocally = new SimpleApiJob(accountFound->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(token));
+    const auto encodedToken = QString::fromUtf8(QUrl::toPercentEncoding(token));   // Sanitise the token
+    const auto encodedRelPath = QUrl::toPercentEncoding(slashPrefixedPath); // Sanitise the relPath
+    const auto checkTokenForEditLocally = new SimpleApiJob(accountFound->account(), QStringLiteral("/ocs/v2.php/apps/files/api/v1/openlocaleditor/%1").arg(encodedToken));
+
+    QUrlQuery params;
+    params.addQueryItem(QStringLiteral("path"), slashPrefixedPath);
+    checkTokenForEditLocally->addQueryParams(params);
     checkTokenForEditLocally->setVerb(SimpleApiJob::Verb::Post);
-    checkTokenForEditLocally->setBody(QByteArray{"path=/"}.append(relPath.toUtf8()));
     connect(checkTokenForEditLocally, &SimpleApiJob::resultReceived, checkTokenForEditLocally, [this, folderForFile, localFilePath, showError, accountFound, relPath] (int statusCode) {
         constexpr auto HTTP_OK_CODE = 200;
         if (statusCode != HTTP_OK_CODE) {
