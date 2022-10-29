@@ -116,7 +116,9 @@ RowLayout {
         bold: true
         bgColor: Style.currentUserHeaderColor
 
-        visible: !syncStatus.syncing && NC.UserModel.currentUser.hasLocalFolder
+        visible: !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
         enabled: visible
         onClicked: {
             if(!syncStatus.syncing) {
