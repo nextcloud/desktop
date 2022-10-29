@@ -369,6 +369,21 @@ AccountStatePtr AccountManager::account(const QString &name)
     return it != _accounts.cend() ? *it : AccountStatePtr();
 }
 
+AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
+{
+    for (const auto &account : accounts()) {
+        const auto isUserIdWithPort = id.split(QLatin1Char(':')).size() > 1;
+        const auto port = isUserIdWithPort ? account->account()->url().port() : -1;
+        const auto portString = (port > 0 && port != 80 && port != 443) ? QStringLiteral(":%1").arg(port) : QStringLiteral("");
+        const QString davUserId = QStringLiteral("%1@%2").arg(account->account()->davUser(), account->account()->url().host()) + portString;
+
+        if (davUserId == id) {
+            return account;
+        }
+    }
+    return {};
+}
+
 AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
 {
     auto id = newAccount->id();
