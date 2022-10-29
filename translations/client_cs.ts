@@ -1512,53 +1512,69 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Nedaří se nalézt účet pro lokální upravování</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1484"/>
-        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1490"/>
-        <location filename="../src/gui/folderman.cpp" line="1506"/>
+        <location filename="../src/gui/folderman.cpp" line="1493"/>
+        <source>Invalid file path was provided.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1493"/>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1505"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1511"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že jeho popis umístění je platný a že je synchronizovaný lokálně.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1498"/>
+        <location filename="../src/gui/folderman.cpp" line="1519"/>
         <source>Could not find a folder to sync.</source>
         <translation>Nedaří se najít složku pro synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1554"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Nedaří se ověřit správnost požadavku na otevření souboru ze serveru.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1638"/>
+        <location filename="../src/gui/folderman.cpp" line="1675"/>
         <source>Undefined state.</source>
         <translation>Nedefinovaný stav.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1641"/>
+        <location filename="../src/gui/folderman.cpp" line="1678"/>
         <source>Waiting to start syncing.</source>
         <translation>Čeká na spuštění synchronizace.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1644"/>
+        <location filename="../src/gui/folderman.cpp" line="1681"/>
         <source>Preparing for sync.</source>
         <translation>Příprava na synchronizaci.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1647"/>
+        <location filename="../src/gui/folderman.cpp" line="1684"/>
         <source>Sync is running.</source>
         <translation>Synchronizace je spuštěná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1652"/>
+        <location filename="../src/gui/folderman.cpp" line="1689"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Synchronizace dokončena s nevyřešenými konflikty.</translation>
     </message>
@@ -1578,62 +1594,62 @@ Pokud to byla pouze chyba a chcete si tyto soubory ponechat, budou ze serveru zn
         <translation>Zrušeno uživatelem.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1654"/>
+        <location filename="../src/gui/folderman.cpp" line="1691"/>
         <source>Last sync was successful.</source>
         <translation>Poslední synchronizace byla úspěšná.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1660"/>
+        <location filename="../src/gui/folderman.cpp" line="1697"/>
         <source>Setup error.</source>
         <translation>Chyba nastavení.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1663"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>Sync request was cancelled.</source>
         <translation>Požadavek na synchronizaci zrušen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1666"/>
+        <location filename="../src/gui/folderman.cpp" line="1703"/>
         <source>Sync is paused.</source>
         <translation>Synchronizace je pozastavena.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1672"/>
+        <location filename="../src/gui/folderman.cpp" line="1709"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (synchronizace je pozastavena)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1680"/>
+        <location filename="../src/gui/folderman.cpp" line="1717"/>
         <source>No valid folder selected!</source>
         <translation>Nevybrána platná složka!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1729"/>
         <source>The selected path does not exist!</source>
         <translation>Vybraný popis umístění neexistuje!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1696"/>
+        <location filename="../src/gui/folderman.cpp" line="1733"/>
         <source>The selected path is not a folder!</source>
         <translation>Vybraný popis umístění není složka!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1737"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Nemáte oprávnění pro zápis do zvolené složky!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1789"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní složka %1 už obsahuje podsložku použitou pro synchronizaci. Zvolte jinou!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1760"/>
+        <location filename="../src/gui/folderman.cpp" line="1797"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Místní složka %1 už je obsažena ve složce, použité pro synchronizaci. Zvolte jinou!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1776"/>
+        <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ze serveru se do tohoto umístění už synchronizuje. Zvolte jinou místní složku!</translation>
     </message>

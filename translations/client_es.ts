@@ -1514,53 +1514,69 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>No fue posible encontrar una cuenta para edición local</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1484"/>
-        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>No fue posible encontrar un archivo para edición local. Asegúrese de que no está excluida a través de la sincronización selectiva.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1490"/>
-        <location filename="../src/gui/folderman.cpp" line="1506"/>
+        <location filename="../src/gui/folderman.cpp" line="1493"/>
+        <source>Invalid file path was provided.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1493"/>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1505"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation>No fue posible encontrar un archivo para edición local. Asegúrese de que no está excluida a través de la sincronización selectiva.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1511"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>No fue posible encontrar un archivo para edición local. Asegúrese de que la ruta es válida y que este se encuentra sincronizado localmente.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1498"/>
+        <location filename="../src/gui/folderman.cpp" line="1519"/>
         <source>Could not find a folder to sync.</source>
         <translation>No fue posible encontrar una carpeta para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1554"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1638"/>
+        <location filename="../src/gui/folderman.cpp" line="1675"/>
         <source>Undefined state.</source>
         <translation>Estado no definido.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1641"/>
+        <location filename="../src/gui/folderman.cpp" line="1678"/>
         <source>Waiting to start syncing.</source>
         <translation>Esperando para comenzar la sincronización.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1644"/>
+        <location filename="../src/gui/folderman.cpp" line="1681"/>
         <source>Preparing for sync.</source>
         <translation>Preparándose para sincronizar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1647"/>
+        <location filename="../src/gui/folderman.cpp" line="1684"/>
         <source>Sync is running.</source>
         <translation>Sincronización en funcionamiento.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1652"/>
+        <location filename="../src/gui/folderman.cpp" line="1689"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>La sincronización finalizó pero con conflictos sin resolver.</translation>
     </message>
@@ -1580,62 +1596,62 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <translation>Interrumpido por el usuario.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1654"/>
+        <location filename="../src/gui/folderman.cpp" line="1691"/>
         <source>Last sync was successful.</source>
         <translation>La última sincronización se ha realizado con éxito.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1660"/>
+        <location filename="../src/gui/folderman.cpp" line="1697"/>
         <source>Setup error.</source>
         <translation>Error de configuración.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1663"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>Sync request was cancelled.</source>
         <translation>La solicitud de sincronización fue cancelada.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1666"/>
+        <location filename="../src/gui/folderman.cpp" line="1703"/>
         <source>Sync is paused.</source>
         <translation>La sincronización está en pausa.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1672"/>
+        <location filename="../src/gui/folderman.cpp" line="1709"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sincronización en pausa)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1680"/>
+        <location filename="../src/gui/folderman.cpp" line="1717"/>
         <source>No valid folder selected!</source>
         <translation>¡La carpeta seleccionada no es válida!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1729"/>
         <source>The selected path does not exist!</source>
         <translation>¡La ruta seleccionada no existe!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1696"/>
+        <location filename="../src/gui/folderman.cpp" line="1733"/>
         <source>The selected path is not a folder!</source>
         <translation>¡La ruta seleccionada no es una carpeta!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1737"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>¡No tiene permiso para escribir en la carpeta seleccionada!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1789"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>El directorio local %1 ya contiene un directorio usado en una conexión de sincronización de directorios. Por favor, elija otro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1760"/>
+        <location filename="../src/gui/folderman.cpp" line="1797"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>El directorio local %1 está dentro de un directorio usado en una conexión de sincronización de directorios. Por favor, elija otro.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1776"/>
+        <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Ya existe una tarea de sincronización entre el servidor y esta carpeta. Por favor elija otra carpeta local.</translation>
     </message>

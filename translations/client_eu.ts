@@ -1513,53 +1513,69 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Ezin izan da kontu bat aurkitu editatze lokalerako</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1484"/>
-        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Ezin izan da fitxategi bat aurkitu editatze lokalerako. Ziurtatu ez dagoela ezikusia sinkronizazio hautakorraren bidez.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1500"/>
         <source>Undefined State.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1490"/>
-        <location filename="../src/gui/folderman.cpp" line="1506"/>
+        <location filename="../src/gui/folderman.cpp" line="1493"/>
+        <source>Invalid file path was provided.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1493"/>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1505"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation>Ezin izan da fitxategi bat aurkitu editatze lokalerako. Ziurtatu ez dagoela ezikusia sinkronizazio hautakorraren bidez.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1511"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Ezin izan da fitxategi bat aurkitu editatze lokalerako. Ziurtatu bide-izena baliozkoa dela eta lokalean sinkronizatuta dagoela.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1498"/>
+        <location filename="../src/gui/folderman.cpp" line="1519"/>
         <source>Could not find a folder to sync.</source>
         <translation>Ezin izan da sinkronizatzeko karpeta aurkitu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1517"/>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1554"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1638"/>
+        <location filename="../src/gui/folderman.cpp" line="1675"/>
         <source>Undefined state.</source>
         <translation>Definitu gabeko egoera.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1641"/>
+        <location filename="../src/gui/folderman.cpp" line="1678"/>
         <source>Waiting to start syncing.</source>
         <translation>Itxoiten sinkronizazioa hasteko.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1644"/>
+        <location filename="../src/gui/folderman.cpp" line="1681"/>
         <source>Preparing for sync.</source>
         <translation>Sinkronizazioa prestatzen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1647"/>
+        <location filename="../src/gui/folderman.cpp" line="1684"/>
         <source>Sync is running.</source>
         <translation>Sinkronizazioa martxan da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1652"/>
+        <location filename="../src/gui/folderman.cpp" line="1689"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Sinkronizazioa burutu da, ebatzi gabeko gatazka batzuekin.</translation>
     </message>
@@ -1579,62 +1595,62 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
         <translation>Erabiltzaileak bertan behera utzi du.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1654"/>
+        <location filename="../src/gui/folderman.cpp" line="1691"/>
         <source>Last sync was successful.</source>
         <translation>Azkeneko sinkronizazioa behar bezala burutu da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1660"/>
+        <location filename="../src/gui/folderman.cpp" line="1697"/>
         <source>Setup error.</source>
         <translation>Konfigurazio errorea.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1663"/>
+        <location filename="../src/gui/folderman.cpp" line="1700"/>
         <source>Sync request was cancelled.</source>
         <translation>Sinkronizazio eskaera bertan behera utzi da.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1666"/>
+        <location filename="../src/gui/folderman.cpp" line="1703"/>
         <source>Sync is paused.</source>
         <translation>Sinkronizazioa pausatuta dago.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1672"/>
+        <location filename="../src/gui/folderman.cpp" line="1709"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Sinkronizazioa pausatuta dago)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1680"/>
+        <location filename="../src/gui/folderman.cpp" line="1717"/>
         <source>No valid folder selected!</source>
         <translation>Ez da baliozko karpetarik hautatu!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1692"/>
+        <location filename="../src/gui/folderman.cpp" line="1729"/>
         <source>The selected path does not exist!</source>
         <translation>Hautatutako bidea ez da existitzen!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1696"/>
+        <location filename="../src/gui/folderman.cpp" line="1733"/>
         <source>The selected path is not a folder!</source>
         <translation>Hautatutako bidea ez da karpeta bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1737"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Ez daukazu hautatutako karpetan idazteko baimenik!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1752"/>
+        <location filename="../src/gui/folderman.cpp" line="1789"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Tokiko &apos;%1&apos; karpetak badu dagoeneko sinkronizatutako karpeta bat. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1760"/>
+        <location filename="../src/gui/folderman.cpp" line="1797"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Tokiko &apos;%1&apos; karpeta dagoeneko sinkronizatutako karpeta batean dago. Hautatu beste bat!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1776"/>
+        <location filename="../src/gui/folderman.cpp" line="1813"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Dagoeneko sinkronizazio bat dago zerbitzaritik karpeta lokal honetara. Aukeratu tokiko beste karpeta bat!</translation>
     </message>
