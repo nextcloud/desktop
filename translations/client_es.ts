@@ -1478,7 +1478,7 @@ Por favor, considere eliminar esta carpeta desde la cuenta y añadirla de nuevo.
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
-        <source>Add a space</source>
+        <source>Add a Space</source>
         <translation type="unfinished"/>
     </message>
     <message>

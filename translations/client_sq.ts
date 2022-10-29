@@ -1486,8 +1486,8 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
-        <source>Add a space</source>
-        <translation>Shtoni një hapësirë</translation>
+        <source>Add a Space</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="294"/>
