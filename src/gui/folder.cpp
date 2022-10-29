@@ -46,8 +46,12 @@
 #include <QPushButton>
 #include <QApplication>
 
-static const char versionC[] = "version";
-
+namespace {
+#ifndef VERSION_C
+#define VERSION_C
+constexpr auto versionC= "version";
+#endif
+}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolder, "nextcloud.gui.folder", QtInfoMsg)
