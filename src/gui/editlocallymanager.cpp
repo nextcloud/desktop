@@ -17,8 +17,6 @@
 #include <QUrl>
 #include <QLoggingCategory>
 
-#include "editlocallyhandler.h"
-
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcEditLocallyManager, "nextcloud.gui.editlocallymanager", QtInfoMsg)
@@ -41,7 +39,7 @@ EditLocallyManager *EditLocallyManager::instance()
 void EditLocallyManager::editLocally(const QUrl &url)
 {
     const auto inputs = parseEditLocallyUrl(url);
-    createHandler(inputs.userId, inputs.relPath, inputs.token);
+    createJob(inputs.userId, inputs.relPath, inputs.token);
 }
 
 EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl(const QUrl &url)
@@ -69,25 +67,25 @@ EditLocallyManager::EditLocallyInputData EditLocallyManager::parseEditLocallyUrl
     return {userId, fileRemotePath, token};
 }
 
-void EditLocallyManager::createHandler(const QString &userId,
+void EditLocallyManager::createJob(const QString &userId,
                                        const QString &relPath,
                                        const QString &token)
 {
-    const EditLocallyHandlerPtr handler(new EditLocallyHandler(userId, relPath, token));
-    // We need to make sure the handler sticks around until it is finished
-    _handlers.insert(token, handler);
+    const EditLocallyJobPtr job(new EditLocallyJob(userId, relPath, token));
+    // We need to make sure the job sticks around until it is finished
+    _jobs.insert(token, job);
 
-    const auto removeHandler = [this, token] { _handlers.remove(token); };
-    const auto setupHandler = [handler] { handler->startEditLocally(); };
+    const auto removeJob = [this, token] { _jobs.remove(token); };
+    const auto setupJob = [job] { job->startEditLocally(); };
 
-    connect(handler.data(), &EditLocallyHandler::error,
-            this, removeHandler);
-    connect(handler.data(), &EditLocallyHandler::fileOpened,
-            this, removeHandler);
-    connect(handler.data(), &EditLocallyHandler::setupFinished,
-            handler.data(), setupHandler);
+    connect(job.data(), &EditLocallyJob::error,
+            this, removeJob);
+    connect(job.data(), &EditLocallyJob::fileOpened,
+            this, removeJob);
+    connect(job.data(), &EditLocallyJob::setupFinished,
+            job.data(), setupJob);
 
-    handler->startSetup();
+    job->startSetup();
 }
 
 }

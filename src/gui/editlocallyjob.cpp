@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#include "editlocallyhandler.h"
+#include "editlocallyjob.h"
 
 #include <QMessageBox>
 #include <QDesktopServices>
@@ -26,9 +26,9 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcEditLocallyHandler, "nextcloud.gui.editlocallyhandler", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcEditLocallyJob, "nextcloud.gui.editlocallyjob", QtInfoMsg)
 
-EditLocallyHandler::EditLocallyHandler(const QString &userId,
+EditLocallyJob::EditLocallyJob(const QString &userId,
                                        const QString &relPath,
                                        const QString &token,
                                        QObject *parent)
@@ -39,10 +39,10 @@ EditLocallyHandler::EditLocallyHandler(const QString &userId,
 {
 }
 
-void EditLocallyHandler::startSetup()
+void EditLocallyJob::startSetup()
 {
     if (_token.isEmpty() || _relPath.isEmpty() || _userId.isEmpty()) {
-        qCWarning(lcEditLocallyHandler) << "Could not start setup."
+        qCWarning(lcEditLocallyJob) << "Could not start setup."
                                         << "token:" << _token
                                         << "relPath:" << _relPath
                                         << "userId" << _userId;
@@ -56,14 +56,14 @@ void EditLocallyHandler::startSetup()
     // We check the input data locally first, without modifying any state or
     // showing any potentially misleading data to the user
     if (!isTokenValid(_token)) {
-        qCWarning(lcEditLocallyHandler) << "Edit locally request is missing a valid token, will not open file. "
+        qCWarning(lcEditLocallyJob) << "Edit locally request is missing a valid token, will not open file. "
                                         << "Token received was:" << _token;
         showError(tr("Invalid token received."), tr("Please try again."));
         return;
     }
 
     if (!isRelPathValid(_relPath)) {
-        qCWarning(lcEditLocallyHandler) << "Provided relPath was:" << _relPath << "which is not canonical.";
+        qCWarning(lcEditLocallyJob) << "Provided relPath was:" << _relPath << "which is not canonical.";
         showError(tr("Invalid file path was provided."), tr("Please try again."));
         return;
     }
@@ -71,7 +71,7 @@ void EditLocallyHandler::startSetup()
     _accountState = AccountManager::instance()->accountFromUserId(_userId);
 
     if (!_accountState) {
-        qCWarning(lcEditLocallyHandler) << "Could not find an account " << _userId << " to edit file " << _relPath << " locally.";
+        qCWarning(lcEditLocallyJob) << "Could not find an account " << _userId << " to edit file " << _relPath << " locally.";
         showError(tr("Could not find an account for local editing."), tr("Please try again."));
         return;
     }
@@ -81,10 +81,10 @@ void EditLocallyHandler::startSetup()
     startTokenRemoteCheck();
 }
 
-void EditLocallyHandler::startTokenRemoteCheck()
+void EditLocallyJob::startTokenRemoteCheck()
 {
     if (!_accountState || _relPath.isEmpty() || _token.isEmpty()) {
-        qCWarning(lcEditLocallyHandler) << "Could not start token check."
+        qCWarning(lcEditLocallyJob) << "Could not start token check."
                                         << "accountState:" << _accountState
                                         << "relPath:" << _relPath
                                         << "token:" << _token;
@@ -101,14 +101,14 @@ void EditLocallyHandler::startTokenRemoteCheck()
     params.addQueryItem(QStringLiteral("path"), prefixSlashToPath(encodedRelPath));
     _checkTokenJob->addQueryParams(params);
     _checkTokenJob->setVerb(SimpleApiJob::Verb::Post);
-    connect(_checkTokenJob.get(), &SimpleApiJob::resultReceived, this, &EditLocallyHandler::remoteTokenCheckResultReceived);
+    connect(_checkTokenJob.get(), &SimpleApiJob::resultReceived, this, &EditLocallyJob::remoteTokenCheckResultReceived);
 
     _checkTokenJob->start();
 }
 
-void EditLocallyHandler::remoteTokenCheckResultReceived(const int statusCode)
+void EditLocallyJob::remoteTokenCheckResultReceived(const int statusCode)
 {
-    qCInfo(lcEditLocallyHandler) << "token check result" << statusCode;
+    qCInfo(lcEditLocallyJob) << "token check result" << statusCode;
 
     constexpr auto HTTP_OK_CODE = 200;
     _tokenVerified = statusCode == HTTP_OK_CODE;
@@ -121,10 +121,10 @@ void EditLocallyHandler::remoteTokenCheckResultReceived(const int statusCode)
     proceedWithSetup();
 }
 
-void EditLocallyHandler::proceedWithSetup()
+void EditLocallyJob::proceedWithSetup()
 {
     if (!_tokenVerified) {
-        qCWarning(lcEditLocallyHandler) << "Could not proceed with setup as token is not verified.";
+        qCWarning(lcEditLocallyJob) << "Could not proceed with setup as token is not verified.";
         return;
     }
 
@@ -159,12 +159,12 @@ void EditLocallyHandler::proceedWithSetup()
     Q_EMIT setupFinished();
 }
 
-QString EditLocallyHandler::prefixSlashToPath(const QString &path)
+QString EditLocallyJob::prefixSlashToPath(const QString &path)
 {
     return path.startsWith('/') ? path : QChar::fromLatin1('/') + path;
 }
 
-bool EditLocallyHandler::isTokenValid(const QString &token)
+bool EditLocallyJob::isTokenValid(const QString &token)
 {
     if (token.isEmpty()) {
         return false;
@@ -178,7 +178,7 @@ bool EditLocallyHandler::isTokenValid(const QString &token)
     return regexMatch.hasMatch();
 }
 
-bool EditLocallyHandler::isRelPathValid(const QString &relPath)
+bool EditLocallyJob::isRelPathValid(const QString &relPath)
 {
     if (relPath.isEmpty()) {
         return false;
@@ -201,7 +201,7 @@ bool EditLocallyHandler::isRelPathValid(const QString &relPath)
     return true;
 }
 
-bool EditLocallyHandler::isRelPathExcluded(const QString &relPath)
+bool EditLocallyJob::isRelPathExcluded(const QString &relPath)
 {
     if (relPath.isEmpty()) {
         return false;
@@ -221,7 +221,7 @@ bool EditLocallyHandler::isRelPathExcluded(const QString &relPath)
     return false;
 }
 
-void EditLocallyHandler::showError(const QString &message, const QString &informativeText)
+void EditLocallyJob::showError(const QString &message, const QString &informativeText)
 {
     Systray::instance()->destroyEditFileLocallyLoadingDialog();
     showErrorNotification(message, informativeText);
@@ -230,7 +230,7 @@ void EditLocallyHandler::showError(const QString &message, const QString &inform
     Q_EMIT error(message, informativeText);
 }
 
-void EditLocallyHandler::showErrorNotification(const QString &message, const QString &informativeText) const
+void EditLocallyJob::showErrorNotification(const QString &message, const QString &informativeText) const
 {
     if (!_accountState || !_accountState->account()) {
         return;
@@ -246,7 +246,7 @@ void EditLocallyHandler::showErrorNotification(const QString &message, const QSt
     }
 }
 
-void EditLocallyHandler::showErrorMessageBox(const QString &message, const QString &informativeText) const
+void EditLocallyJob::showErrorMessageBox(const QString &message, const QString &informativeText) const
 {
     const auto messageBox = new QMessageBox;
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -259,10 +259,10 @@ void EditLocallyHandler::showErrorMessageBox(const QString &message, const QStri
     messageBox->raise();
 }
 
-void EditLocallyHandler::startEditLocally()
+void EditLocallyJob::startEditLocally()
 {
     if (_fileName.isEmpty() || _localFilePath.isEmpty() || !_folderForFile) {
-        qCWarning(lcEditLocallyHandler) << "Could not start to edit locally."
+        qCWarning(lcEditLocallyJob) << "Could not start to edit locally."
                                         << "fileName:" << _fileName
                                         << "localFilePath:" << _localFilePath
                                         << "folderForFile:" << _folderForFile;
@@ -273,20 +273,20 @@ void EditLocallyHandler::startEditLocally()
 
     _folderForFile->startSync();
     const auto syncFinishedConnection = connect(_folderForFile, &Folder::syncFinished,
-                                                this, &EditLocallyHandler::folderSyncFinished);
+                                                this, &EditLocallyJob::folderSyncFinished);
 
     EditLocallyManager::instance()->folderSyncFinishedConnections.insert(_localFilePath,
                                                                          syncFinishedConnection);
 }
 
-void EditLocallyHandler::folderSyncFinished(const OCC::SyncResult &result)
+void EditLocallyJob::folderSyncFinished(const OCC::SyncResult &result)
 {
     Q_UNUSED(result)
     disconnectSyncFinished();
     openFile();
 }
 
-void EditLocallyHandler::disconnectSyncFinished() const
+void EditLocallyJob::disconnectSyncFinished() const
 {
     if(_localFilePath.isEmpty()) {
         return;
@@ -300,10 +300,10 @@ void EditLocallyHandler::disconnectSyncFinished() const
     }
 }
 
-void EditLocallyHandler::openFile()
+void EditLocallyJob::openFile()
 {
     if(_localFilePath.isEmpty()) {
-        qCWarning(lcEditLocallyHandler) << "Could not edit locally. Invalid local file path.";
+        qCWarning(lcEditLocallyJob) << "Could not edit locally. Invalid local file path.";
         return;
     }
 

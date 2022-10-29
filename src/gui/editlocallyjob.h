@@ -20,21 +20,21 @@
 
 namespace OCC {
 
-class EditLocallyHandler;
-using EditLocallyHandlerPtr = QSharedPointer<EditLocallyHandler>;
+class EditLocallyJob;
+using EditLocallyJobPtr = QSharedPointer<EditLocallyJob>;
 
 class Folder;
 class SyncResult;
 
-class EditLocallyHandler : public QObject
+class EditLocallyJob : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit EditLocallyHandler(const QString &userId,
-                                const QString &relPath,
-                                const QString &token,
-                                QObject *parent = nullptr);
+    explicit EditLocallyJob(const QString &userId,
+                            const QString &relPath,
+                            const QString &token,
+                            QObject *parent = nullptr);
 
     [[nodiscard]] static bool isTokenValid(const QString &token);
     [[nodiscard]] static bool isRelPathValid(const QString &relPath);

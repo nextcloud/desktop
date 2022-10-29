@@ -81,8 +81,8 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.h
     connectionvalidator.cpp
-    editlocallyhandler.h
-    editlocallyhandler.cpp
+    editlocallyjob.h
+    editlocallyjob.cpp
     editlocallymanager.h
     editlocallymanager.cpp
     folder.h

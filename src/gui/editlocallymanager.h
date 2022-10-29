@@ -17,7 +17,7 @@
 #include <QObject>
 #include <QHash>
 
-#include "editlocallyhandler.h"
+#include "editlocallyjob.h"
 
 namespace OCC {
 
@@ -34,9 +34,9 @@ public slots:
     void editLocally(const QUrl &url);
 
 private slots:
-    void createHandler(const QString &userId,
-                       const QString &relPath,
-                       const QString &token);
+    void createJob(const QString &userId,
+                   const QString &relPath,
+                   const QString &token);
 
 private:
     explicit EditLocallyManager(QObject *parent = nullptr);
@@ -50,7 +50,7 @@ private:
 
     [[nodiscard]] static EditLocallyInputData parseEditLocallyUrl(const QUrl &url);
 
-    QHash<QString, EditLocallyHandlerPtr> _handlers;
+    QHash<QString, EditLocallyJobPtr> _jobs;
 };
 
 }
