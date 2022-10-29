@@ -319,8 +319,10 @@ set(3rdparty_SRC
 
 if(NOT WIN32)
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
+   set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 else()
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_win.cpp )
+   set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_win.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
 endif()
 
 find_package(Qt5LinguistTools)
@@ -514,6 +516,16 @@ target_link_libraries(nextcloudCore
   )
 
 add_subdirectory(socketapi)
+
+# skip unity inclusion for files which cause problems with a CMake unity build
+set_property(SOURCE
+    ${CMAKE_CURRENT_SOURCE_DIR}/socketapi/socketapi.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/socketapi/socketuploadjob.cpp
+    PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+
+foreach(FILE IN LISTS client_UI_SRCS)
+	set_property(SOURCE ${FILE} PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+endforeach()
 
 if(Qt5WebEngine_FOUND AND Qt5WebEngineWidgets_FOUND)
   target_link_libraries(nextcloudCore PUBLIC Qt5::WebEngineWidgets)
