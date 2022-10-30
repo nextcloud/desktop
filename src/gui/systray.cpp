@@ -299,14 +299,14 @@ bool Systray::raiseFileDetailDialogs(const QString &localPath)
     auto it = _fileDetailDialogs.begin();
     while (it != _fileDetailDialogs.end()) {
         const auto dialog = *it;
-        auto liveDialog = dialog != nullptr;
+        auto nullDialog = dialog == nullptr;
 
-        if (liveDialog && !dialog->isVisible()) {
+        if (!nullDialog && !dialog->isVisible()) {
             destroyDialog(dialog);
-            liveDialog = false;
+            nullDialog = true;
         }
 
-        if (liveDialog && (localPath.isEmpty() || dialog->property("localPath").toString() == localPath)) {
+        if (!nullDialog && (localPath.isEmpty() || dialog->property("localPath").toString() == localPath)) {
             dialog->show();
             dialog->raise();
             dialog->requestActivate();
