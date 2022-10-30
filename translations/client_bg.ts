@@ -169,6 +169,11 @@
         <source>Opening for local editing</source>
         <translation>Отваряне за локално редактиране</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
+        <source>Opening file for local editing</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>EmojiPicker</name>
@@ -1179,6 +1184,53 @@ This action will abort any currently running synchronization.</source>
     </message>
 </context>
 <context>
+    <name>OCC::EditLocallyJob</name>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
+        <source>Invalid file path was provided.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
+        <source>Could not find an account for local editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
+        <source>Could not find a folder to sync.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::EncryptFolderJob</name>
     <message>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="79"/>
@@ -1503,6 +1555,21 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>(архивиране %1)</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>Неопределено състояние.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1675"/>
+        <source>Undefined state.</source>
+        <translation>Неопределено състояние.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1678"/>
+        <source>Waiting to start syncing.</source>
+        <translation>Изчакване на сихронизиране.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>Edit locally request is not valid. Opening the file is forbidden.</source>
         <translation>Заявката за локално редактиране не е валидна. Отварянето на файла е забранено.</translation>
@@ -1511,11 +1578,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find an account for local editing</source>
         <translation>Не можа да се намери профил за локално редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>Неопределено състояние.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1493"/>
@@ -1534,37 +1596,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Не можа да се намери файл за локално редактиране. Уверете се, че не е изключен чрез селективно синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1511"/>
-        <location filename="../src/gui/folderman.cpp" line="1538"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Не можа да се намери файл за локално редактиране. Уверете се, че пътят му е валиден и е синхронизиран локално.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1519"/>
-        <source>Could not find a folder to sync.</source>
-        <translation>Не можа да се намери папка за синхронизиране.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1530"/>
-        <source>Invalid token received.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1554"/>
-        <source>Could not validate the request to open a file from server.</source>
-        <translation>Не можа да провери заявката за отваряне на файл от сървъра.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1675"/>
-        <source>Undefined state.</source>
-        <translation>Неопределено състояние.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1678"/>
-        <source>Waiting to start syncing.</source>
-        <translation>Изчакване на сихронизиране.</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1681"/>
         <source>Preparing for sync.</source>
         <translation>Подготвяне за синхронизиране.</translation>
@@ -1573,6 +1604,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1684"/>
         <source>Sync is running.</source>
         <translation>Синхронизиране на файлове.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1511"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation>Не можа да се намери файл за локално редактиране. Уверете се, че пътят му е валиден и е синхронизиран локално.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1689"/>
@@ -1585,6 +1622,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Последното синхронизиране завърши успешно.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1519"/>
+        <source>Could not find a folder to sync.</source>
+        <translation>Не можа да се намери папка за синхронизиране.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup Error.</source>
         <translation>Грешка при Настройката.</translation>
@@ -1595,9 +1637,19 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Прекъсване от потребителя.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1691"/>
         <source>Last sync was successful.</source>
         <translation>Последното синхронизиране беше успешно.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1554"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation>Не можа да провери заявката за отваряне на файл от сървъра.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1697"/>

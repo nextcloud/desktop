@@ -169,6 +169,11 @@
         <source>Opening for local editing</source>
         <translation>開啟本機編輯</translation>
     </message>
+    <message>
+        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
+        <source>Opening file for local editing</source>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>EmojiPicker</name>
@@ -1179,6 +1184,53 @@ This action will abort any currently running synchronization.</source>
     </message>
 </context>
 <context>
+    <name>OCC::EditLocallyJob</name>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
+        <source>Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
+        <source>Invalid file path was provided.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
+        <source>Could not find an account for local editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
+        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
+        <source>Could not find a folder to sync.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>OCC::EncryptFolderJob</name>
     <message>
         <location filename="../src/libsync/encryptfolderjob.cpp" line="79"/>
@@ -1503,6 +1555,21 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>（備份 %1）</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1500"/>
+        <source>Undefined State.</source>
+        <translation>未定義狀態。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1675"/>
+        <source>Undefined state.</source>
+        <translation>未定義狀態。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1678"/>
+        <source>Waiting to start syncing.</source>
+        <translation>正在等待同步開始。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>Edit locally request is not valid. Opening the file is forbidden.</source>
         <translation>本機編輯請求無效。禁止開啟檔案。</translation>
@@ -1511,11 +1578,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1472"/>
         <source>Could not find an account for local editing</source>
         <translation>找不到用於本機編輯的帳號</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1500"/>
-        <source>Undefined State.</source>
-        <translation>未定義狀態。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1493"/>
@@ -1534,37 +1596,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>找不到用於本機編輯的檔案。請確保其沒有被選擇性同步排除。</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1511"/>
-        <location filename="../src/gui/folderman.cpp" line="1538"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>找不到用於本機編輯的檔案。請確保其路徑有效且在本機同步。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1519"/>
-        <source>Could not find a folder to sync.</source>
-        <translation>找不到要同步的資料夾。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1530"/>
-        <source>Invalid token received.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1554"/>
-        <source>Could not validate the request to open a file from server.</source>
-        <translation>無法驗證從伺服器開啟檔案的請求。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1675"/>
-        <source>Undefined state.</source>
-        <translation>未定義狀態。</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1678"/>
-        <source>Waiting to start syncing.</source>
-        <translation>正在等待同步開始。</translation>
-    </message>
-    <message>
         <location filename="../src/gui/folderman.cpp" line="1681"/>
         <source>Preparing for sync.</source>
         <translation>正在準備同步。</translation>
@@ -1573,6 +1604,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1684"/>
         <source>Sync is running.</source>
         <translation>正在執行同步。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1511"/>
+        <location filename="../src/gui/folderman.cpp" line="1538"/>
+        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
+        <translation>找不到用於本機編輯的檔案。請確保其路徑有效且在本機同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1689"/>
@@ -1585,6 +1622,11 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>最後一次同步成功。</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1519"/>
+        <source>Could not find a folder to sync.</source>
+        <translation>找不到要同步的資料夾。</translation>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
         <source>Setup Error.</source>
         <translation>安裝失敗。</translation>
@@ -1595,9 +1637,19 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>使用者中斷。</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderman.cpp" line="1530"/>
+        <source>Invalid token received.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderman.cpp" line="1691"/>
         <source>Last sync was successful.</source>
         <translation>上次同步成功。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderman.cpp" line="1554"/>
+        <source>Could not validate the request to open a file from server.</source>
+        <translation>無法驗證從伺服器開啟檔案的請求。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1697"/>
