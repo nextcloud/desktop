@@ -285,6 +285,103 @@ void Systray::destroyEditFileLocallyLoadingDialog()
     _editFileLocallyLoadingDialog = nullptr;
 }
 
+bool Systray::raiseDialogs()
+{
+    return raiseFileDetailDialogs();
+}
+
+bool Systray::raiseFileDetailDialogs(const QString &localPath)
+{
+    if(_fileDetailDialogs.empty()) {
+        return false;
+    }
+
+    auto it = _fileDetailDialogs.begin();
+    while (it != _fileDetailDialogs.end()) {
+        const auto dialog = *it;
+        auto nullDialog = dialog == nullptr;
+
+        if (!nullDialog && !dialog->isVisible()) {
+            destroyDialog(dialog);
+            nullDialog = true;
+        }
+
+        if (!nullDialog && (localPath.isEmpty() || dialog->property("localPath").toString() == localPath)) {
+            dialog->show();
+            dialog->raise();
+            dialog->requestActivate();
+
+            ++it;
+            continue;
+        }
+
+        it = _fileDetailDialogs.erase(it);
+        continue;
+    }
+
+    // If it is empty then we have raised no dialogs, so return false (and viceversa)
+    return !_fileDetailDialogs.empty();
+}
+
+void Systray::createFileDetailsDialog(const QString &localPath)
+{
+    if (raiseFileDetailDialogs(localPath)) {
+        qCDebug(lcSystray) << "Reopening an existing file details dialog for " << localPath;
+        return;
+    }
+
+    qCDebug(lcSystray) << "Opening new file details dialog for " << localPath;
+
+    if (!_trayEngine) {
+        qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "as no tray engine was available";
+        return;
+    }
+
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file details dialog for" << localPath << "no responsible folder found";
+        return;
+    }
+
+    const QVariantMap initialProperties{
+        {"accountState", QVariant::fromValue(folder->accountState())},
+        {"localPath", localPath},
+    };
+
+    QQmlComponent fileDetailsDialog(_trayEngine, QStringLiteral("qrc:/qml/src/gui/filedetails/FileDetailsWindow.qml"));
+
+    if (!fileDetailsDialog.isError()) {
+        const auto createdDialog = fileDetailsDialog.createWithInitialProperties(initialProperties);
+        const auto dialog = qobject_cast<QQuickWindow*>(createdDialog);
+
+        if(!dialog) {
+            qCWarning(lcSystray) << "File details dialog window resulted in creation of object that was not a window!";
+            return;
+        }
+
+        _fileDetailDialogs.append(dialog);
+
+        dialog->show();
+        dialog->raise();
+        dialog->requestActivate();
+
+    } else {
+        qCWarning(lcSystray) << fileDetailsDialog.errorString();
+    }
+}
+
+void Systray::createShareDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Sharing);
+}
+
+void Systray::createFileActivityDialog(const QString &localPath)
+{
+    createFileDetailsDialog(localPath);
+    Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
+}
+
 void Systray::slotCurrentUserChanged()
 {
     if (_trayEngine) {

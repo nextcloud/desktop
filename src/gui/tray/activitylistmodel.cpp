@@ -93,6 +93,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
 void ActivityListModel::setAccountState(AccountState *state)
 {
     _accountState = state;
+    Q_EMIT accountStateChanged();
 }
 
 void ActivityListModel::setCurrentItem(const int currentItem)

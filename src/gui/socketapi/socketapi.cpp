@@ -497,10 +497,10 @@ void SocketApi::broadcastMessage(const QString &msg, bool doWait)
 void SocketApi::processFileActivityRequest(const QString &localFile)
 {
     const auto fileData = FileData::get(localFile);
-    emit fileActivityCommandReceived(fileData.serverRelativePath, fileData.journalRecord().numericFileId().toInt());
+    emit fileActivityCommandReceived(fileData.localPath);
 }
 
-void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener, ShareDialogStartPage startPage)
+void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener)
 {
     auto theme = Theme::instance();
 
@@ -537,7 +537,7 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
         const QString message = QLatin1String("SHARE:OK:") + QDir::toNativeSeparators(localFile);
         listener->sendMessage(message);
 
-        emit shareCommandReceived(remotePath, fileData.localPath, startPage);
+        emit shareCommandReceived(fileData.localPath);
     }
 }
 
@@ -581,7 +581,7 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
 
 void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
 {
-    processShareRequest(localFile, listener, ShareDialogStartPage::UsersAndGroups);
+    processShareRequest(localFile, listener);
 }
 
 void SocketApi::command_ACTIVITY(const QString &localFile, SocketListener *listener)
@@ -593,7 +593,7 @@ void SocketApi::command_ACTIVITY(const QString &localFile, SocketListener *liste
 
 void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
 {
-    processShareRequest(localFile, listener, ShareDialogStartPage::PublicLinks);
+    processShareRequest(localFile, listener);
 }
 
 void SocketApi::command_VERSION(const QString &, SocketListener *listener)
@@ -673,7 +673,7 @@ public:
     }
 
 private slots:
-    void sharesFetched(const QList<QSharedPointer<Share>> &shares)
+    void sharesFetched(const QList<SharePtr> &shares)
     {
         auto shareName = SocketApi::tr("Context menu share");
 
@@ -783,7 +783,7 @@ void SocketApi::command_COPY_PUBLIC_LINK(const QString &localFile, SocketListene
     connect(job, &GetOrCreatePublicLinkShare::done, this,
         [](const QString &url) { copyUrlToClipboard(url); });
     connect(job, &GetOrCreatePublicLinkShare::error, this,
-        [=]() { emit shareCommandReceived(fileData.serverRelativePath, fileData.localPath, ShareDialogStartPage::PublicLinks); });
+        [=]() { emit shareCommandReceived(fileData.localPath); });
     job->run();
 }
 

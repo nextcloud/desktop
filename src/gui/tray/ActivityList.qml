@@ -1,6 +1,7 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
+import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
 import Style 1.0
 
@@ -9,6 +10,8 @@ ScrollView {
     property alias model: sortedActivityList.activityListModel
 
     property bool isFileActivityList: false
+    property int iconSize: Style.trayListItemIconSize
+    property int delegateHorizontalPadding: 0
 
     signal openFile(string filePath)
     signal activityItemClicked(int index)
@@ -36,8 +39,9 @@ ScrollView {
 
         highlight: Rectangle {
             id: activityHover
-            width: activityList.currentItem.width
-            height: activityList.currentItem.height
+
+            anchors.fill: activityList.currentItem
+
             color: Style.lightHover
             visible: activityList.activeFocus
         }
@@ -54,8 +58,13 @@ ScrollView {
         }
 
         delegate: ActivityItem {
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: controlRoot.delegateHorizontalPadding
+            anchors.rightMargin: controlRoot.delegateHorizontalPadding
+
             isFileActivityList: controlRoot.isFileActivityList
-            width: activityList.contentWidth
+            iconSize: controlRoot.iconSize
             flickable: activityList
             onHoveredChanged: if (hovered) {
                 // When we set the currentIndex the list view will scroll...

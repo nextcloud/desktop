@@ -10,6 +10,7 @@ add_library(testutils
   pushnotificationstestutils.cpp
   themeutils.cpp
   testhelper.cpp
+  sharetestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
@@ -64,6 +65,9 @@ nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(ActivityData)
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
+nextcloud_add_test(ShareModel)
+nextcloud_add_test(ShareeModel)
+nextcloud_add_test(SortedShareModel)
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)

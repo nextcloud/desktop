@@ -35,4 +35,6 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(SharePermissions)
 
 } // namespace OCC
 
+Q_DECLARE_METATYPE(OCC::SharePermission)
+
 #endif

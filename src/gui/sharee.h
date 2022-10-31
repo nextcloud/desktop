@@ -61,47 +61,9 @@ private:
     Type _type;
 };
 
-
-class ShareeModel : public QAbstractListModel
-{
-    Q_OBJECT
-public:
-    enum LookupMode {
-        LocalSearch = 0,
-        GlobalSearch = 1
-    };
-
-    explicit ShareeModel(const AccountPtr &account, const QString &type, QObject *parent = nullptr);
-
-    using ShareeSet = QVector<QSharedPointer<Sharee>>; // FIXME: make it a QSet<Sharee> when Sharee can be compared
-    void fetch(const QString &search, const ShareeSet &blacklist, LookupMode lookupMode);
-    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
-
-    QSharedPointer<Sharee> getSharee(int at);
-
-    [[nodiscard]] QString currentSearch() const { return _search; }
-
-signals:
-    void shareesReady();
-    void displayErrorMessage(int code, const QString &);
-
-private slots:
-    void shareesFetched(const QJsonDocument &reply);
-
-private:
-    QSharedPointer<Sharee> parseSharee(const QJsonObject &data);
-    void setNewSharees(const QVector<QSharedPointer<Sharee>> &newSharees);
-
-    AccountPtr _account;
-    QString _search;
-    QString _type;
-
-    QVector<QSharedPointer<Sharee>> _sharees;
-    QVector<QSharedPointer<Sharee>> _shareeBlacklist;
-};
+using ShareePtr = QSharedPointer<OCC::Sharee>;
 }
 
-Q_DECLARE_METATYPE(QSharedPointer<OCC::Sharee>)
+Q_DECLARE_METATYPE(OCC::ShareePtr)
 
 #endif //SHAREE_H

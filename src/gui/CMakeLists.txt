@@ -39,9 +39,6 @@ set(client_UI_SRCS
     ignorelisttablewidget.ui
     networksettings.ui
     settingsdialog.ui
-    sharedialog.ui
-    sharelinkwidget.ui
-    shareusergroupwidget.ui
     shareuserline.ui
     sslerrordialog.ui
     addcertificatedialog.ui
@@ -139,14 +136,8 @@ set(client_SRCS
     selectivesyncdialog.cpp
     settingsdialog.h
     settingsdialog.cpp
-    sharedialog.h
-    sharedialog.cpp
-    sharelinkwidget.h
-    sharelinkwidget.cpp
     sharemanager.h
     sharemanager.cpp
-    shareusergroupwidget.h
-    shareusergroupwidget.cpp
     profilepagewidget.h
     profilepagewidget.cpp
     sharee.h
@@ -193,6 +184,14 @@ set(client_SRCS
     emojimodel.cpp
     fileactivitylistmodel.h
     fileactivitylistmodel.cpp
+    filedetails/filedetails.h
+    filedetails/filedetails.cpp
+    filedetails/sharemodel.h
+    filedetails/sharemodel.cpp
+    filedetails/shareemodel.h
+    filedetails/shareemodel.cpp
+    filedetails/sortedsharemodel.h
+    filedetails/sortedsharemodel.cpp
     tray/svgimageprovider.h
     tray/svgimageprovider.cpp
     tray/syncstatussummary.h

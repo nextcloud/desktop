@@ -18,4 +18,6 @@ public:
 
 OCC::FolderDefinition folderDefinition(const QString &path);
 
+const QByteArray jsonValueToOccReply(const QJsonValue &jsonValue);
+
 #endif // TESTHELPER_H

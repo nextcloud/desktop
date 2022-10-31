@@ -8,6 +8,7 @@
 #include "syncenginetestutils.h"
 #include "httplogger.h"
 #include "accessmanager.h"
+#include "gui/sharepermissions.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -349,8 +350,15 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
+        xml.writeTextElement(ocUri, QStringLiteral("share-permissions"), QString::number(static_cast<int>(OCC::SharePermissions(OCC::SharePermissionRead |
+                                                                                                                                OCC::SharePermissionUpdate |
+                                                                                                                                OCC::SharePermissionCreate |
+                                                                                                                                OCC::SharePermissionDelete |
+                                                                                                                                OCC::SharePermissionShare))));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
+        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.fileId));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
+        xml.writeTextElement(ocUri, QStringLiteral("privatelink"), href);
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock"), fileInfo.lockState == FileInfo::LockState::FileLocked ? QStringLiteral("1") : QStringLiteral("0"));
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-type"), fileInfo.lockOwnerId);

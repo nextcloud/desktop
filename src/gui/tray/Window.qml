@@ -21,15 +21,7 @@ ApplicationWindow {
     color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
 
-    property int fileActivityDialogObjectId: -1
-
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
-
-    function openFileActivityDialog(objectName, objectId) {
-        fileActivityDialogLoader.objectName = objectName;
-        fileActivityDialogLoader.objectId = objectId;
-        fileActivityDialogLoader.refresh();
-    }
 
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
 
@@ -89,10 +81,6 @@ ApplicationWindow {
                 accountMenu.close();
                 appsMenu.close();
             }
-        }
-
-        function onShowFileActivityDialog(objectName, objectId) {
-            openFileActivityDialog(objectName, objectId)
         }
 
         function onShowErrorMessageDialog(error) {
@@ -818,27 +806,6 @@ ApplicationWindow {
             onActivityItemClicked: {
                 model.slotTriggerDefaultAction(index)
             }
-        }
-
-        Loader {
-            id: fileActivityDialogLoader
-
-            property string objectName: ""
-            property int objectId: -1
-
-            function refresh() {
-                active = true
-                item.model.load(activityModel.accountState, objectId)
-                item.show()
-            }
-
-            active: false
-            sourceComponent: FileActivityDialog {
-                title: qsTr("%1 - File activity").arg(fileActivityDialogLoader.objectName)
-                onClosing: fileActivityDialogLoader.active = false
-            }
-
-            onLoaded: refresh()
         }
     } // Item trayWindowMainItem
 }

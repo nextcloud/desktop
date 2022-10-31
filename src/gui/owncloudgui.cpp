@@ -29,11 +29,12 @@
 #include "owncloudsetupwizard.h"
 #include "progressdispatcher.h"
 #include "settingsdialog.h"
-#include "sharedialog.h"
 #include "theme.h"
 #include "wheelhandler.h"
-#include "common/syncjournalfilerecord.h"
-#include "creds/abstractcredentials.h"
+#include "filedetails/filedetails.h"
+#include "filedetails/shareemodel.h"
+#include "filedetails/sharemodel.h"
+#include "filedetails/sortedsharemodel.h"
 #include "tray/sortedactivitylistmodel.h"
 #include "tray/syncstatussummary.h"
 #include "tray/unifiedsearchresultslistmodel.h"
@@ -97,11 +98,6 @@ ownCloudGui::ownCloudGui(Application *parent)
     connect(_tray.data(), &Systray::shutdown,
         this, &ownCloudGui::slotShutdown);
 
-    connect(_tray.data(), &Systray::openShareDialog,
-        this, [=](const QString &sharePath, const QString &localPath) {
-                slotShowShareDialog(sharePath, localPath, ShareDialogStartPage::UsersAndGroups);
-            });
-
     ProgressDispatcher *pd = ProgressDispatcher::instance();
     connect(pd, &ProgressDispatcher::progressInfo, this,
         &ownCloudGui::slotUpdateProgress);
@@ -125,6 +121,10 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<SortedActivityListModel>("com.nextcloud.desktopclient", 1, 0, "SortedActivityListModel");
     qmlRegisterType<WheelHandler>("com.nextcloud.desktopclient", 1, 0, "WheelHandler");
     qmlRegisterType<CallStateChecker>("com.nextcloud.desktopclient", 1, 0, "CallStateChecker");
+    qmlRegisterType<FileDetails>("com.nextcloud.desktopclient", 1, 0, "FileDetails");
+    qmlRegisterType<ShareModel>("com.nextcloud.desktopclient", 1, 0, "ShareModel");
+    qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
+    qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
 
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
@@ -134,6 +134,8 @@ ownCloudGui::ownCloudGui(Application *parent)
     qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
+    qRegisterMetaType<SharePtr>("SharePtr");
+    qRegisterMetaType<ShareePtr>("ShareePtr");
 
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserModel", UserModel::instance());
     qmlRegisterSingletonInstance("com.nextcloud.desktopclient", 1, 0, "UserAppsModel", UserAppsModel::instance());
@@ -196,12 +198,8 @@ void ownCloudGui::slotTrayClicked(QSystemTrayIcon::ActivationReason reason)
     } else if (reason == QSystemTrayIcon::Trigger) {
         if (OwncloudSetupWizard::bringWizardToFrontIfVisible()) {
             // brought wizard to front
-        } else if (_shareDialogs.size() > 0) {
-            // Share dialog(s) be hidden by other apps, bring them back
-            Q_FOREACH (const QPointer<ShareDialog> &shareDialog, _shareDialogs) {
-                Q_ASSERT(shareDialog.data());
-                raiseDialog(shareDialog);
-            }
+        } else if (_tray->raiseDialogs()) {
+            // Brings dialogs hidden by other apps to front, returns true if any raised
         } else if (_tray->isOpen()) {
             _tray->hideWindow();
         } else {
@@ -652,54 +650,14 @@ void ownCloudGui::raiseDialog(QWidget *raiseWidget)
 }
 
 
-void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &localPath, ShareDialogStartPage startPage)
+void ownCloudGui::slotShowShareDialog(const QString &localPath) const
 {
-    const auto folder = FolderMan::instance()->folderForPath(localPath);
-    if (!folder) {
-        qCWarning(lcApplication) << "Could not open share dialog for" << localPath << "no responsible folder found";
-        return;
-    }
-
-    const auto accountState = folder->accountState();
-
-    const QString file = localPath.mid(folder->cleanPath().length() + 1);
-    SyncJournalFileRecord fileRecord;
-
-    bool resharingAllowed = true; // lets assume the good
-    if (folder->journalDb()->getFileRecord(file, &fileRecord) && fileRecord.isValid()) {
-        // check the permission: Is resharing allowed?
-        if (!fileRecord._remotePerm.isNull() && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
-            resharingAllowed = false;
-        }
-    }
-
-    auto maxSharingPermissions = resharingAllowed? SharePermissions(accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
-
-    ShareDialog *w = nullptr;
-    if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
-        qCInfo(lcApplication) << "Raising share dialog" << sharePath << localPath;
-        w = _shareDialogs[localPath];
-    } else {
-        qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, sharePath, localPath, maxSharingPermissions, fileRecord.numericFileId(), fileRecord._lockstate, startPage);
-        w->setAttribute(Qt::WA_DeleteOnClose, true);
-
-        _shareDialogs[localPath] = w;
-        connect(w, &QObject::destroyed, this, &ownCloudGui::slotRemoveDestroyedShareDialogs);
-    }
-    raiseDialog(w);
+    _tray->createShareDialog(localPath);
 }
 
-void ownCloudGui::slotRemoveDestroyedShareDialogs()
+void ownCloudGui::slotShowFileActivityDialog(const QString &localPath) const
 {
-    QMutableMapIterator<QString, QPointer<ShareDialog>> it(_shareDialogs);
-    while (it.hasNext()) {
-        it.next();
-        if (!it.value() || it.value() == sender()) {
-            it.remove();
-        }
-    }
+    _tray->createFileActivityDialog(localPath);
 }
-
 
 } // end namespace

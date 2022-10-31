@@ -63,17 +63,30 @@ void AsyncImageResponse::processNextImage()
         return;
     }
 
-    if (_imagePaths.at(_index).startsWith(QStringLiteral(":/client"))) {
-        setImageAndEmitFinished(QIcon(_imagePaths.at(_index)).pixmap(_requestedImageSize).toImage());
+    const auto imagePath = _imagePaths.at(_index);
+    if (imagePath.startsWith(QStringLiteral(":/client"))) {
+        setImageAndEmitFinished(QIcon(imagePath).pixmap(_requestedImageSize).toImage());
+        return;
+    } else if (imagePath.startsWith(QStringLiteral(":/fileicon"))) {
+        const auto filePath = imagePath.mid(10);
+        const auto fileInfo = QFileInfo(filePath);
+        setImageAndEmitFinished(_fileIconProvider.icon(fileInfo).pixmap(_requestedImageSize).toImage());
         return;
     }
 
-    const auto currentUser = OCC::UserModel::instance()->currentUser();
-    if (currentUser && currentUser->account()) {
+    OCC::AccountPtr accountInRequestedServer;
+
+    for (const auto &account : OCC::AccountManager::instance()->accounts()) {
+        if (account && account->account() && imagePath.startsWith(account->account()->url().toString())) {
+           accountInRequestedServer = account->account();
+        }
+    }
+
+    if (accountInRequestedServer) {
         const QUrl iconUrl(_imagePaths.at(_index));
         if (iconUrl.isValid() && !iconUrl.scheme().isEmpty()) {
             // fetch the remote resource
-            const auto reply = currentUser->account()->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
+            const auto reply = accountInRequestedServer->sendRawRequest(QByteArrayLiteral("GET"), iconUrl);
             connect(reply, &QNetworkReply::finished, this, &AsyncImageResponse::slotProcessNetworkReply);
             ++_index;
             return;
