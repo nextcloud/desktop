@@ -172,7 +172,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Otevírání souboru pro lokální úpravy</translation>
     </message>
 </context>
 <context>
@@ -1188,7 +1188,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Obdržen neplatný token.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
@@ -1196,33 +1196,33 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Zadán neplatný popis umístění souboru.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se nalézt účet pro lokální upravování.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Nedaří se ověřit správnost požadavku na otevření souboru ze serveru.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že není vyjmutý prostřednictvím selektivní synchronizace.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se nalézt soubor pro místní upravování. Ověřte, že jeho popis umístění je platný a že je synchronizovaný lokálně.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>

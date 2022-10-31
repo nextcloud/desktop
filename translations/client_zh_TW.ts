@@ -172,7 +172,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>開啟檔案供本機編輯</translation>
     </message>
 </context>
 <context>
@@ -1188,7 +1188,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>收到無效的權杖。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
@@ -1196,38 +1196,38 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>請再試一次。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>提供了無效的檔案路徑。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於本機編輯的帳號。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>無法驗證從伺服器開啟檔案的請求。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於本機編輯的檔案。請確保其沒有被選擇性同步排除。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於本機編輯的檔案。請確保其路徑有效且在本機同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>找不到要同步的資料夾。</translation>
     </message>
 </context>
 <context>
@@ -1582,13 +1582,13 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1493"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>提供了無效的檔案路徑。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1493"/>
         <location filename="../src/gui/folderman.cpp" line="1530"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>請再試一次。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1505"/>
@@ -1639,7 +1639,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1530"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>收到無效的權杖。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1691"/>
@@ -5349,7 +5349,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>立即同步</translation>
     </message>
 </context>
 <context>
