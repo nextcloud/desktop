@@ -69,7 +69,7 @@ public:
      * Return the account state pointer for an account from its id
      */
 
-    [[nodiscard]] AccountStatePtr accountFromUserId(const QString &id) const;
+    AccountStatePtr accountFromUserId(const QString &id) const;
 
     /**
      * Delete the AccountState

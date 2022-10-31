@@ -26,7 +26,7 @@ class EditLocallyManager : public QObject
     Q_OBJECT
 
 public:
-    [[nodiscard]] static EditLocallyManager *instance();
+    static EditLocallyManager *instance();
 
     QHash<QString, QMetaObject::Connection> folderSyncFinishedConnections;
 
@@ -48,7 +48,7 @@ private:
         QString token;
     };
 
-    [[nodiscard]] static EditLocallyInputData parseEditLocallyUrl(const QUrl &url);
+    static EditLocallyInputData parseEditLocallyUrl(const QUrl &url);
 
     QHash<QString, EditLocallyJobPtr> _jobs;
 };

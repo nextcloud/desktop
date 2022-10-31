@@ -36,10 +36,10 @@ public:
                             const QString &token,
                             QObject *parent = nullptr);
 
-    [[nodiscard]] static bool isTokenValid(const QString &token);
-    [[nodiscard]] static bool isRelPathValid(const QString &relPath);
-    [[nodiscard]] static bool isRelPathExcluded(const QString &relPath);
-    [[nodiscard]] static QString prefixSlashToPath(const QString &path);
+    static bool isTokenValid(const QString &token);
+    static bool isRelPathValid(const QString &relPath);
+    static bool isRelPathExcluded(const QString &relPath);
+    static QString prefixSlashToPath(const QString &path);
 
 signals:
     void setupFinished();
