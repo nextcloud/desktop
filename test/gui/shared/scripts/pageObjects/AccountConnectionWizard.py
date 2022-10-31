@@ -118,7 +118,7 @@ class AccountConnectionWizard:
         "type": "QLineEdit",
         "visible": 1,
     }
-    VIRTUAL_File_RADIO_BUTTON = names.syncModeGroupBox_useVfsRadioButton_QRadioButton
+    VIRTUAL_FILE_RADIO_BUTTON = names.syncModeGroupBox_useVfsRadioButton_QRadioButton
     ENABLE_EXPERIMENTAL_FEATURE_BUTTON = (
         names.contentWidget_Enable_experimental_placeholder_mode_QPushButton
     )
@@ -221,11 +221,8 @@ class AccountConnectionWizard:
         self.addUserCreds(context)
         self.selectSyncFolder(context)
 
-    def openSyncDialog(self):
-        squish.clickButton(squish.waitForObject(self.CHOOSE_WHAT_TO_SYNC_BUTTON))
-
     def selectManualSyncFolder(self):
-        squish.clickButton(squish.waitForObject(self.MANUAL_SYNC_FOLDER_OPTION))
+        squish.clickButton(squish.waitForObject(self.CONF_SYNC_MANUALLY_RADIO_BUTTON))
 
     def selectFoldersToSync(self, context):
         # first deselect all
@@ -252,7 +249,7 @@ class AccountConnectionWizard:
         squish.mouseClick(
             squish.waitForObject(
                 {
-                    "container": names.deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView,
+                    "container": names.deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView_2,
                     "text": headerText,
                     "type": "HeaderViewItem",
                     "visible": True,

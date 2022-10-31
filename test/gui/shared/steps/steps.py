@@ -1254,10 +1254,15 @@ def step(context):
     newAccount.addServer(context)
 
 
-@When('the user opens chose_what_to_sync dialog')
+@Given('the user has added the following user credentials:')
 def step(context):
     newAccount = AccountConnectionWizard()
-    newAccount.openSyncDialog()
+    newAccount.addUserCreds(context)
+    test.compare(
+        waitForObjectExists(newAccount.ADVANCE_SETUP_PAGE).visible,
+        True,
+        "Assert setup page is visible",
+    )
 
 
 @When('the user selects the following folders to sync:')
@@ -1475,43 +1480,17 @@ def step(context, folderName):
     clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
 
 
-@When(
-    r'^the user adds (the first|another) account with advanced configuration$',
-    regexp=True,
-)
-def step(context, accountType):
+@When('the user selects vfs option in advanced section')
+def step(context):
     newAccount = AccountConnectionWizard()
-    if accountType == 'another':
-        toolbar = Toolbar()
-        toolbar.clickAddAccount()
-
-    newAccount.addAccountCredential(context)
+    clickButton(waitForObject(newAccount.VIRTUAL_FILE_RADIO_BUTTON))
 
 
-@When(
-    r'^the user selects (virtual_files|configure_synchronization_manually) option in advanced section$',
-    regexp=True,
-)
-def step(context, advancedConfigOption):
+@When(r'^the user (confirms|cancels) the enable experimental vfs option$', regexp=True)
+def step(context, action):
     newAccount = AccountConnectionWizard()
-    if advancedConfigOption == 'configure_synchronization_manually':
-        clickButton(waitForObject(newAccount.CONF_SYNC_MANUALLY_RADIO_BUTTON))
-        clickButton(waitForObject(newAccount.NEXT_BUTTON))
+    if action == "confirms":
+        clickButton(waitForObject(newAccount.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
     else:
-        clickButton(waitForObject(newAccount.VIRTUAL_File_RADIO_BUTTON))
-
-
-@When(
-    "the user selects enable_experimental_placeholder_mode option in enable experimental feature dialogue box"
-)
-def step(context):
-    newAccount = AccountConnectionWizard()
-    clickButton(waitForObject(newAccount.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
-    clickButton(waitForObject(newAccount.NEXT_BUTTON))
-
-
-@When("the user selects stay_safe option in enable experimental feature dialogue box")
-def step(context):
-    newAccount = AccountConnectionWizard()
-    clickButton(waitForObject(newAccount.STAY_SAFE_BUTTON))
+        clickButton(waitForObject(newAccount.STAY_SAFE_BUTTON))
     clickButton(waitForObject(newAccount.NEXT_BUTTON))
