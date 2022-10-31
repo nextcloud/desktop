@@ -31,7 +31,7 @@ Feature: Syncing files
         And the folder "simple-folder" should exist on the file system
         And the folder "large-folder" should exist on the file system
 
-    @skip @issue-9733
+    @issue-9733
     Scenario: Syncing a file from the server and creating a conflict
         Given user "Alice" has uploaded file on the server with content "server content" to "/conflict.txt"
         And user "Alice" has set up a client with default settings
@@ -44,7 +44,6 @@ Feature: Syncing files
         When the user resumes the file sync on the client
         And the user clicks on the activity tab
         And the user selects "Not Synced" tab in the activity
-        # Then a conflict warning should be shown for 1 files
         Then the table of conflict warnings should include file "conflict.txt"
         And the file "conflict.txt" should exist on the file system with the following content
             """

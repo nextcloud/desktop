@@ -674,7 +674,7 @@ def step(context):
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
     waitAndWriteFile(
-        join(context.userData['currentUserSyncPath'], filename), fileContent
+        context, join(context.userData['currentUserSyncPath'], filename), fileContent
     )
 
 
