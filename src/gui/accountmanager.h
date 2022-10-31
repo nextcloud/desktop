@@ -66,6 +66,12 @@ public:
     AccountStatePtr account(const QString &name);
 
     /**
+     * Return the account state pointer for an account from its id
+     */
+
+    AccountStatePtr accountFromUserId(const QString &id) const;
+
+    /**
      * Delete the AccountState
      */
     void deleteAccount(AccountState *account);

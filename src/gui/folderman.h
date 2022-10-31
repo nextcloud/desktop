@@ -213,9 +213,6 @@ public:
     void setDirtyProxy();
     void setDirtyNetworkLimits();
 
-    /** opens a file with default app, if the file is present **/
-    void editFileLocally(const QString &userId, const QString &relPath, const QString &token);
-
 signals:
     /**
       * signal to indicate a folder has changed its sync state.
@@ -374,8 +371,6 @@ private:
     NavigationPaneHelper _navigationPaneHelper;
 
     bool _appRestartRequired = false;
-
-    QMap<QString, QMetaObject::Connection> _localFileEditingSyncFinishedConnections;
 
     static FolderMan *_instance;
     explicit FolderMan(QObject *parent = nullptr);

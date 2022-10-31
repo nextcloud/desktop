@@ -22,6 +22,7 @@
 #include "config.h"
 #include "account.h"
 #include "accountstate.h"
+#include "editlocallymanager.h"
 #include "connectionvalidator.h"
 #include "folder.h"
 #include "folderman.h"
@@ -749,32 +750,8 @@ void Application::handleEditLocallyFromOptions()
         return;
     }
 
-    handleEditLocally(_editFileLocallyUrl);
+    EditLocallyManager::instance()->editLocally(_editFileLocallyUrl);
     _editFileLocallyUrl.clear();
-}
-
-void Application::handleEditLocally(const QUrl &url) const
-{
-    auto pathSplit = url.path().split('/', Qt::SkipEmptyParts);
-
-    if (pathSplit.size() < 2) {
-        qCWarning(lcApplication) << "Invalid URL for file local editing: " + pathSplit.join('/');
-        return;
-    }
-
-    // for a sample URL "nc://open/admin@nextcloud.lan:8080/Photos/lovely.jpg", QUrl::path would return "admin@nextcloud.lan:8080/Photos/lovely.jpg"
-    const auto userId = pathSplit.takeFirst();
-    const auto fileRemotePath = pathSplit.join('/');
-    const auto urlQuery = QUrlQuery{url};
-
-    auto token = QString{};
-    if (urlQuery.hasQueryItem(QStringLiteral("token"))) {
-        token = urlQuery.queryItemValue(QStringLiteral("token"));
-    } else {
-        qCWarning(lcApplication) << "Invalid URL for file local editing: missing token";
-    }
-
-    FolderMan::instance()->editFileLocally(userId, fileRemotePath, token);
 }
 
 QString substLang(const QString &lang)
@@ -917,7 +894,7 @@ bool Application::event(QEvent *event)
             // On macOS, Qt does not handle receiving a custom URI as it does on other systems (as an application argument).
             // Instead, it sends out a QFileOpenEvent. We therefore need custom handling for our URI handling on macOS.
             qCInfo(lcApplication) << "macOS: Opening local file for editing: " << openEvent->url();
-            handleEditLocally(openEvent->url());
+            EditLocallyManager::instance()->editLocally(openEvent->url());
         } else {
             const auto errorParsingLocalFileEditingUrl = QStringLiteral("The supplied url for local file editing '%1' is invalid!").arg(openEvent->url().toString());
             qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
