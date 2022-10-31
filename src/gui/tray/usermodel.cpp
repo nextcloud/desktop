@@ -617,9 +617,6 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
         }
 
         if(activity._fileAction != "file_deleted" && !item->isEmpty()) {
-            auto remotePath = folder->remotePath();
-            remotePath.append(activity._fileAction == "file_renamed" ? item->_renameTarget : activity._file);
-
             const auto localFiles = FolderMan::instance()->findFileInLocalFolders(item->_file, account());
             if (!localFiles.isEmpty()) {
                 const auto firstFilePath = localFiles.constFirst();
