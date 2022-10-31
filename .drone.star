@@ -6,10 +6,6 @@
 #
 
 DEFAULT_PHP_VERSION = "7.4"
-GUI_TEST_DIR = "/drone/src/test/gui"
-GUI_TEST_REPORT_DIR = "/drone/src/test/guiReportUpload"
-NOTIFICATION_TEMPLATE_DIR = "/drone/src"
-STACKTRACE_FILE = "%s/stacktrace.log" % GUI_TEST_REPORT_DIR
 
 CYTOPIA_BLACK = "cytopia/black"
 DOCKER_GIT = "docker:git"
@@ -39,7 +35,10 @@ TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
 OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 
 dir = {
-    "base": "/drone",
+    "base": "/drone/src",
+    "server": "/drone/src/server",
+    "guiTest": "/drone/src/test/gui",
+    "guiTestReport": "/drone/src/test/guiReportUpload",
 }
 
 def main(ctx):
@@ -150,7 +149,7 @@ def unit_test_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, tri
 def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-master-qa"):
     pipeline_name = "GUI-tests"
     build_dir = "build-" + pipeline_name
-    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip" % GUI_TEST_REPORT_DIR
+    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip" % dir["guiTestReport"]
 
     if (len(filterTags) > 0):
         for tags in filterTags:
@@ -255,14 +254,14 @@ def gui_tests(squish_parameters = ""):
         "image": OC_CI_SQUISH,
         "environment": {
             "LICENSEKEY": from_secret("squish_license_server"),
-            "GUI_TEST_REPORT_DIR": GUI_TEST_REPORT_DIR,
-            "CLIENT_REPO": "/drone/src/",
+            "GUI_TEST_REPORT_DIR": dir["guiTestReport"],
+            "CLIENT_REPO": dir["base"],
             "MIDDLEWARE_URL": "http://testmiddleware:3000/",
             "BACKEND_HOST": "http://owncloud/",
             "SECURE_BACKEND_HOST": "https://owncloud/",
-            "SERVER_INI": "/drone/src/test/gui/drone/server.ini",
+            "SERVER_INI": "%s/drone/server.ini" % dir["guiTest"],
             "SQUISH_PARAMETERS": squish_parameters,
-            "STACKTRACE_FILE": STACKTRACE_FILE,
+            "STACKTRACE_FILE": "%s/stacktrace.log" % dir["guiTestReport"],
         },
     }]
 
@@ -276,7 +275,7 @@ def gui_tests_format(trigger):
                 "name": "black",
                 "image": CYTOPIA_BLACK,
                 "commands": [
-                    "cd /drone/src/test/gui",
+                    "cd %s" % dir["guiTest"],
                     "black --check --diff .",
                 ],
             },
@@ -304,7 +303,7 @@ def changelog(ctx, trigger = {}):
                     ],
                     "remote": "https://github.com/%s" % (repo_slug),
                     "branch": ctx.build.source if ctx.build.event == "pull_request" else "master",
-                    "path": "/drone/src",
+                    "path": dir["base"],
                     "netrc_machine": "github.com",
                     "netrc_username": from_secret("github_username"),
                     "netrc_password": from_secret("github_token"),
@@ -388,7 +387,7 @@ def notification(name, trigger = {}):
                     },
                 },
                 "commands": [
-                    "bash %s/drone/notification_template.sh %s" % (GUI_TEST_DIR, NOTIFICATION_TEMPLATE_DIR),
+                    "bash %s/drone/notification_template.sh %s" % (dir["guiTest"], dir["base"]),
                 ],
             },
             {
@@ -397,7 +396,7 @@ def notification(name, trigger = {}):
                 "settings": {
                     "webhook": from_secret("private_rocketchat"),
                     "channel": "desktop-internal",
-                    "template": "file:%s/template.md" % NOTIFICATION_TEMPLATE_DIR,
+                    "template": "file:%s/template.md" % dir["base"],
                 },
             },
         ],
@@ -423,7 +422,7 @@ def installCore(version = "latest"):
         "image": OC_CI_CORE,
         "settings": {
             "version": version,
-            "core_path": "/drone/src/server",
+            "core_path": dir["server"],
             "db_type": "mysql",
             "db_name": "owncloud",
             "db_host": "mysql",
@@ -437,7 +436,7 @@ def setupServerAndApp(logLevel = 2):
         "name": "setup-owncloud-server",
         "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "commands": [
-            "cd /drone/src/server/",
+            "cd %s" % dir["server"],
             "php occ a:e testing",
             "php occ config:system:set trusted_domains 1 --value=owncloud",
             "php occ log:manage --level %s" % logLevel,
@@ -452,11 +451,11 @@ def owncloudService():
         "name": "owncloud",
         "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "environment": {
-            "APACHE_WEBROOT": "/drone/src/server/",
+            "APACHE_WEBROOT": dir["server"],
             "APACHE_CONFIG_TEMPLATE": "ssl",
             "APACHE_SSL_CERT_CN": "server",
-            "APACHE_SSL_CERT": "%s/%s.crt" % (dir["base"], "server"),
-            "APACHE_SSL_KEY": "%s/%s.key" % (dir["base"], "server"),
+            "APACHE_SSL_CERT": "%s/server.crt" % dir["base"],
+            "APACHE_SSL_KEY": "%s/server.key" % dir["base"],
             "APACHE_LOGGING_PATH": "/dev/null",
         },
         "commands": [
@@ -489,7 +488,7 @@ def owncloudLog():
         "image": OC_UBUNTU,
         "detach": True,
         "commands": [
-            "tail -f /drone/src/server/data/owncloud.log",
+            "tail -f %s/data/owncloud.log" % dir["server"],
         ],
     }]
 
@@ -498,7 +497,7 @@ def fixPermissions():
         "name": "fix-permissions",
         "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
         "commands": [
-            "cd /drone/src/server",
+            "cd %s" % dir["server"],
             "chown www-data * -R",
         ],
     }]
@@ -517,8 +516,8 @@ def setGuiTestReportDir():
         "name": "create-gui-test-report-directory",
         "image": OC_UBUNTU,
         "commands": [
-            "mkdir %s/screenshots -p" % GUI_TEST_REPORT_DIR,
-            "chmod 777 %s -R" % GUI_TEST_REPORT_DIR,
+            "mkdir %s/screenshots -p" % dir["guiTestReport"],
+            "chmod 777 %s -R" % dir["guiTestReport"],
         ],
     }]
 
@@ -527,7 +526,7 @@ def showGuiTestResult():
         "name": "show-gui-test-result",
         "image": PYTHON,
         "commands": [
-            "python /drone/src/test/gui/TestLogParser.py /drone/src/test/guiTestReport/results.json",
+            "python %s/TestLogParser.py %s/results.json" % (dir["guiTest"], dir["guiTestReport"]),
         ],
         "when": {
             "status": [
@@ -548,8 +547,8 @@ def uploadGuiTestLogs():
                 "from_secret": "cache_public_s3_server",
             },
             "path_style": True,
-            "source": "%s/**/*" % GUI_TEST_REPORT_DIR,
-            "strip_prefix": "%s" % GUI_TEST_REPORT_DIR,
+            "source": "%s/**/*" % dir["guiTestReport"],
+            "strip_prefix": "%s" % dir["guiTestReport"],
             "target": "/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload",
         },
         "environment": {
@@ -572,7 +571,7 @@ def buildGithubComment(suite = ""):
         "name": "build-github-comment",
         "image": OC_UBUNTU,
         "commands": [
-            "bash /drone/src/test/gui/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER}" % GUI_TEST_REPORT_DIR,
+            "bash %s/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER}" % (dir["guiTest"], dir["guiTestReport"]),
         ],
         "environment": {
             "TEST_CONTEXT": suite,
@@ -599,7 +598,7 @@ def githubComment(alternateSuiteName):
         "name": "github-comment",
         "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
         "settings": {
-            "message": "%s/comments.file" % GUI_TEST_REPORT_DIR,
+            "message": "%s/comments.file" % dir["guiTestReport"],
             "key": "pr-${DRONE_PULL_REQUEST}",
             "update": "true",
             "api_key": {
@@ -607,7 +606,7 @@ def githubComment(alternateSuiteName):
             },
         },
         "commands": [
-            "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (GUI_TEST_REPORT_DIR, prefix, GUI_TEST_REPORT_DIR, GUI_TEST_REPORT_DIR),
+            "if [ -s %s/comments.file ]; then echo '%s' | cat - %s/comments.file > temp && mv temp %s/comments.file && /bin/drone-github-comment; fi" % (dir["guiTestReport"], prefix, dir["guiTestReport"], dir["guiTestReport"]),
         ],
         "when": {
             "status": [
