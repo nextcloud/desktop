@@ -64,7 +64,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
-        And the user "Alice" clicks on the next button in sync connection wizard
+        And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         Then the sync all checkbox should be checked
 
@@ -78,7 +78,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
-        And the user "Alice" clicks on the next button in sync connection wizard
+        And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         And the user selects the following folders to sync:
             | folder        |
@@ -99,7 +99,7 @@ Feature: Syncing files
             | user     | Alice          |
             | password | 1234           |
         When the user selects manual sync folder option in advanced section
-        And the user "Alice" clicks on the next button in sync connection wizard
+        And the user sets the sync path in sync connection wizard
         And the user selects "ownCloud" as a remote destination folder
         # folders are sorted by name in ascending order by default
         Then the folders should be in the following order:
