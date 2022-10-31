@@ -18,6 +18,7 @@
 #import <AppKit/NSApplication.h>
 
 #include "application.h"
+#include "editlocallymanager.h"
 
 /* In theory, we should be able to just capture QFileOpenEvents
  * when we open our custom URLs in our Application class and be
@@ -59,7 +60,7 @@
     NSURL* url = [NSURL URLWithString:[[event paramDescriptorForKeyword:keyDirectObject] stringValue]];
     const auto app = qobject_cast<OCC::Application *>(QApplication::instance());
     const auto qtUrl = QUrl::fromNSURL(url);
-    app->handleEditLocally(qtUrl);
+    EditLocallyManager::instance()->editLocally(qtUrl);
 }
 
 @end
