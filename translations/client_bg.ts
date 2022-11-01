@@ -42,7 +42,7 @@
         <translation>Списък на дейностите</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/ActivityList.qml" line="103"/>
+        <location filename="../src/gui/tray/ActivityList.qml" line="112"/>
         <source>No activities yet</source>
         <translation>Все още няма активности</translation>
     </message>
@@ -165,11 +165,6 @@
 <context>
     <name>EditFileLocallyLoadingDialog</name>
     <message>
-        <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="74"/>
-        <source>Opening for local editing</source>
-        <translation>Отваряне за локално редактиране</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
         <translation type="unfinished"/>
@@ -189,6 +184,27 @@
         <location filename="../src/gui/ErrorBox.qml" line="49"/>
         <source>Error</source>
         <translation>Грешка</translation>
+    </message>
+</context>
+<context>
+    <name>FileDetailsPage</name>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
+        <source>Activity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
+        <source>Sharing</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>FileDetailsWindow</name>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
+        <source>File details of %1 · %2</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -336,12 +352,12 @@
         <translation>Цялостно мнемонично криптиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <location filename="../src/gui/accountmanager.cpp" line="421"/>
         <source>End-to-End encryption mnemonic</source>
         <translation>Цялостно мнемонично криптиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountmanager.cpp" line="407"/>
+        <location filename="../src/gui/accountmanager.cpp" line="422"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>За да защитим вашата Криптографска идентичност, ние я криптираме мнемонично  с 12 думи от речника. Моля, отбележете ги и ги пазете на сигурно място. Те ще са необходими, за да добавите други устройства към вашия профил (като вашия мобилен телефон или лаптоп).</translation>
     </message>
@@ -820,32 +836,32 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="149"/>
+        <location filename="../src/gui/application.cpp" line="150"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Продължаването ще означава &lt;b&gt;изтриване на тези настройки&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="151"/>
+        <location filename="../src/gui/application.cpp" line="152"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Продължаването ще означава &lt;b&gt;игнориране на тези настройки&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="157"/>
+        <location filename="../src/gui/application.cpp" line="158"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Някои настройки са били конфигурирани в по-нови версии на този клиент и използват функции, които не са налични в тази версия.&lt;br&gt;&lt;br&gt;% 1&lt;br&gt;&lt;br&gt;Текущият конфигурационен файл вече е архивиран до% 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="164"/>
+        <location filename="../src/gui/application.cpp" line="165"/>
         <source>Quit</source>
         <translation>Напусни</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="165"/>
+        <location filename="../src/gui/application.cpp" line="166"/>
         <source>Continue</source>
         <translation>Продължи</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="339"/>
+        <location filename="../src/gui/application.cpp" line="340"/>
         <source>Error accessing the configuration file</source>
         <translation>Грешка при опита за отваряне на конфигурационния файл</translation>
     </message>
@@ -855,12 +871,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че вашият потребител има достъп до файла.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="340"/>
+        <location filename="../src/gui/application.cpp" line="341"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Възникна грешка при достъпа до конфигурационния файл при % 1 . Моля да се уверите, че файлът е достъпен от вашият системен профил.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="343"/>
+        <location filename="../src/gui/application.cpp" line="344"/>
         <source>Quit %1</source>
         <translation>Напускане %1</translation>
     </message>
@@ -1241,6 +1257,51 @@ This can be an issue with your OpenSSL libraries.</source>
     </message>
 </context>
 <context>
+    <name>OCC::FileDetails</name>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
+        <source>%1 second(s) ago</source>
+        <comment>seconds elapsed since file last modified</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
+        <source>%1 minute(s) ago</source>
+        <comment>minutes elapsed since file last modified</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
+        <source>%1 hour(s) ago</source>
+        <comment>hours elapsed since file last modified</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
+        <source>%1 day(s) ago</source>
+        <comment>days elapsed since file last modified</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
+        <source>%1 month(s) ago</source>
+        <comment>months elapsed since file last modified</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
+        <source>%1 year(s) ago</source>
+        <comment>years elapsed since file last modified</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
+        <source>Locked by %1 - Expires in %2 minute(s)</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+</context>
+<context>
     <name>OCC::Flow2Auth</name>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
@@ -1535,22 +1596,22 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="405"/>
+        <location filename="../src/gui/folderman.cpp" line="403"/>
         <source>Could not reset folder state</source>
         <translation>Състоянието на папка не можа да се нулира</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="406"/>
+        <location filename="../src/gui/folderman.cpp" line="404"/>
         <source>An old sync journal &quot;%1&quot; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>Намерен е стар дневник за синхронизиране „%1“, но не може да бъде премахнат. Моля да се уверите, че в момента не го използва нито едно приложение.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1270"/>
+        <location filename="../src/gui/folderman.cpp" line="1268"/>
         <source> (backup)</source>
         <translation>(архивиране)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1275"/>
+        <location filename="../src/gui/folderman.cpp" line="1273"/>
         <source> (backup %1)</source>
         <translation>(архивиране %1)</translation>
     </message>
@@ -1560,59 +1621,27 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Неопределено състояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1675"/>
+        <location filename="../src/gui/folderman.cpp" line="1518"/>
         <source>Undefined state.</source>
         <translation>Неопределено състояние.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1678"/>
+        <location filename="../src/gui/folderman.cpp" line="1521"/>
         <source>Waiting to start syncing.</source>
         <translation>Изчакване на сихронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1452"/>
-        <source>Edit locally request is not valid. Opening the file is forbidden.</source>
-        <translation>Заявката за локално редактиране не е валидна. Отварянето на файла е забранено.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1472"/>
-        <source>Could not find an account for local editing</source>
-        <translation>Не можа да се намери профил за локално редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1493"/>
-        <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1493"/>
-        <location filename="../src/gui/folderman.cpp" line="1530"/>
-        <source>Please try again.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1505"/>
-        <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Не можа да се намери файл за локално редактиране. Уверете се, че не е изключен чрез селективно синхронизиране.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1681"/>
+        <location filename="../src/gui/folderman.cpp" line="1524"/>
         <source>Preparing for sync.</source>
         <translation>Подготвяне за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1684"/>
+        <location filename="../src/gui/folderman.cpp" line="1527"/>
         <source>Sync is running.</source>
         <translation>Синхронизиране на файлове.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1511"/>
-        <location filename="../src/gui/folderman.cpp" line="1538"/>
-        <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Не можа да се намери файл за локално редактиране. Уверете се, че пътят му е валиден и е синхронизиран локално.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1689"/>
+        <location filename="../src/gui/folderman.cpp" line="1532"/>
         <source>Sync finished with unresolved conflicts.</source>
         <translation>Синхронизирането приключи с неразрешени конфликти.</translation>
     </message>
@@ -1620,11 +1649,6 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last Sync was successful.</source>
         <translation>Последното синхронизиране завърши успешно.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1519"/>
-        <source>Could not find a folder to sync.</source>
-        <translation>Не можа да се намери папка за синхронизиране.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
@@ -1637,72 +1661,62 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <translation>Прекъсване от потребителя.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1530"/>
-        <source>Invalid token received.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1691"/>
+        <location filename="../src/gui/folderman.cpp" line="1534"/>
         <source>Last sync was successful.</source>
         <translation>Последното синхронизиране беше успешно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1554"/>
-        <source>Could not validate the request to open a file from server.</source>
-        <translation>Не можа да провери заявката за отваряне на файл от сървъра.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderman.cpp" line="1697"/>
+        <location filename="../src/gui/folderman.cpp" line="1540"/>
         <source>Setup error.</source>
         <translation>Грешка при настройката.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1700"/>
+        <location filename="../src/gui/folderman.cpp" line="1543"/>
         <source>Sync request was cancelled.</source>
         <translation>Заявката за синхронизиране беше отказана.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1703"/>
+        <location filename="../src/gui/folderman.cpp" line="1546"/>
         <source>Sync is paused.</source>
         <translation>Синхронизирането е на пауза.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1709"/>
+        <location filename="../src/gui/folderman.cpp" line="1552"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (Синхронизирането е на пауза)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1717"/>
+        <location filename="../src/gui/folderman.cpp" line="1560"/>
         <source>No valid folder selected!</source>
         <translation>Не сте избрали валидна папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1729"/>
+        <location filename="../src/gui/folderman.cpp" line="1572"/>
         <source>The selected path does not exist!</source>
         <translation>Избраният път не съществува!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1733"/>
+        <location filename="../src/gui/folderman.cpp" line="1576"/>
         <source>The selected path is not a folder!</source>
         <translation>Избраният път не е папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1737"/>
+        <location filename="../src/gui/folderman.cpp" line="1580"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>Нямате права за писане в избраната папка.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1789"/>
+        <location filename="../src/gui/folderman.cpp" line="1632"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локалната папка %1 вече съдържа папка, използвана във връзка за синхронизиране на папка. Моля, изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1797"/>
+        <location filename="../src/gui/folderman.cpp" line="1640"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>Локалната папка %1 вече се съдържа в папка, използвана във връзка за синхронизиране на папка. Моля, изберете друга!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1813"/>
+        <location filename="../src/gui/folderman.cpp" line="1656"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>Вече има синхронизация от сървъра към тази локална папка. Моля, изберете друга локална папка!</translation>
     </message>
@@ -3857,199 +3871,21 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
-    <name>OCC::ShareDialog</name>
+    <name>OCC::ShareModel</name>
     <message>
-        <location filename="../src/gui/sharedialog.ui" line="69"/>
-        <source>share label</source>
-        <translation> споделяне на етикет</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="124"/>
-        <source>Nextcloud Path:</source>
-        <translation>Път в Nextcloud</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.ui" line="155"/>
-        <source>Icon</source>
-        <translation>Икона</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="96"/>
-        <source>%1</source>
-        <translation>%1</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="105"/>
-        <source>Locked by %1 - Expire in %2 minutes</source>
-        <comment>remaining time before lock expire</comment>
-        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Ще изтече след %2 минути</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../src/gui/sharedialog.cpp" line="106"/>
-        <source>Locked by %1 - Expires in %2 minutes</source>
-        <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="127"/>
-        <source>Folder: %2</source>
-        <translation>Папка: %2</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="130"/>
-        <source>%1 Sharing</source>
-        <translation>%1 Споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="332"/>
-        <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation>Файлът не може да бъде споделен, защото е без право за споделяне.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="417"/>
-        <source>Please enter a password for your link share:</source>
-        <translation>Моля, въведете парола за споделяне на вашата връзка:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharedialog.cpp" line="418"/>
-        <source>Password for share required</source>
-        <translation>Нужна е парола за споделяне</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareLinkWidget</name>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation>Връзка за споделяне</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
-        <source>Note</source>
-        <translation>Бележка</translation>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
+        <source>Link share</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
-        <source>Set password</source>
-        <translation>Задаване на парола</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
-        <source>Expires</source>
-        <translation>Изтича</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
-        <source>Allow editing</source>
-        <translation>Разреши редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
-        <source>View only</source>
-        <translation>Само изглед</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
-        <source>Allow upload and editing</source>
-        <translation>За качване и редактиране</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
-        <source>File drop (upload only)</source>
-        <translation>Само за качване</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
-        <source>Link name</source>
-        <translation>Име на връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
-        <source>Note to recipient</source>
-        <translation>Бележка за получателя</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
-        <source>Password protect</source>
-        <translation>Защита с парола</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
-        <source>Set expiration date</source>
-        <translation>Срок на валидност</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
-        <source>Delete link</source>
-        <translation>Изтриване на връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
-        <source>Add another link</source>
-        <translation>Добавя още една връзка</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
-        <source>Confirm Link Share Deletion</source>
-        <translation>Потвърждава Изтриването на Споделяне на Връзки</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
-        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Наистина ли желаете да изтриете споделеното с публична връзка &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Бележка: Изтриването е необратима операция.&lt;/p&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
-        <source>Delete</source>
-        <translation>Изтрий</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
-        <source>Cancel</source>
-        <translation>Отказ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
-        <source>Public link</source>
-        <translation>Публична връзка</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::ShareUserGroupWidget</name>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
-        <source>Share with users or groups …</source>
-        <translation>Споделяне с потребители или групи...</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
-        <source>Search globally</source>
-        <translation>Глобално търсене </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
-        <source>Copy link</source>
-        <translation>Копирай връзката</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
-        <source>No results for &quot;%1&quot;</source>
-        <translation>Няма резултати за „%1“</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
-        <source>Password for share required</source>
-        <translation>Нужна е парола за споделяне</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
-        <source>Please enter a password for your email share:</source>
-        <translation>Моля, въведете парола за споделяне на вашият имейл:</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
-        <source>I shared something with you</source>
-        <translation>Споделих нещо с вас</translation>
+        <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
+        <source>Enter a note for the recipient</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5337,6 +5173,42 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
 </context>
 <context>
+    <name>ShareView</name>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
+        <source>Password required for new share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
+        <source>Share password</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
+        <source>Sharing is disabled</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
+        <source>This item cannot be shared.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
+        <source>Sharing is disabled.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShareeSearchField</name>
+    <message>
+        <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
+        <source>Search for users or groups…</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>SyncJournalDb</name>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="895"/>
@@ -5950,6 +5822,202 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Освобождаване на локално място</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareDialog</name>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="69"/>
+        <source>share label</source>
+        <translation> споделяне на етикет</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="124"/>
+        <source>Nextcloud Path:</source>
+        <translation>Път в Nextcloud</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="155"/>
+        <source>Icon</source>
+        <translation>Икона</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="96"/>
+        <source>%1</source>
+        <translation>%1</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <source>Locked by %1 - Expire in %2 minutes</source>
+        <comment>remaining time before lock expire</comment>
+        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Ще изтече след %2 минути</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="106"/>
+        <source>Locked by %1 - Expires in %2 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform><numerusform>Заключено от %1 - Изтича след %2 минути</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="127"/>
+        <source>Folder: %2</source>
+        <translation>Папка: %2</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="130"/>
+        <source>%1 Sharing</source>
+        <translation>%1 Споделяне</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <source>The file cannot be shared because it does not have sharing permission.</source>
+        <translation>Файлът не може да бъде споделен, защото е без право за споделяне.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="417"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Моля, въведете парола за споделяне на вашата връзка:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="418"/>
+        <source>Password for share required</source>
+        <translation>Нужна е парола за споделяне</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareLinkWidget</name>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
+        <source>Share link</source>
+        <translation>Връзка за споделяне</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
+        <source>Note</source>
+        <translation>Бележка</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
+        <source>Set password</source>
+        <translation>Задаване на парола</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
+        <source>Expires</source>
+        <translation>Изтича</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
+        <source>Allow editing</source>
+        <translation>Разреши редактиране</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>View only</source>
+        <translation>Само изглед</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
+        <source>Allow upload and editing</source>
+        <translation>За качване и редактиране</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
+        <source>File drop (upload only)</source>
+        <translation>Само за качване</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
+        <source>Link name</source>
+        <translation>Име на връзка</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
+        <source>Note to recipient</source>
+        <translation>Бележка за получателя</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
+        <source>Password protect</source>
+        <translation>Защита с парола</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
+        <source>Set expiration date</source>
+        <translation>Срок на валидност</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <source>Delete link</source>
+        <translation>Изтриване на връзка</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
+        <source>Add another link</source>
+        <translation>Добавя още една връзка</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation>Потвърждава Изтриването на Споделяне на Връзки</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Наистина ли желаете да изтриете споделеното с публична връзка &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Бележка: Изтриването е необратима операция.&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <source>Delete</source>
+        <translation>Изтрий</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
+        <source>Cancel</source>
+        <translation>Отказ</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
+        <source>Public link</source>
+        <translation>Публична връзка</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareUserGroupWidget</name>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
+        <source>Share with users or groups …</source>
+        <translation>Споделяне с потребители или групи...</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
+        <source>Search globally</source>
+        <translation>Глобално търсене </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
+        <source>Copy link</source>
+        <translation>Копирай връзката</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
+        <source>No results for &quot;%1&quot;</source>
+        <translation>Няма резултати за „%1“</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
+        <source>Password for share required</source>
+        <translation>Нужна е парола за споделяне</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
+        <source>Please enter a password for your email share:</source>
+        <translation>Моля, въведете парола за споделяне на вашият имейл:</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
+        <source>I shared something with you</source>
+        <translation>Споделих нещо с вас</translation>
     </message>
 </context>
 </TS>
