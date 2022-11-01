@@ -296,7 +296,7 @@ public:
     bool trustCertificates() const;
 
     void setE2eEncryptionKeysGenerationAllowed(bool allowed);
-    [[nodiscard]] bool e2eEncryptionKeysGenerationAllowed() const;
+    bool e2eEncryptionKeysGenerationAllowed() const;
 
 public slots:
     /// Used when forgetting credentials
