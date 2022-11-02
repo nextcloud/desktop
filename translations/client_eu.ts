@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Jarduera</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Partekatzea</translation>
     </message>
 </context>
 <context>
@@ -345,24 +345,6 @@
     </message>
 </context>
 <context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Amaitu muturretik muturrerako zifratzea</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="421"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>Muturretik muturrerako enkriptatzearen gako mnemoteknikoa</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="422"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Zure nortasun kriptografikoa babesteko,  hiztegietako 12 hitzen mnemoniko batekin zifratzen dugu. Mesedez, kontuan hartu horiek eta gorde itzazu. Beharrezkoak izango dira zure kontuan beste gailu batzuk gehitzeko (telefono mugikorra edo ordenagailu eramangarria adibidez).</translation>
-    </message>
-</context>
-<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
@@ -419,12 +401,12 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Do not encrypt folder</source>
+        <source>Don&apos;t encrypt folder</source>
         <translation>Ez enkriptatu karpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
+        <source>Do not encrypt folder</source>
         <translation>Ez enkriptatu karpeta</translation>
     </message>
     <message>
@@ -433,10 +415,9 @@
         <translation>Enkriptatu karpeta</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="233"/>
-        <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation>Kontu honek muturretik muturrerako zifratzea onartzen du</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="241"/>
+        <source>No account configured.</source>
+        <translation>Ez da konturik konfiguratu.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -450,14 +431,10 @@
         <translation>Erakutsi  mnemoteknika</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="241"/>
-        <source>No account configured.</source>
-        <translation>Ez da konturik konfiguratu.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="256"/>
-        <source>Enable encryption</source>
-        <translation>Gaitu zifratzea</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation>Kontu honek muturretik muturrerako zifratzea onartzen du</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -604,6 +581,16 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Desgaitu laguntza</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Sync Running</source>
         <translation>Sinkronizazioa martxan da</translation>
@@ -717,6 +704,11 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="1362"/>
         <source>Remove connection</source>
         <translation>Ezabatu konexioa</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="256"/>
+        <source>Enable encryption</source>
+        <translation>Gaitu zifratzea</translation>
     </message>
 </context>
 <context>
@@ -3875,7 +3867,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Partekatu esteka</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
@@ -5822,6 +5814,24 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Egin leku librea lokalean</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountManager</name>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>Amaitu muturretik muturrerako zifratzea</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="422"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation>Zure nortasun kriptografikoa babesteko,  hiztegietako 12 hitzen mnemoniko batekin zifratzen dugu. Mesedez, kontuan hartu horiek eta gorde itzazu. Beharrezkoak izango dira zure kontuan beste gailu batzuk gehitzeko (telefono mugikorra edo ordenagailu eramangarria adibidez).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="421"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation>Muturretik muturrerako enkriptatzearen gako mnemoteknikoa</translation>
     </message>
 </context>
 <context>

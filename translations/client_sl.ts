@@ -345,24 +345,6 @@
     </message>
 </context>
 <context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Mnemonika celostnega šifriranja</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="421"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="422"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Za zaščito vaše kriptografske istovetnosti se ta šifrira z uporabo 12 slovarskih besed. Te je priporočljivo zabeležiti in jih varno shraniti. Brez njih ni mogoče dodati drugih naprav v račun (kot sta mobilni telefon in prenosni računalnik).</translation>
-    </message>
-</context>
-<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
@@ -419,13 +401,13 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <source>Don&apos;t encrypt folder</source>
+        <translation>Ne šifriraj mape</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Ne šifriraj mape</translation>
+        <source>Do not encrypt folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -433,10 +415,9 @@
         <translation>Šifriraj mapo</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="233"/>
-        <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/accountsettings.cpp" line="241"/>
+        <source>No account configured.</source>
+        <translation>Ni nastavljenega računa.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -450,14 +431,10 @@
         <translation>Pokaži mnemoniko</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="241"/>
-        <source>No account configured.</source>
-        <translation>Ni nastavljenega računa.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="256"/>
-        <source>Enable encryption</source>
-        <translation>Omogoči šifriranje</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -604,6 +581,16 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <translation>Onemogoči podporo</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Sync Running</source>
         <translation>Usklajevanje je v teku</translation>
@@ -717,6 +704,11 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <location filename="../src/gui/accountsettings.cpp" line="1362"/>
         <source>Remove connection</source>
         <translation>Odstrani povezavo</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="256"/>
+        <source>Enable encryption</source>
+        <translation>Omogoči šifriranje</translation>
     </message>
 </context>
 <context>
@@ -5822,6 +5814,24 @@ To je nov preizkusni način. Če ga boste uporabili, pošljite tudi poročila o 
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Sprostite krajevno shrambo</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountManager</name>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>Mnemonika celostnega šifriranja</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="422"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation>Za zaščito vaše kriptografske istovetnosti se ta šifrira z uporabo 12 slovarskih besed. Te je priporočljivo zabeležiti in jih varno shraniti. Brez njih ni mogoče dodati drugih naprav v račun (kot sta mobilni telefon in prenosni računalnik).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="421"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

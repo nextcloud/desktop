@@ -345,24 +345,6 @@
     </message>
 </context>
 <context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Ende-til-ende -kryptering mnemonic</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="421"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="422"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>For å beskytte din kryptografiske identitet, krypterer vi den med en mnemonic med 12 ordbok ord. Vennligst noter disse ned og oppbevar dem trygt. De vil være nødvendige for å legge til andre enheter på kontoen din (som mobiltelefonen eller den bærbare datamaskinen).</translation>
-    </message>
-</context>
-<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
@@ -419,13 +401,13 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <source>Don&apos;t encrypt folder</source>
+        <translation>Ikke krypter mappe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
-        <translation>Ikke krypter mappe</translation>
+        <source>Do not encrypt folder</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -433,10 +415,9 @@
         <translation>Krypter mappe</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="233"/>
-        <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <location filename="../src/gui/accountsettings.cpp" line="241"/>
+        <source>No account configured.</source>
+        <translation>Ingen konto konfigurert.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -450,14 +431,10 @@
         <translation>Vis mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="241"/>
-        <source>No account configured.</source>
-        <translation>Ingen konto konfigurert.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="256"/>
-        <source>Enable encryption</source>
-        <translation>Aktiver kryptering</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -604,6 +581,16 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <translation>Deaktiver support</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Sync Running</source>
         <translation>Synkroniserer...</translation>
@@ -717,6 +704,11 @@ Denne handlingen vil avbryte enhver synkronisering som kjører.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="1362"/>
         <source>Remove connection</source>
         <translation>Fjern tilkobling</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="256"/>
+        <source>Enable encryption</source>
+        <translation>Aktiver kryptering</translation>
     </message>
 </context>
 <context>
@@ -5797,6 +5789,24 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountManager</name>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>Ende-til-ende -kryptering mnemonic</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="422"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation>For å beskytte din kryptografiske identitet, krypterer vi den med en mnemonic med 12 ordbok ord. Vennligst noter disse ned og oppbevar dem trygt. De vil være nødvendige for å legge til andre enheter på kontoen din (som mobiltelefonen eller den bærbare datamaskinen).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="421"/>
+        <source>End-to-End encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
 </context>

@@ -345,24 +345,6 @@
     </message>
 </context>
 <context>
-    <name>OCC::AccountManager</name>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="406"/>
-        <source>End to end encryption mnemonic</source>
-        <translation>Chiffrement de bout en bout mnémotechnique</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="421"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation>Phrase d&apos;encryption de bout en bout</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountmanager.cpp" line="422"/>
-        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une mnémonique de 12 mots du dictionnaire. Veuillez les noter et les garder en sécurité. Ils seront nécessaires pour ajouter d’autres appareils à votre compte (comme votre téléphone portable ou votre ordinateur portable).</translation>
-    </message>
-</context>
-<context>
     <name>OCC::AccountSettings</name>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="31"/>
@@ -419,12 +401,12 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Do not encrypt folder</source>
+        <source>Don&apos;t encrypt folder</source>
         <translation>Ne pas chiffrer le dossier</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
-        <source>Don&apos;t encrypt folder</source>
+        <source>Do not encrypt folder</source>
         <translation>Ne pas chiffrer le dossier</translation>
     </message>
     <message>
@@ -433,10 +415,9 @@
         <translation>Chiffrer le dossier</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="233"/>
-        <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation>Ce compte supporte l&apos;encryption de bout en bout</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="241"/>
+        <source>No account configured.</source>
+        <translation>Aucun compte configuré.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="233"/>
@@ -450,14 +431,10 @@
         <translation>Afficher le mnémonique</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="241"/>
-        <source>No account configured.</source>
-        <translation>Aucun compte configuré.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="256"/>
-        <source>Enable encryption</source>
-        <translation>Activer le chiffrement</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation>Ce compte supporte l&apos;encryption de bout en bout</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="270"/>
@@ -601,6 +578,16 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
         <translation>Désactiver le support</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="977"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
         <source>Sync Running</source>
         <translation>Synchronisation en cours</translation>
@@ -715,6 +702,11 @@ Vous prenez vos propres risques.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="1362"/>
         <source>Remove connection</source>
         <translation>Retirer le compte</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="256"/>
+        <source>Enable encryption</source>
+        <translation>Activer le chiffrement</translation>
     </message>
 </context>
 <context>
@@ -5821,6 +5813,24 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/guiutility.cpp" line="105"/>
         <source>Free up local space</source>
         <translation>Libérer de l&apos;espace local</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountManager</name>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>Chiffrement de bout en bout mnémotechnique</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="422"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une mnémonique de 12 mots du dictionnaire. Veuillez les noter et les garder en sécurité. Ils seront nécessaires pour ajouter d’autres appareils à votre compte (comme votre téléphone portable ou votre ordinateur portable).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="421"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation>Phrase d&apos;encryption de bout en bout</translation>
     </message>
 </context>
 <context>
