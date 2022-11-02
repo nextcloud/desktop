@@ -23,6 +23,17 @@
 #include "testhelper.h"
 
 #include <QTest>
+#include <QHash>
+
+namespace {
+    constexpr auto events = 3;
+    constexpr auto eventC = "event";
+    constexpr auto calendarC = "calendar";
+    constexpr auto nameC = "name";
+    constexpr auto linkC = "link";
+    constexpr auto typeC = "type";
+    constexpr auto idC = "id";
+};
 
 class TestActivityData : public QObject
 {
@@ -31,7 +42,7 @@ class TestActivityData : public QObject
 public:
     TestActivityData() = default;
 
-    void createJsonSpecificFormatData(QString fileFormat, QString mimeType)
+    void createFilesActivityJsonData(QString fileFormat, QString mimeType)
     {
         const auto objectType = QStringLiteral("files");
         const auto subject = QStringLiteral("You created path/test.").append(fileFormat);
@@ -46,10 +57,10 @@ public:
         const auto icon = account->url().toString().append(QStringLiteral("/apps/files/img/add-color.svg"));
 
         const QJsonObject richStringData({
-            {QStringLiteral("type"), activityType},
-            {QStringLiteral("id"), activityId},
-            {QStringLiteral("link"),  link},
-            {QStringLiteral("name"), fileName},
+            {typeC, activityType},
+            {idC, activityId},
+            {linkC,  link},
+            {nameC, fileName},
             {QStringLiteral("path"), objectName}
         });
 
@@ -61,7 +72,7 @@ public:
 
         // Text file previews should be replaced by mimetype icon
         const QJsonObject previewData({
-            {QStringLiteral("link"), link},
+            {linkC, link},
             {QStringLiteral("mimeType"), mimeType},
             {QStringLiteral("fileId"), activityId},
             {QStringLiteral("filename"), fileName},
@@ -73,11 +84,11 @@ public:
         QJsonObject testData({
             {QStringLiteral("object_type"), objectType},
             {QStringLiteral("activity_id"), activityId},
-            {QStringLiteral("type"), activityType},
+            {typeC, activityType},
             {QStringLiteral("subject"), subject},
             {QStringLiteral("message"), message},
             {QStringLiteral("object_name"), objectName},
-            {QStringLiteral("link"), link},
+            {linkC, link},
             {QStringLiteral("datetime"), datetime},
             {QStringLiteral("icon"), icon},
             {QStringLiteral("subject_rich"), subjectRichData},
@@ -85,6 +96,107 @@ public:
         });
 
         QTest::addRow("data") << testData << fileFormat << mimeType << objectType << subject << path << fileName << activityType << activityId << message << objectName << link << datetime << icon << subjectRichString << subjectRichData << previewUrl;
+    }
+
+    void createCalendarActivityJsonData(QString name, QString event, QString calendar)
+    {
+        const auto objectType = calendarC;
+        const auto subject = QStringLiteral("%1 updated event %2 in calendar %3").arg(name, event, calendar);
+        const auto activityType = QStringLiteral("calendar_event");
+        const auto activityId = 10000;
+        const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
+        const auto icon = account->url().toString().append(QStringLiteral("/core/img/places/calendar.svg"));
+        const auto eventLink = QStringLiteral("/apps/calendar/dayGridMonth/now/edit/sidebar/A12bcD12AbcDEFgH456/next");
+
+        const auto subjectRichString = QStringLiteral("{actor} updated event {event} in calendar {calendar}");
+        const QJsonArray subjectRichData({
+            subjectRichString,
+            {{
+                {objectType, {{
+                    {typeC, objectType},
+                    {idC, QStringLiteral()},
+                    {linkC,  QStringLiteral()},
+                    {nameC, calendar},
+                }}},
+                {eventC, {{
+                    {typeC, QStringLiteral("calendar-event")},
+                    {idC, QStringLiteral("12AA3456-A1B2-A1B2-A1B2-AB12C34567D8")},
+                    {linkC, account->url().toString().append(eventLink)},
+                    {nameC, event},
+                }}},
+                {QStringLiteral("actor"), {{
+                    {typeC, QStringLiteral("user")},
+                    {idC, QStringLiteral("username")},
+                    {linkC,  QStringLiteral()},
+                    {nameC, name},
+                }}},
+            }},
+        });
+
+        QJsonObject testData({
+            {QStringLiteral("object_type"), objectType},
+            {QStringLiteral("subject"), subject},
+            {typeC, activityType},
+            {QStringLiteral("activity_id"), activityId},
+            {QStringLiteral("object_name"), QStringLiteral()},
+            {QStringLiteral("datetime"), datetime},
+            {QStringLiteral("icon"), icon},
+            {QStringLiteral("subject_rich"), subjectRichData},
+        });
+
+        QTest::addRow("data") << testData << QStringLiteral() << QStringLiteral() << objectType << subject << QStringLiteral() << QStringLiteral() << activityType << activityId << QStringLiteral() << QStringLiteral() << QStringLiteral() << datetime << icon << subjectRichString << subjectRichData << QStringLiteral();
+    }
+
+    // We always "use" event. What you are observing comes from the event merging, e.g. if a user creates two events,
+    // there will be only 1 activity entry saying "X created event A and B", but the mechanism is incremental and
+    // when you only modified the same entry twice, you get "X updated event A" with A being event1 instead of event.
+    void createCalendarEventMergedActivityJsonData(QString name, QString event, QString calendar, int mergedEvent)
+    {
+        const auto objectType = calendarC;
+        const auto subject = QStringLiteral("%1 updated event %2 in calendar %3").arg(name, event, calendar);
+        const auto activityType = QStringLiteral("calendar_event");
+        const auto activityId = 10000;
+        const auto datetime = QDateTime::currentDateTime().toString(Qt::ISODate);
+        const auto icon = account->url().toString().append(QStringLiteral("/core/img/places/calendar.svg"));
+        const auto eventLink = QStringLiteral("/apps/calendar/dayGridMonth/now/edit/sidebar/A12bcD12AbcDEFgH456/next");
+
+        const auto subjectRichString = QStringLiteral("{actor} updated event {event%1} in calendar {calendar}").arg(mergedEvent);
+        const QJsonArray subjectRichData({
+            subjectRichString,
+            {{
+              {objectType, {{
+                  {typeC, objectType},
+                  {idC, QStringLiteral()},
+                  {linkC,  QStringLiteral()},
+                  {nameC, calendar},
+              }}},
+              {QStringLiteral("event%1").arg(mergedEvent), {{
+                  {typeC, QStringLiteral("calendar-event")},
+                  {idC, QStringLiteral("12AA3456-A1B2-A1B2-A1B2-AB12C34567D8")},
+                  {linkC, account->url().toString().append(eventLink)},
+                {nameC, event},
+              }}},
+              {QStringLiteral("actor"), {{
+                  {typeC, QStringLiteral("user")},
+                  {idC, QStringLiteral("username")},
+                  {linkC,  QStringLiteral()},
+                  {nameC, name},
+              }}},
+           }},
+        });
+
+        QJsonObject testData({
+            {QStringLiteral("object_type"), objectType},
+            {QStringLiteral("subject"), subject},
+            {typeC, activityType},
+            {QStringLiteral("activity_id"), activityId},
+            {QStringLiteral("object_name"), QStringLiteral()},
+            {QStringLiteral("datetime"), datetime},
+            {QStringLiteral("icon"), icon},
+            {QStringLiteral("subject_rich"), subjectRichData},
+        });
+
+        QTest::addRow("data") << testData << QStringLiteral() << QStringLiteral() << objectType << subject << QStringLiteral() << QStringLiteral() << activityType << activityId << QStringLiteral() << QStringLiteral() << QStringLiteral() << datetime << icon << subjectRichString << subjectRichData << QStringLiteral();
     }
 
     QScopedPointer<FakeQNAM> fakeQnam;
@@ -120,9 +232,15 @@ private slots:
         QTest::addColumn<QJsonArray>("subjectRichDataExpected");
         QTest::addColumn<QString>("previewUrlExpected");
 
-        createJsonSpecificFormatData(QStringLiteral("jpg"), QStringLiteral("image/jpg"));
-        createJsonSpecificFormatData(QStringLiteral("txt"), QStringLiteral("text/plain"));
-        createJsonSpecificFormatData(QStringLiteral("pdf"), QStringLiteral("application/pdf"));
+        createFilesActivityJsonData(QStringLiteral("jpg"), QStringLiteral("image/jpg"));
+        createFilesActivityJsonData(QStringLiteral("txt"), QStringLiteral("text/plain"));
+        createFilesActivityJsonData(QStringLiteral("pdf"), QStringLiteral("application/pdf"));
+        createCalendarActivityJsonData(account->displayName(), QStringLiteral("Event 1"), QStringLiteral("Calendar 1"));
+        createCalendarActivityJsonData(account->displayName(), QStringLiteral("Event 2"), QStringLiteral("Calendar 2"));
+
+        for (int i = 1; i <= events; i++) {
+            createCalendarEventMergedActivityJsonData(account->displayName(), QStringLiteral("Event"), QStringLiteral("Calendar"), i);
+        }
     }
 
     void testFromJson()
@@ -154,29 +272,58 @@ private slots:
         QCOMPARE(activity._subject, subjectExpected);
         QCOMPARE(activity._message, messageExpected);
         QCOMPARE(activity._file, objectNameExpected);
-        QCOMPARE(activity._link, linkExpected);
         QCOMPARE(activity._dateTime, QDateTime::fromString(datetimeExpected, Qt::ISODate));
+        QCOMPARE(activity._objectName, objectNameExpected);
 
-        QCOMPARE(activity._subjectRichParameters.count(), 1);
-        QCOMPARE(activity._subjectDisplay, QStringLiteral("You created ").append(fileNameExpected));
+        const auto richParams = activity._subjectRichParameters;
 
-        QCOMPARE(activity._previews.count(), 1);
-        // We want the different icon when we have a preview
-        //QCOMPARE(activity._icon, iconExpected);
+        if (objectTypeExpected != calendarC) {
+            QCOMPARE(activity._link, linkExpected);
 
-        if(fileFormat == "txt") {
-            QCOMPARE(activity._previews[0]._source, account->url().toString().append(QStringLiteral("/index.php/apps/theming/img/core/filetypes/text.svg")));
-            QCOMPARE(activity._previews[0]._isMimeTypeIcon, true);
-            QCOMPARE(activity._previews[0]._mimeType, mimeTypeExpected);
-        } else if(fileFormat == "pdf") {
-            QCOMPARE(activity._previews[0]._source, account->url().toString().append(QStringLiteral("/index.php/apps/theming/img/core/filetypes/application-pdf.svg")));
-            QCOMPARE(activity._previews[0]._isMimeTypeIcon, true);
+            QCOMPARE(richParams.count(), 1);
+            QCOMPARE(activity._subjectDisplay, QStringLiteral("You created ").append(fileNameExpected));
+
+            const auto previews = activity._previews;
+
+            QCOMPARE(previews.count(), 1);
+
+            auto icon = account->url().toString().append("/index.php/apps/theming/img/core/filetypes/%1.svg");
+            const auto isMimeTypeIcon = true;
+
+            if(fileFormat == "txt") {
+                QCOMPARE(previews[0]._source, icon.arg("text"));
+                QCOMPARE(previews[0]._isMimeTypeIcon, isMimeTypeIcon);
+            } else if(fileFormat == "pdf") {
+                QCOMPARE(previews[0]._source, icon.arg("application-pdf"));
+                QCOMPARE(previews[0]._isMimeTypeIcon, isMimeTypeIcon);
+            } else {
+                QCOMPARE(previews[0]._source, previewUrlExpected);
+                QCOMPARE(previews[0]._isMimeTypeIcon, !isMimeTypeIcon);
+            }
+
+            QCOMPARE(previews[0]._mimeType, mimeTypeExpected);
         } else {
-            QCOMPARE(activity._previews[0]._source, previewUrlExpected);
-            QCOMPARE(activity._previews[0]._isMimeTypeIcon, false);
-        }
+            QCOMPARE(richParams.count(), 3);
+            QCOMPARE(subjectRichDataExpected.count(), 2);
 
-        QCOMPARE(activity._previews[0]._mimeType, mimeTypeExpected);
+            QString eventName;
+            QUrl eventLink;
+            auto expectedParams = subjectRichDataExpected[1].toObject();
+            for (auto i = expectedParams.begin(); i != expectedParams.end(); ++i) {
+                if (i.key().startsWith(eventC)) {
+                    const auto expectedJsonObject = i.value().toObject();
+                    eventName = expectedJsonObject.value(nameC).toString();
+                    eventLink = expectedJsonObject.value(linkC).toString();
+                    break;
+                }
+            }
+
+            QCOMPARE(activity._link, eventLink);
+            QCOMPARE(activity._subjectDisplay, QStringLiteral("%1 updated event %2 in calendar %3").arg(account->displayName(),
+                                                                                                        eventName,
+                                                                                                        richParams[calendarC].name));
+            QCOMPARE(activity._icon, iconExpected);
+        }
     }
 };
 
