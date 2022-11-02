@@ -28,7 +28,6 @@ set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 set(client_UI_SRCS
     accountsettings.ui
     conflictdialog.ui
-    internallinkwidget.ui
     invalidfilenamedialog.ui
     foldercreationdialog.ui
     folderwizardsourcepage.ui
@@ -102,8 +101,6 @@ set(client_SRCS
     generalsettings.cpp
     legalnotice.h
     legalnotice.cpp
-    internallinkwidget.h
-    internallinkwidget.cpp
     ignorelisteditor.h
     ignorelisteditor.cpp
     ignorelisttablewidget.h
