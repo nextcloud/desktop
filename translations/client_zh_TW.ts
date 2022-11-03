@@ -583,12 +583,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>端到端加密助記詞</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>為了保護您的身份，我們將用含 12 個單詞的助記詞進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手機或筆記型電腦）加入您的帳號中，需用到此助記詞。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>

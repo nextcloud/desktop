@@ -70,7 +70,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Atmesti</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="49"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Klaida</translation>
     </message>
 </context>
 <context>
@@ -218,7 +218,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko perkelti „%1“ į „%2“</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -451,7 +451,7 @@ Palaukite naujo sinchronizavimo, o tuomet jį šifruokite.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Šifravimas patyrė nesėkmę</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
@@ -1164,7 +1164,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="275"/>
         <source>Error while opening directory %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atveriant katalogą %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="277"/>
@@ -1200,7 +1200,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Bandykite dar kartą.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
@@ -1285,7 +1285,7 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Užrakino %1 – Baigia galioti po %2 minutės</numerusform><numerusform>Užrakino %1 – Baigia galioti po %2 minučių</numerusform><numerusform>Užrakino %1 – Baigia galioti po %2 minučių</numerusform><numerusform>Užrakino %1 – Baigia galioti po %2 minutės</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1602,7 +1602,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1518"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>Neapibrėžta būsena.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1521"/>
@@ -1647,7 +1647,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1540"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>Sąrankos klaida.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1543"/>
@@ -1860,7 +1860,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1168"/>
         <source>Waiting for %n other folder(s) …</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Laukiama dar %n aplanko…</numerusform><numerusform>Laukiama dar %n aplankų…</numerusform><numerusform>Laukiama dar %n aplankų…</numerusform><numerusform>Laukiama dar %n aplanko…</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
@@ -2354,12 +2354,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Vidinė nuoroda</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
         <source>Only works for users with access to this folder</source>
-        <translation type="unfinished"/>
+        <translation>Veikia tik naudotojams, turintiems prieigą prie šio aplanko</translation>
     </message>
 </context>
 <context>
@@ -2377,12 +2377,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Klaida</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
         <source>Please enter a new name for the file:</source>
-        <translation type="unfinished"/>
+        <translation>Įveskite naują failo pavadinimą:</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
@@ -2392,7 +2392,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="86"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Pervadinti failą</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
@@ -2462,7 +2462,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko pervadinti vietinio failo. %1</translation>
     </message>
 </context>
 <context>
@@ -2481,7 +2481,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Autorių teisės 2017–2021 Nextcloud GmbH&lt;br /&gt;Autorių teisės 2012–2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -2738,7 +2738,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>New %1 update ready</source>
-        <translation type="unfinished"/>
+        <translation>Yra paruoštas naujas %1 atnaujinimas</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
@@ -3150,7 +3150,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="433"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Išlikite saugūs</translation>
     </message>
 </context>
 <context>
@@ -3439,7 +3439,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1272"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu failas %1 yra naudojamas</translation>
     </message>
 </context>
 <context>
@@ -3470,17 +3470,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Could not create folder %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepavyko sukurti aplanko %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu failas %1 yra naudojamas</translation>
     </message>
 </context>
 <context>
@@ -3506,7 +3506,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>nepavyko iš vietinės duomenų bazės gauti failo %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
@@ -3516,12 +3516,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>Klaida atnaujinant metaduomenis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu failas %1 yra naudojamas</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
@@ -3570,7 +3570,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="262"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu failas %1 yra naudojamas</translation>
     </message>
 </context>
 <context>
@@ -3588,7 +3588,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>nepavyko iš vietinės duomenų bazės gauti failo %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
@@ -3603,7 +3603,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu failas %1 yra naudojamas</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="290"/>
@@ -3669,7 +3669,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="794"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Šiuo metu failas %1 yra naudojamas</translation>
     </message>
 </context>
 <context>
@@ -4613,18 +4613,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minučių</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 valanda</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 valandos</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
@@ -4723,7 +4723,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>Prisijunkite naudodami paskyrą: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
@@ -5058,22 +5058,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs pervadinote %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs ištrynėte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs sukūrėte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="591"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Jūs pakeitėte %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="614"/>
@@ -5157,17 +5157,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinimas yra išjungtas</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Šis elementas negali būti bendrinamas.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Bendrinimas yra išjungtas.</translation>
     </message>
 </context>
 <context>
@@ -5175,7 +5175,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Ieškoti naudotojų ar grupių…</translation>
     </message>
 </context>
 <context>
@@ -5191,7 +5191,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sinchronizuoti dabar</translation>
     </message>
 </context>
 <context>
