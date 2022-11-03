@@ -1483,7 +1483,7 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="46"/>
         <source>Add a Space</source>
-        <translation type="unfinished"/>
+        <translation>Einen Space hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="294"/>
@@ -3739,7 +3739,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="57"/>
         <source>Priority</source>
-        <translation type="unfinished"/>
+        <translation>Priorität</translation>
     </message>
 </context>
 <context>
