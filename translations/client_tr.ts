@@ -191,7 +191,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation>Etkinlik</translation>
+        <translation>İşlem</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 · %2 dosyasının ayrıntıları</translation>
     </message>
 </context>
 <context>
@@ -583,12 +583,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Şifreli kimliğiniz korunmak için 12 sözlük sözcüğünden oluşan bir anımsatıcı ile şifrelendi. Lütfen bu sözcükleri not ederek güvenli bir yerde saklayın. Bu bilgi hesabınıza başka aygıtlar (cep telefonu ya da bilgisayar) eklemek istediğinizde gerekir.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
@@ -1290,7 +1290,7 @@ Bu durum OpenSLL kitaplıkları ile ilgili bir sorun olabilir.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 tarafından kilitlenmiş - %2 dakika sonra açılacak</numerusform><numerusform>%1 tarafından kilitlenmiş - %2 dakika sonra açılacak</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3866,17 +3866,17 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation>Linki paylaş</translation>
+        <translation>Bağlantıyı paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation>Link paylaşımı</translation>
+        <translation>Bağlantı paylaşımı</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
         <source>Enter a note for the recipient</source>
-        <translation>Alıcı için bir note giriniz</translation>
+        <translation>Alıcı için bir not yazın</translation>
     </message>
 </context>
 <context>
@@ -5168,12 +5168,12 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation>Yeni paylaşım için şifre gerekli</translation>
+        <translation>Yeni paylaşım için parola gerekli</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation>Şifreyi paylaş</translation>
+        <translation>Parolayı paylaş</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
@@ -5183,7 +5183,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation>Bu öğe paylaşılamaz</translation>
+        <translation>Bu öge paylaşılamaz.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
@@ -5196,7 +5196,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Kullanıcıları veya grupları ara</translation>
+        <translation>Kullanıcı ya da grup arama…</translation>
     </message>
 </context>
 <context>

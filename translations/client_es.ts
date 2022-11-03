@@ -583,12 +583,12 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemónico para cifrado de extremo a extremo</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Para proteger tu identidad criptográfica, la ciframos con una regla mnemotécnica de 12 palabras del diccionario. Por favor, anótalas y mantenlas a salvo. Estas palabras serán necesarias para añadir otros dispositivos a su cuenta (como un teléfono móvil o un portátil). </translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
