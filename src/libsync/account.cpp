@@ -935,6 +935,7 @@ bool Account::trustCertificates() const
 
 void Account::setE2eEncryptionKeysGenerationAllowed(bool allowed)
 {
+    // fake change
     _e2eEncryptionKeysGenerationAllowed = allowed;
 }
 
