@@ -583,12 +583,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemotechnická fráze pro šifrování mezi koncovými body</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Pro ochranu vaší kryptografické identity ji šifrujeme pomocí mnemotechnické fráze, tvořené 12 slovy ze slovníku. Poznamenejte si ji někam bezpečně. Bude potřebná pro přidání dalších zařízení k vašemu účtu (jako je mobilní telefon či notebook).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
