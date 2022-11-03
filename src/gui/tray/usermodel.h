@@ -160,7 +160,7 @@ public:
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    QImage avatarById(const int id);
+    [[nodiscard]]  QImage avatarById(const int id) const;
 
     [[nodiscard]] User *currentUser() const;
 
@@ -213,7 +213,7 @@ private:
     static UserModel *_instance;
     UserModel(QObject *parent = nullptr);
     QList<User*> _users;
-    int _currentUserId = 0;
+    int _currentUserId = -1;
     bool _init = true;
 
     void buildUserList();
