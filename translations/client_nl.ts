@@ -63,7 +63,7 @@
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.ui" line="130"/>
         <source>Skip this version</source>
-        <translation>Deze versie overslaan.</translation>
+        <translation>Deze versie overslaan</translation>
     </message>
 </context>
 <context>
@@ -104,7 +104,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="27"/>
         <source>file manager</source>
-        <translation>Bestandsbeheer</translation>
+        <translation>bestandsbeheer</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="33"/>
@@ -114,7 +114,7 @@
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="38"/>
         <source>Show in web browser</source>
-        <translation>Toon in Browser</translation>
+        <translation>Toon in browser</translation>
     </message>
     <message>
         <location filename="../src/gui/commonstrings.cpp" line="43"/>
@@ -586,12 +586,14 @@ Deze actie annuleert alle huidig lopende synchronisatie.</translation>
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Het account %1 is op het moment uitgelogd.
+
+Hernieuw de authenticatie met de web browser.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="854"/>
         <source>Reauthorization required.</source>
-        <translation type="unfinished"/>
+        <translation>Hernieuwde authenticatie nodig</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="863"/>
@@ -773,7 +775,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/models/activitylistmodel.cpp" line="121"/>
         <source>Local path</source>
-        <translation type="unfinished"/>
+        <translation>Lokale pad</translation>
     </message>
 </context>
 <context>
@@ -970,27 +972,27 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="628"/>
         <source>[&lt;vfs file&gt;]</source>
-        <translation type="unfinished"/>
+        <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="644"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile en --logdir kunnen niet tegelijkertijd gebruikt worden</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="658"/>
         <source>Invalid path passed to --confdir</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldig pad voor --confdir</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="671"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
-        <translation type="unfinished"/>
+        <translation>Fout: onbekende taal &quot;%1&quot; (gebruik --list-languages om een complete lijst van ondersteunde vertalingen te krijgen)</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="680"/>
         <source>Available translations: %1</source>
-        <translation type="unfinished"/>
+        <translation>Beschikbare vertalingen: %1</translation>
     </message>
 </context>
 <context>
@@ -1075,7 +1077,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="320"/>
         <source>The configured server for this client is too old.</source>
-        <translation type="unfinished"/>
+        <translation>De voor dit programma ingestelde server is te oud</translation>
     </message>
 </context>
 <context>
@@ -1091,7 +1093,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Server vroeg niet naar autorisatie</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="57"/>
@@ -1136,7 +1138,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/models/expandingheaderview.cpp" line="104"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Kolom grootes terugzetten</translation>
     </message>
 </context>
 <context>
@@ -1415,7 +1417,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="1248"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation type="unfinished"/>
+        <translation>Map %1 wordt al gebruikt voor synchronisatie!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1255"/>
@@ -1450,7 +1452,7 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
     <message>
         <location filename="../src/gui/folderman.cpp" line="1295"/>
         <source>%1 Please pick another one!</source>
-        <translation type="unfinished"/>
+        <translation>%1 Kies een andere uit.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1378"/>
@@ -1462,7 +1464,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderman.cpp" line="1452"/>
         <source>%1 - %2@%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2@%3</translation>
     </message>
 </context>
 <context>
@@ -1526,7 +1528,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
         <source>Click this button to add a space.</source>
-        <translation type="unfinished"/>
+        <translation>Klik op deze knop om een Space toe te voegen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="236"/>
@@ -1731,7 +1733,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation type="unfinished"/>
+        <translation>Deze map kan niet worden gesynchroniseerd. Kies een andere.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
@@ -1921,7 +1923,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="77"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation type="unfinished"/>
+        <translation>Verandering van taal vereist een herstart om effect te hebben.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="220"/>
@@ -1971,7 +1973,7 @@ Let op dat dit alleen selecteert uit welke pool upgrades worden gehaald, en dat 
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Geef het wachtwoord op voor het account.</translation>
     </message>
 </context>
 <context>
@@ -2071,12 +2073,12 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>Het bestand %1 is genegeerd, want de naam is gereserveerd door %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
         <source>Reset column sizes</source>
-        <translation type="unfinished"/>
+        <translation>Kolom grootes terugzetten</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="223"/>
@@ -2436,7 +2438,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="409"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Inloggen is geslaagd&lt;/h1&gt;&lt;p&gt;Dit venster kan gesloten worden.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="410"/>
@@ -2451,7 +2453,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="565"/>
         <source>Oauth2 authentication requires a secured connection.</source>
-        <translation type="unfinished"/>
+        <translation>OAuth2 vereist een beveiligde verbinding.</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
@@ -2497,7 +2499,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
         <source>New %1 available. Please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; to download the new AppImage manually.</source>
-        <translation type="unfinished"/>
+        <translation>Een nieuw(e) %1 is beschikbaar. Klik &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt; on het nieuwe AppImage handmatig te downloaden.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
@@ -2684,7 +2686,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>Er kan geen ruimte gemaakt worden, bestand %1 is in gebuik</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
@@ -2853,7 +2855,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij schrijven van Metadata naar de database: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="187"/>
@@ -2922,7 +2924,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="109"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation type="unfinished"/>
+        <translation>Lokaal bestand gewijzigd bij sync. Het wordt opnieuw meegenomen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="581"/>
@@ -3031,7 +3033,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
         <source>Issues</source>
-        <translation type="unfinished"/>
+        <translation>Problemen</translation>
     </message>
     <message>
         <location filename="../src/gui/models/protocolitemmodel.cpp" line="134"/>
@@ -3080,7 +3082,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/protocolwidget.cpp" line="149"/>
         <source>Retry sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseer opnieuw</translation>
     </message>
 </context>
 <context>
@@ -3634,7 +3636,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="896"/>
         <source>Create and copy public link to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopieer openbare link naar klembord</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="898"/>
@@ -3644,7 +3646,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="975"/>
         <source>Open in %1</source>
-        <translation type="unfinished"/>
+        <translation>Open in %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="983"/>
@@ -3698,7 +3700,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="162"/>
         <source>Open in Web</source>
-        <translation type="unfinished"/>
+        <translation>Open in browser</translation>
     </message>
 </context>
 <context>
@@ -3706,7 +3708,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="45"/>
         <source>Sync</source>
-        <translation type="unfinished"/>
+        <translation>Synchroniseer</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="47"/>
@@ -3716,17 +3718,17 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
         <source>Subtitle</source>
-        <translation type="unfinished"/>
+        <translation>Ondertitel</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="51"/>
         <source>Web URL</source>
-        <translation type="unfinished"/>
+        <translation>Web-URL</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="53"/>
         <source>Web Dav URL</source>
-        <translation type="unfinished"/>
+        <translation>WebDav-Url</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="55"/>
@@ -3803,7 +3805,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/common/syncjournaldb.cpp" line="934"/>
         <source>Failed to connect database.</source>
-        <translation type="unfinished"/>
+        <translation>Kon geen tijdelijke database aanmaken</translation>
     </message>
 </context>
 <context>
@@ -3827,7 +3829,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="14"/>
         <source>TLS Certificate Error</source>
-        <translation type="unfinished"/>
+        <translation>TLS certificaat fout</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
@@ -3837,7 +3839,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
         <source>Cannot connect securely to %1</source>
-        <translation type="unfinished"/>
+        <translation>Kan niet beveiligd verbinden met &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="69"/>
@@ -3855,12 +3857,12 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
         <source>Installed version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Geïnstalleerde versie: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
         <source>Available update: %1</source>
-        <translation type="unfinished"/>
+        <translation>Beschikbare update: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="38"/>
@@ -3880,7 +3882,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
         <source>Reject</source>
-        <translation type="unfinished"/>
+        <translation>Afwijzen</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
@@ -3932,7 +3934,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldige lokale download folder: %1</translation>
     </message>
 </context>
 <context>
@@ -3945,7 +3947,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="55"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (aanbevolen)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="73"/>
@@ -3994,12 +3996,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Geef de inloggegevens op voor het account.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Aan het verbinden met &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4007,22 +4009,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldige inloggegevens</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
         <source>Failed to fetch user display name</source>
-        <translation type="unfinished"/>
+        <translation>Kon de weergavenaam niet ophalen</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation type="unfinished"/>
+        <translation>Inloggen mislukt: ongeldige gebruikersnaam en/of wachtwoord</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
         <source>Login failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Inloggen mislukt: %1</translation>
     </message>
 </context>
 <context>
@@ -4030,7 +4032,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="53"/>
         <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
+        <translation>Ontving een ongeldig antwoord van de server</translation>
     </message>
 </context>
 <context>
@@ -4048,7 +4050,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="118"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>Gebruiker wees ongeldig SSL certificaat af</translation>
     </message>
 </context>
 <context>
@@ -4056,17 +4058,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Aan het verbinden met &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Heropen browser</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik de browser om bij %1 in te loggen.</translation>
     </message>
 </context>
 <context>
@@ -4074,12 +4076,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="50"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij het inloggen bij een OAuth2 server.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="55"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation type="unfinished"/>
+        <translation>Server geeft aan dat OAuth2 niet wordt ondersteund.</translation>
     </message>
 </context>
 <context>
@@ -4095,18 +4097,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldige server URL</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Onbeveiligde verbinding</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>De verbinding met %1 is niet beveiligd.
+Weet U zeker dat U verder wilt gaan?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
@@ -4124,12 +4127,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="109"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Klaar</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Volgende &gt;</translation>
     </message>
 </context>
 <context>
@@ -4137,7 +4140,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Aan het verbinden met &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4173,7 +4176,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="341"/>
         <source>Ignored errors %1</source>
-        <translation type="unfinished"/>
+        <translation>Genegeerde fouten %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="355"/>
@@ -4292,7 +4295,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="352"/>
         <source>Up to date (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Bijgewerkt (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="356"/>
@@ -4342,7 +4345,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="818"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>Toon %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="819"/>
@@ -4467,7 +4470,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
         <source>WebFinger</source>
-        <translation type="unfinished"/>
+        <translation>WebFinger</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
@@ -4477,7 +4480,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation type="unfinished"/>
+        <translation>Synchronisatie opties</translation>
     </message>
 </context>
 <context>
@@ -4485,7 +4488,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Nieuw account toevoegen</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4500,7 +4503,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; Terug</translation>
     </message>
 </context>
 <context>
@@ -4521,7 +4524,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="20"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Space toevoegen&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Selecteer een Space om het met deze computer te synchroniseren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4529,7 +4532,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="84"/>
         <source>Undefined</source>
-        <translation type="unfinished"/>
+        <translation>ongedefiniëerd</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="86"/>
@@ -4560,22 +4563,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="96"/>
         <source>File Ignored</source>
-        <translation type="unfinished"/>
+        <translation>genegeerd</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="98"/>
         <source>Restored</source>
-        <translation type="unfinished"/>
+        <translation>hersteld</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="102"/>
         <source>Blacklisted</source>
-        <translation type="unfinished"/>
+        <translation>op de zwarte lijst</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="104"/>
         <source>Excluded</source>
-        <translation type="unfinished"/>
+        <translation>uitgezonderd</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="106"/>
@@ -4593,7 +4596,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="697"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>&amp;E-mail adres</translation>
     </message>
 </context>
 <context>
@@ -4669,7 +4672,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
         <source>Please enter your username:</source>
-        <translation type="unfinished"/>
+        <translation>Geef uw gebruikersnaam:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
@@ -4696,7 +4699,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2 %7%8biliotheken Qt %3, %4%7Gebruikt virtuele bestandenplugin: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4750,7 +4753,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
         <source>%1 moved to %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 is verplaatst naar %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
