@@ -57,6 +57,12 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
+    struct SingleItemDiscoveryOptions {
+        QString discoveryPath;
+        QString filePathRelative;
+        SyncFileItemPtr discoveryDirItem;
+    };
+
     SyncEngine(AccountPtr account,
                const QString &localPath,
                const SyncOptions &syncOptions,
@@ -118,6 +124,9 @@ public:
      */
     void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
 
+    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
+    const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
+
     /**
      * Returns whether the given folder-relative path should be locally discovered
      * given the local discovery options.
@@ -155,6 +164,8 @@ signals:
     void itemCompleted(const SyncFileItemPtr &);
 
     void transmissionProgress(const ProgressInfo &progress);
+
+    void itemDiscovered(const SyncFileItemPtr &);
 
     /// We've produced a new sync error of a type.
     void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
@@ -303,6 +314,8 @@ private:
     std::set<QString> _localDiscoveryPaths;
 
     QStringList _leadingAndTrailingSpacesFilesAllowed;
+
+    SingleItemDiscoveryOptions _singleItemDiscoveryOptions;
 };
 }
 

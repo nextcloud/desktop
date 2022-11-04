@@ -293,6 +293,8 @@ public:
     QByteArray _dataFingerprint;
     bool _anotherSyncNeeded = false;
 
+    QStringList _listExclusiveFiles;
+
 signals:
     void fatalError(const QString &errorString);
     void itemDiscovered(const SyncFileItemPtr &item);

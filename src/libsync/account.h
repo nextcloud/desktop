@@ -114,6 +114,9 @@ public:
     /// The name of the account as shown in the toolbar
     QString displayName() const;
 
+    /// User id in a form 'user@example.de, optionally port is added (if it is not 80 or 443)
+    QString userIdAtHostWithPort() const;
+
     QColor accentColor() const;
     QColor headerColor() const;
     QColor headerTextColor() const;
