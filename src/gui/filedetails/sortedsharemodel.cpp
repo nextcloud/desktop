@@ -73,11 +73,22 @@ bool SortedShareModel::lessThan(const QModelIndex &sourceLeft, const QModelIndex
     const auto leftShareType = leftShare->getShareType();
 
     // Placeholder link shares always go at top
-    if(leftShareType == Share::TypePlaceholderLink) {
+    if (leftShareType == Share::TypePlaceholderLink) {
         return true;
+    } else if (leftShareType == Share::TypeInternalLink) {
+        // Internal links always at bottom
+        return false;
     }
 
     const auto rightShareType = rightShare->getShareType();
+
+    // Placeholder link shares always go at top
+    if (rightShareType == Share::TypePlaceholderLink) {
+        return false;
+    } else if (rightShareType == Share::TypeInternalLink) {
+        // Internal links always at bottom
+        return true;
+    }
 
     // We want to place link shares at the top
     if (leftShareType == Share::TypeLink && rightShareType != Share::TypeLink) {

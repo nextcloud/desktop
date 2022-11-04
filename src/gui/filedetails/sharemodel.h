@@ -74,6 +74,7 @@ public:
         ShareTypeCircle = Share::TypeCircle,
         ShareTypeRoom = Share::TypeRoom,
         ShareTypePlaceholderLink = Share::TypePlaceholderLink,
+        ShareTypeInternalLink = Share::TypeInternalLink,
     };
     Q_ENUM(ShareType);
 
@@ -109,6 +110,7 @@ signals:
     void fetchOngoingChanged();
     void hasInitialShareFetchCompletedChanged();
     void shareesChanged();
+    void internalLinkReady();
 
     void serverError(const int code, const QString &message);
     void passwordSetError(const QString &shareId, const int code, const QString &message);
@@ -157,6 +159,7 @@ private slots:
     void updateData();
     void initShareManager();
     void handlePlaceholderLinkShare();
+    void setupInternalLinkShare();
 
     void slotPropfindReceived(const QVariantMap &result);
     void slotServerError(const int code, const QString &message);
@@ -183,6 +186,7 @@ private:
     bool _fetchOngoing = false;
     bool _hasInitialShareFetchCompleted = false;
     SharePtr _placeholderLinkShare;
+    SharePtr _internalLinkShare;
 
     // DO NOT USE QSHAREDPOINTERS HERE.
     // QSharedPointers MUST NOT be used with pointers already assigned to other shared pointers.

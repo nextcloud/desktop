@@ -24,7 +24,8 @@
 
 namespace {
 
-static const QString placeholderLinkShareId = QStringLiteral("__placeholderLinkShareId__");
+static const auto placeholderLinkShareId = QStringLiteral("__placeholderLinkShareId__");
+static const auto internalLinkShareId = QStringLiteral("__internalLinkShareId__");
 
 QString createRandomPassword()
 {
@@ -129,6 +130,11 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
             return startOfExpireDayUTC.toMSecsSinceEpoch();
         }
         }
+    } else if (share->getShareType() == Share::TypeInternalLink) {
+        switch(role) {
+        case LinkRole:
+            return _privateLinkUrl;
+        }
     }
 
     switch(role) {
@@ -190,6 +196,8 @@ void ShareModel::resetData()
     _sharePath.clear();
     _maxSharingPermissions = {};
     _numericFileId.clear();
+    _privateLinkUrl.clear();
+    _filelockState = {};
     _manager.clear();
     _shares.clear();
     _fetchOngoing = false;
@@ -256,12 +264,19 @@ void ShareModel::updateData()
                                           _sharePath,
                                           Share::TypePlaceholderLink));
 
+    _internalLinkShare.reset(new Share(_accountState->account(),
+                                       internalLinkShareId,
+                                       _accountState->account()->id(),
+                                       _accountState->account()->davDisplayName(),
+                                       _sharePath,
+                                       Share::TypeInternalLink));
+
     auto job = new PropfindJob(_accountState->account(), _sharePath);
     job->setProperties(
         QList<QByteArray>()
-        << "https://open-collaboration-services.org/ns:share-permissions"
-        << "https://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
-        << "https://owncloud.org/ns:privatelink");
+        << "http://open-collaboration-services.org/ns:share-permissions"
+        << "http://owncloud.org/ns:fileid" // numeric file id for fallback private link generation
+        << "http://owncloud.org/ns:privatelink");
     job->setTimeout(10 * 1000);
     connect(job, &PropfindJob::result, this, &ShareModel::slotPropfindReceived);
     connect(job, &PropfindJob::finishedWithError, this, [&](const QNetworkReply *reply) {
@@ -359,6 +374,8 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
         qCInfo(lcShareModel) << "Received numeric file id for" << _sharePath << numericFileId;
         _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
     }
+
+    setupInternalLinkShare();
 }
 
 void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
@@ -382,6 +399,21 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     }
 
     handlePlaceholderLinkShare();
+}
+
+void ShareModel::setupInternalLinkShare()
+{
+    if (!_accountState ||
+        _accountState->account().isNull() ||
+        _localPath.isEmpty() ||
+        _privateLinkUrl.isEmpty()) {
+        return;
+    }
+
+    beginInsertRows({}, _shares.count(), _shares.count());
+    _shares.append(_internalLinkShare);
+    endInsertRows();
+    Q_EMIT internalLinkReady();
 }
 
 void ShareModel::slotAddShare(const SharePtr &share)
@@ -508,6 +540,8 @@ QString ShareModel::displayStringForShare(const SharePtr &share) const
         return displayString;
     } else if (share->getShareType() == Share::TypePlaceholderLink) {
         return tr("Link share");
+    } else if (share->getShareType() == Share::TypeInternalLink) {
+        return tr("Internal link");
     } else if (share->getShareWith()) {
         return share->getShareWith()->format();
     }
@@ -521,6 +555,8 @@ QString ShareModel::iconUrlForShare(const SharePtr &share) const
     const auto iconsPath = QStringLiteral("image://svgimage-custom-color/");
 
     switch(share->getShareType()) {
+    case Share::TypeInternalLink:
+        return QString(iconsPath + QStringLiteral("external.svg"));
     case Share::TypePlaceholderLink:
     case Share::TypeLink:
         return QString(iconsPath + QStringLiteral("public.svg"));

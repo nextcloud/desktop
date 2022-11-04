@@ -53,6 +53,7 @@ GridLayout {
 
     readonly property bool isLinkShare: model.shareType === ShareModel.ShareTypeLink
     readonly property bool isPlaceholderLinkShare: model.shareType === ShareModel.ShareTypePlaceholderLink
+    readonly property bool isInternalLinkShare: model.shareType === ShareModel.ShareTypeInternalLink
 
     readonly property string text: model.display ?? ""
     readonly property string detailText: model.detailText ?? ""
@@ -183,7 +184,7 @@ GridLayout {
             icon.width: 16
             icon.height: 16
 
-            visible: root.isLinkShare
+            visible: root.isLinkShare || root.isInternalLinkShare
             enabled: visible
 
             onClicked: {
@@ -210,7 +211,7 @@ GridLayout {
 
             imageSource: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
 
-            visible: !root.isPlaceholderLinkShare
+            visible: !root.isPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible
 
             onClicked: root.rootStackView.push(shareDetailsPageComponent, {}, StackView.PushTransition)
