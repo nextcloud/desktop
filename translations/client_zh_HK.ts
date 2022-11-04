@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>打開檔案進行近端編輯</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>活動紀錄</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>分享</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 的檔案詳細資訊 · %2</translation>
     </message>
 </context>
 <context>
@@ -584,12 +584,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="977"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>端到端加密助記碼</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>為了保護您的身分，我們將用含12個單詞的助記碼進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手提電話或手提電腦）加入您的賬戶中，需用到此助記碼。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="991"/>
@@ -1197,7 +1197,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>收到無效的權杖。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
@@ -1205,38 +1205,38 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>請再試一次。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>提供了無效的檔案路徑。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於近端編輯的賬戶。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>無法驗證從伺服器開啟檔案的請求。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於近端編輯的檔案。請確保它沒有被選擇性同步排除。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>找不到用於近端編輯的檔案。請確保檔案的途徑有效並且在近端同步。</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>找不到要同步的資料夾。</translation>
     </message>
 </context>
 <context>
@@ -1254,43 +1254,43 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 秒前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 分鐘前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 小時前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 天前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 個月前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 年前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>被 %1 鎖上 - %2 分鐘後過期</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2359,19 +2359,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/ignorelisttablewidget.cpp" line="113"/>
         <source>Add a new ignore pattern:</source>
         <translation>新增要略過的檔案模式：</translation>
-    </message>
-</context>
-<context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>內部連結</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation>只對可以存取此資料夾的用戶生效</translation>
     </message>
 </context>
 <context>
@@ -3866,17 +3853,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>分享連結</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>連結分享</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>輸入給收件人的訊息</translation>
     </message>
 </context>
 <context>
@@ -5168,27 +5155,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>新分享需要密碼</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>分享密碼</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>分享功能已停用</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>無法分享此項目。</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>分享功能已停用。</translation>
     </message>
 </context>
 <context>
@@ -5196,7 +5183,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>搜尋用戶或是群組 ...</translation>
     </message>
 </context>
 <context>
@@ -5831,6 +5818,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/accountmanager.cpp" line="421"/>
         <source>End-to-End encryption mnemonic</source>
         <translation>端到端加密助記碼</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::InternalLinkWidget</name>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
+        <source>Internal link</source>
+        <translation>內部連結</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
+        <source>Only works for users with access to this folder</source>
+        <translation>只對可以存取此資料夾的用戶生效</translation>
     </message>
 </context>
 <context>

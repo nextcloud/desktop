@@ -2358,19 +2358,6 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
     </message>
 </context>
 <context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>Ligazón interna</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation>Só funciona para usuarios con acceso a este cartafol</translation>
-    </message>
-</context>
-<context>
     <name>OCC::InvalidFilenameDialog</name>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
@@ -5827,6 +5814,19 @@ Este é un novo modo experimental. Se decide usalo, agradecémoslle que informe 
         <location filename="../src/gui/accountmanager.cpp" line="421"/>
         <source>End-to-End encryption mnemonic</source>
         <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OCC::InternalLinkWidget</name>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
+        <source>Internal link</source>
+        <translation>Ligazón interna</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
+        <source>Only works for users with access to this folder</source>
+        <translation>Só funciona para usuarios con acceso a este cartafol</translation>
     </message>
 </context>
 <context>

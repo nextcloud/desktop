@@ -2352,19 +2352,6 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
     </message>
 </context>
 <context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>Intern länk</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation type="unfinished"/>
-    </message>
-</context>
-<context>
     <name>OCC::InvalidFilenameDialog</name>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
@@ -5812,6 +5799,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/accountmanager.cpp" line="421"/>
         <source>End-to-End encryption mnemonic</source>
         <translation>End to end krypteringsord</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::InternalLinkWidget</name>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
+        <source>Internal link</source>
+        <translation>Intern länk</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
+        <source>Only works for users with access to this folder</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
