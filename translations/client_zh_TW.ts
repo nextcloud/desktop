@@ -2363,19 +2363,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
 </context>
 <context>
-    <name>OCC::InternalLinkWidget</name>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
-        <source>Internal link</source>
-        <translation>內部連結</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
-        <source>Only works for users with access to this folder</source>
-        <translation>僅對可存取此資料夾的使用者有效</translation>
-    </message>
-</context>
-<context>
     <name>OCC::InvalidFilenameDialog</name>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
@@ -5832,6 +5819,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/accountmanager.cpp" line="421"/>
         <source>End-to-End encryption mnemonic</source>
         <translation>端到端加密助記詞</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::InternalLinkWidget</name>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
+        <source>Internal link</source>
+        <translation>內部連結</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
+        <source>Only works for users with access to this folder</source>
+        <translation>僅對可存取此資料夾的使用者有效</translation>
     </message>
 </context>
 <context>
