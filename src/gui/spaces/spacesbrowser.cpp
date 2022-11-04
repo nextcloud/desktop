@@ -38,6 +38,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
 
     auto *sortModel = new OCC::Models::WeightedQSortFilterProxyModel(this);
     sortModel->setSourceModel(_model);
+    sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     sortModel->setWeightedColumn(static_cast<int>(SpacesModel::Columns::Priority));
 
     ui->tableView->setModel(sortModel);

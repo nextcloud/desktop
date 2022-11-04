@@ -54,18 +54,11 @@ FolderStatusModel::FolderStatusModel(QObject *parent)
     , _accountState(nullptr)
     , _dirty(false)
 {
+    connect(this, &FolderStatusModel::rowsInserted, this, &FolderStatusModel::dirtyChanged);
 }
 
 FolderStatusModel::~FolderStatusModel()
 {
-}
-
-static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, const FolderStatusModel::SubFolderInfo &rhs)
-{
-    return QString::compare(lhs._folder->displayName(),
-               rhs._folder->displayName(),
-               Qt::CaseInsensitive)
-        < 0;
 }
 
 void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
@@ -101,9 +94,6 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
 
         connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);
     }
-
-    // Sort by header text
-    std::sort(_folders.begin(), _folders.end(), sortByFolderHeader);
 
     // Set the root _pathIdx after the sorting
     for (int i = 0; i < _folders.size(); ++i) {
@@ -286,6 +276,10 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return f->isReady();
         case Columns::IsUsingSpaces:
             return _accountState->supportsSpaces();
+        case Columns::IsDeployed:
+            return f->isDeployed();
+        case Columns::Priority:
+            return f->priority() + 1; // add one to have a higher prio than the hacked add button
         }
         break;
     case Qt::ToolTipRole: {

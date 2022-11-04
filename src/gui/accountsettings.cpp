@@ -47,15 +47,17 @@
 #include <QKeySequence>
 #include <QListWidgetItem>
 #include <QMessageBox>
+#include <QPropertyAnimation>
+#include <QSortFilterProxyModel>
 #include <QToolTip>
 #include <QTreeView>
 #include <QVBoxLayout>
 #include <QVariant>
-#include <qpropertyanimation.h>
-#include <qstringlistmodel.h>
+
 
 #include "account.h"
 #include "askexperimentalvirtualfilesfeaturemessagebox.h"
+#include "gui/models/models.h"
 #include "loginrequireddialog.h"
 #include "oauthloginwidget.h"
 
@@ -119,13 +121,24 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     _model = new FolderStatusModel(this);
     _model->setAccountState(_accountState);
-    ui->_folderList->setModel(_model);
+
+    auto weightedModel = new Models::WeightedQSortFilterProxyModel(this);
+    weightedModel->setSourceModel(_model);
+    weightedModel->setWeightedColumn(static_cast<int>(FolderStatusModel::Columns::Priority));
+    weightedModel->setSortCaseSensitivity(Qt::CaseInsensitive);
+
+    _sortModel = weightedModel;
+
+    ui->_folderList->setModel(_sortModel);
     ui->_folderList->setItemDelegate(new FolderStatusDelegate(this));
 
-    for (int i = 1; i <= _model->columnCount(); ++i) {
+    for (int i = 1; i <= _sortModel->columnCount(); ++i) {
         ui->_folderList->header()->hideSection(i);
     }
     ui->_folderList->header()->setStretchLastSection(true);
+
+    ui->_folderList->sortByColumn(static_cast<int>(FolderStatusModel::Columns::HeaderRole), Qt::AscendingOrder);
+
     ui->_folderList->header()->hide();
 #if defined(Q_OS_MAC)
     ui->_folderList->setMinimumWidth(400);
@@ -136,7 +149,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
 
     auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = ui->_folderList;
-    mouseCursorChanger->model = _model;
+    mouseCursorChanger->model = _sortModel;
     ui->_folderList->setMouseTracking(true);
     ui->_folderList->setAttribute(Qt::WA_Hover, true);
     ui->_folderList->installEventFilter(mouseCursorChanger);
@@ -152,12 +165,6 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(ui->_folderList, &QTreeView::collapsed, this, &AccountSettings::refreshSelectiveSyncStatus);
     connect(ui->selectiveSyncNotification, &QLabel::linkActivated,
         this, &AccountSettings::slotLinkActivated);
-    connect(_model, &FolderStatusModel::suggestExpand, ui->_folderList, &QTreeView::expand);
-    connect(_model, &FolderStatusModel::dirtyChanged, this, &AccountSettings::refreshSelectiveSyncStatus);
-    refreshSelectiveSyncStatus();
-    connect(_model, &QAbstractItemModel::rowsInserted,
-        this, &AccountSettings::refreshSelectiveSyncStatus);
-
     QAction *syncNowAction = new QAction(this);
     syncNowAction->setShortcut(QKeySequence(Qt::Key_F6));
     connect(syncNowAction, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolder);
@@ -168,6 +175,12 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(syncNowWithRemoteDiscovery, &QAction::triggered, this, &AccountSettings::slotScheduleCurrentFolderForceFullDiscovery);
     addAction(syncNowWithRemoteDiscovery);
 
+
+    connect(_model, &FolderStatusModel::suggestExpand, this, [this](const QModelIndex &index) {
+        ui->_folderList->expand(_sortModel->mapFromSource(index));
+    });
+    connect(_model, &FolderStatusModel::dirtyChanged, this, &AccountSettings::refreshSelectiveSyncStatus);
+    refreshSelectiveSyncStatus();
 
     connect(ui->selectiveSyncApply, &QAbstractButton::clicked, _model, &FolderStatusModel::slotApplySelectiveSync);
     connect(ui->selectiveSyncCancel, &QAbstractButton::clicked, _model, &FolderStatusModel::resetFolders);
@@ -217,7 +230,7 @@ void AccountSettings::createAccountToolbox()
 Folder *AccountSettings::selectedFolder() const
 {
     const QModelIndex selected = ui->_folderList->selectionModel()->currentIndex();
-    return _model->folder(selected);
+    return _model->folder(_sortModel->mapToSource(selected));
 }
 
 void AccountSettings::slotToggleSignInState()
@@ -232,8 +245,8 @@ void AccountSettings::slotToggleSignInState()
 void AccountSettings::doExpand()
 {
     // Make sure at least the root items are expanded
-    for (int i = 0; i < _model->rowCount(); ++i) {
-        auto idx = _model->index(i);
+    for (int i = 0; i < _sortModel->rowCount(); ++i) {
+        auto idx = _sortModel->index(i, 0);
         if (!ui->_folderList->isExpanded(idx))
             ui->_folderList->setExpanded(idx, true);
     }
@@ -248,8 +261,9 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
-    const auto removeFolderAction = [index, this](QMenu *menu) {
-        Q_ASSERT(!_model->folder(index)->isDeployed());
+    const auto isDeployed = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsDeployed)).data().toBool();
+    const auto removeFolderAction = [isDeployed, this](QMenu *menu) {
+        Q_ASSERT(!isDeployed);
         return menu->addAction(tr("Remove folder sync connection"), this, &AccountSettings::slotRemoveCurrentFolder);
     };
 
@@ -259,7 +273,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     // Only allow removal if the item isn't in "ready" state.
-    if (classification == FolderStatusModel::RootFolder && !index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsReady)).data().toBool() && !_model->folder(index)->isDeployed()) {
+    if (classification == FolderStatusModel::RootFolder && !index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsReady)).data().toBool() && !isDeployed) {
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
         removeFolderAction(menu);
@@ -298,7 +312,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
     // Add an action to open the folder on the server in a webbrowser:
 
-    if (auto info = _model->infoForIndex(index)) {
+    if (auto info = _model->infoForIndex(_sortModel->mapToSource(index))) {
         if (info->_folder->accountState()->account()->capabilities().privateLinkPropertyAvailable()) {
             QString path = info->_folder->remotePathTrailingSlash();
             if (classification == FolderStatusModel::SubFolder) {
@@ -349,7 +363,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         QAction *ac = menu->addAction(folderPaused ? tr("Resume sync") : tr("Pause sync"));
         connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableCurrentFolder);
 
-        if (!_model->folder(index)->isDeployed()) {
+        if (!isDeployed) {
             removeFolderAction(menu);
 
             if (folder->virtualFilesEnabled() && !Theme::instance()->forceVirtualFilesOption()) {
@@ -392,7 +406,7 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
         } else {
             QToolTip::showText(
                 QCursor::pos(),
-                _model->data(indx, Qt::ToolTipRole).toString(),
+                _sortModel->data(indx, Qt::ToolTipRole).toString(),
                 this);
         }
         return;
@@ -480,7 +494,7 @@ void AccountSettings::slotRemoveCurrentFolder()
         connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, row, this]{
             if (messageBox->clickedButton() == yesButton) {
                 FolderMan::instance()->removeFolder(folder);
-                _model->removeRow(row);
+                _sortModel->removeRow(row);
 
                 // single folder fix to show add-button and hide remove-button
                 emit folderChanged();
@@ -892,9 +906,9 @@ void AccountSettings::slotAccountStateChanged()
     if (state != AccountState::Connected) {
         /* check if there are expanded root items, if so, close them */
         int i;
-        for (i = 0; i < _model->rowCount(); ++i) {
-            if (ui->_folderList->isExpanded(_model->index(i)))
-                ui->_folderList->setExpanded(_model->index(i), false);
+        for (i = 0; i < _sortModel->rowCount(); ++i) {
+            if (ui->_folderList->isExpanded(_sortModel->index(i, 0)))
+                ui->_folderList->setExpanded(_sortModel->index(i, 0), false);
         }
     }
 
@@ -926,12 +940,12 @@ void AccountSettings::slotLinkActivated(const QString &link)
         // Make sure the folder itself is expanded
         Folder *folder = FolderMan::instance()->folder(id);
         if (folder) {
-            QModelIndex folderIndx = _model->indexForPath(folder, QString());
+            QModelIndex folderIndx = _sortModel->mapFromSource(_model->indexForPath(folder, QString()));
             if (!ui->_folderList->isExpanded(folderIndx)) {
                 ui->_folderList->setExpanded(folderIndx, true);
             }
 
-            QModelIndex indx = _model->indexForPath(folder, myFolder);
+            QModelIndex indx = _sortModel->mapFromSource(_model->indexForPath(folder, myFolder));
             if (indx.isValid()) {
                 // make sure all the parents are expanded
                 for (auto i = indx.parent(); i.isValid(); i = i.parent()) {
@@ -975,7 +989,7 @@ void AccountSettings::refreshSelectiveSyncStatus()
             if (myFolder.endsWith(QLatin1Char('/'))) {
                 myFolder.chop(1);
             }
-            QModelIndex theIndx = _model->indexForPath(folder, myFolder);
+            QModelIndex theIndx = _sortModel->mapFromSource(_model->indexForPath(folder, myFolder));
             if (theIndx.isValid()) {
                 msg += QStringLiteral("<a href=\"%1?folder=%2\">%1</a>")
                            .arg(Utility::escape(myFolder), QString::fromUtf8(QUrl::toPercentEncoding(QString::fromUtf8(folder->id()))));
@@ -1067,8 +1081,8 @@ bool AccountSettings::event(QEvent *e)
     if (e->type() == QEvent::Show) {
         // Expand the folder automatically only if there's only one, see #4283
         // The 2 is 1 folder + 1 'add folder' button
-        if (_model->rowCount() <= 2) {
-            ui->_folderList->setExpanded(_model->index(0, 0), true);
+        if (_sortModel->rowCount() <= 2) {
+            ui->_folderList->setExpanded(_sortModel->index(0, 0), true);
         }
     }
     return QWidget::event(e);

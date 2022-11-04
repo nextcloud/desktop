@@ -62,6 +62,8 @@ public:
         IsUsingSpaces, // boolean
 
         ItemType, // ItemType
+        Priority, // uint32_t
+        IsDeployed, // bool
 
         ColumnCount
     };

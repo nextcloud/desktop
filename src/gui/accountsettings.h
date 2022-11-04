@@ -31,6 +31,7 @@ class QModelIndex;
 class QNetworkReply;
 class QListWidgetItem;
 class QLabel;
+class QSortFilterProxyModel;
 
 namespace OCC {
 
@@ -98,6 +99,7 @@ private:
     Ui::AccountSettings *ui;
 
     FolderStatusModel *_model;
+    QSortFilterProxyModel *_sortModel;
     QUrl _OCUrl;
     bool _wasDisabledBefore;
     AccountStatePtr _accountState;
