@@ -16,9 +16,6 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="windowTitle">
-   <string>OAuthLoginWidget</string>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,0">
    <property name="leftMargin">
     <number>0</number>
