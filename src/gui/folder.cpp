@@ -831,8 +831,11 @@ bool Folder::reloadExcludes()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    Q_UNUSED(pathList)
-
+    const auto singleItemDiscoveryOptions = _engine->singleItemDiscoveryOptions();
+    Q_ASSERT(!singleItemDiscoveryOptions.discoveryDirItem || singleItemDiscoveryOptions.discoveryDirItem->isDirectory());
+    if (singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isDirectory()) {
+        qCCritical(lcFolder) << "startSync only accepts directory SyncFileItem, not a file.";
+    }
     if (isBusy()) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
@@ -868,7 +871,13 @@ void Folder::startSync(const QStringList &pathList)
     bool periodicFullLocalDiscoveryNow =
         fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
         && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
-    if (_folderWatcher && _folderWatcher->isReliable()
+
+    if (!singleItemDiscoveryOptions.filePathRelative.isEmpty()
+        && singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isEmpty()) {
+        qCInfo(lcFolder) << "Going to sync just one file";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {singleItemDiscoveryOptions.discoveryPath});
+        _localDiscoveryTracker->startSyncPartialDiscovery();
+    } else if (_folderWatcher && _folderWatcher->isReliable()
         && hasDoneFullLocalDiscovery
         && !periodicFullLocalDiscoveryNow) {
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";

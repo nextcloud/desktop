@@ -118,32 +118,14 @@ void EditLocallyJob::remoteTokenCheckResultReceived(const int statusCode)
         return;
     }
 
-    proceedWithSetup();
+    findAfolderAndConstructPaths();
 }
 
 void EditLocallyJob::proceedWithSetup()
 {
     if (!_tokenVerified) {
         qCWarning(lcEditLocallyJob) << "Could not proceed with setup as token is not verified.";
-        return;
-    }
-
-    const auto foundFiles = FolderMan::instance()->findFileInLocalFolders(_relPath, _accountState->account());
-
-    if (foundFiles.isEmpty()) {
-        if (isRelPathExcluded(_relPath)) {
-            showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
-        } else {
-            showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
-        }
-        return;
-    }
-
-    _localFilePath = foundFiles.first();
-    _folderForFile = FolderMan::instance()->folderForPath(_localFilePath);
-
-    if (!_folderForFile) {
-        showError(tr("Could not find a folder to sync."), _relPath);
+        showError(tr("Could not validate the request to open a file from server."), tr("Please try again."));
         return;
     }
 
@@ -155,13 +137,178 @@ void EditLocallyJob::proceedWithSetup()
 
     _fileName = relPathSplit.last();
 
+    _folderForFile = findFolderForFile(_relPath, _userId);
+
+    if (!_folderForFile) {
+        showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
+        return;
+    }
+
+    if (_relPathParent != QStringLiteral("/") && (!_fileParentItem || _fileParentItem->isEmpty())) {
+        showError(tr("Could not find a file for local editing. Make sure its path is valid and it is synced locally."), _relPath);
+        return;
+    }
+
+    _localFilePath = _folderForFile->path() + _relativePathToRemoteRoot;
+
     Systray::instance()->destroyEditFileLocallyLoadingDialog();
     Q_EMIT setupFinished();
+}
+
+void EditLocallyJob::findAfolderAndConstructPaths()
+{
+    _folderForFile = findFolderForFile(_relPath, _userId);
+
+    if (!_folderForFile) {
+        showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
+        return;
+    }
+
+    _relativePathToRemoteRoot = getRelativePathToRemoteRootForFile();
+
+    if (_relativePathToRemoteRoot.isEmpty()) {
+        qCWarning(lcEditLocallyJob) << "_relativePathToRemoteRoot is empty for" << _relPath;
+        showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
+        return;
+    }
+
+    _relPathParent = getRelativePathParent();
+
+    if (_relPathParent.isEmpty()) {
+        showError(tr("Could not find a file for local editing. Make sure it is not excluded via selective sync."), _relPath);
+        return;
+    }
+
+    if (_relPathParent == QStringLiteral("/")) {
+        proceedWithSetup();
+        return;
+    }
+
+    fetchRemoteFileParentInfo();
 }
 
 QString EditLocallyJob::prefixSlashToPath(const QString &path)
 {
     return path.startsWith('/') ? path : QChar::fromLatin1('/') + path;
+}
+
+void EditLocallyJob::fetchRemoteFileParentInfo()
+{
+    Q_ASSERT(_relPathParent != QStringLiteral("/"));
+
+    if (_relPathParent == QStringLiteral("/")) {
+        qCWarning(lcEditLocallyJob) << "LsColJob must only be used for nested folders.";
+        return;
+    }
+
+    const auto job = new LsColJob(_accountState->account(), QDir::cleanPath(_folderForFile->remotePathTrailingSlash() + _relPathParent), this);
+    const QList<QByteArray> props{QByteArrayLiteral("resourcetype"),
+                                  QByteArrayLiteral("getlastmodified"),
+                                  QByteArrayLiteral("getetag"),
+                                  QByteArrayLiteral("http://owncloud.org/ns:size"),
+                                  QByteArrayLiteral("http://owncloud.org/ns:id"),
+                                  QByteArrayLiteral("http://owncloud.org/ns:permissions"),
+                                  QByteArrayLiteral("http://owncloud.org/ns:checksums")};
+
+    job->setProperties(props);
+    connect(job, &LsColJob::directoryListingIterated, this, &EditLocallyJob::slotDirectoryListingIterated);
+    connect(job, &LsColJob::finishedWithoutError, this, &EditLocallyJob::proceedWithSetup);
+    connect(job, &LsColJob::finishedWithError, this, &EditLocallyJob::slotLsColJobFinishedWithError);
+    job->start();
+}
+
+bool EditLocallyJob::checkIfFileParentSyncIsNeeded()
+{
+    if (_relPathParent == QLatin1String("/")) {
+        return true;
+    }
+
+    Q_ASSERT(_fileParentItem && !_fileParentItem->isEmpty());
+
+    if (!_fileParentItem || _fileParentItem->isEmpty()) {
+        return true;
+    }
+
+    SyncJournalFileRecord rec;
+    if (!_folderForFile->journalDb()->getFileRecord(_fileParentItem->_file, &rec) || !rec.isValid()) {
+        // we don't have this folder locally, so let's sync it
+        _fileParentItem->_direction = SyncFileItem::Down;
+        _fileParentItem->_instruction = CSYNC_INSTRUCTION_NEW;
+    } else if (rec._etag != _fileParentItem->_etag && rec._modtime != _fileParentItem->_modtime) {
+        // we just need to update metadata as the folder is already present locally
+        _fileParentItem->_direction = rec._modtime < _fileParentItem->_modtime ? SyncFileItem::Down : SyncFileItem::Up;
+        _fileParentItem->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+    } else {
+        _fileParentItem->_direction = SyncFileItem::Down;
+        _fileParentItem->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
+        SyncJournalFileRecord recFile;
+        if (_folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &recFile) && recFile.isValid()) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void EditLocallyJob::startSyncBeforeOpening()
+{
+    eraseBlacklistRecordForItem();
+    if (!checkIfFileParentSyncIsNeeded()) {
+        openFile();
+        return;
+    }
+
+    // connect to a SyncEngine::itemDiscovered so we can complete the job as soon as the file in question is discovered
+    QObject::connect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
+    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent, _relativePathToRemoteRoot, _fileParentItem});
+    FolderMan::instance()->forceSyncForFolder(_folderForFile);
+}
+
+void EditLocallyJob::eraseBlacklistRecordForItem()
+{
+    if (!_folderForFile || !_fileParentItem) {
+        qCWarning(lcEditLocallyJob) << "_folderForFile or _fileParentItem is invalid!";
+        return;
+    }
+    Q_ASSERT(!_folderForFile->isSyncRunning());
+    if (_folderForFile->isSyncRunning()) {
+        qCWarning(lcEditLocallyJob) << "_folderForFile is syncing";
+        return;
+    }
+    if (_folderForFile->journalDb()->errorBlacklistEntry(_fileParentItem->_file).isValid()) {
+        _folderForFile->journalDb()->wipeErrorBlacklistEntry(_fileParentItem->_file);
+    }
+}
+
+const QString EditLocallyJob::getRelativePathToRemoteRootForFile() const
+{
+    Q_ASSERT(_folderForFile);
+    if (!_folderForFile) {
+        return {};
+    }
+
+    if (_folderForFile->remotePathTrailingSlash().size() == 1) {
+        return _relPath;
+    } else {
+        const auto remoteFolderPathWithTrailingSlash = _folderForFile->remotePathTrailingSlash();
+        const auto remoteFolderPathWithoutLeadingSlash =
+            remoteFolderPathWithTrailingSlash.startsWith(QLatin1Char('/')) ? remoteFolderPathWithTrailingSlash.mid(1) : remoteFolderPathWithTrailingSlash;
+
+        return _relPath.startsWith(remoteFolderPathWithoutLeadingSlash) ? _relPath.mid(remoteFolderPathWithoutLeadingSlash.size()) : _relPath;
+    }
+}
+
+const QString EditLocallyJob::getRelativePathParent() const
+{
+    Q_ASSERT(!_relativePathToRemoteRoot.isEmpty());
+    if (_relativePathToRemoteRoot.isEmpty()) {
+        return {};
+    }
+    auto relativePathToRemoteRootSplit = _relativePathToRemoteRoot.split(QLatin1Char('/'));
+    if (relativePathToRemoteRootSplit.size() > 1) {
+        relativePathToRemoteRootSplit.removeLast();
+        return relativePathToRemoteRootSplit.join(QLatin1Char('/'));
+    }
+    return QStringLiteral("/");
 }
 
 bool EditLocallyJob::isTokenValid(const QString &token)
@@ -201,24 +348,49 @@ bool EditLocallyJob::isRelPathValid(const QString &relPath)
     return true;
 }
 
-bool EditLocallyJob::isRelPathExcluded(const QString &relPath)
+OCC::Folder *EditLocallyJob::findFolderForFile(const QString &relPath, const QString &userId)
 {
     if (relPath.isEmpty()) {
-        return false;
+        return nullptr;
     }
 
     const auto folderMap = FolderMan::instance()->map();
-    for (const auto &folder : folderMap) {
-        bool result = false;
-        const auto excludedThroughSelectiveSync = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &result);
-        for (const auto &excludedPath : excludedThroughSelectiveSync) {
-            if (relPath.startsWith(excludedPath)) {
-                return true;
-            }
-        }
+
+    const auto relPathSplit = relPath.split(QLatin1Char('/'));
+
+    // a file is on the first level of remote root, so, we just need a proper folder that points to a remote root
+    if (relPathSplit.size() == 1) {
+        const auto foundIt = std::find_if(std::begin(folderMap), std::end(folderMap), [&userId](const OCC::Folder *folder) {
+            return folder->remotePath() == QStringLiteral("/") && folder->accountState()->account()->userIdAtHostWithPort() == userId;
+        });
+
+        return foundIt != std::end(folderMap) ? foundIt.value() : nullptr;
     }
 
-    return false;
+    const auto relPathWithSlash = relPath.startsWith(QStringLiteral("/")) ? relPath : QStringLiteral("/") + relPath;
+
+    for (const auto &folder : folderMap) {
+        // make sure we properly handle folders with non-root(nested) remote paths
+        if ((folder->remotePath() != QStringLiteral("/") && !relPathWithSlash.startsWith(folder->remotePath()))
+            || folder->accountState()->account()->userIdAtHostWithPort() != userId) {
+            continue;
+        }
+        auto result = false;
+        const auto excludedThroughSelectiveSync = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &result);
+        auto isExcluded = false;
+        for (const auto &excludedPath : excludedThroughSelectiveSync) {
+            if (relPath.startsWith(excludedPath)) {
+                isExcluded = true;
+                break;
+            }
+        }
+        if (isExcluded) {
+            continue;
+        }
+        return folder;
+    }
+
+    return nullptr;
 }
 
 void EditLocallyJob::showError(const QString &message, const QString &informativeText)
@@ -271,32 +443,95 @@ void EditLocallyJob::startEditLocally()
 
     Systray::instance()->createEditFileLocallyLoadingDialog(_fileName);
 
-    _folderForFile->startSync();
-    const auto syncFinishedConnection = connect(_folderForFile, &Folder::syncFinished,
-                                                this, &EditLocallyJob::folderSyncFinished);
+    if (_folderForFile->isSyncRunning()) {
+        // in case sync is already running - terminate it and start a new one
+        _syncTerminatedConnection = connect(_folderForFile, &Folder::syncFinished, this, [this]() {
+            disconnect(_syncTerminatedConnection);
+            _syncTerminatedConnection = {};
+            startSyncBeforeOpening();
+        });
+        _folderForFile->slotTerminateSync();
 
-    EditLocallyManager::instance()->folderSyncFinishedConnections.insert(_localFilePath,
-                                                                         syncFinishedConnection);
+        return;
+    }
+    startSyncBeforeOpening();
 }
 
-void EditLocallyJob::folderSyncFinished(const OCC::SyncResult &result)
+void EditLocallyJob::slotItemCompleted(const OCC::SyncFileItemPtr &item)
 {
-    Q_UNUSED(result)
-    disconnectSyncFinished();
-    openFile();
+    Q_ASSERT(item && !item->isEmpty());
+    if (!item || item->isEmpty()) {
+        qCWarning(lcEditLocallyJob) << "invalid item";
+    }
+    if (item->_file == _relativePathToRemoteRoot) {
+        disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted, this, &EditLocallyJob::slotItemCompleted);
+        disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
+        openFile();
+    }
 }
 
-void EditLocallyJob::disconnectSyncFinished() const
+void EditLocallyJob::slotLsColJobFinishedWithError(QNetworkReply *reply)
 {
-    if(_localFilePath.isEmpty()) {
+    const auto contentType = reply->header(QNetworkRequest::ContentTypeHeader).toString();
+    const auto invalidContentType = !contentType.contains(QStringLiteral("application/xml; charset=utf-8"))
+        && !contentType.contains(QStringLiteral("application/xml; charset=\"utf-8\"")) && !contentType.contains(QStringLiteral("text/xml; charset=utf-8"))
+        && !contentType.contains(QStringLiteral("text/xml; charset=\"utf-8\""));
+    const auto httpCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+
+    qCWarning(lcEditLocallyJob) << "LSCOL job error" << reply->errorString() << httpCode << reply->error();
+
+    const auto message = reply->error() == QNetworkReply::NoError && invalidContentType
+        ? tr("Server error: PROPFIND reply is not XML formatted!") : reply->errorString();
+    qCWarning(lcEditLocallyJob) << "Could not proceed with setup as file PROPFIND job has failed." << httpCode << message;
+    showError(tr("Could not find a remote file info for local editing. Make sure its path is valid."), _relPath);
+}
+
+void EditLocallyJob::slotDirectoryListingIterated(const QString &name, const QMap<QString, QString> &properties)
+{
+    Q_ASSERT(_relPathParent != QStringLiteral("/"));
+
+    if (_relPathParent == QStringLiteral("/")) {
+        qCWarning(lcEditLocallyJob) << "LsColJob must only be used for nested folders.";
         return;
     }
 
-    const auto manager = EditLocallyManager::instance();
+    const auto job = qobject_cast<LsColJob*>(sender());
+    Q_ASSERT(job);
+    if (!job) {
+        qCWarning(lcEditLocallyJob) << "Must call slotDirectoryListingIterated from a signal.";
+        return;
+    }
 
-    if (const auto existingConnection = manager->folderSyncFinishedConnections.value(_localFilePath)) {
-        disconnect(existingConnection);
-        manager->folderSyncFinishedConnections.remove(_localFilePath);
+    if (name.endsWith(_relPathParent)) {
+        // let's remove remote dav path and remote root from the beginning of the name
+        const auto nameWithoutDavPath = name.mid(_accountState->account()->davPath().size());
+
+        const auto remoteFolderPathWithTrailingSlash = _folderForFile->remotePathTrailingSlash();
+        const auto remoteFolderPathWithoutLeadingSlash = remoteFolderPathWithTrailingSlash.startsWith(QLatin1Char('/'))
+            ? remoteFolderPathWithTrailingSlash.mid(1) : remoteFolderPathWithTrailingSlash;
+
+        const auto cleanName = nameWithoutDavPath.startsWith(remoteFolderPathWithoutLeadingSlash)
+            ? nameWithoutDavPath.mid(remoteFolderPathWithoutLeadingSlash.size()) : nameWithoutDavPath;
+        disconnect(job, &LsColJob::directoryListingIterated, this, &EditLocallyJob::slotDirectoryListingIterated);
+        _fileParentItem = SyncFileItem::fromProperties(cleanName, properties);
+    }
+}
+
+void EditLocallyJob::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
+{
+    Q_ASSERT(item && !item->isEmpty());
+    if (!item || item->isEmpty()) {
+        qCWarning(lcEditLocallyJob) << "invalid item";
+    }
+    if (item->_file == _relativePathToRemoteRoot) {
+        disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
+        if (item->_instruction == CSYNC_INSTRUCTION_NONE) {
+            // return early if the file is already in sync
+            slotItemCompleted(item);
+            return;
+        }
+        // or connect to the SyncEngine::itemCompleted and wait till the file gets sycned
+        QObject::connect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted, this, &EditLocallyJob::slotItemCompleted);
     }
 }
 

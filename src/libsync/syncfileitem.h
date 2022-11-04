@@ -124,6 +124,10 @@ public:
      */
     static SyncFileItemPtr fromSyncJournalFileRecord(const SyncJournalFileRecord &rec);
 
+    /** Creates a basic SyncFileItem from remote properties
+     */
+    [[nodiscard]] static SyncFileItemPtr fromProperties(const QString &filePath, const QMap<QString, QString> &properties);
+
 
     SyncFileItem()
         : _type(ItemTypeSkip)

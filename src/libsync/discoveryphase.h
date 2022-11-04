@@ -294,6 +294,8 @@ public:
     QHash<QString, long long> _filesNeedingScheduledSync;
     QVector<QString> _filesUnscheduleSync;
 
+    QStringList _listExclusiveFiles;
+
 signals:
     void fatalError(const QString &errorString);
     void itemDiscovered(const OCC::SyncFileItemPtr &item);

@@ -115,6 +115,9 @@ public:
     /// The name of the account as shown in the toolbar
     [[nodiscard]] QString displayName() const;
 
+    /// User id in a form 'user@example.de, optionally port is added (if it is not 80 or 443)
+    [[nodiscard]] QString userIdAtHostWithPort() const;
+
     /// The name of the account that is displayed as nicely as possible,
     /// e.g. the actual name of the user (John Doe). If this cannot be
     /// provided, defaults to davUser (e.g. johndoe)

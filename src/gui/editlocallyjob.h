@@ -17,6 +17,7 @@
 #include <QObject>
 
 #include "accountstate.h"
+#include "syncfileitem.h"
 
 namespace OCC {
 
@@ -38,7 +39,7 @@ public:
 
     [[nodiscard]] static bool isTokenValid(const QString &token);
     [[nodiscard]] static bool isRelPathValid(const QString &relPath);
-    [[nodiscard]] static bool isRelPathExcluded(const QString &relPath);
+    [[nodiscard]] static OCC::Folder *findFolderForFile(const QString &relPath, const QString &userId);
     [[nodiscard]] static QString prefixSlashToPath(const QString &path);
 
 signals:
@@ -51,31 +52,47 @@ public slots:
     void startEditLocally();
 
 private slots:
+    void fetchRemoteFileParentInfo();
+    void startSyncBeforeOpening();
+    void eraseBlacklistRecordForItem();
+
     void startTokenRemoteCheck();
     void proceedWithSetup();
+    void findAfolderAndConstructPaths();
 
     void showError(const QString &message, const QString &informativeText);
     void showErrorNotification(const QString &message, const QString &informativeText) const;
     void showErrorMessageBox(const QString &message, const QString &informativeText) const;
 
     void remoteTokenCheckResultReceived(const int statusCode);
-    void folderSyncFinished(const OCC::SyncResult &result);
+    void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
 
-    void disconnectSyncFinished() const;
+    void slotLsColJobFinishedWithError(QNetworkReply *reply);
+    void slotDirectoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
+
     void openFile();
 
 private:
+    [[nodiscard]] bool checkIfFileParentSyncIsNeeded(); // returns true if sync will be needed, false otherwise
+    [[nodiscard]] const QString getRelativePathToRemoteRootForFile() const; // returns either '/' or a (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
+    [[nodiscard]] const QString getRelativePathParent() const;
+
     bool _tokenVerified = false;
 
     AccountStatePtr _accountState;
     QString _userId;
-    QString _relPath;
+    QString _relPath; // full remote path for a file (as on the server)
+    QString _relativePathToRemoteRoot; // (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
+    QString _relPathParent; // a folder where the file resides ('/' if it is in the first level of a remote root, or e.g. a '/subfolder/a/b/c if it resides in a nested folder)
     QString _token;
+    SyncFileItemPtr _fileParentItem;
 
     QString _fileName;
     QString _localFilePath;
     Folder *_folderForFile = nullptr;
     std::unique_ptr<SimpleApiJob> _checkTokenJob;
+    QMetaObject::Connection _syncTerminatedConnection = {};
 };
 
 }

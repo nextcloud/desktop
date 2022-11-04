@@ -14,6 +14,7 @@
 
 #include "discoveryphase.h"
 #include "discovery.h"
+#include "helpers.h"
 
 #include "account.h"
 #include "clientsideencryptionjobs.h"

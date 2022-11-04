@@ -30,9 +30,6 @@ class QJsonObject;
 
 namespace OCC {
 
-/** Strips quotes and gzip annotations */
-OWNCLOUDSYNC_EXPORT QByteArray parseEtag(const char *header);
-
 struct HttpError
 {
     int code; // HTTP error code
