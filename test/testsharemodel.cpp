@@ -143,7 +143,7 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share
     }
 
     void testFetchSharesFailedError()
@@ -163,7 +163,7 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + "wrong-filename-oops.md");
         QVERIFY(serverError.wait(3000));
         QCOMPARE(model.hasInitialShareFetchCompleted(), true);
-        QCOMPARE(model.rowCount(), 0); // Make sure no placeholder
+        QCOMPARE(model.rowCount(), 0); // Make sure no placeholder nor internal link share
     }
 
     void testCorrectFetchOngoingSignalling()
@@ -250,8 +250,13 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Remember internal link share!
 
+        // Placeholder link share gets added after we are done parsing fetched shares, and the
+        // internal link share is added after we receive a reply from the PROPFIND, which we
+        // send before fetching the shares, so it will be added first.
+        //
+        // Hence we grab the remote share in between.
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         QVERIFY(!shareIndex.data(Qt::DisplayRole).toString().isEmpty());
         QCOMPARE(shareIndex.data(ShareModel::ShareTypeRole).toInt(), _testLinkShareDefinition.shareType);
@@ -291,9 +296,14 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), 2); // Remember about placeholder link share
+        QCOMPARE(model.rowCount(), 3); // Remember about placeholder and internal link share
 
-        const auto shareIndex = model.index(0, 0, {}); // Placeholder link share gets added after we are done parsing fetched shares
+        // Placeholder link share gets added after we are done parsing fetched shares, and the
+        // internal link share is added after we receive a reply from the PROPFIND, which we
+        // send before fetching the shares, so it will be added first.
+        //
+        // Hence we grab the remote share in between.
+        const auto shareIndex = model.index(1, 0, {});
         QVERIFY(!shareIndex.data(Qt::DisplayRole).toString().isEmpty());
         QCOMPARE(shareIndex.data(ShareModel::ShareTypeRole).toInt(), _testEmailShareDefinition.shareType);
         QCOMPARE(shareIndex.data(ShareModel::ShareIdRole).toString(), _testEmailShareDefinition.shareId);
@@ -329,9 +339,14 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), 2); // Remember about placeholder link share
+        QCOMPARE(model.rowCount(), 3); // Remember about placeholder and internal link share
 
-        const auto shareIndex = model.index(0, 0, {}); // Placeholder link share gets added after we are done parsing fetched shares
+        // Placeholder link share gets added after we are done parsing fetched shares, and the
+        // internal link share is added after we receive a reply from the PROPFIND, which we
+        // send before fetching the shares, so it will be added first.
+        //
+        // Hence we grab the remote share in between.
+        const auto shareIndex = model.index(1, 0, {});
         QVERIFY(!shareIndex.data(Qt::DisplayRole).toString().isEmpty());
         QCOMPARE(shareIndex.data(ShareModel::ShareTypeRole).toInt(), _testUserShareDefinition.shareType);
         QCOMPARE(shareIndex.data(ShareModel::ShareIdRole).toString(), _testUserShareDefinition.shareId);
@@ -376,13 +391,13 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Test if it gets added
         model.createNewLinkShare();
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 2); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Test if it's the type we wanted
         const auto newLinkShareIndex = model.index(model.rowCount() - 1, 0, {});
@@ -393,7 +408,7 @@ private slots:
         model.createNewUserGroupShare(sharee);
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 3); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Test if it's the type we wanted
         const auto newUserGroupShareIndex = model.index(model.rowCount() - 1, 0, {});
@@ -404,12 +419,12 @@ private slots:
         model.createNewLinkShareWithPassword(password);
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 4); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         model.createNewUserGroupShareWithPassword(sharee, password);
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 5); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         helper.resetTestData();
     }
@@ -468,7 +483,7 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Confirm that the model requests a password
         QSignalSpy requestPasswordForLinkShare(&model, &ShareModel::requestPasswordForLinkShare);
@@ -547,17 +562,21 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Test that the model data is correctly reporting that expire dates are enforced for all share types
         for(auto i = 0; i < model.rowCount(); ++i) {
             const auto shareIndex = model.index(i, 0, {});
-            QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnforcedRole).toBool(), true);
+            const auto shareType = shareIndex.data(ShareModel::ShareTypeRole).toInt();
+            const auto expectTrue = shareType != ShareModel::ShareTypePlaceholderLink &&
+                                    shareType != ShareModel::ShareTypeInternalLink;
+            QCOMPARE(shareIndex.data(ShareModel::ExpireDateEnforcedRole).toBool(), expectTrue);
 
             QDateTime expectedExpireDateTime;
-            switch(shareIndex.data(ShareModel::ShareTypeRole).toInt()) {
+            switch(shareType) {
+            case Share::TypeInternalLink:
             case Share::TypePlaceholderLink:
-                break;
+                return;
             case Share::TypeUser:
             case Share::TypeGroup:
             case Share::TypeCircle:
@@ -596,13 +615,13 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Create share
         model.createNewLinkShare();
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 2); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Test if it gets deleted properly
         const auto latestLinkShare = model.index(model.rowCount() - 1, 0, {}).data(ShareModel::ShareRole).value<SharePtr>();
@@ -610,7 +629,7 @@ private slots:
         model.deleteShare(latestLinkShare);
         QVERIFY(shareDeleted.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         helper.resetTestData();
     }
@@ -630,7 +649,7 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
         QVERIFY(hasInitialShareFetchCompletedChanged.wait(5000));
         QVERIFY(model.hasInitialShareFetchCompleted());
-        QCOMPARE(model.rowCount(), 1); // There should be a placeholder now
+        QCOMPARE(model.rowCount(), 2); // There should be a placeholder and internal link share now
 
         const QPersistentModelIndex placeholderLinkShareIndex(model.index(model.rowCount() - 1, 0, {}));
         QCOMPARE(placeholderLinkShareIndex.data(ShareModel::ShareTypeRole).toInt(), Share::TypePlaceholderLink);
@@ -641,7 +660,7 @@ private slots:
         model.createNewUserGroupShare(sharee);
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount() + 1);
+        QCOMPARE(model.rowCount(), helper.shareCount() + 2); // Internal link share too!
 
         QVERIFY(placeholderLinkShareIndex.isValid());
         QCOMPARE(placeholderLinkShareIndex.data(ShareModel::ShareTypeRole).toInt(), Share::TypePlaceholderLink);
@@ -650,7 +669,7 @@ private slots:
         model.createNewLinkShare();
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 2); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         QVERIFY(!placeholderLinkShareIndex.isValid());
 
@@ -660,7 +679,7 @@ private slots:
         model.deleteShare(latestLinkShare);
         QVERIFY(shareDeleted.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount() + 1);
+        QCOMPARE(model.rowCount(), helper.shareCount() + 2); // Internal link share too!
 
         const auto newPlaceholderLinkShareIndex = model.index(model.rowCount() - 1, 0, {});
         QCOMPARE(newPlaceholderLinkShareIndex.data(ShareModel::ShareTypeRole).toInt(), Share::TypePlaceholderLink);
@@ -687,7 +706,7 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         QCOMPARE(shareIndex.data(ShareModel::EditingAllowedRole).toBool(), SharePermissions(_testLinkShareDefinition.sharePermissions).testFlag(SharePermissionUpdate));
@@ -720,7 +739,7 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         QCOMPARE(shareIndex.data(ShareModel::PasswordProtectEnabledRole).toBool(), true);
@@ -761,7 +780,7 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Check what we know
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
@@ -811,7 +830,7 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         QCOMPARE(shareIndex.data(ShareModel::NoteEnabledRole).toBool(), true);
@@ -852,7 +871,7 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         const auto shareIndex = model.index(model.rowCount() - 1, 0, {});
         QCOMPARE(shareIndex.data(ShareModel::LinkShareLabelRole).toBool(), true);
@@ -885,7 +904,7 @@ private slots:
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
 
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         QCOMPARE(model.sharees().count(), 2); // Link shares don't have sharees
 
@@ -894,7 +913,7 @@ private slots:
         model.createNewUserGroupShare(sharee);
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 4); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         const auto sharees = model.sharees();
         QCOMPARE(sharees.count(), 3); // Link shares don't have sharees
@@ -906,7 +925,7 @@ private slots:
         const auto sharePtr = shareIndex.data(ShareModel::ShareRole).value<SharePtr>();
         model.deleteShare(sharePtr);
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Now check the sharee is gone
         QCOMPARE(model.sharees().count(), 2);
@@ -934,7 +953,7 @@ private slots:
 
         QVERIFY(sharesChanged.wait(5000));
         QCOMPARE(helper.shareCount(), 1); // Check our test is working!
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Internal link share!
 
         // Reset the fake server to pretend like nothing is wrong there
         helper.resetTestShares();

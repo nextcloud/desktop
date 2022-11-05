@@ -31,6 +31,11 @@ public slots:
     {
         // Let's insert them in the opposite order we want from the model
         for (auto it = _expectedOrder.crbegin(); it != _expectedOrder.crend(); ++it) {
+            const auto shareDef = *it;
+            if(it->shareType == Share::TypeInternalLink || it->shareType == Share::TypePlaceholderLink) {
+                continue; // Don't add the shares that are only internal in the client
+            }
+
             helper.appendShareReplyData(*it);
         }
     }
@@ -50,10 +55,11 @@ private:
     FakeShareDefinition _remoteBDefinition;
     FakeShareDefinition _roomADefinition;
     FakeShareDefinition _roomBDefinition;
+    FakeShareDefinition _internalLinkDefinition;
 
     QVector<FakeShareDefinition> _expectedOrder;
 
-    static constexpr auto _expectedShareCount = 12;
+    static constexpr auto _expectedRemoteShareCount = 12;
 
 private slots:
     void initTestCase()
@@ -108,6 +114,10 @@ private slots:
         const auto roomBShareWithDisplayName = QStringLiteral("Room B");
         _roomBDefinition = FakeShareDefinition(&helper, Share::TypeRoom, roomBShareWith, roomBShareWithDisplayName);
 
+        // Dummy internal link share, just use it to check position
+        _internalLinkDefinition.shareId = QStringLiteral("__internalLinkShareId__");
+        _internalLinkDefinition.shareType = Share::TypeInternalLink;
+
         _expectedOrder = {// Placeholder link shares always go first, followed by normal link shares.
                           _linkADefinition,
                           _linkBDefinition,
@@ -121,21 +131,22 @@ private slots:
                           _remoteADefinition,
                           _remoteBDefinition,
                           _roomADefinition,
-                          _roomBDefinition};
+                          _roomBDefinition,
+                          _internalLinkDefinition};
     }
 
     void testSetModel()
     {
         helper.resetTestData();
         addAllTestShares();
-        QCOMPARE(helper.shareCount(), _expectedShareCount);
+        QCOMPARE(helper.shareCount(), _expectedRemoteShareCount);
 
         ShareModel model;
         QSignalSpy sharesChanged(&model, &ShareModel::sharesChanged);
         model.setAccountState(helper.accountState.data());
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Remember the internal link share!
 
         SortedShareModel sortedModel;
         QAbstractItemModelTester sortedModelTester(&sortedModel);
@@ -153,14 +164,14 @@ private slots:
     {
         helper.resetTestData();
         addAllTestShares();
-        QCOMPARE(helper.shareCount(), _expectedShareCount);
+        QCOMPARE(helper.shareCount(), _expectedRemoteShareCount);
 
         ShareModel model;
         QSignalSpy sharesChanged(&model, &ShareModel::sharesChanged);
         model.setAccountState(helper.accountState.data());
         model.setLocalPath(helper.fakeFolder.localPath() + helper.testFileName);
         QVERIFY(sharesChanged.wait(5000));
-        QCOMPARE(model.rowCount(), helper.shareCount());
+        QCOMPARE(model.rowCount(), helper.shareCount() + 1); // Remember the internal link share!
 
         SortedShareModel sortedModel;
         QAbstractItemModelTester sortedModelTester(&sortedModel);
