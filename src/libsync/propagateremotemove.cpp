@@ -246,8 +246,8 @@ void PropagateRemoteMove::finalize()
     // to the new record. It is not a problem to skip it here.
     SyncJournalFileRecord oldRecord;
     if (!propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord)) {
-        qCWarning(lcPropagateRemoteMove) << "could not get file from local DB" << _item->_originalFile;
-        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(_item->_originalFile));
+        qCWarning(lcPropagateRemoteMove) << "Could not get file from local DB" << _item->_originalFile;
+        done(SyncFileItem::NormalError, tr("Could not get file %1 from local DB").arg(_item->_originalFile));
         return;
     }
     auto &vfs = propagator()->syncOptions()._vfs;
