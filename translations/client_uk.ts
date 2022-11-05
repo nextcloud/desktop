@@ -2051,7 +2051,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/generalsettings.ui" line="20"/>
         <location filename="../src/gui/generalsettings.ui" line="32"/>
         <source>About</source>
-        <translation>Про систему</translation>
+        <translation>Опис</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="41"/>
