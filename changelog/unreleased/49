@@ -1,0 +1,5 @@
+Bugfix: Windows VFS fixed some failing downloads
+
+We fixed an api issue where some downloads in the Explorer caused infite download restarts.
+
+https://github.com/owncloud/client-desktop-vfs-win/pull/49
