@@ -73,7 +73,11 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
 
         QObject::connect(drive, &GraphApi::Drives::finishedSignal, [accountStatePtr, drive, addFolder, finalize] {
             if (drive->parseError().error == QJsonParseError::NoError) {
-                const auto &drives = drive->drives();
+                auto drives = drive->drives();
+
+                // we do not want to set up folder sync connections for disabled spaces (#10173)
+                drives.erase(std::remove_if(drives.begin(), drives.end(), GraphApi::isDriveDisabled));
+
                 if (!drives.isEmpty()) {
                     const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
                     FileSystem::setFolderMinimumPermissions(localDir.path());

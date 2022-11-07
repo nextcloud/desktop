@@ -20,6 +20,11 @@
 
 namespace OCC {
 namespace GraphApi {
+    /**
+     * Check whether a drive object has been deleted.
+     */
+    bool OWNCLOUDSYNC_EXPORT isDriveDisabled(const OpenAPI::OAIDrive &drive);
+
     class OWNCLOUDSYNC_EXPORT Drives : public JsonJob
     {
         Q_OBJECT
