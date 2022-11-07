@@ -35,7 +35,7 @@
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcDisco, "nextcloud.sync.discovery", QtInfoMsg)
 
 void ProcessDirectoryJob::start()
 {
@@ -615,24 +615,6 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     // Unknown in db: new file on the server
     Q_ASSERT(!dbEntry.isValid());
 
-    if (!serverEntry.renameName.isEmpty()) {
-        item->_renameTarget = _dirItem ? _dirItem->_file + "/" + serverEntry.renameName : serverEntry.renameName;
-        item->_originalFile = path._original;
-        item->_modtime = serverEntry.modtime;
-        item->_size = serverEntry.size;
-        item->_instruction = CSYNC_INSTRUCTION_RENAME;
-        item->_direction = SyncFileItem::Up;
-        item->_fileId = serverEntry.fileId;
-        item->_remotePerm = serverEntry.remotePerm;
-        item->_isShared = serverEntry.remotePerm.hasPermission(RemotePermissions::IsShared);
-        item->_lastShareStateFetchedTimestmap = QDateTime::currentMSecsSinceEpoch();
-        item->_etag = serverEntry.etag;
-        item->_type = serverEntry.isDirectory ? CSyncEnums::ItemTypeDirectory : CSyncEnums::ItemTypeFile;
-
-        processFileAnalyzeLocalInfo(item, path, localEntry, serverEntry, dbEntry, _queryServer);
-        return;
-    }
-
     item->_instruction = CSYNC_INSTRUCTION_NEW;
     item->_direction = SyncFileItem::Down;
     item->_modtime = serverEntry.modtime;
@@ -881,41 +863,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         processFileFinalize(item, path, recurse, recurseQueryLocal, recurseQueryServer);
     };
 
-    auto handleInvalidSpaceRename = [&] (SyncFileItem::Direction direction) {
-        if (_dirItem) {
-            path._target = _dirItem->_file + "/" + localEntry.renameName;
-        } else {
-            path._target = localEntry.renameName;
-        }
-        OCC::SyncJournalFileRecord base;
-        if (!_discoveryData->_statedb->getFileRecordByInode(localEntry.inode, &base)) {
-            dbError();
-            return;
-        }
-        const auto originalPath = base.path();
-        const auto adjustedOriginalPath = _discoveryData->adjustRenamedPath(originalPath, SyncFileItem::Down);
-        _discoveryData->_renamedItemsLocal.insert(originalPath, path._target);
-        item->_renameTarget = path._target;
-        path._server = adjustedOriginalPath;
-        if (_dirItem) {
-            item->_file = _dirItem->_file + "/" + localEntry.name;
-        } else {
-            item->_file = localEntry.name;
-        }
-        path._original = originalPath;
-        item->_originalFile = path._original;
-        item->_modtime = base.isValid() ? base._modtime : localEntry.modtime;
-        item->_inode = base.isValid() ? base._inode : localEntry.inode;
-        item->_instruction = CSYNC_INSTRUCTION_RENAME;
-        item->_direction = direction;
-        item->_fileId = base.isValid() ? base._fileId : QByteArray{};
-        item->_remotePerm = base.isValid() ? base._remotePerm : RemotePermissions{};
-        item->_etag = base.isValid() ? base._etag : QByteArray{};
-        item->_type = base.isValid() ? base._type : localEntry.type;
-        item->_isShared = base.isValid() ? base._isShared : false;
-        item->_lastShareStateFetchedTimestmap = base.isValid() ? base._lastShareStateFetchedTimestmap : 0;
-    };
-
     if (!localEntry.isValid()) {
         if (_queryLocal == ParentNotChanged && dbEntry.isValid()) {
             // Not modified locally (ParentNotChanged)
@@ -1000,8 +947,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
                     || _discoveryData->_syncOptions._vfs->needsMetadataUpdate(*item))) {
                 item->_instruction = CSYNC_INSTRUCTION_UPDATE_METADATA;
                 item->_direction = SyncFileItem::Down;
-            } else if (!localEntry.renameName.isEmpty()) {
-                handleInvalidSpaceRename(SyncFileItem::Up);
             }
         } else if (!typeChange && isVfsWithSuffix()
             && dbEntry.isVirtualFile() && !localEntry.isVirtualFile
@@ -1093,16 +1038,6 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
         return;
     } else if (serverModified) {
         processFileConflict(item, path, localEntry, serverEntry, dbEntry);
-        finalize();
-        return;
-    }
-
-    if (!localEntry.renameName.isEmpty()) {
-        handleInvalidSpaceRename(SyncFileItem::Down);
-        item->_instruction = CSYNC_INSTRUCTION_NEW;
-        item->_direction = SyncFileItem::Up;
-        item->_originalFile = item->_file;
-        item->_file = item->_renameTarget;
         finalize();
         return;
     }

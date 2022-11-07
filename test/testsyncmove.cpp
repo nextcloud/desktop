@@ -890,6 +890,29 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testRenameParallelismWithBlacklist()
+    {
+        constexpr auto testFileName = "blackListFile";
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().insert(testFileName);
+        fakeFolder.serverErrorPaths().append(testFileName, 500); // will be blacklisted
+        QVERIFY(!fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().mkdir("B");
+        fakeFolder.remoteModifier().rename("A/file", "B/file");
+        fakeFolder.remoteModifier().remove("A");
+
+        QVERIFY(!fakeFolder.syncOnce());
+        auto folderA = fakeFolder.currentLocalState().find("A");
+        QCOMPARE(folderA, nullptr);
+    }
+
     void testMovedWithError_data()
     {
         QTest::addColumn<Vfs::Mode>("vfsMode");

@@ -594,7 +594,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     }
 
     foreach (PropagatorJob *it, directoriesToRemove) {
-        _rootJob->_dirDeletionJobs.appendJob(it);
+        _rootJob->appendDirDeletionJob(it);
     }
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
@@ -1292,6 +1292,11 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
     return _subJobs.committedDiskSpace() + _dirDeletionJobs.committedDiskSpace();
 }
 
+void PropagateRootDirectory::appendDirDeletionJob(PropagatorJob *job)
+{
+    _dirDeletionJobs.appendJob(job);
+}
+
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
     qCInfo(lcRootDirectory()) << "scheduleSelfOrChild" << _state << "pending uploads" << propagator()->delayedTasks().size() << "subjobs state" << _subJobs._state;
@@ -1327,6 +1332,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 
     if (status != SyncFileItem::Success
         && status != SyncFileItem::Restoration
+        && status != SyncFileItem::BlacklistedError
         && status != SyncFileItem::Conflict) {
         if (_state != Finished) {
             // Synchronously abort
@@ -1338,11 +1344,37 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         return;
     }
 
+    if (_errorStatus == SyncFileItem::NoStatus) {
+        switch (status) {
+        case SyncFileItem::NoStatus:
+        case SyncFileItem::FatalError:
+        case SyncFileItem::NormalError:
+        case SyncFileItem::SoftError:
+        case SyncFileItem::Conflict:
+        case SyncFileItem::FileIgnored:
+        case SyncFileItem::FileLocked:
+        case SyncFileItem::Restoration:
+        case SyncFileItem::FileNameInvalid:
+        case SyncFileItem::FileNameClash:
+        case SyncFileItem::DetailError:
+        case SyncFileItem::Success:
+            break;
+        case SyncFileItem::BlacklistedError:
+            _errorStatus = SyncFileItem::BlacklistedError;
+            break;
+        }
+    }
+
     propagator()->scheduleNextJob();
 }
 
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
+    if (_errorStatus != SyncFileItem::NoStatus && status == SyncFileItem::Success) {
+        qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "reporting previous error" << _errorStatus;
+        status = _errorStatus;
+    }
+
     _state = Finished;
     qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "emit finished" << status;
     emit finished(status);
