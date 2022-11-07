@@ -196,7 +196,7 @@ QString Theme::version() const
 
 QString Theme::configFileName() const
 {
-    return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");
+    return QStringLiteral(APPLICATION_CONFIG_NAME ".cfg");
 }
 
 #ifndef TOKEN_AUTH_ONLY
