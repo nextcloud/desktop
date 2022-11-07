@@ -50,6 +50,7 @@ struct CmdOptions
 {
     QString source_dir;
     QUrl target_url;
+    QString remoteFolder;
     QString config_directory;
     QString user;
     QString password;
@@ -74,7 +75,6 @@ struct SyncCTX
     }
     CmdOptions options;
     QUrl credentialFreeUrl;
-    QString folder;
     AccountPtr account;
     QString user;
 };
@@ -133,7 +133,7 @@ void sync(const SyncCTX &ctx)
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
     auto engine = new SyncEngine(
-        ctx.account, ctx.account->davUrl(), ctx.options.source_dir, ctx.folder, db);
+        ctx.account, ctx.account->davUrl(), ctx.options.source_dir, ctx.options.remoteFolder, db);
     engine->setSyncOptions(opt);
     engine->setParent(db);
 
@@ -330,17 +330,17 @@ CmdOptions parseOptions(const QStringList &app_args)
 
     parser.addPositionalArgument(QStringLiteral("source_dir"), QStringLiteral("The source dir"));
     parser.addPositionalArgument(QStringLiteral("server_url"), QStringLiteral("The url to the server"));
+    parser.addPositionalArgument(QStringLiteral("remote_folder"), QStringLiteral("A remote folder"));
 
     parser.process(app_args);
 
 
     const QStringList args = parser.positionalArguments();
-    if (args.size() < 2) {
+    if (args.size() < 2 || args.size() > 3) {
         parser.showHelp();
         exit(1);
     }
 
-    options.target_url = QUrl::fromUserInput(args[1]);
     options.source_dir = [arg = args[0]] {
         QFileInfo fi(arg);
         if (!fi.exists()) {
@@ -353,6 +353,10 @@ CmdOptions parseOptions(const QStringList &app_args)
         }
         return sourceDir;
     }();
+    options.target_url = QUrl::fromUserInput(args[1]);
+    if (args.size() == 3) {
+        options.remoteFolder = args[2];
+    }
 
     if (parser.isSet(httpproxyOption)) {
         options.proxy = parser.value(httpproxyOption);
@@ -433,12 +437,6 @@ int main(int argc, char **argv)
         QStringList splitted = tmp.path().split(ctx.account->davPath());
         tmp.setPath(splitted.value(0));
         tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
-
-        // Remote folders typically start with a / and don't end with one
-        ctx.folder = QLatin1Char('/') + splitted.value(1);
-        if (ctx.folder.endsWith(QLatin1Char('/')) && ctx.folder != QLatin1Char('/')) {
-            ctx.folder.chop(1);
-        }
         return tmp;
     }();
     ctx.credentialFreeUrl = baseUrl.adjusted(QUrl::RemoveUserInfo);

@@ -1,0 +1,5 @@
+Change: Don't guess remote folder in owncloudcmd
+
+The commandline client was modified to explicitly accept remote folder, the remote folder must no longer be encoded in the server url.
+
+https://github.com/owncloud/client/issues/10193
