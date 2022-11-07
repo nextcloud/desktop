@@ -41,14 +41,6 @@ namespace {
     const char propertyPermissionMap[] = "oc_permissionMap";
 }
 
-static QString removeTrailingSlash(const QString &s)
-{
-    if (s.endsWith(QLatin1Char('/'))) {
-        return s.left(s.size() - 1);
-    }
-    return s;
-}
-
 FolderStatusModel::FolderStatusModel(QObject *parent)
     : QAbstractItemModel(parent)
     , _accountState(nullptr)
@@ -280,6 +272,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return f->isDeployed();
         case Columns::Priority:
             return f->priority() + 1; // add one to have a higher prio than the hacked add button
+        case Columns::ItemType: // handled before
+            [[fallthrough]];
+        case Columns::ColumnCount:
+            Q_UNREACHABLE();
+            break;
         }
         break;
     case Qt::ToolTipRole: {
@@ -365,7 +362,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
         }
         _dirty = true;
         emit dirtyChanged();
-        emit dataChanged(index, index, QVector<int>() << role);
+        emit dataChanged(index, index, { role });
         return true;
     }
     return QAbstractItemModel::setData(index, value, role);
@@ -715,9 +712,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
         newInfo._size = job->sizes().value(path);
-        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains(QLatin1String("M"));
+        newInfo._isExternal = permissionMap.value(Utility::stripTrailingSlash(path)).toString().contains(QLatin1String("M"));
         newInfo._path = relativePath;
-        newInfo._name = removeTrailingSlash(relativePath).split(QLatin1Char('/')).last();
+        newInfo._name = Utility::stripTrailingSlash(relativePath).split(QLatin1Char('/')).last();
 
         if (relativePath.isEmpty())
             continue;
