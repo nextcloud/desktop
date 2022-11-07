@@ -410,7 +410,7 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
         Q_UNREACHABLE();
     }();
     const QString qtVersion = QString::fromUtf8(qVersion());
-    const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : QCoreApplication::translate("ownCloudTheme::qtVer", "%1 (Built against Qt %1)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
+    const QString qtVersionString = (QLatin1String(QT_VERSION_STR) == qtVersion ? qtVersion : QCoreApplication::translate("ownCloudTheme::qtVer", "%1 (Built against Qt %2)").arg(qtVersion, QStringLiteral(QT_VERSION_STR)));
     QString _version = Version::displayString();
     QString gitUrl;
     if (!Version::gitSha().isEmpty()) {
