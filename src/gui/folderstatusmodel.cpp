@@ -20,6 +20,7 @@
 #include "folderstatusdelegate.h"
 #include "theme.h"
 
+#include <QDir>
 #include <QFileIconProvider>
 #include <QVarLengthArray>
 
@@ -280,17 +281,14 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         }
         break;
     case Qt::ToolTipRole: {
-        QString toolTip;
         if (!progress.isNull()) {
             return progress._progressString;
         }
-        if (accountConnected)
-            toolTip = Theme::instance()->statusHeaderText(f->syncResult().status());
-        else
-            toolTip = tr("Signed out");
-        toolTip += QLatin1String("\n");
-        toolTip += folderInfo._folder->path();
-        return toolTip;
+        if (accountConnected) {
+            return tr("%1\n%2").arg(Theme::instance()->statusHeaderText(f->syncResult().status()), QDir::toNativeSeparators(folderInfo._folder->path()));
+        } else {
+            return tr("Signed out\n%1").arg(QDir::toNativeSeparators(folderInfo._folder->path()));
+        }
     }
     }
     return QVariant();
