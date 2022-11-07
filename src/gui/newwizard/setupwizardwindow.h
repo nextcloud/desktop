@@ -74,6 +74,7 @@ public Q_SLOTS:
      * Show "transition to next page" animation. Use displayPage(...) to end it.
      */
     void slotStartTransition();
+    void reject() override;
 
 private Q_SLOTS:
     void slotReplaceContent(QWidget *newWidget);

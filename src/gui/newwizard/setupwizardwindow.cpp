@@ -8,6 +8,7 @@
 #include "theme.h"
 
 #include <QLabel>
+#include <QMessageBox>
 #include <QStyleFactory>
 
 using namespace std::chrono_literals;
@@ -35,6 +36,7 @@ SetupWizardWindow::SetupWizardWindow(SettingsDialog *parent)
     , _ui(new ::Ui::SetupWizardWindow)
 {
     Utility::setModal(this);
+    setWindowFlag(Qt::WindowCloseButtonHint, false);
 
     _ui->setupUi(this);
 
@@ -147,6 +149,18 @@ void SetupWizardWindow::slotStartTransition()
     _ui->navigation->setEnabled(false);
     // also, we should assume the user has seen the error message in case one is shown
     slotHideErrorMessageWidget();
+}
+
+void SetupWizardWindow::reject()
+{
+    auto messageBox = new QMessageBox(QMessageBox::Warning, tr("Cancel Setup"), tr("Do you really want to cancel the account setup?"), QMessageBox::Yes | QMessageBox::No, ocApp()->gui()->settingsDialog());
+    messageBox->setAttribute(Qt::WA_DeleteOnClose);
+    connect(messageBox, &QMessageBox::accepted, this, [this] {
+        // call the base implementation
+        QDialog::reject();
+    });
+    messageBox->show();
+    ocApp()->gui()->raiseDialog(messageBox);
 }
 
 void SetupWizardWindow::slotReplaceContent(QWidget *newWidget)
