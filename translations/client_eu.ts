@@ -633,7 +633,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1124"/>
         <source>Connected to %1.</source>
-        <translation>%1ra konektatuta.</translation>
+        <translation>%1 konektatuta.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1128"/>
@@ -2071,12 +2071,12 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
     <message>
         <location filename="../src/gui/generalsettings.ui" line="75"/>
         <source>Use &amp;Monochrome Icons</source>
-        <translation>Erabili &amp;Kolore Bakarreko Ikonoak</translation>
+        <translation>Erabili &amp;kolore bakarreko ikonoak</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="82"/>
         <source>&amp;Launch on System Startup</source>
-        <translation>&amp;Abiarazi Sistema Hasterakoan</translation>
+        <translation>&amp;Abiarazi sistema hasterakoan</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="89"/>
@@ -2133,7 +2133,7 @@ Istripua izan bada eta zure fitxategiak mantentzea erabakitzen baduzu, zerbitzar
     <message>
         <location filename="../src/gui/generalsettings.ui" line="229"/>
         <source>Ask for confirmation before synchronizing folders larger than</source>
-        <translation>Eskatu baimena handiagoak diren karpetak sinkronizatu baino lehen</translation>
+        <translation>Eskatu baimena tamaina hau baino handiagoak diren karpetak sinkronizatu baino lehen</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="249"/>
@@ -2630,7 +2630,7 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
     <message>
         <location filename="../src/gui/networksettings.ui" line="197"/>
         <source>Download Bandwidth</source>
-        <translation>Deskargako banda zabalera</translation>
+        <translation>Deskargaren banda zabalera</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="203"/>
@@ -2665,7 +2665,7 @@ Kontuan izan erregistro-komando lerroaren edozein aukera erabiliz ezarpen hau ga
     <message>
         <location filename="../src/gui/networksettings.ui" line="276"/>
         <source>Upload Bandwidth</source>
-        <translation>Kargako banda zabalera</translation>
+        <translation>Kargaren banda zabalera</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.cpp" line="40"/>
@@ -4494,7 +4494,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/libsync/theme.cpp" line="527"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;small&gt;Fitxategi birtualen plugina erabiltzen:% 1&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;small&gt;Fitxategi birtualen plugina erabiltzen: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="542"/>
