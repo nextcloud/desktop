@@ -64,8 +64,6 @@ struct CmdOptions
     int restartTimes = 3;
     int downlimit = 0;
     int uplimit = 0;
-    bool deltasync;
-    qint64 deltasyncminfilesize;
 };
 
 struct SyncCTX
