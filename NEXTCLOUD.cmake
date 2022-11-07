@@ -1,6 +1,7 @@
 set( APPLICATION_NAME       "Nextcloud" )
 set( APPLICATION_SHORTNAME  "Nextcloud" )
 set( APPLICATION_EXECUTABLE "nextcloud" )
+set( APPLICATION_CONFIG_NAME "${APPLICATION_EXECUTABLE}" )
 set( APPLICATION_DOMAIN     "nextcloud.com" )
 set( APPLICATION_VENDOR     "Nextcloud GmbH" )
 set( APPLICATION_UPDATE_URL "https://updates.nextcloud.org/client/" CACHE STRING "URL for updater" )
