@@ -4,7 +4,9 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import Qt.labs.platform 1.1 as NativeDialogs
+
 import "../"
+import "../filedetails/"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
@@ -76,6 +78,7 @@ ApplicationWindow {
 
         function onIsOpenChanged() {
             userStatusDrawer.close()
+            fileDetailsDrawer.close();
 
             if(Systray.isOpen) {
                 accountMenu.close();
@@ -87,6 +90,10 @@ ApplicationWindow {
             var newErrorDialog = errorMessageDialog.createObject(trayWindow)
             newErrorDialog.text = error
             newErrorDialog.open()
+        }
+
+        function onShowFileDetails(accountState, localPath, fileDetailsPage) {
+            fileDetailsDrawer.openFileDetails(accountState, localPath, fileDetailsPage);
         }
     }
 
@@ -136,6 +143,92 @@ ApplicationWindow {
                 anchors.fill: parent
                 userIndex: userStatusDrawer.userIndex
                 onFinished: userStatusDrawer.close()
+            }
+        }
+    }
+
+    Drawer {
+        id: fileDetailsDrawer
+        width: parent.width
+        height: parent.height
+        padding: 0
+        edge: Qt.RightEdge
+        modal: false
+        visible: false
+
+        background: Rectangle {
+            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+            border.width: Style.trayWindowBorderWidth
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
+
+        property var folderAccountState: ({})
+        property string fileLocalPath: ""
+        property var pageToShow: Systray.FileDetailsPage.Activity
+
+        function openFileDetails(accountState, localPath, fileDetailsPage) {
+            console.log(`About to show file details view in tray for ${localPath}`);
+            folderAccountState = accountState;
+            fileLocalPath = localPath;
+            pageToShow = fileDetailsPage;
+
+            if(!opened) {
+                open();
+            }
+        }
+
+        Loader {
+            id: fileDetailsContents
+            anchors.fill: parent
+            active: fileDetailsDrawer.visible
+            onActiveChanged: {
+                if (active) {
+                    Systray.showFileDetailsPage(fileDetailsDrawer.fileLocalPath,
+                                                fileDetailsDrawer.pageToShow);
+                }
+            }
+            sourceComponent: ColumnLayout {
+                anchors.fill: parent
+
+                FileDetailsPage {
+                    id: fileDetails
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+
+                    background: null
+                    accountState: fileDetailsDrawer.folderAccountState
+                    localPath: fileDetailsDrawer.fileLocalPath
+                }
+
+                CustomButton {
+                    FontMetrics {
+                        id: doneButtonFm
+                        font: parent.contentsFont
+                    }
+
+                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
+                    Layout.topMargin: fileDetails.intendedPadding
+                    Layout.bottomMargin: fileDetails.intendedPadding
+                    Layout.leftMargin: fileDetails.intendedPadding
+                    Layout.rightMargin: fileDetails.intendedPadding
+                    Layout.preferredWidth: doneButtonFm.boundingRect(text).width +
+                                           leftPadding +
+                                           rightPadding +
+                                           Style.standardSpacing * 2
+
+                    text: qsTr("Done")
+                    contentsFont.bold: true
+                    bgColor: Style.currentUserHeaderColor
+                    textColor: Style.adjustedCurrentUserHeaderColor
+                    textColorHovered: Style.currentUserHeaderTextColor
+                    onClicked: fileDetailsDrawer.close()
+
+                    Accessible.role: Accessible.Button
+                    Accessible.name: qsTr("Close the file details view")
+                    Accessible.onPressAction: clicked()
+                }
             }
         }
     }

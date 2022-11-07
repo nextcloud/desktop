@@ -382,6 +382,18 @@ void Systray::createFileActivityDialog(const QString &localPath)
     Q_EMIT showFileDetailsPage(localPath, FileDetailsPage::Activity);
 }
 
+void Systray::presentShareViewInTray(const QString &localPath)
+{
+    const auto folder = FolderMan::instance()->folderForPath(localPath);
+    if (!folder) {
+        qCWarning(lcSystray) << "Could not open file details view in tray for" << localPath << "no responsible folder found";
+        return;
+    }
+    qCDebug(lcSystray) << "Opening file details view in tray for " << localPath;
+
+    Q_EMIT showFileDetails(folder->accountState(), localPath, FileDetailsPage::Sharing);
+}
+
 void Systray::slotCurrentUserChanged()
 {
     if (_trayEngine) {
