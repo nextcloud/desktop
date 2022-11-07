@@ -366,24 +366,22 @@ void Utility::crash()
 // restarting from the installer.
 QByteArray Utility::versionOfInstalledBinary(const QString &command)
 {
-    QByteArray re;
-    if (isLinux()) {
-        QString binary(command);
-        if (binary.isEmpty()) {
-            binary = qApp->arguments()[0];
-        }
-        QStringList params;
-        params << QStringLiteral("--version");
-        QProcess process;
-        process.start(binary, params);
-        process.waitForFinished(); // sets current thread to sleep and waits for pingProcess end
-        re = process.readAllStandardOutput();
-        int newline = re.indexOf('\n');
-        if (newline > 0) {
-            re.truncate(newline);
-        }
+    QString binary(command);
+    if (binary.isEmpty()) {
+        binary = qApp->arguments()[0];
     }
-    return re;
+    QStringList params;
+    params << QStringLiteral("--version");
+    QProcess process;
+    process.start(binary, params);
+    process.waitForFinished(); // sets current thread to sleep and waits for pingProcess end
+    QByteArray re = process.readAllStandardOutput();
+    qCDebug(lcUtility) << Q_FUNC_INFO << re;
+    int newline = re.indexOf('\n');
+    if (newline > 0) {
+        re.truncate(newline);
+    }
+    return re.trimmed();
 }
 
 QString Utility::timeAgoInWords(const QDateTime &dt, const QDateTime &from)
