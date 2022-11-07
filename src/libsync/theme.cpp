@@ -196,6 +196,7 @@ QString Theme::version() const
 
 QString Theme::configFileName() const
 {
+    //
     return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");
 }
 
