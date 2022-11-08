@@ -4700,8 +4700,8 @@ Devam etmek istediğinizden emin misiniz?</translation>
     <name>ownCloudTheme::qtVer</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
-        <source>%1 (Built against Qt %1)</source>
-        <translation>%1 (Qt %1&apos;e göre oluşturuldu)</translation>
+        <source>%1 (Built against Qt %2)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

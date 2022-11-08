@@ -4692,8 +4692,8 @@ Möchten Sie fortfahren?</translation>
     <name>ownCloudTheme::qtVer</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
-        <source>%1 (Built against Qt %1)</source>
-        <translation>%1 (Mit Qt %1 gebaut)</translation>
+        <source>%1 (Built against Qt %2)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
