@@ -256,7 +256,7 @@ GridLayout {
             bgColor: Style.lightHover
             bgNormalOpacity: 0
 
-            imageSource: "qrc:///client/theme/add.svg"
+            imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
 
             visible: root.isPlaceholderLinkShare && root.canCreateLinkShares
             enabled: visible
@@ -276,7 +276,7 @@ GridLayout {
             bgColor: Style.lightHover
             bgNormalOpacity: 0
 
-            imageSource: "qrc:///client/theme/copy.svg"
+            imageSource: "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
             icon.width: 16
             icon.height: 16
 
@@ -305,7 +305,7 @@ GridLayout {
             bgColor: Style.lightHover
             bgNormalOpacity: 0
 
-            imageSource: "qrc:///client/theme/more.svg"
+            imageSource: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
 
             visible: !root.isPlaceholderLinkShare
             enabled: visible
