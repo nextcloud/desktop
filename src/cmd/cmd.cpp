@@ -50,6 +50,8 @@ struct CmdOptions
 {
     QString source_dir;
     QUrl target_url;
+    QUrl server_url;
+
     QString remoteFolder;
     QString config_directory;
     QString user;
@@ -74,7 +76,6 @@ struct SyncCTX
     {
     }
     CmdOptions options;
-    QUrl credentialFreeUrl;
     AccountPtr account;
     QString user;
 };
@@ -133,7 +134,7 @@ void sync(const SyncCTX &ctx)
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
     auto engine = new SyncEngine(
-        ctx.account, ctx.account->davUrl(), ctx.options.source_dir, ctx.options.remoteFolder, db);
+        ctx.account, ctx.options.target_url, ctx.options.source_dir, ctx.options.remoteFolder, db);
     engine->setSyncOptions(opt);
     engine->setParent(db);
 
@@ -320,6 +321,7 @@ CmdOptions parseOptions(const QStringList &app_args)
     auto excludeOption = addOption({ { QStringLiteral("exclude") }, QStringLiteral("Path to an exclude list [file]"), QStringLiteral("file") });
     auto unsyncedfoldersOption = addOption({ { QStringLiteral("unsyncedfolders") }, QStringLiteral("File containing the list of unsynced remote folders (selective sync)"), QStringLiteral("file") });
 
+    auto serverOption = addOption({ { QStringLiteral("server") }, QStringLiteral("Use [url] as the location of the server. OCIS only (server location and spaces url can differ)"), QStringLiteral("url") });
     auto userOption = addOption({ { QStringLiteral("u"), QStringLiteral("user") }, QStringLiteral("Use [name] as the login name"), QStringLiteral("name") });
     auto passwordOption = addOption({ { QStringLiteral("p"), QStringLiteral("password") }, QStringLiteral("Use [pass] as password"), QStringLiteral("password") });
     auto useNetrcOption = addOption({ { QStringLiteral("n") }, QStringLiteral("Use netrc (5) for login") });
@@ -379,6 +381,9 @@ CmdOptions parseOptions(const QStringList &app_args)
     if (parser.isSet(nonInterActiveOption)) {
         options.interactive = false;
     }
+    if (parser.isSet(serverOption)) {
+        options.server_url = QUrl::fromUserInput(parser.value(serverOption));
+    }
     if (parser.isSet(userOption)) {
         options.user = parser.value(userOption);
     }
@@ -433,22 +438,29 @@ int main(int argc, char **argv)
 
     setupCredentials(ctx);
 
-    if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
-        ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
+    if (ctx.options.server_url.isEmpty()) {
+        ctx.options.server_url = ctx.options.target_url;
+        // guess dav path
+        if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
+            ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
+        }
     }
 
+    // don't leak credentials more than needed
+    ctx.options.server_url = ctx.options.server_url.adjusted(QUrl::RemoveUserInfo);
+    ctx.options.target_url = ctx.options.target_url.adjusted(QUrl::RemoveUserInfo);
+
     const QUrl baseUrl = [&ctx] {
-        auto tmp = ctx.options.target_url;
+        auto tmp = ctx.options.server_url;
         // Find the folder and the original owncloud url
         QStringList splitted = tmp.path().split(ctx.account->davPath());
         tmp.setPath(splitted.value(0));
         tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
         return tmp;
     }();
-    ctx.credentialFreeUrl = baseUrl.adjusted(QUrl::RemoveUserInfo);
 
 
-    ctx.account->setUrl(ctx.credentialFreeUrl);
+    ctx.account->setUrl(baseUrl);
 
     auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url());
 
