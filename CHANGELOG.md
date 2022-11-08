@@ -23,6 +23,8 @@ Summary
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 * Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
 * Bugfix - Changes during upload of a file could still trigger the ignore list: [#9924](https://github.com/owncloud/client/issues/9924)
+* Change - Don't guess remote folder in owncloudcmd: [#10193](https://github.com/owncloud/client/issues/10193)
+* Change - Owncloudcmd OCIS support: [#10239](https://github.com/owncloud/client/pull/10239)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
 * Change - We removed support for ownCloud servers < 10.0: [#9578](https://github.com/owncloud/client/issues/9578)
@@ -147,6 +149,21 @@ Details
    increasing amount of time.
 
    https://github.com/owncloud/client/issues/9924
+
+* Change - Don't guess remote folder in owncloudcmd: [#10193](https://github.com/owncloud/client/issues/10193)
+
+   The commandline client was modified to explicitly accept remote folder, the remote folder
+   must no longer be encoded in the server url.
+
+   https://github.com/owncloud/client/issues/10193
+
+* Change - Owncloudcmd OCIS support: [#10239](https://github.com/owncloud/client/pull/10239)
+
+   When using ocis and spaces with the cmd client the additional parameter `--server` is
+   required. `--server` spcifies the url to the server, while the positional parameter
+   'server_url' specifies the webdav url.
+
+   https://github.com/owncloud/client/pull/10239
 
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 
