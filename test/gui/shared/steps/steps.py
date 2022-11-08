@@ -1140,7 +1140,7 @@ def enableVFSSupport(vfsBtnText):
     # But it is inside the "stack_folderList_QTreeView" object.
     # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
     mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
+        waitForObjectItem(names.stack_folderList_QTreeView, "ownCloud"),
         718,
         27,
         Qt.NoModifier,
@@ -1165,7 +1165,7 @@ def step(context, btnText):
     # But it is inside the "stack_folderList_QTreeView" object.
     # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
     mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
+        waitForObjectItem(names.stack_folderList_QTreeView, "ownCloud"),
         718,
         27,
         Qt.NoModifier,
@@ -1185,7 +1185,7 @@ def step(context):
     # But it is inside the "stack_folderList_QTreeView" object.
     # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
     mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "_1"),
+        waitForObjectItem(names.stack_folderList_QTreeView, "ownCloud"),
         733,
         27,
         Qt.NoModifier,
