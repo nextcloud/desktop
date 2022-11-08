@@ -13,22 +13,12 @@
  * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
  * for more details.
  */
-
-#include <iostream>
-#include <random>
-#include <qcoreapplication.h>
-#include <QStringList>
-#include <QUrl>
-#include <QFile>
-#include <QFileInfo>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QNetworkProxy>
-#include <qdebug.h>
+#include "httpcredentialstext.h"
+#include "netrcparser.h"
 
 #include "account.h"
 #include "common/syncjournaldb.h"
-#include "config.h"
+#include "common/version.h"
 #include "configfile.h" // ONLY ACCESS THE STATIC FUNCTIONS!
 #include "csync_exclude.h"
 #include "libsync/logger.h"
@@ -37,8 +27,19 @@
 #include "networkjobs/jsonjob.h"
 #include "syncengine.h"
 
-#include "httpcredentialstext.h"
-#include "netrcparser.h"
+#include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QDebug>
+#include <QFile>
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QNetworkProxy>
+#include <QStringList>
+#include <QUrl>
+
+#include <iostream>
+#include <random>
 
 
 using namespace OCC;
@@ -49,6 +50,9 @@ struct CmdOptions
 {
     QString source_dir;
     QUrl target_url;
+    QUrl server_url;
+
+    QString remoteFolder;
     QString config_directory;
     QString user;
     QString password;
@@ -63,8 +67,6 @@ struct CmdOptions
     int restartTimes = 3;
     int downlimit = 0;
     int uplimit = 0;
-    bool deltasync;
-    qint64 deltasyncminfilesize;
 };
 
 struct SyncCTX
@@ -74,8 +76,6 @@ struct SyncCTX
     {
     }
     CmdOptions options;
-    QUrl credentialFreeUrl;
-    QString folder;
     AccountPtr account;
     QString user;
 };
@@ -134,7 +134,7 @@ void sync(const SyncCTX &ctx)
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
     auto engine = new SyncEngine(
-        ctx.account, ctx.account->davUrl(), ctx.options.source_dir, ctx.folder, db);
+        ctx.account, ctx.options.target_url, ctx.options.source_dir, ctx.options.remoteFolder, db);
     engine->setSyncOptions(opt);
     engine->setParent(db);
 
@@ -160,16 +160,22 @@ void sync(const SyncCTX &ctx)
         if (!ctx.options.interactive) {
             abort(false);
         } else {
-            std::cout << (dir == SyncFileItem::Down ? "All files in the sync folder '%1' folder were deleted on the server.\n"
-                                                      "These deletes will be synchronized to your local sync folder, making such files "
-                                                      "unavailable unless you have a right to restore. \n"
-                                                      "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
-                                                      "If you decide to delete the files, they will be unavailable to you, unless you are the owner."
-                                                    : "All the files in your local sync folder '%1' were deleted. These deletes will be "
-                                                      "synchronized with your server, making such files unavailable unless restored.\n"
-                                                      "Are you sure you want to sync those actions with the server?\n"
-                                                      "If this was an accident and you decide to keep your files, they will be re-synced from the server.")
-                      << std::endl;
+            if (dir == SyncFileItem::Down) {
+                std::cout << "All files in the sync folder '" << qPrintable(ctx.options.remoteFolder) << "' folder were deleted on the server.\n"
+                          << "These deletes will be synchronized to your local sync folder, making such files "
+                          << "unavailable unless you have a right to restore. \n"
+                          << "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
+                          << "If you decide to delete the files, they will be unavailable to you, unless you are the owner."
+                          << std::endl;
+
+
+            } else {
+                std::cout << "All the files in your local sync folder '" << qPrintable(ctx.options.source_dir) << "' were deleted. These deletes will be "
+                          << "synchronized with your server, making such files unavailable unless restored.\n"
+                          << "Are you sure you want to sync those actions with the server?\n"
+                          << "If this was an accident and you decide to keep your files, they will be re-synced from the server."
+                          << std::endl;
+            }
             std::string s;
             while (true) {
                 std::cout << "Remove all files?[y,n]";
@@ -297,119 +303,111 @@ void setupCredentials(SyncCTX &ctx)
 }
 }
 
-
-[[noreturn]] void help()
-{
-    const char *binaryName = APPLICATION_EXECUTABLE "cmd";
-
-    std::cout << binaryName << " - command line " APPLICATION_NAME " client tool" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "Usage: " << binaryName << " [OPTION] <source_dir> <server_url>" << std::endl;
-    std::cout << "" << std::endl;
-    std::cout << "A proxy can either be set manually using --httpproxy." << std::endl;
-    std::cout << "Otherwise, the setting from a configured sync client will be used." << std::endl;
-    std::cout << std::endl;
-    std::cout << "Options:" << std::endl;
-    std::cout << "  --silent, -s           Don't be so verbose" << std::endl;
-    std::cout << "  --httpproxy [proxy]    Specify a http proxy to use." << std::endl;
-    std::cout << "                         Proxy is http://server:port" << std::endl;
-    std::cout << "  --trust                Trust the SSL certification." << std::endl;
-    std::cout << "  --exclude [file]       Exclude list file" << std::endl;
-    std::cout << "  --unsyncedfolders [file]    File containing the list of unsynced remote folders (selective sync)" << std::endl;
-    std::cout << "  --user, -u [name]      Use [name] as the login name" << std::endl;
-    std::cout << "  --password, -p [pass]  Use [pass] as password" << std::endl;
-    std::cout << "  -n                     Use netrc (5) for login" << std::endl;
-    std::cout << "  --non-interactive      Do not block execution with interaction" << std::endl;
-    std::cout << "  --max-sync-retries [n] Retries maximum n times (default to 3)" << std::endl;
-    std::cout << "  --uplimit [n]          Limit the upload speed of files to n KB/s" << std::endl;
-    std::cout << "  --downlimit [n]        Limit the download speed of files to n KB/s" << std::endl;
-    std::cout << "  -h                     Sync hidden files,do not ignore them" << std::endl;
-    std::cout << "  --version, -v          Display version and exit" << std::endl;
-    std::cout << "  --logdebug             More verbose logging" << std::endl;
-    std::cout << "" << std::endl;
-    exit(0);
-}
-
-[[noreturn]] void showVersion()
-{
-    std::cout << qPrintable(Theme::instance()->versionSwitchOutput());
-    exit(0);
-}
-
 CmdOptions parseOptions(const QStringList &app_args)
 {
     CmdOptions options;
-    QStringList args(app_args);
+    QCommandLineParser parser;
+    parser.setApplicationDescription(QStringLiteral("%1 version %2 - command line client tool").arg(QCoreApplication::instance()->applicationName(), OCC::Version::displayString()));
 
-    int argCount = args.count();
+    // this little snippet saves a few lines below
+    auto addOption = [&parser](const QCommandLineOption &option) {
+        parser.addOption(option);
+        return option;
+    };
 
-    if (argCount < 3) {
-        if (argCount >= 2) {
-            const QString option = args.at(1);
-            if (option == QLatin1String("-v") || option == QLatin1String("--version")) {
-                showVersion();
-            }
-        }
-        help();
-    }
+    auto silentOption = addOption({ { QStringLiteral("s"), QStringLiteral("silten") }, QStringLiteral("Don't be so verbose.") });
+    auto httpproxyOption = addOption({ { QStringLiteral("httpproxy") }, QStringLiteral("Specify a http proxy to use."), QStringLiteral("http://server:port") });
+    auto trustOption = addOption({ { QStringLiteral("trust") }, QStringLiteral("Trust the SSL certification") });
+    auto excludeOption = addOption({ { QStringLiteral("exclude") }, QStringLiteral("Path to an exclude list [file]"), QStringLiteral("file") });
+    auto unsyncedfoldersOption = addOption({ { QStringLiteral("unsyncedfolders") }, QStringLiteral("File containing the list of unsynced remote folders (selective sync)"), QStringLiteral("file") });
 
-    options.target_url = QUrl(args.takeLast());
+    auto serverOption = addOption({ { QStringLiteral("server") }, QStringLiteral("Use [url] as the location of the server. OCIS only (server location and spaces url can differ)"), QStringLiteral("url") });
+    auto userOption = addOption({ { QStringLiteral("u"), QStringLiteral("user") }, QStringLiteral("Use [name] as the login name"), QStringLiteral("name") });
+    auto passwordOption = addOption({ { QStringLiteral("p"), QStringLiteral("password") }, QStringLiteral("Use [pass] as password"), QStringLiteral("password") });
+    auto useNetrcOption = addOption({ { QStringLiteral("n") }, QStringLiteral("Use netrc (5) for login") });
 
-    options.source_dir = args.takeLast();
-    QFileInfo fi(options.source_dir);
-    if (!fi.exists()) {
-        std::cerr << "Source dir '" << qPrintable(options.source_dir) << "' does not exist." << std::endl;
+    auto nonInterActiveOption = addOption({ { QStringLiteral("non-interactive") }, QStringLiteral("Do not block execution with interaction") });
+    auto maxRetriesOption = addOption({ { QStringLiteral("max-sync-retries") }, QStringLiteral("Retries maximum n times (default to 3)"), QStringLiteral("n") });
+    auto uploadLimitOption = addOption({ { QStringLiteral("uplimit") }, QStringLiteral("Limit the upload speed of files to n KB/s"), QStringLiteral("n") });
+    auto downloadLimitption = addOption({ { QStringLiteral("downlimit") }, QStringLiteral("Limit the download speed of files to n KB/s"), QStringLiteral("n") });
+
+    auto logdebugOption = addOption({ { QStringLiteral("logdebug") }, QStringLiteral("More verbose logging") });
+
+    parser.addHelpOption();
+    parser.addVersionOption();
+
+    parser.addPositionalArgument(QStringLiteral("source_dir"), QStringLiteral("The source dir"));
+    parser.addPositionalArgument(QStringLiteral("server_url"), QStringLiteral("The url to the server"));
+    parser.addPositionalArgument(QStringLiteral("remote_folder"), QStringLiteral("A remote folder"));
+
+    parser.process(app_args);
+
+
+    const QStringList args = parser.positionalArguments();
+    if (args.size() < 2 || args.size() > 3) {
+        parser.showHelp();
         exit(1);
     }
-    options.source_dir = fi.absoluteFilePath();
-    if (!options.source_dir.endsWith(QLatin1Char('/'))) {
-        options.source_dir.append(QLatin1Char('/'));
-    }
 
-    QStringListIterator it(args);
-    // skip file name;
-    if (it.hasNext())
-        it.next();
-
-    while (it.hasNext()) {
-        const QString option = it.next();
-
-        if (option == QLatin1String("--httpproxy") && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.proxy = it.next();
-        } else if (option == QLatin1String("-s") || option == QLatin1String("--silent")) {
-            options.silent = true;
-        } else if (option == QLatin1String("--trust")) {
-            options.trustSSL = true;
-        } else if (option == QLatin1String("-n")) {
-            options.useNetrc = true;
-        } else if (option == QLatin1String("-h")) {
-            options.ignoreHiddenFiles = false;
-        } else if (option == QLatin1String("--non-interactive")) {
-            options.interactive = false;
-        } else if ((option == QLatin1String("-u") || option == QLatin1String("--user")) && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.user = it.next();
-        } else if ((option == QLatin1String("-p") || option == QLatin1String("--password")) && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.password = it.next();
-        } else if (option == QLatin1String("--exclude") && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.exclude = it.next();
-        } else if (option == QLatin1String("--unsyncedfolders") && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.unsyncedfolders = it.next();
-        } else if (option == QLatin1String("--max-sync-retries") && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.restartTimes = it.next().toInt();
-        } else if (option == QLatin1String("--uplimit") && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.uplimit = it.next().toInt() * 1000;
-        } else if (option == QLatin1String("--downlimit") && !it.peekNext().startsWith(QLatin1String("-"))) {
-            options.downlimit = it.next().toInt() * 1000;
-        } else if (option == QLatin1String("--logdebug")) {
-            Logger::instance()->setLogFile(QStringLiteral("-"));
-            Logger::instance()->setLogDebug(true);
-        } else {
-            help();
+    options.source_dir = [arg = args[0]] {
+        QFileInfo fi(arg);
+        if (!fi.exists()) {
+            std::cerr << "Source dir '" << qPrintable(arg) << "' does not exist." << std::endl;
+            exit(1);
         }
+        QString sourceDir = fi.absoluteFilePath();
+        if (!sourceDir.endsWith(QLatin1Char('/'))) {
+            sourceDir.append(QLatin1Char('/'));
+        }
+        return sourceDir;
+    }();
+    options.target_url = QUrl::fromUserInput(args[1]);
+    if (args.size() == 3) {
+        options.remoteFolder = args[2];
     }
 
-    if (options.target_url.isEmpty() || options.source_dir.isEmpty()) {
-        help();
+    if (parser.isSet(httpproxyOption)) {
+        options.proxy = parser.value(httpproxyOption);
+    }
+    if (parser.isSet(silentOption)) {
+        options.silent = true;
+    }
+    if (parser.isSet(trustOption)) {
+        options.trustSSL = true;
+    }
+    if (parser.isSet(useNetrcOption)) {
+        options.useNetrc = true;
+    }
+    if (parser.isSet(nonInterActiveOption)) {
+        options.interactive = false;
+    }
+    if (parser.isSet(serverOption)) {
+        options.server_url = QUrl::fromUserInput(parser.value(serverOption));
+    }
+    if (parser.isSet(userOption)) {
+        options.user = parser.value(userOption);
+    }
+    if (parser.isSet(passwordOption)) {
+        options.password = parser.value(passwordOption);
+    }
+    if (parser.isSet(excludeOption)) {
+        options.exclude = parser.value(excludeOption);
+    }
+    if (parser.isSet(unsyncedfoldersOption)) {
+        options.unsyncedfolders = parser.value(unsyncedfoldersOption);
+    }
+    if (parser.isSet(maxRetriesOption)) {
+        options.restartTimes = parser.value(maxRetriesOption).toInt();
+    }
+    if (parser.isSet(uploadLimitOption)) {
+        options.uplimit = parser.value(maxRetriesOption).toInt() * 1000;
+    }
+    if (parser.isSet(downloadLimitption)) {
+        options.downlimit = parser.value(downloadLimitption).toInt() * 1000;
+    }
+    if (parser.isSet(logdebugOption)) {
+        Logger::instance()->setLogFile(QStringLiteral("-"));
+        Logger::instance()->setLogDebug(true);
     }
     return options;
 }
@@ -417,6 +415,7 @@ CmdOptions parseOptions(const QStringList &app_args)
 int main(int argc, char **argv)
 {
     QCoreApplication app(argc, argv);
+    app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
 
 #ifdef Q_OS_WIN
     // Ensure OpenSSL config file is only loaded from app directory
@@ -439,28 +438,29 @@ int main(int argc, char **argv)
 
     setupCredentials(ctx);
 
-    if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
-        ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
+    if (ctx.options.server_url.isEmpty()) {
+        ctx.options.server_url = ctx.options.target_url;
+        // guess dav path
+        if (!ctx.options.target_url.path().contains(ctx.account->davPath())) {
+            ctx.options.target_url = OCC::Utility::concatUrlPath(ctx.options.target_url, ctx.account->davPath());
+        }
     }
 
+    // don't leak credentials more than needed
+    ctx.options.server_url = ctx.options.server_url.adjusted(QUrl::RemoveUserInfo);
+    ctx.options.target_url = ctx.options.target_url.adjusted(QUrl::RemoveUserInfo);
+
     const QUrl baseUrl = [&ctx] {
-        auto tmp = ctx.options.target_url;
+        auto tmp = ctx.options.server_url;
         // Find the folder and the original owncloud url
         QStringList splitted = tmp.path().split(ctx.account->davPath());
         tmp.setPath(splitted.value(0));
         tmp.setScheme(tmp.scheme().replace(QLatin1String("owncloud"), QLatin1String("http")));
-
-        // Remote folders typically start with a / and don't end with one
-        ctx.folder = QLatin1Char('/') + splitted.value(1);
-        if (ctx.folder.endsWith(QLatin1Char('/')) && ctx.folder != QLatin1Char('/')) {
-            ctx.folder.chop(1);
-        }
         return tmp;
     }();
-    ctx.credentialFreeUrl = baseUrl.adjusted(QUrl::RemoveUserInfo);
 
 
-    ctx.account->setUrl(ctx.credentialFreeUrl);
+    ctx.account->setUrl(baseUrl);
 
     auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url());
 

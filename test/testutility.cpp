@@ -110,20 +110,17 @@ private slots:
 
     void testVersionOfInstalledBinary()
     {
-        if(isLinux()) {
-            // pass the cmd client from our build dir
-            // this is a bit inaccurate as it does not test the "real thing"
-            // but cmd and gui have the same --version handler by now
-            // and cmd works without X in CI
-            QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUD_BIN_PATH  "/" APPLICATION_EXECUTABLE "cmd"));
-            qDebug() << "Version of installed ownCloud Binary: " << ver;
-            QVERIFY(!ver.isEmpty());
+        // pass the cmd client from our build dir
+        // this is a bit inaccurate as it does not test the "real thing"
+        // but cmd and gui have the same --version handler by now
+        // and cmd works without X in CI
+        QString ver = versionOfInstalledBinary(QStringLiteral(OWNCLOUD_BIN_PATH "/" APPLICATION_EXECUTABLE "cmd"));
+        qDebug() << "Version of installed ownCloud Binary: " << ver;
+        QVERIFY(!ver.isEmpty());
 
-            QRegExp rx(APPLICATION_SHORTNAME " \\d+\\.\\d+\\.\\d+.*");
-            QVERIFY(rx.exactMatch(ver));
-        } else {
-            QVERIFY(versionOfInstalledBinary().isEmpty());
-        }
+        QRegExp rx(APPLICATION_SHORTNAME "cmd ownCloud \\d+\\.\\d+\\.\\d+.*", Qt::CaseInsensitive);
+        qDebug() << rx.pattern();
+        QVERIFY(rx.exactMatch(ver));
     }
 
     void testTimeAgo()
