@@ -159,16 +159,22 @@ void sync(const SyncCTX &ctx)
         if (!ctx.options.interactive) {
             abort(false);
         } else {
-            std::cout << (dir == SyncFileItem::Down ? "All files in the sync folder '%1' folder were deleted on the server.\n"
-                                                      "These deletes will be synchronized to your local sync folder, making such files "
-                                                      "unavailable unless you have a right to restore. \n"
-                                                      "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
-                                                      "If you decide to delete the files, they will be unavailable to you, unless you are the owner."
-                                                    : "All the files in your local sync folder '%1' were deleted. These deletes will be "
-                                                      "synchronized with your server, making such files unavailable unless restored.\n"
-                                                      "Are you sure you want to sync those actions with the server?\n"
-                                                      "If this was an accident and you decide to keep your files, they will be re-synced from the server.")
-                      << std::endl;
+            if (dir == SyncFileItem::Down) {
+                std::cout << "All files in the sync folder '" << qPrintable(ctx.options.remoteFolder) << "' folder were deleted on the server.\n"
+                          << "These deletes will be synchronized to your local sync folder, making such files "
+                          << "unavailable unless you have a right to restore. \n"
+                          << "If you decide to keep the files, they will be re-synced with the server if you have rights to do so.\n"
+                          << "If you decide to delete the files, they will be unavailable to you, unless you are the owner."
+                          << std::endl;
+
+
+            } else {
+                std::cout << "All the files in your local sync folder '" << qPrintable(ctx.options.source_dir) << "' were deleted. These deletes will be "
+                          << "synchronized with your server, making such files unavailable unless restored.\n"
+                          << "Are you sure you want to sync those actions with the server?\n"
+                          << "If this was an accident and you decide to keep your files, they will be re-synced from the server."
+                          << std::endl;
+            }
             std::string s;
             while (true) {
                 std::cout << "Remove all files?[y,n]";
