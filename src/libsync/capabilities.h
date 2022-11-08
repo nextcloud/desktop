@@ -91,6 +91,25 @@ struct OWNCLOUDSYNC_EXPORT SpaceSupport
     bool isValid() const;
 };
 
+struct OWNCLOUDSYNC_EXPORT FilesSharing
+{
+    /**
+     api_enabled": true,
+    "resharing": true,
+    "group_sharing": true,
+    "sharing_roles": true,
+    "auto_accept_share": true,
+    "share_with_group_members_only": true,
+    "share_with_membership_groups_only": true,
+    "search_min_length": 3,
+    "default_permissions": 22,
+    */
+    FilesSharing(const QVariantMap &filesSharing);
+
+    // TODO: add more
+    bool sharing_roles = false;
+};
+
 /**
  * @brief The Capabilities class represents the capabilities of an ownCloud
  * server
@@ -254,6 +273,8 @@ public:
 
     const AppProviders &appProviders() const;
 
+    const FilesSharing &filesSharing() const;
+
 
     QVariantMap raw() const;
 
@@ -265,6 +286,7 @@ private:
     SpaceSupport _spaces;
     Status _status;
     AppProviders _appProviders;
+    FilesSharing _filesSharing;
 };
 }
 
