@@ -11,6 +11,7 @@ Summary
 * Bugfix - Don't unset implicit log flush: [#9515](https://github.com/owncloud/client/pull/9515)
 * Bugfix - We fixed a crash: [#10017](https://github.com/owncloud/client/pull/10017)
 * Bugfix - Sync status changes are now directly displayed: [#10101](https://github.com/owncloud/client/issues/10101)
+* Bugfix - Windows VFS fixed some failing downloads: [#49](https://github.com/owncloud/client-desktop-vfs-win/pull/49)
 * Bugfix - Don't trigger ignore list when files are locked on the server: [#5382](https://github.com/owncloud/enterprise/issues/5382)
 * Bugfix - Properly resume upload with a partial local discovery: [#5382](https://github.com/owncloud/enterprise/issues/5382)
 * Bugfix - Add request time and other missing data to .owncloudsync.log: [#7348](https://github.com/owncloud/client/issues/7348)
@@ -23,7 +24,9 @@ Summary
 * Bugfix - Fix adding bookmarks on Gtk+ 3 based desktops: [#9752](https://github.com/owncloud/client/pull/9752)
 * Bugfix - Stop the activity spinner when the request failed: [#9798](https://github.com/owncloud/client/issues/9798)
 * Bugfix - Changes during upload of a file could still trigger the ignore list: [#9924](https://github.com/owncloud/client/issues/9924)
+* Change - Windows: Update the folder icon on every start: [#10184](https://github.com/owncloud/client/issues/10184)
 * Change - Don't guess remote folder in owncloudcmd: [#10193](https://github.com/owncloud/client/issues/10193)
+* Change - When connected to oCIS, open the browser instead of the sharing dialog: [#10206](https://github.com/owncloud/client/issues/10206)
 * Change - Owncloudcmd OCIS support: [#10239](https://github.com/owncloud/client/pull/10239)
 * Change - Make sharedialog preview be more resilient: [#8938](https://github.com/owncloud/client/issues/8938)
 * Change - We no longer persist cookies: [#9495](https://github.com/owncloud/client/issues/9495)
@@ -75,6 +78,12 @@ Details
 * Bugfix - Sync status changes are now directly displayed: [#10101](https://github.com/owncloud/client/issues/10101)
 
    https://github.com/owncloud/client/issues/10101
+
+* Bugfix - Windows VFS fixed some failing downloads: [#49](https://github.com/owncloud/client-desktop-vfs-win/pull/49)
+
+   We fixed an api issue where some downloads in the Explorer caused infite download restarts.
+
+   https://github.com/owncloud/client-desktop-vfs-win/pull/49
 
 * Bugfix - Don't trigger ignore list when files are locked on the server: [#5382](https://github.com/owncloud/enterprise/issues/5382)
 
@@ -150,12 +159,26 @@ Details
 
    https://github.com/owncloud/client/issues/9924
 
+* Change - Windows: Update the folder icon on every start: [#10184](https://github.com/owncloud/client/issues/10184)
+
+   The ownCloud installation path might have changed, causing the desktop.ini to point at the
+   wrong path. We now update the icon location on every application start.
+
+   https://github.com/owncloud/client/issues/10184
+
 * Change - Don't guess remote folder in owncloudcmd: [#10193](https://github.com/owncloud/client/issues/10193)
 
    The commandline client was modified to explicitly accept remote folder, the remote folder
    must no longer be encoded in the server url.
 
    https://github.com/owncloud/client/issues/10193
+
+* Change - When connected to oCIS, open the browser instead of the sharing dialog: [#10206](https://github.com/owncloud/client/issues/10206)
+
+   When connected to oCIS, we now open the browser and navigate to the file the user wanted to share
+   instead of opening the legacy sharing dialog.
+
+   https://github.com/owncloud/client/issues/10206
 
 * Change - Owncloudcmd OCIS support: [#10239](https://github.com/owncloud/client/pull/10239)
 
