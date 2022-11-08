@@ -51,6 +51,7 @@ void registerNotificationCategories(const QString &localizedDownloadString);
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
+void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
 double menuBarThickness();
 #endif
@@ -113,6 +114,7 @@ public slots:
 
     void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
+    void showTalkMessage(const QString &title, const QString &message, const QString &replyTo, const QString &token, const AccountStatePtr &accountState);
     void setToolTip(const QString &tip);
 
     void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);

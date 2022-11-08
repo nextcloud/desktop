@@ -486,6 +486,18 @@ void Systray::showUpdateMessage(const QString &title, const QString &message, co
 #endif
 }
 
+void Systray::showTalkMessage(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr &accountState)
+{
+#if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
+    sendOsXTalkNotification(title, message, token, replyTo, accountState);
+#else // TODO: Implement custom notifications (i.e. actionable) for other OSes
+    Q_UNUSED(replyTo);
+    Q_UNUSED(token);
+    Q_UNUSED(accountState);
+    showMessage(title, message);
+#endif
+}
+
 void Systray::setToolTip(const QString &tip)
 {
     QSystemTrayIcon::setToolTip(tr("%1: %2").arg(Theme::instance()->appNameGUI(), tip));

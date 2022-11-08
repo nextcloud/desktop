@@ -110,22 +110,29 @@ public slots:
     void slotSendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
     void forceSyncNow() const;
 
-private:
+private slots:
     void slotPushNotificationsReady();
     void slotDisconnectPushNotifications();
     void slotReceivedPushNotification(Account *account);
     void slotReceivedPushActivity(Account *account);
     void slotCheckExpiredActivities();
 
+    void checkNotifiedNotifications();
+    void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
+    void showDesktopNotification(const Activity &activity);
+    void showDesktopNotification(const ActivityList &activityList);
+    void showDesktopTalkNotification(const Activity &activity);
+
+private:
     void connectPushNotifications() const;
     [[nodiscard]] bool checkPushNotificationsAreReady() const;
 
     bool isActivityOfCurrentAccount(const Folder *folder) const;
     [[nodiscard]] bool isUnsolvableConflict(const SyncFileItemPtr &item) const;
 
-    void showDesktopNotification(const QString &title, const QString &message, const long notificationId);
+    bool notificationAlreadyShown(const long notificationId);
+    bool canShowNotification(const long notificationId);
 
-private:
     AccountStatePtr _account;
     bool _isCurrentUser;
     ActivityListModel *_activityModel;

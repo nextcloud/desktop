@@ -82,27 +82,32 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     connect(this, &User::sendReplyMessage, this, &User::slotSendReplyMessage);
 }
 
-void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
+void User::checkNotifiedNotifications()
 {
-    // Notification ids are uints, which are 4 bytes. Error activities don't have ids, however, so we generate one.
-    // To avoid possible collisions between the activity ids which are actually the notification ids received from
-    // the server (which are always positive) and our "fake" error activity ids, we assign a negative id to the
-    // error notification.
-    //
-    // To ensure that we can still treat an unsigned int as normal, we use a long, which is 8 bytes.
-
-    ConfigFile cfg;
-    if (!cfg.optionalServerNotifications() || !isDesktopNotificationsAllowed()) {
-        return;
-    }
-
     // after one hour, clear the gui log notification store
     constexpr qint64 clearGuiLogInterval = 60 * 60 * 1000;
     if (_guiLogTimer.elapsed() > clearGuiLogInterval) {
         _notifiedNotifications.clear();
     }
+}
 
-    if (_notifiedNotifications.contains(notificationId)) {
+bool User::notificationAlreadyShown(const long notificationId)
+{
+    checkNotifiedNotifications();
+    return _notifiedNotifications.contains(notificationId);
+}
+
+bool User::canShowNotification(const long notificationId)
+{
+    ConfigFile cfg;
+    return cfg.optionalServerNotifications() &&
+            isDesktopNotificationsAllowed() &&
+            !notificationAlreadyShown(notificationId);
+}
+
+void User::showDesktopNotification(const QString &title, const QString &message, const long notificationId)
+{
+    if(!canShowNotification(notificationId)) {
         return;
     }
 
@@ -112,9 +117,66 @@ void User::showDesktopNotification(const QString &title, const QString &message,
     _guiLogTimer.start();
 }
 
+void User::showDesktopNotification(const Activity &activity)
+{
+    const auto notificationId = activity._id;
+    const auto message = AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
+    showDesktopNotification(activity._subject, message, notificationId);
+}
+
+void User::showDesktopNotification(const ActivityList &activityList)
+{
+    const auto subject = QStringLiteral("%1 notifications").arg(activityList.count());
+    const auto notificationId = -static_cast<int>(qHash(subject));
+
+    if (!canShowNotification(notificationId)) {
+        return;
+    }
+
+    const auto multipleAccounts = AccountManager::instance()->accounts().count() > 1;
+    const auto message = multipleAccounts ? activityList.constFirst()._accName : QString();
+
+    // Notification ids are uints, which are 4 bytes. Error activities don't have ids, however, so we generate one.
+    // To avoid possible collisions between the activity ids which are actually the notification ids received from
+    // the server (which are always positive) and our "fake" error activity ids, we assign a negative id to the
+    // error notification.
+    //
+    // To ensure that we can still treat an unsigned int as normal, we use a long, which is 8 bytes.
+
+    Logger::instance()->postGuiLog(subject, message);
+
+    for(const auto &activity : activityList) {
+        _notifiedNotifications.insert(activity._id);
+        _activityModel->addNotificationToActivityList(activity);
+    }
+}
+
+void User::showDesktopTalkNotification(const Activity &activity)
+{
+    const auto notificationId = activity._id;
+
+    if (!canShowNotification(notificationId)) {
+        return;
+    }
+
+    if (activity._talkNotificationData.messageId.isEmpty()) {
+        showDesktopNotification(activity._subject, activity._message, notificationId);
+        return;
+    }
+
+    _notifiedNotifications.insert(notificationId);
+    _activityModel->addNotificationToActivityList(activity);
+
+    Systray::instance()->showTalkMessage(activity._subject,
+                                         activity._message,
+                                         activity._talkNotificationData.conversationToken,
+                                         activity._talkNotificationData.messageId,
+                                         _account);
+    _guiLogTimer.start();
+}
+
 void User::slotBuildNotificationDisplay(const ActivityList &list)
 {
-    const auto multipleAccounts = AccountManager::instance()->accounts().count() > 1;
     ActivityList toNotifyList;
 
     std::copy_if(list.constBegin(), list.constEnd(), std::back_inserter(toNotifyList), [&](const Activity &activity) {
@@ -131,25 +193,16 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
     });
 
     if(toNotifyList.count() > 2) {
-        const auto subject = QStringLiteral("%1 notifications").arg(toNotifyList.count());
-        const auto message = multipleAccounts ? toNotifyList.constFirst()._accName : QString();
-        showDesktopNotification(subject, message, -static_cast<int>(qHash(subject)));
-
-        // Set these activities as notified here, rather than in showDesktopNotification
-        for(const auto &activity : qAsConst(toNotifyList)) {
-            _notifiedNotifications.insert(activity._id);
-            _activityModel->addNotificationToActivityList(activity);
-        }
-
+        showDesktopNotification(toNotifyList);
         return;
     }
 
     for(const auto &activity : qAsConst(toNotifyList)) {
-        const auto message = activity._objectType == QStringLiteral("chat")
-            ? activity._message : AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
-
-        showDesktopNotification(activity._subject, message, activity._id); // We assigned the notif. id to the activity id
-        _activityModel->addNotificationToActivityList(activity);
+        if (activity._objectType == QStringLiteral("chat")) {
+            showDesktopTalkNotification(activity);
+        } else {
+            showDesktopNotification(activity);
+        }
     }
 }
 
@@ -548,7 +601,7 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
         // add 'other errors' to activity list
         _activityModel->addErrorToActivityList(activity);
 
-        showDesktopNotification(activity._subject, activity._message, activity._id);
+        showDesktopNotification(activity);
 
         if (!_expiredActivitiesCheckTimer.isActive()) {
             _expiredActivitiesCheckTimer.start(expiredActivitiesCheckIntervalMsecs);
