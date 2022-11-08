@@ -163,6 +163,8 @@ public:
     };
     Q_ENUM(ChangeReason)
 
+    static void prepareFolder(const QString &path);
+
     /** Create a new Folder
      */
     Folder(const FolderDefinition &definition, const AccountStatePtr &accountState, std::unique_ptr<Vfs> &&vfs, QObject *parent = nullptr);

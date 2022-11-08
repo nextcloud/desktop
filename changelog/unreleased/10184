@@ -1,0 +1,6 @@
+Change: Windows: Update the folder icon on every start
+
+The ownCloud installation path might have changed, causing the desktop.ini to point at the wrong path.
+We now update the icon location on every application start.
+
+https://github.com/owncloud/client/issues/10184

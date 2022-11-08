@@ -77,6 +77,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                 if (!drives.isEmpty()) {
                     const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
                     FileSystem::setFolderMinimumPermissions(localDir.path());
+                    Folder::prepareFolder(localDir.path());
                     Utility::setupFavLink(localDir.path());
                     for (const auto &d : drives) {
                         const QString name = GraphApi::Drives::getDriveDisplayName(d);

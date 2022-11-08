@@ -113,6 +113,7 @@ Folder::Folder(const FolderDefinition &definition,
 
     // check if the local path exists
     if (checkLocalPath()) {
+        prepareFolder(path());
         // those errors should not persist over sessions
         _journal.wipeErrorBlacklistCategory(SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
         _engine.reset(new SyncEngine(_accountState->account(), webDavUrl(), path(), remotePath(), &_journal));
@@ -261,6 +262,35 @@ SyncOptions Folder::loadSyncOptions()
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
     return opt;
+}
+
+void Folder::prepareFolder(const QString &path)
+{
+#ifdef Q_OS_WIN
+    // First create a Desktop.ini so that the folder and favorite link show our application's icon.
+    const QFileInfo desktopIniPath = QStringLiteral("%1/Desktop.ini").arg(path);
+    {
+        QSettings desktopIni(desktopIniPath.absoluteFilePath(), QSettings::IniFormat);
+        qCInfo(lcFolder) << "Creating" << desktopIni.fileName() << "to set a folder icon in Explorer.";
+        desktopIni.beginGroup(QStringLiteral(".ShellClassInfo"));
+        desktopIni.setValue(QStringLiteral("IconResource"), QDir::toNativeSeparators(qApp->applicationFilePath()));
+        desktopIni.sync();
+    }
+
+    const QString longFolderPath = FileSystem::longWinPath(path);
+    const QString longDesktopIniPath = FileSystem::longWinPath(desktopIniPath.absoluteFilePath());
+    // Set the folder as system and Desktop.ini as hidden+system for explorer to pick it.
+    // https://msdn.microsoft.com/en-us/library/windows/desktop/cc144102
+    const DWORD folderAttrs = GetFileAttributesW(reinterpret_cast<const wchar_t *>(longFolderPath.utf16()));
+    if (!SetFileAttributesW(reinterpret_cast<const wchar_t *>(longFolderPath.utf16()), folderAttrs | FILE_ATTRIBUTE_SYSTEM)) {
+        const auto error = GetLastError();
+        qCWarning(lcFolder) << "SetFileAttributesW failed on" << longFolderPath << Utility::formatWinError(error);
+    }
+    if (!SetFileAttributesW(reinterpret_cast<const wchar_t *>(longDesktopIniPath.utf16()), FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)) {
+        const auto error = GetLastError();
+        qCWarning(lcFolder) << "SetFileAttributesW failed on" << longDesktopIniPath << Utility::formatWinError(error);
+    }
+#endif
 }
 
 QByteArray Folder::id() const
