@@ -71,7 +71,7 @@ AbstractButton {
             text: root.text
             textColor: root.textColor
             textColorHovered: root.textColorHovered
-            bold: root.primaryButton
+            font.bold: root.primaryButton
         }
     }
 }

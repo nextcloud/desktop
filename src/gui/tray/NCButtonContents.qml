@@ -28,7 +28,7 @@ RowLayout {
 
     property color textColor: Style.ncTextColor
     property color textColorHovered: textColor
-    property bool bold: false
+    property alias font: buttonLabel.font
 
     Image {
         id: icon
@@ -40,6 +40,8 @@ RowLayout {
     }
 
     Label {
+        id: buttonLabel
+
         Layout.maximumWidth: icon.width > 0 ? parent.width - icon.width - parent.spacing : parent.width
         Layout.fillWidth: icon.status !== Image.Ready
 

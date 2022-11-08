@@ -15,10 +15,9 @@ Button {
     property color textColor: Style.ncTextColor
     property color textColorHovered: textColor
 
+    property alias contentsFont: contents.font
+
     property alias bgColor: bgRectangle.color
-
-    property bool bold: false
-
     property alias bgNormalOpacity: bgRectangle.normalOpacity
     property alias bgHoverOpacity: bgRectangle.hoverOpacity
 
@@ -37,12 +36,12 @@ Button {
     }
 
     contentItem: NCButtonContents {
+        id: contents
         hovered: root.hovered
         imageSourceHover: root.imageSourceHover
         imageSource: root.imageSource
         text: root.text
         textColor: root.textColor
         textColorHovered: root.textColorHovered
-        bold: root.bold
     }
 }

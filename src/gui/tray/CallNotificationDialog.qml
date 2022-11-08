@@ -220,7 +220,7 @@ Window {
 
                         visible: isAnswerCallButton
                         text: modelData.label
-                        bold: true
+                        contentsFont.bold: true
                         bgColor: Style.ncBlue
                         bgNormalOpacity: 0.8
 
@@ -247,7 +247,7 @@ Window {
                 CustomButton {
                     id: declineCall
                     text: qsTr("Decline")
-                    bold: true
+                    contentsFont.bold: true
                     bgColor: Style.errorBoxBackgroundColor
                     bgNormalOpacity: 0.8
 

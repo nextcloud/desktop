@@ -102,18 +102,19 @@ RowLayout {
     CustomButton {
         FontMetrics {
             id: syncNowFm
-            font.bold: true
+            font: parent.contentsFont
         }
 
-        Layout.preferredWidth: syncNowFm.boundingRect(text).width + leftPadding + rightPadding
+        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
+                               leftPadding +
+                               rightPadding +
+                               Style.standardSpacing * 2
         Layout.rightMargin: Style.trayHorizontalMargin
-
-        FontMetrics { font.bold: true }
 
         text: qsTr("Sync now")
         textColor: Style.adjustedCurrentUserHeaderColor
         textColorHovered: Style.currentUserHeaderTextColor
-        bold: true
+        contentsFont.bold: true
         bgColor: Style.currentUserHeaderColor
 
         visible: !syncStatus.syncing &&
