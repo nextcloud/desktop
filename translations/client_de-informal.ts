@@ -2,47 +2,42 @@
 <context>
     <name>AccountConfiguredWizardPage</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="36"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="33"/>
         <source>✓ You&apos;re all set!</source>
         <translation>✓ Fertiggestellt!</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
         <source>Advanced configuration</source>
         <translation>Erweiterte Einstellungen</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
         <source>Configure files download:</source>
         <translation>File Download konfigurieren:</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
         <source>Download everything</source>
         <translation>Alles herunterladen</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
         <translation>Nach Fertigstellung des Installationsassistenten, kannst du die Ordnersynchronistation manuell einstellen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="163"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
         <translation>Synchronisation manuell konfigurieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="210"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
         <translation>Lokales Download Verzeichnis wählen:</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="219"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -69,19 +64,14 @@
 <context>
     <name>BasicLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="20"/>
-        <source>BasicLoginWidget</source>
-        <translation>Einfaches Anmelde-Widget</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="78"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="91"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="75"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="88"/>
         <source>Username</source>
         <translation>Benutzername</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="98"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="114"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="95"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="111"/>
         <source>Password</source>
         <translation>Passwort</translation>
     </message>
@@ -349,22 +339,17 @@
 <context>
     <name>OAuthLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="20"/>
-        <source>OAuthLoginWidget</source>
-        <translation>OAuth Anmelde-Widget</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="66"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="63"/>
         <source>Open Browser</source>
         <translation>Browser öffnen</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="79"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="76"/>
         <source>Copy URL to clipboard</source>
         <translation>URL in die Zwischenablage kopieren</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="179"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="176"/>
         <source>Retry</source>
         <translation>Wiederholen</translation>
     </message>
@@ -4523,12 +4508,7 @@ Möchtest du fortfahren?</translation>
 <context>
     <name>SpacesPage</name>
     <message>
-        <location filename="../src/gui/folderwizard/spacespage.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation>Assistenz Seite</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard/spacespage.ui" line="20"/>
+        <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Einen Space hinzufügen&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Einen Space auswählen um ihn mit deinem Computer zu synchroisieren.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4712,8 +4692,8 @@ Möchtest du fortfahren?</translation>
     <name>ownCloudTheme::qtVer</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
-        <source>%1 (Built against Qt %1)</source>
-        <translation>%1 (Gegen Qt %1 kompiliert)</translation>
+        <source>%1 (Built against Qt %2)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

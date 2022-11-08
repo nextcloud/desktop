@@ -1,0 +1,5 @@
+Change: When connected to oCIS, open the browser instead of the sharing dialog
+
+When connected to oCIS, we now open the browser and navigate to the file the user wanted to share instead of opening the legacy sharing dialog.
+
+https://github.com/owncloud/client/issues/10206 

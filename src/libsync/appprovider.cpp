@@ -22,6 +22,7 @@
 #include "libsync/account.h"
 #include "libsync/networkjobs/jsonjob.h"
 
+#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QJsonArray>
 #include <QMimeDatabase>
@@ -72,15 +73,21 @@ const AppProvider::Provider &AppProvider::app(const QString &localPath) const
     return app(mimeType);
 }
 
-bool OCC::AppProvider::open(const AccountPtr &account, const QString &localPath, const QByteArray &fileId) const
+bool AppProvider::open(const AccountPtr &account, const QString &localPath, const QByteArray &fileId) const
 {
     const auto &a = app(localPath);
     if (a.isValid()) {
         SimpleNetworkJob::UrlQuery query { { QStringLiteral("file_id"), QString::fromUtf8(fileId) } };
         auto *job = new JsonJob(account, account->url(), account->capabilities().appProviders().openWebUrl, "POST", query);
-        QObject::connect(job, &JsonJob::finishedSignal, [job] {
-            const auto url = QUrl(job->data().value(QStringLiteral("uri")).toString());
-            qCDebug(lcAppProvider) << "start browser" << url << QDesktopServices::openUrl(url);
+        QObject::connect(job, &JsonJob::finishedSignal, [job, localPath] {
+            if (job->httpStatusCode() == 200) {
+                const auto url = QUrl(job->data().value(QStringLiteral("uri")).toString());
+                qCDebug(lcAppProvider) << "start browser" << url << QDesktopServices::openUrl(url);
+            } else {
+                QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
+                    Q_ARG(QString, QCoreApplication::translate("AppProvider", "Error")),
+                    Q_ARG(QString, QCoreApplication::translate("AppProvider", "Failed to open %1 in web. Error: %2.").arg(localPath, job->reply()->errorString())));
+            }
         });
         job->start();
         return true;

@@ -77,6 +77,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                 if (!drives.isEmpty()) {
                     const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
                     FileSystem::setFolderMinimumPermissions(localDir.path());
+                    Folder::prepareFolder(localDir.path());
                     Utility::setupFavLink(localDir.path());
                     for (const auto &d : drives) {
                         const QString name = GraphApi::Drives::getDriveDisplayName(d);
@@ -1206,47 +1207,52 @@ void ownCloudGui::slotShowShareDialog(const QString &sharePath, const QString &l
         qCWarning(lcApplication) << "Could not open share dialog for" << localPath << "no responsible folder found";
         return;
     }
-
-    const auto accountState = folder->accountState();
-
-    SyncJournalFileRecord fileRecord;
-
-    bool resharingAllowed = true; // lets assume the good
-    if (folder->journalDb()->getFileRecord(file, &fileRecord) && fileRecord.isValid()) {
-        // check the permission: Is resharing allowed?
-        if (!fileRecord._remotePerm.isNull() && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
-            resharingAllowed = false;
-        }
-    }
-
-    // As a first approximation, set the set of permissions that can be granted
-    // either to everything (resharing allowed) or nothing (no resharing).
-    //
-    // The correct value will be found with a propfind from ShareDialog.
-    // (we want to show the dialog directly, not wait for the propfind first)
-    SharePermissions maxSharingPermissions =
-        SharePermissionRead
-        | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
-        | SharePermissionShare;
-    if (!resharingAllowed) {
-        maxSharingPermissions = SharePermission(0);
-    }
-
-
-    ShareDialog *w = nullptr;
-    if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
-        qCInfo(lcApplication) << "Raising share dialog" << sharePath << localPath;
-        w = _shareDialogs[localPath];
+    if (folder->accountState()->account()->capabilities().filesSharing().sharing_roles) {
+        fetchPrivateLinkUrl(folder->accountState()->account(), folder->webDavUrl(), sharePath, this, [](const QUrl &url) {
+            Utility::openBrowser(url, nullptr);
+        });
     } else {
-        qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
-        w = new ShareDialog(accountState, folder->webDavUrl(), sharePath, localPath, maxSharingPermissions, startPage, settingsDialog());
-        w->setAttribute(Qt::WA_DeleteOnClose, true);
+        const auto accountState = folder->accountState();
 
-        _shareDialogs[localPath] = w;
-        connect(w, &QObject::destroyed, this, &ownCloudGui::slotRemoveDestroyedShareDialogs);
+        SyncJournalFileRecord fileRecord;
+
+        bool resharingAllowed = true; // lets assume the good
+        if (folder->journalDb()->getFileRecord(file, &fileRecord) && fileRecord.isValid()) {
+            // check the permission: Is resharing allowed?
+            if (!fileRecord._remotePerm.isNull() && !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
+                resharingAllowed = false;
+            }
+        }
+
+        // As a first approximation, set the set of permissions that can be granted
+        // either to everything (resharing allowed) or nothing (no resharing).
+        //
+        // The correct value will be found with a propfind from ShareDialog.
+        // (we want to show the dialog directly, not wait for the propfind first)
+        SharePermissions maxSharingPermissions =
+            SharePermissionRead
+            | SharePermissionUpdate | SharePermissionCreate | SharePermissionDelete
+            | SharePermissionShare;
+        if (!resharingAllowed) {
+            maxSharingPermissions = SharePermission(0);
+        }
+
+
+        ShareDialog *w = nullptr;
+        if (_shareDialogs.contains(localPath) && _shareDialogs[localPath]) {
+            qCInfo(lcApplication) << "Raising share dialog" << sharePath << localPath;
+            w = _shareDialogs[localPath];
+        } else {
+            qCInfo(lcApplication) << "Opening share dialog" << sharePath << localPath << maxSharingPermissions;
+            w = new ShareDialog(accountState, folder->webDavUrl(), sharePath, localPath, maxSharingPermissions, startPage, settingsDialog());
+            w->setAttribute(Qt::WA_DeleteOnClose, true);
+
+            _shareDialogs[localPath] = w;
+            connect(w, &QObject::destroyed, this, &ownCloudGui::slotRemoveDestroyedShareDialogs);
+        }
+        w->open();
+        raiseDialog(w);
     }
-    w->open();
-    raiseDialog(w);
 }
 
 void ownCloudGui::slotRemoveDestroyedShareDialogs()

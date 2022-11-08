@@ -2,47 +2,42 @@
 <context>
     <name>AccountConfiguredWizardPage</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>表單</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="36"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="33"/>
         <source>✓ You&apos;re all set!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
         <source>Advanced configuration</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
         <source>Configure files download:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
         <source>Download everything</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="163"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="210"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="219"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -69,19 +64,14 @@
 <context>
     <name>BasicLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="20"/>
-        <source>BasicLoginWidget</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="78"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="91"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="75"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="88"/>
         <source>Username</source>
         <translation>使用者名稱</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="98"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="114"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="95"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="111"/>
         <source>Password</source>
         <translation>密碼</translation>
     </message>
@@ -349,22 +339,17 @@
 <context>
     <name>OAuthLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="20"/>
-        <source>OAuthLoginWidget</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="66"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="63"/>
         <source>Open Browser</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="79"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="76"/>
         <source>Copy URL to clipboard</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="179"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="176"/>
         <source>Retry</source>
         <translation>重試</translation>
     </message>
@@ -4512,12 +4497,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>SpacesPage</name>
     <message>
-        <location filename="../src/gui/folderwizard/spacespage.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard/spacespage.ui" line="20"/>
+        <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -4701,8 +4681,8 @@ Are you sure you want to proceed?</source>
     <name>ownCloudTheme::qtVer</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
-        <source>%1 (Built against Qt %1)</source>
-        <translation>%1 (針對Qt構建%1)</translation>
+        <source>%1 (Built against Qt %2)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

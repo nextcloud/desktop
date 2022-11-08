@@ -20,6 +20,7 @@
 #include "folderstatusdelegate.h"
 #include "theme.h"
 
+#include <QDir>
 #include <QFileIconProvider>
 #include <QVarLengthArray>
 
@@ -41,31 +42,16 @@ namespace {
     const char propertyPermissionMap[] = "oc_permissionMap";
 }
 
-static QString removeTrailingSlash(const QString &s)
-{
-    if (s.endsWith(QLatin1Char('/'))) {
-        return s.left(s.size() - 1);
-    }
-    return s;
-}
-
 FolderStatusModel::FolderStatusModel(QObject *parent)
     : QAbstractItemModel(parent)
     , _accountState(nullptr)
     , _dirty(false)
 {
+    connect(this, &FolderStatusModel::rowsInserted, this, &FolderStatusModel::dirtyChanged);
 }
 
 FolderStatusModel::~FolderStatusModel()
 {
-}
-
-static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, const FolderStatusModel::SubFolderInfo &rhs)
-{
-    return QString::compare(lhs._folder->displayName(),
-               rhs._folder->displayName(),
-               Qt::CaseInsensitive)
-        < 0;
 }
 
 void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
@@ -101,9 +87,6 @@ void FolderStatusModel::setAccountState(const AccountStatePtr &accountState)
 
         connect(f, &Folder::newBigFolderDiscovered, this, &FolderStatusModel::slotNewBigFolder, Qt::UniqueConnection);
     }
-
-    // Sort by header text
-    std::sort(_folders.begin(), _folders.end(), sortByFolderHeader);
 
     // Set the root _pathIdx after the sorting
     for (int i = 0; i < _folders.size(); ++i) {
@@ -153,15 +136,14 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     if (role == Qt::EditRole)
         return QVariant();
 
-    // independent of the index
-    if (role == FolderStatusDelegate::IsUsingSpaces) {
-        return _accountState->supportsSpaces();
+    const Columns column = static_cast<Columns>(index.column());
+    const auto itemType = classify(index);
+    if (column == Columns::ItemType) {
+        return itemType;
     }
-    switch (classify(index)) {
+    switch (itemType) {
     case AddButton: {
-        if (role == FolderStatusDelegate::AddButton) {
-            return QVariant(true);
-        } else if (role == Qt::ToolTipRole) {
+        if (role == Qt::ToolTipRole) {
             if (!_accountState->isConnected()) {
                 return tr("You need to be connected to add a folder");
             }
@@ -171,10 +153,24 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     }
     case SubFolder: {
         const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
+
         switch (role) {
         case Qt::DisplayRole:
-            //: Example text: "File.txt (23KB)"
-            return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
+            switch (column) {
+            case Columns::FolderPathRole: {
+                auto f = x._folder;
+                if (!f)
+                    return QVariant();
+                return QVariant(f->path() + x._path);
+            }
+            case Columns::IsReady:
+                return x._folder->isReady();
+            case Columns::HeaderRole:
+                //: Example text: "File.txt (23KB)"
+                return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
+            default:
+                return {};
+            }
         case Qt::ToolTipRole:
             return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
@@ -186,16 +182,6 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
                 return QColor(Qt::red);
             }
             break;
-        case FolderStatusDelegate::FolderPathRole: {
-            auto f = x._folder;
-            if (!f)
-                return QVariant();
-            return QVariant(f->path() + x._path);
-        }
-        case FolderStatusDelegate::IsReady: {
-            auto f = x._folder;
-            return f->isReady();
-        }
         }
     }
         return QVariant();
@@ -227,71 +213,83 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
     const bool accountConnected = _accountState->isConnected();
 
     switch (role) {
-    case FolderStatusDelegate::FolderPathRole:
-        return f->shortGuiLocalPath();
-    case FolderStatusDelegate::FolderSecondPathRole:
-        return f->remotePath();
-    case FolderStatusDelegate::FolderConflictMsg:
-        return (f->syncResult().hasUnresolvedConflicts())
-            ? QStringList(tr("There are unresolved conflicts. Click for details."))
-            : QStringList();
-    case FolderStatusDelegate::FolderErrorMsg: {
-        auto errors = f->syncResult().errorStrings();
-        const auto legacyError = FolderMan::instance()->unsupportedConfiguration(f->path());
-        if (!legacyError) {
-            // the error message might contain new lines, the delegate only expect multiple single line values
-            errors.append(legacyError.error().split(QLatin1Char('\n')));
+    case Qt::DisplayRole:
+        switch (column) {
+        case Columns::FolderPathRole:
+            return f->shortGuiLocalPath();
+        case Columns::FolderSecondPathRole:
+            return f->remotePath();
+        case Columns::FolderConflictMsg:
+            return (f->syncResult().hasUnresolvedConflicts())
+                ? QStringList(tr("There are unresolved conflicts. Click for details."))
+                : QStringList();
+        case Columns::FolderErrorMsg: {
+            auto errors = f->syncResult().errorStrings();
+            const auto legacyError = FolderMan::instance()->unsupportedConfiguration(f->path());
+            if (!legacyError) {
+                // the error message might contain new lines, the delegate only expect multiple single line values
+                errors.append(legacyError.error().split(QLatin1Char('\n')));
+            }
+            return errors;
         }
-        return errors;
-    }
-    case FolderStatusDelegate::FolderInfoMsg:
-        return f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
-            ? QStringList(tr("Virtual file support is enabled."))
-            : QStringList();
-    case FolderStatusDelegate::SyncRunning:
-        return f->syncResult().status() == SyncResult::SyncRunning;
-    case FolderStatusDelegate::HeaderRole:
-        return f->displayName();
-    case FolderStatusDelegate::FolderSyncPaused:
-        return f->syncPaused();
-    case FolderStatusDelegate::FolderAccountConnected:
-        return accountConnected;
+        case Columns::FolderInfoMsg:
+            return f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
+                ? QStringList(tr("Virtual file support is enabled."))
+                : QStringList();
+        case Columns::SyncRunning:
+            return f->syncResult().status() == SyncResult::SyncRunning;
+        case Columns::HeaderRole:
+            return f->displayName();
+        case Columns::FolderSyncPaused:
+            return f->syncPaused();
+        case Columns::FolderAccountConnected:
+            return accountConnected;
+        case Columns::FolderStatusIconRole:
+            if (accountConnected) {
+                auto theme = Theme::instance();
+                if (f->syncPaused()) {
+                    return theme->folderDisabledIcon();
+                } else {
+                    return theme->syncStateIcon(f->syncResult().status());
+                }
+            } else {
+                return Theme::instance()->folderOfflineIcon();
+            }
+        case Columns::SyncProgressItemString:
+            return progress._progressString;
+        case Columns::WarningCount:
+            return progress._warningCount;
+        case Columns::SyncProgressOverallPercent:
+            return progress._overallPercent;
+        case Columns::SyncProgressOverallString:
+            return progress._overallSyncString;
+        case Columns::FolderSyncText:
+            return tr("Local folder: %1").arg(f->shortGuiLocalPath());
+        case Columns::IsReady:
+            return f->isReady();
+        case Columns::IsUsingSpaces:
+            return _accountState->supportsSpaces();
+        case Columns::IsDeployed:
+            return f->isDeployed();
+        case Columns::Priority:
+            return f->priority() + 1; // add one to have a higher prio than the hacked add button
+        case Columns::ItemType: // handled before
+            [[fallthrough]];
+        case Columns::ColumnCount:
+            Q_UNREACHABLE();
+            break;
+        }
+        break;
     case Qt::ToolTipRole: {
-        QString toolTip;
         if (!progress.isNull()) {
             return progress._progressString;
         }
-        if (accountConnected)
-            toolTip = Theme::instance()->statusHeaderText(f->syncResult().status());
-        else
-            toolTip = tr("Signed out");
-        toolTip += QLatin1String("\n");
-        toolTip += folderInfo._folder->path();
-        return toolTip;
-    }
-    case FolderStatusDelegate::FolderStatusIconRole:
         if (accountConnected) {
-            auto theme = Theme::instance();
-            if (f->syncPaused()) {
-                return theme->folderDisabledIcon();
-            } else {
-                return theme->syncStateIcon(f->syncResult().status());
-            }
+            return tr("%1\n%2").arg(Theme::instance()->statusHeaderText(f->syncResult().status()), QDir::toNativeSeparators(folderInfo._folder->path()));
         } else {
-            return Theme::instance()->folderOfflineIcon();
+            return tr("Signed out\n%1").arg(QDir::toNativeSeparators(folderInfo._folder->path()));
         }
-    case FolderStatusDelegate::SyncProgressItemString:
-        return progress._progressString;
-    case FolderStatusDelegate::WarningCount:
-        return progress._warningCount;
-    case FolderStatusDelegate::SyncProgressOverallPercent:
-        return progress._overallPercent;
-    case FolderStatusDelegate::SyncProgressOverallString:
-        return progress._overallSyncString;
-    case FolderStatusDelegate::FolderSyncText:
-        return tr("Local folder: %1").arg(f->shortGuiLocalPath());
-    case FolderStatusDelegate::IsReady:
-        return f->isReady();
+    }
     }
     return QVariant();
 }
@@ -362,7 +360,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
         }
         _dirty = true;
         emit dirtyChanged();
-        emit dataChanged(index, index, QVector<int>() << role);
+        emit dataChanged(index, index, { role });
         return true;
     }
     return QAbstractItemModel::setData(index, value, role);
@@ -371,7 +369,7 @@ bool FolderStatusModel::setData(const QModelIndex &index, const QVariant &value,
 
 int FolderStatusModel::columnCount(const QModelIndex &) const
 {
-    return 1;
+    return static_cast<int>(Columns::ColumnCount);
 }
 
 int FolderStatusModel::rowCount(const QModelIndex &parent) const
@@ -580,7 +578,7 @@ bool FolderStatusModel::canFetchMore(const QModelIndex &parent) const
 void FolderStatusModel::fetchMore(const QModelIndex &parent)
 {
     {
-        const auto isReady = data(parent, FolderStatusDelegate::IsReady);
+        const auto isReady = parent.siblingAtColumn(static_cast<int>(Columns::IsReady)).data();
 
         Q_ASSERT(isReady.isValid());
 
@@ -712,9 +710,9 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._pathIdx = parentInfo->_pathIdx;
         newInfo._pathIdx << newSubs.size();
         newInfo._size = job->sizes().value(path);
-        newInfo._isExternal = permissionMap.value(removeTrailingSlash(path)).toString().contains(QLatin1String("M"));
+        newInfo._isExternal = permissionMap.value(Utility::stripTrailingSlash(path)).toString().contains(QLatin1String("M"));
         newInfo._path = relativePath;
-        newInfo._name = removeTrailingSlash(relativePath).split(QLatin1Char('/')).last();
+        newInfo._name = Utility::stripTrailingSlash(relativePath).split(QLatin1Char('/')).last();
 
         if (relativePath.isEmpty())
             continue;
@@ -916,7 +914,6 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
     // throttle the model updates to prevent an needlessly high cpu usage used on ui updates.
     if (folder._lastProgressUpdateStatus != progress.status() || (std::chrono::steady_clock::now() - folder._lastProgressUpdated > progressUpdateTimeOutC)) {
         folder._lastProgressUpdateStatus = progress.status();
-        const QVector<int> roles = { FolderStatusDelegate::SyncProgressItemString, FolderStatusDelegate::WarningCount, Qt::ToolTipRole };
 
         switch (progress.status()) {
         case ProgressInfo::None:
@@ -937,7 +934,7 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress, Folder *f)
         case ProgressInfo::Done:
             computeProgress(progress, pi);
         }
-        emit dataChanged(index(folderIndex), index(folderIndex), roles);
+        emit dataChanged(index(folderIndex), index(folderIndex));
         folder._lastProgressUpdated = std::chrono::steady_clock::now();
     }
 }

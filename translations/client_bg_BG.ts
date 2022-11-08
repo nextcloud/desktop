@@ -2,47 +2,42 @@
 <context>
     <name>AccountConfiguredWizardPage</name>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="14"/>
-        <source>Form</source>
-        <translation>Формуляр</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="36"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="33"/>
         <source>✓ You&apos;re all set!</source>
         <translation>✓ Всичко е готово!</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="71"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
         <source>Advanced configuration</source>
         <translation>Разширена настройка</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="143"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
         <source>Configure files download:</source>
         <translation>Настройка на изтеглянето на файлове:</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="150"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
         <source>Download everything</source>
         <translation>Изтегляне на всичко</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
         <translation>След като завършите този съветник, можете да настроите синхронизирането на папки ръчно.</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="163"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
         <translation>Ръчна настройка на синхронизацията</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="210"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
         <translation>Избор на локална директория за изтегляне:</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="222"/>
+        <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="219"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -69,19 +64,14 @@
 <context>
     <name>BasicLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="20"/>
-        <source>BasicLoginWidget</source>
-        <translation>Основна джаджа за вход</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="78"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="91"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="75"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="88"/>
         <source>Username</source>
         <translation>Потребителско име</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="98"/>
-        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="114"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="95"/>
+        <location filename="../src/gui/loginrequireddialog/basicloginwidget.ui" line="111"/>
         <source>Password</source>
         <translation>Парола</translation>
     </message>
@@ -349,22 +339,17 @@
 <context>
     <name>OAuthLoginWidget</name>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="20"/>
-        <source>OAuthLoginWidget</source>
-        <translation>OAuth джаджа за влизане</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="66"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="63"/>
         <source>Open Browser</source>
         <translation>Отворен браузър</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="79"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="76"/>
         <source>Copy URL to clipboard</source>
         <translation>Копиране на URL адреса в клипборда</translation>
     </message>
     <message>
-        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="179"/>
+        <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="176"/>
         <source>Retry</source>
         <translation>Повторете</translation>
     </message>
@@ -4532,12 +4517,7 @@ Are you sure you want to proceed?</source>
 <context>
     <name>SpacesPage</name>
     <message>
-        <location filename="../src/gui/folderwizard/spacespage.ui" line="14"/>
-        <source>WizardPage</source>
-        <translation>Страница на съветника</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderwizard/spacespage.ui" line="20"/>
+        <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добавяне на пространство&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Изберете пространство за да го синхронизирате с вашия компютър.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4721,8 +4701,8 @@ Are you sure you want to proceed?</source>
     <name>ownCloudTheme::qtVer</name>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
-        <source>%1 (Built against Qt %1)</source>
-        <translation>%1 (създадено спрямо Qt %1)</translation>
+        <source>%1 (Built against Qt %2)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

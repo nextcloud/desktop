@@ -26,31 +26,7 @@ class FolderStatusDelegate : public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    FolderStatusDelegate();
-
-    // TODO: don't use the role but columns...
-    enum datarole { HeaderRole = Qt::UserRole + 100,
-        FolderPathRole, // for a SubFolder it's the complete path
-        FolderSecondPathRole,
-        FolderConflictMsg,
-        FolderErrorMsg,
-        FolderInfoMsg,
-        FolderSyncPaused,
-        FolderStatusIconRole,
-        FolderAccountConnected,
-
-        SyncProgressOverallPercent,
-        SyncProgressOverallString,
-        SyncProgressItemString,
-        WarningCount,
-        SyncRunning,
-
-        AddButton, // 1 = enabled; 2 = disabled
-        FolderSyncText,
-        IsReady, // boolean
-        IsUsingSpaces // boolean
-    };
-    Q_ENUM(datarole);
+    FolderStatusDelegate(QObject *parent);
 
     void paint(QPainter *, const QStyleOptionViewItem &, const QModelIndex &) const override;
     QSize sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const override;
