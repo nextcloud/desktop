@@ -3290,7 +3290,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Değiştirilme zamanı geçersiz olduğundan eşitlenemedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="937"/>
+        <location filename="../src/libsync/discovery.cpp" line="884"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>%1 dosya kaydı veritabanından silinirken sorun çıktı</translation>
     </message>

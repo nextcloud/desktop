@@ -4,7 +4,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="29"/>
         <source>Open %1 locally</source>
-        <translation type="unfinished"/>
+        <translation>Malfermi %1 loke</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="44"/>
@@ -39,7 +39,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="30"/>
         <source>Activity list</source>
-        <translation type="unfinished"/>
+        <translation>Listo de aktiveco</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="112"/>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../src/gui/folderwizardsourcepage.ui" line="44"/>
         <source>&amp;Choose …</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Elekti…</translation>
     </message>
 </context>
 <context>
@@ -402,12 +402,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Ne ĉifri dosierujon</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Ne ĉifri dosierujon</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="100"/>
@@ -450,7 +450,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
         <source>Encryption failed</source>
-        <translation type="unfinished"/>
+        <translation>Ĉifrado malsukcesis</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="354"/>
@@ -478,7 +478,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="494"/>
         <location filename="../src/gui/accountsettings.cpp" line="560"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Krei novan dosierujon</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="500"/>
@@ -653,7 +653,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1148"/>
         <source>Connecting to %1 …</source>
-        <translation type="unfinished"/>
+        <translation>Konektante al %1…</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1153"/>
@@ -802,7 +802,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="60"/>
         <source>Certificate password:</source>
-        <translation type="unfinished"/>
+        <translation>Atestila pasvorto:</translation>
     </message>
     <message>
         <location filename="../src/gui/addcertificatedialog.ui" line="79"/>
@@ -840,7 +840,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
         <source>Quit</source>
-        <translation type="unfinished"/>
+        <translation>Forlasi</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="166"/>
@@ -952,7 +952,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="678"/>
         <source>Restoration failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Restaŭrado malsukcesis: %1</translation>
     </message>
 </context>
 <context>
@@ -986,13 +986,13 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="14"/>
         <source>Sync Conflict</source>
-        <translation type="unfinished"/>
+        <translation>Sinkroniga konflikto</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
         <location filename="../src/gui/conflictdialog.cpp" line="94"/>
         <source>Conflicting versions of %1.</source>
-        <translation type="unfinished"/>
+        <translation>Konfliktaj versioj de %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="32"/>
@@ -1008,7 +1008,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/conflictdialog.ui" line="57"/>
         <location filename="../src/gui/conflictdialog.ui" line="165"/>
         <source>Click to open the file</source>
-        <translation type="unfinished"/>
+        <translation>Alklaku por malfermi la dosieron</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="96"/>
@@ -1025,7 +1025,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="110"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open local version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Malfermi lokan version&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="154"/>
@@ -1035,38 +1035,38 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="218"/>
         <source>&lt;a href=&quot;%1&quot;&gt;Open server version&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;a href=&quot;%1&quot;&gt;Malfermi servilan version&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
         <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep selected version</source>
-        <translation type="unfinished"/>
+        <translation>Teni elektitan version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="148"/>
         <source>Open local version</source>
-        <translation type="unfinished"/>
+        <translation>Malfermi lokan version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="156"/>
         <source>Open server version</source>
-        <translation type="unfinished"/>
+        <translation>Malfermi servilan version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="174"/>
         <source>Keep both versions</source>
-        <translation type="unfinished"/>
+        <translation>Teni ambaŭ versiojn</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="175"/>
         <source>Keep local version</source>
-        <translation type="unfinished"/>
+        <translation>Teni lokan version</translation>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep server version</source>
-        <translation type="unfinished"/>
+        <translation>Teni servilan version</translation>
     </message>
 </context>
 <context>
@@ -1171,7 +1171,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="281"/>
         <source>Directory not found: %1</source>
-        <translation type="unfinished"/>
+        <translation>Dosierujo ne troviĝis: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="312"/>
@@ -1246,37 +1246,37 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>antaŭ %1 sekundo</numerusform><numerusform>antaŭ %1 sekundoj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>antaŭ %1 minuto</numerusform><numerusform>antaŭ %1 minutoj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>antaŭ %1 horo</numerusform><numerusform>antaŭ %1 horoj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>antaŭ %1 tago</numerusform><numerusform>antaŭ %1 tagoj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>antaŭ %1 monato</numerusform><numerusform>antaŭ %1 monatoj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>antaŭ %1 jaro</numerusform><numerusform>antaŭ %1 jaroj</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
@@ -1352,7 +1352,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="221"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Remalfermi TTT-legilon</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="224"/>
@@ -1531,17 +1531,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folder.cpp" line="1271"/>
         <source>Remove All Files?</source>
-        <translation type="unfinished"/>
+        <translation>Ĉu forigi ĉiujn dosierojn?</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1275"/>
         <source>Remove all files</source>
-        <translation type="unfinished"/>
+        <translation>Forigi ĉiujn dosierojn</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1276"/>
         <source>Keep files</source>
-        <translation type="unfinished"/>
+        <translation>Teni dosierojn</translation>
     </message>
 </context>
 <context>
@@ -1549,12 +1549,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="14"/>
         <source>Create new folder</source>
-        <translation type="unfinished"/>
+        <translation>Krei novan dosierujon</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="42"/>
         <source>Enter folder name</source>
-        <translation type="unfinished"/>
+        <translation>Tajpu nomon de dosierujo</translation>
     </message>
     <message>
         <location filename="../src/gui/foldercreationdialog.ui" line="61"/>
@@ -1863,7 +1863,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1174"/>
         <source>Preparing to sync …</source>
-        <translation type="unfinished"/>
+        <translation>Pretigante sinkronigon…</translation>
     </message>
 </context>
 <context>
@@ -2088,7 +2088,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="134"/>
         <source>&amp;Channel</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Kanalo</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="151"/>
@@ -2194,7 +2194,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="479"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>ZIP-arkivoj</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="485"/>
@@ -2352,7 +2352,7 @@ Elementoj, kies forigo estas permesita, estos forigitaj, se ili malhelpas forigo
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="14"/>
         <source>Invalid filename</source>
-        <translation type="unfinished"/>
+        <translation>Nevalida dosiernomo</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.ui" line="23"/>
@@ -2466,7 +2466,7 @@ Elementoj, kies forigo estas permesita, estos forigitaj, se ili malhelpas forigo
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Kopirajtoj 2017-2021 Nextcloud GmbH&lt;br /&gt;Kopirajtoj 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="58"/>
@@ -2549,7 +2549,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
         <source>Update Failed</source>
-        <translation type="unfinished"/>
+        <translation>Ĝisdatigo malsukcesis</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
@@ -2559,17 +2559,17 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Ask again later</source>
-        <translation type="unfinished"/>
+        <translation>Redemandi poste</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Restart and update</source>
-        <translation type="unfinished"/>
+        <translation>Relanĉi kaj ĝisdatigi</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
         <source>Update manually</source>
-        <translation type="unfinished"/>
+        <translation>Ĝisdatigi permane</translation>
     </message>
 </context>
 <context>
@@ -2818,7 +2818,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
         <source>Sync the folder &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigi la dosierujon «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
@@ -2829,7 +2829,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
-        <translation type="unfinished"/>
+        <translation>%1 da libera spaco</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="374"/>
@@ -3099,7 +3099,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="93"/>
         <source>Add %1 account</source>
-        <translation type="unfinished"/>
+        <translation>Aldoni konton %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="97"/>
@@ -3135,7 +3135,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="433"/>
         <source>Stay safe</source>
-        <translation type="unfinished"/>
+        <translation>Resti sekura</translation>
     </message>
 </context>
 <context>
@@ -3209,7 +3209,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="315"/>
         <source>Filename is too long.</source>
-        <translation type="unfinished"/>
+        <translation>Dosiernomo tro longas.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="319"/>
@@ -3267,7 +3267,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="937"/>
+        <location filename="../src/libsync/discovery.cpp" line="884"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
@@ -3511,7 +3511,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>Failed to rename file</source>
-        <translation type="unfinished"/>
+        <translation>Ne eblis ŝanĝi nomon de dosiero</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
@@ -3807,7 +3807,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="105"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>Agordoj de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="123"/>
@@ -3908,7 +3908,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Protekti per pasvorto</translation>
     </message>
 </context>
 <context>
@@ -3917,7 +3917,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharee.cpp" line="133"/>
         <source>%1 (%2)</source>
         <comment>sharee (shareWithAdditionalInfo)</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)</translation>
     </message>
 </context>
 <context>
@@ -4020,12 +4020,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1229"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Solvi konflikton…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1233"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Movi kaj ŝanĝi nomon…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1236"/>
@@ -4035,7 +4035,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1238"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Forviŝi lokajn ŝanĝojn</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1244"/>
@@ -4344,7 +4344,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>Ĉio sinkroniĝis!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
@@ -4359,12 +4359,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigante</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
         <source>Sync paused</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigo paŭzinta</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
@@ -4384,12 +4384,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%1 el %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigante dosieron %1 el %2</translation>
     </message>
 </context>
 <context>
@@ -4407,19 +4407,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="209"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Malfermi ĉefdialogon</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="212"/>
         <location filename="../src/gui/systray.cpp" line="222"/>
         <source>Pause sync</source>
-        <translation type="unfinished"/>
+        <translation>Paŭzigi sinkronigon</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="213"/>
         <location filename="../src/gui/systray.cpp" line="228"/>
         <source>Resume sync</source>
-        <translation type="unfinished"/>
+        <translation>Daŭrigi sinkronigon</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="214"/>
@@ -4434,17 +4434,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="216"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>Forlasi %1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="222"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Ĉezigi sinkronigadon por ĉio</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="228"/>
         <source>Resume sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Daŭrigi sinkronigon por ĉio</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="421"/>
@@ -4458,7 +4458,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/theme.cpp" line="520"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Labortabla Kliento %1&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="523"/>
@@ -4505,7 +4505,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="510"/>
         <source>Retry all uploads</source>
-        <translation type="unfinished"/>
+        <translation>Reprovi ĉiujn alŝutojn</translation>
     </message>
 </context>
 <context>
@@ -4523,7 +4523,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1058"/>
         <source>Remove connection</source>
-        <translation type="unfinished"/>
+        <translation>Forigi konekton</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="1059"/>
@@ -4620,7 +4620,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Ĉi tiu semajno</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
@@ -4720,7 +4720,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="20"/>
         <source>Form</source>
-        <translation type="unfinished"/>
+        <translation>Formularo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -4731,7 +4731,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>Saluti ĉe via %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -4908,7 +4908,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
         <source>Local Folder</source>
-        <translation type="unfinished"/>
+        <translation>Loka dosierujo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="121"/>
@@ -4923,12 +4923,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Servila adreso</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Sync Logo</source>
-        <translation type="unfinished"/>
+        <translation>Sinkroniga emblemo</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
@@ -5024,7 +5024,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="183"/>
         <source>Server address</source>
-        <translation type="unfinished"/>
+        <translation>Servila adreso</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudsetupnocredspage.ui" line="259"/>
@@ -5042,27 +5042,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="585"/>
         <source>You renamed %1</source>
-        <translation type="unfinished"/>
+        <translation>Vi ŝanĝis nomon de %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="587"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Vi forviŝis %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="589"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Vi kreis %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="591"/>
         <source>You changed %1</source>
-        <translation type="unfinished"/>
+        <translation>Vi ŝanĝis %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="614"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigis %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -5123,7 +5123,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="805"/>
         <source>Mark as read</source>
-        <translation type="unfinished"/>
+        <translation>Marki kiel legitan</translation>
     </message>
 </context>
 <context>
@@ -5175,7 +5175,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sinkronigi nun</translation>
     </message>
 </context>
 <context>
@@ -5258,7 +5258,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="135"/>
         <source>Account actions</source>
-        <translation type="unfinished"/>
+        <translation>Kontaj agoj</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
@@ -5313,7 +5313,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Nevidebla</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
@@ -5449,7 +5449,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="199"/>
         <location filename="../src/gui/tray/Window.qml" line="334"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>Ĉezigi sinkronigadon por ĉio</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="219"/>
@@ -5464,7 +5464,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="305"/>
         <source>Add new account</source>
-        <translation type="unfinished"/>
+        <translation>Aldoni novan konton</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="340"/>
@@ -5474,7 +5474,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="363"/>
         <source>Exit</source>
-        <translation type="unfinished"/>
+        <translation>Forlasi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="373"/>
@@ -5801,7 +5801,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="64"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Interna ligilo</translation>
     </message>
     <message>
         <location filename="../src/gui/internallinkwidget.ui" line="83"/>
@@ -5884,7 +5884,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
         <source>Set password</source>
-        <translation type="unfinished"/>
+        <translation>Agordi pasvorton</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
@@ -5914,7 +5914,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>Nomo de ligilo</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
@@ -5987,7 +5987,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
         <source>No results for &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Neniu rezulto pri «%1»</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
