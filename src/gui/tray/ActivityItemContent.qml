@@ -15,12 +15,11 @@ RowLayout {
 
     property bool showDismissButton: false
 
-    property bool childHovered: shareButton.hovered || dismissActionButton.hovered
+    property bool childHovered: fileDetailsButton.hovered || dismissActionButton.hovered
 
     property int iconSize: Style.trayListItemIconSize
 
     signal dismissButtonClicked()
-    signal shareButtonClicked()
 
     spacing: Style.trayHorizontalMargin
 
@@ -182,7 +181,7 @@ RowLayout {
         Layout.preferredWidth: Style.trayListItemIconSize
         Layout.preferredHeight: Style.trayListItemIconSize
 
-        visible: root.showDismissButton && !shareButton.visible
+        visible: root.showDismissButton && !fileDetailsButton.visible
 
         imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
         imageSourceHover: "image://svgimage-custom-color/clear.svg" + "/" + UserModel.currentUser.headerTextColor
@@ -195,20 +194,18 @@ RowLayout {
     }
 
     CustomButton {
-        id: shareButton
+        id: fileDetailsButton
 
         Layout.preferredWidth: Style.trayListItemIconSize
         Layout.preferredHeight: Style.trayListItemIconSize
 
-        visible: root.activityData.isShareable
-
-        imageSource: "image://svgimage-custom-color/share.svg" + "/" + Style.adjustedCurrentUserHeaderColor
-        imageSourceHover: "image://svgimage-custom-color/share.svg" + "/" + Style.currentUserHeaderTextColor
-
-        toolTipText: qsTr("Open share dialog")
-
+        imageSource: "image://svgimage-custom-color/more.svg" + "/" + Style.adjustedCurrentUserHeaderColor
+        imageSourceHover: "image://svgimage-custom-color/more.svg" + "/" + Style.currentUserHeaderTextColor
+        toolTipText: qsTr("Open file details")
         bgColor: Style.currentUserHeaderColor
 
-        onClicked: root.shareButtonClicked()
+        visible: model.showFileDetails
+
+        onClicked: Systray.presentShareViewInTray(model.openablePath)
     }
 }

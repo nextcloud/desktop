@@ -89,17 +89,6 @@ RowLayout {
                     moreActionsButtonContextMenu.close();
                 }
             }
-
-            ActivityItemContextMenu {
-                id: moreActionsButtonContextMenu
-
-                maxActionButtons: root.maxActionButtons
-                linksContextMenu: root.linksContextMenu
-
-                onMenuEntryTriggered: function(entryIndex) {
-                    root.triggerAction(entryIndex)
-                }
-            }
         }
     }
 }
