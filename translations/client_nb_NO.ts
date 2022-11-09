@@ -5174,7 +5174,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
         <translation type="unfinished"/>
     </message>

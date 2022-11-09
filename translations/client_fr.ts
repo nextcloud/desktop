@@ -5197,7 +5197,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>SyncStatus</name>
     <message>
-        <location filename="../src/gui/tray/SyncStatus.qml" line="113"/>
+        <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
         <translation>Synchroniser maintenant</translation>
     </message>
