@@ -84,6 +84,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QString davUser MEMBER _davUser)
     Q_PROPERTY(QString displayName MEMBER _displayName)
     Q_PROPERTY(QUrl url MEMBER _url)
+    Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
 
 public:
     static AccountPtr create();
@@ -294,6 +295,9 @@ public:
     void setTrustCertificates(bool trustCertificates);
     bool trustCertificates() const;
 
+    void setE2eEncryptionKeysGenerationAllowed(bool allowed);
+    bool e2eEncryptionKeysGenerationAllowed() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
@@ -347,6 +351,8 @@ private:
     static QString davPathBase();
 
     bool _trustCertificates = false;
+
+    bool _e2eEncryptionKeysGenerationAllowed = false;
 
     QWeakPointer<Account> _sharedThis;
     QString _id;
