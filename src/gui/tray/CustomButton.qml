@@ -24,8 +24,12 @@ Button {
 
     background: Rectangle {
         id: bgRectangle
+
+        property real normalOpacity: 0.3
+        property real hoverOpacity: 1.0
+
         color: "transparent"
-        opacity: parent.hovered ? 1.0 : bgOpacity
+        opacity: parent.hovered ? hoverOpacity : normalOpacity
         radius: width / 2
     }
 
