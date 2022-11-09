@@ -924,7 +924,7 @@ void Account::setE2eEncryptionKeysGenerationAllowed(bool allowed)
     _e2eEncryptionKeysGenerationAllowed = allowed;
 }
 
-[[nodiscard]] bool Account::e2eEncryptionKeysGenerationAllowed() const
+bool Account::e2eEncryptionKeysGenerationAllowed() const
 {
     return _e2eEncryptionKeysGenerationAllowed;
 }
