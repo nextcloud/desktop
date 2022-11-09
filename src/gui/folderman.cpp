@@ -616,6 +616,8 @@ void FolderMan::forceSyncForFolder(Folder *folder)
     }
 
     folder->slotWipeErrorBlacklist(); // issue #6757
+    folder->setSyncPaused(false);
+
     // Insert the selected folder at the front of the queue
     scheduleFolderNext(folder);
 }
