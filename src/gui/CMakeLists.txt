@@ -317,6 +317,9 @@ set(3rdparty_SRC
     ../3rdparty/kirigami/wheelhandler.cpp
    )
 
+set_property(SOURCE ../3rdparty/kmessagewidget/kmessagewidget.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+set_property(SOURCE ../3rdparty/kirigami/wheelhandler.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
+
 if(NOT WIN32)
    list(APPEND 3rdparty_SRC ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp)
    set_property(SOURCE ../3rdparty/qtlockedfile/qtlockedfile_unix.cpp PROPERTY SKIP_UNITY_BUILD_INCLUSION ON)
