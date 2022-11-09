@@ -138,3 +138,10 @@ bool OCC::Models::WeightedQSortFilterProxyModel::lessThan(const QModelIndex &sou
     }
     return QSortFilterProxyModel::lessThan(source_left, source_right);
 }
+
+bool OCC::Models::FilteringProxyModel::filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const
+{
+    // column doesn't matter, since we do not filter based on a specific column but on a specific item role
+    const auto index = sourceModel()->index(sourceRow, filterKeyColumn(), sourceParent);
+    return sourceModel()->data(index, static_cast<int>(filterRole())).toBool();
+}

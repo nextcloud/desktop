@@ -36,8 +36,13 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     ui->setupUi(this);
     _model = new SpacesModel(this);
 
-    auto *sortModel = new OCC::Models::WeightedQSortFilterProxyModel(this);
-    sortModel->setSourceModel(_model);
+    auto *filterModel = new Models::FilteringProxyModel(this);
+    filterModel->setSourceModel(_model);
+    filterModel->setFilterRole(Models::DataRoles::FilterRole);
+    filterModel->setFilterKeyColumn(static_cast<int>(SpacesModel::Columns::Enabled));
+
+    auto *sortModel = new Models::WeightedQSortFilterProxyModel(this);
+    sortModel->setSourceModel(filterModel);
     sortModel->setSortCaseSensitivity(Qt::CaseInsensitive);
     sortModel->setWeightedColumn(static_cast<int>(SpacesModel::Columns::Priority));
 
@@ -56,6 +61,7 @@ SpacesBrowser::SpacesBrowser(QWidget *parent)
     // part of the name (see the delegate)
     header->hideSection(static_cast<int>(SpacesModel::Columns::Subtitle));
     header->hideSection(static_cast<int>(SpacesModel::Columns::Priority));
+    header->hideSection(static_cast<int>(SpacesModel::Columns::Enabled));
     header->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(header, &QHeaderView::customContextMenuRequested, header, [header, this] {
         auto menu = new QMenu(this);
@@ -77,16 +83,7 @@ void SpacesBrowser::setAccount(OCC::AccountPtr acc)
         QTimer::singleShot(0, this, [this] {
             auto drive = new OCC::GraphApi::Drives(_acc);
             connect(drive, &OCC::GraphApi::Drives::finishedSignal, this, [drive, this] {
-                auto drives = drive->drives();
-
-                // hide disabled spaces
-                drives.erase(std::remove_if(drives.begin(), drives.end(), [](const OpenAPI::OAIDrive &drive) {
-                    // this is how disabled spaces are represented in the graph API
-                    return drive.getRoot().getDeleted().getState() == QStringLiteral("trashed");
-                }));
-
-                _model->setDriveData(_acc, drives);
-                show();
+                _model->setDriveData(_acc, drive->drives());
             });
             drive->start();
         });

@@ -55,7 +55,9 @@ QVariant SpacesModel::headerData(int section, Qt::Orientation orientation, int r
                 return tr("Image");
             case Columns::Priority:
                 return tr("Priority");
-            case Columns::ColumnCount:
+            case Columns::Enabled:
+                return tr("Enabled");
+            default:
                 Q_UNREACHABLE();
                 break;
             }
@@ -105,7 +107,7 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
             return {};
         case Columns::Priority:
             return GraphApi::Drives::getDrivePriority(item);
-        case Columns::ColumnCount:
+        default:
             Q_UNREACHABLE();
             break;
         }
@@ -153,6 +155,13 @@ QVariant SpacesModel::data(const QModelIndex &index, int role) const
         }
         default:
             return data(index, Qt::DisplayRole);
+        }
+    case Models::FilterRole:
+        switch (column) {
+        case Columns::Enabled:
+            return !GraphApi::isDriveDisabled(item);
+        default:
+            Q_UNREACHABLE();
         }
     }
     return {};
