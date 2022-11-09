@@ -971,7 +971,7 @@ void AccountSettings::slotSetSubFolderAvailability(Folder *folder, const QString
 
 void AccountSettings::displayMnemonic(const QString &mnemonic)
 {
-    auto widget = QDialog(this);
+    QDialog widget;
     Ui_Dialog ui;
     ui.setupUi(&widget);
     widget.setWindowTitle(tr("End-to-End encryption mnemonic"));
