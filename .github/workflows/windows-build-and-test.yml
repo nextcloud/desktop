@@ -72,7 +72,7 @@ jobs:
 
               $binFolder = "$buildFolder\bin"
 
-              & OpenCppCoverage.exe --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300 -j (Get-CimInstance Win32_ComputerSystem).NumberOfLogicalProcessors
+              & OpenCppCoverage.exe --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300
           }
           
           runTestsAndCreateCoverage

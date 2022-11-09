@@ -147,7 +147,7 @@ private slots:
     void testACreate() { // create a new file
         QString file(_rootPath + "/foo.txt");
         QString cmd;
-        cmd = QString("echo \"xyz\" > %1").arg(file);
+        cmd = QString("echo \"xyz\" > \"%1\"").arg(file);
         qDebug() << "Command: " << cmd;
         system(cmd.toLocal8Bit());
 
