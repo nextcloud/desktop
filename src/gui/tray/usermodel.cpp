@@ -915,12 +915,17 @@ bool UserModel::isUserConnected(const int id)
     return _users[id]->isConnected();
 }
 
-QImage UserModel::avatarById(const int id)
+QImage UserModel::avatarById(const int id) const
 {
-    if (id < 0 || id >= _users.size())
-        return {};
+    const auto foundUserByIdIter = std::find_if(std::cbegin(_users), std::cend(_users), [&id](const OCC::User* const user) {
+        return user->account()->id() == QString::number(id);
+    });
 
-    return _users[id]->avatar();
+    if (foundUserByIdIter == std::cend(_users)) {
+        return {};
+    }
+
+    return (*foundUserByIdIter)->avatar();
 }
 
 QString UserModel::currentUserServer()
@@ -966,8 +971,8 @@ void UserModel::addUser(AccountStatePtr &user, const bool &isCurrent)
         });
 
         _users << u;
-        if (isCurrent) {
-            _currentUserId = _users.indexOf(_users.last());
+        if (isCurrent || _currentUserId < 0) {
+            setCurrentUserId(_users.size() - 1);
         }
 
         endInsertRows();
@@ -1018,13 +1023,31 @@ void UserModel::openCurrentAccountServer()
 
 void UserModel::setCurrentUserId(const int id)
 {
-    if (_currentUserId == id || _currentUserId < 0 || _currentUserId >= _users.size())
+    Q_ASSERT(id < _users.size());
+
+    if (id < 0 || id >= _users.size()) {
+        if (id < 0 && _currentUserId != id) {
+            _currentUserId = id;
+            emit currentUserChanged();
+        }
         return;
-    
-    _users[_currentUserId]->setCurrentUser(false);
-    _users[id]->setCurrentUser(true);
-    _currentUserId = id;
-    emit currentUserChanged();
+    }
+
+    const auto isCurrentUserChanged = !_users[id]->isCurrentUser();
+    if (isCurrentUserChanged) {
+        for (const auto user : _users) {
+            user->setCurrentUser(false);
+        }
+        _users[id]->setCurrentUser(true);
+    }
+
+    if (_currentUserId == id && isCurrentUserChanged) {
+        // order has changed, index remained the same
+        emit currentUserChanged();
+    } else if (_currentUserId != id) {
+        _currentUserId = id;
+        emit currentUserChanged();
+    }
 }
 
 void UserModel::login(const int id)
@@ -1045,26 +1068,22 @@ void UserModel::logout(const int id)
 
 void UserModel::removeAccount(const int id)
 {
-    if (id < 0 || id >= _users.size())
+    if (id < 0 || id >= _users.size()) {
         return;
+    }
 
     QMessageBox messageBox(QMessageBox::Question,
-        tr("Confirm Account Removal"),
-        tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
-           "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-            .arg(_users[id]->name()),
-        QMessageBox::NoButton);
-    QPushButton *yesButton =
-        messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
+                           tr("Confirm Account Removal"),
+                           tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+                              "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+                               .arg(_users[id]->name()),
+                           QMessageBox::NoButton);
+    const auto * const yesButton = messageBox.addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox.addButton(tr("Cancel"), QMessageBox::NoRole);
 
     messageBox.exec();
     if (messageBox.clickedButton() != yesButton) {
         return;
-    }
-
-    if (_users[id]->isCurrentUser() && _users.count() > 1) {
-        id == 0 ? setCurrentUserId(1) : setCurrentUserId(0);
     }
 
     _users[id]->logout();
@@ -1073,6 +1092,15 @@ void UserModel::removeAccount(const int id)
     beginRemoveRows(QModelIndex(), id, id);
     _users.removeAt(id);
     endRemoveRows();
+
+    if (_users.size() <= 1) {
+        setCurrentUserId(_users.size() - 1);
+    } else if (currentUserId() > id) {
+        // an account was removed from the in-between 0 and the current one, the index of the current one needs a decrement
+        setCurrentUserId(currentUserId() - 1);
+    } else if (currentUserId() == id) {
+        setCurrentUserId(id < _users.size() ? id : id - 1);
+    }
 }
 
 std::shared_ptr<OCC::UserStatusConnector> UserModel::userStatusConnector(int id)
