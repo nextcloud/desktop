@@ -149,11 +149,11 @@ ApplicationWindow {
 
     Drawer {
         id: fileDetailsDrawer
-        width: parent.width
+        width: parent.width - Style.trayDrawerMargin
         height: parent.height
         padding: 0
         edge: Qt.RightEdge
-        modal: false
+        modal: true
         visible: false
 
         background: Rectangle {
