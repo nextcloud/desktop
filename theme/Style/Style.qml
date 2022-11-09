@@ -42,6 +42,7 @@ QtObject {
     property int trayModalWidth: 380
     property int trayModalHeight: 490
     property int trayListItemIconSize: accountAvatarSize
+    property int trayDrawerMargin: trayWindowHeaderHeight
     property real thumbnailImageSizeReduction: 0.2  // We reserve some space within the thumbnail "item", here about 20%.
                                                     // This is because we need to also add the added/modified icon and we
                                                     // want them to fit within the general icon size. We also need to know

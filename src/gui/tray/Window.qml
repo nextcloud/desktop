@@ -106,10 +106,10 @@ ApplicationWindow {
     Drawer {
         id: userStatusDrawer
         width: parent.width
-        height: parent.height
+        height: parent.height - Style.trayDrawerMargin
         padding: 0
         edge: Qt.BottomEdge
-        modal: false
+        modal: true
         visible: false
 
         background: Rectangle {
