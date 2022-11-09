@@ -188,47 +188,17 @@ ApplicationWindow {
                                                 fileDetailsDrawer.pageToShow);
                 }
             }
-            sourceComponent: ColumnLayout {
+            sourceComponent:FileDetailsPage {
+                id: fileDetails
+
                 anchors.fill: parent
 
-                FileDetailsPage {
-                    id: fileDetails
+                background: null
+                accountState: fileDetailsDrawer.folderAccountState
+                localPath: fileDetailsDrawer.fileLocalPath
+                showCloseButton: true
 
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-
-                    background: null
-                    accountState: fileDetailsDrawer.folderAccountState
-                    localPath: fileDetailsDrawer.fileLocalPath
-                }
-
-                CustomButton {
-                    FontMetrics {
-                        id: doneButtonFm
-                        font: parent.contentsFont
-                    }
-
-                    Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                    Layout.topMargin: fileDetails.intendedPadding
-                    Layout.bottomMargin: fileDetails.intendedPadding
-                    Layout.leftMargin: fileDetails.intendedPadding
-                    Layout.rightMargin: fileDetails.intendedPadding
-                    Layout.preferredWidth: doneButtonFm.boundingRect(text).width +
-                                           leftPadding +
-                                           rightPadding +
-                                           Style.standardSpacing * 2
-
-                    text: qsTr("Done")
-                    contentsFont.bold: true
-                    bgColor: Style.currentUserHeaderColor
-                    textColor: Style.adjustedCurrentUserHeaderColor
-                    textColorHovered: Style.currentUserHeaderTextColor
-                    onClicked: fileDetailsDrawer.close()
-
-                    Accessible.role: Accessible.Button
-                    Accessible.name: qsTr("Close the file details view")
-                    Accessible.onPressAction: clicked()
-                }
+                onCloseButtonClicked: fileDetailsDrawer.close()
             }
         }
     }
