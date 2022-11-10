@@ -66,7 +66,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="88"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Erreur</translation>
     </message>
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="89"/>
