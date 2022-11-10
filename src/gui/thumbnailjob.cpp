@@ -19,7 +19,7 @@
 namespace OCC {
 
 ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject *parent)
-    : AbstractNetworkJob(account, account->davUrl(), QStringLiteral("index.php/apps/files/api/v1/thumbnail/150/150") + path, parent)
+    : AbstractNetworkJob(account, account->url(), QStringLiteral("index.php/apps/files/api/v1/thumbnail/150/150") + path, parent)
 {
     Q_ASSERT(path.startsWith(QLatin1Char('/')));
     setIgnoreCredentialFailure(true);
