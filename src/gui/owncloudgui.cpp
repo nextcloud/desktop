@@ -76,7 +76,7 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                 auto drives = drive->drives();
 
                 // we do not want to set up folder sync connections for disabled spaces (#10173)
-                drives.erase(std::remove_if(drives.begin(), drives.end(), GraphApi::isDriveDisabled));
+                drives.erase(std::remove_if(drives.begin(), drives.end(), &GraphApi::isDriveDisabled), drives.end());
 
                 if (!drives.isEmpty()) {
                     const QDir localDir(accountStatePtr->account()->defaultSyncRoot());
