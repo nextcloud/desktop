@@ -228,6 +228,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
     // Connect E2E stuff
     initializeE2eEncryption();
+    _ui->encryptionMessage->setCloseButtonVisible(false);
 
     _ui->connectLabel->setText(tr("No account configured."));
 
