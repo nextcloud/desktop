@@ -70,9 +70,12 @@ nextcloud_add_test(ShareModel)
 nextcloud_add_test(ShareeModel)
 nextcloud_add_test(SortedShareModel)
 
-if(BUILD_E2E_TESTS)
+if(ADD_E2E_TESTS)
     nextcloud_add_test(E2eServerSetup)
     nextcloud_add_test(E2eFileTransfer)
+else()
+    nextcloud_build_test(E2eServerSetup)
+    nextcloud_build_test(E2eFileTransfer)
 endif()
 
 if( UNIX AND NOT APPLE )

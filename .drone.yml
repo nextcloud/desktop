@@ -9,7 +9,7 @@ steps:
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DBUILD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
+    - cmake -G Ninja -DCMAKE_C_COMPILER=gcc-11 -DCMAKE_CXX_COMPILER=g++-11 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DADD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
 
 - name: compile
   image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-11
@@ -79,7 +79,7 @@ steps:
       path: /drone/build
   commands:
     - cd /drone/build
-    - cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DBUILD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
+    - cmake -G Ninja -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-14 -DCMAKE_CXX_COMPILER=clang++-14 -DCMAKE_BUILD_TYPE=Debug -DQUICK_COMPILER=ON -DBUILD_UPDATER=ON -DBUILD_TESTING=1 -DADD_E2E_TESTS=ON -DECM_ENABLE_SANITIZERS=address -DCMAKE_CXX_FLAGS=-Werror -DOPENSSL_ROOT_DIR=/usr/local/lib64 ../src
 - name: compile
   image: ghcr.io/nextcloud/continuous-integration-client:client-5.15-11
   volumes:
