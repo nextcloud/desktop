@@ -246,9 +246,9 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
     connect(actionDisplayMnemonic, &QAction::triggered, this, [this]() {
         displayMnemonic(_accountState->account()->e2e()->_mnemonic);
     });
-    _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
+    _ui->encryptionMessage->setText(tr("End-to-End encryption has been enabled for this account"));
     _ui->encryptionMessage->show();
-    
+
 }
 
 void AccountSettings::slotE2eEncryptionGenerateKeys()
