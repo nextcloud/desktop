@@ -117,17 +117,17 @@ private slots:
     void updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const;
     void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
 
-private:
+private slots:
     void displayMnemonic(const QString &mnemonic);
-    void showConnectionLabel(const QString &message,
-        QStringList errors = QStringList());
-    bool event(QEvent *) override;
-    void createAccountToolbox();
+    void showConnectionLabel(const QString &message, QStringList errors = QStringList());
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
 
     void initializeE2eEncryption();
     void removeActionFromEncryptionMessage(const QString &actionId);
+
+private:
+    bool event(QEvent *) override;
     QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
 
     /// Returns the alias of the selected folder, empty string if none
