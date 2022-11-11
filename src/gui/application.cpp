@@ -232,15 +232,8 @@ Application::Application(int &argc, char **argv, Platform *platform)
     , _userTriggeredConnect(false)
     , _debugMode(false)
 {
-#ifdef Q_OS_WIN
-    // Ensure OpenSSL config file is only loaded from app directory
-    const QString opensslConf = QCoreApplication::applicationDirPath() + QStringLiteral("/openssl.cnf");
-    qputenv("OPENSSL_CONF", opensslConf.toLocal8Bit());
-#elif defined(Q_OS_LINUX)
-#if defined(OC_PLUGIN_DIR)
-    addLibraryPath(QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)));
-#endif
-#endif
+    platform->setApplication(this);
+
     // TODO: Can't set this without breaking current config paths
     //    setOrganizationName(QLatin1String(APPLICATION_VENDOR));
     setOrganizationDomain(QStringLiteral(APPLICATION_REV_DOMAIN));

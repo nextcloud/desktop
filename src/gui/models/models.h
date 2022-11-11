@@ -28,7 +28,10 @@ namespace Models {
 
     enum DataRoles {
         UnderlyingDataRole = Qt::UserRole + 100,
-        StringFormatWidthRole // The width for a cvs formated column
+        StringFormatWidthRole, // The width for a cvs formatted column
+
+        // data() should return boolean values for this role to work in conjunction with FilteringProxyModel
+        FilterRole,
     };
     Q_ENUM_NS(DataRoles)
 
@@ -94,5 +97,13 @@ namespace Models {
     {
         return range<T>(0, end);
     }
+
+    class FilteringProxyModel : public QSortFilterProxyModel
+    {
+        using QSortFilterProxyModel::QSortFilterProxyModel;
+
+    protected:
+        bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    };
 } // OCC::Models namespace
 } // OCC namespace

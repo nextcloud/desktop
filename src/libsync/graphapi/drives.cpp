@@ -77,3 +77,11 @@ uint32_t Drives::getDrivePriority(const OpenAPI::OAIDrive &drive)
     }
     return 0;
 }
+
+namespace OCC::GraphApi {
+bool isDriveDisabled(const OpenAPI::OAIDrive &drive)
+{
+    // this is how disabled spaces are represented in the graph API
+    return drive.getRoot().getDeleted().getState() == QLatin1String("trashed");
+}
+}

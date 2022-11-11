@@ -33,8 +33,9 @@ public:
         WebUrl,
         WebDavUrl,
         Priority,
+        Enabled,
 
-        ColumnCount
+        ColumnCount,
     };
     Q_ENUM(Columns)
     explicit SpacesModel(QObject *parent = nullptr);

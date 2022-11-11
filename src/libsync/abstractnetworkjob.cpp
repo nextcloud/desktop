@@ -182,6 +182,11 @@ void AbstractNetworkJob::adoptRequest(QPointer<QNetworkReply> reply)
 void AbstractNetworkJob::slotFinished()
 {
     _finished = true;
+
+    if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
+        Q_EMIT _account->invalidCredentials();
+    }
+
     if (_reply->error() != QNetworkReply::NoError) {
         if (_account->jobQueue()->retry(this)) {
             qCDebug(lcNetworkJob) << "Queued:" << this << "for retry";
@@ -205,9 +210,6 @@ void AbstractNetworkJob::slotFinished()
     // get the Date timestamp from reply
     _responseTimestamp = _reply->rawHeader("Date");
 
-    if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
-        Q_EMIT _account->invalidCredentials();
-    }
     if (!reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).isNull() && !(isAuthenticationJob() || reply()->request().hasRawHeader(QByteArrayLiteral("OC-Connection-Validator")))) {
         Q_EMIT _account->unknownConnectionState();
         qCWarning(lcNetworkJob) << this << "Unsupported redirect on" << _reply->url().toString() << "to" << reply()->attribute(QNetworkRequest::RedirectionTargetAttribute).toString();
@@ -353,7 +355,7 @@ void AbstractNetworkJob::retry()
     _retryCount++;
     qCInfo(lcNetworkJob) << "Restarting" << this << "for the" << _retryCount << "time";
     if (_requestBody) {
-        if (_requestBody->isSequential()) {
+        if (!_requestBody->isSequential()) {
             Q_ASSERT(_requestBody->isOpen());
             _requestBody->seek(0);
         } else {

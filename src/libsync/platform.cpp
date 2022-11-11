@@ -12,31 +12,45 @@
  * for more details.
  */
 
-#include "application.h"
 #include "platform.h"
 
-#include <QCoreApplication>
+#include "platform_unix.h"
+#include "platform_win.h"
+
+#if defined(Q_OS_MAC)
+#include "platform_mac.h"
+#endif
 
 namespace OCC {
 
-class WinPlatform : public Platform
+Platform::~Platform()
 {
-public:
-    WinPlatform()
-    {
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
-    }
+}
 
-    ~WinPlatform() override;
-};
-
-WinPlatform::~WinPlatform()
+void Platform::migrate()
 {
+}
+
+void Platform::setApplication(QCoreApplication *application)
+{
+    Q_UNUSED(application);
 }
 
 std::unique_ptr<Platform> Platform::create()
 {
+    // we need to make sure the platform class is initialized before a Q(Core)Application has been set up
+    // the constructors run some initialization code that affects Qt's initialization
+    Q_ASSERT(QCoreApplication::instance() == nullptr);
+
+#if defined(Q_OS_WIN)
     return std::make_unique<WinPlatform>();
+#elif defined(Q_OS_LINUX)
+    return std::make_unique<UnixPlatform>();
+#elif defined(Q_OS_MAC)
+    return std::make_unique<MacPlatform>();
+#else
+    Q_UNREACHABLE();
+#endif
 }
 
-} // namespace OCC
+} // OCC namespace

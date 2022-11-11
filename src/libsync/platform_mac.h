@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Erik Verbruggen <erik@verbruggen.consulting>
+ * Copyright (C) by Fabian Müller <fmueller@owncloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,29 +12,28 @@
  * for more details.
  */
 
-#ifndef PLATFORM_H
-#define PLATFORM_H
+#pragma once
 
-#include <memory>
+#include "platform.h"
 
-#include <QString>
+#include <QProcess>
+#include <qglobal.h>
 
 namespace OCC {
 
-/**
- * @brief The Platform is the baseclass for all platform classes, which in turn implement platform
- *        specific functionality for the GUI.
- */
-class Platform
+class MacPlatformPrivate;
+
+class MacPlatform : public Platform
 {
 public:
-    virtual ~Platform() = 0;
+    MacPlatform();
+    ~MacPlatform() override;
 
-    static std::unique_ptr<Platform> create();
+    void migrate() override;
 
-    virtual void migrate();
+private:
+    Q_DECLARE_PRIVATE(MacPlatform);
+    QScopedPointer<MacPlatformPrivate> d_ptr;
 };
 
-} // OCC namespace
-
-#endif // PLATFORM_H
+} // namespace OCC

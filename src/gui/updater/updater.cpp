@@ -76,15 +76,7 @@ QUrlQuery Updater::getQueryParams()
     Theme *theme = Theme::instance();
     QString platform = QStringLiteral("stranger");
     if (Utility::isLinux()) {
-#ifdef WITH_APPIMAGEUPDATER
-        if (Utility::runningInAppImage()) {
-            platform = QStringLiteral("linux-appimage-") + QSysInfo::buildCpuArchitecture();
-        } else {
-#endif
-            platform = QStringLiteral("linux");
-#ifdef WITH_APPIMAGEUPDATER
-        }
-#endif
+        platform = QStringLiteral("linux");
     } else if (Utility::isBSD()) {
         platform = QStringLiteral("bsd");
     } else if (Utility::isWindows()) {
@@ -102,6 +94,13 @@ QUrlQuery Updater::getQueryParams()
     query.addQueryItem(QStringLiteral("oem"), theme->appName());
     query.addQueryItem(QStringLiteral("buildArch"), QSysInfo::buildCpuArchitecture());
     query.addQueryItem(QStringLiteral("currentArch"), QSysInfo::currentCpuArchitecture());
+
+    // client updater server is now aware of packaging format
+    // TODO: add packaging string for other supported platforms, too
+#ifdef WITH_APPIMAGEUPDATER
+    query.addQueryItem(QStringLiteral("packaging"), QStringLiteral("AppImage"));
+#endif
+
 
     query.addQueryItem(QStringLiteral("versionsuffix"), OCC::Version::suffix());
 

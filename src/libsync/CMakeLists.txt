@@ -28,6 +28,7 @@ set(libsync_SRCS
     networkjobs.cpp
     owncloudpropagator.cpp
     owncloudtheme.cpp
+    platform.cpp
     progressdispatcher.cpp
     propagatorjobs.cpp
     propagatedownload.cpp
@@ -63,7 +64,17 @@ set(libsync_SRCS
     graphapi/drives.cpp
 
     appprovider.cpp
- )
+)
+
+if(WIN32)
+    list(APPEND libsync_SRCS platform_win.cpp)
+elseif(UNIX)
+    if (APPLE)
+        list(APPEND libsync_SRCS platform_mac.mm platform_mac_deprecated.mm)
+    else()
+        list(APPEND libsync_SRCS platform_unix.cpp)
+    endif()
+endif()
 
 set(libsync_SRCS ${libsync_SRCS} creds/httpcredentials.cpp)
 
