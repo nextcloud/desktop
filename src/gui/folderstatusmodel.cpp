@@ -962,13 +962,7 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
             estimatedUpBw += progress.fileProgress(citm._item).estimatedBandwidth;
         }
         auto fileName = QFileInfo(citm._item._file).fileName();
-        if (allFilenames.length() > 0) {
-            //: Build a list of file names
-            allFilenames.append(tr(", '%1'").arg(fileName));
-        } else {
-            //: Argument is a file name
-            allFilenames.append(tr("'%1'").arg(fileName));
-        }
+        allFilenames.append(tr("'%1'").arg(fileName));
     }
     if (curItemProgress == -1) {
         curItemProgress = curItem._size;
@@ -989,7 +983,7 @@ void FolderStatusModel::computeProgress(const ProgressInfo &progress, SubFolderI
                     Utility::octetsToString(estimatedBw) );
             */
             //: Example text: "Syncing 'foo.txt', 'bar.txt'"
-            fileProgressString = tr("Syncing %1").arg(allFilenames.join(QChar()));
+            fileProgressString = tr("Syncing %1").arg(allFilenames.join(QStringLiteral(", ")));
             if (estimatedDownBw > 0) {
                 fileProgressString.append(tr(", "));
 // ifdefs: https://github.com/owncloud/client/issues/3095#issuecomment-128409294
