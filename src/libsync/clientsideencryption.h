@@ -128,6 +128,10 @@ public:
 
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
+    void sensitiveDataForgotten();
+    void privateKeyDeleted();
+    void certificateDeleted();
+    void mnemonicDeleted();
 
 public slots:
     void initialize(const AccountPtr &account);
@@ -140,6 +144,11 @@ private slots:
     void publicKeyFetched(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
+
+    void handlePrivateKeyDeleted(QKeychain::Job *incoming);
+    void handleCertificateDeleted(QKeychain::Job *incoming);
+    void handleMnemonicDeleted(QKeychain::Job *incoming);
+    void checkAllSensitiveDataDeleted();
 
     void getPrivateKeyFromServer(const AccountPtr &account);
     void getPublicKeyFromServer(const AccountPtr &account);
