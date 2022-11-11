@@ -476,9 +476,13 @@ void PropagateDownloadFile::start()
           _isEncrypted = true;
           startAfterIsEncryptedIsChecked();
         });
+        connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::fileMetadataNotFound, [this, path] {
+            qCWarning(lcPropagateDownload) << "File encryption metadata not found for" << path;
+            startAfterIsEncryptedIsChecked();
+        });
         connect(_downloadEncryptedHelper, &PropagateDownloadEncrypted::failed, [this] {
-          done(SyncFileItem::NormalError,
-               tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
+                   done(SyncFileItem::NormalError,
+                        tr("File %1 cannot be downloaded because encryption information is missing.").arg(QDir::toNativeSeparators(_item->_file)));
         });
         _downloadEncryptedHelper->start();
     }
