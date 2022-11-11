@@ -3744,6 +3744,11 @@ for additional privileges during the process.</source>
         <source>Priority</source>
         <translation>Приоритет</translation>
     </message>
+    <message>
+        <location filename="../src/gui/spaces/spacesmodel.cpp" line="59"/>
+        <source>Enabled</source>
+        <translation>Включено</translation>
+    </message>
 </context>
 <context>
     <name>OCC::SyncEngine</name>
@@ -4172,241 +4177,241 @@ Are you sure you want to proceed?</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Please sign in</source>
         <translation>Пожалуйста войдите в систему</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Folder %1: %2</source>
         <translation>Каталог %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="344"/>
         <source>Unresolved %1 conflicts</source>
         <translation>Неразрешённые конфликты %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="346"/>
         <source>Ignored errors %1</source>
         <translation>Проигнорировано ошибок %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="356"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>There are no sync folders configured.</source>
         <translation>Нет настроенных каталогов для синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
         <source>Open in browser</source>
         <translation>Открыть в браузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="740"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="834"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="744"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="838"/>
         <source>Log in...</source>
         <translation>Вход...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="732"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="836"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="736"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
         <source>Log out</source>
         <translation>Выйти</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="530"/>
         <source>Recent Changes</source>
         <translation>Недавние изменения</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
         <source>Managed Folders:</source>
         <translation>Управляемые каталоги:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Открыть каталог &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
         <source>Open %1 in browser</source>
         <translation>Открыть %1 в браузере</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="233"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="237"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Учётная запись сервера %1 работает с неподдерживаемой версией %2. Использование клиента с неподдерживаемой версией сервера не тестировалось и потенциально опасно. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="821"/>
         <source>Unknown status</source>
         <translation>Неизвестный статус</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="821"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>Details...</source>
         <translation>Детали...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="827"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="831"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="831"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
         <source>Quit %1</source>
         <translation>Закрыть %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="288"/>
         <source>Disconnected from %1</source>
         <translation>Отключен от %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="232"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Unsupported Server Version</source>
         <translation>Версия сервера не поддерживается</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="278"/>
         <source>Disconnected</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>Disconnected from some accounts</source>
         <translation>Отключено от некоторых учётных записей</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="287"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Disconnected from accounts:</source>
         <translation>Отключен от учетных записей:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Account %1: %2</source>
         <translation>Учетная запись %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Signed out</source>
         <translation>Вышли из аккаунта</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Account synchronization is disabled</source>
         <translation>Синхронизация учётной записи отключена</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>Synchronization is paused</source>
         <translation>Синхронизация приостановлена</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="353"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>Up to date (%1)</source>
         <translation>Синхронизировано (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>No sync folders configured</source>
         <translation>Не настроено ни одного каталога для синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="405"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Unpause all folders</source>
         <translation>Снять с паузы все папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="410"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Pause all folders</source>
         <translation>Поставить на паузу все папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="711"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="715"/>
         <source>Unpause all synchronization</source>
         <translation>Возобновить все синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="713"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
         <source>Unpause synchronization</source>
         <translation>Возобновить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="721"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="725"/>
         <source>Pause all synchronization</source>
         <translation>Приостановить все синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="723"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="727"/>
         <source>Pause synchronization</source>
         <translation>Приостановить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="730"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="734"/>
         <source>Log out of all accounts</source>
         <translation>Выйти из всех учетных записей</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="738"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="742"/>
         <source>Log in to all accounts...</source>
         <translation>Войти во все учетные записи...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="819"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="823"/>
         <source>Show %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="820"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="824"/>
         <source>New account...</source>
         <translation>Новая учётная запись…</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="829"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>About %1</source>
         <translation>Про %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="862"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="866"/>
         <source>No items synced recently</source>
         <translation>Недавно ничего не синхронизировалось</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="881"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="885"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Проверяю измененеия в удалённом &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="884"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="888"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Проверяю изменения в локальном &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="899"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="903"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Синхронизация %1 из %2  (осталось %3)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="904"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="908"/>
         <source>Syncing %1 of %2</source>
         <translation>Синхронизирую %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="913"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Синхронизация %1 (осталось %2)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="916"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Syncing %1</source>
         <translation>Синхронизация %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>

@@ -24,12 +24,12 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation>Pärast viisardi lõpetamist saate kaustade sünkroonimise käsitsi seadistada.</translation>
+        <translation>Pärast viisardi lõpetamist saate kaustade sünkroniseermise käsitsi seadistada.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
-        <translation>Seadistage sünkroonimine käsitsi</translation>
+        <translation>Seadistage sünkroniseerimine käsitsi</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
@@ -127,7 +127,7 @@
     <message numerus="yes">
         <location filename="../src/gui/commonstrings.cpp" line="48"/>
         <source>%n Filter(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n Filter(-rit)</numerusform><numerusform>%n Filter(-rit)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -441,12 +441,12 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="185"/>
         <source>Synchronize all</source>
-        <translation>Sünkrooni kõik</translation>
+        <translation>Sünkroniseeri kõik</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="192"/>
         <source>Synchronize none</source>
-        <translation>Ära sünkrooni midagi</translation>
+        <translation>Ära sünkroniseeri midagi</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="199"/>
@@ -484,22 +484,22 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="349"/>
         <source>Choose what to sync</source>
-        <translation>Vali, mida sünkroonida</translation>
+        <translation>Vali, mida sünkroniseerida</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
         <source>Force sync now</source>
-        <translation>Sünkrooni jõuga kohe</translation>
+        <translation>Sünkroniseeri jõuga kohe</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="357"/>
         <source>Restart sync</source>
-        <translation>Taaskäivita sünkroonimine</translation>
+        <translation>Taaskäivita sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="267"/>
         <source>Remove folder sync connection</source>
-        <translation>Eemalda kaustade sünkroonimise ühendus</translation>
+        <translation>Eemalda kaustade sünkroniseerimise ühendus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="370"/>
@@ -509,12 +509,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="484"/>
         <source>Confirm Folder Sync Connection Removal</source>
-        <translation>Kinnita kaustade sünkroonimise ühenduse kustutamine</translation>
+        <translation>Kinnita kaustade sünkroniseerimise ühenduse kustutamine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="492"/>
         <source>Remove Folder Sync Connection</source>
-        <translation>Eemalda kaustade sünkroonimise ühendus</translation>
+        <translation>Eemalda kaustade sünkroniseerimise ühendus</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="587"/>
@@ -657,12 +657,12 @@ Palun autentige end brauseri abil.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>Resume sync</source>
-        <translation>Jätka sünkroonimist</translation>
+        <translation>Jätka sünkroniseerimist</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="363"/>
         <source>Pause sync</source>
-        <translation>Peata sünkroonimine</translation>
+        <translation>Peata sünkroniseerimine</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="378"/>
@@ -999,7 +999,7 @@ Failide sünkroniseerimise töölaua rakendus.</translation>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="7"/>
         <source>Enable experimental feature?</source>
-        <translation>Aktiveerida eksperimentaalne funktsioon?</translation>
+        <translation>Lülitada sisse eksperimentaalne funktsioon?</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="8"/>
@@ -1012,16 +1012,16 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>Kui režiim &quot;virtuaalsed failid&quot; on sisse lülitatud, ei laadita esialgu ühtegi faili alla. Selle asemel luuakse iga serveris olemasoleva faili jaoks väike fail. Sisu saab alla laadida neid faile käivitades või kasutades nende kontekstmenüüd.
 
-Virtuaalsete failide režiim on vastastikku välistatud koos valikulise sünkroonimisega. Hetkel valimata kaustad tõlgitakse ainult võrguühendusega saadaval olevateks kaustadeks ja teie valikulise sünkroonimise seaded lähtestatakse.
+Virtuaalsete failide režiim on vastastikku välistatud koos valikulise sünkroniseerimisega. Hetkel valimata kaustad tõlgitakse ainult võrguühendusega saadaval olevateks kaustadeks ja teie valikulise sünkroniseerimise seaded lähtestatakse.
 
-Sellele režiimile lülitumine katkestab kõik hetkel käimasolevad sünkroonimised. 
+Sellele režiimile lülitumine katkestab kõik hetkel käimasolevad sünkroniseerimised. 
 
 See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage kõikidest tekkivatest probleemidest.</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Eksperimentaalse paigutusrežiimi aktiveerimine</translation>
+        <translation>Eksperimentaalse paigutusrežiimi sisselülitamine</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="24"/>
@@ -1090,7 +1090,7 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="208"/>
         <source>Failed to parse credentials %1</source>
-        <translation>Kasutajaandmete analüüsimine ebaõnnestus %1</translation>
+        <translation>Kasutajaandmete parsimine ebaõnnestus %1</translation>
     </message>
 </context>
 <context>
@@ -1197,7 +1197,7 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="538"/>
         <source>%1 and %n other file(s) have been removed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n muu(d) fail(i) on eemaldatud.</numerusform><numerusform>%1 ja %n muu(d) fail(i) on eemaldatud.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="222"/>
@@ -1212,7 +1212,7 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="545"/>
         <source>%1 and %n other file(s) have been added.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> %1 ja %n muu(d) fail(i) on lisatud.</numerusform><numerusform> %1 ja %n muu(d) fail(i) on lisatud.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="547"/>
@@ -1223,32 +1223,32 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="552"/>
         <source>%1 and %n other file(s) have been updated.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> %1 ja %n muu(d) fail(i) on uuendatud.</numerusform><numerusform> %1 ja %n muu(d) fail(i) on uuendatud.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="559"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform> %1 on ümber nimetatud %2 ja %n muu(d) fail(i) on ümber nimetatud.</numerusform><numerusform> %1 on ümber nimetatud %2 ja %n muu(d) fail(i) on ümber nimetatud.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="566"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 on teisaldatud asukohta %2 ja %n muu(d) fail(i) on teisaldatud.</numerusform><numerusform>%1 on teisaldatud asukohta %2 ja %n muu(d) fail(i) on teisaldatud.</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="573"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n teisel failil(-del) on sünkroniseerimiskonfliktid.</numerusform><numerusform>%1 ja %n teisel failil(-del) on sünkroniseerimiskonfliktid.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="575"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 on sünkroonimiskonflikt. Palun kontrollige konfliktifaili!</translation>
+        <translation>%1 on sünkroniseerimiskonflikt. Palun kontrollige konfliktifaili!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="580"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ja %n teist(i) faili(e) ei õnnestunud vigade tõttu sünkroonida. Vaata üksikasju logist.</numerusform><numerusform>%1 ja %n teist(i) faili(e) ei õnnestunud vigade tõttu sünkroniseerida. Vaata üksikasju logist.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="582"/>
@@ -1287,12 +1287,12 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
     <message>
         <location filename="../src/gui/folder.cpp" line="1252"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
-        <translation>Kaust %1 loodi, kuid oli varem sünkroonimisest välja jäetud. Selles olevaid andmeid ei sünkroniseerita.</translation>
+        <translation>Kaust %1 loodi, kuid oli varem sünkroniseerimisest välja jäetud. Selles olevaid andmeid ei sünkroniseerita.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1255"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
-        <translation>Fail %1 loodi, kuid jäeti varem sünkroonimisest välja. Seda ei sünkroniseerita.</translation>
+        <translation>Fail %1 loodi, kuid jäeti varem sünkroniseerimisest välja. Seda ei sünkroniseerita.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1266"/>
@@ -1301,8 +1301,8 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
 
 %1</source>
-        <translation>Sünkroonitud kaustade muudatusi ei olnud võimalik usaldusväärselt jälgida.
-See tähendab, et sünkroonimisklient ei pruugi kohalikke muudatusi kohe üles laadida, vaid otsib ainult kohalikke muudatusi ja laadib need üles aeg-ajalt (vaikimisi iga kahe tunni järel).
+        <translation>Sünkroniseeritud kaustade muudatusi ei olnud võimalik usaldusväärselt jälgida.
+See tähendab, et sünkroniseerimisklient ei pruugi kohalikke muudatusi kohe üles laadida, vaid otsib ainult kohalikke muudatusi ja laadib need üles aeg-ajalt (vaikimisi iga kahe tunni järel).
 
 % 1</translation>
     </message>
@@ -1312,9 +1312,9 @@ See tähendab, et sünkroonimisklient ei pruugi kohalikke muudatusi kohe üles l
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to keep the files, they will be re-synced with the server if you have rights to do so.
 If you decide to delete the files, they will be unavailable to you, unless you are the owner.</source>
-        <translation>Kõik failid sünkroonimiskaustas &quot;%1&quot; olevas kaustas kustutati serverist. 
-Need kustutatud failid sünkroonitakse teie kohalikku sünkroonimiskausta, mistõttu need failid ei ole kättesaadavad, kui teil ei ole taastamisõigust.
-Kui te otsustate failid säilitada, sünkroonitakse need uuesti serveriga, kui teil on selleks õigused.
+        <translation>Kõik failid sünkroniseerimiskaustas &quot;%1&quot; olevas kaustas kustutati serverist. 
+Need kustutatud failid sünkroniseeritakse teie kohalikku sünkroniseerimiskausta, mistõttu need failid ei ole kättesaadavad, kui teil ei ole taastamisõigust.
+Kui te otsustate failid säilitada, sünkroniseeritakse need uuesti serveriga, kui teil on selleks õigused.
 Kui te otsustate failid kustutada, on need teile kättesaamatud, välja arvatud juhul, kui te olete omanik.</translation>
     </message>
     <message>
@@ -1322,9 +1322,9 @@ Kui te otsustate failid kustutada, on need teile kättesaamatud, välja arvatud 
         <source>All the files in your local sync folder '%1' were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
-        <translation>Kõik failid teie kohalikust sünkroonimiskaustast &quot;%1&quot; kustutati. Need kustutatud failid sünkroniseeritakse teie serveriga, mistõttu need failid ei ole kättesaadavad, kui neid ei taastata.
-Kas olete kindel, et soovite neid toiminguid serveriga sünkroonida?
-Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroonitakse need uuesti serverist.</translation>
+        <translation>Kõik failid teie kohalikust sünkroniseerimiskaustast &quot;%1&quot; kustutati. Need kustutatud failid sünkroniseeritakse teie serveriga, mistõttu need failid ei ole kättesaadavad, kui neid ei taastata.
+Kas olete kindel, et soovite neid toiminguid serveriga sünkroniseerida?
+Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroniseeritakse need uuesti serverist.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1328"/>
@@ -1387,7 +1387,7 @@ Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroonitakse need
     <message>
         <location filename="../src/gui/folderman.cpp" line="1191"/>
         <source>Sync was successful, unresolved conflicts.</source>
-        <translation>Sünkroonimine oli edukas, lahendamata konfliktid.</translation>
+        <translation>Sünkroniseerimine oli edukas, lahendamata konfliktid.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1193"/>
@@ -1422,7 +1422,7 @@ Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroonitakse need
     <message>
         <location filename="../src/gui/folderman.cpp" line="1248"/>
         <source>The folder %1 is used in a folder sync connection!</source>
-        <translation>Kausta %1 kasutatakse kausta sünkroonimisühenduses!</translation>
+        <translation>Kausta %1 kasutatakse kausta sünkroniseerimisühenduses!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1255"/>
@@ -1442,17 +1442,17 @@ Kui see oli õnnetus ja te otsustate oma failid säilitada, sünkroonitakse need
     <message>
         <location filename="../src/gui/folderman.cpp" line="1278"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
-        <translation>Antud kohalikust kaust on juba serverist sünkrooniseeritud. Palun valige mõni teine kohalik kaust!</translation>
+        <translation>Antud kohalikust kaust on juba serverist sünkroniseeritud. Palun valige mõni teine kohalik kaust!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1282"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Kohalik kaust %1 sisaldab juba kausta, mida kasutatakse kaustade sünkroonimisühenduses. Palun valige teine!</translation>
+        <translation>Kohalik kaust %1 sisaldab juba kausta, mida kasutatakse kaustade sünkroniseerimisühenduses. Palun valige teine!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1288"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
-        <translation>Kohalik kaust %1 sisaldub juba kaustas, mida kasutatakse kaustade sünkroonimisühenduses. Palun valige teine!</translation>
+        <translation>Kohalik kaust %1 sisaldub juba kaustas, mida kasutatakse kaustade sünkroniseerimisühenduses. Palun valige teine!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1295"/>
@@ -1519,7 +1519,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="237"/>
         <source>Virtual file support is enabled.</source>
-        <translation>Virtuaalse faili tugi on aktiveeritud.</translation>
+        <translation>Virtuaalse faili tugi on sisse lülitatud.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="196"/>
@@ -1648,7 +1648,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message numerus="yes">
         <location filename="../src/gui/folderstatusmodel.cpp" line="1101"/>
         <source>Waiting for %n other folder(s)...</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ootan %n teise kausta järel...</numerusform><numerusform>Ootan %n teise kausta järel...</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1748,7 +1748,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation>Antud kausta ei saa sünkrooniseerida. Palun valige teine kaust.</translation>
+        <translation>Antud kausta ei saa sünkroniseerida. Palun valige teine kaust.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
@@ -1758,7 +1758,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="341"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Te juba sünkroonite &lt;i&gt;%1&lt;/i&gt;, mis on &lt;i&gt;%2&lt;/i&gt; alamkaust.</translation>
+        <translation>Te juba sünkroniseerite &lt;i&gt;%1&lt;/i&gt;, mis on &lt;i&gt;%2&lt;/i&gt; alamkaust.</translation>
     </message>
 </context>
 <context>
@@ -1908,7 +1908,7 @@ Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</transl
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Näita sünkroonitavaid kaustu &amp;Failihalduri navigatsioonipaanil</translation>
+        <translation>Näita sünkroniseeritavaid kaustu &amp;Failihalduri navigatsioonipaanil</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
@@ -2028,7 +2028,7 @@ Pange tähele, et sellega valitakse ainult allikas, millest uuendused võetakse,
         <source>Files or folders matching a pattern will not be synchronized. Changes take effect the next time folders are synchronized.
 
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
-        <translation>Mustrile vastavaid faile või kaustu ei sünkroniseerita. Muudatused jõustuvad järgmisel sünkroonimisel.
+        <translation>Mustrile vastavaid faile või kaustu ei sünkroniseerita. Muudatused jõustuvad järgmisel sünkroniseerimisel.
 
 Üksused, mille kustutamine on lubatud, kustutatakse, kui need takistavad kataloogi eemaldamist. See on kasulik metaandmete jaoks.</translation>
     </message>
@@ -2414,7 +2414,7 @@ Pange tähele, et mistahes logimise käsurea suvandite kasutamine tühistab sead
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Serverist tagastatud JSON-i töötlemine ebaõnnestus: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Serverist tagastatud JSON-i parsimine ebaõnnestus: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
@@ -2937,7 +2937,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="109"/>
         <source>Local file changed during sync. It will be resumed.</source>
-        <translation>Kohalik fail muutus sünkroonimise ajal. Seda jätkatakse.</translation>
+        <translation>Kohalik fail muutus sünkroniseerimise ajal. Seda jätkatakse.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="581"/>
@@ -3079,7 +3079,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="22"/>
         <source>Local sync protocol</source>
-        <translation>Kohalik sünkrooniseerimise protokoll</translation>
+        <translation>Kohalik sünkroniseerimise protokoll</translation>
     </message>
     <message>
         <location filename="../src/gui/protocolwidget.ui" line="45"/>
@@ -3149,7 +3149,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Tühjendage kaugkaustade valik, mida te ei soovi sünkrooniseerida.</translation>
+        <translation>Tühjendage kaugkaustade valik, mida te ei soovi sünkroniseerida.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3752,6 +3752,11 @@ for additional privileges during the process.</source>
         <source>Priority</source>
         <translation>Olulisus</translation>
     </message>
+    <message>
+        <location filename="../src/gui/spaces/spacesmodel.cpp" line="59"/>
+        <source>Enabled</source>
+        <translation>Sisse lülitatud</translation>
+    </message>
 </context>
 <context>
     <name>OCC::SyncEngine</name>
@@ -3769,7 +3774,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="422"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Kohaliku sünkroonimisandmebaasi avamine või loomine ei ole võimalik. Veenduge, et teil oleks sünkroonimiskaustas kirjutamisõigus.</translation>
+        <translation>Kohaliku sünkroniseerimisandmebaasi avamine või loomine ei ole võimalik. Veenduge, et teil oleks sünkroniseerimiskaustas kirjutamisõigus.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1013"/>
@@ -3799,7 +3804,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="479"/>
         <source>Unable to read from the sync journal.</source>
-        <translation>Sünkroonimispäevikust ei saa lugeda.</translation>
+        <translation>Sünkroniseerimispäevikust ei saa lugeda.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="558"/>
@@ -3981,7 +3986,7 @@ Uuendus toimub taustal ja kirjutab praeguse AppImage&apos;i faili üle. Uuendami
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
         <source>Enable experimental feature?</source>
-        <translation>Aktiveerida eksperimentaalne funktsioon?</translation>
+        <translation>Lülitada sisse eksperimentaalne funktsioon?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="121"/>
@@ -3994,16 +3999,16 @@ Switching to this mode will abort any currently running synchronization.
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
         <translation>Kui režiim &quot;virtuaalsed failid&quot; on sisse lülitatud, ei laadita esialgu ühtegi faili alla. Selle asemel luuakse iga serveris olemasoleva faili jaoks väike fail. Sisu saab alla laadida neid faile käivitades või kasutades nende kontekstmenüüd.
 
-Virtuaalsete failide režiim on vastastikku välistatud koos valikulise sünkroonimisega. Hetkel valimata kaustad tõlgitakse ainult võrguühendusega saadaval olevateks kaustadeks ja teie valikulise sünkroonimise seaded lähtestatakse.
+Virtuaalsete failide režiim on vastastikku välistatud koos valikulise sünkroniseerimisega. Hetkel valimata kaustad tõlgitakse ainult võrguühendusega saadaval olevateks kaustadeks ja teie valikulise sünkroniseerimise seaded lähtestatakse.
 
-Selle režiimile lülitumine katkestab kõik hetkel käimasolevad sünkroonimised. 
+Selle režiimile lülitumine katkestab kõik hetkel käimasolevad sünkroniseerimised. 
 
 See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage kõikidest tekkivatest probleemidest.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
         <source>Enable experimental placeholder mode</source>
-        <translation>Eksperimentaalse paigutusrežiimi aktiveerimine</translation>
+        <translation>Eksperimentaalse paigutusrežiimi sisselülitamine</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="137"/>
@@ -4178,7 +4183,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation>WebFingeri vastuse analüüsimine ebaõnnestus: %1</translation>
+        <translation>WebFingeri vastuse parsimine ebaõnnestus: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="44"/>
@@ -4189,241 +4194,241 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="303"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
         <source>Please sign in</source>
         <translation>Palun logi sisse</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="331"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
         <source>Folder %1: %2</source>
         <translation>Kaust %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="340"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="344"/>
         <source>Unresolved %1 conflicts</source>
         <translation>Lahendamata %1 konfliktid</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="342"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="346"/>
         <source>Ignored errors %1</source>
         <translation>Ignoreeritud vigu %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="356"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
         <source>There are no sync folders configured.</source>
         <translation>Sünkroniseeritavaid kaustasid pole seadistatud.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="367"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
         <source>Open in browser</source>
         <translation>Ava veebilehitsejas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="740"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="834"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="744"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="838"/>
         <source>Log in...</source>
         <translation>Logi sisse...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="732"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="836"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="736"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
         <source>Log out</source>
         <translation>Logi välja</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="526"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="530"/>
         <source>Recent Changes</source>
         <translation>Hiljutised muudatused</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="395"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
         <source>Managed Folders:</source>
         <translation>Hallatavad kaustad:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="398"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="402"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>Ava kaust &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="369"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
         <source>Open %1 in browser</source>
         <translation>Ava %1 veebilehitsejas</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="233"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="237"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>Konto %1 server on kasutab mittetoetatud versiooni %2. Selle kliendi kasutamine koos toetamata serveriversioonidega on testimata ja potentsiaalselt ohtlik. Tegutsege omal vastutusel.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="817"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="821"/>
         <source>Unknown status</source>
         <translation>Tundmatu staatus</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="821"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>Details...</source>
         <translation>Üksikasjad...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="827"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="831"/>
         <source>Help</source>
         <translation>Abiinfo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="831"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
         <source>Quit %1</source>
         <translation>Lõpeta %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="284"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="288"/>
         <source>Disconnected from %1</source>
         <translation>Ühendus %1 katkestatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="232"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
         <source>Unsupported Server Version</source>
         <translation>Toetamata serveri versioon</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="274"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="278"/>
         <source>Disconnected</source>
         <translation>Lahti ühendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="276"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>Disconnected from some accounts</source>
         <translation>Ühendus mõne kontoga katkestatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="287"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
         <source>Disconnected from accounts:</source>
         <translation>Kontodest lahtiühendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="289"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Account %1: %2</source>
         <translation>Konto %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="304"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
         <source>Signed out</source>
         <translation>Välja logitud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
         <source>Account synchronization is disabled</source>
         <translation>Konto sünkroniseermine ei ole lubatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
         <source>Synchronization is paused</source>
         <translation>Sünkroniseerimine on peatatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="353"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
         <source>Up to date (%1)</source>
         <translation>Ajakohane (% 1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
         <source>No sync folders configured</source>
-        <translation>Sünkroonimiskaustu ei ole konfigureeritud</translation>
+        <translation>Sünkroniseerimiskaustu ei ole konfigureeritud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="405"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
         <source>Unpause all folders</source>
         <translation> Vabasta kõik kaustad pausilt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="410"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
         <source>Pause all folders</source>
         <translation>Pane kõik kaustad pausile</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="711"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="715"/>
         <source>Unpause all synchronization</source>
         <translation>Jätka kõiki sünkroniseerimisi</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="713"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
         <source>Unpause synchronization</source>
         <translation>Jätka sünkroniseerimist</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="721"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="725"/>
         <source>Pause all synchronization</source>
         <translation>Peata kõik sünkroniseerimised</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="723"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="727"/>
         <source>Pause synchronization</source>
         <translation>Peata sünkroniseerimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="730"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="734"/>
         <source>Log out of all accounts</source>
         <translation>Logi välja kõikidelt kontodelt</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="738"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="742"/>
         <source>Log in to all accounts...</source>
         <translation>Logi sisse kõikidele kontodele...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="819"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="823"/>
         <source>Show %1</source>
         <translation>Näita %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="820"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="824"/>
         <source>New account...</source>
         <translation>Uus konto...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="829"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>About %1</source>
         <translation>Rakendusest %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="862"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="866"/>
         <source>No items synced recently</source>
         <translation>Ühtegi üksust pole hiljuti sünkroniseeritud</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="881"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="885"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>Kaugühenduse &apos;%1&apos; muutuste kontroll</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="884"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="888"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>Kohaliku &apos;%1&apos; muutuste kontroll</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="899"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="903"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>Sünkroniseerin %1 %2-st (%3 veel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="904"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="908"/>
         <source>Syncing %1 of %2</source>
         <translation>Sünkroniseerimine %1 %2-st</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="913"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>Sünkroniseerin %1 (%2 veel)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="916"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="920"/>
         <source>Syncing %1</source>
         <translation>Sünkroniseerin %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="933"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
@@ -4443,7 +4448,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="405"/>
         <source>%n hour(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tund(i) tagasi</numerusform><numerusform>%n tund(i) tagasi</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="410"/>
@@ -4458,7 +4463,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="415"/>
         <source>%n minute(s) ago</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut(it) tagasi</numerusform><numerusform>%n minut(it) tagasi</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="418"/>
@@ -4510,7 +4515,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation>Sünkroonimisvalikud</translation>
+        <translation>Sünkroniseerimisvalikud</translation>
     </message>
 </context>
 <context>
@@ -4649,32 +4654,32 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="267"/>
         <source>%n year(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n aasta(t)</numerusform><numerusform>%n aasta(t)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="268"/>
         <source>%n month(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n kuu(d)</numerusform><numerusform>%n kuu(d)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="269"/>
         <source>%n day(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n päev(a)</numerusform><numerusform>%n päev(a)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="270"/>
         <source>%n hour(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n tund(i)</numerusform><numerusform>%n tund(i)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="271"/>
         <source>%n minute(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n minut(it)</numerusform><numerusform>%n minut(it)</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="272"/>
         <source>%n second(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%n sekund(it)</numerusform><numerusform>%n sekund(it)</numerusform></translation>
     </message>
     <message>
         <location filename="../src/common/utility.cpp" line="296"/>
@@ -4724,7 +4729,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="423"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Qt teegid %3, %4%7Kasutatakse virtuaalsete failide pluginat: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4732,7 +4737,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Ehitatud vastavalt Qt %2)</translation>
     </message>
 </context>
 <context>
