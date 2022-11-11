@@ -415,10 +415,6 @@ CmdOptions parseOptions(const QStringList &app_args)
 
 int main(int argc, char **argv)
 {
-<<<<<<< HEAD
-    QCoreApplication app(argc, argv);
-    app.setApplicationVersion(Theme::instance()->versionSwitchOutput());
-=======
     auto platform = OCC::Platform::create();
 
     QCoreApplication app(argc, argv);
@@ -427,7 +423,6 @@ int main(int argc, char **argv)
     platform->migrate();
 
     platform->setApplication(&app);
->>>>>>> origin/3.0
 
     SyncCTX ctx { parseOptions(app.arguments()) };
 
