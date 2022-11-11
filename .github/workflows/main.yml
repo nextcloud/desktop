@@ -111,9 +111,7 @@ jobs:
 
     - name: Package
       run: |
-        if(-not $IsLinux) {
-            & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --package owncloud/owncloud-client
-        }
+        & "${env:GITHUB_WORKSPACE}/.github/workflows/.craft.ps1" -c --no-cache --src-dir "${env:GITHUB_WORKSPACE}" --package owncloud/owncloud-client
 
     - name: Prepare artifacts
       run: |
