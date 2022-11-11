@@ -119,48 +119,46 @@ public:
     class PKey;
 
     ClientSideEncryption();
-    void initialize(const AccountPtr &account);
 
-private:
-    void generateKeyPair(const AccountPtr &account);
-    void generateCSR(const AccountPtr &account, PKey keyPair);
-    void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
-    void encryptPrivateKey(const AccountPtr &account);
-
-public:
-    void forgetSensitiveData(const AccountPtr &account);
-
-private slots:
-    void publicKeyFetched(QKeychain::Job *incoming);
-    void privateKeyFetched(QKeychain::Job *incoming);
-    void mnemonicKeyFetched(QKeychain::Job *incoming);
+    QByteArray _privateKey;
+    QSslKey _publicKey;
+    QSslCertificate _certificate;
+    QString _mnemonic;
+    bool _newMnemonicGenerated = false;
 
 signals:
     void initializationFinished(bool isNewMnemonicGenerated = false);
 
-private:
+public slots:
+    void initialize(const AccountPtr &account);
+    void forgetSensitiveData(const AccountPtr &account);
+
+private slots:
+    void generateKeyPair(const AccountPtr &account);
+    void encryptPrivateKey(const AccountPtr &account);    
+
+    void publicKeyFetched(QKeychain::Job *incoming);
+    void privateKeyFetched(QKeychain::Job *incoming);
+    void mnemonicKeyFetched(QKeychain::Job *incoming);
+
     void getPrivateKeyFromServer(const AccountPtr &account);
     void getPublicKeyFromServer(const AccountPtr &account);
     void fetchAndValidatePublicKeyFromServer(const AccountPtr &account);
     void decryptPrivateKey(const AccountPtr &account, const QByteArray &key);
 
     void fetchFromKeyChain(const AccountPtr &account);
-
-    [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
-    [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     void writePrivateKey(const AccountPtr &account);
     void writeCertificate(const AccountPtr &account);
     void writeMnemonic(const AccountPtr &account);
 
-    bool isInitialized = false;
+private:
+    void generateCSR(const AccountPtr &account, PKey keyPair);
+    void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
 
-public:
-    //QSslKey _privateKey;
-    QByteArray _privateKey;
-    QSslKey _publicKey;
-    QSslCertificate _certificate;
-    QString _mnemonic;
-    bool _newMnemonicGenerated = false;
+    [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
+    [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
+
+    bool isInitialized = false;
 };
 
 /* Generates the Metadata for the folder */
