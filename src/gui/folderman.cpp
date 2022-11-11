@@ -658,6 +658,16 @@ void FolderMan::forceSyncForFolder(Folder *folder)
     scheduleFolderNext(folder);
 }
 
+void FolderMan::removeE2eFiles(const AccountPtr &account) const
+{
+    Q_ASSERT(account->e2e()->_mnemonic.isEmpty());
+    for (const auto folder : map()) {
+        if(folder->accountState()->account()->id() == account->id()) {
+            folder->removeLocalE2eFiles();
+        }
+    }
+}
+
 void FolderMan::slotScheduleAppRestart()
 {
     _appRestartRequired = true;

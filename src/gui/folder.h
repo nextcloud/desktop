@@ -370,6 +370,11 @@ public slots:
 
     void setSilenceErrorsUntilNextSync(bool silenceErrors);
 
+    /** Deletes local copies of E2EE files.
+     * Intended for clean-up after disabling E2EE for an account.
+     */
+    void removeLocalE2eFiles();
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
