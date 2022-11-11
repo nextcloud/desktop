@@ -235,8 +235,8 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
 {
     if (isUsingOAuth()) {
         // The function is called in order to determine whether we need to ask the user for a password
-        // if we are using oaut we already started a refresh in slotAuthentication, at least in theory, ensure the auth is started.
-        // If the refresh fails we will emit authenticationFailed ourself.
+        // if we are using OAuth, we already started a refresh in slotAuthentication, at least in theory, ensure the auth is started.
+        // If the refresh fails, we are going to emit authenticationFailed ourselves
         if (reply->error() == QNetworkReply::AuthenticationRequiredError) {
             slotAuthentication(reply, nullptr);
         }

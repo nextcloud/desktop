@@ -184,7 +184,6 @@ void AbstractNetworkJob::slotFinished()
     _finished = true;
 
     if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
-        qDebug() << "Invalid credentials";
         Q_EMIT _account->invalidCredentials();
     }
 
@@ -356,7 +355,7 @@ void AbstractNetworkJob::retry()
     _retryCount++;
     qCInfo(lcNetworkJob) << "Restarting" << this << "for the" << _retryCount << "time";
     if (_requestBody) {
-        if (_requestBody->isSequential()) {
+        if (!_requestBody->isSequential()) {
             Q_ASSERT(_requestBody->isOpen());
             _requestBody->seek(0);
         } else {
