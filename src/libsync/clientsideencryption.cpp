@@ -1066,7 +1066,7 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
 {
     _publicKey = QSslKey();
 
-    const auto createDeleteJob = [account](QString user) {
+    const auto createDeleteJob = [account](const QString user) {
         auto *job = new DeletePasswordJob(Theme::instance()->appName());
         job->setInsecureFallback(false);
         job->setKey(AbstractCredentials::keychainKey(account->url().toString(), user, account->id()));
@@ -1086,7 +1086,7 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
     deleteMnemonicJob->start();
 }
 
-void ClientSideEncryption::handlePrivateKeyDeleted(QKeychain::Job *incoming)
+void ClientSideEncryption::handlePrivateKeyDeleted(const QKeychain::Job* const incoming)
 {
     if (incoming->error() != QKeychain::NoError) {
         qCWarning(lcCse) << "Private key could not be deleted:" << incoming->errorString();
@@ -1099,7 +1099,7 @@ void ClientSideEncryption::handlePrivateKeyDeleted(QKeychain::Job *incoming)
     checkAllSensitiveDataDeleted();
 }
 
-void ClientSideEncryption::handleCertificateDeleted(QKeychain::Job *incoming)
+void ClientSideEncryption::handleCertificateDeleted(const QKeychain::Job* const incoming)
 {
     if (incoming->error() != QKeychain::NoError) {
         qCWarning(lcCse) << "Certificate could not be deleted:" << incoming->errorString();
@@ -1112,7 +1112,7 @@ void ClientSideEncryption::handleCertificateDeleted(QKeychain::Job *incoming)
     checkAllSensitiveDataDeleted();
 }
 
-void ClientSideEncryption::handleMnemonicDeleted(QKeychain::Job *incoming)
+void ClientSideEncryption::handleMnemonicDeleted(const QKeychain::Job* const incoming)
 {
     if (incoming->error() != QKeychain::NoError) {
         qCWarning(lcCse) << "Mnemonic could not be deleted:" << incoming->errorString();

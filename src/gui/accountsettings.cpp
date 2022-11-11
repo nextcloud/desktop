@@ -66,6 +66,7 @@ constexpr auto propertyFolder = "folder";
 constexpr auto propertyPath = "path";
 constexpr auto e2eUiActionIdKey = "id";
 constexpr auto e2EeUiActionEnableEncryptionId = "enable_encryption";
+constexpr auto e2EeUiActionDisableEncryptionId = "disable_encryption";
 constexpr auto e2EeUiActionDisplayMnemonicId = "display_mnemonic";
 }
 
@@ -243,7 +244,12 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 
 void AccountSettings::slotE2eEncryptionMnemonicReady()
 {
-    auto *const actionDisplayMnemonic = addActionToEncryptionMessage(tr("Display mnemonic"), e2EeUiActionDisplayMnemonicId);
+    const auto actionDisableEncryption = addActionToEncryptionMessage(tr("Disable encryption"), e2EeUiActionDisableEncryptionId);
+    connect(actionDisableEncryption, &QAction::triggered, this, [this] {
+        disableEncryptionForAccount(_accountState->account());
+    });
+
+    const auto actionDisplayMnemonic = addActionToEncryptionMessage(tr("Display mnemonic"), e2EeUiActionDisplayMnemonicId);
     connect(actionDisplayMnemonic, &QAction::triggered, this, [this]() {
         displayMnemonic(_accountState->account()->e2e()->_mnemonic);
     });
@@ -1024,6 +1030,31 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
     widget.exec();
 }
 
+void AccountSettings::disableEncryptionForAccount(const AccountPtr &account) const
+{
+    QMessageBox dialog;
+    dialog.setWindowTitle(tr("Disable end-to-end encryption"));
+    dialog.setText(tr("Disable end-to-end encryption for %1?").arg(account->davUser()));
+    dialog.setInformativeText(tr("Removing end-to-end encryption will remove locally-synced files that are encrypted."
+                                 "<br>"
+                                 "Encrypted files will remain on the server."));
+    dialog.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    dialog.setDefaultButton(QMessageBox::Ok);
+    dialog.adjustSize();
+
+    const auto ret = dialog.exec();
+    switch(ret) {
+    case QMessageBox::Ok:
+        connect(account->e2e(), &ClientSideEncryption::sensitiveDataForgotten,
+                this, &AccountSettings::resetE2eEncryption);
+        account->e2e()->forgetSensitiveData(account);
+        break;
+    case QMessageBox::Cancel:
+        break;
+    Q_UNREACHABLE();
+    }
+}
+
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
     const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
@@ -1257,16 +1288,21 @@ void AccountSettings::slotAccountStateChanged()
     refreshSelectiveSyncStatus();
 
     if (state == AccountState::State::Connected) {
-        /* TODO: We should probably do something better here.
-         * Verify if the user has a private key already uploaded to the server,
-         * if it has, do not offer to create one.
-         */
-        qCInfo(lcAccountSettings) << "Account" << accountsState()->account()->displayName()
-            << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvailable();
+        checkClientSideEncryptionState();
+    }
+}
 
-        if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
-            _ui->encryptionMessage->show();
-        }
+void AccountSettings::checkClientSideEncryptionState()
+{
+    /* TODO: We should probably do something better here.
+     * Verify if the user has a private key already uploaded to the server,
+     * if it has, do not offer to create one.
+     */
+    qCInfo(lcAccountSettings) << "Account" << accountsState()->account()->displayName()
+        << "Client Side Encryption" << accountsState()->account()->capabilities().clientSideEncryptionAvailable();
+
+    if (_accountState->account()->capabilities().clientSideEncryptionAvailable()) {
+        _ui->encryptionMessage->show();
     }
 }
 
@@ -1567,6 +1603,17 @@ void AccountSettings::initializeE2eEncryption()
         _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
         _accountState->account()->e2e()->initialize(_accountState->account());
     }
+}
+
+void AccountSettings::resetE2eEncryption()
+{
+    for (const auto action : _ui->encryptionMessage->actions()) {
+        _ui->encryptionMessage->removeAction(action);
+    }
+    _ui->encryptionMessage->setText({});
+    _ui->encryptionMessage->setIcon({});
+    initializeE2eEncryption();
+    checkClientSideEncryptionState();
 }
 
 void AccountSettings::removeActionFromEncryptionMessage(const QString &actionId)
