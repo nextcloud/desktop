@@ -4527,27 +4527,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="155"/>
         <source>Could not fetch predefined statuses. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja iegūt iepriekš definētus statusus. Pārliecinieties, vai esat izveidojis savienojumu ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="144"/>
         <source>Could not fetch user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja iegūt lietotāja statusu. Pārliecinieties, vai esat izveidojis savienojumu ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="148"/>
         <source>User status feature is not supported. You will not be able to set your user status.</source>
-        <translation type="unfinished"/>
+        <translation>Lietotāja statusa funkcija netiek atbalstīta. Jūs nevarēsiet iestatīt savu lietotāja statusu.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="152"/>
         <source>Emojis feature is not supported. Some user status functionality may not work.</source>
-        <translation type="unfinished"/>
+        <translation>Emociju funkcija netiek atbalstīta. Dažas lietotāja statusa funkcijas var nedarboties.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="156"/>
         <source>Could not set user status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja iestatīt lietotāja statusu. Pārliecinieties, vai esat izveidojis savienojumu ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="159"/>
@@ -4557,7 +4557,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="160"/>
         <source>Could not clear user status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Nevarēja notīrīt lietotāja statusa ziņojumu. Pārliecinieties, vai esat izveidojis savienojumu ar serveri.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="163"/>
@@ -4588,60 +4588,60 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="363"/>
         <source>30 minutes</source>
-        <translation type="unfinished"/>
+        <translation>30 minūtes</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="366"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="421"/>
         <source>1 hour</source>
-        <translation type="unfinished"/>
+        <translation>1 stunda</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="369"/>
         <source>4 hours</source>
-        <translation type="unfinished"/>
+        <translation>4 stundas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="372"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="456"/>
         <source>Today</source>
-        <translation type="unfinished"/>
+        <translation>Šodien</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="375"/>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="458"/>
         <source>This week</source>
-        <translation type="unfinished"/>
+        <translation>Šonedēļ</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="410"/>
         <source>Less than a minute</source>
-        <translation type="unfinished"/>
+        <translation>Mazāk par minūti</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="414"/>
         <source>1 minute</source>
-        <translation type="unfinished"/>
+        <translation>1 minūte</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="416"/>
         <source>%1 minutes</source>
-        <translation type="unfinished"/>
+        <translation>%1 minūtes</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="423"/>
         <source>%1 hours</source>
-        <translation type="unfinished"/>
+        <translation>%1 stundas</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="428"/>
         <source>1 day</source>
-        <translation type="unfinished"/>
+        <translation>1 diena</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="430"/>
         <source>%1 days</source>
-        <translation type="unfinished"/>
+        <translation>%1 dienas</translation>
     </message>
 </context>
 <context>
@@ -5254,7 +5254,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="158"/>
         <source>Set status</source>
-        <translation type="unfinished"/>
+        <translation>Iestatīt statusu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="176"/>
@@ -5279,22 +5279,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
-        <translation type="unfinished"/>
+        <translation>Tiešsaistes statuss</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
-        <translation type="unfinished"/>
+        <translation>Tiešsaistē</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Away</source>
-        <translation type="unfinished"/>
+        <translation>Prom</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Netraucēt</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
@@ -5304,7 +5304,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>Neredzams</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
@@ -5314,7 +5314,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
-        <translation type="unfinished"/>
+        <translation>Statusa ziņojums</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
@@ -5324,7 +5324,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
-        <translation type="unfinished"/>
+        <translation>Notīrīt statusa ziņojumu pēc</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
@@ -5334,12 +5334,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
-        <translation type="unfinished"/>
+        <translation>Notīrīt statusa ziņojumu</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
-        <translation type="unfinished"/>
+        <translation>Iestatīt statusa ziņojumu</translation>
     </message>
 </context>
 <context>
@@ -5445,7 +5445,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="219"/>
         <source>Set user status</source>
-        <translation type="unfinished"/>
+        <translation>Iestatiet lietotāja statusu</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="292"/>

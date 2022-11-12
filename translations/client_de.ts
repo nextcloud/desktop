@@ -6025,4 +6025,676 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Ich habe etwas mit Ihnen geteilt</translation>
     </message>
 </context>
+</TS>bersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
+        <source>Clear status message after</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
+        <source>Clear status message</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
+        <source>Set status message</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>Utility</name>
+    <message>
+        <location filename="../src/common/utility.cpp" line="136"/>
+        <source>%L1 GB</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="140"/>
+        <source>%L1 MB</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="144"/>
+        <source>%L1 KB</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="147"/>
+        <source>%L1 B</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="335"/>
+        <source>%n year(s)</source>
+        <translation><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="336"/>
+        <source>%n month(s)</source>
+        <translation><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="337"/>
+        <source>%n day(s)</source>
+        <translation><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="338"/>
+        <source>%n hour(s)</source>
+        <translation><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="339"/>
+        <source>%n minute(s)</source>
+        <translation><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/common/utility.cpp" line="340"/>
+        <source>%n second(s)</source>
+        <translation><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform><numerusform>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/common/utility.cpp" line="364"/>
+        <source>%1 %2</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>ValidateChecksumHeader</name>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="340"/>
+        <source>The checksum header is malformed.</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="380"/>
+        <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/common/checksums.cpp" line="385"/>
+        <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>Window</name>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="166"/>
+        <source>Nextcloud desktop main dialog</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="193"/>
+        <source>Current account</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="199"/>
+        <location filename="../src/gui/tray/Window.qml" line="334"/>
+        <source>Resume sync for all</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="199"/>
+        <location filename="../src/gui/tray/Window.qml" line="334"/>
+        <source>Pause sync for all</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="219"/>
+        <source>Set user status</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="292"/>
+        <source>Add account</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE). </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="305"/>
+        <source>Add new account</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="340"/>
+        <source>Settings</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="363"/>
+        <source>Exit</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="373"/>
+        <source>Current user avatar</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
+        <source>Current account avatar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <source>Current user status is online</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="412"/>
+        <source>Current user status is do not disturb</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
+        <source>Current account status is online</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="447"/>
+        <source>Current account status is do not disturb</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="516"/>
+        <source>Account switcher and settings menu</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="535"/>
+        <source>Open local folder of current account</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
+        <source>Connected</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="558"/>
+        <source>Disconnected</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="594"/>
+        <source>Open Nextcloud Talk in browser</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="614"/>
+        <source>More apps</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="669"/>
+        <source>Open %1 in browser</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="793"/>
+        <source>Unified search results list</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="854"/>
+        <source>%1 - File activity</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>main.cpp</name>
+    <message>
+        <location filename="../src/gui/main.cpp" line="51"/>
+        <source>System Tray not available</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/main.cpp" line="52"/>
+        <source>%1 requires on a working system tray. If you are running XFCE, please follow &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;these instructions&lt;/a&gt;. Otherwise, please install a system tray application such as &quot;trayer&quot; and try again.</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE). &lt;a href=&quot;http://docs.xfce.org/xfce/xfce4-panel/systray&quot;&gt;&lt;/a&gt;</translation>
+    </message>
+</context>
+<context>
+    <name>nextcloudTheme::about()</name>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="499"/>
+        <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>progress</name>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="33"/>
+        <source>Virtual file created</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="35"/>
+        <source>Replaced by virtual file</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="37"/>
+        <source>Downloaded</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="40"/>
+        <source>Uploaded</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="43"/>
+        <source>Server version downloaded, copied changed local file into conflict file</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
+        <source>Deleted</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="48"/>
+        <source>Moved to %1</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="50"/>
+        <source>Ignored</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
+        <source>Filesystem access error</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
+        <source>Error</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="56"/>
+        <source>Updated local metadata</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="59"/>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="61"/>
+        <source>Unknown</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="72"/>
+        <source>downloading</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="74"/>
+        <source>uploading</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="76"/>
+        <source>deleting</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="79"/>
+        <source>moving</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="81"/>
+        <source>ignoring</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="84"/>
+        <source>error</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/progressdispatcher.cpp" line="86"/>
+        <source>updating local metadata</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>theme</name>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="84"/>
+        <source>Status undefined</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="87"/>
+        <source>Waiting to start sync</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="90"/>
+        <source>Sync is running</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="93"/>
+        <source>Sync Success</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
+        <source>Sync Success, some files were ignored.</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
+        <source>Sync Error</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
+        <source>Setup Error</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <source>Preparing to sync</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <source>Aborting …</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <source>Sync is paused</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>utility</name>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="46"/>
+        <source>Could not open browser</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="47"/>
+        <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="70"/>
+        <source>Could not open email client</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="71"/>
+        <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="86"/>
+        <source>Always available locally</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="88"/>
+        <source>Currently available locally</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="90"/>
+        <source>Some available online only</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="93"/>
+        <source>Available online only</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="100"/>
+        <source>Make always available locally</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/guiutility.cpp" line="105"/>
+        <source>Free up local space</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountManager</name>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="406"/>
+        <source>End to end encryption mnemonic</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountmanager.cpp" line="407"/>
+        <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::InternalLinkWidget</name>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="64"/>
+        <source>Internal link</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/internallinkwidget.ui" line="83"/>
+        <source>Only works for users with access to this folder</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareDialog</name>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="69"/>
+        <source>share label</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="124"/>
+        <source>Nextcloud Path:</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.ui" line="155"/>
+        <source>Icon</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="96"/>
+        <source>%1</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="105"/>
+        <source>Locked by %1 - Expire in %2 minutes</source>
+        <comment>remaining time before lock expire</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../src/gui/sharedialog.cpp" line="106"/>
+        <source>Locked by %1 - Expires in %2 minutes</source>
+        <comment>remaining time before lock expires</comment>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="127"/>
+        <source>Folder: %2</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="130"/>
+        <source>%1 Sharing</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="332"/>
+        <source>The file cannot be shared because it does not have sharing permission.</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="417"/>
+        <source>Please enter a password for your link share:</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharedialog.cpp" line="418"/>
+        <source>Password for share required</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareLinkWidget</name>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
+        <source>Share link</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
+        <source>Note</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
+        <source>Set password</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.ui" line="315"/>
+        <source>Expires</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="184"/>
+        <source>Allow editing</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="190"/>
+        <source>View only</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="196"/>
+        <source>Allow upload and editing</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
+        <source>File drop (upload only)</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
+        <source>Link name</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
+        <source>Note to recipient</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="261"/>
+        <source>Password protect</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="280"/>
+        <source>Set expiration date</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="302"/>
+        <source>Delete link</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="307"/>
+        <source>Add another link</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
+        <source>Confirm Link Share Deletion</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
+        <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
+        <source>Delete</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="511"/>
+        <source>Cancel</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/sharelinkwidget.cpp" line="529"/>
+        <source>Public link</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::ShareUserGroupWidget</name>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
+        <source>Share with users or groups …</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
+        <source>Search globally</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
+        <source>Copy link</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>
+        <source>No results for &quot;%1&quot;</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
+        <source>Password for share required</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
+        <source>Please enter a password for your email share:</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
+        <source>I shared something with you</source>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE).</translation>
+    </message>
+</context>
 </TS>
