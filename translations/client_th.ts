@@ -394,17 +394,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="248"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
         <source>Connection timed out</source>
         <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>ข้อผิดพลาดที่ไม่รู้จัก: การตอบกลับของเครือข่ายถูกลบแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="347"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>เซิร์ฟเวอร์ตอบกลับ &quot;%1 %2&quot; ถึง &quot;%3 %4&quot;</translation>
     </message>
@@ -889,106 +889,106 @@ Please authenticate using your browser.</source>
         <translation>ดำเนินการต่อ</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="326"/>
+        <location filename="../src/gui/application.cpp" line="319"/>
         <source>Error accessing the configuration file</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="327"/>
+        <location filename="../src/gui/application.cpp" line="320"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>เกิดข้อผิดพลาดขณะกำลังเข้าถึงไฟล์กำหนดค่า %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="330"/>
+        <location filename="../src/gui/application.cpp" line="323"/>
         <source>Quit %1</source>
         <translation>ออก %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="597"/>
+        <location filename="../src/gui/application.cpp" line="590"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 รุ่น %2&lt;byte value=&quot;xd&quot;/&gt;
 ประสานข้อมูลไฟล์เดสก์ท็อปยูทิลิตี้</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="595"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
         <source>Show the settings dialog while starting.</source>
         <translation>แสดงกล่องโต้ตอบการตั้งค่าขณะเริ่มต้น</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Quit the running instance.</source>
         <translation>ออกจากอินสแตนซ์ที่ทำงานอยู่</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>เขียนบันทึกลงในไฟล์ (ใช้เพื่อเขียนไปยัง stdout)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="619"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>เขียน Log output ของการประสานข้อมูลแต่ละรายการไปยังไฟล์ใหม่ในโฟลเดอร์</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="620"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>Flush the log file after every write.</source>
         <translation>ล้างไฟล์บันทึกหลังจากเขียนทุกครั้ง</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="614"/>
         <source>Output debug-level messages in the log.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
-        <location filename="../src/gui/application.cpp" line="623"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>Override UI language.</source>
         <translation>แทนที่ภาษา UI</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="617"/>
         <source>Use the given configuration folder.</source>
         <translation>ใช้โฟลเดอร์การกำหนดค่าที่กำหนด</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>Enable debug mode.</source>
         <translation>เปิดใช้งานโหมดแก้ไขข้อบกพร่อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>เปิดไฟล์ ระบบไฟล์เสมือน (ทางเลือก)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="644"/>
+        <location filename="../src/gui/application.cpp" line="637"/>
         <source>--logfile and --logdir are mutually exclusive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="658"/>
+        <location filename="../src/gui/application.cpp" line="651"/>
         <source>Invalid path passed to --confdir</source>
         <translation>Path ที่ไม่ถูกต้องได้ถูกส่งผ่านไปยัง --confdir</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="671"/>
+        <location filename="../src/gui/application.cpp" line="664"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="680"/>
+        <location filename="../src/gui/application.cpp" line="673"/>
         <source>Available translations: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1555,47 +1555,40 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>คืนค่าการเปลี่ยนแปลง</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
-        <source>, &apos;%1&apos;</source>
-        <extracomment>Build a list of file names</extracomment>
-        <translation>, &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
         <source>&apos;%1&apos;</source>
-        <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>กำลังประสานข้อมูล %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>, </source>
         <translation>หรือ</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>ดาวน์โหลด %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/วินาที</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>อัปโหลด %1/s</translation>
@@ -1606,36 +1599,36 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>โฟลเดอร์ในเครื่อง: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 ของ %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1037"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>เหลืออีก %5 ไฟล์, %1 ไฟล์จาก %2, %3 ไฟล์จาก %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1045"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 จาก %2, %3 จาก %4 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
         <source>file %1 of %2</source>
         <translation>ไฟล์ %1 จาก %2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1101"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1095"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>กำลังรออีก (%n) โฟลเดอร์...</numerusform></translation>
     </message>
