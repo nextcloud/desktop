@@ -38,7 +38,12 @@
 #include <QSet>
 #include <QNetworkProxy>
 
-static const char versionC[] = "version";
+namespace {
+#ifndef VERSION_C
+#define VERSION_C
+constexpr auto versionC= "version";
+#endif
+}
 static const int maxFoldersVersion = 1;
 
 namespace OCC {

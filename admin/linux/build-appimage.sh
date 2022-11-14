@@ -34,6 +34,7 @@ cmake \
     -D BUILD_UPDATER=$BUILD_UPDATER \
     -D MIRALL_VERSION_BUILD=$BUILDNR \
     -D MIRALL_VERSION_SUFFIX="$VERSION_SUFFIX" \
+    -D CMAKE_UNITY_BUILD=ON \
     ${DESKTOP_CLIENT_ROOT}
 cmake --build . --target all
 DESTDIR=/app cmake --install .
