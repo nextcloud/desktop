@@ -1458,6 +1458,7 @@ void AccountSettings::initializeE2eEncryption()
         slotE2eEncryptionMnemonicReady();
     } else {
         _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
+        _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
         _ui->encryptionMessage->hide();
 
         auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Enable encryption"), e2EeUiActionEnableEncryptionId);
