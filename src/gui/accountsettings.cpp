@@ -247,6 +247,7 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
         displayMnemonic(_accountState->account()->e2e()->_mnemonic);
     });
 
+    _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
     _ui->encryptionMessage->setText(tr("End-to-End encryption has been enabled for this account"));
     _ui->encryptionMessage->setIcon(Theme::createIconFromSvgResource(QStringLiteral(":/client/theme/colored/state-ok.svg")));
     _ui->encryptionMessage->show();
@@ -1457,6 +1458,7 @@ void AccountSettings::initializeE2eEncryption()
     if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
         slotE2eEncryptionMnemonicReady();
     } else {
+        _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
         _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
         _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
         _ui->encryptionMessage->hide();
