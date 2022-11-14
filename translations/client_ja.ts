@@ -1254,37 +1254,37 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 秒前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 分前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 時間前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 日前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 ヶ月前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1 年前</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
@@ -1615,7 +1615,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1518"/>
         <source>Undefined state.</source>
-        <translation type="unfinished"/>
+        <translation>未定義の状態。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1521"/>
@@ -1655,12 +1655,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1534"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>前回の同期は成功しました。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1540"/>
         <source>Setup error.</source>
-        <translation type="unfinished"/>
+        <translation>設定エラー</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1543"/>
@@ -3853,17 +3853,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>リンクを共有</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>リンク共有</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>受信者へのメモを入力してください</translation>
     </message>
 </context>
 <context>
@@ -4749,7 +4749,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <source>Log in</source>
-        <translation type="unfinished"/>
+        <translation>ログイン</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
@@ -4760,7 +4760,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>他のサービスでサインアップ</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
@@ -4927,7 +4927,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
         <source>Username</source>
-        <translation type="unfinished"/>
+        <translation>ユーザー名</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
@@ -4942,7 +4942,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
         <source>Choose different folder</source>
-        <translation type="unfinished"/>
+        <translation>他のフォルダーを選択</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
@@ -5155,27 +5155,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>新規共有に必要なパスワード</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>パスワードを共有</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>共有は無効になっています</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>このアイテムは共有できません</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>共有は無効になっています</translation>
     </message>
 </context>
 <context>
@@ -5183,7 +5183,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>ユーザーまたはグループを検索する ...</translation>
     </message>
 </context>
 <context>
@@ -5262,12 +5262,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>現在のステータスはオンラインです</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>現在のステータスは取り込み中です</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
@@ -5332,7 +5332,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
-        <translation type="unfinished"/>
+        <translation>全ての通知をミュート</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
@@ -5342,7 +5342,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>オフライン</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
@@ -5508,7 +5508,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>現在のアバター</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
@@ -5523,12 +5523,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>現在のステータスはオンラインです</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>現在のステータスは取り込み中です</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="516"/>
