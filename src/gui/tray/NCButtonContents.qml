@@ -47,7 +47,6 @@ RowLayout {
 
         text: root.text
         textFormat: Text.PlainText
-        font.bold: root.bold
 
         visible: root.text !== ""
 
