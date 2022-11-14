@@ -85,6 +85,7 @@ static Result<void, QString> writePlistToFile(NSString *plistFile, NSDictionary 
     }
 
     // Now write the file.
+    qCInfo(lcUtility()) << "Writing plist file" << QString::fromNSString(plistFile); // Especially for branded clients: log the file name, so it can be found when debugging.
     if (![plist writeToURL:[NSURL fileURLWithPath:plistFile isDirectory:NO] error:&error]) {
         return QString::fromNSString(error.localizedDescription);
     }
@@ -149,10 +150,7 @@ static Result<void, QString> writeNewPlistFile(NSString *plistFile, NSString *fu
 {
     NSDictionary *plistTemplate = @{
         @"Label" : QCoreApplication::organizationDomain().toNSString(),
-        @"KeepAlive" : @ {
-            @"Crashed" : @NO,
-            @"SuccessfulExit" : @NO
-        },
+        @"KeepAlive" : @NO,
         @"Program" : fullPath,
         @"RunAtLoad" : enable ? @YES : @NO
     };
@@ -214,7 +212,7 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
                 if (!result) {
                     qCWarning(lcUtility) << result.error();
                 }
-            } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
+            } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are lse if (![fileManager fileExistscase insensitive)
                 // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
                 // e.g. KeepAlive was changed, we leave it as-is.
                 auto result = modifyPlist(plistFile, plist, enable);
