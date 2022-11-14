@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>ローカル編集を起動</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>アクティビティ</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>共有</translation>
     </message>
 </context>
 <context>
@@ -583,7 +583,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>エンドツーエンドの暗号化ニーモニック</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
@@ -888,7 +888,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
         <source>&amp;Username:</source>
-        <translation type="unfinished"/>
+        <translation>ユーザー名(&amp;U):</translation>
     </message>
     <message>
         <location filename="../src/gui/authenticationdialog.cpp" line="37"/>
@@ -1204,7 +1204,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>再度お試しください</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
@@ -5199,7 +5199,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>直ちに同期</translation>
     </message>
 </context>
 <context>
@@ -5362,7 +5362,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>キャンセル</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
