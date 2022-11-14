@@ -246,7 +246,9 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
     connect(actionDisplayMnemonic, &QAction::triggered, this, [this]() {
         displayMnemonic(_accountState->account()->e2e()->_mnemonic);
     });
+
     _ui->encryptionMessage->setText(tr("End-to-End encryption has been enabled for this account"));
+    _ui->encryptionMessage->setIcon(Theme::createIconFromSvgResource(QStringLiteral(":/client/theme/colored/state-ok.svg")));
     _ui->encryptionMessage->show();
 
 }

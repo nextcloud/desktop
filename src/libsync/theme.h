@@ -567,6 +567,7 @@ public:
      */
     static QPixmap createColorAwarePixmap(const QString &name);
 
+    static QIcon createIconFromSvgResource(const QString &resourcePath);
 
     /**
      * @brief Whether to show the option to create folders using "virtual files".

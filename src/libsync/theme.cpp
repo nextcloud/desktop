@@ -870,6 +870,21 @@ QPixmap Theme::createColorAwarePixmap(const QString &name)
     return createColorAwarePixmap(name, QGuiApplication::palette());
 }
 
+QIcon Theme::createIconFromSvgResource(const QString &resourcePath)
+{
+    QSvgRenderer renderer(resourcePath);
+
+    QImage img(64, 64, QImage::Format_ARGB32);
+    img.fill(Qt::GlobalColor::transparent);
+
+    QPainter imgPainter(&img);
+    renderer.render(&imgPainter);
+
+    QIcon icon(QPixmap::fromImage(img));
+
+    return icon;
+}
+
 bool Theme::showVirtualFilesOption() const
 {
     const auto vfsMode = bestAvailableVfsMode();
