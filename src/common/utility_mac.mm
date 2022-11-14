@@ -80,6 +80,7 @@ static Result<void, QString> writePlistToFile(NSString *plistFile, NSDictionary 
     }
 
     // Now write the file.
+    qCInfo(lcUtility()) << "Writing plist file" << QString::fromNSString(plistFile); // Especially for branded clients: log the file name, so it can be found when debugging.
     if (![plist writeToURL:[NSURL fileURLWithPath:plistFile isDirectory:NO] error:&error]) {
         return QString::fromNSString(error.localizedDescription);
     }
@@ -144,10 +145,7 @@ static Result<void, QString> writeNewPlistFile(NSString *plistFile, NSString *fu
 {
     NSDictionary *plistTemplate = @{
         @"Label" : QCoreApplication::organizationDomain().toNSString(),
-        @"KeepAlive" : @ {
-            @"Crashed" : @NO, // To have launchd restart the client after a crash, change this to @YES
-            @"SuccessfulExit" : @NO
-        },
+        @"KeepAlive" : @NO,
         @"Program" : fullPath,
         @"RunAtLoad" : enable ? @YES : @NO
     };
@@ -185,55 +183,47 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
         // An error might occur in the code below, but we cannot report anything, so we just ignore them.
 
         if ([fileManager fileExistsAtPath:plistFile]) {
-            if (enable) {
-                auto maybePlist = readPlistFromFile(plistFile);
-                if (!maybePlist) {
-                    // broken plist, overwrite it
-                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                    if (!result) {
-                        qCWarning(lcUtility) << Q_FUNC_INFO << result.error();
-                    }
-                    return;
+            auto maybePlist = readPlistFromFile(plistFile);
+            if (!maybePlist) {
+                // broken plist, overwrite it
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << Q_FUNC_INFO << result.error();
                 }
-                NSDictionary *plist = *maybePlist;
+                return;
+            }
+            NSDictionary *plist = *maybePlist;
 
-                id programValue = plist[@"Program"];
-                if (programValue == nil) {
-                    // broken plist, overwrite it
-                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                    if (!result) {
-                        qCWarning(lcUtility) << result.error();
-                    }
-                } else if (![fileManager fileExistsAtPath:programValue]) {
-                    // Ok, a plist from some removed program, overwrite it
-                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                    if (!result) {
-                        qCWarning(lcUtility) << result.error();
-                    }
-                } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
-                    // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
-                    // e.g. KeepAlive was changed, we leave it as-is.
-                    auto result = modifyPlist(plistFile, plist, enable);
-                    if (!result) {
-                        qCWarning(lcUtility) << result.error();
-                    }
-                } else if ([fullPath hasPrefix:@"/Applications/"]) {
-                    // ok, we seem to be an officially installed application, overwrite the file
-                    auto result = writeNewPlistFile(plistFile, fullPath, enable);
-                    if (!result) {
-                        qCWarning(lcUtility) << result.error();
-                    }
-                } else {
-                    qCInfo(lcUtility) << "We're not an installed application, there is anoter executable "
-                                         "mentioned in the plist file, and that executable seems to exist, "
-                                         "so let's not touch the file.";
+            id programValue = plist[@"Program"];
+            if (programValue == nil) {
+                // broken plist, overwrite it
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
+            } else if (![fileManager fileExistsAtPath:programValue]) {
+                // Ok, a plist from some removed program, overwrite it
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
+            } else if ([fullPath compare:programValue options:NSCaseInsensitiveSearch] == NSOrderedSame) { // (Note: case insensitive compare, because most fs setups on mac are case insensitive)
+                // Wohoo, it's ours! Now carefully change only the RunAtLoad entry. If any value for
+                // e.g. KeepAlive was changed, we leave it as-is.
+                auto result = modifyPlist(plistFile, plist, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
+                }
+            } else if ([fullPath hasPrefix:@"/Applications/"]) {
+                // ok, we seem to be an officially installed application, overwrite the file
+                auto result = writeNewPlistFile(plistFile, fullPath, enable);
+                if (!result) {
+                    qCWarning(lcUtility) << result.error();
                 }
             } else {
-                // Disable launch-on-startup: remove the plist file
-                NSError *error = nil;
-                if (![fileManager removeItemAtPath:plistFile error:&error]) {
-                    qCWarning(lcUtility) << "Could not remove plist file:" << QString::fromNSString(error.localizedDescription);
-                }
+                qCInfo(lcUtility) << "We're not an installed application, there is anoter executable "
+                                     "mentioned in the plist file, and that executable seems to exist, "
+                                     "so let's not touch the file.";
             }
         } else {
             if (enable) {
