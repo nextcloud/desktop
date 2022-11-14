@@ -117,7 +117,7 @@ void UserStatusSelectorModel::reset()
 void UserStatusSelectorModel::init()
 {
     if (!_userStatusConnector) {
-        qCWarning(lcUserStatusDialogModel) << "No user status conenctor set";
+        qCWarning(lcUserStatusDialogModel) << "No user status connector set";
         return;
     }
 
