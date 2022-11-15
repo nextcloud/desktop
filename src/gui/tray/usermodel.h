@@ -88,17 +88,17 @@ signals:
     void sendReplyMessage(const int activityIndex, const QString &conversationToken, const QString &message, const QString &replyTo);
 
 public slots:
-    void slotItemCompleted(const QString &folder, const SyncFileItemPtr &item);
-    void slotProgressInfo(const QString &folder, const ProgressInfo &progress);
-    void slotAddError(const QString &folderAlias, const QString &message, ErrorCategory category);
-    void slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotItemCompleted(const QString &folder, const OCC::SyncFileItemPtr &item);
+    void slotProgressInfo(const QString &folder, const OCC::ProgressInfo &progress);
+    void slotAddError(const QString &folderAlias, const QString &message, OCC::ErrorCategory category);
+    void slotAddErrorToGui(const QString &folderAlias, OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
     void slotNotificationRequestFinished(int statusCode);
     void slotNotifyNetworkError(QNetworkReply *reply);
     void slotEndNotificationRequest(int replyCode);
     void slotNotifyServerFinished(const QString &reply, int replyCode);
     void slotSendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
-    void slotBuildNotificationDisplay(const ActivityList &list);
-    void slotBuildIncomingCallDialogs(const ActivityList &list);
+    void slotBuildNotificationDisplay(const OCC::ActivityList &list);
+    void slotBuildIncomingCallDialogs(const OCC::ActivityList &list);
     void slotRefreshNotifications();
     void slotRefreshActivitiesInitial();
     void slotRefreshActivities();

@@ -34,7 +34,7 @@ signals:
     void activityListModelChanged();
 
 public slots:
-    void setActivityListModel(ActivityListModel *activityListModel);
+    void setActivityListModel(OCC::ActivityListModel *activityListModel);
 
 protected:
     [[nodiscard]] bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;

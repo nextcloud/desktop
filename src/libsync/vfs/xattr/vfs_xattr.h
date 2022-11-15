@@ -53,7 +53,7 @@ public:
     AvailabilityResult availability(const QString &folderPath) override;
 
 public slots:
-    void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) override;
+    void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
 
 protected:
     void startImpl(const VfsSetupParams &params) override;

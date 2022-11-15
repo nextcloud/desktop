@@ -110,14 +110,14 @@ public slots:
     void slotTriggerAction(const int activityIndex, const int actionIndex);
     void slotTriggerDismiss(const int activityIndex);
 
-    void addNotificationToActivityList(const Activity &activity);
-    void addErrorToActivityList(const Activity &activity);
-    void addIgnoredFileToList(const Activity &newActivity);
-    void addSyncFileItemToActivityList(const Activity &activity);
+    void addNotificationToActivityList(const OCC::Activity &activity);
+    void addErrorToActivityList(const OCC::Activity &activity);
+    void addIgnoredFileToList(const OCC::Activity &newActivity);
+    void addSyncFileItemToActivityList(const OCC::Activity &activity);
     void removeActivityFromActivityList(int row);
-    void removeActivityFromActivityList(const Activity &activity);
+    void removeActivityFromActivityList(const OCC::Activity &activity);
 
-    void setAccountState(AccountState *state);
+    void setAccountState(OCC::AccountState *state);
     void setReplyMessageSent(const int activityIndex, const QString &message);
     void setCurrentItem(const int currentItem);
 
@@ -140,12 +140,12 @@ protected slots:
     void setDoneFetching(bool value);
     void setHideOldActivities(bool value);
     void setDisplayActions(bool value);
-    void setFinalList(const ActivityList &finalList); // added for unit tests
+    void setFinalList(const OCC::ActivityList &finalList); // added for unit tests
 
     virtual void startFetchJob();
 
 private slots:
-    void addEntriesToActivityList(const ActivityList &activityList);
+    void addEntriesToActivityList(const OCC::ActivityList &activityList);
 
 private:
     static QVariantList convertLinksToMenuEntries(const Activity &activity);

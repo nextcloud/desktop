@@ -113,43 +113,43 @@ signals:
     void serverError(const int code, const QString &message);
     void passwordSetError(const QString &shareId, const int code, const QString &message);
     void requestPasswordForLinkShare();
-    void requestPasswordForEmailSharee(const ShareePtr &sharee);
+    void requestPasswordForEmailSharee(const OCC::ShareePtr &sharee);
 
     void sharesChanged();
 
 public slots:
-    void setAccountState(AccountState *accountState);
+    void setAccountState(OCC::AccountState *accountState);
     void setLocalPath(const QString &localPath);
 
     void createNewLinkShare() const;
     void createNewLinkShareWithPassword(const QString &password) const;
-    void createNewUserGroupShare(const ShareePtr &sharee);
+    void createNewUserGroupShare(const OCC::ShareePtr &sharee);
     void createNewUserGroupShareFromQml(const QVariant &sharee);
-    void createNewUserGroupShareWithPassword(const ShareePtr &sharee, const QString &password) const;
+    void createNewUserGroupShareWithPassword(const OCC::ShareePtr &sharee, const QString &password) const;
     void createNewUserGroupShareWithPasswordFromQml(const QVariant &sharee, const QString &password) const;
 
-    void deleteShare(const SharePtr &share) const;
+    void deleteShare(const OCC::SharePtr &share) const;
     void deleteShareFromQml(const QVariant &share) const;
 
-    void toggleShareAllowEditing(const SharePtr &share, const bool enable) const;
+    void toggleShareAllowEditing(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareAllowEditingFromQml(const QVariant &share, const bool enable) const;
-    void toggleShareAllowResharing(const SharePtr &share, const bool enable) const;
+    void toggleShareAllowResharing(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareAllowResharingFromQml(const QVariant &share, const bool enable) const;
-    void toggleSharePasswordProtect(const SharePtr &share, const bool enable);
+    void toggleSharePasswordProtect(const OCC::SharePtr &share, const bool enable);
     void toggleSharePasswordProtectFromQml(const QVariant &share, const bool enable);
-    void toggleShareExpirationDate(const SharePtr &share, const bool enable) const;
+    void toggleShareExpirationDate(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareExpirationDateFromQml(const QVariant &share, const bool enable) const;
-    void toggleShareNoteToRecipient(const SharePtr &share, const bool enable) const;
+    void toggleShareNoteToRecipient(const OCC::SharePtr &share, const bool enable) const;
     void toggleShareNoteToRecipientFromQml(const QVariant &share, const bool enable) const;
 
-    void setLinkShareLabel(const QSharedPointer<LinkShare> &linkShare, const QString &label) const;
+    void setLinkShareLabel(const QSharedPointer<OCC::LinkShare> &linkShare, const QString &label) const;
     void setLinkShareLabelFromQml(const QVariant &linkShare, const QString &label) const;
-    void setShareExpireDate(const SharePtr &share, const qint64 milliseconds) const;
+    void setShareExpireDate(const OCC::SharePtr &share, const qint64 milliseconds) const;
     // Needed as ints in QML are 32 bits so we need to use a QVariant
     void setShareExpireDateFromQml(const QVariant &share, const QVariant milliseconds) const;
-    void setSharePassword(const SharePtr &share, const QString &password);
+    void setSharePassword(const OCC::SharePtr &share, const QString &password);
     void setSharePasswordFromQml(const QVariant &share, const QString &password);
-    void setShareNote(const SharePtr &share, const QString &note) const;
+    void setShareNote(const OCC::SharePtr &share, const QString &note) const;
     void setShareNoteFromQml(const QVariant &share, const QString &note) const;
 
 private slots:
@@ -160,11 +160,11 @@ private slots:
 
     void slotPropfindReceived(const QVariantMap &result);
     void slotServerError(const int code, const QString &message);
-    void slotAddShare(const SharePtr &share);
+    void slotAddShare(const OCC::SharePtr &share);
     void slotRemoveShareWithId(const QString &shareId);
-    void slotSharesFetched(const QList<SharePtr> &shares);
-    void slotAddSharee(const ShareePtr &sharee);
-    void slotRemoveSharee(const ShareePtr &sharee);
+    void slotSharesFetched(const QList<OCC::SharePtr> &shares);
+    void slotAddSharee(const OCC::ShareePtr &sharee);
+    void slotRemoveSharee(const OCC::ShareePtr &sharee);
 
     void slotSharePermissionsSet(const QString &shareId);
     void slotSharePasswordSet(const QString &shareId);

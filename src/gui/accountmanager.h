@@ -108,16 +108,16 @@ private:
 
 public slots:
     /// Saves account data, not including the credentials
-    void saveAccount(Account *a);
+    void saveAccount(OCC::Account *a);
 
     /// Saves account state data, not including the account
-    void saveAccountState(AccountState *a);
+    void saveAccountState(OCC::AccountState *a);
 
 
 Q_SIGNALS:
-    void accountAdded(AccountState *account);
-    void accountRemoved(AccountState *account);
-    void accountSyncConnectionRemoved(AccountState *account);
-    void removeAccountFolders(AccountState *account);
+    void accountAdded(OCC::AccountState *account);
+    void accountRemoved(OCC::AccountState *account);
+    void accountSyncConnectionRemoved(OCC::AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
 };
 }

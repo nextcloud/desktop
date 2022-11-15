@@ -78,13 +78,13 @@ public slots:
     void slotShowTrayUpdateMessage(const QString &title, const QString &msg, const QUrl &webUrl);
     void slotShowOptionalTrayMessage(const QString &title, const QString &msg);
     void slotFolderOpenAction(const QString &alias);
-    void slotUpdateProgress(const QString &folder, const ProgressInfo &progress);
+    void slotUpdateProgress(const QString &folder, const OCC::ProgressInfo &progress);
     void slotShowGuiMessage(const QString &title, const QString &message);
     void slotFoldersChanged();
     void slotShowSettings();
     void slotShowSyncProtocol();
     void slotShutdown();
-    void slotSyncStateChange(Folder *);
+    void slotSyncStateChange(OCC::Folder *);
     void slotTrayClicked(QSystemTrayIcon::ActivationReason reason);
     void slotToggleLogBrowser();
     void slotOpenOwnCloud();
@@ -94,7 +94,7 @@ public slots:
     void slotHelp();
     void slotOpenPath(const QString &path);
     void slotAccountStateChanged();
-    void slotTrayMessageIfServerUnsupported(Account *account);
+    void slotTrayMessageIfServerUnsupported(OCC::Account *account);
 
 
     /**

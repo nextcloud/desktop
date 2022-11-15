@@ -127,7 +127,7 @@ public slots:
     void abort();
 
     void setNetworkLimits(int upload, int download);
-    void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
+    void setSyncOptions(const OCC::SyncOptions &options) { _syncOptions = options; }
     void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
 
     /**
@@ -141,7 +141,7 @@ public slots:
      * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
      * sync's style.
      */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
+    void setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle style, std::set<QString> paths = {});
 
     void addAcceptedInvalidFileName(const QString& filePath);
 
@@ -150,17 +150,17 @@ signals:
     void rootEtag(const QByteArray &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
-    void aboutToPropagate(SyncFileItemVector &);
+    void aboutToPropagate(OCC::SyncFileItemVector &);
 
     // after each item completed by a job (successful or not)
-    void itemCompleted(const SyncFileItemPtr &);
+    void itemCompleted(const OCC::SyncFileItemPtr &);
 
-    void transmissionProgress(const ProgressInfo &progress);
+    void transmissionProgress(const OCC::ProgressInfo &progress);
 
     /// We've produced a new sync error of a type.
-    void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
+    void syncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
 
-    void addErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
 
     void finished(bool success);
     void started();
@@ -170,7 +170,7 @@ signals:
      * This usually happen when the server was reset or something.
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
-    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, std::function<void(bool)> f);
+    void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void(bool)> f);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
@@ -186,7 +186,7 @@ private slots:
     void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
 
     /** When the discovery phase discovers an item */
-    void slotItemDiscovered(const SyncFileItemPtr &item);
+    void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 
     /** Called when a SyncFileItem gets accepted for a sync.
      *
@@ -194,12 +194,12 @@ private slots:
      * can also be called via the propagator for items that are
      * created during propagation.
      */
-    void slotNewItem(const SyncFileItemPtr &item);
+    void slotNewItem(const OCC::SyncFileItemPtr &item);
 
-    void slotItemCompleted(const SyncFileItemPtr &item);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
     void slotDiscoveryFinished();
     void slotPropagationFinished(bool success);
-    void slotProgress(const SyncFileItem &item, qint64 curent);
+    void slotProgress(const OCC::SyncFileItem &item, qint64 curent);
     void slotCleanPollsJobAborted(const QString &error);
 
     /** Records that a file was touched by a job. */

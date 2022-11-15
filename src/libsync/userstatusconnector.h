@@ -128,12 +128,12 @@ public:
     [[nodiscard]] virtual UserStatus userStatus() const = 0;
 
 signals:
-    void userStatusFetched(const UserStatus &userStatus);
-    void predefinedStatusesFetched(const QVector<UserStatus> &statuses);
+    void userStatusFetched(const OCC::UserStatus &userStatus);
+    void predefinedStatusesFetched(const QVector<OCC::UserStatus> &statuses);
     void userStatusSet();
     void serverUserStatusChanged();
     void messageCleared();
-    void error(Error error);
+    void error(OCC::UserStatusConnector::Error error);
 };
 }
 

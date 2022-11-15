@@ -75,10 +75,10 @@ signals:
     void displayErrorMessage(const int code, const QString &message);
 
 public slots:
-    void setAccountState(AccountState *accountState);
+    void setAccountState(OCC::AccountState *accountState);
     void setShareItemIsFolder(const bool shareItemIsFolder);
     void setSearchString(const QString &searchString);
-    void setLookupMode(const LookupMode lookupMode);
+    void setLookupMode(const OCC::ShareeModel::LookupMode lookupMode);
     void setShareeBlocklist(const QVariantList shareeBlocklist);
 
     void fetch();

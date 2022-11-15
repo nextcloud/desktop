@@ -93,7 +93,7 @@ public:
 
     Q_REQUIRED_RESULT QVariantList clearStageTypes() const;
     Q_REQUIRED_RESULT QString clearAtDisplayString() const;
-    Q_INVOKABLE [[nodiscard]] QString clearAtReadable(const UserStatus &status) const;
+    Q_INVOKABLE [[nodiscard]] QString clearAtReadable(const OCC::UserStatus &status) const;
 
     Q_REQUIRED_RESULT QString errorMessage() const;
 
@@ -101,8 +101,8 @@ public slots:
     void setUserIndex(const int userIndex);
     void setUserStatus();
     void clearUserStatus();
-    void setClearAt(const ClearStageType clearStageType);
-    void setPredefinedStatus(const UserStatus &predefinedStatus);
+    void setClearAt(const OCC::UserStatusSelectorModel::ClearStageType clearStageType);
+    void setPredefinedStatus(const OCC::UserStatus &predefinedStatus);
 
 signals:
     void userIndexChanged();

@@ -16,8 +16,8 @@ public:
     explicit ServerNotificationHandler(AccountState *accountState, QObject *parent = nullptr);
 
 signals:
-    void newNotificationList(ActivityList);
-    void newIncomingCallsList(ActivityList);
+    void newNotificationList(OCC::ActivityList);
+    void newIncomingCallsList(OCC::ActivityList);
 
 public slots:
     void slotFetchNotifications();

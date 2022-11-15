@@ -100,7 +100,7 @@ signals:
     void openHelp();
     void shutdown();
 
-    void showFileDetailsPage(const QString &fileLocalPath, const FileDetailsPage page);
+    void showFileDetailsPage(const QString &fileLocalPath, const OCC::Systray::FileDetailsPage page);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
     void showErrorMessageDialog(const QString &error);
 
@@ -111,11 +111,11 @@ public slots:
     void setTrayEngine(QQmlApplicationEngine *trayEngine);
     void create();
 
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
+    void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
     void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
     void setToolTip(const QString &tip);
 
-    void createCallDialog(const Activity &callNotification, const AccountStatePtr accountState);
+    void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);
     void createEditFileLocallyLoadingDialog(const QString &fileName);
     void destroyEditFileLocallyLoadingDialog();
 
@@ -130,7 +130,7 @@ public slots:
     // only for those managed by the C++ engine
     void destroyDialog(QQuickWindow *window) const;
 
-    void showWindow(WindowPosition position = WindowPosition::Default);
+    void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
     void hideWindow();
 
     void setSyncIsPaused(const bool syncIsPaused);

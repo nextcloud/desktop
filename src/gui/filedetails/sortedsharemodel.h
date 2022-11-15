@@ -33,7 +33,7 @@ signals:
     void shareModelChanged();
 
 public slots:
-    void setShareModel(ShareModel *shareModel);
+    void setShareModel(OCC::ShareModel *shareModel);
 
 protected:
     [[nodiscard]] bool lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const override;
