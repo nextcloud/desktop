@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="248"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
         <source>Connection timed out</source>
         <translation>සම්බන්ධතාවය කල් ඉකුත් විය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>නොදන්නා දෝෂය: ජාල පිළිතුර මකා ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="347"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>සේවාදායකය &quot;%1 %2&quot; සිට &quot;%3 %4&quot;දක්වා පිළිතුරු දුන්නේය</translation>
     </message>
@@ -888,106 +888,106 @@ Please authenticate using your browser.</source>
         <translation>දිගටම කරගෙන යන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="326"/>
+        <location filename="../src/gui/application.cpp" line="319"/>
         <source>Error accessing the configuration file</source>
         <translation>වින්‍යාස ගොනුවට ප්‍රවේශ වීමේ දෝෂයකි</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="327"/>
+        <location filename="../src/gui/application.cpp" line="320"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>%1හි වින්‍යාස ගොනුවට ප්‍රවේශ වීමේදී දෝෂයක් ඇති විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="330"/>
+        <location filename="../src/gui/application.cpp" line="323"/>
         <source>Quit %1</source>
         <translation>%1න් ඉවත් වන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="597"/>
+        <location filename="../src/gui/application.cpp" line="590"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 අනුවාදය %2
 ගොනු සමමුහුර්ත කිරීමේ ඩෙස්ක්ටොප් උපයෝගීතාව.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="602"/>
+        <location filename="../src/gui/application.cpp" line="595"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
         <translation>වැඩි විස්තර සඳහා, %1බලන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="609"/>
         <source>Show the settings dialog while starting.</source>
         <translation>ආරම්භ කිරීමේදී සැකසුම් සංවාදය පෙන්වන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="610"/>
         <source>Quit the running instance.</source>
         <translation>ධාවන අවස්ථාවෙන් ඉවත් වන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="611"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>ගොනුවට ලොගය ලියන්න (භාවිතා කරන්න - stdout වෙත ලිවීමට).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="619"/>
+        <location filename="../src/gui/application.cpp" line="612"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>එක් එක් සමමුහුර්ත ලොග් ප්‍රතිදානය ෆෝල්ඩරයේ නව ගොනුවක ලියන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="620"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>Flush the log file after every write.</source>
         <translation>සෑම ලිවීමකටම පසු ලොග් ගොනුව ෆ්ලෂ් කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="614"/>
         <source>Output debug-level messages in the log.</source>
         <translation>ලොගයේ නිදොස් මට්ටමේ පණිවිඩ ප්‍රතිදානය කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="622"/>
-        <location filename="../src/gui/application.cpp" line="623"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>Override UI language.</source>
         <translation>UI භාෂාව අභිබවා යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="624"/>
+        <location filename="../src/gui/application.cpp" line="617"/>
         <source>Use the given configuration folder.</source>
         <translation>ලබා දී ඇති වින්‍යාස ෆෝල්ඩරය භාවිතා කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="625"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>Enable debug mode.</source>
         <translation>නිදොස් කිරීමේ මාදිලිය සබල කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>විවෘත කළ යුතු අතථ්‍ය ගොනු පද්ධති ගොනුව (විකල්ප).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="628"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="644"/>
+        <location filename="../src/gui/application.cpp" line="637"/>
         <source>--logfile and --logdir are mutually exclusive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="658"/>
+        <location filename="../src/gui/application.cpp" line="651"/>
         <source>Invalid path passed to --confdir</source>
         <translation>වලංගු නොවන මාර්ගයක් --confdir වෙත ගොස් ඇත</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="671"/>
+        <location filename="../src/gui/application.cpp" line="664"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>දෝෂය: නොදන්නා භාෂාව &quot;%1&quot; (සහාය දක්වන පරිවර්තන සම්පූර්ණ ලැයිස්තුවක් ලබා ගැනීමට --list-languages භාවිතා කරන්න)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="680"/>
+        <location filename="../src/gui/application.cpp" line="673"/>
         <source>Available translations: %1</source>
         <translation>පවතින පරිවර්තන: %1</translation>
     </message>
@@ -1557,47 +1557,40 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>වෙනස්කම් සමනය කිරීම</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="967"/>
-        <source>, &apos;%1&apos;</source>
-        <extracomment>Build a list of file names</extracomment>
-        <translation>, &apos;%1&apos;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="970"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="965"/>
         <source>&apos;%1&apos;</source>
-        <extracomment>Argument is a file name</extracomment>
         <translation>&apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="986"/>
         <source>Syncing %1</source>
         <extracomment>Example text: &quot;Syncing 'foo.txt', 'bar.txt'&quot;</extracomment>
         <translation>සමමුහුර්ත කිරීම %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1005"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="988"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="999"/>
         <source>, </source>
         <translation>, </translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="998"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="992"/>
         <source>download %1/s</source>
         <extracomment>Example text: &quot;download 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>%1/s බාගන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1000"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="994"/>
         <source>↓ %1/s</source>
         <translation>↓ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1004"/>
         <source>↑ %1/s</source>
         <translation>↑ %1/s</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1008"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1002"/>
         <source>upload %1/s</source>
         <extracomment>Example text: &quot;upload 24Kb/s&quot; (%1 is replaced by 24Kb (translated))</extracomment>
         <translation>%1/s උඩුගත කරන්න</translation>
@@ -1608,36 +1601,36 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>දේශීය ෆෝල්ඩරය: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1016"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1010"/>
         <source>%1 %2 (%3 of %4)</source>
         <extracomment>Example text: &quot;uploading foobar.png (2MB of 2MB)&quot;</extracomment>
         <translation>%1 %2 (%3 න් %4)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1020"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1014"/>
         <source>%1 %2</source>
         <extracomment>Example text: &quot;uploading foobar.png&quot;</extracomment>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1037"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%5 ඉතිරි, %1 න් %2, ගොනු %3 න් %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1045"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
         <source>%1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;12 MB of 345 MB, file 6 of 7&quot;</extracomment>
         <translation>%1 න් %2, ගොනු %3 න් %4</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1052"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1046"/>
         <source>file %1 of %2</source>
         <translation>ගොනු %1 න් %2</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folderstatusmodel.cpp" line="1101"/>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="1095"/>
         <source>Waiting for %n other folder(s)...</source>
         <translation><numerusform>වෙනත් ෆෝල්ඩර(ය) %n ක් සඳහා රැඳී සිටිමින්...</numerusform><numerusform>වෙනත් ෆෝල්ඩර(ය) %n ක් සඳහා රැඳී සිටිමින්...</numerusform></translation>
     </message>
