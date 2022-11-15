@@ -71,8 +71,8 @@ private slots:
 
         auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
         const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
-        for (const auto &s : childrenKeys) {
-            modifier.remove(s);
+        for (const auto &key : childrenKeys) {
+            modifier.remove(key);
         }
 
         QVERIFY(!fakeFolder.syncOnce()); // Should fail because we cancel the sync
@@ -113,8 +113,8 @@ private slots:
 
         auto &modifier = deleteOnRemote ? fakeFolder.remoteModifier() : fakeFolder.localModifier();
         const auto childrenKeys = fakeFolder.currentRemoteState().children.keys();
-        for (const auto &s : childrenKeys) {
-            modifier.remove(s);
+        for (const auto &key : childrenKeys) {
+            modifier.remove(key);
         }
 
         QVERIFY(fakeFolder.syncOnce()); // Should succeed, and all files must then be deleted

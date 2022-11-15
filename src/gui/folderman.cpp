@@ -1428,12 +1428,12 @@ void FolderMan::slotWipeFolderForAccount(AccountState *accountState)
 void FolderMan::setDirtyProxy()
 {
     const auto folderMapValues = _folderMap.values();
-    for (const Folder *f : folderMapValues) {
-        if (f) {
-            if (f->accountState() && f->accountState()->account()
-                && f->accountState()->account()->networkAccessManager()) {
+    for (const auto folder : folderMapValues) {
+        if (folder) {
+            if (folder->accountState() && folder->accountState()->account()
+                && folder->accountState()->account()->networkAccessManager()) {
                 // Need to do this so we do not use the old determined system proxy
-                f->accountState()->account()->networkAccessManager()->setProxy(
+                folder->accountState()->account()->networkAccessManager()->setProxy(
                     QNetworkProxy(QNetworkProxy::DefaultProxy));
             }
         }
@@ -1443,10 +1443,10 @@ void FolderMan::setDirtyProxy()
 void FolderMan::setDirtyNetworkLimits()
 {
     const auto folderMapValues = _folderMap.values();
-    for (Folder *f : folderMapValues) {
+    for (auto folder : folderMapValues) {
         // set only in busy folders. Otherwise they read the config anyway.
-        if (f && f->isBusy()) {
-            f->setDirtyNetworkLimits();
+        if (folder && folder->isBusy()) {
+            folder->setDirtyNetworkLimits();
         }
     }
 }

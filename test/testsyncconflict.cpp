@@ -80,8 +80,8 @@ private slots:
 
         // Verify that the conflict names don't have the user name
         const auto conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
-        for (const auto &name : conflicts) {
-            QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
+        for (const auto &conflict : conflicts) {
+            QVERIFY(!conflict.contains(fakeFolder.syncEngine().account()->davDisplayName()));
         }
 
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a1"));
