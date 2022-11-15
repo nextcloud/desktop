@@ -120,7 +120,7 @@ int csync_vio_local_stat(const QString &uri, csync_file_stat_t *buf)
 {
     struct stat sb;
 
-    if (stat(QFile::encodeName(uri).constData(), &sb) < 0) {
+    if (lstat(QFile::encodeName(uri).constData(), &sb) < 0) {
         return -1;
     }
 
