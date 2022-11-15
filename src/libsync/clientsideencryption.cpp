@@ -1248,6 +1248,12 @@ void ClientSideEncryption::encryptPrivateKey(const AccountPtr &account)
 }
 
 void ClientSideEncryption::decryptPrivateKey(const AccountPtr &account, const QByteArray &key) {
+    if (!account->askUserForMnemonic()) {
+        qCDebug(lcCse) << "Not allowed to ask user for mnemonic";
+        emit initializationFinished();
+        return;
+    }
+
     QString msg = tr("Please enter your end-to-end encryption passphrase:<br>"
                      "<br>"
                      "Username: %2<br>"
