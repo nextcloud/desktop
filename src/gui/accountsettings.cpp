@@ -1489,7 +1489,7 @@ void AccountSettings::initializeE2eEncryption()
 
         connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
             if (!_accountState->account()->e2e()->_publicKey.isNull()) {
-                _ui->encryptionMessage->setText(tr("End-to-End encryption has been enabled on this account with another device."
+                _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled on this account with another device."
                                                    "<br>"
                                                    "It can be enabled on this device by entering your mnemonic."));
             }
