@@ -176,7 +176,7 @@
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="287"/>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="308"/>
         <source>Close</source>
-        <translation>Затвори</translation>
+        <translation>Затваряне</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="148"/>
@@ -225,7 +225,7 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="425"/>
         <source>Could not make directories in trash</source>
-        <translation>Директориите в кошчето не бяха създадени</translation>
+        <translation>Директориите в кошчето не можаха да бъдат създадени</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="439"/>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="63"/>
         <source>Open Browser</source>
-        <translation>Отворен браузър</translation>
+        <translation>Отваряне на браузъра</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="76"/>
@@ -854,7 +854,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="313"/>
         <source>Open the activity view for details.</source>
-        <translation>Отворете изгледа за активност за повече подробности.</translation>
+        <translation>За подробности отворете изгледа на дейността.</translation>
     </message>
     <message>
         <location filename="../src/gui/activitywidget.cpp" line="164"/>
@@ -1120,7 +1120,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="268"/>
         <source>Error while opening directory %1</source>
-        <translation>Грешка при отваряне на директория % 1</translation>
+        <translation>Грешка при отваряне на директорията %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="270"/>
@@ -1263,7 +1263,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="973"/>
         <source>Could not read system exclude file</source>
-        <translation>Не можа да прочете системния файл за изключване</translation>
+        <translation>Неуспешно е  прочитането на системния файл за изключване</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1189"/>
@@ -1348,7 +1348,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="438"/>
         <source>Could not reset folder state</source>
-        <translation>Не може да се възстанови състоянието на папката</translation>
+        <translation>Неуспешно е възстановяването на състоянието на папката</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="439"/>
@@ -2402,17 +2402,17 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="358"/>
         <source>There was an error accessing the &apos;token&apos; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Възникна грешка с &apos;маркера&apos; при достъпа до крайната точка: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Възникна грешка с &apos;токен&apos; при достъп до крайната точка: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="361"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
-        <translation>Не можа да се анализира върнатият JSON от сървъра: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
+        <translation>Неуспех при анализа на върнатият JSON от сървъра: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="364"/>
         <source>Unsupported token type: %1</source>
-        <translation>Неподдържан тип маркер: %1</translation>
+        <translation>Неподдържан тип токен: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="366"/>
@@ -2486,7 +2486,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Неуспешно изтегляне на актуализацията. Моля, натиснете &lt;a href=&apos;%1&apos;&gt;тук&lt;/a&gt; за да я изтеглите ръчно.</translation>
+        <translation>Неуспешно е изтеглянето на актуализацията. Моля, натиснете &lt;a href=&apos;%1&apos;&gt;тук&lt;/a&gt;, за да я изтеглите ръчно.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
@@ -2802,7 +2802,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation>Не може да се премахне %1 поради конфликт на имената на локалните файлове с %2!</translation>
+        <translation>Неуспех при премахването на %1 поради конфликт на имената на локалните файлове с %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -2821,7 +2821,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="243"/>
         <source>Could not rename %1 to %2, the file is currently in use</source>
-        <translation>Не може да се преименува %1 на %2, файлът се използва в момента</translation>
+        <translation>Неуспех при преименуването на %1 на %2, файлът се използва в момента</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="272"/>
@@ -2875,7 +2875,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="120"/>
         <source>Could not rename %1 to %2, error: %3</source>
-        <translation>Не можа да се преименува %1 на %2, грешка: %3</translation>
+        <translation>Неуспех при преименуването на %1 на %2, грешка: %3</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="167"/>
@@ -2908,7 +2908,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1213"/>
         <source>Could not update file : %1</source>
-        <translation>Не е възможно да се актуализира файла : %1</translation>
+        <translation>Неуспех при актуализирането на файла : %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1216"/>
@@ -3332,7 +3332,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="235"/>
         <source>Set &amp;expiration date</source>
-        <translation>Задаване на &amp;дата на валидност</translation>
+        <translation>Задаване на дата на  &amp;валидност</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="181"/>
@@ -3469,7 +3469,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите лична връзка.</translation>
+        <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите поверителна връзка.</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
@@ -3706,7 +3706,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="162"/>
         <source>Open in Web</source>
-        <translation>Отваряне в Интернет</translation>
+        <translation>Отваряне в интернет</translation>
     </message>
 </context>
 <context>
@@ -3803,12 +3803,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="558"/>
         <source>Cannot open the sync journal</source>
-        <translation>Не може да се отвори дневника за синхронизиране</translation>
+        <translation>Неуспешно отваряне на дневника за синхронизиране</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="995"/>
         <source>Aborted</source>
-        <translation>Преустановено</translation>
+        <translation>Прекратено</translation>
     </message>
 </context>
 <context>

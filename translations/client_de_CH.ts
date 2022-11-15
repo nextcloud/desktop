@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="89"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation type="unfinished"/>
+        <translation>%1 konnte in Web nicht geöffnet werden. Fehler: %2.</translation>
     </message>
 </context>
 <context>
@@ -1537,13 +1537,15 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
         <location filename="../src/gui/folderstatusmodel.cpp" line="288"/>
         <source>%1
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="290"/>
         <source>Signed out
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Abgemeldet
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="924"/>
@@ -4146,12 +4148,12 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>Einrichtung abbrechen</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>Die Benutzereinrichtung wirklich abbrechen?</translation>
     </message>
 </context>
 <context>
@@ -4721,7 +4723,7 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="413"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Gebaut mit Qt %2)</translation>
     </message>
 </context>
 <context>
