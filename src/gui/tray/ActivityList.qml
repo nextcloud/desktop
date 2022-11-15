@@ -58,8 +58,8 @@ ScrollView {
         }
 
         delegate: ActivityItem {
-            anchors.left: parent.left
-            anchors.right: parent.right
+            anchors.left: if (parent) parent.left
+            anchors.right: if (parent) parent.right
             anchors.leftMargin: controlRoot.delegateHorizontalPadding
             anchors.rightMargin: controlRoot.delegateHorizontalPadding
 
