@@ -89,11 +89,11 @@ void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAcc
 {
     const auto messageBox = new QMessageBox;
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    messageBox->setText(AccountSettings::tr("End-to-End Encryption with Virtual Files"));
+    messageBox->setText(AccountSettings::tr("End-to-end Encryption with Virtual Files"));
     messageBox->setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. "
                                                        "At the moment, it is not possible to implicitly download virtual files that are "
-                                                       "End-to-End encrypted. To get the best experience with Virtual Files and "
-                                                       "End-to-End Encryption, make sure the encrypted folder is marked with "
+                                                       "End-to-end encrypted. To get the best experience with Virtual Files and "
+                                                       "End-to-end Encryption, make sure the encrypted folder is marked with "
                                                        "\"Make always available locally\"."));
     messageBox->setIcon(QMessageBox::Warning);
     const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
@@ -248,7 +248,7 @@ void AccountSettings::slotE2eEncryptionMnemonicReady()
     });
 
     _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
-    _ui->encryptionMessage->setText(tr("End-to-End encryption has been enabled for this account"));
+    _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled for this account"));
     _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
     _ui->encryptionMessage->show();
 }
@@ -976,7 +976,7 @@ void AccountSettings::displayMnemonic(const QString &mnemonic)
     QDialog widget;
     Ui_Dialog ui;
     ui.setupUi(&widget);
-    widget.setWindowTitle(tr("End-to-End encryption mnemonic"));
+    widget.setWindowTitle(tr("End-to-end encryption mnemonic"));
     ui.label->setText(
         tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
            "Please note these down and keep them safe. "
@@ -1458,7 +1458,7 @@ void AccountSettings::initializeE2eEncryption()
         slotE2eEncryptionMnemonicReady();
     } else {
         _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
-        _ui->encryptionMessage->setText(tr("This account supports End-to-End encryption"));
+        _ui->encryptionMessage->setText(tr("This account supports End-to-end encryption"));
         _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
         _ui->encryptionMessage->hide();
 
