@@ -1353,7 +1353,7 @@ void Folder::removeLocalE2eFiles()
     const auto currentSyncPaused = syncPaused();
     setSyncPaused(true);
 
-    qCDebug(lcFolder) << "About to remove: " << e2eFiles;
+    qCInfo(lcFolder) << "About to remove: " << e2eFiles;
 
     for (const auto &e2eFilePath : qAsConst(e2eFiles)) {
         if (!_journal.deleteFileRecord(e2eFilePath, true)) {
@@ -1362,7 +1362,7 @@ void Folder::removeLocalE2eFiles()
             continue;
         }
 
-        qCDebug(lcFolder) << "Removing local copy of" << e2eFilePath;
+        qCInfo(lcFolder) << "Removing local copy of" << e2eFilePath;
 
         const auto fullPath = QString(path() + e2eFilePath);
         const QFileInfo pathInfo(fullPath);
