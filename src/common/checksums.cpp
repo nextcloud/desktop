@@ -217,12 +217,6 @@ bool uploadChecksumEnabled()
     return enabled;
 }
 
-static bool checksumComputationEnabled()
-{
-    static bool enabled = qEnvironmentVariableIsEmpty("OWNCLOUD_DISABLE_CHECKSUM_COMPUTATIONS");
-    return enabled;
-}
-
 ComputeChecksum::ComputeChecksum(QObject *parent)
     : QObject(parent)
 {
