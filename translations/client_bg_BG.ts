@@ -1125,7 +1125,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="270"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Директорията не е достъпна за клиента, отказано право на достъп</translation>
+        <translation>Директорията не е достъпна за клиента, отказано е правото на достъп</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="274"/>
@@ -1438,7 +1438,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1263"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Вие нямате права да записвате в избраната папка!</translation>
+        <translation>Вие нямате необходимите права да записвате в избраната папка!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1278"/>
@@ -2617,7 +2617,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>permissions</source>
-        <translation>разрешения</translation>
+        <translation>права за достъп</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="413"/>
@@ -2652,12 +2652,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1210"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Не е позволено, защото нямате право да добавяте подпапки в тази папка.</translation>
+        <translation>Не е позволено, защото нямате необходимите права за добавяне на подпапки в тази папка.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Не е позволено, защото нямате право да добавяте файлове в тази папка.</translation>
+        <translation>Не е позволено, защото нямате необходимите права за добавяне на файлове в тази папка.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1228"/>
@@ -3264,12 +3264,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="130"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation>Извличане на максималните възможни разрешения за споделяне от сървъра...</translation>
+        <translation>Извличане от сървъра на максималните възможни права за споделяне...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="191"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Файлът не може да споделен, защото се иска споделяне без да има това право.</translation>
+        <translation>Файлът не може да споделен, защото се иска споделяне без да се има такива права.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="200"/>
@@ -3368,7 +3368,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="96"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Файлът не може да споделен, защото се иска споделяне без да има това право.</translation>
+        <translation>Файлът не може да споделен, защото се иска споделяне без да се има такива права.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>

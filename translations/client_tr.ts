@@ -1485,7 +1485,7 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="47"/>
         <source>Add a Space</source>
-        <translation type="unfinished"/>
+        <translation>Bir Alan Ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="298"/>
@@ -1541,7 +1541,8 @@ Lütfen bu klasörü hesaptan kaldırıp tekrar eklemeyi düşünün.</translati
         <location filename="../src/gui/folderstatusmodel.cpp" line="288"/>
         <source>%1
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="290"/>
