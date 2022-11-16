@@ -630,7 +630,7 @@ QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &val
 
 } // namespace OCC
 
-QDebug &operator<<(QDebug &debug, nanoseconds in)
+QDebug operator<<(QDebug debug, nanoseconds in)
 {
     QDebugStateSaver save(debug);
     debug.nospace();
