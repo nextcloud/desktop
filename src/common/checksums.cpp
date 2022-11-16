@@ -15,15 +15,18 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
-#include "config.h"
-#include "filesystembase.h"
 #include "common/checksums.h"
 #include "asserts.h"
+#include "common/chronoelapsedtimer.h"
+#include "common/utility.h"
+#include "config.h"
+#include "filesystembase.h"
 
 #include <QCoreApplication>
 #include <QCryptographicHash>
 #include <QLoggingCategory>
-#include <qtconcurrentrun.h>
+#include <QScopeGuard>
+#include <QtConcurrentRun>
 
 #include <zlib.h>
 
@@ -296,6 +299,14 @@ QByteArray ComputeChecksum::computeNowOnFile(const QString &filePath, CheckSums:
 
 QByteArray ComputeChecksum::computeNow(QIODevice *device, CheckSums::Algorithm algorithm)
 {
+    // const cast to prevent stream to "device"
+    const auto log = qScopeGuard([device, algorithm, timer = Utility::ChronoElapsedTimer()] {
+        if (auto file = qobject_cast<QFile *>(device)) {
+            qCDebug(lcChecksums) << "Finished" << algorithm << "computation for" << file->fileName() << timer.duration();
+        } else {
+            qCDebug(lcChecksums) << "Finished" << algorithm << "computation for" << device << timer.duration();
+        }
+    });
     switch (algorithm) {
     case CheckSums::Algorithm::SHA3_256:
         [[fallthrough]];
