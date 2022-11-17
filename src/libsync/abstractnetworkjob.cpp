@@ -193,14 +193,6 @@ void AbstractNetworkJob::slotFinished()
             return;
         }
 
-        if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
-            qCWarning(lcNetworkJob) << this << _reply->error() << errorString()
-                                    << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
-                qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
-            }
-        }
-
         if (_reply->error() == QNetworkReply::OperationCanceledError && !_aborted) {
             _timedout = true;
         }
