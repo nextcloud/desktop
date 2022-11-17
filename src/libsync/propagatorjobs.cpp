@@ -238,8 +238,7 @@ void PropagateLocalRename::start()
             // it would have to come out the localFileNameClash function
             done(SyncFileItem::NormalError,
                 tr("File %1 cannot be renamed to %2 because of a local file name clash")
-                    .arg(QDir::toNativeSeparators(_item->_file))
-                    .arg(QDir::toNativeSeparators(_item->_renameTarget)));
+                    .arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(_item->_renameTarget)));
             return;
         }
 
