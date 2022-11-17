@@ -86,10 +86,7 @@ class PropagateLocalRename : public PropagateItemJob
 {
     Q_OBJECT
 public:
-    PropagateLocalRename(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
-        : PropagateItemJob(propagator, item)
-    {
-    }
+    PropagateLocalRename(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
     void start() override;
     JobParallelism parallelism() override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
 };
