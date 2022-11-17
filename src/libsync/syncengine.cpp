@@ -495,6 +495,7 @@ void SyncEngine::startSync()
 
     // This creates the DB if it does not exist yet.
     if (checkJournalAvailable() == SyncStageResult::SyncStageError) {
+        qCWarning(lcEngine) << "No way to create a sync journal!";
         return;
     }
 
@@ -589,7 +590,6 @@ SyncStageResult SyncEngine::checkLocalFolder()
 SyncStageResult SyncEngine::checkJournalAvailable()
 {
     if (!_journal->open()) {
-        qCWarning(lcEngine) << "No way to create a sync journal!";
         Q_EMIT syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
         finalize(false);
         return SyncStageResult::SyncStageError;
@@ -800,15 +800,13 @@ void SyncEngine::slotDiscoveryFinished()
     qCInfo(lcEngine) << "#### Discovery end #################################################### " << _stopWatch.addLapTime(QLatin1String("Discovery Finished")) << "ms";
 
     // Sanity check
-    if (!_journal->open()) {
+    if (checkJournalAvailable() == SyncStageResult::SyncStageError) {
         qCWarning(lcEngine) << "Bailing out, DB failure";
-        Q_EMIT syncError(tr("Cannot open the sync journal"));
-        finalize(false);
         return;
-    } else {
-        // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
-        _journal->commitIfNeededAndStartNewTransaction("Post discovery");
     }
+
+    // Commits a possibly existing (should not though) transaction and starts a new one for the propagate phase
+    _journal->commitIfNeededAndStartNewTransaction("Post discovery");
 
     _progressInfo->_currentDiscoveredRemoteFolder.clear();
     _progressInfo->_currentDiscoveredLocalFolder.clear();
@@ -871,19 +869,7 @@ void SyncEngine::slotDiscoveryFinished()
         // do a database commit
         _journal->commit(QStringLiteral("post treewalk"));
 
-        _propagator = QSharedPointer<OwncloudPropagator>(
-            new OwncloudPropagator(_account, _localPath, _remotePath, _journal, _bulkUploadBlackList));
-        _propagator->setSyncOptions(_syncOptions);
-        connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
-            this, &SyncEngine::slotItemCompleted);
-        connect(_propagator.data(), &OwncloudPropagator::progress,
-            this, &SyncEngine::slotProgress);
-        connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotPropagationFinished, Qt::QueuedConnection);
-        connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
-        connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
-        connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
-        connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
-        connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
+        setupPropagator();
 
         // apply the network limits to the propagator
         setNetworkLimits(_uploadLimit, _downloadLimit);
@@ -932,6 +918,23 @@ void SyncEngine::slotDiscoveryFinished()
         return;
     }
     finish();
+}
+
+void SyncEngine::setupPropagator()
+{
+    _propagator = QSharedPointer<OwncloudPropagator>(
+        new OwncloudPropagator(_account, _localPath, _remotePath, _journal, _bulkUploadBlackList));
+    _propagator->setSyncOptions(_syncOptions);
+    connect(_propagator.data(), &OwncloudPropagator::itemCompleted,
+        this, &SyncEngine::slotItemCompleted);
+    connect(_propagator.data(), &OwncloudPropagator::progress,
+        this, &SyncEngine::slotProgress);
+    connect(_propagator.data(), &OwncloudPropagator::finished, this, &SyncEngine::slotPropagationFinished, Qt::QueuedConnection);
+    connect(_propagator.data(), &OwncloudPropagator::seenLockedFile, this, &SyncEngine::seenLockedFile);
+    connect(_propagator.data(), &OwncloudPropagator::touchedFile, this, &SyncEngine::slotAddTouchedFile);
+    connect(_propagator.data(), &OwncloudPropagator::insufficientLocalStorage, this, &SyncEngine::slotInsufficientLocalStorage);
+    connect(_propagator.data(), &OwncloudPropagator::insufficientRemoteStorage, this, &SyncEngine::slotInsufficientRemoteStorage);
+    connect(_propagator.data(), &OwncloudPropagator::newItem, this, &SyncEngine::slotNewItem);
 }
 
 void SyncEngine::slotCleanPollsJobAborted(const QString &error)

@@ -237,6 +237,7 @@ private slots:
     void cleanupOngoingPolls();
     void logEnvInfo() const;
     void setupDiscoveryPhase(const QStringList &selectiveSyncBlackList, const QStringList &selectiveSyncWhiteList);
+    void setupPropagator();
 
 private:
     // Some files need a sync run to be executed at a specified time after
