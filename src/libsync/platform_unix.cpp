@@ -14,6 +14,7 @@
 
 #include "platform_unix.h"
 
+#include <QCoreApplication>
 #include <QDir>
 #include <QLoggingCategory>
 
@@ -55,7 +56,7 @@ void UnixPlatform::setApplication(QCoreApplication *application)
     Platform::setApplication(application);
 
 #if defined(OC_PLUGIN_DIR)
-    const QString pluginDirPath = QDir(QApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
+    const QString pluginDirPath = QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR));
     qCDebug(lcPlatform) << "adding plugin directory" << pluginDirPath;
     application->addLibraryPath(pluginDirPath);
 #endif
