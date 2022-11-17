@@ -49,6 +49,12 @@ enum AnotherSyncNeeded {
     DelayedFollowUp // regularly schedule this folder again (around 1/minute, unlimited)
 };
 
+enum class SyncStageResult {
+    SyncStageSuccess = 0,
+    SyncStageWarning,
+    SyncStageError
+};
+
 /**
  * @brief The SyncEngine class
  * @ingroup libsync
@@ -228,6 +234,10 @@ private slots:
     void slotUnscheduleFilesDelayedSync();
     void slotCleanupScheduledSyncTimers();
 
+    void cleanupOngoingPolls();
+    void logEnvInfo() const;
+    void setupDiscoveryPhase(const QStringList &selectiveSyncBlackList, const QStringList &selectiveSyncWhiteList);
+
 private:
     // Some files need a sync run to be executed at a specified time after
     // their status is scheduled to change (e.g. lock status will expire in
@@ -268,7 +278,21 @@ private:
         QSet<QString> files;
     };
 
+    struct SelectiveSyncStageResult {
+        SyncStageResult stageResult = SyncStageResult::SyncStageError;
+        bool usingSelectiveSync = false;
+        QStringList selectiveSyncBlackList = {};
+        QStringList selectiveSyncWhiteList = {};
+    };
+
     bool checkErrorBlacklisting(SyncFileItem &item);
+
+    bool journalReadyForSync();
+
+    SyncStageResult checkDiskSpace();
+    SyncStageResult checkLocalFolder();
+    SyncStageResult checkJournalAvailable();
+    SelectiveSyncStageResult checkSelectiveSyncList();
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
     // as their temporary files.

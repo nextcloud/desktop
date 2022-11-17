@@ -458,20 +458,7 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 
 void SyncEngine::startSync()
 {
-    if (_journal->exists()) {
-        QVector<SyncJournalDb::PollInfo> pollInfos = _journal->getPollInfos();
-        if (!pollInfos.isEmpty()) {
-            qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
-            auto *job = new CleanupPollsJob(_account,
-                _journal, _localPath, _syncOptions._vfs, this);
-            connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
-            connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
-            job->start();
-            return;
-        }
-    }
-
-    if (s_anySyncRunning || _syncRunning) {
+    if (!journalReadyForSync() || s_anySyncRunning || _syncRunning) {
         return;
     }
 
@@ -486,34 +473,13 @@ void SyncEngine::startSync()
 
     _progressInfo->reset();
 
-    if (!QDir(_localPath).exists()) {
-        _anotherSyncNeeded = DelayedFollowUp;
-        // No _tr, it should only occur in non-mirall
-        Q_EMIT syncError(QStringLiteral("Unable to find local sync folder."));
-        finalize(false);
+    if (checkLocalFolder() == SyncStageResult::SyncStageError) {
         return;
     }
 
     // Check free size on disk first.
-    const qint64 minFree = criticalFreeSpaceLimit();
-    const qint64 freeBytes = Utility::freeDiskSpace(_localPath);
-    if (freeBytes >= 0) {
-        if (freeBytes < minFree) {
-            qCWarning(lcEngine()) << "Too little space available at" << _localPath << ". Have"
-                                  << freeBytes << "bytes and require at least" << minFree << "bytes";
-            _anotherSyncNeeded = DelayedFollowUp;
-            Q_EMIT syncError(tr("Only %1 are available, need at least %2 to start",
-                "Placeholders are postfixed with file sizes using Utility::octetsToString()")
-                                 .arg(
-                                     Utility::octetsToString(freeBytes),
-                                     Utility::octetsToString(minFree)));
-            finalize(false);
-            return;
-        } else {
-            qCInfo(lcEngine) << "There are" << freeBytes << "bytes available at" << _localPath;
-        }
-    } else {
-        qCWarning(lcEngine) << "Could not determine free space available at" << _localPath;
+    if (checkDiskSpace() == SyncStageResult::SyncStageError) {
+        return;
     }
 
     _syncItems.clear();
@@ -525,20 +491,11 @@ void SyncEngine::startSync()
         qCInfo(lcEngine) << "Sync with existing sync journal";
     }
 
-    QString verStr("Using Qt ");
-    verStr.append(qVersion());
-
-    verStr.append(" SSL library ").append(QSslSocket::sslLibraryVersionString().toUtf8().data());
-    verStr.append(" on ").append(Utility::platformName());
-    qCInfo(lcEngine) << verStr;
+    logEnvInfo();
 
     // This creates the DB if it does not exist yet.
-    if (!_journal->open()) {
-        qCWarning(lcEngine) << "No way to create a sync journal!";
-        Q_EMIT syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
-        finalize(false);
+    if (checkJournalAvailable() == SyncStageResult::SyncStageError) {
         return;
-        // database creation error!
     }
 
     // Functionality like selective sync might have set up etag storage
@@ -556,15 +513,8 @@ void SyncEngine::startSync()
         return;
     }
 
-    bool ok = false;
-    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    if (ok) {
-        bool usingSelectiveSync = (!selectiveSyncBlackList.isEmpty());
-        qCInfo(lcEngine) << (usingSelectiveSync ? "Using Selective Sync" : "NOT Using Selective Sync");
-    } else {
-        qCWarning(lcEngine) << "Could not retrieve selective sync list from DB";
-        Q_EMIT syncError(tr("Unable to read the blacklist from the local database"));
-        finalize(false);
+    const auto selectiveSyncState = checkSelectiveSyncList();
+    if (selectiveSyncState.stageResult == SyncStageResult::SyncStageError) {
         return;
     }
 
@@ -572,6 +522,124 @@ void SyncEngine::startSync()
     _progressInfo->_status = ProgressInfo::Starting;
     emit transmissionProgress(*_progressInfo);
 
+    setupDiscoveryPhase(selectiveSyncState.selectiveSyncBlackList, selectiveSyncState.selectiveSyncWhiteList);
+}
+
+bool SyncEngine::journalReadyForSync()
+{
+    if (_journal->exists() && !_journal->getPollInfos().isEmpty()) {
+        qCInfo(lcEngine) << "Finish Poll jobs before starting a sync";
+        cleanupOngoingPolls();
+        return false;
+    }
+
+    return true;
+}
+
+void SyncEngine::cleanupOngoingPolls()
+{
+    auto *job = new CleanupPollsJob(_account,
+        _journal, _localPath, _syncOptions._vfs, this);
+    connect(job, &CleanupPollsJob::finished, this, &SyncEngine::startSync);
+    connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
+    job->start();
+}
+
+SyncStageResult SyncEngine::checkDiskSpace()
+{
+    const qint64 minFree = criticalFreeSpaceLimit();
+    const qint64 freeBytes = Utility::freeDiskSpace(_localPath);
+
+    if (freeBytes >= 0) {
+        if (freeBytes < minFree) {
+            qCWarning(lcEngine()) << "Too little space available at" << _localPath  << ". "
+                                  << "Have" << freeBytes << "bytes and require at least" << minFree << "bytes";
+
+            Q_EMIT syncError(tr("Only %1 are available, need at least %2 to start",
+                                "Placeholders are postfixed with file sizes using Utility::octetsToString()")
+                             .arg(Utility::octetsToString(freeBytes), Utility::octetsToString(minFree)));
+
+            _anotherSyncNeeded = DelayedFollowUp;
+            finalize(false);
+            return SyncStageResult::SyncStageError;
+        }
+
+        qCInfo(lcEngine) << "There are" << freeBytes << "bytes available at" << _localPath;
+        return SyncStageResult::SyncStageSuccess;
+    }
+
+    qCWarning(lcEngine) << "Could not determine free space available at" << _localPath;
+    return SyncStageResult::SyncStageWarning;
+}
+
+SyncStageResult SyncEngine::checkLocalFolder()
+{
+    if (!QDir(_localPath).exists()) {
+        _anotherSyncNeeded = DelayedFollowUp;
+        // No _tr, it should only occur in non-mirall
+        Q_EMIT syncError(QStringLiteral("Unable to find local sync folder."));
+        finalize(false);
+
+        return SyncStageResult::SyncStageError;
+    }
+
+    return SyncStageResult::SyncStageSuccess;
+}
+
+SyncStageResult SyncEngine::checkJournalAvailable()
+{
+    if (!_journal->open()) {
+        qCWarning(lcEngine) << "No way to create a sync journal!";
+        Q_EMIT syncError(tr("Unable to open or create the local sync database. Make sure you have write access in the sync folder."));
+        finalize(false);
+        return SyncStageResult::SyncStageError;
+        // database creation error!
+    }
+
+    return SyncStageResult::SyncStageSuccess;
+}
+
+SyncEngine::SelectiveSyncStageResult SyncEngine::checkSelectiveSyncList()
+{
+    bool blackListOk = false;
+    bool whiteListOk = false;
+    auto selectiveSyncBlackList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &blackListOk);
+    auto selectiveSyncWhiteList = _journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &whiteListOk);
+
+    const auto ok = blackListOk && whiteListOk;
+
+    if (ok) {
+        bool usingSelectiveSync = !selectiveSyncBlackList.isEmpty() && !selectiveSyncWhiteList.isEmpty();
+        qCInfo(lcEngine) << (usingSelectiveSync ? "Using Selective Sync" : "NOT Using Selective Sync");
+        return {SyncStageResult::SyncStageSuccess, ok, selectiveSyncBlackList, selectiveSyncWhiteList};
+    }
+
+    qCWarning(lcEngine) << "Could not retrieve selective sync list from DB";
+
+    if (!blackListOk && !whiteListOk) {
+        Q_EMIT syncError(tr("Unable to read either the blacklist or whitelist from the local database"));
+    } else if (!blackListOk) {
+        Q_EMIT syncError(tr("Unable to read the blacklist from the local database"));
+    } else if (!whiteListOk) {
+        Q_EMIT syncError(tr("Unable to read the whitelist from the local database"));
+    }
+
+    finalize(false);
+    return {SyncStageResult::SyncStageError, ok, selectiveSyncBlackList, selectiveSyncWhiteList};
+}
+
+void SyncEngine::logEnvInfo() const
+{
+    QString verStr("Using Qt ");
+    verStr.append(qVersion());
+
+    verStr.append(" SSL library ").append(QSslSocket::sslLibraryVersionString().toUtf8().data());
+    verStr.append(" on ").append(Utility::platformName());
+    qCInfo(lcEngine) << verStr;
+}
+
+void SyncEngine::setupDiscoveryPhase(const QStringList &selectiveSyncBlackList, const QStringList &selectiveSyncWhiteList)
+{
     qCInfo(lcEngine) << "#### Discovery start ####################################################";
     qCInfo(lcEngine) << "Server" << account()->serverVersion()
                      << (account()->isHttp2Supported() ? "Using HTTP/2" : "");
@@ -582,18 +650,24 @@ void SyncEngine::startSync()
     _discoveryPhase->_leadingAndTrailingSpacesFilesAllowed = _leadingAndTrailingSpacesFilesAllowed;
     _discoveryPhase->_account = _account;
     _discoveryPhase->_excludes = _excludedFiles.data();
+
     const QString excludeFilePath = _localPath + QStringLiteral(".sync-exclude.lst");
     if (QFile::exists(excludeFilePath)) {
         _discoveryPhase->_excludes->addExcludeFilePath(excludeFilePath);
         _discoveryPhase->_excludes->reloadExcludeFiles();
     }
+
     _discoveryPhase->_statedb = _journal;
     _discoveryPhase->_localDir = _localPath;
-    if (!_discoveryPhase->_localDir.endsWith('/'))
+    if (!_discoveryPhase->_localDir.endsWith('/')) {
         _discoveryPhase->_localDir+='/';
+    }
+
     _discoveryPhase->_remoteFolder = _remotePath;
-    if (!_discoveryPhase->_remoteFolder.endsWith('/'))
+    if (!_discoveryPhase->_remoteFolder.endsWith('/')) {
         _discoveryPhase->_remoteFolder+='/';
+    }
+
     _discoveryPhase->_syncOptions = _syncOptions;
     _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &path) {
         const auto result = shouldDiscoverLocally(path);
@@ -601,18 +675,11 @@ void SyncEngine::startSync()
         return result;
     };
     _discoveryPhase->setSelectiveSyncBlackList(selectiveSyncBlackList);
-    _discoveryPhase->setSelectiveSyncWhiteList(_journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok));
-    if (!ok) {
-        qCWarning(lcEngine) << "Unable to read selective sync list, aborting.";
-        Q_EMIT syncError(tr("Unable to read from the sync journal."));
-        finalize(false);
-        return;
-    }
+    _discoveryPhase->setSelectiveSyncWhiteList(selectiveSyncWhiteList);
 
     // Check for invalid character in old server version
     QString invalidFilenamePattern = _account->capabilities().invalidFilenameRegex();
-    if (invalidFilenamePattern.isNull()
-        && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
+    if (invalidFilenamePattern.isNull() && _account->serverVersionInt() < Account::makeServerVersion(8, 1, 0)) {
         // Server versions older than 8.1 don't support some characters in filenames.
         // If the capability is not set, default to a pattern that avoids uploading
         // files with names that contain these.
@@ -620,8 +687,10 @@ void SyncEngine::startSync()
         // version check doesn't make sense for custom servers.
         invalidFilenamePattern = R"([\\:?*"<>|])";
     }
-    if (!invalidFilenamePattern.isEmpty())
+    if (!invalidFilenamePattern.isEmpty()) {
         _discoveryPhase->_invalidFilenameRx = QRegularExpression(invalidFilenamePattern);
+    }
+
     _discoveryPhase->_serverBlacklistedFiles = _account->capabilities().blacklistedFiles();
     _discoveryPhase->_ignoreHiddenFiles = ignoreHiddenFiles();
 
