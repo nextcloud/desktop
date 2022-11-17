@@ -103,6 +103,11 @@ void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
     _ignoreCredentialFailure = ignore;
 }
 
+bool AbstractNetworkJob::ignoreCredentialFailure() const
+{
+    return _ignoreCredentialFailure || _isAuthenticationJob;
+}
+
 QNetworkReply *AbstractNetworkJob::reply() const
 {
     Q_ASSERT(_reply);
@@ -183,7 +188,7 @@ void AbstractNetworkJob::slotFinished()
 {
     _finished = true;
 
-    if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
+    if (!_account->credentials()->stillValid(_reply) && !ignoreCredentialFailure()) {
         Q_EMIT _account->invalidCredentials();
     }
 

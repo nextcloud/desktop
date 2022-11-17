@@ -71,7 +71,7 @@ public:
     QNetworkReply *reply() const;
 
     void setIgnoreCredentialFailure(bool ignore);
-    bool ignoreCredentialFailure() const { return _ignoreCredentialFailure; }
+    bool ignoreCredentialFailure() const;
 
     QByteArray responseTimestamp() const;
     QDateTime responseQTimeStamp() const;
