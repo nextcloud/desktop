@@ -568,7 +568,11 @@ void SyncEngine::startSync()
     if (!_discoveryPhase->_remoteFolder.endsWith('/'))
         _discoveryPhase->_remoteFolder+='/';
     _discoveryPhase->_syncOptions = _syncOptions;
-    _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) { return shouldDiscoverLocally(s); };
+    _discoveryPhase->_shouldDiscoverLocaly = [this](const QString &s) {
+        const auto result = shouldDiscoverLocally(s);
+        qCInfo(lcEngine) << "shouldDiscoverLocaly" << s << (result ? "true" : "false");
+        return result;
+    };
     _discoveryPhase->setSelectiveSyncBlackList(selectiveSyncBlackList);
     _discoveryPhase->setSelectiveSyncWhiteList(_journal->getSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, &ok));
     if (!ok) {
