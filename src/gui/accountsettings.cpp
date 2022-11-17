@@ -1462,7 +1462,7 @@ void AccountSettings::initializeE2eEncryption()
         _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
         _ui->encryptionMessage->hide();
 
-        auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Enable encryption"), e2EeUiActionEnableEncryptionId);
+        auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Setup encryption"), e2EeUiActionEnableEncryptionId);
         connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
     }
 }
