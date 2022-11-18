@@ -187,6 +187,7 @@ Page {
             fileDetails: root.fileDetails
             horizontalPadding: root.intendedPadding
             iconSize: root.iconSize
+            rootStackView: root.rootStackView
         }
     }
 }

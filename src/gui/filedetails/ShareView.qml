@@ -71,6 +71,8 @@ ColumnLayout {
         }
     }
 
+    property StackView rootStackView: StackView {}
+
     Dialog {
         id: shareRequiresPasswordDialog
 
@@ -216,12 +218,13 @@ ColumnLayout {
                             if(shareId !== model.shareId) {
                                 return;
                             }
-
                             shareDelegate.resetMenu();
                         }
                     }
 
                     iconSize: root.iconSize
+                    fileDetails: root.fileDetails
+                    rootStackView: root.rootStackView
                     canCreateLinkShares: root.publicLinkSharingPossible
 
                     onCreateNewLinkShare: {
