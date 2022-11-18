@@ -377,6 +377,13 @@ void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
                     emit itemCompleted(item);
                     return;
                 }
+            } else {
+                if (!FileSystem::setModTime(filePath, item->_modtime)) {
+                    item->_instruction = CSYNC_INSTRUCTION_ERROR;
+                    item->_errorString = tr("Could not update file metadata: %1").arg(filePath);
+                    emit itemCompleted(item);
+                    return;
+                }
             }
 
             // Updating the db happens on success
