@@ -32,11 +32,20 @@ class ExcludedFiles;
 
 namespace OCC {
 
+namespace LocalDiscoveryEnums {
+
+OCSYNC_EXPORT Q_NAMESPACE
+
 enum class LocalDiscoveryStyle {
     FilesystemOnly, //< read all local data from the filesystem
     DatabaseAndFilesystem, //< read from the db, except for listed paths
 };
 
+Q_ENUM_NS(LocalDiscoveryStyle)
+
+}
+
+using OCC::LocalDiscoveryEnums::LocalDiscoveryStyle;
 
 class Account;
 class SyncJournalDb;
