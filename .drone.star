@@ -230,9 +230,9 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
     cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s" -DWITH_LIBCLOUDPROVIDERS=ON' % (generator, c_compiler, cxx_compiler, build_type)
 
     if ctest:
-        cmake_options += " -DBUILD_TESTING=1"
+        cmake_options += " -DBUILD_TESTING=ON"
     else:
-        cmake_options += " -DBUILD_TESTING=0"
+        cmake_options += " -DBUILD_TESTING=OFF"
 
     return [
         {
