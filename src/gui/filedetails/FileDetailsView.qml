@@ -13,30 +13,23 @@
  */
 
 import QtQuick 2.15
-import QtQuick.Window 2.15
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import com.nextcloud.desktopclient 1.0
 import Style 1.0
 
-ApplicationWindow {
+StackView {
     id: root
 
-    property var accountState
+    property var accountState: ({})
     property string localPath: ""
 
-    width: 400
-    height: 500
-    minimumWidth: 300
-    minimumHeight: 300
-
-    title: qsTr("File details of %1 · %2").arg(fileDetailsPage.fileDetails.name).arg(Systray.windowTitle)
-
-    FileDetailsView {
-        id: fileDetailsPage
-        anchors.fill: parent
+    FileDetailsPage {
+        width: parent.width
+        height: parent.height
         accountState: root.accountState
         localPath: root.localPath
+        rootStackView: root
     }
 }
