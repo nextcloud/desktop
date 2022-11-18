@@ -20,6 +20,8 @@ AbstractButton {
     property string verb: ""
     property bool isTalkReplyButton: false
 
+    leftPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
+    rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
 
     background: NCButtonBackground {
         color: Style.currentUserHeaderColor

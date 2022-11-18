@@ -26,8 +26,8 @@ Button {
         hovered: root.hovered
     }
 
-    leftPadding: root.text === "" ? 5 : 10
-    rightPadding: root.text === "" ? 5 : 10
+    leftPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
+    rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
     NCToolTip {
