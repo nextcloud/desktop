@@ -264,31 +264,10 @@ void PropagateLocalRename::start()
         return;
     }
 
-    const auto deleteOldRecord = [this] (const QString &fileName) -> bool
-    {
-        SyncJournalFileRecord oldRecord;
-        if (!propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
-            qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << fileName;
-            done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName));
-            return false;
-        }
-        if (!propagator()->_journal->deleteFileRecord(fileName)) {
-            qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << fileName;
-            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(fileName));
-            return false;
-        }
-
-        return true;
-    };
-
-    if (fileAlreadyMoved) {
-        if (!deleteOldRecord(previousNameInDb)) {
-            return;
-        }
-    } else {
-        if (!deleteOldRecord(_item->_originalFile)) {
-            return;
-        }
+    if (fileAlreadyMoved && !deleteOldDbRecord(previousNameInDb)) {
+        return;
+    } else if (!deleteOldDbRecord(_item->_originalFile)) {
+        return;
     }
 
     auto &vfs = propagator()->syncOptions()._vfs;
@@ -362,5 +341,22 @@ void PropagateLocalRename::start()
     propagator()->_journal->commit("localRename");
 
     done(SyncFileItem::Success);
+}
+
+bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
+{
+    SyncJournalFileRecord oldRecord;
+    if (!propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
+        qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << fileName;
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName));
+        return false;
+    }
+    if (!propagator()->_journal->deleteFileRecord(fileName)) {
+        qCWarning(lcPropagateLocalRename) << "could not delete file from local DB" << fileName;
+        done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(fileName));
+        return false;
+    }
+
+    return true;
 }
 }
