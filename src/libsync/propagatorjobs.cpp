@@ -244,8 +244,7 @@ void PropagateLocalRename::start()
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
-        QString renameError;
-        if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
+        if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
             done(SyncFileItem::NormalError, renameError);
             return;
         }
@@ -273,7 +272,7 @@ void PropagateLocalRename::start()
     const auto oldFile = _item->_file;
 
     if (!_item->isDirectory()) { // Directories are saved at the end
-        SyncFileItem newItem(*_item);
+        auto newItem(*_item);
         if (oldRecord.isValid()) {
             newItem._checksumHeader = oldRecord._checksumHeader;
         }
@@ -286,7 +285,7 @@ void PropagateLocalRename::start()
             return;
         }
     } else {
-        auto dbQueryResult = propagator()->_journal->getFilesBelowPath(oldFile.toUtf8(), [oldFile, this] (const SyncJournalFileRecord &record) -> void {
+        const auto dbQueryResult = propagator()->_journal->getFilesBelowPath(oldFile.toUtf8(), [oldFile, this] (const SyncJournalFileRecord &record) -> void {
             const auto oldFileName = record._path;
             const auto oldFileNameString = QString::fromUtf8(oldFileName);
             auto newFileNameString = oldFileNameString;
@@ -308,7 +307,7 @@ void PropagateLocalRename::start()
                 return;
             }
 
-            auto newItem = SyncFileItem::fromSyncJournalFileRecord(oldRecord);
+            const auto newItem = SyncFileItem::fromSyncJournalFileRecord(oldRecord);
             newItem->_file = newFileNameString;
             const auto result = propagator()->updateMetadata(*newItem);
             if (!result) {
@@ -339,8 +338,7 @@ void PropagateLocalRename::start()
 
 bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
 {
-    SyncJournalFileRecord oldRecord;
-    if (!propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
+    if (SyncJournalFileRecord oldRecord; !propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
         qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << fileName;
         done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName));
         return false;
