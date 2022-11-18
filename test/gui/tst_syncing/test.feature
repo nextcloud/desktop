@@ -55,7 +55,7 @@ Feature: Syncing files
             client content
             """
 
-
+    @skipOnOCIS
     Scenario: Sync all is selected by default
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -69,7 +69,7 @@ Feature: Syncing files
         And the user selects "ownCloud" as a remote destination folder
         Then the sync all checkbox should be checked
 
-
+    @skipOnOCIS
     Scenario: Sync only one folder from the server
         Given user "Alice" has created folder "simple-folder" on the server
         And user "Alice" has created folder "large-folder" on the server
@@ -87,7 +87,7 @@ Feature: Syncing files
         Then the folder "simple-folder" should exist on the file system
         But the folder "large-folder" should not exist on the file system
 
-    @skip @issue-9733
+    @skip @issue-9733 @skipOnOCIS
     Scenario: sort folders list by name and size
         Given user "Alice" has created folder "123Folder" on the server
         And user "Alice" has uploaded file on the server with content "small" to "123Folder/lorem.txt"
@@ -309,7 +309,7 @@ Feature: Syncing files
             | filename                                                                                                                                                                                                                     |
             | thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIsAVeryLongFileNameToCheckThatItWorks-thisIs.txt |
 
-
+    @skipOnOCIS
     Scenario Outline: File with long name (233 characters) is blacklisted
         Given user "Alice" has set up a client with default settings
         When user "Alice" creates a file "<filename>" with the following content inside the sync folder

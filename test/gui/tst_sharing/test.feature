@@ -1,3 +1,4 @@
+@skipOnOCIS @pr-10241
 Feature: Sharing
 
     As a user

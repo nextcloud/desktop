@@ -250,10 +250,14 @@ def step(context, username):
     displayName = getDisplaynameForUser(context, username)
     setUpClient(context, username, displayName, context.userData['clientConfigFile'])
 
-    waitUntilConnectionIsConfigured(context)
-
-    enterUserPassword = EnterPassword()
-    enterUserPassword.enterPassword(password)
+    if context.userData['ocis']:
+        newAccount = AccountConnectionWizard()
+        newAccount.acceptCertificate()
+        newAccount.oidcLogin(username, password, True)
+    else:
+        waitUntilConnectionIsConfigured(context)
+        enterUserPassword = EnterPassword()
+        enterUserPassword.enterPassword(password)
 
     # wait for files to sync
     waitForInitialSyncToComplete(context)
@@ -989,8 +993,13 @@ def step(context, username):
     accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
     accountStatus.accountAction("Log in")
     password = getPasswordForUser(context, username)
-    enterUserPassword = EnterPassword()
-    enterUserPassword.enterPassword(password)
+
+    if context.userData['ocis']:
+        account = AccountConnectionWizard()
+        account.oidcLogin(username, password, True)
+    else:
+        enterUserPassword = EnterPassword()
+        enterUserPassword.enterPassword(password)
 
     # wait for files to sync
     waitForInitialSyncToComplete(context)
@@ -1135,17 +1144,8 @@ def step(context, user, resource, content):
     waitAndTryToWriteFile(context, resource, content)
 
 
-def enableVFSSupport(vfsBtnText):
-    # The enabling/disabling VFS button do not have it's own object
-    # But it is inside the "stack_folderList_QTreeView" object.
-    # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
-    mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "ownCloud"),
-        718,
-        27,
-        Qt.NoModifier,
-        Qt.LeftButton,
-    )
+def enableVFSSupport(context, vfsBtnText):
+    AccountStatus.openAccountMenu(context)
     activateItem(waitForObjectItem(names.settings_QMenu, vfsBtnText))
     clickButton(
         waitForObject(
@@ -1156,41 +1156,23 @@ def enableVFSSupport(vfsBtnText):
 
 @When("the user enables virtual file support")
 def step(context):
-    enableVFSSupport("Enable virtual file support (experimental)...")
+    enableVFSSupport(context, "Enable virtual file support (experimental)...")
 
 
 @Then('the "|any|" button should be available')
 def step(context, btnText):
-    # The enabling/disabling VFS button do not have it's own object
-    # But it is inside the "stack_folderList_QTreeView" object.
-    # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
-    mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "ownCloud"),
-        718,
-        27,
-        Qt.NoModifier,
-        Qt.LeftButton,
-    )
+    AccountStatus.openAccountMenu(context)
     waitForObjectItem(names.settings_QMenu, btnText)
 
 
 @Given("the user has enabled virtual file support")
 def step(context):
-    enableVFSSupport("Enable virtual file support (experimental)...")
+    enableVFSSupport(context, "Enable virtual file support (experimental)...")
 
 
 @When("the user disables virtual file support")
 def step(context):
-    # The enabling/disabling VFS button do not have it's own object
-    # But it is inside the "stack_folderList_QTreeView" object.
-    # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object to enable/disable VFS
-    mouseClick(
-        waitForObjectItem(names.stack_folderList_QTreeView, "ownCloud"),
-        733,
-        27,
-        Qt.NoModifier,
-        Qt.LeftButton,
-    )
+    AccountStatus.openAccountMenu(context)
     activateItem(
         waitForObjectItem(names.settings_QMenu, "Disable virtual file support...")
     )
@@ -1201,7 +1183,8 @@ def step(context):
 
 @When('the user accepts the certificate')
 def step(context):
-    clickButton(waitForObject(names.oCC_TlsErrorDialog_Yes_QPushButton))
+    newAccount = AccountConnectionWizard()
+    newAccount.acceptCertificate()
 
 
 @Then('the lock shown should be closed')
@@ -1259,7 +1242,7 @@ def step(context):
     newAccount = AccountConnectionWizard()
     newAccount.addServer(context)
     test.compare(
-        waitForObjectExists(newAccount.CREDENTIAL_PAGE).visible,
+        waitForObjectExists(newAccount.BASIC_CREDENTIAL_PAGE).visible,
         True,
         "Assert credentials page is visible",
     )
@@ -1424,12 +1407,18 @@ def step(context):
 
 @Then('VFS enabled baseline image should match the default screenshot')
 def step(context):
-    test.vp("VP_VFS_enabled")
+    if context.userData['ocis']:
+        test.vp("VP_VFS_enabled_oCIS")
+    else:
+        test.vp("VP_VFS_enabled")
 
 
 @Then('VFS enabled baseline image should not match the default screenshot')
 def step(context):
-    test.xvp("VP_VFS_enabled")
+    if context.userData['ocis']:
+        test.xvp("VP_VFS_enabled_oCIS")
+    else:
+        test.xvp("VP_VFS_enabled")
 
 
 @When('user "|any|" creates the following files inside the sync folder:')
@@ -1463,7 +1452,10 @@ def step(context, username, foldername):
 
 @Then("credentials wizard should be visible")
 def step(context):
-    waitForObject(AccountConnectionWizard.CREDENTIAL_PAGE)
+    if context.userData['ocis']:
+        waitForObject(AccountConnectionWizard.OAUTH_CREDENTIAL_PAGE)
+    else:
+        waitForObject(AccountConnectionWizard.BASIC_CREDENTIAL_PAGE)
 
 
 @When('the user "|any|" clicks on the next button in sync connection wizard')

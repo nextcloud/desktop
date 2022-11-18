@@ -15,7 +15,14 @@ OC_CI_BAZEL_BUILDIFIER = "owncloudci/bazel-buildifier"
 OC_CI_CLIENT = "owncloudci/client:latest"
 OC_CI_CORE = "owncloudci/core"
 OC_CI_DRONE_CANCEL_PREVIOUS_BUILDS = "owncloudci/drone-cancel-previous-builds"
+OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
+OC_CI_NODEJS = "owncloudci/nodejs:16"
 OC_CI_PHP = "owncloudci/php:%s"
+OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
+OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
+OC_OCIS = "owncloud/ocis:%s"
+OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.2"
+OC_UBUNTU = "owncloud/ubuntu:20.04"
 
 # Eventually, we have to use image built on ubuntu
 # Todo: update or remove the following images
@@ -23,23 +30,23 @@ OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_CLIENT_FEDORA = "owncloudci/client:fedora-36-amd64"
 OC_CI_SQUISH = "owncloudci/squish:fedora-36-6.7-20220106-1008-qt515x-linux64"
 
-OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
-OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.2"
-OC_UBUNTU = "owncloud/ubuntu:20.04"
 PLUGINS_GIT_ACTION = "plugins/git-action:1"
 PLUGINS_S3 = "plugins/s3"
 PLUGINS_SLACK = "plugins/slack"
 PYTHON = "python"
 THEGEEKLAB_DRONE_GITHUB_COMMENT = "thegeeklab/drone-github-comment:1"
 TOOLHIPPIE_CALENS = "toolhippie/calens:latest"
-OC_CI_DRONE_SKIP_PIPELINE = "owncloudci/drone-skip-pipeline"
 
 dir = {
     "base": "/drone/src",
     "server": "/drone/src/server",
     "guiTest": "/drone/src/test/gui",
     "guiTestReport": "/drone/src/test/guiReportUpload",
+    "build": "/drone/src/build",
 }
+
+oc10_server_version = "latest"  # stable release
+ocis_server_version = "2.0.0-rc.1"
 
 def main(ctx):
     build_trigger = {
@@ -76,7 +83,9 @@ def main(ctx):
             trigger = cron_trigger,
         )
 
-        gui_tests = gui_test_pipeline(ctx, trigger = cron_trigger)
+        gui_tests = gui_test_pipeline(ctx, trigger = cron_trigger) + \
+                    gui_test_pipeline(ctx, trigger = cron_trigger, server_version = ocis_server_version, server_type = "ocis")
+
         notify = notification(
             name = "build",
             trigger = cron_trigger,
@@ -88,7 +97,8 @@ def main(ctx):
                     check_starlark(build_trigger) + \
                     changelog(ctx, trigger = build_trigger) + \
                     unit_test_pipeline(ctx, "clang", "clang++", "Debug", "Ninja", trigger = build_trigger) + \
-                    gui_test_pipeline(ctx, trigger = build_trigger, version = "latest")
+                    gui_test_pipeline(ctx, trigger = build_trigger) + \
+                    gui_test_pipeline(ctx, trigger = build_trigger, server_version = ocis_server_version, server_type = "ocis")
 
     return pipelines
 
@@ -130,7 +140,6 @@ def check_starlark(trigger = {}):
 def unit_test_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, trigger = {}):
     build_command = "ninja" if generator == "Ninja" else "make"
     pipeline_name = c_compiler + "-" + build_type.lower() + "-" + build_command
-    build_dir = "build-" + pipeline_name
 
     return [{
         "kind": "pipeline",
@@ -141,20 +150,14 @@ def unit_test_pipeline(ctx, c_compiler, cxx_compiler, build_type, generator, tri
         },
         "steps": skipIfUnchanged(ctx, "unit-tests") +
                  gitSubModules() +
-                 build_client(c_compiler, cxx_compiler, build_type, generator, build_command, build_dir) +
-                 unit_tests(build_dir),
+                 build_client(c_compiler, cxx_compiler, build_type, generator, build_command) +
+                 unit_tests(),
         "trigger": trigger,
     }]
 
-def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-master-qa"):
-    pipeline_name = "GUI-tests"
-    build_dir = "build-" + pipeline_name
-    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false --tags ~@skip" % dir["guiTestReport"]
-
-    if (len(filterTags) > 0):
-        for tags in filterTags:
-            squish_parameters += " --tags " + tags
-            pipeline_name += "-" + tags
+def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_server_version, server_type = "oc10"):
+    pipeline_name = "GUI-tests-%s" % server_type
+    squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false" % dir["guiTestReport"]
 
     build_config = {
         "c_compiler": "gcc",
@@ -164,6 +167,46 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
         "build_command": "ninja",
     }
 
+    steps = skipIfUnchanged(ctx, "gui-tests") + \
+            gitSubModules()
+
+    services = testMiddlewareService(server_type)
+
+    if server_type == "oc10":
+        squish_parameters += " --tags ~@skip --tags ~@skipOnOC10"
+
+        steps += installCore(server_version) + \
+                 setupServerAndApp() + \
+                 fixPermissions() + \
+                 owncloudLog()
+        services += owncloudService() + \
+                    databaseService()
+    else:
+        squish_parameters += " --tags ~@skip --tags ~@skipOnOCIS"
+
+        steps += installPnpm() + \
+                 ocisService(server_version) + \
+                 waitForOcisService()
+
+    steps += setGuiTestReportDir() + \
+             build_client(
+                 build_config["c_compiler"],
+                 build_config["cxx_compiler"],
+                 build_config["build_type"],
+                 build_config["generator"],
+                 build_config["build_command"],
+                 OC_CI_CLIENT_FEDORA,
+             ) + \
+             gui_tests(squish_parameters, server_type) + \
+             uploadGuiTestLogs(server_type) + \
+             buildGithubComment(pipeline_name, server_type) + \
+             githubComment(pipeline_name, server_type)
+
+    if (len(filterTags) > 0):
+        tags = ",".join(filterTags)
+        squish_parameters += " --tags %s" % tags
+        pipeline_name += "-" + tags
+
     return [{
         "kind": "pipeline",
         "name": pipeline_name,
@@ -171,32 +214,8 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
             "os": "linux",
             "arch": "amd64",
         },
-        "steps": skipIfUnchanged(ctx, "gui-tests") +
-                 gitSubModules() +
-                 installCore(version) +
-                 setupServerAndApp() +
-                 fixPermissions() +
-                 owncloudLog() +
-                 setGuiTestReportDir() +
-                 build_client(
-                     build_config["c_compiler"],
-                     build_config["cxx_compiler"],
-                     build_config["build_type"],
-                     build_config["generator"],
-                     build_config["build_command"],
-                     build_dir,
-                     OC_CI_CLIENT_FEDORA,
-                 ) +
-                 gui_tests(squish_parameters) +
-                 # GUI test result has been disabled for now, as we squish can not produce the result in both html and json format.
-                 # Disabled untill the feature to generate json result is implemented in squish, or some other method to reuse the log parser is implemented.
-                 #  showGuiTestResult() +
-                 uploadGuiTestLogs() +
-                 buildGithubComment(pipeline_name) +
-                 githubComment(pipeline_name),
-        "services": testMiddlewareService() +
-                    owncloudService() +
-                    databaseService(),
+        "steps": steps,
+        "services": services,
         "trigger": trigger,
         "volumes": [
             {
@@ -206,7 +225,9 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], version = "daily-maste
         ],
     }]
 
-def build_client(c_compiler, cxx_compiler, build_type, generator, build_command, build_dir, image = OC_CI_CLIENT):
+def build_client(c_compiler, cxx_compiler, build_type, generator, build_command, image = OC_CI_CLIENT):
+    cmake_options = '-G"%s" -DCMAKE_C_COMPILER="%s" -DCMAKE_CXX_COMPILER="%s" -DCMAKE_BUILD_TYPE="%s" -DBUILD_TESTING=1 -DWITH_LIBCLOUDPROVIDERS=ON' % (generator, c_compiler, cxx_compiler, build_type)
+
     return [
         {
             "name": "generate",
@@ -215,9 +236,9 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
                 "LC_ALL": "C.UTF-8",
             },
             "commands": [
-                'mkdir -p "' + build_dir + '"',
-                'cd "' + build_dir + '"',
-                'cmake -G"' + generator + '" -DCMAKE_C_COMPILER="' + c_compiler + '" -DCMAKE_CXX_COMPILER="' + cxx_compiler + '" -DCMAKE_BUILD_TYPE="' + build_type + '" -DBUILD_TESTING=1 -DWITH_LIBCLOUDPROVIDERS=ON -S ..',
+                "mkdir -p %s" % dir["build"],
+                "cd %s" % dir["build"],
+                "cmake %s -S .." % cmake_options,
             ],
         },
         {
@@ -227,13 +248,13 @@ def build_client(c_compiler, cxx_compiler, build_type, generator, build_command,
                 "LC_ALL": "C.UTF-8",
             },
             "commands": [
-                'cd "' + build_dir + '"',
+                "cd %s" % dir["build"],
                 build_command + " -j4",
             ],
         },
     ]
 
-def unit_tests(build_dir):
+def unit_tests():
     return [{
         "name": "ctest",
         "image": OC_CI_CLIENT,
@@ -241,14 +262,14 @@ def unit_tests(build_dir):
             "LC_ALL": "C.UTF-8",
         },
         "commands": [
-            'cd "' + build_dir + '"',
+            "cd %s" % dir["build"],
             "useradd -m -s /bin/bash tester",
             "chown -R tester:tester .",
             "su-exec tester ctest --output-on-failure -LE nodrone",
         ],
     }]
 
-def gui_tests(squish_parameters = ""):
+def gui_tests(squish_parameters = "", server_type = "oc10"):
     return [{
         "name": "GUItests",
         "image": OC_CI_SQUISH,
@@ -257,11 +278,13 @@ def gui_tests(squish_parameters = ""):
             "GUI_TEST_REPORT_DIR": dir["guiTestReport"],
             "CLIENT_REPO": dir["base"],
             "MIDDLEWARE_URL": "http://testmiddleware:3000/",
-            "BACKEND_HOST": "http://owncloud/",
-            "SECURE_BACKEND_HOST": "https://owncloud/",
+            "BACKEND_HOST": "http://owncloud/" if server_type == "oc10" else "https://ocis:9200",
+            "SECURE_BACKEND_HOST": "https://owncloud/" if server_type == "oc10" else "https://ocis:9200",
+            "OCIS": "true" if server_type == "ocis" else "false",
             "SERVER_INI": "%s/drone/server.ini" % dir["guiTest"],
             "SQUISH_PARAMETERS": squish_parameters,
             "STACKTRACE_FILE": "%s/stacktrace.log" % dir["guiTestReport"],
+            "PLAYWRIGHT_BROWSERS_PATH": "%s/.playwright" % dir["base"],
         },
     }]
 
@@ -416,12 +439,12 @@ def databaseService():
         "command": ["--default-authentication-plugin=mysql_native_password"],
     }]
 
-def installCore(version = "latest"):
+def installCore(server_version = "latest"):
     return [{
         "name": "install-core",
         "image": OC_CI_CORE,
         "settings": {
-            "version": version,
+            "version": server_version,
             "core_path": dir["server"],
             "db_type": "mysql",
             "db_name": "owncloud",
@@ -464,13 +487,19 @@ def owncloudService():
         ],
     }]
 
-def testMiddlewareService():
+def testMiddlewareService(server_type = "oc10"):
     environment = {
-        "BACKEND_HOST": "http://owncloud",
         "NODE_TLS_REJECT_UNAUTHORIZED": "0",
         "MIDDLEWARE_HOST": "testmiddleware",
         "REMOTE_UPLOAD_DIR": "/uploads",
     }
+
+    if server_type == "ocis":
+        environment["BACKEND_HOST"] = "https://ocis:9200"
+        environment["TEST_WITH_GRAPH_API"] = "true"
+        environment["RUN_ON_OCIS"] = "true"
+    else:
+        environment["BACKEND_HOST"] = "http://owncloud"
 
     return [{
         "name": "testmiddleware",
@@ -499,6 +528,54 @@ def fixPermissions():
         "commands": [
             "cd %s" % dir["server"],
             "chown www-data * -R",
+        ],
+    }]
+
+def ocisService(server_version = "latest"):
+    return [{
+        "name": "ocis",
+        "image": OC_OCIS % server_version,
+        "detach": True,
+        "environment": {
+            "OCIS_URL": "https://ocis:9200",
+            "IDM_ADMIN_PASSWORD": "admin",
+            "STORAGE_HOME_DRIVER": "ocis",
+            "STORAGE_USERS_DRIVER": "ocis",
+            "OCIS_INSECURE": "true",
+            "PROXY_ENABLE_BASIC_AUTH": True,
+            "OCIS_LOG_LEVEL": "error",
+            "OCIS_LOG_PRETTY": "true",
+            "OCIS_LOG_COLOR": "true",
+        },
+        "commands": [
+            "/usr/bin/ocis init",
+            "/usr/bin/ocis server",
+        ],
+    }]
+
+def waitForOcisService():
+    return [{
+        "name": "wait-for-ocis",
+        "image": OC_CI_WAIT_FOR,
+        "commands": [
+            "wait-for -it ocis:9200 -t 300",
+        ],
+    }]
+
+def installPnpm():
+    return [{
+        "name": "pnpm-install",
+        "image": OC_CI_NODEJS,
+        "environment": {
+            "PLAYWRIGHT_BROWSERS_PATH": "%s/.playwright" % dir["base"],
+            "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "true",
+        },
+        "commands": [
+            "cd %s/webUI" % dir["guiTest"],
+            "pnpm config set store-dir ./.pnpm-store",
+            "pnpm install",
+            # install required browser
+            "npx playwright install chromium",
         ],
     }]
 
@@ -535,7 +612,7 @@ def showGuiTestResult():
         },
     }]
 
-def uploadGuiTestLogs():
+def uploadGuiTestLogs(server_type = "oc10"):
     return [{
         "name": "upload-gui-test-result",
         "image": PLUGINS_S3,
@@ -549,7 +626,7 @@ def uploadGuiTestLogs():
             "path_style": True,
             "source": "%s/**/*" % dir["guiTestReport"],
             "strip_prefix": "%s" % dir["guiTestReport"],
-            "target": "/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/guiReportUpload",
+            "target": "/${DRONE_REPO}/${DRONE_BUILD_NUMBER}/%s/guiReportUpload" % server_type,
         },
         "environment": {
             "AWS_ACCESS_KEY_ID": {
@@ -566,12 +643,12 @@ def uploadGuiTestLogs():
         },
     }]
 
-def buildGithubComment(suite = ""):
+def buildGithubComment(suite = "", server_type = "oc10"):
     return [{
         "name": "build-github-comment",
         "image": OC_UBUNTU,
         "commands": [
-            "bash %s/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER}" % (dir["guiTest"], dir["guiTestReport"]),
+            "bash %s/drone/comment.sh %s ${DRONE_REPO} ${DRONE_BUILD_NUMBER} %s" % (dir["guiTest"], dir["guiTestReport"], server_type),
         ],
         "environment": {
             "TEST_CONTEXT": suite,
@@ -592,14 +669,14 @@ def buildGithubComment(suite = ""):
         },
     }]
 
-def githubComment(alternateSuiteName):
+def githubComment(alternateSuiteName, server_type = "oc10"):
     prefix = "Results for <strong>%s</strong> ${DRONE_BUILD_LINK}/${DRONE_JOB_NUMBER}${DRONE_STAGE_NUMBER}/1" % alternateSuiteName
     return [{
         "name": "github-comment",
         "image": THEGEEKLAB_DRONE_GITHUB_COMMENT,
         "settings": {
             "message": "%s/comments.file" % dir["guiTestReport"],
-            "key": "pr-${DRONE_PULL_REQUEST}",
+            "key": "pr-${DRONE_PULL_REQUEST}-%s" % server_type,
             "update": "true",
             "api_key": {
                 "from_secret": "github_token",
