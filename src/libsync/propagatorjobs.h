@@ -89,5 +89,9 @@ public:
     PropagateLocalRename(OwncloudPropagator *propagator, const SyncFileItemPtr &item);
     void start() override;
     JobParallelism parallelism() override { return _item->isDirectory() ? WaitForFinished : FullParallelism; }
+
+private:
+    bool deleteOldDbRecord(const QString &fileName);
+
 };
 }
