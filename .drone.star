@@ -291,6 +291,7 @@ def gui_tests(squish_parameters = "", server_type = "oc10"):
             "SQUISH_PARAMETERS": squish_parameters,
             "STACKTRACE_FILE": "%s/stacktrace.log" % dir["guiTestReport"],
             "PLAYWRIGHT_BROWSERS_PATH": "%s/.playwright" % dir["base"],
+            "OWNCLOUD_CORE_DUMP": 1,
         },
     }]
 
