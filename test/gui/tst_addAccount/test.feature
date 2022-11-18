@@ -29,6 +29,7 @@ Feature: adding accounts
         And an account should be displayed with the displayname Brian Murphy and host %local_server_hostname%
 
 
+    @skipOnOCIS
     Scenario: Adding account with wrong credentials
         Given the user has started the client
         And the user has added the following server address:

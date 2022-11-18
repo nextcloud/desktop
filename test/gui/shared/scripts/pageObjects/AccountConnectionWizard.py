@@ -1,6 +1,7 @@
 import names
 import squish
 from helpers.SetupClientHelper import getClientDetails, createUserSyncPath
+from helpers.WebUIHelper import authorize_via_webui
 import test
 
 
@@ -27,13 +28,30 @@ class AccountConnectionWizard:
         "visible": 1,
         "window": names.setupWizardWindow_OCC_Wizard_SetupWizardWindow,
     }
-    CREDENTIAL_PAGE = {
+    BASIC_CREDENTIAL_PAGE = {
         "container": names.setupWizardWindow_contentWidget_QStackedWidget,
         "name": "CredentialsSetupWizardPage",
         "type": "OCC::Wizard::BasicCredentialsSetupWizardPage",
         "visible": 1,
     }
-
+    OAUTH_CREDENTIAL_PAGE = {
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "name": "CredentialsSetupWizardPage",
+        "type": "OCC::Wizard::OAuthCredentialsSetupWizardPage",
+        "visible": 1,
+    }
+    ACCEPT_CERTIFICATE_YES = {
+        "text": "Yes",
+        "type": "QPushButton",
+        "visible": 1,
+        "window": names.oCC_TlsErrorDialog_OCC_TlsErrorDialog,
+    }
+    COPY_URL_TO_CLIPBOARD_BUTTON = {
+        "container": names.contentWidget_contentWidget_QStackedWidget,
+        "name": "copyUrlToClipboardButton",
+        "type": "QPushButton",
+        "visible": 1,
+    }
     ADVANCE_SETUP_PAGE = {
         "name": "OwncloudAdvancedSetupPage",
         "type": "OCC::OwncloudAdvancedSetupPage",
@@ -121,22 +139,33 @@ class AccountConnectionWizard:
         )
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
 
-        try:
-            squish.clickButton(
-                squish.waitForObject(self.CONFIRM_INSECURE_CONNECTION_BUTTON)
-            )
-        except:
-            test.log(
-                "No insecure connection warning for server " + clientDetails['server']
-            )
-            pass
+        if not context.userData['ocis']:
+            try:
+                squish.clickButton(
+                    squish.waitForObject(self.CONFIRM_INSECURE_CONNECTION_BUTTON, 1000)
+                )
+            except:
+                test.log(
+                    "No insecure connection warning for server "
+                    + clientDetails['server']
+                )
+                pass
+
+    def acceptCertificate(self):
+        squish.clickButton(squish.waitForObject(self.ACCEPT_CERTIFICATE_YES))
 
     def addUserCreds(self, context):
         clientDetails = getClientDetails(context)
 
+        if context.userData['ocis']:
+            self.oidcLogin(clientDetails['user'], clientDetails['password'])
+        else:
+            self.basicLogin(clientDetails['user'], clientDetails['password'])
+
+    def basicLogin(self, username, password):
         squish.type(
             squish.waitForObject(self.USERNAME_BOX),
-            clientDetails['user'],
+            username,
         )
         squish.type(
             squish.waitForObject(self.USERNAME_BOX),
@@ -144,9 +173,25 @@ class AccountConnectionWizard:
         )
         squish.type(
             squish.waitForObject(self.PASSWORD_BOX),
-            clientDetails['password'],
+            password,
         )
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
+
+    def oidcLogin(self, username, password, relogin=False):
+        # wait 500ms for copy button to fully load
+        squish.snooze(1 / 2)
+        if relogin:
+            self.COPY_URL_TO_CLIPBOARD_BUTTON[
+                "container"
+            ] = names.loginRequiredDialog_contentWidget_QStackedWidget
+            squish.clickButton(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
+        else:
+            self.COPY_URL_TO_CLIPBOARD_BUTTON[
+                "container"
+            ] = names.contentWidget_contentWidget_QStackedWidget
+            squish.clickButton(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
+
+        authorize_via_webui(username, password)
 
     def finishSetup(self):
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
@@ -171,6 +216,8 @@ class AccountConnectionWizard:
 
     def addAccountCredential(self, context):
         self.addServer(context)
+        if context.userData['ocis']:
+            self.acceptCertificate()
         self.addUserCreds(context)
         self.selectSyncFolder(context)
 

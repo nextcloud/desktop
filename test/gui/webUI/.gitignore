@@ -1,0 +1,8 @@
+node_modules/
+/test-results/
+/playwright-report/
+/playwright/.cache/
+.pnpm-store/
+package-lock.json
+yarn.lock
+.playwright

@@ -36,11 +36,18 @@ def getClientDetails(context):
 
 
 def createUserSyncPath(context, username):
-    userSyncPath = join(context.userData['clientRootSyncPath'], username)
+    # '' at the end adds '/' to the path
+    if context.userData['ocis']:
+        userSyncPath = join(
+            context.userData['clientRootSyncPath'], username, 'Personal', ''
+        )
+    else:
+        userSyncPath = join(context.userData['clientRootSyncPath'], username, '')
+
     if not exists(userSyncPath):
         makedirs(userSyncPath)
 
-    setCurrentUserSyncPath(context, username)
+    setCurrentUserSyncPath(context, userSyncPath)
     return userSyncPath
 
 
@@ -48,8 +55,7 @@ def getUserSyncPath(context, username):
     return createUserSyncPath(context, username)
 
 
-def setCurrentUserSyncPath(context, user):
-    syncPath = join(context.userData['clientRootSyncPath'], user, '')
+def setCurrentUserSyncPath(context, syncPath):
     context.userData['currentUserSyncPath'] = syncPath
 
 
@@ -87,32 +93,36 @@ def setUpClient(context, username, displayName, confFilePath):
     [Accounts]
     0/Folders/1/ignoreHiddenFiles=true
     0/Folders/1/localPath={client_sync_path}
+    0/Folders/1/displayString={displayString}
     0/Folders/1/paused=false
     0/Folders/1/targetPath=/
     0/Folders/1/version=2
     0/Folders/1/virtualFilesMode=off
     0/dav_user={davUserName}
     0/display-name={displayUserName}
-    0/http_oauth=false
+    0/http_oauth={oauth}
     0/http_user={davUserName}
     0/url={local_server}
     0/user={displayUserFirstName}
     0/version=1
     version=2
     '''
-    userFirstName = username.split()
+
     userSetting = userSetting + getPollingInterval()
 
-    syncPath = createUserSyncPath(context, userFirstName[0])
+    syncPath = createUserSyncPath(context, username)
 
     args = {
+        'displayString': 'Personal' if context.userData['ocis'] else 'ownCloud',
         'displayUserName': displayName,
-        'davUserName': userFirstName[0].lower(),
-        'displayUserFirstName': userFirstName[0],
+        'davUserName': username if context.userData['ocis'] else username.lower(),
+        'displayUserFirstName': displayName.split()[0],
         'client_sync_path': syncPath,
         'local_server': context.userData['localBackendUrl'],
+        'oauth': 'true' if context.userData['ocis'] else 'false',
     }
     userSetting = userSetting.format(**args)
+
     configFile = open(confFilePath, "w")
     configFile.write(userSetting)
     configFile.close()

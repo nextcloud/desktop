@@ -51,6 +51,7 @@ def hook(context):
         'tempFolderPath': 'TEMP_FOLDER_PATH',
         'clientConfigDir': 'CLIENT_CONFIG_DIR',
         'guiTestReportDir': 'GUI_TEST_REPORT_DIR',
+        'ocis': 'OCIS',
     }
 
     context.userData = {
@@ -65,24 +66,32 @@ def hook(context):
         'tempFolderPath': gettempdir(),
         'clientConfigDir': '/tmp/owncloud-client/',
         'guiTestReportDir': os.path.abspath('../reports/'),
+        'ocis': False,
     }
 
     # try reading configs from config.ini
     cfg = ConfigParser()
     try:
-        if cfg.read('../config.ini'):
+        script_path = os.path.dirname(os.path.realpath(__file__))
+        if cfg.read(os.path.join(script_path, '..', 'config.ini')):
             for key, _ in context.userData.items():
                 if key in CONFIG_ENV_MAP:
                     value = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
                     if value:
-                        context.userData[key] = value
+                        if key == 'ocis':
+                            context.userData[key] = value == 'true'
+                        else:
+                            context.userData[key] = value
     except Exception as err:
         test.log(str(err))
 
     # read and override configs from environment variables
     for key, value in CONFIG_ENV_MAP.items():
         if os.environ.get(value):
-            context.userData[key] = os.environ.get(value)
+            if key == 'ocis':
+                context.userData[key] = os.environ.get(value) == 'true'
+            else:
+                context.userData[key] = os.environ.get(value)
 
     # Set the default values if empty
     for key, value in context.userData.items():
