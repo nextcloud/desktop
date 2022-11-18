@@ -117,6 +117,7 @@ public:
     FileInfo(const QString &name) : name{name} { }
     FileInfo(const QString &name, qint64 size) : name{name}, isDir{false}, size{size} { }
     FileInfo(const QString &name, qint64 size, char contentChar) : name{name}, isDir{false}, size{size}, contentChar{contentChar} { }
+    FileInfo(const QString &name, qint64 size, char contentChar, QDateTime mtime) : name{name}, isDir{false}, lastModified(mtime), size{size}, contentChar{contentChar} { }
     FileInfo(const QString &name, const std::initializer_list<FileInfo> &children);
 
     void addChild(const FileInfo &info);
