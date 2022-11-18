@@ -589,11 +589,17 @@ Page {
                         up.indicator: Item {}
                         down.indicator: Item {}
 
-                        background: Rectangle {
-                            radius: Style.slightlyRoundedButtonRadius
-                            border.width: Style.normalBorderWidth
-                            border.color: expireDateSpinBox.activeFocus ? Style.ncBlue : Style.menuBorder
-                            color: Style.backgroundColor
+                        padding: 0
+                        background: null
+                        contentItem: NCInputTextField {
+                            text: expireDateSpinBox.textFromValue(expireDateSpinBox.value, expireDateSpinBox.locale)
+                            readOnly: !expireDateSpinBox.editable
+                            validator: expireDateSpinBox.validator
+                            inputMethodHints: Qt.ImhFormattedNumbersOnly
+                            onAccepted: {
+                                expireDateSpinBox.value = expireDateSpinBox.valueFromText(text, expireDateSpinBox.locale);
+                                expireDateSpinBox.valueModified();
+                            }
                         }
 
                         value: expireDateReduced
