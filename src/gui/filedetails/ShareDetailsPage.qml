@@ -180,7 +180,7 @@ Page {
     }
 
     header: ColumnLayout {
-        spacing: root.intendedPadding
+        spacing: root.padding
 
         GridLayout {
             id: headerGridLayout
@@ -250,488 +250,505 @@ Page {
         }
     }
 
-    ColumnLayout {
-        id: moreMenu
+    contentItem: ColumnLayout {
+        ScrollView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
-        property int rowIconWidth: 16
-        property int indicatorItemWidth: 20
-        property int indicatorSpacing: Style.standardSpacing
-        property int itemPadding: Style.smallSpacing
+            contentWidth: availableWidth
+
+            clip: true
+
+            ColumnLayout {
+                id: moreMenu
+
+                property int rowIconWidth: 16
+                property int indicatorItemWidth: 20
+                property int indicatorSpacing: Style.standardSpacing
+                property int itemPadding: Style.smallSpacing
+
+                width: parent.width
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    height: visible ? implicitHeight : 0
+                    spacing: moreMenu.indicatorSpacing
+
+                    visible: root.isLinkShare
+
+                    Image {
+                        Layout.preferredWidth: moreMenu.indicatorItemWidth
+                        Layout.fillHeight: true
+
+                        verticalAlignment: Image.AlignVCenter
+                        horizontalAlignment: Image.AlignHCenter
+                        fillMode: Image.Pad
+
+                        source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
+                        sourceSize.width: moreMenu.rowIconWidth
+                        sourceSize.height: moreMenu.rowIconWidth
+                    }
+
+                    NCInputTextField {
+                        id: linkShareLabelTextField
+
+                        Layout.fillWidth: true
+                        height: visible ? implicitHeight : 0
+
+                        text: root.linkShareLabel
+                        placeholderText: qsTr("Share label")
+
+                        enabled: root.isLinkShare &&
+                                 !root.waitingForLinkShareLabelChange
+
+                        onAccepted: if(text !== root.linkShareLabel) {
+                            root.setLinkShareLabel(text);
+                            root.waitingForLinkShareLabelChange = true;
+                        }
+
+                        NCBusyIndicator {
+                            anchors.fill: parent
+                            visible: root.waitingForLinkShareLabelChange
+                            running: visible
+                            z: 1
+                        }
+                    }
+                }
+
+                // On these checkables, the clicked() signal is called after
+                // the check state changes.
+                CheckBox {
+                    id: editingAllowedMenuItem
+
+                    Layout.fillWidth: true
+
+                    spacing: moreMenu.indicatorSpacing
+                    padding: moreMenu.itemPadding
+                    indicator.width: moreMenu.indicatorItemWidth
+                    indicator.height: moreMenu.indicatorItemWidth
+
+                    checkable: true
+                    checked: root.editingAllowed
+                    text: qsTr("Allow editing")
+                    enabled: !root.waitingForEditingAllowedChange
+
+                    onClicked: {
+                        root.toggleAllowEditing(checked);
+                        root.waitingForEditingAllowedChange = true;
+                    }
+
+                    NCBusyIndicator {
+                        anchors.fill: parent
+                        visible: root.waitingForEditingAllowedChange
+                        running: visible
+                        z: 1
+                    }
+                }
+
+                CheckBox {
+                    id: passwordProtectEnabledMenuItem
+
+                    Layout.fillWidth: true
+
+                    spacing: moreMenu.indicatorSpacing
+                    padding: moreMenu.itemPadding
+                    indicator.width: moreMenu.indicatorItemWidth
+                    indicator.height: moreMenu.indicatorItemWidth
+
+                    checkable: true
+                    checked: root.passwordProtectEnabled
+                    text: qsTr("Password protect")
+                    enabled: !root.waitingForPasswordProtectEnabledChange && !root.passwordEnforced
+
+                    onClicked: {
+                        root.togglePasswordProtect(checked);
+                        root.waitingForPasswordProtectEnabledChange = true;
+                    }
+
+                    NCBusyIndicator {
+                        anchors.fill: parent
+                        visible: root.waitingForPasswordProtectEnabledChange
+                        running: visible
+                        z: 1
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+
+                    height: visible ? implicitHeight : 0
+                    spacing: moreMenu.indicatorSpacing
+
+                    visible: root.passwordProtectEnabled
+
+                    Image {
+                        Layout.preferredWidth: moreMenu.indicatorItemWidth
+                        Layout.fillHeight: true
+
+                        verticalAlignment: Image.AlignVCenter
+                        horizontalAlignment: Image.AlignHCenter
+                        fillMode: Image.Pad
+
+                        source: "image://svgimage-custom-color/lock-https.svg/" + Style.menuBorder
+                        sourceSize.width: moreMenu.rowIconWidth
+                        sourceSize.height: moreMenu.rowIconWidth
+                    }
+
+                    NCInputTextField {
+                        id: passwordTextField
+
+                        Layout.fillWidth: true
+                        height: visible ? implicitHeight : 0
+
+                        text: root.password !== "" ? root.password : root.passwordPlaceholder
+                        enabled: root.passwordProtectEnabled &&
+                                 !root.waitingForPasswordChange &&
+                                 !root.waitingForPasswordProtectEnabledChange
+
+                        onAccepted: if(text !== root.password && text !== root.passwordPlaceholder) {
+                            passwordErrorBoxLoader.message = "";
+                            root.setPassword(text);
+                            root.waitingForPasswordChange = true;
+                        }
+
+                        NCBusyIndicator {
+                            anchors.fill: parent
+                            visible: root.waitingForPasswordChange ||
+                                     root.waitingForPasswordProtectEnabledChange
+                            running: visible
+                            z: 1
+                        }
+                    }
+                }
+
+                Loader {
+                    id: passwordErrorBoxLoader
+
+                    property string message: ""
+
+                    Layout.fillWidth: true
+                    height: message !== "" ? implicitHeight : 0
+
+                    active: message !== ""
+                    visible: active
+
+                    sourceComponent: Item {
+                        anchors.top: parent.top
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        // Artificially add vertical padding
+                        implicitHeight: passwordErrorBox.implicitHeight + (Style.smallSpacing * 2)
+
+                        ErrorBox {
+                            id: passwordErrorBox
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            anchors.verticalCenter: parent.verticalCenter
+
+                            text: passwordErrorBoxLoader.message
+                        }
+                    }
+                }
+
+                CheckBox {
+                    id: expireDateEnabledMenuItem
+
+                    Layout.fillWidth: true
+
+                    spacing: moreMenu.indicatorSpacing
+                    padding: moreMenu.itemPadding
+                    indicator.width: moreMenu.indicatorItemWidth
+                    indicator.height: moreMenu.indicatorItemWidth
+
+                    checkable: true
+                    checked: root.expireDateEnabled
+                    text: qsTr("Set expiration date")
+                    enabled: !root.waitingForExpireDateEnabledChange && !root.expireDateEnforced
+
+                    onClicked: {
+                        root.toggleExpirationDate(checked);
+                        root.waitingForExpireDateEnabledChange = true;
+                    }
+
+                    NCBusyIndicator {
+                        anchors.fill: parent
+                        visible: root.waitingForExpireDateEnabledChange
+                        running: visible
+                        z: 1
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    height: visible ? implicitHeight : 0
+                    spacing: moreMenu.indicatorSpacing
+
+                    visible: root.expireDateEnabled
+
+                    Image {
+                        Layout.preferredWidth: moreMenu.indicatorItemWidth
+                        Layout.fillHeight: true
+
+                        verticalAlignment: Image.AlignVCenter
+                        horizontalAlignment: Image.AlignHCenter
+                        fillMode: Image.Pad
+
+                        source: "image://svgimage-custom-color/calendar.svg/" + Style.menuBorder
+                        sourceSize.width: moreMenu.rowIconWidth
+                        sourceSize.height: moreMenu.rowIconWidth
+                    }
+
+                    // QML dates are essentially JavaScript dates, which makes them very finicky and unreliable.
+                    // Instead, we exclusively deal with msecs from epoch time to make things less painful when editing.
+                    // We only use the QML Date when showing the nice string to the user.
+                    SpinBox {
+                        id: expireDateSpinBox
+
+                        // Work arounds the limitations of QML's 32 bit integer when handling msecs from epoch
+                        // Instead, we handle everything as days since epoch
+                        readonly property int dayInMSecs: 24 * 60 * 60 * 1000
+                        readonly property int expireDateReduced: Math.floor(root.expireDate / dayInMSecs)
+                        // Reset the model data after binding broken on user interact
+                        onExpireDateReducedChanged: value = expireDateReduced
+
+                        // We can't use JS's convenient Infinity or Number.MAX_VALUE as
+                        // JS Number type is 64 bits, whereas QML's int type is only 32 bits
+                        readonly property IntValidator intValidator: IntValidator {}
+                        readonly property int maximumExpireDateReduced: root.expireDateEnforced ?
+                                                                            Math.floor(root.maximumExpireDate / dayInMSecs) :
+                                                                            intValidator.top
+                        readonly property int minimumExpireDateReduced: {
+                            const currentDate = new Date();
+                            const minDateUTC = new Date(Date.UTC(currentDate.getFullYear(),
+                                                                 currentDate.getMonth(),
+                                                                 currentDate.getDate() + 1));
+                            return Math.floor(minDateUTC / dayInMSecs) // Start of day at 00:00:0000 UTC
+                        }
+
+                        // Taken from Kalendar 22.08
+                        // https://invent.kde.org/pim/kalendar/-/blob/release/22.08/src/contents/ui/KalendarUtils/dateutils.js
+                        function parseDateString(dateString) {
+                            function defaultParse() {
+                                const defaultParsedDate = Date.fromLocaleDateString(Qt.locale(), dateString, Locale.NarrowFormat);
+                                // JS always generates date in system locale, eliminate timezone difference to UTC
+                                const msecsSinceEpoch = defaultParsedDate.getTime() - (defaultParsedDate.getTimezoneOffset() * 60 * 1000);
+                                return new Date(msecsSinceEpoch);
+                            }
+
+                            const dateStringDelimiterMatches = dateString.match(/\D/);
+                            if(dateStringDelimiterMatches.length === 0) {
+                                // Let the date method figure out this weirdness
+                                return defaultParse();
+                            }
+
+                            const dateStringDelimiter = dateStringDelimiterMatches[0];
+
+                            const localisedDateFormatSplit = Qt.locale().dateFormat(Locale.NarrowFormat).split(dateStringDelimiter);
+                            const localisedDateDayPosition = localisedDateFormatSplit.findIndex((x) => /d/gi.test(x));
+                            const localisedDateMonthPosition = localisedDateFormatSplit.findIndex((x) => /m/gi.test(x));
+                            const localisedDateYearPosition = localisedDateFormatSplit.findIndex((x) => /y/gi.test(x));
+
+                            let splitDateString = dateString.split(dateStringDelimiter);
+                            let userProvidedYear = splitDateString[localisedDateYearPosition]
+
+                            const dateNow = new Date();
+                            const stringifiedCurrentYear = dateNow.getFullYear().toString();
+
+                            // If we have any input weirdness, or if we have a fully-written year
+                            // (e.g. 2022 instead of 22) then use default parse
+                            if(splitDateString.length === 0 ||
+                                    splitDateString.length > 3 ||
+                                    userProvidedYear.length >= stringifiedCurrentYear.length) {
+
+                                return defaultParse();
+                            }
+
+                            let fullyWrittenYear = userProvidedYear.split("");
+                            const digitsToAdd = stringifiedCurrentYear.length - fullyWrittenYear.length;
+                            for(let i = 0; i < digitsToAdd; i++) {
+                                fullyWrittenYear.splice(i, 0, stringifiedCurrentYear[i])
+                            }
+                            fullyWrittenYear = fullyWrittenYear.join("");
+
+                            const fixedYearNum = Number(fullyWrittenYear);
+                            const monthIndexNum = Number(splitDateString[localisedDateMonthPosition]) - 1;
+                            const dayNum = Number(splitDateString[localisedDateDayPosition]);
+
+                            console.log(dayNum, monthIndexNum, fixedYearNum);
+
+                            // Modification: return date in UTC
+                            return new Date(Date.UTC(fixedYearNum, monthIndexNum, dayNum));
+                        }
+
+                        Layout.fillWidth: true
+                        height: visible ? implicitHeight : 0
+
+
+                        // We want all the internal benefits of the spinbox but don't actually want the
+                        // buttons, so set an empty item as a dummy
+                        up.indicator: Item {}
+                        down.indicator: Item {}
+
+                        background: Rectangle {
+                            radius: Style.slightlyRoundedButtonRadius
+                            border.width: Style.normalBorderWidth
+                            border.color: expireDateSpinBox.activeFocus ? Style.ncBlue : Style.menuBorder
+                            color: Style.backgroundColor
+                        }
+
+                        value: expireDateReduced
+                        from: minimumExpireDateReduced
+                        to: maximumExpireDateReduced
+
+                        textFromValue: (value, locale) => {
+                            const dateFromValue = new Date(value * dayInMSecs);
+                            return dateFromValue.toLocaleDateString(Qt.locale(), Locale.NarrowFormat);
+                        }
+                        valueFromText: (text, locale) => {
+                            const dateFromText = parseDateString(text);
+                            return Math.floor(dateFromText.getTime() / dayInMSecs);
+                        }
+
+                        editable: true
+                        inputMethodHints: Qt.ImhDate | Qt.ImhFormattedNumbersOnly
+
+                        enabled: root.expireDateEnabled &&
+                                 !root.waitingForExpireDateChange &&
+                                 !root.waitingForExpireDateEnabledChange
+
+                        onValueModified: {
+                            if (!enabled || !activeFocus) {
+                                return;
+                            }
+
+                            root.setExpireDate(value * dayInMSecs);
+                            root.waitingForExpireDateChange = true;
+                        }
+
+                        NCBusyIndicator {
+                            anchors.fill: parent
+                            visible: root.waitingForExpireDateEnabledChange ||
+                                     root.waitingForExpireDateChange
+                            running: visible
+                            z: 1
+                        }
+                    }
+                }
+
+                CheckBox {
+                    id: noteEnabledMenuItem
+
+                    Layout.fillWidth: true
+
+                    spacing: moreMenu.indicatorSpacing
+                    padding: moreMenu.itemPadding
+                    indicator.width: moreMenu.indicatorItemWidth
+                    indicator.height: moreMenu.indicatorItemWidth
+
+                    checkable: true
+                    checked: root.noteEnabled
+                    text: qsTr("Note to recipient")
+                    enabled: !root.waitingForNoteEnabledChange
+
+                    onClicked: {
+                        root.toggleNoteToRecipient(checked);
+                        root.waitingForNoteEnabledChange = true;
+                    }
+
+                    NCBusyIndicator {
+                        anchors.fill: parent
+                        visible: root.waitingForNoteEnabledChange
+                        running: visible
+                        z: 1
+                    }
+                }
+
+                RowLayout {
+                    Layout.fillWidth: true
+                    height: visible ? implicitHeight : 0
+                    spacing: moreMenu.indicatorSpacing
+
+                    visible: root.noteEnabled
+
+                    Image {
+                        Layout.preferredWidth: moreMenu.indicatorItemWidth
+                        Layout.fillHeight: true
+
+                        verticalAlignment: Image.AlignVCenter
+                        horizontalAlignment: Image.AlignHCenter
+                        fillMode: Image.Pad
+
+                        source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
+                        sourceSize.width: moreMenu.rowIconWidth
+                        sourceSize.height: moreMenu.rowIconWidth
+                    }
+
+                    NCInputTextEdit {
+                        id: noteTextEdit
+
+                        Layout.fillWidth: true
+                        height: visible ? Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight) : 0
+                        submitButton.height: Math.min(Style.talkReplyTextFieldPreferredHeight, height - 2)
+
+                        text: root.note
+                        enabled: root.noteEnabled &&
+                                 !root.waitingForNoteChange &&
+                                 !root.waitingForNoteEnabledChange
+
+                        onEditingFinished: if(text !== root.note) {
+                            root.setNote(text);
+                            root.waitingForNoteChange = true;
+                        }
+
+                        NCBusyIndicator {
+                            anchors.fill: parent
+                            visible: root.waitingForNoteChange ||
+                                     root.waitingForNoteEnabledChange
+                            running: visible
+                            z: 1
+                        }
+                    }
+                }
+            }
+        }
 
         RowLayout {
-            anchors.left: parent.left
-            anchors.leftMargin: moreMenu.itemPadding
-            anchors.right: parent.right
-            anchors.rightMargin: moreMenu.itemPadding
-            height: visible ? implicitHeight : 0
-            spacing: moreMenu.indicatorSpacing
+            Layout.fillWidth: true
 
-            visible: root.isLinkShare
-
-            Image {
-                Layout.preferredWidth: moreMenu.indicatorItemWidth
-                Layout.fillHeight: true
-
-                verticalAlignment: Image.AlignVCenter
-                horizontalAlignment: Image.AlignHCenter
-                fillMode: Image.Pad
-
-                source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
-                sourceSize.width: moreMenu.rowIconWidth
-                sourceSize.height: moreMenu.rowIconWidth
-            }
-
-            NCInputTextField {
-                id: linkShareLabelTextField
-
+            CustomButton {
                 Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
+                implicitWidth: parent.width / 2
+                height: Style.standardPrimaryButtonHeight
 
-                text: root.linkShareLabel
-                placeholderText: qsTr("Share label")
+                imageSource: "image://svgimage-custom-color/close.svg/" + Style.ncHeaderTextColor
+                text: qsTr("Unshare")
+                textColor: Style.ncHeaderTextColor
+                contentsFont.bold: true
+                bgColor: Style.errorBoxBackgroundColor
+                bgNormalOpacity: 1.0
+                bgHoverOpacity: Style.hoverOpacity
 
-                enabled: root.isLinkShare &&
-                         !root.waitingForLinkShareLabelChange
-
-                onAccepted: if(text !== root.linkShareLabel) {
-                    root.setLinkShareLabel(text);
-                    root.waitingForLinkShareLabelChange = true;
-                }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForLinkShareLabelChange
-                    running: visible
-                    z: 1
-                }
-            }
-        }
-
-        // On these checkables, the clicked() signal is called after
-        // the check state changes.
-        CheckBox {
-            id: editingAllowedMenuItem
-
-            spacing: moreMenu.indicatorSpacing
-            padding: moreMenu.itemPadding
-            indicator.width: moreMenu.indicatorItemWidth
-            indicator.height: moreMenu.indicatorItemWidth
-
-            checkable: true
-            checked: root.editingAllowed
-            text: qsTr("Allow editing")
-            enabled: !root.waitingForEditingAllowedChange
-
-            onClicked: {
-                root.toggleAllowEditing(checked);
-                root.waitingForEditingAllowedChange = true;
+                onClicked: root.deleteShare()
             }
 
-            NCBusyIndicator {
-                anchors.fill: parent
-                visible: root.waitingForEditingAllowedChange
-                running: visible
-                z: 1
-            }
-        }
-
-        CheckBox {
-            id: passwordProtectEnabledMenuItem
-
-            spacing: moreMenu.indicatorSpacing
-            padding: moreMenu.itemPadding
-            indicator.width: moreMenu.indicatorItemWidth
-            indicator.height: moreMenu.indicatorItemWidth
-
-            checkable: true
-            checked: root.passwordProtectEnabled
-            text: qsTr("Password protect")
-            enabled: !root.waitingForPasswordProtectEnabledChange && !root.passwordEnforced
-
-            onClicked: {
-                root.togglePasswordProtect(checked);
-                root.waitingForPasswordProtectEnabledChange = true;
-            }
-
-            NCBusyIndicator {
-                anchors.fill: parent
-                visible: root.waitingForPasswordProtectEnabledChange
-                running: visible
-                z: 1
-            }
-        }
-
-        RowLayout {
-            anchors.left: parent.left
-            anchors.leftMargin: moreMenu.itemPadding
-            anchors.right: parent.right
-            anchors.rightMargin: moreMenu.itemPadding
-            height: visible ? implicitHeight : 0
-            spacing: moreMenu.indicatorSpacing
-
-            visible: root.passwordProtectEnabled
-
-            Image {
-                Layout.preferredWidth: moreMenu.indicatorItemWidth
-                Layout.fillHeight: true
-
-                verticalAlignment: Image.AlignVCenter
-                horizontalAlignment: Image.AlignHCenter
-                fillMode: Image.Pad
-
-                source: "image://svgimage-custom-color/lock-https.svg/" + Style.menuBorder
-                sourceSize.width: moreMenu.rowIconWidth
-                sourceSize.height: moreMenu.rowIconWidth
-            }
-
-            NCInputTextField {
-                id: passwordTextField
-
+            CustomButton {
                 Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
+                implicitWidth: parent.width / 2
+                height: Style.standardPrimaryButtonHeight
 
-                text: root.password !== "" ? root.password : root.passwordPlaceholder
-                enabled: root.passwordProtectEnabled &&
-                         !root.waitingForPasswordChange &&
-                         !root.waitingForPasswordProtectEnabledChange
+                imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncHeaderTextColor
+                text: qsTr("Add another link")
+                textColor: Style.ncHeaderTextColor
+                contentsFont.bold: true
+                bgColor: Style.ncBlue
+                bgNormalOpacity: 1.0
+                bgHoverOpacity: Style.hoverOpacity
 
-                onAccepted: if(text !== root.password && text !== root.passwordPlaceholder) {
-                    passwordErrorBoxLoader.message = "";
-                    root.setPassword(text);
-                    root.waitingForPasswordChange = true;
-                }
+                visible: root.isLinkShare && root.canCreateLinkShares
+                enabled: visible
 
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForPasswordChange ||
-                             root.waitingForPasswordProtectEnabledChange
-                    running: visible
-                    z: 1
-                }
+                onClicked: root.createNewLinkShare()
             }
-        }
-
-        Loader {
-            id: passwordErrorBoxLoader
-
-            property string message: ""
-
-            anchors.left: parent.left
-            anchors.right: parent.right
-            height: message !== "" ? implicitHeight : 0
-
-            active: message !== ""
-            visible: active
-
-            sourceComponent: Item {
-                anchors.top: parent.top
-                anchors.left: parent.left
-                anchors.right: parent.right
-                // Artificially add vertical padding
-                implicitHeight: passwordErrorBox.implicitHeight + (Style.smallSpacing * 2)
-
-                ErrorBox {
-                    id: passwordErrorBox
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.verticalCenter: parent.verticalCenter
-
-                    text: passwordErrorBoxLoader.message
-                }
-            }
-        }
-
-        CheckBox {
-            id: expireDateEnabledMenuItem
-
-            spacing: moreMenu.indicatorSpacing
-            padding: moreMenu.itemPadding
-            indicator.width: moreMenu.indicatorItemWidth
-            indicator.height: moreMenu.indicatorItemWidth
-
-            checkable: true
-            checked: root.expireDateEnabled
-            text: qsTr("Set expiration date")
-            enabled: !root.waitingForExpireDateEnabledChange && !root.expireDateEnforced
-
-            onClicked: {
-                root.toggleExpirationDate(checked);
-                root.waitingForExpireDateEnabledChange = true;
-            }
-
-            NCBusyIndicator {
-                anchors.fill: parent
-                visible: root.waitingForExpireDateEnabledChange
-                running: visible
-                z: 1
-            }
-        }
-
-        RowLayout {
-            anchors.left: parent.left
-            anchors.leftMargin: moreMenu.itemPadding
-            anchors.right: parent.right
-            anchors.rightMargin: moreMenu.itemPadding
-            height: visible ? implicitHeight : 0
-            spacing: moreMenu.indicatorSpacing
-
-            visible: root.expireDateEnabled
-
-            Image {
-                Layout.preferredWidth: moreMenu.indicatorItemWidth
-                Layout.fillHeight: true
-
-                verticalAlignment: Image.AlignVCenter
-                horizontalAlignment: Image.AlignHCenter
-                fillMode: Image.Pad
-
-                source: "image://svgimage-custom-color/calendar.svg/" + Style.menuBorder
-                sourceSize.width: moreMenu.rowIconWidth
-                sourceSize.height: moreMenu.rowIconWidth
-            }
-
-            // QML dates are essentially JavaScript dates, which makes them very finicky and unreliable.
-            // Instead, we exclusively deal with msecs from epoch time to make things less painful when editing.
-            // We only use the QML Date when showing the nice string to the user.
-            SpinBox {
-                id: expireDateSpinBox
-
-                // Work arounds the limitations of QML's 32 bit integer when handling msecs from epoch
-                // Instead, we handle everything as days since epoch
-                readonly property int dayInMSecs: 24 * 60 * 60 * 1000
-                readonly property int expireDateReduced: Math.floor(root.expireDate / dayInMSecs)
-                // Reset the model data after binding broken on user interact
-                onExpireDateReducedChanged: value = expireDateReduced
-
-                // We can't use JS's convenient Infinity or Number.MAX_VALUE as
-                // JS Number type is 64 bits, whereas QML's int type is only 32 bits
-                readonly property IntValidator intValidator: IntValidator {}
-                readonly property int maximumExpireDateReduced: root.expireDateEnforced ?
-                                                                    Math.floor(root.maximumExpireDate / dayInMSecs) :
-                                                                    intValidator.top
-                readonly property int minimumExpireDateReduced: {
-                    const currentDate = new Date();
-                    const minDateUTC = new Date(Date.UTC(currentDate.getFullYear(),
-                                                         currentDate.getMonth(),
-                                                         currentDate.getDate() + 1));
-                    return Math.floor(minDateUTC / dayInMSecs) // Start of day at 00:00:0000 UTC
-                }
-
-                // Taken from Kalendar 22.08
-                // https://invent.kde.org/pim/kalendar/-/blob/release/22.08/src/contents/ui/KalendarUtils/dateutils.js
-                function parseDateString(dateString) {
-                    function defaultParse() {
-                        const defaultParsedDate = Date.fromLocaleDateString(Qt.locale(), dateString, Locale.NarrowFormat);
-                        // JS always generates date in system locale, eliminate timezone difference to UTC
-                        const msecsSinceEpoch = defaultParsedDate.getTime() - (defaultParsedDate.getTimezoneOffset() * 60 * 1000);
-                        return new Date(msecsSinceEpoch);
-                    }
-
-                    const dateStringDelimiterMatches = dateString.match(/\D/);
-                    if(dateStringDelimiterMatches.length === 0) {
-                        // Let the date method figure out this weirdness
-                        return defaultParse();
-                    }
-
-                    const dateStringDelimiter = dateStringDelimiterMatches[0];
-
-                    const localisedDateFormatSplit = Qt.locale().dateFormat(Locale.NarrowFormat).split(dateStringDelimiter);
-                    const localisedDateDayPosition = localisedDateFormatSplit.findIndex((x) => /d/gi.test(x));
-                    const localisedDateMonthPosition = localisedDateFormatSplit.findIndex((x) => /m/gi.test(x));
-                    const localisedDateYearPosition = localisedDateFormatSplit.findIndex((x) => /y/gi.test(x));
-
-                    let splitDateString = dateString.split(dateStringDelimiter);
-                    let userProvidedYear = splitDateString[localisedDateYearPosition]
-
-                    const dateNow = new Date();
-                    const stringifiedCurrentYear = dateNow.getFullYear().toString();
-
-                    // If we have any input weirdness, or if we have a fully-written year
-                    // (e.g. 2022 instead of 22) then use default parse
-                    if(splitDateString.length === 0 ||
-                            splitDateString.length > 3 ||
-                            userProvidedYear.length >= stringifiedCurrentYear.length) {
-
-                        return defaultParse();
-                    }
-
-                    let fullyWrittenYear = userProvidedYear.split("");
-                    const digitsToAdd = stringifiedCurrentYear.length - fullyWrittenYear.length;
-                    for(let i = 0; i < digitsToAdd; i++) {
-                        fullyWrittenYear.splice(i, 0, stringifiedCurrentYear[i])
-                    }
-                    fullyWrittenYear = fullyWrittenYear.join("");
-
-                    const fixedYearNum = Number(fullyWrittenYear);
-                    const monthIndexNum = Number(splitDateString[localisedDateMonthPosition]) - 1;
-                    const dayNum = Number(splitDateString[localisedDateDayPosition]);
-
-                    console.log(dayNum, monthIndexNum, fixedYearNum);
-
-                    // Modification: return date in UTC
-                    return new Date(Date.UTC(fixedYearNum, monthIndexNum, dayNum));
-                }
-
-                Layout.fillWidth: true
-                height: visible ? implicitHeight : 0
-
-
-                // We want all the internal benefits of the spinbox but don't actually want the
-                // buttons, so set an empty item as a dummy
-                up.indicator: Item {}
-                down.indicator: Item {}
-
-                background: Rectangle {
-                    radius: Style.slightlyRoundedButtonRadius
-                    border.width: Style.normalBorderWidth
-                    border.color: expireDateSpinBox.activeFocus ? Style.ncBlue : Style.menuBorder
-                    color: Style.backgroundColor
-                }
-
-                value: expireDateReduced
-                from: minimumExpireDateReduced
-                to: maximumExpireDateReduced
-
-                textFromValue: (value, locale) => {
-                    const dateFromValue = new Date(value * dayInMSecs);
-                    return dateFromValue.toLocaleDateString(Qt.locale(), Locale.NarrowFormat);
-                }
-                valueFromText: (text, locale) => {
-                    const dateFromText = parseDateString(text);
-                    return Math.floor(dateFromText.getTime() / dayInMSecs);
-                }
-
-                editable: true
-                inputMethodHints: Qt.ImhDate | Qt.ImhFormattedNumbersOnly
-
-                enabled: root.expireDateEnabled &&
-                         !root.waitingForExpireDateChange &&
-                         !root.waitingForExpireDateEnabledChange
-
-                onValueModified: {
-                    if (!enabled || !activeFocus) {
-                        return;
-                    }
-
-                    root.setExpireDate(value * dayInMSecs);
-                    root.waitingForExpireDateChange = true;
-                }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForExpireDateEnabledChange ||
-                             root.waitingForExpireDateChange
-                    running: visible
-                    z: 1
-                }
-            }
-        }
-
-        CheckBox {
-            id: noteEnabledMenuItem
-
-            spacing: moreMenu.indicatorSpacing
-            padding: moreMenu.itemPadding
-            indicator.width: moreMenu.indicatorItemWidth
-            indicator.height: moreMenu.indicatorItemWidth
-
-            checkable: true
-            checked: root.noteEnabled
-            text: qsTr("Note to recipient")
-            enabled: !root.waitingForNoteEnabledChange
-
-            onClicked: {
-                root.toggleNoteToRecipient(checked);
-                root.waitingForNoteEnabledChange = true;
-            }
-
-            NCBusyIndicator {
-                anchors.fill: parent
-                visible: root.waitingForNoteEnabledChange
-                running: visible
-                z: 1
-            }
-        }
-
-        RowLayout {
-            anchors.left: parent.left
-            anchors.leftMargin: moreMenu.itemPadding
-            anchors.right: parent.right
-            anchors.rightMargin: moreMenu.itemPadding
-            height: visible ? implicitHeight : 0
-            spacing: moreMenu.indicatorSpacing
-
-            visible: root.noteEnabled
-
-            Image {
-                Layout.preferredWidth: moreMenu.indicatorItemWidth
-                Layout.fillHeight: true
-
-                verticalAlignment: Image.AlignVCenter
-                horizontalAlignment: Image.AlignHCenter
-                fillMode: Image.Pad
-
-                source: "image://svgimage-custom-color/edit.svg/" + Style.menuBorder
-                sourceSize.width: moreMenu.rowIconWidth
-                sourceSize.height: moreMenu.rowIconWidth
-            }
-
-            NCInputTextEdit {
-                id: noteTextEdit
-
-                Layout.fillWidth: true
-                height: visible ? Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight) : 0
-                submitButton.height: Math.min(Style.talkReplyTextFieldPreferredHeight, height - 2)
-
-                text: root.note
-                enabled: root.noteEnabled &&
-                         !root.waitingForNoteChange &&
-                         !root.waitingForNoteEnabledChange
-
-                onEditingFinished: if(text !== root.note) {
-                    root.setNote(text);
-                    root.waitingForNoteChange = true;
-                }
-
-                NCBusyIndicator {
-                    anchors.fill: parent
-                    visible: root.waitingForNoteChange ||
-                             root.waitingForNoteEnabledChange
-                    running: visible
-                    z: 1
-                }
-            }
-        }
-
-        MenuItem {
-            spacing: moreMenu.indicatorSpacing
-            padding: moreMenu.itemPadding
-
-            icon.width: moreMenu.indicatorItemWidth
-            icon.height: moreMenu.indicatorItemWidth
-            icon.color: Style.ncTextColor
-            icon.source: "qrc:///client/theme/close.svg"
-            text: qsTr("Unshare")
-
-            onTriggered: root.deleteShare()
-        }
-
-        MenuItem {
-            height: visible ? implicitHeight : 0
-            spacing: moreMenu.indicatorSpacing
-            padding: moreMenu.itemPadding
-
-            icon.width: moreMenu.indicatorItemWidth
-            icon.height: moreMenu.indicatorItemWidth
-            icon.color: Style.ncTextColor
-            icon.source: "qrc:///client/theme/add.svg"
-            text: qsTr("Add another link")
-
-            visible: root.isLinkShare && root.canCreateLinkShares
-            enabled: visible
-
-            onTriggered: root.createNewLinkShare()
         }
     }
-
 }
