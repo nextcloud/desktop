@@ -45,7 +45,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     auto base = state.find(pathComponents.parentDirComponents());
     if (!base)
         return false;
-    for (const auto &item : base->children) {
+    for (const auto &item : qAsConst(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
@@ -79,8 +79,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // Verify that the conflict names don't have the user name
-        for (const auto &name : findConflicts(fakeFolder.currentLocalState().children["A"])) {
-            QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
+        const auto conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        for (const auto &conflict : conflicts) {
+            QVERIFY(!conflict.contains(fakeFolder.syncEngine().account()->davDisplayName()));
         }
 
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a1"));

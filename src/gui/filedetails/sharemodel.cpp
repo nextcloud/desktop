@@ -316,7 +316,7 @@ void ShareModel::handlePlaceholderLinkShare()
     auto linkSharePresent = false;
     auto placeholderLinkSharePresent = false;
 
-    for (const auto &share : _shares) {
+    for (const auto &share : qAsConst(_shares)) {
         const auto shareType = share->getShareType();
 
         if (!linkSharePresent && shareType == Share::TypeLink) {

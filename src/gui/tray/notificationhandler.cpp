@@ -92,7 +92,8 @@ void ServerNotificationHandler::slotNotificationsReceived(const QJsonDocument &j
 
         if(json.contains("subjectRichParameters")) {
             const auto richParams = json.value("subjectRichParameters").toObject();
-            for(const auto &key : richParams.keys()) {
+            const auto richParamsKeys = richParams.keys();
+            for(const auto &key : richParamsKeys) {
                 const auto parameterJsonObject = richParams.value(key).toObject();
                 a._subjectRichParameters.insert(key, Activity::RichSubjectParameter{
                                                     parameterJsonObject.value(QStringLiteral("type")).toString(),

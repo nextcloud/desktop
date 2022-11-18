@@ -990,7 +990,8 @@ void SocketApi::setFileLock(const QString &localFile, const SyncFileItem::LockSt
 void SocketApi::command_V2_LIST_ACCOUNTS(const QSharedPointer<SocketApiJobV2> &job) const
 {
     QJsonArray out;
-    for (auto acc : AccountManager::instance()->accounts()) {
+    const auto accounts = AccountManager::instance()->accounts();
+    for (auto acc : accounts) {
         // TODO: Use uuid once https://github.com/owncloud/client/pull/8397 is merged
         out << QJsonObject({ { "name", acc->account()->displayName() }, { "id", acc->account()->id() } });
     }

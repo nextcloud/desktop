@@ -136,7 +136,7 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         showDesktopNotification(subject, message, -static_cast<int>(qHash(subject)));
 
         // Set these activities as notified here, rather than in showDesktopNotification
-        for(const auto &activity : toNotifyList) {
+        for(const auto &activity : qAsConst(toNotifyList)) {
             _notifiedNotifications.insert(activity._id);
             _activityModel->addNotificationToActivityList(activity);
         }
@@ -144,7 +144,7 @@ void User::slotBuildNotificationDisplay(const ActivityList &list)
         return;
     }
 
-    for(const auto &activity : toNotifyList) {
+    for(const auto &activity : qAsConst(toNotifyList)) {
         const auto message = activity._objectType == QStringLiteral("chat")
             ? activity._message : AccountManager::instance()->accounts().count() == 1 ? "" : activity._accName;
 
@@ -220,7 +220,8 @@ void User::slotReceivedPushActivity(Account *account)
 
 void User::slotCheckExpiredActivities()
 {
-    for (const Activity &activity : _activityModel->errorsList()) {
+    const auto errorsList = _activityModel->errorsList();
+    for (const Activity &activity : errorsList) {
         if (activity._expireAtMsecs > 0 && QDateTime::currentDateTime().toMSecsSinceEpoch() >= activity._expireAtMsecs) {
             _activityModel->removeActivityFromActivityList(activity);
         }
@@ -1032,7 +1033,7 @@ void UserModel::setCurrentUserId(const int id)
 
     const auto isCurrentUserChanged = !_users[id]->isCurrentUser();
     if (isCurrentUserChanged) {
-        for (const auto user : _users) {
+        for (const auto user : qAsConst(_users)) {
             user->setCurrentUser(false);
         }
         _users[id]->setCurrentUser(true);

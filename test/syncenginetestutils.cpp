@@ -791,7 +791,8 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
     Q_ASSERT(!fileName.isEmpty());
 
     // Compute the size and content from the chunks if possible
-    for (auto chunkName : sourceFolder->children.keys()) {
+    const auto childrenKeys = sourceFolder->children.keys();
+    for (auto chunkName : childrenKeys) {
         auto &x = sourceFolder->children[chunkName];
         Q_ASSERT(!x.isDir);
         Q_ASSERT(x.size > 0); // There should not be empty chunks
