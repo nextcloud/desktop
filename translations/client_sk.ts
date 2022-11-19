@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Otvoriť súbor pre lokálnu úpravu</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivita</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľanie</translation>
     </message>
 </context>
 <context>
@@ -1196,7 +1196,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Bol prijatý neplatný token.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
@@ -3291,7 +3291,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Chyba pri synchronizácii z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Chyba pri mazaní záznamu o súbore %1 z databázy</translation>
     </message>
@@ -3513,14 +3513,11 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
         <translation>nie je možné získať súbor %1 z lokálnej DB</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>Nie je možné vymazať záznam o súbore %1 z lokálnej DB</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3531,6 +3528,17 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>Nie je možné vymazať záznam o súbore %1 z lokálnej DB</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
@@ -3854,17 +3862,17 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľaný odkaz</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Zadajte poznámku pre príjemcu</translation>
     </message>
 </context>
 <context>
@@ -5156,27 +5164,27 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Pre nové zdieľanie sa vyžaduje heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľať heslo</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľanie je zakázané</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Túto položku nie je možné zdieľať.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Zdieľanie je zakázané.</translation>
     </message>
 </context>
 <context>
@@ -5184,7 +5192,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Hľadať používateľov alebo skupiny ...</translation>
     </message>
 </context>
 <context>
@@ -5200,7 +5208,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Synchronizovať teraz</translation>
     </message>
 </context>
 <context>

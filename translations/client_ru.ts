@@ -52,7 +52,7 @@
     <message>
         <location filename="../src/gui/BasicComboBox.qml" line="59"/>
         <source>Clear status message menu</source>
-        <translation type="unfinished"/>
+        <translation>Меню отчистки статуса сообщения</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Аватар звонящего</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>Открытие файла для локального редактирования</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>События</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Общий доступ</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>Сведения о файле  %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -218,7 +218,7 @@
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation>Не удалось переместить &quot;%1&quot; в &quot;%2&quot;</translation>
+        <translation>Не удалось переместить «%1» в «%2»</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -582,12 +582,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="958"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Мнемофраза оконечного шифрования</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>Для защиты личного идентификатора оконечного шифрования используется мнемофраза, состоящая из двенадцати слов. Мнемофразу следует записать и сохранить запись в надёжном месте, она потребуется для подключения к учётной записи ваших дополнительных устройств.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1024"/>
@@ -1195,7 +1195,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>Получен недействительный токен.  </translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
@@ -1203,38 +1203,38 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Попробуйте ещё раз.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Указан недействительный путь. </translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти учётную запись для локального редактирования.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось проверить запрос на открытие файла на сервере.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти файл для локального редактирования. Убедитесь, что файл не исключён из выборочной синхронизации.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти файл для локального редактирования. Убедитесь, что путь к этому файлу действителен, а также что файл синхронизирован и сохранён локально.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось найти папку для её синхронизации.</translation>
     </message>
 </context>
 <context>
@@ -1244,7 +1244,7 @@ This action will abort any currently running synchronization.</source>
         <source>Could not generate the metadata for encryption, Unlocking the folder.
 This can be an issue with your OpenSSL libraries.</source>
         <translation>Не удалось создать метаданные для расшифровывания папки.
-Причина, возможно, в библиотеках OpenSSL.</translation>
+Возможно, причиной ошибки являются библиотеки OpenSSL.</translation>
     </message>
 </context>
 <context>
@@ -1253,43 +1253,43 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 секунду назад</numerusform><numerusform>%1 секунды назад</numerusform><numerusform>%1 секунд назад</numerusform><numerusform>%1 секунды назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 минуту назад</numerusform><numerusform>%1 минуты назад</numerusform><numerusform>%1 минут назад</numerusform><numerusform>%1 минуты назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 час назад</numerusform><numerusform>%1 часа назад</numerusform><numerusform>%1 часов назад</numerusform><numerusform>%1 часа назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 день назад</numerusform><numerusform>%1 дня назад</numerusform><numerusform>%1 дней назад</numerusform><numerusform>%1 дня назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 месяц назад</numerusform><numerusform>%1 месяца назад</numerusform><numerusform>%1 месяцев назад</numerusform><numerusform>%1 месяца назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>1 год назад</numerusform><numerusform>%1 года назад</numerusform><numerusform>%1 лет назад</numerusform><numerusform>%1 года назад</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Заблокировано %1 ещё на %2 минуту</numerusform><numerusform>Заблокировано %1 ещё на %2 минут</numerusform><numerusform>Заблокировано %1 ещё на %2 минуты</numerusform><numerusform>Заблокировано %1 ещё на %2 минуты</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3124,7 +3124,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
@@ -3288,7 +3288,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Синхронизация невозможна по причине некорректного времени изменения файла</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Не удалось удалить из базы данных запись %1</translation>
     </message>
@@ -3510,14 +3510,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Файл %1 не может быть переименован в %2 из-за локального конфликта имён</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
         <translation>не удалось получить файл %1 из локальной базы данных</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>Не удалось удалить запись о файле %1 из локальной базы данных</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3528,6 +3525,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>Файл «%1» используется</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>Не удалось удалить запись о файле %1 из локальной базы данных</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
@@ -3851,17 +3859,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Общий доступ по ссылке</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Поделиться ссылкой</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Введите примечание для получателя</translation>
     </message>
 </context>
 <context>
@@ -4603,12 +4611,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="171"/>
         <source>Could not set status. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось установить статус. Убедитесь, что подключение к серверу установлено.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="175"/>
         <source>Could not clear status message. Make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось удалить описание статуса на сервере. Убедитесь, что подключение установлено.</translation>
     </message>
     <message>
         <location filename="../src/gui/userstatusselectormodel.cpp" line="360"/>
@@ -4719,7 +4727,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>Был выполнен выход из учётной записи %1 на сервере %2. Войдите заново.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
@@ -5153,27 +5161,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>Для публикации ресурса требуется задать пароль</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>Пароль для доступа к ресурсу</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Публикация отключена</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>Этот объект не может быть опубликован</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Публикация отключена.</translation>
     </message>
 </context>
 <context>
@@ -5181,7 +5189,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>Поиск пользователя или группы…</translation>
     </message>
 </context>
 <context>
@@ -5197,7 +5205,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Сихнронизировать</translation>
     </message>
 </context>
 <context>
@@ -5265,7 +5273,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="64"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текущий статус пользователя: не беспокоить</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/UserLine.qml" line="89"/>
@@ -5340,7 +5348,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>Вне сети</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
@@ -5506,7 +5514,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="408"/>
         <source>Current account avatar</source>
-        <translation type="unfinished"/>
+        <translation>Текущее изображение учётной записи</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
@@ -5521,12 +5529,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
-        <translation type="unfinished"/>
+        <translation>Текущий статус пользователя: в сети</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
-        <translation type="unfinished"/>
+        <translation>Текущий статус пользователя: не беспокоить</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="516"/>

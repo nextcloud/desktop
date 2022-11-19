@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>گشودن گفت‌وگوی هم‌رسانی</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>گشودن پرونده برای ویرایش محلّی</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="133"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>هیچ اموجی اخیری وجود ندارد</translation>
     </message>
 </context>
 <context>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="49"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>خطا</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>فعّالیت</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>جزییات پروندهٔ %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -212,13 +212,13 @@
     <message>
         <location filename="../src/common/filesystembase.cpp" line="384"/>
         <source>Could not make directories in trash</source>
-        <translation>امکان ایجاد پوشه در سطل آشغال وجود ندارد</translation>
+        <translation>نتوانست در زبااله‌دان شاخه بسازد</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="398"/>
         <location filename="../src/common/filesystembase.cpp" line="404"/>
         <source>Could not move &quot;%1&quot; to &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>نتوانست «%1» را به «%2»‌ جابه‌جا کند</translation>
     </message>
     <message>
         <location filename="../src/common/filesystembase.cpp" line="438"/>
@@ -246,7 +246,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
         <source>Logo</source>
-        <translation type="unfinished"/>
+        <translation>نشان</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="73"/>
@@ -282,17 +282,17 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
         <source>Create folder</source>
-        <translation type="unfinished"/>
+        <translation>ایجاد شاخه</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="163"/>
         <source>Refresh</source>
-        <translation>بازنمایی</translation>
+        <translation>نوسازی</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="177"/>
         <source>Folders</source>
-        <translation>پوشه ها</translation>
+        <translation>شاخه‌ها</translation>
     </message>
 </context>
 <context>
@@ -2208,17 +2208,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="706"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>برای هم رسانی نیاز به گذرواژه است</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="707"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>لطفاً برای هم‌رسانی پیوندتان، گذرواژه‌ای وارد کنید:</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="733"/>
         <source>Sharing error</source>
-        <translation>خطای به اشتراک گذاری</translation>
+        <translation>خطای هم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="734"/>
@@ -3135,12 +3135,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="23"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>برای هم‌رسانی نیاز به گذرواژه است</translation>
     </message>
     <message>
         <location filename="../src/gui/passwordinputdialog.ui" line="35"/>
         <source>Please enter a password for your share:</source>
-        <translation type="unfinished"/>
+        <translation>لطفاً گذرواژه‌ای برای هم‌رسانیتان وارد کنید:</translation>
     </message>
 </context>
 <context>
@@ -3259,7 +3259,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
@@ -3429,7 +3429,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="306"/>
         <source>A file or folder was removed from a read only share, but restoring failed: %1</source>
-        <translation>یک پرونده یا پوشه از یک اشتراک فقط خواندنی حذف شد، اما بازگردانی شکست خورد: 1%</translation>
+        <translation>پرونده یا شاخه‌ای از هم‌رسانی فقط‌خواندنی برداشته شد، ولی بازگردانی شکست خورد: 1%</translation>
     </message>
 </context>
 <context>
@@ -3481,13 +3481,10 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3498,6 +3495,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3822,12 +3830,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>پیوند هم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی پیوند</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
@@ -3865,7 +3873,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
         <source>Can reshare</source>
-        <translation>امکان اشتراک گذاری وجود دارد</translation>
+        <translation>می‌تواند بازهم‌رسانی شود</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
@@ -3880,7 +3888,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="529"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>ناهم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="538"/>
@@ -3917,7 +3925,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="678"/>
         <source>Context menu share</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی فهرست بافتاری</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="950"/>
@@ -3927,13 +3935,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1006"/>
         <source>I shared something with you</source>
-        <translation>من چیزی را با شما به اشتراک گذاشتم</translation>
+        <translation>چیزی را با شما هم‌رساندم</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1019"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1051"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>گزینه‌های هم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1020"/>
@@ -3954,12 +3962,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1049"/>
         <source>Resharing this file is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>بازهم‌رسانی این پرونده مجاز نیست</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1049"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>بازهم‌رسانی این شاخه مجاز نیست</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1063"/>
@@ -4753,7 +4761,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="71"/>
         <source>Screensharing, online meetings &amp; web conferences</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی صفحه، جلسه‌های برخط و کنفرانس‌های وبی</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="111"/>
@@ -5123,27 +5131,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>برای هم‌رسانی جدید نیاز به گذرواژه است</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>گذرواژهٔ هم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی از کار افتاده</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>این مورد نمی‌تواند هم‌رسانی شود.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی از کار افتاده.</translation>
     </message>
 </context>
 <context>
@@ -5310,7 +5318,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
-        <translation type="unfinished"/>
+        <translation>برون‌خط به نظر رسیدن</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
@@ -5801,7 +5809,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.ui" line="69"/>
         <source>share label</source>
-        <translation>اشتراک‌گذاری برچسب</translation>
+        <translation>هم‌رسانی برچسب</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="124"/>
@@ -5838,22 +5846,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="130"/>
         <source>%1 Sharing</source>
-        <translation>%1 اشتراک‌گذاری</translation>
+        <translation>هم‌رسانی %1</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="332"/>
         <source>The file cannot be shared because it does not have sharing permission.</source>
-        <translation type="unfinished"/>
+        <translation>این پرونده نمی‌تواند هم‌رسانی شود، چرا که اجازهٔ هم‌رسانی ندارد.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="417"/>
         <source>Please enter a password for your link share:</source>
-        <translation type="unfinished"/>
+        <translation>لطفاً برای هم‌رسانی پیوندتان، گذرواژه‌ای وارد کنید:</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="418"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>برای هم‌رسانی نیاز به گذرواژه است</translation>
     </message>
 </context>
 <context>
@@ -5861,7 +5869,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="59"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>پیوند هم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
@@ -5931,12 +5939,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="503"/>
         <source>Confirm Link Share Deletion</source>
-        <translation>حذف اشتراک گذاری لینک را تایید کنید</translation>
+        <translation>تأیید حذف پیوند هم‌رسانی</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="504"/>
         <source>&lt;p&gt;Do you really want to delete the public link share &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;Note: This action cannot be undone.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;آیا شما واقعا می خواهید اشتراک لینک عمومی را حذف کنید&lt;i&gt;1%&lt;/i&gt;؟&lt;/p&gt;&lt;p&gt; توجه: این عمل نمی تواند انجام نشود.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;واقعاً می خواهید پیوند هم‌رسانی عمومی &lt;i&gt;%1&lt;/i&gt; را حذف کنید؟&lt;/p&gt;&lt;p&gt; توجه: این عمل بازگشت‌پذیر نیست.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="510"/>
@@ -5959,7 +5967,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="74"/>
         <source>Share with users or groups …</source>
-        <translation type="unfinished"/>
+        <translation>هم‌رسانی با کاربران یا گروه‌ها…</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="123"/>
@@ -5979,17 +5987,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="367"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>برای هم‌رسانی نیاز به گذرواژه است</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="368"/>
         <source>Please enter a password for your email share:</source>
-        <translation type="unfinished"/>
+        <translation>لطفاً برای هم‌رسانی رایانامه‌تان، گذرواژه‌ای وارد کنید:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="421"/>
         <source>I shared something with you</source>
-        <translation>من چیزی را با شما به اشتراک گذاشتم</translation>
+        <translation>چیزی را با شما هم‌رساندم</translation>
     </message>
 </context>
 </TS>
