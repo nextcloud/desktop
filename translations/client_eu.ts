@@ -3291,7 +3291,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>Ezin da sinkronizatu aldaketa-ordu baliogabea delako</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Errorea %1 fitxategi erregistroa datu-basetik ezabatzean</translation>
     </message>
@@ -3513,14 +3513,11 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <translation>%1 fitxategiari ezin zaio %2 izena eman fitxategi lokal baten izenarekin talkagatik.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
         <translation>Ezin izan da %1 fitxategia datu-base lokaletik lortu</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>Ezin izan da %1 fitxategiaren erregistroa datu-base lokaletik ezabatu</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3531,6 +3528,17 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>%1 fitxategia erabiltzen ari da</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>Ezin izan da %1 fitxategiaren erregistroa datu-base lokaletik ezabatu</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>

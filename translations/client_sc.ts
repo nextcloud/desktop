@@ -3291,7 +3291,7 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation type="unfinished"/>
     </message>
@@ -3513,13 +3513,10 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation>S&apos;archìviu %1 non faghet a ddu torrare a numenare %2 pro unu cunflitu cun su nùmene de s&apos;archìviu locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3531,6 +3528,17 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>S&apos;archìviu %1 est giai impreadu</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>

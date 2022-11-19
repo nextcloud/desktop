@@ -3291,7 +3291,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Synchronisierung wegen ungültiger Änderungszeit nicht möglich</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fehler beim Löschen des Dateisatzes %1 aus der Datenbank</translation>
     </message>
@@ -3513,14 +3513,11 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <translation>Die Datei %1 kann aufgrund eines Konfliktes mit einem lokalen Dateinamen nicht in %2 umbenannt werden</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
         <translation>Datei %1 konnte nicht aus der lokalen Datenbank abgerufen werden</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>Der Dateidatensatz %1 konnte nicht aus der lokalen Datenbank gelöscht werden</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3531,6 +3528,17 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>Die Datei %1 ist aktuell in Benutzung</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>Der Dateidatensatz %1 konnte nicht aus der lokalen Datenbank gelöscht werden</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>

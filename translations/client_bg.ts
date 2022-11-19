@@ -3291,7 +3291,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизира поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="884"/>
+        <location filename="../src/libsync/discovery.cpp" line="907"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Грешка при изтриване на запис на файл %1 от базата данни</translation>
     </message>
@@ -3513,14 +3513,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation> Файл % 1 не може да бъде преименуван на %2 поради сблъсък с името на локален файл!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
         <source>could not get file %1 from local DB</source>
         <translation>не можа да се получи файл %1 от локалната БД</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="259"/>
-        <source>Could not delete file record %1 from local DB</source>
-        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3531,6 +3528,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
         <source>The file %1 is currently in use</source>
         <translation>Файлът %1 в момента се използва</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <source>Could not delete file record %1 from local DB</source>
+        <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <source>Failed to propagate directory rename in hierarchy</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
