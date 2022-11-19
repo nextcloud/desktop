@@ -133,6 +133,6 @@ public:
 
 };
 
-K_PLUGIN_FACTORY(OwncloudDolphinPluginActionFactory, registerPlugin<OwncloudDolphinPluginAction>();)
+K_PLUGIN_CLASS_WITH_JSON(OwncloudDolphinPluginAction, APPLICATION_EXECUTABLE "dolphinactionplugin.json")
 
 #include "ownclouddolphinactionplugin.moc"
