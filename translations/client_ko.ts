@@ -1756,22 +1756,22 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>연결 시간 초과됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="175"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>서버에서 E-Tag를 받지 못했습니다. 프록시/게이트웨이를 확인하십시오</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>계속 진행하기 위하여 받은 E-Tag가 다릅니다. 잠시 후 다시 시도합니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="193"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>예기치 않은 다운로드 컨텐트 길이를 전송 받았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
         <source>Server returned wrong content-range</source>
         <translation>서버에서 잘못된 content-range를 반환함</translation>
     </message>
@@ -2666,67 +2666,67 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="353"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>공간 해제 실패, 파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="455"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="368"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>이 파일을 다운로드하면 로컬 디스크 공간이 제한 이하로 남게 됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="517"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="516"/>
         <source>Free space on disk is less than %1</source>
         <translation>디스크에 남은 공간이 %1보다 적음</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="640"/>
         <source>File was deleted from server</source>
         <translation>서버에서 파일이 삭제됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="708"/>
         <source>The file could not be downloaded completely.</source>
         <translation>파일을 완전히 다운로드할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>서버에서 알려 온 파일 크기가 %1이지만 다운로드한 파일이 비어 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="896"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1015"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
         <translation>메타데이터 갱신 에러: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="920"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1018"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="919"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1017"/>
         <source>The file %1 is currently in use</source>
         <translation>파일 %1 은(는) 현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="349"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="945"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="348"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File has changed since discovery</source>
         <translation>발견 이후 파일이 변경됨</translation>
     </message>

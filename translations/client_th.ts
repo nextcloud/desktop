@@ -1764,22 +1764,22 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="175"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>ไม่มี E-Tag ที่ได้รับจากเซิร์ฟเวอร์ กรุณาตรวจสอบ พร็อกซี่หรือเกตเวย์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>เราได้รับ E-Tag ที่แตกต่างกันสำหรับการทำงาน กรุณาลองอีกครั้งในเวลาถัดไป</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="193"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>เราได้รับการดาวน์โหลดความยาวของเนื้อหาโดยไม่คาดคิด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
         <source>Server returned wrong content-range</source>
         <translation>เซิร์ฟเวอร์ส่งคืนช่วงของเนื้อหาที่ผิด</translation>
     </message>
@@ -2678,67 +2678,67 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="353"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="455"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="368"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>ไม่สามารถดาวน์โหลดไฟล์ %1 ได้เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>การดาวน์โหลดจะช่วยลดพืนที่จัดเก็บภายในเครื่องที่ต่ำกว่าขีดจำกัด</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="517"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="516"/>
         <source>Free space on disk is less than %1</source>
         <translation>พื้นที่ว่างในดิสก์น้อยกว่า %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="640"/>
         <source>File was deleted from server</source>
         <translation>ไฟล์ถูกลบออกจากเซิร์ฟเวอร์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>เว็บเซิร์ฟเวอร์ที่ใช้งานส่งคืนเนื้อหาที่ว่างเปล่าสำหรับไฟล์ที่ไม่ว่างเปล่าหลังจากการทำซ้ำ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="708"/>
         <source>The file could not be downloaded completely.</source>
         <translation>ดาวน์โหลดไฟล์ไม่สำเร็จ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>ไฟล์ที่ดาวน์โหลดว่างเปล่าแม้ว่าเซิร์ฟเวอร์ประกาศว่าควรจะเป็น %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="896"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>ไม่สามารถบันทึก %1 ไฟล์ได้เนื่องจากชื่อไฟล์ในเครื่องขัดแย้งกับ %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1015"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
         <translation>เกิดข้อผิดพลาดในการอัปเดตข้อมูล metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="920"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1018"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="919"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1017"/>
         <source>The file %1 is currently in use</source>
         <translation>กำลังใช้งาน %1 ไฟล์</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="349"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="945"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="348"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File has changed since discovery</source>
         <translation>ไฟล์มีการเปลี่ยนแปลงตั้งแต่ถูกพบ</translation>
     </message>

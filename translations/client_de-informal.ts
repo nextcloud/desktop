@@ -1772,22 +1772,22 @@ Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.
         <translation>Zeitüberschreitung der Verbindung</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="175"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Kein E-Tag vom Server empfangen, bitte Proxy / Gateway überprüfen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Beim Fortfahren wurde ein abweichender E-Tag empfangen. Bitte erneut versuchen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="193"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>Unerwartete Daten-Länge beim Herunterladen empfangen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
         <source>Server returned wrong content-range</source>
         <translation>Der Server hat einen falschen Bereich für den Inhalt zurück gegeben</translation>
     </message>
@@ -2685,67 +2685,67 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="353"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>Speicherplatz konnte nicht freigegeben werden, die Datei %1 wird derzeit verwendet</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="455"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="368"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>Datei %1 kann nicht heruntergeladen werden, da der lokale Dateiname mit %2 kollidiert!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Das Herunterladen würde den lokalen freien Speicherplatz unter das Limit reduzieren</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="517"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="516"/>
         <source>Free space on disk is less than %1</source>
         <translation>Der freie Speicherplatz beträgt weniger als %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="640"/>
         <source>File was deleted from server</source>
         <translation>Datei wurde vom Server gelöscht</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>Der Webserver hat eine leere Länge bezüglich des Inhalts für eine nicht leere Datei in der Wiederaufnahme zurückgegeben (Defekt)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="708"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Die Datei konnte nicht vollständig herunter geladen werden.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Die heruntergeladene Datei ist leer, obwohl der Server %1  als Größe übermittelt hat.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="896"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>Datei %1 kann nicht gespeichert werden, da der lokale Dateiname mit %2 kollidiert!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1015"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
         <translation>Fehler beim Aktualisieren von Metadaten: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="920"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1018"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="919"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1017"/>
         <source>The file %1 is currently in use</source>
         <translation>Die Datei %1 wird gerade benutzt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="349"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="945"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="348"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File has changed since discovery</source>
         <translation>Datei ist seit der Entdeckung geändert worden</translation>
     </message>
