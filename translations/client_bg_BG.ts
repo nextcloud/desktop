@@ -1282,7 +1282,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="1193"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Моля, отидете в настройки за да изберете дали искате да го изтеглите.</translation>
+        <translation>Моля, отидете в настройки, за да изберете дали искате да го изтеглите.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1252"/>
@@ -1438,7 +1438,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1263"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Вие нямате необходимите права да записвате в избраната папка!</translation>
+        <translation>Вие нямате необходимите права за запис в избраната папка!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1278"/>
@@ -1693,7 +1693,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation>Изберете локална папка.</translation>
+        <translation>Избор на локална папка</translation>
     </message>
 </context>
 <context>
@@ -1938,9 +1938,9 @@ Please consider removing this folder from the account and adding it again.</sour
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>Каналът за актуализиране определя кои клиентски актуализации ще бъдат предложени за инсталиране. &quot;Стабилният&quot; канал съдържа само надграждания, които се считат за надеждни, докато версиите в &quot;бета&quot; канала могат да съдържат по-нови функции и грешки, които все още не са тествани старателно.
+        <translation>Каналът за актуализация определя кои клиентски актуализации ще бъдат предложени за инсталиране. &quot;Стабилният&quot; канал съдържа само надграждания, които се считат за надеждни, докато версиите в &quot;бета&quot; канала могат да съдържат по-нови функции и грешки, които все още не са тествани старателно.
 
-Обърнете внимание, че по този начин се избира само от кой пакет ще се вземат подобренията и че няма да има понижение във версията: Така че връщането от бета канала към стабилния канал обикновено не може да се извърши веднага и означава изчакване на стабилна версия, която е по-нова от инсталираната в момента бета версия.</translation>
+Обърнете внимание, че по този начин се избира само от кой пакет ще се вземат подобренията, и че няма да има понижение във версията: Така, че връщането от бета канала към стабилния канал обикновено не може да се извърши веднага и означава изчакване на стабилна версия, която е по-нова от инсталираната в момента бета версия.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="233"/>
@@ -3143,7 +3143,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Премахнете избора на папки, които не желаете да синхронизирате.</translation>
+        <translation>Премахнете избора от отдалечените папки, които не желаете да синхронизирате.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3591,7 +3591,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="758"/>
         <source>Select new location...</source>
-        <translation>Изберете ново местоположение ...</translation>
+        <translation>Избор на ново местоположение...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="768"/>
@@ -3975,7 +3975,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
         <source>Select the local folder</source>
-        <translation>Изберете локална папка.</translation>
+        <translation>Избор на локална папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
@@ -4548,7 +4548,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добавяне на пространство&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Изберете пространство за да го синхронизирате с вашия компютър.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добавяне на пространство&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Изберете пространство, за да го синхронизирате с вашия компютър.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
