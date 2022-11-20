@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="44"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>I %1</translation>
     </message>
 </context>
 <context>
@@ -18,7 +18,7 @@
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="82"/>
         <location filename="../src/gui/tray/ActivityItemActions.qml" line="85"/>
         <source>Show more actions</source>
-        <translation type="unfinished"/>
+        <translation>Vis flere handlinger</translation>
     </message>
 </context>
 <context>
@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>Åbn delingsdialogen</translation>
     </message>
 </context>
 <context>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="112"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>Ingen aktiviteter endnu</translation>
     </message>
 </context>
 <context>
