@@ -67,6 +67,7 @@
 #include <QUrlQuery>
 #include <QVersionNumber>
 #include <QRandomGenerator>
+#include <QHttp2Configuration>
 
 class QSocket;
 
@@ -429,7 +430,7 @@ Application::Application(int &argc, char **argv)
     QTimer::singleShot(0, this, &Application::slotCheckConnection);
 
     // Can't use onlineStateChanged because it is always true on modern systems because of many interfaces
-    connect(&_networkConfigurationManager, &QNetworkConfigurationManager::configurationChanged,
+    connect(QNetworkInformation::instance(), &QNetworkInformation::reachabilityChanged,
         this, &Application::slotSystemOnlineConfigurationChanged);
 
 #if defined(BUILD_UPDATER)
@@ -647,9 +648,10 @@ void Application::slotCleanup()
 // FIXME: This is not ideal yet since a ConnectionValidator might already be running and is in
 // progress of timing out in some seconds.
 // Maybe we need 2 validators, one triggered by timer, one by network configuration changes?
-void Application::slotSystemOnlineConfigurationChanged(QNetworkConfiguration cnf)
+void Application::slotSystemOnlineConfigurationChanged()
 {
-    if (cnf.state() & QNetworkConfiguration::Active) {
+    if (QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Site ||
+            QNetworkInformation::instance()->reachability() == QNetworkInformation::Reachability::Online) {
         const auto list = AccountManager::instance()->accounts();
         for (const auto &accountState : list) {
             accountState->systemOnlineConfigurationChanged();
