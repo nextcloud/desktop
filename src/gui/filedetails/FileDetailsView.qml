@@ -25,7 +25,7 @@ StackView {
     property var accountState: ({})
     property string localPath: ""
 
-    FileDetailsPage {
+    initialItem: FileDetailsPage {
         width: parent.width
         height: parent.height
         accountState: root.accountState

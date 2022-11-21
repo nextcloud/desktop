@@ -227,7 +227,7 @@ GridLayout {
 
                     canCreateLinkShares: root.canCreateLinkShares
 
-                    onCloseShareDetails: root.rootStackView.clear(StackView.PopTransition)
+                    onCloseShareDetails: root.rootStackView.pop(root.rootStackView.initialItem, StackView.PopTransition)
 
                     onToggleAllowEditing: root.toggleAllowEditing(enable)
                     onToggleAllowResharing: root.toggleAllowResharing(enable)
