@@ -226,7 +226,7 @@ target_link_libraries(nextcloudsync PUBLIC Qt5::Gui Qt5::Widgets Qt5::Svg)
 
 if (NOT TOKEN_AUTH_ONLY)
     find_package(Qt${QT_MAJOR_VERSION} COMPONENTS REQUIRED Widgets Svg)
-    target_link_libraries(nextcloudsync PUBLIC Qt::Widgets Qt::Svg qt5keychain)
+    target_link_libraries(nextcloudsync PUBLIC Qt::Widgets Qt::Svg Qt${QT_MAJOR_VERSION}Keychain::Qt${QT_MAJOR_VERSION}Keychain)
 endif()
 
 if(Inotify_FOUND)
