@@ -3538,7 +3538,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>Nie udało się rozszerzyć zmiany nazwy katalogu w hierarchii</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
