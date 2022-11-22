@@ -265,9 +265,9 @@ void PropagateLocalRename::start()
     }
 
     auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_originalFile);
-    if (!vfs->setPinState(_item->_originalFile, PinState::Inherited)) {
-        qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_originalFile << "to inherited";
+    auto pinState = vfs->pinState(_item->_renameTarget);
+    if (!vfs->setPinState(_item->_renameTarget, PinState::Inherited)) {
+        qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_renameTarget << "to inherited";
     }
 
     const auto oldFile = _item->_file;
