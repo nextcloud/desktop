@@ -1243,6 +1243,45 @@ private slots:
         auto expectedState = fakeFolder.currentLocalState();
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
     }
+
+    void testServerUpdatingMTimeShouldNotCreateConflicts()
+    {
+        constexpr auto testFile = "test.txt";
+        constexpr auto CURRENT_MTIME = 1646057277;
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert(testFile);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME - 2));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileFirstSync = fakeFolder.currentLocalState().find(testFile);
+        QVERIFY(fileFirstSync);
+        QCOMPARE(fileFirstSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 2);
+
+        fakeFolder.remoteModifier().setModTimeKeepEtag(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME - 1));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileSecondSync = fakeFolder.currentLocalState().find(testFile);
+        QVERIFY(fileSecondSync);
+        QCOMPARE(fileSecondSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 1);
+
+        fakeFolder.remoteModifier().setModTime(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileThirdSync = fakeFolder.currentLocalState().find(testFile);
+        QVERIFY(fileThirdSync);
+        QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)
