@@ -23,6 +23,7 @@
 
 #include "config.h"
 #include "configfile.h"
+#include "deletejob.h"
 #include "folderman.h"
 #include "folder.h"
 #include "theme.h"
@@ -541,6 +542,12 @@ void SocketApi::processShareRequest(const QString &localFile, SocketListener *li
     }
 }
 
+void SocketApi::processLeaveShareRequest(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener)
+    FolderMan::instance()->leaveShare(QDir::fromNativeSeparators(localFile));
+}
+
 void SocketApi::broadcastStatusPushMessage(const QString &systemPath, SyncFileStatus fileStatus)
 {
     QString msg = buildMessage(QLatin1String("STATUS"), systemPath, fileStatus.toSocketAPIString());
@@ -582,6 +589,11 @@ void SocketApi::command_RETRIEVE_FILE_STATUS(const QString &argument, SocketList
 void SocketApi::command_SHARE(const QString &localFile, SocketListener *listener)
 {
     processShareRequest(localFile, listener);
+}
+
+void SocketApi::command_LEAVESHARE(const QString &localFile, SocketListener *listener)
+{
+    processLeaveShareRequest(localFile, listener);
 }
 
 void SocketApi::command_ACTIVITY(const QString &localFile, SocketListener *listener)
@@ -1046,6 +1058,10 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     auto theme = Theme::instance();
     if (!capabilities.shareAPI() || !(theme->userGroupSharing() || (theme->linkSharing() && capabilities.sharePublicLink())))
         return;
+
+    if (record._isShared && !record._sharedByMe) {
+        listener->sendMessage(QLatin1String("MENU_ITEM:LEAVESHARE") + flagString + tr("Leave this share"));
+    }
 
     // If sharing is globally disabled, do not show any sharing entries.
     // If there is no permission to share for this file, add a disabled entry saying so

@@ -96,7 +96,12 @@ Account::~Account() = default;
 
 QString Account::davPath() const
 {
-    return davPathBase() + QLatin1Char('/') + davUser() + QLatin1Char('/');
+    return davPathRoot() + QLatin1Char('/');
+}
+
+QString Account::davPathRoot() const
+{
+    return davPathBase() + QLatin1Char('/') + davUser();
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)

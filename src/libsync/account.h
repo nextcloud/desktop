@@ -141,6 +141,13 @@ public:
      */
     [[nodiscard]] QString davPath() const;
 
+    /**
+     * @brief The possibly themed dav path root for the account. It has
+     *        no trailing slash.
+     * @returns the (themeable) dav path for the account.
+     */
+    [[nodiscard]] QString davPathRoot() const;
+
     /** Returns webdav entry URL, based on url() */
     [[nodiscard]] QUrl davUrl() const;
 
