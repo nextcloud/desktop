@@ -222,11 +222,19 @@ void PropagateLocalRename::start()
     if (propagator()->_abortRequested)
         return;
 
+    auto &vfs = propagator()->syncOptions()._vfs;
     const auto previousNameInDb = propagator()->adjustRenamedPath(_item->_file);
     const auto existingFile = propagator()->fullLocalPath(propagator()->adjustRenamedPath(_item->_file));
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
     const auto fileAlreadyMoved = !QFileInfo::exists(propagator()->fullLocalPath(_item->_originalFile));
+    auto pinState = OCC::PinState::Unspecified;
+    if (!fileAlreadyMoved) {
+        auto pinStateResult = vfs->pinState(propagator()->adjustRenamedPath(_item->_file));
+        if (pinStateResult) {
+            pinState = pinStateResult.get();
+        }
+    }
 
     // if the file is a file underneath a moved dir, the _item->file is equal
     // to _item->renameTarget and the file is not moved as a result.
@@ -269,10 +277,10 @@ void PropagateLocalRename::start()
         return;
     }
 
-    auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_renameTarget);
-    if (!vfs->setPinState(_item->_renameTarget, PinState::Inherited)) {
-        qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_renameTarget << "to inherited";
+    if (pinState != OCC::PinState::Unspecified && !vfs->setPinState(_item->_renameTarget, pinState)) {
+        qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_renameTarget << "to old value" << pinState;
+        done(SyncFileItem::NormalError, tr("Error setting pin state"));
+        return;
     }
 
     const auto oldFile = _item->_file;
@@ -330,11 +338,6 @@ void PropagateLocalRename::start()
             done(SyncFileItem::FatalError, tr("Failed to rename file"));
             return;
         }
-    }
-    if (pinState && *pinState != PinState::Inherited
-        && !vfs->setPinState(_item->_renameTarget, *pinState)) {
-        done(SyncFileItem::NormalError, tr("Error setting pin state"));
-        return;
     }
 
     propagator()->_journal->commit("localRename");
