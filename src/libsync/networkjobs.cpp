@@ -416,7 +416,7 @@ DetermineAuthTypeJob::DetermineAuthTypeJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, account->davUrl(), {}, parent)
 {
     setAuthenticationJob(true);
-    setIgnoreCredentialFailure(true);
+    setForceIgnoreCredentialFailure(true);
 }
 
 void DetermineAuthTypeJob::start()

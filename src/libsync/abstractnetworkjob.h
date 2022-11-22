@@ -70,7 +70,7 @@ public:
 
     QNetworkReply *reply() const;
 
-    void setIgnoreCredentialFailure(bool ignore);
+    void setForceIgnoreCredentialFailure(bool ignore);
     bool ignoreCredentialFailure() const;
 
     QByteArray responseTimestamp() const;
@@ -198,7 +198,7 @@ private:
     bool _timedout = false; // set to true when the timeout slot is received
     bool _aborted = false;
     bool _finished = false;
-    bool _ignoreCredentialFailure = false;
+    bool _forceIgnoreCredentialFailure = false;
 
     QNetworkRequest _request;
     QByteArray _verb;

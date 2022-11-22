@@ -98,14 +98,14 @@ void AbstractNetworkJob::setTimeout(const std::chrono::seconds sec)
     _timeout = sec;
 }
 
-void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
+void AbstractNetworkJob::setForceIgnoreCredentialFailure(bool ignore)
 {
-    _ignoreCredentialFailure = ignore;
+    _forceIgnoreCredentialFailure = ignore;
 }
 
 bool AbstractNetworkJob::ignoreCredentialFailure() const
 {
-    return _ignoreCredentialFailure || _isAuthenticationJob;
+    return _forceIgnoreCredentialFailure || _isAuthenticationJob;
 }
 
 QNetworkReply *AbstractNetworkJob::reply() const
