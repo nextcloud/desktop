@@ -67,6 +67,8 @@ private slots:
 signals:
     void authorisationLinkChanged();
 
+    void oAuthErrorOccurred();
+
 private:
     QScopedPointer<AccountBasedOAuth, QScopedPointerObjectDeleteLater<AccountBasedOAuth>> _asyncAuth;
     QPointer<QWidget> _loginRequiredDialog;
