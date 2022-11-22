@@ -145,6 +145,8 @@ void PropagateUploadFileTUS::startNextChunk()
         qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << propagator()->fullRemotePath(_item->_file);
         job = makeCreationWithUploadJob(&req, device);
     }
+
+    job->setPriority(QNetworkRequest::LowPriority);
     qCDebug(lcPropagateUploadTUS) << "Offset:" << _currentOffset << _currentOffset  / (_item->_size + 1) * 100
                                   << "Chunk:" << chunkSize << chunkSize / (_item->_size + 1) * 100;
 
