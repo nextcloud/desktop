@@ -732,6 +732,26 @@ Page {
 
                     onClicked: root.deleteShare()
                 }
+
+                CustomButton {
+                    height: Style.standardPrimaryButtonHeight
+
+                    imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncBlue
+                    imageSourceHover: "image://svgimage-custom-color/add.svg/" + Style.ncHeaderTextColor
+                    text: qsTr("Add another link")
+                    textColor: Style.ncBlue
+                    textColorHovered: Style.ncHeaderTextColor
+                    contentsFont.bold: true
+                    bgNormalColor: Style.buttonBackgroundColor
+                    bgHoverColor: Style.ncBlue
+                    bgNormalOpacity: 1.0
+                    bgHoverOpacity: 1.0
+
+                    visible: root.isLinkShare && root.canCreateLinkShares
+                    enabled: visible
+
+                    onClicked: root.createNewLinkShare()
+                }
             }
         }
 
@@ -740,24 +760,7 @@ Page {
 
 
 
-            CustomButton {
-                Layout.fillWidth: true
-                implicitWidth: parent.width / 2
-                height: Style.standardPrimaryButtonHeight
 
-                imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncHeaderTextColor
-                text: qsTr("Add another link")
-                textColor: Style.ncHeaderTextColor
-                contentsFont.bold: true
-                bgColor: Style.ncBlue
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: Style.hoverOpacity
-
-                visible: root.isLinkShare && root.canCreateLinkShares
-                enabled: visible
-
-                onClicked: root.createNewLinkShare()
-            }
         }
     }
 }
