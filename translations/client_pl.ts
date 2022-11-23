@@ -3291,7 +3291,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zsynchronizować z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="907"/>
+        <location filename="../src/libsync/discovery.cpp" line="908"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Błąd podczas usuwania rekordu pliku %1 z bazy danych</translation>
     </message>
@@ -3513,11 +3513,16 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zmienić nazwy pliku %1 na %2 z powodu konfliktu nazwy pliku lokalnego</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="352"/>
         <source>could not get file %1 from local DB</source>
         <translation>Nie można pobrać pliku %1 z lokalnej bazy danych</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
+        <source>Error setting pin state</source>
+        <translation>Błąd podczas ustawiania stanu przypięcia</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3530,13 +3535,13 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Plik %1 jest aktualnie używany</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nie można usunąć rekordu pliku %1 z lokalnej bazy danych</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Nie udało się rozszerzyć zmiany nazwy katalogu w hierarchii</translation>
     </message>
@@ -3544,11 +3549,6 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>Failed to rename file</source>
         <translation>Nie udało się zmienić nazwy pliku</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
-        <source>Error setting pin state</source>
-        <translation>Błąd podczas ustawiania stanu przypięcia</translation>
     </message>
 </context>
 <context>
@@ -3992,6 +3992,11 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Wyślij link prywatny e-mailem…</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1063"/>
+        <source>Leave this share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1049"/>
         <source>Resharing this file is not allowed</source>
         <translation>Udostępnianie dalej tego pliku jest niedozwolone</translation>
@@ -4308,7 +4313,12 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zaktualizować metadanych pliku wirtualnego: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="386"/>
+        <location filename="../src/libsync/syncengine.cpp" line="383"/>
+        <source>Could not update file metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>Nie można ustawić rekordu pliku na lokalną bazę danych: %1</translation>
     </message>

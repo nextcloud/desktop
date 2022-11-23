@@ -3291,7 +3291,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизира поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="907"/>
+        <location filename="../src/libsync/discovery.cpp" line="908"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Грешка при изтриване на запис на файл %1 от базата данни</translation>
     </message>
@@ -3513,11 +3513,16 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation> Файл % 1 не може да бъде преименуван на %2 поради сблъсък с името на локален файл!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="262"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="349"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="352"/>
         <source>could not get file %1 from local DB</source>
         <translation>не можа да се получи файл %1 от локалната БД</translation>
+    </message>
+    <message>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
+        <source>Error setting pin state</source>
+        <translation>Грешка при настройване на състоянието на закачване</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
@@ -3530,13 +3535,13 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Файлът %1 в момента се използва</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="312"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="354"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation> Неуспешно разпространение на преименуването на директория в йерархията</translation>
     </message>
@@ -3544,11 +3549,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
         <source>Failed to rename file</source>
         <translation>Неуспешно преименуване на файл</translation>
-    </message>
-    <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
-        <source>Error setting pin state</source>
-        <translation>Грешка при настройване на състоянието на закачване</translation>
     </message>
 </context>
 <context>
@@ -3992,6 +3992,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Изпращане на частната връзката по имейл…</translation>
     </message>
     <message>
+        <location filename="../src/gui/socketapi/socketapi.cpp" line="1063"/>
+        <source>Leave this share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1049"/>
         <source>Resharing this file is not allowed</source>
         <translation>Повторното споделяне на този файл не е разрешено</translation>
@@ -4308,7 +4313,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Невъзможност да се актуализират метаданните на виртуалния файл: % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="386"/>
+        <location filename="../src/libsync/syncengine.cpp" line="383"/>
+        <source>Could not update file metadata: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>Не може да се зададе запис на файл в локалната БД: %1</translation>
     </message>
