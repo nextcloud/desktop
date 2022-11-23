@@ -40,6 +40,7 @@
 #include <QPainter>
 #include <QPainterPath>
 #include <QQuickView>
+#include <QActionGroup>
 
 namespace {
 const QString TOOLBAR_CSS()
