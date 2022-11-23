@@ -312,14 +312,13 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         progressBarOpt.minimum = 0;
         progressBarOpt.maximum = 100;
         progressBarOpt.progress = overallPercent;
-        progressBarOpt.orientation = Qt::Horizontal;
+        progressBarOpt.state = QStyle::StateFlag::State_Horizontal;
         progressBarOpt.rect = QStyle::visualRect(option.direction, option.rect, progressBarRect);
 #ifdef Q_OS_MACOS
         backupStyle->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #else
         QApplication::style()->drawControl(QStyle::CE_ProgressBar, &progressBarOpt, painter, option.widget);
 #endif
-
 
         // Overall Progress Text
         QRect overallProgressRect;
