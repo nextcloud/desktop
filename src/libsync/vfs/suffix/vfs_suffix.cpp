@@ -14,11 +14,14 @@
 
 #include "vfs_suffix.h"
 
-#include <QFile>
-
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
+
+#include <QFile>
+#include <QLoggingCategory>
+
+Q_LOGGING_CATEGORY(lcVfsSuffix, "nextcloud.sync.vfs.suffix", QtInfoMsg)
 
 namespace OCC {
 
@@ -151,6 +154,12 @@ bool VfsSuffix::statTypeVirtualFile(csync_file_stat_t *stat, void *)
         return true;
     }
     return false;
+}
+
+bool VfsSuffix::setPinState(const QString &folderPath, PinState state)
+{
+    qCDebug(lcVfsSuffix) << "setPinState" << folderPath << state;
+    return setPinStateInDb(folderPath, state);
 }
 
 Vfs::AvailabilityResult VfsSuffix::availability(const QString &folderPath)
