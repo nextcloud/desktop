@@ -300,7 +300,7 @@ SocketApi::SocketApi(QObject *parent)
             qCDebug(lcSocketApi) << "creating" << info.dir().path() << result;
             if (result) {
                 QFile::setPermissions(socketPath,
-                    QFile::Permissions(QFile::ReadOwner + QFile::WriteOwner + QFile::ExeOwner));
+                    QFile::Permissions(QFile::ReadOwner | QFile::WriteOwner | QFile::ExeOwner));
             }
         }
     }
