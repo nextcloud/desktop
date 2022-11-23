@@ -14,12 +14,16 @@
 
 import QtQuick 2.15
 
+import Style 1.0
+
 Rectangle {
     property bool hovered: false
     property real normalOpacity: 0.3
     property real hoverOpacity: 1.0
+    property color normalColor: Style.buttonBackgroundColor
+    property color hoverColor: Style.buttonBackgroundColor
 
-    color: "transparent"
+    color: hovered ? hoverColor : normalColor
     opacity: hovered ? hoverOpacity : normalOpacity
     radius: width / 2
 }

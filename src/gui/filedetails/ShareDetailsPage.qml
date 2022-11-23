@@ -715,27 +715,30 @@ Page {
                         }
                     }
                 }
+
+                CustomButton {
+                    height: Style.standardPrimaryButtonHeight
+
+                    imageSource: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
+                    imageSourceHover: "image://svgimage-custom-color/close.svg/" + Style.ncHeaderTextColor
+                    text: qsTr("Unshare")
+                    textColor: Style.errorBoxBackgroundColor
+                    textColorHovered: "white"
+                    contentsFont.bold: true
+                    bgNormalColor: Style.buttonBackgroundColor
+                    bgHoverColor: Style.errorBoxBackgroundColor
+                    bgNormalOpacity: 1.0
+                    bgHoverOpacity: 1.0
+
+                    onClicked: root.deleteShare()
+                }
             }
         }
 
         RowLayout {
             Layout.fillWidth: true
 
-            CustomButton {
-                Layout.fillWidth: true
-                implicitWidth: parent.width / 2
-                height: Style.standardPrimaryButtonHeight
 
-                imageSource: "image://svgimage-custom-color/close.svg/" + Style.ncHeaderTextColor
-                text: qsTr("Unshare")
-                textColor: Style.ncHeaderTextColor
-                contentsFont.bold: true
-                bgColor: Style.errorBoxBackgroundColor
-                bgNormalOpacity: 1.0
-                bgHoverOpacity: Style.hoverOpacity
-
-                onClicked: root.deleteShare()
-            }
 
             CustomButton {
                 Layout.fillWidth: true
