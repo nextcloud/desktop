@@ -32,6 +32,9 @@ signals:
 private slots:
     void testLeaveShare()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path()); // we don't want to pollute the user's config file
+
         constexpr auto firstSharePath = "A/sharedwithme_A.txt";
         constexpr auto secondSharePath = "A/B/sharedwithme_B.data";
 
@@ -95,7 +98,7 @@ private slots:
            reply = new FakePayloadReply(op, req, {}, nullptr);
 
            emit incomingShareDeleted();
-           
+
            return reply;
         });
 
