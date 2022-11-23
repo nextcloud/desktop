@@ -98,7 +98,7 @@ private slots:
            reply = new FakePayloadReply(op, req, {}, nullptr);
 
            emit incomingShareDeleted();
-           
+
            return reply;
         });
 
