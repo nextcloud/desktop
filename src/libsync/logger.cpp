@@ -111,7 +111,7 @@ void Logger::postGuiMessage(const QString &title, const QString &message)
 bool Logger::isLoggingToFile() const
 {
     QMutexLocker lock(&_mutex);
-    return _logstream;
+    return !_logstream.isNull();
 }
 
 void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString &message)
