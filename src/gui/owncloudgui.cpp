@@ -139,6 +139,7 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     qRegisterMetaTypeStreamOperators<Emoji>();
 
+    qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");
