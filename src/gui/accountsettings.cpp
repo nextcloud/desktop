@@ -792,7 +792,7 @@ void AccountSettings::slotAccountStateChanged()
         switch (state) {
         case AccountState::Connected: {
             QStringList errors;
-            if (account->serverVersionUnsupported()) {
+            if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
                 errors << tr("The server version %1 is unsupported! Proceed at your own risk.").arg(account->capabilities().status().versionString());
             }
             showConnectionLabel(tr("Connected to %1.").arg(serverWithUser), errors);

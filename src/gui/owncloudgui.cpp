@@ -233,7 +233,7 @@ void ownCloudGui::slotAccountStateChanged()
 
 void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
 {
-    if (account->serverVersionUnsupported()) {
+    if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
         slotShowTrayMessage(
             tr("Unsupported Server Version"),
             tr("The server on account %1 runs an unsupported version %2. "

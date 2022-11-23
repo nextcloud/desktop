@@ -780,7 +780,7 @@ void FolderMan::slotForwardFolderSyncStateChange()
 void FolderMan::slotServerVersionChanged(Account *account)
 {
     // Pause folders if the server version is unsupported
-    if (account->serverVersionUnsupported()) {
+    if (account->serverSupportLevel() == Account::ServerSupportLevel::Unsupported) {
         qCWarning(lcFolderMan) << "The server version is unsupported:" << account->capabilities().status().versionString()
                                << "pausing all folders on the account";
 

@@ -169,17 +169,13 @@ public:
     void setAppProvider(AppProvider &&p);
     const AppProvider &appProvider() const;
 
-    /** Whether the server is too old.
-     *
-     * Not supporting server versions is a gradual process. There's a hard
-     * compatibility limit (see ConnectionValidator) that forbids connecting
-     * to extremely old servers. And there's a weak "untested, not
-     * recommended, potentially dangerous" limit, that users might want
-     * to go beyond.
-     *
-     * This function returns true if the server is beyond the weak limit.
-     */
-    bool serverVersionUnsupported() const;
+    enum class ServerSupportLevel {
+        Supported,
+        Unknown,
+        Unsupported
+    };
+    Q_ENUMS(ServerSupportLevel);
+    ServerSupportLevel serverSupportLevel() const;
 
     /** True when the server connection is using HTTP2  */
     bool isHttp2Supported() { return _http2Supported; }
