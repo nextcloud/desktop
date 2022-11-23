@@ -25,7 +25,6 @@
 
 class QUrl;
 class QLocalSocket;
-class QStringList;
 class QFileInfo;
 
 namespace OCC
