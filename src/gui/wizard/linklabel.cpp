@@ -27,7 +27,7 @@ void LinkLabel::setUrl(const QUrl &url)
     this->url = url;
 }
 
-void LinkLabel::enterEvent(QEvent * /*event*/)
+void LinkLabel::enterEvent(QEnterEvent * /*event*/)
 {
     setFontUnderline(true);
     setCursor(Qt::PointingHandCursor);
