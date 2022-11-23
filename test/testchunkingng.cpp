@@ -6,9 +6,12 @@
  */
 
 #include "syncenginetestutils.h"
-#include <QtTest>
+
 #include <owncloudpropagator.h>
 #include <syncengine.h>
+
+#include <QtTest>
+#include <QTextCodec>
 
 using namespace OCC;
 

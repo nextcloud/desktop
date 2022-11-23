@@ -28,9 +28,15 @@ set_package_properties(Qt${QT_MAJOR_VERSION}Concurrent PROPERTIES
 
 find_package(Qt${QT_MAJOR_VERSION}QuickWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
 set_package_properties(Qt${QT_MAJOR_VERSION}QuickWidgets PROPERTIES
-    DESCRIPTION "Qt5 QuickWidgets component."
+    DESCRIPTION "Qt${QT_MAJOR_VERSION} QuickWidgets component."
     TYPE REQUIRED
 )
+
+find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
+ set_package_properties(Qt${QT_VERSION_MAJOR}Core5Compat PROPERTIES
+     DESCRIPTION "Qt${QT_VERSION_MAJOR} Core5Compat component."
+     TYPE REQUIRED
+ )
 
 find_package(Qt${QT_MAJOR_VERSION}WebEngineWidgets ${REQUIRED_QT_VERSION} CONFIG QUIET)
 if(NOT BUILD_WITH_WEBENGINE)
@@ -45,19 +51,17 @@ else()
     )
 endif()
 
-if (${QT_MAJOR_VERSION} STREQUAL "5")
-    find_package(Qt${QT_MAJOR_VERSION}WebEngine ${REQUIRED_QT_VERSION} CONFIG QUIET)
-    if(APPLE)
-        set_package_properties(Qt${QT_MAJOR_VERSION}WebEngine PROPERTIES
-            DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngine component."
-            TYPE RECOMMENDED
-        )
-    else()
-        set_package_properties(Qt${QT_MAJOR_VERSION}WebEngine PROPERTIES
-            DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngine component."
-            TYPE REQUIRED
-        )
-    endif()
+find_package(Qt${QT_MAJOR_VERSION}WebEngine ${REQUIRED_QT_VERSION} CONFIG QUIET)
+if(NOT BUILD_WITH_WEBENGINE)
+    set_package_properties(Qt${QT_MAJOR_VERSION}WebEngine PROPERTIES
+        DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngine component."
+        TYPE RECOMMENDED
+    )
+else()
+    set_package_properties(Qt${QT_MAJOR_VERSION}WebEngine PROPERTIES
+        DESCRIPTION "Qt${QT_MAJOR_VERSION} WebEngine component."
+        TYPE REQUIRED
+    )
 endif()
 
 find_package(Qt${QT_VERSION_MAJOR}WebEngineCore ${REQUIRED_QT_VERSION} CONFIG QUIET)

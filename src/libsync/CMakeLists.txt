@@ -212,6 +212,7 @@ target_link_libraries(nextcloudsync
   Qt::Xml
   Qt::Sql
   KF5::Archive
+  Qt::Core5Compat
 )
 
 target_compile_features(nextcloudsync
