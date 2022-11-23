@@ -394,17 +394,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>หมดเวลาการเชื่อมต่อ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>ข้อผิดพลาดที่ไม่รู้จัก: การตอบกลับของเครือข่ายถูกลบแล้ว</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>เซิร์ฟเวอร์ตอบกลับ &quot;%1 %2&quot; ถึง &quot;%3 %4&quot;</translation>
     </message>
@@ -2979,7 +2979,7 @@ for additional privileges during the process.</source>
         <translation>ไฟล์ %1 กำลังถูกใช้งานอยู่</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>ไฟล์ในเครื่องถูกลบออกในระหว่างการประสานข้อมูล</translation>
     </message>

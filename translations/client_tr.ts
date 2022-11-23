@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>Bağlantı zaman aşımına uğradı</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Bilinmeyen hata: ağdan gelen yanıt silindi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Sunucu &quot;%1 %2&quot; tarafından &quot;%3 %4&quot; tarafına cevap verdi.</translation>
     </message>
@@ -2991,7 +2991,7 @@ for additional privileges during the process.</source>
         <translation>%1 dosya şu anda kullanımda</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>Eşitleme sırasında yerel dosya kaldırıldı.</translation>
     </message>

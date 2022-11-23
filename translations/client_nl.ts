@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>Time-out verbinding</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Onbekende fout: antwoord van het netwerk is verwijderd</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Server antwoordde &quot;%1 %2&quot; naar &quot;%3 %4&quot;</translation>
     </message>
@@ -2983,7 +2983,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <translation>%1 is in gebruik</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>Het lokale bestand werd verwijderd tijdens sync.</translation>
     </message>

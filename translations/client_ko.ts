@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>연결 시간 초과됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>알 수 없는 오류: 네트워크 응답이 삭제됨</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>서버 응답: &quot;%1 %2&quot; - &quot;%3 %4&quot;</translation>
     </message>
@@ -2967,7 +2967,7 @@ for additional privileges during the process.</source>
         <translation>%1  파일은  현재 이용 중입니다</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>로컬 파일이 동기화 중 삭제되었습니다.</translation>
     </message>

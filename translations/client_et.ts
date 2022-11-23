@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>Ühendus aegus</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Tundmatu viga: võrguvastus kustutati</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Server vastas &quot;%3 %4&quot; päringule &quot;%1 %2&quot;</translation>
     </message>
@@ -2991,7 +2991,7 @@ for additional privileges during the process.</source>
         <translation>%1 fail on hetkel kasutuses</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>Kohalik fail on eemaldatud sünkroniseerimise käigus.</translation>
     </message>

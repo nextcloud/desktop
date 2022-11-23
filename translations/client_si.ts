@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>සම්බන්ධතාවය කල් ඉකුත් විය</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>නොදන්නා දෝෂය: ජාල පිළිතුර මකා ඇත</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>සේවාදායකය &quot;%1 %2&quot; සිට &quot;%3 %4&quot;දක්වා පිළිතුරු දුන්නේය</translation>
     </message>
@@ -2983,7 +2983,7 @@ for additional privileges during the process.</source>
         <translation>%1 ගොනුව දැනට භාවිතා වේ</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>සමමුහුර්ත කිරීමේදී දේශීය ගොනුව ඉවත් කරන ලදී.</translation>
     </message>
