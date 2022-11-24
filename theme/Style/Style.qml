@@ -53,6 +53,7 @@ QtObject {
     property int smallSpacing: 5
 
     property int iconButtonWidth: 36
+    property int standardPrimaryButtonHeight: 40
 
     property int minActivityHeight: variableSize(40)
 

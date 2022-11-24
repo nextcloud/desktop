@@ -33,17 +33,19 @@ RowLayout {
     Image {
         id: icon
 
-        Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
+        Layout.fillWidth: !buttonLabel.visible
 
         source: root.hovered ? root.imageSourceHover : root.imageSource
         fillMode: Image.PreserveAspectFit
+        horizontalAlignment: Image.AlignHCenter
+        verticalAlignment: Image.AlignVCenter
+        visible: root.hovered ? root.imageSourceHover !== "" : root.imageSource !== ""
     }
 
     Label {
         id: buttonLabel
 
-        Layout.maximumWidth: icon.width > 0 ? parent.width - icon.width - parent.spacing : parent.width
-        Layout.fillWidth: icon.status !== Image.Ready
+        Layout.fillWidth: true
 
         text: root.text
         textFormat: Text.PlainText
@@ -52,7 +54,7 @@ RowLayout {
 
         color: root.hovered ? root.textColorHovered : root.textColor
 
-        horizontalAlignment: Text.AlignHCenter
+        horizontalAlignment: icon.visible ? Text.AlignLeft : Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
 
         elide: Text.ElideRight

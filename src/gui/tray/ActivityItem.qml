@@ -80,7 +80,7 @@ ItemDelegate {
 
             Layout.fillWidth: true
             Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing
-            Layout.minimumHeight: Style.minActivityHeight
+            Layout.preferredHeight: Style.standardPrimaryButtonHeight
 
             displayActions: model.displayActions
             objectType: model.objectType
