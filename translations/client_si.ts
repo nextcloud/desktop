@@ -92,12 +92,12 @@
 <context>
     <name>ChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="122"/>
+        <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="126"/>
+        <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>චෙක්සම් ශීර්ෂයේ නොදන්නා චෙක්සම් වර්ගය &apos;%1&apos;අඩංගු විය</translation>
     </message>
@@ -3900,7 +3900,7 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="381"/>
+        <location filename="../src/common/checksums.cpp" line="386"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>බාගත කළ ගොනුව චෙක්සම් සමඟ නොගැලපේ, එය නැවත ආරම්භ වනු ඇත. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>

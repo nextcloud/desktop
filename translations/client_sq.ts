@@ -92,12 +92,12 @@
 <context>
     <name>ChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="122"/>
+        <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
         <translation>Kryet e checksum-it janë të keqformuara: %1</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="126"/>
+        <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Kryet e checksum-it përmbanin një lloj të panjohur checksum-i &apos;%1&apos;</translation>
     </message>
@@ -3911,7 +3911,7 @@ Përditësimi do të kryhet në prapaskenë dhe do të mbishkruajë kartelën e 
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="381"/>
+        <location filename="../src/common/checksums.cpp" line="386"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Kartela e shkarkuar nuk përputhet me vlerën e llogaritur të checksum-it, do të rimerret. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>

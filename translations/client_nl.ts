@@ -92,12 +92,12 @@
 <context>
     <name>ChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="122"/>
+        <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="126"/>
+        <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Het header controlegetal bevat een onbekend controlegetal type &apos;%1&apos;</translation>
     </message>
@@ -1532,13 +1532,15 @@ Please consider removing this folder from the account and adding it again.</sour
         <location filename="../src/gui/folderstatusmodel.cpp" line="288"/>
         <source>%1
 %2</source>
-        <translation type="unfinished"/>
+        <translation>%1
+%2</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="290"/>
         <source>Signed out
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Afgemeld
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="924"/>
@@ -3901,7 +3903,7 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="381"/>
+        <location filename="../src/common/checksums.cpp" line="386"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Het gedownloade bestand komt niet overeen met de checksum, het wordt hervat. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>

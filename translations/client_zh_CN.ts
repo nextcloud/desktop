@@ -92,12 +92,12 @@
 <context>
     <name>ChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="122"/>
+        <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="126"/>
+        <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>校验头包含未知的校验类型 &apos;%1&apos;</translation>
     </message>
@@ -3900,7 +3900,7 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="381"/>
+        <location filename="../src/common/checksums.cpp" line="386"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>下载的文件与校验和不匹配，它将被恢复。 “%1”!=“%2”</translation>
     </message>
