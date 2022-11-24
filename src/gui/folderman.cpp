@@ -1433,6 +1433,7 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
                 QStringList() << QStringLiteral("/"));
         }
         qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
+        newFolder->saveToSettings();
     } else {
         qCWarning(lcFolderMan) << "Failed to create local sync folder!";
     }
@@ -1442,7 +1443,10 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
 Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config)
 {
     auto f = addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
-    f->setPriority(config.priority);
+    if (f) {
+        f->setPriority(config.priority);
+        f->saveToSettings();
+    }
     return f;
 }
 
