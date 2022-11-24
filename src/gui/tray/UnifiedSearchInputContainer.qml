@@ -7,22 +7,34 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
 TextField {
-    id: trayWindowUnifiedSearchTextField
+    id: root
+
+    signal clearText()
 
     property bool isSearchInProgress: false
 
     readonly property color textFieldIconsColor: Style.menuBorder
 
-    readonly property int textFieldIconsOffset: Style.trayHorizontalMargin
+    readonly property int textFieldIconsPadding: 4
+    readonly property int textFieldIconsLeftOffset: Style.trayHorizontalMargin + leftInset
+    readonly property int textFieldIconsRightOffset: Style.trayHorizontalMargin + rightInset
+    readonly property int textFieldIconsTopOffset: topInset
+    readonly property int textFieldIconsBottomOffset: bottomInset
 
     readonly property double textFieldIconsScaleFactor: 0.6
 
-    readonly property int textFieldHorizontalPaddingOffset: Style.trayHorizontalMargin
+    readonly property int textFieldTextLeftOffset: Style.trayHorizontalMargin + leftInset
+    readonly property int textFieldTextRightOffset: Style.trayHorizontalMargin + rightInset
 
-    signal clearText()
-
-    leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width + trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin + textFieldHorizontalPaddingOffset - 1
-    rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width + trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin + textFieldHorizontalPaddingOffset
+    topPadding: topInset
+    bottomPadding: bottomInset
+    leftPadding: trayWindowUnifiedSearchTextFieldSearchIcon.width +
+                 trayWindowUnifiedSearchTextFieldSearchIcon.anchors.leftMargin +
+                 textFieldTextLeftOffset - 1
+    rightPadding: trayWindowUnifiedSearchTextFieldClearTextButton.width +
+                  trayWindowUnifiedSearchTextFieldClearTextButton.anchors.rightMargin +
+                  textFieldTextRightOffset
+    verticalAlignment: Qt.AlignVCenter
 
     placeholderText: qsTr("Search files, messages, events …")
 
@@ -32,47 +44,51 @@ TextField {
 
     background: Rectangle {
         radius: 5
-        border.color: parent.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
+        border.color: root.activeFocus ? UserModel.currentUser.accentColor : Style.menuBorder
         border.width: 1
         color: Style.backgroundColor
     }
 
     Image {
         id: trayWindowUnifiedSearchTextFieldSearchIcon
+
+        anchors {
+            left: root.left
+            leftMargin: root.textFieldIconsLeftOffset
+            top: root.top
+            topMargin: root.textFieldIconsTopOffset + root.textFieldIconsPadding
+            bottom: root.bottom
+            bottomMargin: root.textFieldIconsBottomOffset + root.textFieldIconsPadding
+        }
+
         width: Style.trayListItemIconSize - anchors.leftMargin
         fillMode: Image.PreserveAspectFit
         horizontalAlignment: Image.AlignLeft
 
-        anchors {
-            left: parent.left
-            leftMargin: parent.textFieldIconsOffset
-            verticalCenter: parent.verticalCenter
-        }
-
-        visible: !trayWindowUnifiedSearchTextField.isSearchInProgress
-
         smooth: true;
         antialiasing: true
         mipmap: true
-        source: "image://svgimage-custom-color/search.svg" + "/" + trayWindowUnifiedSearchTextField.textFieldIconsColor
-        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
+        source: "image://svgimage-custom-color/search.svg" + "/" + root.textFieldIconsColor
+        sourceSize: Qt.size(root.height * root.textFieldIconsScaleFactor, root.height * root.textFieldIconsScaleFactor)
+
+        visible: !root.isSearchInProgress
     }
 
     NCBusyIndicator {
         id: busyIndicator
 
         anchors {
-            left: trayWindowUnifiedSearchTextField.left
-            bottom: trayWindowUnifiedSearchTextField.bottom
-            leftMargin: trayWindowUnifiedSearchTextField.textFieldIconsOffset - 4
-            topMargin: 4
-            bottomMargin: 4
-            verticalCenter: trayWindowUnifiedSearchTextField.verticalCenter
+            top: root.top
+            topMargin: root.textFieldIconsTopOffset + root.textFieldIconsPadding
+            bottom: root.bottom
+            bottomMargin: root.textFieldIconsBottomOffset + root.textFieldIconsPadding
+            left: root.left
+            leftMargin: root.textFieldIconsLeftOffset
         }
 
         width: height
-        color: trayWindowUnifiedSearchTextField.textFieldIconsColor
-        visible: trayWindowUnifiedSearchTextField.isSearchInProgress
+        color: root.textFieldIconsColor
+        visible: root.isSearchInProgress
         running: visible
     }
 
@@ -80,25 +96,27 @@ TextField {
         id: trayWindowUnifiedSearchTextFieldClearTextButton
 
         anchors {
-            right: parent.right
-            rightMargin: parent.textFieldIconsOffset
-            verticalCenter: parent.verticalCenter
+            top: root.top
+            topMargin: root.textFieldIconsTopOffset + root.textFieldIconsPadding
+            bottom: root.bottom
+            bottomMargin: root.textFieldIconsBottomOffset + root.textFieldIconsPadding
+            right: root.right
+            rightMargin: root.textFieldIconsRightOffset
         }
 
-        smooth: true;
+        fillMode: Image.PreserveAspectFit
+        smooth: true
         antialiasing: true
         mipmap: true
 
-        visible: parent.text
-        source: "image://svgimage-custom-color/clear.svg" + "/" + trayWindowUnifiedSearchTextField.textFieldIconsColor
-        sourceSize: Qt.size(parent.height * parent.textFieldIconsScaleFactor, parent.height * parent.textFieldIconsScaleFactor)
+        visible: root.text
+        source: "image://svgimage-custom-color/clear.svg" + "/" + root.textFieldIconsColor
+        sourceSize: Qt.size(root.height * root.textFieldIconsScaleFactor, root.height * root.textFieldIconsScaleFactor)
 
         MouseArea {
             id: trayWindowUnifiedSearchTextFieldClearTextButtonMouseArea
-
             anchors.fill: parent
-
-            onClicked: trayWindowUnifiedSearchTextField.clearText()
+            onClicked: root.clearText()
         }
     }
 }

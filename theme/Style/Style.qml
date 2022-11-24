@@ -121,6 +121,7 @@ QtObject {
     readonly property int unifiedSearchResultSectionItemLeftPadding: 16
     readonly property int unifiedSearchResultSectionItemVerticalPadding: 8
     readonly property int unifiedSearchResultNothingFoundHorizontalMargin: 10
+    readonly property int unifiedSearchInputContainerHeight: 40
 
     readonly property var fontMetrics: FontMetrics {}
 
