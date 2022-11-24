@@ -580,17 +580,13 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Math.max(Style.talkReplyTextFieldPreferredHeight, contentHeight)
 
-            anchors {
-                top: trayWindowHeaderBackground.bottom
-                left: trayWindowMainItem.left
-                right: trayWindowMainItem.right
-
-                topMargin: Style.trayHorizontalMargin + controlRoot.padding
-                leftMargin: Style.trayHorizontalMargin + controlRoot.padding
-                rightMargin: Style.trayHorizontalMargin + controlRoot.padding
-            }
+            anchors.top: trayWindowHeaderBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.topMargin: Style.trayHorizontalMargin
+            anchors.leftMargin: Style.trayHorizontalMargin
+            anchors.rightMargin: Style.trayHorizontalMargin
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
             readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
