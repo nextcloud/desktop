@@ -277,7 +277,7 @@ void PropagateLocalRename::start()
         return;
     }
 
-    if (pinState != OCC::PinState::Unspecified && !vfs->setPinState(_item->_renameTarget, pinState)) {
+    if (!vfs->setPinState(_item->_renameTarget, pinState)) {
         qCWarning(lcPropagateLocalRename) << "Could not set pin state of" << _item->_renameTarget << "to old value" << pinState;
         done(SyncFileItem::NormalError, tr("Error setting pin state"));
         return;

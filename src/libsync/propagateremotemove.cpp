@@ -251,7 +251,7 @@ void PropagateRemoteMove::finalize()
         return;
     }
     auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_renameTarget);
+    auto pinState = vfs->pinState(_item->_originalFile);
 
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 

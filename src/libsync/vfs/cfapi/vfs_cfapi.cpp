@@ -289,6 +289,8 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
 
 bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
 {
+    qCDebug(lcCfApi) << "setPinState" << folderPath << state;
+
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
 
     if (cfapi::setPinState(localPath, state, cfapi::Recurse)) {
