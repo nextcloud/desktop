@@ -139,4 +139,4 @@ stack_connectLabel_QLabel = {"container": settings_stack_QStackedWidget, "name":
 o_folderList_ownCloud_QModelIndex = {"column": 0, "container": stack_folderList_QTreeView, "text": "ownCloud", "type": "QModelIndex"}
 contentWidget_contentWidget_QStackedWidget = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "contentWidget", "type": "QStackedWidget", "visible": 1}
 o_folderList_Personal_QModelIndex = {"column": 0, "container": stack_folderList_QTreeView, "text": "Personal", "type": "QModelIndex"}
-deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView_2 = {"container": add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget, "orientation": 1, "type": "QHeaderView", "unnamed": 1, "visible": 1}
+deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView = {"container": add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget, "orientation": 1, "type": "QHeaderView", "unnamed": 1, "visible": 1}

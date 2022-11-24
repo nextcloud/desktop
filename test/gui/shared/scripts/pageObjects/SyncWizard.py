@@ -10,9 +10,10 @@ class SyncWizard:
         "visible": 1,
     }
 
-    def performAction(self, action):
+    def performAction(self, context, action):
+        item_text = "Personal" if context.userData['ocis'] else "ownCloud"
         squish.openContextMenu(
-            squish.waitForObjectItem(self.ACTION_MENU, "ownCloud"),
+            squish.waitForObjectItem(self.ACTION_MENU, item_text),
             0,
             0,
             squish.Qt.NoModifier,

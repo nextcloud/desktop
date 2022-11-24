@@ -668,7 +668,7 @@ def step(context, resourceType, resource):
 @Given('the user has paused the file sync')
 def step(context):
     syncWizard = SyncWizard()
-    syncWizard.performAction("Pause sync")
+    syncWizard.performAction(context, "Pause sync")
 
 
 @Given('the user has changed the content of local file "|any|" to:')
@@ -682,7 +682,7 @@ def step(context, filename):
 @When('the user resumes the file sync on the client')
 def step(context):
     syncWizard = SyncWizard()
-    syncWizard.performAction("Resume sync")
+    syncWizard.performAction(context, "Resume sync")
 
 
 @Then(
