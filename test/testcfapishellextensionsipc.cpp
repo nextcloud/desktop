@@ -31,96 +31,6 @@ namespace {
 static constexpr auto roootFolderName = "A";
 static constexpr auto imagesFolderName = "photos";
 static constexpr auto filesFolderName = "files";
-
-static const QByteArray fakeNoSharesResponse = R"({"ocs":{"data":[],"meta":{"message":"OK","status":"ok","statuscode":200}}})";
-
-static const QByteArray fakeSharedFilesResponse = R"({"ocs":{"data":[{
-                "attributes": null,
-                "can_delete": true,
-                "can_edit": true,
-                "displayname_file_owner": "admin",
-                "displayname_owner": "admin",
-                "expiration": null,
-                "file_parent": 2981,
-                "file_source": 3538,
-                "file_target": "/test_shared_file.txt",
-                "has_preview": true,
-                "hide_download": 0,
-                "id": "36",
-                "item_source": 3538,
-                "item_type": "file",
-                "label": null,
-                "mail_send": 0,
-                "mimetype": "text/plain",
-                "note": "",
-                "parent": null,
-                "path": "A/files/test_shared_file.txt",
-                "permissions": 19,
-                "share_type": 0,
-                "share_with": "newstandard",
-                "share_with_displayname": "newstandard",
-                "share_with_displayname_unique": "newstandard",
-                "status": {
-                    "clearAt": null,
-                    "icon": null,
-                    "message": null,
-                    "status": "offline"
-                },
-                "stime": 1662995777,
-                "storage": 2,
-                "storage_id": "home::admin",
-                "token": null,
-                "uid_file_owner": "admin",
-                "uid_owner": "admin"
-            },
-            {
-                "attributes": null,
-                "can_delete": true,
-                "can_edit": true,
-                "displayname_file_owner": "admin",
-                "displayname_owner": "admin",
-                "expiration": null,
-                "file_parent": 2981,
-                "file_source": 3538,
-                "file_target": "/test_shared_and_locked_file.txt",
-                "has_preview": true,
-                "hide_download": 0,
-                "id": "36",
-                "item_source": 3538,
-                "item_type": "file",
-                "label": null,
-                "mail_send": 0,
-                "mimetype": "text/plain",
-                "note": "",
-                "parent": null,
-                "path": "A/files/test_shared_and_locked_file.txt",
-                "permissions": 19,
-                "share_type": 0,
-                "share_with": "newstandard",
-                "share_with_displayname": "newstandard",
-                "share_with_displayname_unique": "newstandard",
-                "status": {
-                    "clearAt": null,
-                    "icon": null,
-                    "message": null,
-                    "status": "offline"
-                },
-                "stime": 1662995777,
-                "storage": 2,
-                "storage_id": "home::admin",
-                "token": null,
-                "uid_file_owner": "admin",
-                "uid_owner": "admin"
-            }
-        ],
-        "meta": {
-            "message": "OK",
-            "status": "ok",
-            "statuscode": 200
-        }
-    }
-})";
-
 static constexpr auto shellExtensionServerOverrideIntervalMs = 1000LL * 2LL;
 }
 
@@ -164,6 +74,9 @@ class TestCfApiShellExtensionsIPC : public QObject
 
 public:
     static bool replyWithNoShares;
+
+signals:
+    void propfindRequested();
 
 private slots:
     void initTestCase()
@@ -221,14 +134,11 @@ private slots:
 
                 const auto path = req.url().path();
 
-                if (path.endsWith(OCC::OcsShareJob::_pathForSharesRequest)) {
-                    const auto jsonReply = TestCfApiShellExtensionsIPC::replyWithNoShares ? fakeNoSharesResponse : fakeSharedFilesResponse;
-                    TestCfApiShellExtensionsIPC::replyWithNoShares = false;
-                    auto fakePayloadReply = new FakePayloadReply(op, req, jsonReply, nullptr);
-                    QMap<QNetworkRequest::KnownHeaders, QByteArray> additionalHeaders = {
-                        {QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json"}};
-                    fakePayloadReply->_additionalHeaders = additionalHeaders;
-                    reply = fakePayloadReply;
+                const auto customOperation = req.attribute(QNetworkRequest::CustomVerbAttribute);
+
+                if (customOperation == QStringLiteral("PROPFIND")) {
+                    emit propfindRequested();
+                    reply = new FakePayloadReply(op, req, {}, nullptr);
                 } else if (path.endsWith(ShellExtensionsServer::getFetchThumbnailPath())) {
                     const auto urlQuery = QUrlQuery(req.url());
                     const auto fileId = urlQuery.queryItemValue(QStringLiteral("fileId"));
@@ -383,6 +293,8 @@ private slots:
             }
         }
 
+        QSignalSpy propfindRequestedSpy(this, &TestCfApiShellExtensionsIPC::propfindRequested);
+
         // #1 Test every file's states fetching. Everything must succeed.
         for (auto it = std::cbegin(dummyFileStates); it != std::cend(dummyFileStates); ++it) {
             QEventLoop loop;
@@ -394,8 +306,25 @@ private slots:
             });
             loop.exec();
             t.detach();
+
+            if (!customStates.isEmpty()) {
+                const auto lockedIndex = QString(CUSTOM_STATE_ICON_LOCKED_INDEX).toInt() - QString(CUSTOM_STATE_ICON_INDEX_OFFSET).toInt();
+                const auto sharedIndex = QString(CUSTOM_STATE_ICON_SHARED_INDEX).toInt() - QString(CUSTOM_STATE_ICON_INDEX_OFFSET).toInt();
+
+                if (customStates.contains(lockedIndex) && customStates.contains(sharedIndex)) {
+                    QVERIFY(it.value()._isLocked && it.value()._isShared);
+                }
+                if (customStates.contains(lockedIndex)) {
+                    QVERIFY(it.value()._isLocked);
+                }
+                if (customStates.contains(sharedIndex)) {
+                    QVERIFY(it.value()._isShared);
+                }
+            }
+
             QVERIFY(!customStates.isEmpty() || (!it.value()._isLocked && !it.value()._isShared));
         }
+        QVERIFY(propfindRequestedSpy.isEmpty());
 
         // #2 Test wrong file's states fetching. It must fail.
         QEventLoop loop;
@@ -408,6 +337,7 @@ private slots:
         loop.exec();
         t1.detach();
         QVERIFY(customStates.isEmpty());
+        QVERIFY(propfindRequestedSpy.isEmpty());
 
         // #3 Test wrong file states fetching. It must fail.
         customStates.clear();
@@ -419,6 +349,7 @@ private slots:
         loop.exec();
         t2.detach();
         QVERIFY(customStates.isEmpty());
+        QVERIFY(propfindRequestedSpy.isEmpty());
 
         // reset all share states to make sure we'll get new states when fetching
         for (auto it = std::begin(dummyFileStates); it != std::end(dummyFileStates); ++it) {
@@ -447,36 +378,8 @@ private slots:
             });
             loop.exec();
             t.detach();
-            QVERIFY(!customStates.isEmpty() || (!it.value()._isLocked && !it.value()._isShared));
-
-            if (!customStates.isEmpty()) {
-                const auto lockedIndex = QString(CUSTOM_STATE_ICON_LOCKED_INDEX).toInt() - QString(CUSTOM_STATE_ICON_INDEX_OFFSET).toInt();
-                const auto sharedIndex = QString(CUSTOM_STATE_ICON_SHARED_INDEX).toInt() - QString(CUSTOM_STATE_ICON_INDEX_OFFSET).toInt();
-
-                if (customStates.contains(lockedIndex) && customStates.contains(sharedIndex)) {
-                    QVERIFY(it.value()._isLocked && it.value()._isShared);
-                }
-                if (customStates.contains(lockedIndex)) {
-                    QVERIFY(it.value()._isLocked);
-                }
-                if (customStates.contains(sharedIndex)) {
-                    QVERIFY(it.value()._isShared);
-                }
-            }
         }
-
-        // #5 Test no shares response for a file
-        QTest::qWait(shellExtensionServerOverrideIntervalMs + 1000);
-        TestCfApiShellExtensionsIPC::replyWithNoShares = true;
-        customStates.clear();
-        std::thread t3([&] {
-            VfsShellExtensions::CustomStateProviderIpc customStateProviderIpc;
-            customStates = customStateProviderIpc.fetchCustomStatesForFile(fakeFolder.localPath() + QStringLiteral("A/files/test_non_shared_and_non_locked_file.txt"));
-            QMetaObject::invokeMethod(&loop, &QEventLoop::quit, Qt::QueuedConnection);
-        });
-        loop.exec();
-        t3.detach();
-        QVERIFY(customStates.isEmpty());
+        QVERIFY(propfindRequestedSpy.count() == dummyFileStates.size());
     }
 
     void cleanupTestCase()
