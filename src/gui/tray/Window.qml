@@ -736,23 +736,39 @@ ApplicationWindow {
 
         UnifiedSearchInputContainer {
             id: trayWindowUnifiedSearchInputContainer
-            height: Style.trayWindowHeaderHeight * 0.65
+            height: Style.unifiedSearchInputContainerHeight +
+                    topInset +
+                    bottomInset +
+                    bottomUnifiedSearchInputSeparator.height
 
-            anchors {
-                top: trayWindowHeaderBackground.bottom
-                left: trayWindowMainItem.left
-                right: trayWindowMainItem.right
+            anchors.top: trayWindowHeaderBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
 
-                topMargin: Style.trayHorizontalMargin + controlRoot.padding
-                leftMargin: Style.trayHorizontalMargin + controlRoot.padding
-                rightMargin: Style.trayHorizontalMargin + controlRoot.padding
-            }
+            topInset: Style.trayHorizontalMargin + controlRoot.padding
+            leftInset: Style.trayHorizontalMargin + controlRoot.padding
+            rightInset: Style.trayHorizontalMargin + controlRoot.padding
+            bottomInset: bottomUnifiedSearchInputSeparator.visible ?
+                             Style.trayHorizontalMargin + controlRoot.padding + bottomUnifiedSearchInputSeparator.height :
+                             0
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
             readOnly: !UserModel.currentUser.isConnected || UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             isSearchInProgress: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
             onTextEdited: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = trayWindowUnifiedSearchInputContainer.text }
             onClearText: { UserModel.currentUser.unifiedSearchResultsListModel.searchTerm = "" }
+
+            Rectangle {
+                id: bottomUnifiedSearchInputSeparator
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                height: 1
+                color: Style.menuBorder
+                visible: trayWindowMainItem.isUnifiedSearchActive
+            }
         }
 
         ErrorBox {
@@ -860,6 +876,17 @@ ApplicationWindow {
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
             anchors.left: trayWindowMainItem.left
             anchors.right: trayWindowMainItem.right
+
+            Rectangle {
+                id: syncStatusSeparator
+
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+
+                height: 1
+                color: Style.menuBorder
+            }
         }
 
         Loader {
