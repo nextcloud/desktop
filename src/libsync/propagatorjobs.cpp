@@ -244,7 +244,8 @@ void PropagateLocalRename::start()
 
         emit propagator()->touchedFile(existingFile);
         emit propagator()->touchedFile(targetFile);
-        if (QString renameError; !FileSystem::rename(existingFile, targetFile, &renameError)) {
+	QString renameError;
+        if (!FileSystem::rename(existingFile, targetFile, &renameError)) {
             done(SyncFileItem::NormalError, renameError);
             return;
         }
@@ -338,7 +339,8 @@ void PropagateLocalRename::start()
 
 bool PropagateLocalRename::deleteOldDbRecord(const QString &fileName)
 {
-    if (SyncJournalFileRecord oldRecord; !propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
+    SyncJournalFileRecord oldRecord;
+    if (!propagator()->_journal->getFileRecord(fileName, &oldRecord)) {
         qCWarning(lcPropagateLocalRename) << "could not get file from local DB" << fileName;
         done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(fileName));
         return false;
