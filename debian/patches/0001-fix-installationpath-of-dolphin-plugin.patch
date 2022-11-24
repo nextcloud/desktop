@@ -1,5 +1,5 @@
 diff --git a/shell_integration/dolphin/CMakeLists.txt b/shell_integration/dolphin/CMakeLists.txt
-index 76b6f6ea9..eaf2f51d1 100644
+index 07e609661..1469bc11a 100644
 --- a/shell_integration/dolphin/CMakeLists.txt
 +++ b/shell_integration/dolphin/CMakeLists.txt
 @@ -31,13 +31,14 @@ add_library(${OWNCLOUDDOLPHINHELPER} SHARED
@@ -18,8 +18,8 @@ index 76b6f6ea9..eaf2f51d1 100644
  
  #---ACTION PLUGIN---
  set(OWNCLOUDDOLPHINACTIONPLUGIN ${APPLICATION_EXECUTABLE}dolphinactionplugin)
-@@ -46,3 +47,4 @@ target_link_libraries(${OWNCLOUDDOLPHINACTIONPLUGIN} KF5::CoreAddons KF5::KIOCor
- configure_file(ownclouddolphinactionplugin.desktop.in ${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop ESCAPE_QUOTES @ONLY)
- install(FILES ${CMAKE_CURRENT_BINARY_DIR}/${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop DESTINATION ${KDE_INSTALL_KSERVICES5DIR})
- install(TARGETS ${OWNCLOUDDOLPHINACTIONPLUGIN} DESTINATION ${KDE_INSTALL_PLUGINDIR})
+@@ -46,3 +47,4 @@ kcoreaddons_add_plugin(${OWNCLOUDDOLPHINACTIONPLUGIN} INSTALL_NAMESPACE "kf5/kfi
+                        SOURCES ownclouddolphinactionplugin.cpp)
+ target_link_libraries(${OWNCLOUDDOLPHINACTIONPLUGIN} KF5::CoreAddons KF5::KIOCore KF5::KIOWidgets ${OWNCLOUDDOLPHINHELPER})
+ kcoreaddons_desktop_to_json(${OWNCLOUDDOLPHINACTIONPLUGIN} ${CMAKE_CURRENT_BINARY_DIR}/${OWNCLOUDDOLPHINACTIONPLUGIN}.desktop)
 +set_target_properties(${OWNCLOUDDOLPHINACTIONPLUGIN} PROPERTIES INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${LIB_INSTALL_DIR}/${APPLICATION_EXECUTABLE}")
