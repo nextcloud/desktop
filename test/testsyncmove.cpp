@@ -969,6 +969,56 @@ private slots:
         QVERIFY(!fakeFolder.currentRemoteState().find(dest));
     }
 
+    void testRenameDeepHierarchy()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        fakeFolder.remoteModifier().mkdir("FolA");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB2");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD");
+        fakeFolder.remoteModifier().mkdir("FolA/FolB/FolC/FolD/FolE");
+        fakeFolder.remoteModifier().insert("FolA/FileA.txt");
+        auto fileA = fakeFolder.remoteModifier().find("FolA/FileA.txt");
+        QVERIFY(fileA);
+        fileA->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FileB.txt");
+        auto fileB = fakeFolder.remoteModifier().find("FolA/FolB/FileB.txt");
+        QVERIFY(fileB);
+        fileB->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FileC.txt");
+        auto fileC = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FileC.txt");
+        QVERIFY(fileC);
+        fileC->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FileD.txt");
+        auto fileD = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FolD/FileD.txt");
+        QVERIFY(fileD);
+        fileD->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().insert("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        auto fileE = fakeFolder.remoteModifier().find("FolA/FolB/FolC/FolD/FolE/FileE.txt");
+        QVERIFY(fileE);
+        fileE->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().rename("FolA/FolB", "FolA/FolB2/FolB");
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().insert("FolA/FolB2/FolB/FolC/FolD/FileD2.txt");
+        auto fileD2 = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD2.txt");
+        QVERIFY(fileD2);
+        fileD2->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed511</checksum></oc:checksums>";
+        fakeFolder.remoteModifier().appendByte("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
+        auto fileDMoved = fakeFolder.remoteModifier().find("FolA/FolB2/FolB/FolC/FolD/FileD.txt");
+        QVERIFY(fileDMoved);
+        fileDMoved->extraDavProperties = "<oc:checksums><checksum>SHA1:22596363b3de40b06f981fb85d82312e8c0ed522</checksum></oc:checksums>";
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncMove)

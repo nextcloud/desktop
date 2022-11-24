@@ -37,6 +37,28 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDisco, "sync.discovery", QtInfoMsg)
 
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, qint64 lastSyncTimestamp, QObject *parent)
+    : QObject(parent)
+    , _lastSyncTimestamp(lastSyncTimestamp)
+    , _discoveryData(data)
+{
+    qCDebug(lcDisco) << data;
+    computePinState(basePinState);
+}
+
+ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp, ProcessDirectoryJob *parent)
+    : QObject(parent)
+    , _dirItem(dirItem)
+    , _lastSyncTimestamp(lastSyncTimestamp)
+    , _queryServer(queryServer)
+    , _queryLocal(queryLocal)
+    , _discoveryData(parent->_discoveryData)
+    , _currentFolder(path)
+{
+    qCDebug(lcDisco) << path._server << queryServer << path._local << queryLocal << lastSyncTimestamp;
+    computePinState(parent->_pinState);
+}
+
 void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
@@ -52,6 +74,7 @@ void ProcessDirectoryJob::start()
         if (!_discoveryData->_shouldDiscoverLocaly(_currentFolder._local)
             && (_currentFolder._local == _currentFolder._original || !_discoveryData->_shouldDiscoverLocaly(_currentFolder._original))) {
             _queryLocal = ParentNotChanged;
+            qCDebug(lcDisco) << "adjusted discovery policy" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
         }
     }
 
