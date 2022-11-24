@@ -92,6 +92,7 @@ ApplicationWindow {
 
     OpacityMask {
         anchors.fill: parent
+        anchors.margins: Style.trayWindowBorderWidth
         source: ShaderEffectSource {
             sourceItem: trayWindowMainItem
             hideSource: true
@@ -147,7 +148,8 @@ ApplicationWindow {
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
 
-        anchors.fill:   parent
+        anchors.fill: parent
+        anchors.margins: Style.trayWindowBorderWidth
         clip: true
 
         Accessible.role: Accessible.Grouping
@@ -736,7 +738,6 @@ ApplicationWindow {
 
         ScrollView {
             id: controlRoot
-            padding: 1
             contentWidth: availableWidth
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
