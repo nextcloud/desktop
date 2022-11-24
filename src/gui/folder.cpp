@@ -233,8 +233,8 @@ bool Folder::checkLocalPath()
             error = tr("%1 is not writable.").arg(_definition.localPath());
         }
     }
-    qCWarning(lcFolder) << error;
     if (!error.isEmpty()) {
+        qCWarning(lcFolder) << error;
         _syncResult.appendErrorString(error);
         _syncResult.setStatus(SyncResult::SetupError);
         return false;
