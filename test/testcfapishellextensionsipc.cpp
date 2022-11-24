@@ -165,6 +165,9 @@ public:
 private slots:
     void initTestCase()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         VfsShellExtensions::ThumbnailProviderIpc::overrideServerName = VfsShellExtensions::serverNameForApplicationNameDefault();
         VfsShellExtensions::CustomStateProviderIpc::overrideServerName = VfsShellExtensions::serverNameForApplicationNameDefault();
 
@@ -258,6 +261,9 @@ private slots:
 
     void testRequestThumbnails()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         FolderMan *folderman = FolderMan::instance();
         QVERIFY(folderman);
         auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
@@ -338,6 +344,9 @@ private slots:
 
     void testRequestCustomStates()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         FolderMan *folderman = FolderMan::instance();
         QVERIFY(folderman);
         auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
@@ -469,6 +478,9 @@ private slots:
 
     void cleanupTestCase()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         VfsShellExtensions::ThumbnailProviderIpc::overrideServerName.clear();
 
         if (auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath())) {
