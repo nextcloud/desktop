@@ -1052,7 +1052,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>තමන්ගේම ක්ලවුඩ් ගිණුමක් වින්‍යාස කර නැත</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="321"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="326"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>කරුණාකර නවතම සේවාදායකයට යාවත්කාලීන කර සේවාලාභියා නැවත ආරම්භ කරන්න.</translation>
     </message>
@@ -1072,7 +1072,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>සපයා ඇති අක්තපත්‍ර නිවැරදි නොවේ</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="320"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="325"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"/>
     </message>
@@ -1462,7 +1462,7 @@ Please consider removing this folder from the account and adding it again.</sour
 කරුණාකර මෙම ෆෝල්ඩරය ගිණුමෙන් ඉවත් කර එය නැවත එක් කිරීමට සලකා බලන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1452"/>
+        <location filename="../src/gui/folderman.cpp" line="1456"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"/>
     </message>
@@ -4170,241 +4170,241 @@ Are you sure you want to proceed?</source>
 <context>
     <name>OCC::ownCloudGui</name>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="307"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="309"/>
         <source>Please sign in</source>
         <translation>කරුණාකර පුරනය වන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="335"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="337"/>
         <source>Folder %1: %2</source>
         <translation>ෆෝල්ඩරය %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="344"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="346"/>
         <source>Unresolved %1 conflicts</source>
         <translation>නොවිසඳුනු %1 ගැටුම්</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="346"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="348"/>
         <source>Ignored errors %1</source>
         <translation>නොසලකා හරින ලද දෝෂ %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="360"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="362"/>
         <source>There are no sync folders configured.</source>
         <translation>වින්‍යාස කර ඇති සමමුහුර්ත ෆෝල්ඩර නොමැත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="371"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
         <source>Open in browser</source>
         <translation>බ්‍රවුසරයේ විවෘත කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="420"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="744"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="838"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="422"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="746"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
         <source>Log in...</source>
         <translation>ඇතුල් වන්න...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="424"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="736"/>
-        <location filename="../src/gui/owncloudgui.cpp" line="840"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="426"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="738"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="842"/>
         <source>Log out</source>
         <translation>ලොග් අවුට් වෙන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="530"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="532"/>
         <source>Recent Changes</source>
         <translation>මෑත වෙනස්කම්</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="399"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="401"/>
         <source>Managed Folders:</source>
         <translation>කළමනාකරණය කළ ෆෝල්ඩර:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="402"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="404"/>
         <source>Open folder &apos;%1&apos;</source>
         <translation>ෆෝල්ඩරය විවෘත කරන්න &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="373"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="375"/>
         <source>Open %1 in browser</source>
         <translation>බ්‍රවුසරයේ %1 විවෘත කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="237"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="239"/>
         <source>The server on account %1 runs an unsupported version %2. Using this client with unsupported server versions is untested and potentially dangerous. Proceed at your own risk.</source>
         <translation>%1 ගිණුමේ සේවාදායකය සහාය නොදක්වන %2අනුවාදයක් ධාවනය කරයි. සහාය නොදක්වන සේවාදායක අනුවාද සමඟ මෙම සේවාලාභියා භාවිතා කිරීම පරීක්ෂා නොකළ අතර අනතුරුදායක විය හැකිය. ඔබේම අවදානමකින් ඉදිරියට යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="821"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="823"/>
         <source>Unknown status</source>
         <translation>නොදන්නා තත්ත්වය</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="827"/>
         <source>Details...</source>
         <translation>විස්තර...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="831"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
         <source>Help</source>
         <translation>උදව්</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="837"/>
         <source>Quit %1</source>
         <translation>%1ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="288"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Disconnected from %1</source>
         <translation>%1සිට විසන්ධි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="236"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="238"/>
         <source>Unsupported Server Version</source>
         <translation>සහාය නොදක්වන සේවාදායක අනුවාදය</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="278"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
         <source>Disconnected</source>
         <translation>විසන්ධි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="280"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="282"/>
         <source>Disconnected from some accounts</source>
         <translation>සමහර ගිණුම් වලින් විසන්ධි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="291"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
         <source>Disconnected from accounts:</source>
         <translation>ගිණුම් වලින් විසන්ධි විය:</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="293"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="295"/>
         <source>Account %1: %2</source>
         <translation>ගිණුම %1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="308"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="310"/>
         <source>Signed out</source>
         <translation>වරනය විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="312"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="314"/>
         <source>Account synchronization is disabled</source>
         <translation>ගිණුම් සමමුහුර්ත කිරීම අබල කර ඇත</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="313"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="315"/>
         <source>Synchronization is paused</source>
         <translation>සමමුහුර්ත කිරීම විරාම කර ඇත</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="357"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Up to date (%1)</source>
         <translation>යාවත්කාලීන (%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="361"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="363"/>
         <source>No sync folders configured</source>
         <translation>සමමුහුර්ත ෆෝල්ඩර කිසිවක් වින්‍යාස කර නැත</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="409"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="411"/>
         <source>Unpause all folders</source>
         <translation>සියලුම ෆෝල්ඩර විරාම කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="414"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="416"/>
         <source>Pause all folders</source>
         <translation>සියලුම ෆෝල්ඩර විරාම කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="715"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
         <source>Unpause all synchronization</source>
         <translation>සියලුම සමමුහුර්තකරණය විරාම කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="717"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="719"/>
         <source>Unpause synchronization</source>
         <translation>විරාම සමමුහුර්තකරණය ඉවත් කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="725"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="727"/>
         <source>Pause all synchronization</source>
         <translation>සියලුම සමමුහුර්ත කිරීම් විරාම කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="727"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="729"/>
         <source>Pause synchronization</source>
         <translation>සමමුහුර්ත කිරීම විරාම කරන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="734"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="736"/>
         <source>Log out of all accounts</source>
         <translation>සියලුම ගිණුම් වලින් ඉවත් වන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="742"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="744"/>
         <source>Log in to all accounts...</source>
         <translation>සියලුම ගිණුම් වලට ලොග් වෙන්න...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="823"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>Show %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="824"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="826"/>
         <source>New account...</source>
         <translation>නව ගිණුම...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="833"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="835"/>
         <source>About %1</source>
         <translation>%1පමණ</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="866"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="868"/>
         <source>No items synced recently</source>
         <translation>මෑතකදී අයිතම කිසිවක් සමමුහුර්ත කර නැත</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="885"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="887"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
         <translation>දුරස්ථ &apos;%1&apos;හි වෙනස්කම් සඳහා පරීක්ෂා කිරීම</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="888"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="890"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
         <translation>දේශීය &apos;%1&apos;හි වෙනස්කම් සඳහා පරීක්ෂා කිරීම</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="903"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="905"/>
         <source>Syncing %1 of %2  (%3 left)</source>
         <translation>%2  හි %1 සමමුහුර්ත කිරීම (%3 වමේ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="908"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="910"/>
         <source>Syncing %1 of %2</source>
         <translation>%2න් %1 සමමුහුර්ත කිරීම</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="917"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="919"/>
         <source>Syncing %1 (%2 left)</source>
         <translation>%1 සමමුහුර්ත කරමින් (%2 ඉතිරි)</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="920"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="922"/>
         <source>Syncing %1</source>
         <translation>සමමුහුර්ත කිරීම %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudgui.cpp" line="937"/>
+        <location filename="../src/gui/owncloudgui.cpp" line="939"/>
         <source>%1 (%2, %3)</source>
         <translation>%1 (%2, %3)</translation>
     </message>
