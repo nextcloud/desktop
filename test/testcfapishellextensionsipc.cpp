@@ -5,21 +5,24 @@
  *
  */
 
-#include <account.h>
-#include <accountstate.h>
-#include <accountmanager.h>
-#include <common/vfs.h>
-#include <common/shellextensionutils.h>
+#include "configfile.h"
+#include "account.h"
+#include "accountstate.h"
+#include "accountmanager.h"
+#include "common/vfs.h"
+#include "common/shellextensionutils.h"
 #include "config.h"
-#include <folderman.h>
-#include <libsync/vfs/cfapi/shellext/configvfscfapishellext.h>
-#include <ocssharejob.h>
-#include <shellextensionsserver.h>
-#include <syncengine.h>
+#include "folderman.h"
+#include "libsync/vfs/cfapi/shellext/configvfscfapishellext.h"
+#include "ocssharejob.h"
+#include "shellextensionsserver.h"
+#include "syncengine.h"
 #include "syncenginetestutils.h"
 #include "testhelper.h"
-#include <vfs/cfapi/shellext/customstateprovideripc.h>
-#include <vfs/cfapi/shellext/thumbnailprovideripc.h>
+#include "vfs/cfapi/shellext/customstateprovideripc.h"
+#include "vfs/cfapi/shellext/thumbnailprovideripc.h"
+
+#include <QTemporaryDir>
 #include <QtTest>
 #include <QImage>
 #include <QPainter>
@@ -165,6 +168,9 @@ public:
 private slots:
     void initTestCase()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         VfsShellExtensions::ThumbnailProviderIpc::overrideServerName = VfsShellExtensions::serverNameForApplicationNameDefault();
         VfsShellExtensions::CustomStateProviderIpc::overrideServerName = VfsShellExtensions::serverNameForApplicationNameDefault();
 
@@ -258,6 +264,9 @@ private slots:
 
     void testRequestThumbnails()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         FolderMan *folderman = FolderMan::instance();
         QVERIFY(folderman);
         auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
@@ -338,6 +347,9 @@ private slots:
 
     void testRequestCustomStates()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         FolderMan *folderman = FolderMan::instance();
         QVERIFY(folderman);
         auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath());
@@ -469,6 +481,9 @@ private slots:
 
     void cleanupTestCase()
     {
+        QTemporaryDir dir;
+        ConfigFile::setConfDir(dir.path());
+
         VfsShellExtensions::ThumbnailProviderIpc::overrideServerName.clear();
 
         if (auto folder = FolderMan::instance()->folderForPath(fakeFolder.localPath())) {
