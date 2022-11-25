@@ -138,11 +138,13 @@ public:
     {
         const auto converted = convertValue(value);
         if (lcSql().isDebugEnabled()) {
-            auto stream = QDebug(&_boundValues[pos - 1].value).noquote().nospace() << '\'' << value;
+            QString sqlValue;
+            auto stream = QDebug(&sqlValue).noquote().nospace() << '\'' << value;
             if (typeid(converted) != typeid(value)) {
                 stream << " [" << converted << ']';
             }
             stream << '\'';
+            _boundValues[pos - 1].value = sqlValue;
         }
         bindValueInternal(pos, converted);
     }

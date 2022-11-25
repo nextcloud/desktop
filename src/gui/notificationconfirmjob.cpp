@@ -35,7 +35,7 @@ NotificationWidget *NotificationConfirmJob::widget()
 
 void NotificationConfirmJob::start()
 {
-    setIgnoreCredentialFailure(true);
+    setForceIgnoreCredentialFailure(true);
 
     JsonApiJob::start();
 }

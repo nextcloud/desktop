@@ -98,9 +98,14 @@ void AbstractNetworkJob::setTimeout(const std::chrono::seconds sec)
     _timeout = sec;
 }
 
-void AbstractNetworkJob::setIgnoreCredentialFailure(bool ignore)
+void AbstractNetworkJob::setForceIgnoreCredentialFailure(bool ignore)
 {
-    _ignoreCredentialFailure = ignore;
+    _forceIgnoreCredentialFailure = ignore;
+}
+
+bool AbstractNetworkJob::ignoreCredentialFailure() const
+{
+    return _forceIgnoreCredentialFailure || _isAuthenticationJob;
 }
 
 QNetworkReply *AbstractNetworkJob::reply() const
@@ -183,7 +188,7 @@ void AbstractNetworkJob::slotFinished()
 {
     _finished = true;
 
-    if (!_account->credentials()->stillValid(_reply) && !_ignoreCredentialFailure) {
+    if (!_account->credentials()->stillValid(_reply) && !ignoreCredentialFailure()) {
         Q_EMIT _account->invalidCredentials();
     }
 
@@ -191,14 +196,6 @@ void AbstractNetworkJob::slotFinished()
         if (_account->jobQueue()->retry(this)) {
             qCDebug(lcNetworkJob) << "Queued:" << this << "for retry";
             return;
-        }
-
-        if (!_ignoreCredentialFailure || _reply->error() != QNetworkReply::AuthenticationRequiredError) {
-            qCWarning(lcNetworkJob) << this << _reply->error() << errorString()
-                                    << _reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-            if (_reply->error() == QNetworkReply::ProxyAuthenticationRequiredError) {
-                qCWarning(lcNetworkJob) << _reply->rawHeader("Proxy-Authenticate");
-            }
         }
 
         if (_reply->error() == QNetworkReply::OperationCanceledError && !_aborted) {

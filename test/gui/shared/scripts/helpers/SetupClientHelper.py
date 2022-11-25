@@ -69,7 +69,7 @@ def getResourcePath(context, resource, user=None):
 
 def startClient(context):
     squish.startApplication(
-        "owncloud OWNCLOUD_CORE_DUMP=1 -s"
+        "owncloud -s"
         + " --logfile "
         + context.userData['clientLogFile']
         + " --logdebug"

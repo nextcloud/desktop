@@ -860,11 +860,11 @@ void AccountSettings::slotAccountStateChanged()
                     contentWidget->hideRetryFrame();
                 });
 
-                connect(cred, &HttpCredentialsGui::asked, _askForOAuthLoginDialog, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
-                    if (!cred->ready()) {
-                        ocApp()->gui()->raiseDialog(loginDialog);
-                        contentWidget->showRetryFrame();
-                    }
+                connect(cred, &HttpCredentialsGui::oAuthErrorOccurred, _askForOAuthLoginDialog, [loginDialog = _askForOAuthLoginDialog, contentWidget, cred]() {
+                    Q_ASSERT(!cred->ready());
+
+                    ocApp()->gui()->raiseDialog(loginDialog);
+                    contentWidget->showRetryFrame();
                 });
 
                 showConnectionLabel(tr("Reauthorization required."));

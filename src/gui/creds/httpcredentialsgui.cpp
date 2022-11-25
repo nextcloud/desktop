@@ -87,7 +87,7 @@ void HttpCredentialsGui::asyncAuthResult(OAuth::Result r, const QString &user,
         showDialog();
         return;
     case OAuth::Error:
-        emit asked();
+        Q_EMIT oAuthErrorOccurred();
         return;
     case OAuth::LoggedIn:
         break;

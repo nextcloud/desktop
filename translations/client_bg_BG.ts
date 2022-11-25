@@ -92,12 +92,12 @@
 <context>
     <name>ChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="122"/>
+        <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
         <translation>Заглавката на контролната сума е деформирана: %1</translation>
     </message>
     <message>
-        <location filename="../src/common/checksums.cpp" line="126"/>
+        <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
         <translation>Заглавката на контролната сума съдържа неизвестен тип контролна сума &apos;%1&apos;</translation>
     </message>
@@ -277,7 +277,7 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizardsourcepage.ui" line="20"/>
         <source>Pick a local folder on your computer to sync</source>
-        <translation>Изберете папка на Вашия компютър за синхронизация</translation>
+        <translation>Изберете локална папка в компютъра, която да синхронизирате</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardsourcepage.ui" line="32"/>
@@ -295,7 +295,7 @@
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="20"/>
         <source>Select a remote destination folder</source>
-        <translation>Избиране на отдалечена папка</translation>
+        <translation>Избор на отдалечена целева папка</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardtargetpage.ui" line="49"/>
@@ -393,17 +393,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="250"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="247"/>
         <source>Connection timed out</source>
         <translation>Времето за изчакване на връзката изтече</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="252"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="249"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Неизвестна грешка: мрежовият отговор беше изтрит</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="349"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="346"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>Сървърът отговори „%1%2“ в „%3%4“</translation>
     </message>
@@ -528,7 +528,7 @@
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
 
 This action will abort any currently running synchronization.</source>
-        <translation>Това действие ще деактивира поддръжката на виртуални файлове. В резултат на това ще бъде изтеглено съдържание на папки, които в момента са маркирани като „достъпни само онлайн“.
+        <translation>Това действие ще деактивира поддръжката на виртуални файлове. В резултат на това ще бъде изтеглено съдържание на папки, които в момента са маркирани като &apos;достъпни само онлайн&apos;.
 
 Единственото предимство на деактивирането на поддръжката на виртуални файлове е, че функцията за селективно синхронизиране ще остане налична и достъпна.
 
@@ -935,7 +935,7 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="612"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation>Записвайте всяко изхвеждане от дневника за синхронизиране като нов файл в папката.</translation>
+        <translation>Записване на всяко извеждане от дневника за синхронизиране, като нов файл в папката.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="613"/>
@@ -1125,7 +1125,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="270"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Директорията не е достъпна за клиента, отказано право на достъп</translation>
+        <translation>Директорията не е достъпна за клиента, отказано е правото на достъп</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="274"/>
@@ -1282,7 +1282,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="1193"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
-        <translation>Моля, отидете в настройки за да изберете дали искате да го изтеглите.</translation>
+        <translation>Моля, отидете в настройки, за да изберете дали искате да го изтеглите.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="1252"/>
@@ -1438,7 +1438,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1263"/>
         <source>You have no permission to write to the selected folder!</source>
-        <translation>Вие нямате права да записвате в избраната папка!</translation>
+        <translation>Вие нямате необходимите права за запис в избраната папка!</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1278"/>
@@ -1693,7 +1693,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation>Изберете локална папка.</translation>
+        <translation>Избор на локална папка</translation>
     </message>
 </context>
 <context>
@@ -1706,7 +1706,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="74"/>
         <source>Enter the name of the new folder to be created below &apos;%1&apos;:</source>
-        <translation>Напишете името на папката, която трябва да бъде създадена  &apos;%1&apos;:</translation>
+        <translation>Въведете името на новата папка, която ще бъде създадена под &apos;%1&apos;:</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="103"/>
@@ -1775,22 +1775,22 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation>Време за изчакване на връзката</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="175"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="174"/>
         <source>No E-Tag received from server, check Proxy/Gateway</source>
         <translation>Не е получен E-Tag от сървъра, проверете Proxy/Gateway</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="182"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
         <translation>Получихме различен Е-етикет за възобновяване. Следващия път опитайте отново.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="193"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
         <source>We received an unexpected download Content-Length.</source>
         <translation>Получи се неочаквано изтегляне Content-Length.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="221"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
         <source>Server returned wrong content-range</source>
         <translation>Сървърът върна грешен списък със съдържание</translation>
     </message>
@@ -1938,9 +1938,9 @@ Please consider removing this folder from the account and adding it again.</sour
         <source>The update channel determines which client updates will be offered for installation. The &quot;stable&quot; channel contains only upgrades that are considered reliable, while the versions in the &quot;beta&quot; channel may contain newer features and bugfixes, but have not yet been tested thoroughly.
 
 Note that this selects only what pool upgrades are taken from, and that there are no downgrades: So going back from the beta channel to the stable channel usually cannot be done immediately and means waiting for a stable version that is newer than the currently installed beta version.</source>
-        <translation>Каналът за актуализиране определя кои клиентски актуализации ще бъдат предложени за инсталиране. &quot;Стабилният&quot; канал съдържа само надграждания, които се считат за надеждни, докато версиите в &quot;бета&quot; канала могат да съдържат по-нови функции и грешки, които все още не са тествани старателно.
+        <translation>Каналът за актуализация определя кои клиентски актуализации ще бъдат предложени за инсталиране. &quot;Стабилният&quot; канал съдържа само надграждания, които се считат за надеждни, докато версиите в &quot;бета&quot; канала могат да съдържат по-нови функции и грешки, които все още не са тествани старателно.
 
-Обърнете внимание, че по този начин се избира само от кой пакет ще се вземат подобренията и че няма да има понижение във версията: Така че връщането от бета канала към стабилния канал обикновено не може да се извърши веднага и означава изчакване на стабилна версия, която е по-нова от инсталираната в момента бета версия.</translation>
+Обърнете внимание, че по този начин се избира само от кой пакет ще се вземат подобренията, и че няма да има понижение във версията: Така, че връщането от бета канала към стабилния канал обикновено не може да се извърши веднага и означава изчакване на стабилна версия, която е по-нова от инсталираната в момента бета версия.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="233"/>
@@ -2023,7 +2023,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
 Items where deletion is allowed will be deleted if they prevent a directory from being removed. This is useful for meta data.</source>
         <translation>Файлове или папки, съответстващи на даден шаблон няма да бъдат синхронизирани. Промените влизат в сила следващия път, когато папките се синхронизират.
 
-Елементите, при които е разрешено изтриването ще бъдат изтрити даже ако не е позволено премахването на директория. Това е полезно за мета данните.</translation>
+Елементите, при които е разрешено изтриването ще бъдат изтрити даже ако не е позволено премахването им от директорията. Това е полезно за мета данните.</translation>
     </message>
     <message>
         <location filename="../src/gui/ignorelisteditor.cpp" line="113"/>
@@ -2617,7 +2617,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="411"/>
         <source>permissions</source>
-        <translation>разрешения</translation>
+        <translation>права за достъп</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="413"/>
@@ -2652,12 +2652,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1210"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
-        <translation>Не е позволено, защото нямате право да добавяте подпапки в тази папка.</translation>
+        <translation>Не е позволено, защото нямате необходимите права за добавяне на подпапки в тази папка.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1215"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
-        <translation>Не е позволено, защото нямате право да добавяте файлове в тази папка.</translation>
+        <translation>Не е позволено, защото нямате необходимите права за добавяне на файлове в тази папка.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1228"/>
@@ -2691,67 +2691,67 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::PropagateDownloadFile</name>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="354"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="353"/>
         <source>Failed to free up space, the file %1 is currently in use</source>
         <translation>Неуспешно освобождаване на място, файлът %1 се използва в момента</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="369"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="455"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="368"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
         <translation>Файлът %1 не може да бъде изтеглен, тъй като името на локалния файл е в противоречие с името на файла %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="513"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <source>The download would reduce free local disk space below the limit</source>
         <translation>Изтеглянето ще намали свободното дисково пространство под лимита</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="517"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="516"/>
         <source>Free space on disk is less than %1</source>
         <translation>Свободното място на диска е по-малко от %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="641"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="640"/>
         <source>File was deleted from server</source>
         <translation>Файлът е изтрит от сървъра</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="702"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
         <translation>Повреденият уеб сървър при възобновяване върна празна дължина на съдържанието за непразен файл</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="709"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="708"/>
         <source>The file could not be downloaded completely.</source>
         <translation>Файлът не може да бъде изтеглен напълно.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="716"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="715"/>
         <source>The downloaded file is empty despite the server announced it should have been %1.</source>
         <translation>Изтегленият файл е празен, въпреки че сървърът е посочил, че би трябвало да е %1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="896"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
         <translation>Файлът %1 не може да бъде запазен, тъй като името на местния файл е в конфликт с името на файла %2!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1015"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка при актуализирането на метаданните: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="463"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="920"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="953"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1018"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="462"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="919"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="952"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1017"/>
         <source>The file %1 is currently in use</source>
         <translation>Файлът %1 се използва в момента</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatedownload.cpp" line="349"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="945"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="348"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="944"/>
         <source>File has changed since discovery</source>
         <translation>Файлът е променен от последната проверка</translation>
     </message>
@@ -2992,7 +2992,7 @@ for additional privileges during the process.</source>
         <translation>%1 файлът в момента се използва</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateuploadtus.cpp" line="206"/>
+        <location filename="../src/libsync/propagateuploadtus.cpp" line="208"/>
         <source>The local file was removed during sync.</source>
         <translation>Локалния файл бе премахнат по време на синхронизацията.</translation>
     </message>
@@ -3143,7 +3143,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
-        <translation>Премахнете избора на папки, които не желаете да синхронизирате.</translation>
+        <translation>Премахнете избора от отдалечените папки, които не желаете да синхронизирате.</translation>
     </message>
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
@@ -3229,7 +3229,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="43"/>
         <source>share label</source>
-        <translation>етикет на споделяне</translation>
+        <translation>етикет за споделяне</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="20"/>
@@ -3264,12 +3264,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="130"/>
         <source>Retrieving maximum possible sharing permissions from server...</source>
-        <translation>Извличане на максималните възможни разрешения за споделяне от сървъра...</translation>
+        <translation>Извличане от сървъра на максималните възможни права за споделяне...</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="191"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Файлът не може да споделен, защото се иска споделяне без да има това право.</translation>
+        <translation>Файлът не може да споделен, защото се иска споделяне без да се има такива права.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="200"/>
@@ -3368,7 +3368,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="96"/>
         <source>The file can not be shared because it was shared without sharing permission.</source>
-        <translation>Файлът не може да споделен, защото се иска споделяне без да има това право.</translation>
+        <translation>Файлът не може да споделен, защото се иска споделяне без да се има такива права.</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="93"/>
@@ -3591,7 +3591,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="758"/>
         <source>Select new location...</source>
-        <translation>Изберете ново местоположение ...</translation>
+        <translation>Избор на ново местоположение...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="768"/>
@@ -3832,7 +3832,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="445"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Версия %1. За повече информация посетете &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;За известни проблеми и помощ, моля, посетете: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;От Клаас Фрайтаг, Даниел Молкентин, Оливие Гофарт, Маркус Гьотц, Ян-Кристоф Борхардт, Томас Мюлер,&lt;br&gt;Доминик Шмидт, Михаел Щингл, Хана фон Рет, Фабиан Мюлер и др.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Разпространява се от %4 и е лицензирано под Общия публичен лиценз на GNU (GPL) версия 2.0.&lt;br/&gt;%5 и логото %5 са регистрирани търговски марки на %4 в САЩ, други държави или и в двете.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Версия %1. За повече информация посетете &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;За известни проблеми и помощ, моля, посетете: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;От Клаас Фрайтаг, Даниел Молкентин, Оливие Гофарт, Маркус Гьотц, Ян-Кристоф Борхардт, Томас Мюлер,&lt;br&gt;Доминик Шмидт, Михаел Щингл, Хана фон Рет, Фабиан Мюлер и др.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Авторско право на ownCloud GmbH&lt;/p&gt;&lt;p&gt;Разпространява се от %4 и е лицензирано под Общия публичен лиценз на GNU (GPL) версия 2.0.&lt;br/&gt;%5 и логото %5 са регистрирани търговски марки на %4 в САЩ, други държави или и в двете.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3911,7 +3911,7 @@ The update will be performed in the background, and overwrite the current AppIma
 <context>
     <name>OCC::ValidateChecksumHeader</name>
     <message>
-        <location filename="../src/common/checksums.cpp" line="381"/>
+        <location filename="../src/common/checksums.cpp" line="386"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &apos;%1&apos; != &apos;%2&apos;</source>
         <translation>Изтегленият файл не съответства на контролната сума, той ще бъде възстановен. &apos;%1&apos; != &apos;%2&apos;</translation>
     </message>
@@ -3975,7 +3975,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
         <source>Select the local folder</source>
-        <translation>Изберете локална папка.</translation>
+        <translation>Избор на локална папка.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
@@ -4156,12 +4156,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
         <source>Cancel Setup</source>
-        <translation>Отмяна на настройката</translation>
+        <translation>Анулиране на настройката</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation>Наистина ли искате да анулирате настройката на акаунта?</translation>
+        <translation>Наистина ли искате да нулирате настройката на профила?</translation>
     </message>
 </context>
 <context>
@@ -4548,7 +4548,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добавяне на пространство&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Изберете пространство за да го синхронизирате с вашия компютър.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Добавяне на пространство&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Изберете пространство, за да го синхронизирате с вашия компютър.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>

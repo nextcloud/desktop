@@ -76,6 +76,8 @@ MacPlatform::~MacPlatform()
 void MacPlatform::migrate()
 {
     Platform::migrate();
+
+    migrateLaunchOnStartup();
 }
 
 } // namespace OCC

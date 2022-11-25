@@ -22,7 +22,7 @@ ThumbnailJob::ThumbnailJob(const QString &path, AccountPtr account, QObject *par
     : AbstractNetworkJob(account, account->url(), QStringLiteral("index.php/apps/files/api/v1/thumbnail/150/150") + path, parent)
 {
     Q_ASSERT(path.startsWith(QLatin1Char('/')));
-    setIgnoreCredentialFailure(true);
+    setForceIgnoreCredentialFailure(true);
 }
 
 void ThumbnailJob::start()
