@@ -567,7 +567,6 @@ public:
      */
     static QPixmap createColorAwarePixmap(const QString &name);
 
-
     /**
      * @brief Whether to show the option to create folders using "virtual files".
      *
