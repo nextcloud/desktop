@@ -130,20 +130,18 @@ ColumnLayout {
             Layout.fillWidth: true
             spacing: 0
 
-            UserStatusSelectorButton {
+            AbstractButton {
                 id: fieldButton
+
+                readonly property bool showBorder: hovered || checked || emojiDialog.visible
 
                 Layout.preferredWidth: userStatusMessageTextField.height
                 Layout.preferredHeight: userStatusMessageTextField.height
 
                 text: userStatusSelectorModel.userStatusEmoji
-
-                onClicked: emojiDialog.open()
-                onHeightChanged: topButtonsLayout.maxButtonHeight = Math.max(topButtonsLayout.maxButtonHeight, height)
-
-                primary: true
                 padding: 0
-                z: hovered ? 2 : 0 // Make sure highlight is seen on top of text field
+                z: showBorder ? 2 : 0 // Make sure highlight is seen on top of text field
+                hoverEnabled: true
 
                 property color borderColor: showBorder ? Style.ncBlue : palette.dark
 
@@ -175,6 +173,15 @@ ColumnLayout {
                         color: palette.button
                     }
                 }
+
+                contentItem: Label {
+                    text: fieldButton.text
+                    textFormat: Text.PlainText
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                onClicked: emojiDialog.open()
             }
 
             Popup {
