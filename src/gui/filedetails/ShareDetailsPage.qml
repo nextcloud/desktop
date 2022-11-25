@@ -220,7 +220,7 @@ Page {
                 elide: Text.ElideRight
             }
 
-            CustomButton {
+            Button {
                 id: closeButton
 
                 Layout.rowSpan: headerGridLayout.rows
@@ -232,8 +232,6 @@ Page {
                 icon.source: "image://svgimage-custom-color/clear.svg" + "/" + palette.buttonText
                 icon.width: Style.activityListButtonIconSize
                 icon.height: Style.activityListButtonIconSize
-                toolTipText: qsTr("Dismiss")
-
                 onClicked: root.closeShareDetails()
             }
 
@@ -716,26 +714,23 @@ Page {
                 }
             }
 
-            CustomButton {
+            Button {
                 height: Style.standardPrimaryButtonHeight
-
-                icon.source: "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
-                imageSourceHover: "image://svgimage-custom-color/close.svg/" + palette.brightText
+                icon.source: hovered
+                    ? "image://svgimage-custom-color/close.svg/" + palette.brightText
+                    : "image://svgimage-custom-color/close.svg/" + Style.errorBoxBackgroundColor
                 text: qsTr("Unshare")
-
                 onClicked: root.deleteShare()
             }
 
-            CustomButton {
+            Button {
                 height: Style.standardPrimaryButtonHeight
-
-                icon.source: "image://svgimage-custom-color/add.svg/" + root.accentColor
-                imageSourceHover: "image://svgimage-custom-color/add.svg/" + palette.brightText
+                icon.source: hovered
+                    ? "image://svgimage-custom-color/add.svg/" + palette.brightText
+                    : "image://svgimage-custom-color/add.svg/" + root.accentColor
                 text: qsTr("Add another link")
-
                 visible: root.isLinkShare && root.canCreateLinkShares
                 enabled: visible
-
                 onClicked: root.createNewLinkShare()
             }
         }

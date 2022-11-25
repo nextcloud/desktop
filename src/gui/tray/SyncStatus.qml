@@ -84,12 +84,8 @@ RowLayout {
         }
     }
 
-    CustomButton {
+    Button {
         id: syncNowButton
-
-        FontMetrics {
-            id: syncNowFm
-        }
 
         Layout.rightMargin: Style.trayHorizontalMargin
 
@@ -109,11 +105,7 @@ RowLayout {
         }
     }
 
-    CustomButton {
-        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
-                               leftPadding +
-                               rightPadding +
-                               Style.standardSpacing * 2
+    Button {
         Layout.rightMargin: Style.trayHorizontalMargin
 
         text: qsTr("Resolve conflicts")

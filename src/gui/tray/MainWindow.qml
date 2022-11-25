@@ -739,7 +739,7 @@ ApplicationWindow {
 
             active: false
 
-            sourceComponent: CustomButton {
+            sourceComponent: Button {
                 id: newActivitiesButton
                 hoverEnabled: true
                 padding: Style.smallSpacing
@@ -767,9 +767,9 @@ ApplicationWindow {
 
                 OpacityAnimator {
                     id: fadeoutActivitiesButtonDisappear
-                    target: newActivitiesButton;
-                    from: 1;
-                    to: 0;
+                    target: newActivitiesButton
+                    from: 1
+                    to: 0
                     duration: Style.newActivityButtonDisappearFadeTimeout
                     loops: 1
                     running: false
