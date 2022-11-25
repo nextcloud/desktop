@@ -3186,107 +3186,107 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
 <context>
     <name>OCC::ProcessDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="271"/>
+        <location filename="../src/libsync/discovery.cpp" line="294"/>
         <source>Symbolic links are not supported in syncing.</source>
         <translation>Is ligòngios simbòlicos non sunt suportados in sa sincronizatzione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="279"/>
+        <location filename="../src/libsync/discovery.cpp" line="302"/>
         <source>File is listed on the ignore list.</source>
         <translation>Archìviu postu in s&apos;elencu de is ignorados.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="283"/>
+        <location filename="../src/libsync/discovery.cpp" line="306"/>
         <source>File names ending with a period are not supported on this file system.</source>
         <translation>Is nùmenes chi agabbant cun unu puntu non sunt suportados in custu archìviu de sistema.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="293"/>
+        <location filename="../src/libsync/discovery.cpp" line="316"/>
         <source>File names containing the character &quot;%1&quot; are not supported on this file system.</source>
         <translation>Is archìvios cun in intro su caràtere &quot;%1&quot; non sunt suportados in custu archìviu de su sistema.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="295"/>
+        <location filename="../src/libsync/discovery.cpp" line="318"/>
         <source>File name contains at least one invalid character</source>
         <translation>Su nùmene de su&apos;archìviu tenet a su mancu unu caràtere non bàlidu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="297"/>
+        <location filename="../src/libsync/discovery.cpp" line="320"/>
         <source>The file name is a reserved name on this file system.</source>
         <translation>Su nùmene de s&apos;archìviu est unu nùmene riservadu a custu archìviu de sistema.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="303"/>
+        <location filename="../src/libsync/discovery.cpp" line="326"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Su nùmene de s&apos;archìviu cuntenet tretos a sa fine.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="307"/>
+        <location filename="../src/libsync/discovery.cpp" line="330"/>
         <source>Filename contains leading spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="311"/>
+        <location filename="../src/libsync/discovery.cpp" line="334"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="315"/>
+        <location filename="../src/libsync/discovery.cpp" line="338"/>
         <source>Filename is too long.</source>
         <translation>Su nùmene de s&apos;archìviu est tropu longu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="319"/>
+        <location filename="../src/libsync/discovery.cpp" line="342"/>
         <source>File/Folder is ignored because it&apos;s hidden.</source>
         <translation>S&apos;archìviu/cartella ignoradu ca cuadu.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="322"/>
+        <location filename="../src/libsync/discovery.cpp" line="345"/>
         <source>Stat failed.</source>
         <translation>Stat faddida.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="325"/>
+        <location filename="../src/libsync/discovery.cpp" line="348"/>
         <source>Conflict: Server version downloaded, local copy renamed and not uploaded.</source>
         <translation>Cunflitu: versione de su serbidore iscarrigada, còpia locale torrada a numenare e non carrigada.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="329"/>
+        <location filename="../src/libsync/discovery.cpp" line="352"/>
         <source>The filename cannot be encoded on your file system.</source>
         <translation>Su nùmene de s&apos;archìviu non podet èssere codificada in s&apos;archìviu tuo de sistema.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="332"/>
+        <location filename="../src/libsync/discovery.cpp" line="355"/>
         <source>The filename is blacklisted on the server.</source>
         <translation>Su nùmene de s&apos;archìviu est in sa lista niedda de su serbidore.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="402"/>
+        <location filename="../src/libsync/discovery.cpp" line="425"/>
         <source>File has extension reserved for virtual files.</source>
         <translation>S&apos;archìviu at un&apos;estensione riservada a is archìvios virtuales.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="485"/>
+        <location filename="../src/libsync/discovery.cpp" line="508"/>
         <source>size</source>
         <translation>mannària</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="487"/>
+        <location filename="../src/libsync/discovery.cpp" line="510"/>
         <source>permission</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="491"/>
+        <location filename="../src/libsync/discovery.cpp" line="514"/>
         <source>file id</source>
         <translation>id de s&apos;archìviu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="495"/>
+        <location filename="../src/libsync/discovery.cpp" line="518"/>
         <source>Server reported no %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="849"/>
+        <location filename="../src/libsync/discovery.cpp" line="872"/>
         <source>Cannot sync due to invalid modification time</source>
         <translation type="unfinished"/>
     </message>
@@ -3296,52 +3296,52 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1153"/>
+        <location filename="../src/libsync/discovery.cpp" line="1176"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
         <translation>Iscòrriu carrighende una cartella. Custa s&apos;at a cantzellare!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1156"/>
+        <location filename="../src/libsync/discovery.cpp" line="1179"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
         <translation>Iscòrriu carrighende un&apos;archìviu. Custu s&apos;at a cantzellare!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1514"/>
+        <location filename="../src/libsync/discovery.cpp" line="1537"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
         <translation>Ignoradu ca in sa lista niedda de is cosas de no sincronizare</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1547"/>
+        <location filename="../src/libsync/discovery.cpp" line="1570"/>
         <source>Not allowed because you don&apos;t have permission to add subfolders to that folder</source>
         <translation>Non podes ca non tenes su permissu pro agiùnghere sutacartellas a custas cartellas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1552"/>
+        <location filename="../src/libsync/discovery.cpp" line="1575"/>
         <source>Not allowed because you don&apos;t have permission to add files in that folder</source>
         <translation> Non podes ca non tenes su permissu pro agiùnghere archìvios a custa cartella</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1565"/>
+        <location filename="../src/libsync/discovery.cpp" line="1588"/>
         <source>Not allowed to upload this file because it is read-only on the server, restoring</source>
         <translation>Non podes carrigare custu archìviu ca in su serbidore podes isceti lèghere, riprìstinu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1587"/>
+        <location filename="../src/libsync/discovery.cpp" line="1610"/>
         <source>Moved to invalid target, restoring</source>
         <translation>Tramudadu a un&apos;indiritzu non bàlidu, riprìstinu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1601"/>
+        <location filename="../src/libsync/discovery.cpp" line="1624"/>
         <source>Not allowed to remove, restoring</source>
         <translation>Non ddu podes bogare, riprìstinu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1739"/>
+        <location filename="../src/libsync/discovery.cpp" line="1762"/>
         <source>Error while reading the database</source>
         <translation>Errore leghende sa base de datos</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="1800"/>
+        <location filename="../src/libsync/discovery.cpp" line="1823"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
         <translation>Su serbidore nd&apos;at torradu un&apos;errore leghende sa cartella &quot;%1&quot; : %2</translation>
     </message>
@@ -3508,45 +3508,46 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="230"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
         <translation>S&apos;archìviu %1 non faghet a ddu torrare a numenare %2 pro unu cunflitu cun su nùmene de s&apos;archìviu locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="352"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="302"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="345"/>
         <source>could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="279"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="331"/>
         <source>Error setting pin state</source>
         <translation>Errore impostende s&apos;istadu de su pin </translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="264"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
         <source>Error updating metadata: %1</source>
         <translation>Errore agiornende is metadatos: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="267"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
         <translation>S&apos;archìviu %1 est giai impreadu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="357"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="273"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
         <source>Failed to rename file</source>
         <translation>No at fatu a torrare a numenare s&apos;archìviu</translation>
     </message>
@@ -4349,12 +4350,12 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation> Non at fatu a lèghere sa lista niedda de sa base de datos locale</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="576"/>
+        <location filename="../src/libsync/syncengine.cpp" line="580"/>
         <source>Unable to read from the sync journal.</source>
         <translation>No at fatu a lèghere dae su registru de sincronizatzione.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="659"/>
+        <location filename="../src/libsync/syncengine.cpp" line="663"/>
         <source>Cannot open the sync journal</source>
         <translation>Non faghet a abèrrerer su registru de sincronizatzione</translation>
     </message>
@@ -4364,12 +4365,12 @@ Custa est una modalidade noa, isperimentale. Si detzides de dda impreare, sinnal
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1085"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1089"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation> Su logu in su discu est pagu: is iscarrigamentos chi diant pòdere minimare su logu lìberu suta de %1 s&apos;ant a lassare.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1092"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1096"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Non b&apos;at logu in su serbidore pro unos cantos carrigamentos. </translation>
     </message>
