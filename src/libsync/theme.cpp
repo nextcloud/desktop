@@ -51,7 +51,7 @@ QUrl imagePathToUrl(const QString &imagePath)
         return QUrl::fromLocalFile(imagePath);
     }
 }
-
+//fake change
 bool shouldPreferSvg()
 {
     return QByteArray(APPLICATION_ICON_SET).toUpper() == QByteArrayLiteral("SVG");
