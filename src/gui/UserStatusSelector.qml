@@ -143,7 +143,6 @@ ColumnLayout {
                 onClicked: emojiDialog.open()
                 onHeightChanged: topButtonsLayout.maxButtonHeight = Math.max(topButtonsLayout.maxButtonHeight, height)
 
-                primary: true
                 padding: 0
                 z: hovered ? 2 : 0 // Make sure highlight is seen on top of text field
 
@@ -314,27 +313,42 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.alignment: Qt.AlignBottom
 
-        UserStatusSelectorButton {
+        CustomButton {
             // Prevent being squashed by the other buttons with larger text
             Layout.minimumWidth: implicitWidth
             Layout.fillHeight: true
-            primary: true
+
             text: qsTr("Cancel")
+            contentsFont.bold: true
+            bgColor: Style.buttonBackgroundColor
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: Style.hoverOpacity
+
             onClicked: finished()
         }
-        UserStatusSelectorButton {
+        CustomButton {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            primary: true
+
             text: qsTr("Clear status message")
+            contentsFont.bold: true
+            bgColor: Style.buttonBackgroundColor
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: Style.hoverOpacity
+
             onClicked: userStatusSelectorModel.clearUserStatus()
         }
-        UserStatusSelectorButton {
+        CustomButton {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            primary: true
-            colored: true
+
             text: qsTr("Set status message")
+            textColor: Style.ncHeaderTextColor
+            contentsFont.bold: true
+            bgColor: Style.ncBlue
+            bgNormalOpacity: 1.0
+            bgHoverOpacity: Style.hoverOpacity
+
             onClicked: userStatusSelectorModel.setUserStatus()
         }
     }

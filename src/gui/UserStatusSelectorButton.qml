@@ -25,69 +25,67 @@ AbstractButton {
     id: root
 
     property string secondaryText: ""
-    property bool colored: false
-    property bool primary: false
-    property bool highlighted: false
-    readonly property bool showBorder: hovered || highlighted || checked
+    readonly property bool showBorder: hovered || checked
+
+    readonly property bool hasImage: root.icon.source !== ""
+    readonly property bool hasSecondaryText: root.secondaryText !== ""
+    readonly property bool hasPrimaryText: root.text !== ""
 
     hoverEnabled: true
     padding: Style.standardSpacing
 
     background: Rectangle {
-        radius: root.primary ? Style.veryRoundedButtonRadius : Style.mediumRoundedButtonRadius
-        color: root.colored ? Style.ncBlue : Style.buttonBackgroundColor
-        opacity: root.colored && root.hovered ? Style.hoverOpacity : 1.0
-        border.color: Style.ncBlue
-        border.width: root.showBorder ? root.primary ? Style.normalBorderWidth : Style.thickBorderWidth : 0
+        radius: Style.mediumRoundedButtonRadius
+        color: Style.buttonBackgroundColor
+        border.color: root.checked ? Style.ncBlue : Style.menuBorder
+        border.width: root.showBorder ? Style.thickBorderWidth : 0
     }
 
     contentItem: GridLayout {
-        columns: 2
+        columns: root.hasImage ? 2 : 1
         rows: 2
         columnSpacing: Style.standardSpacing
         rowSpacing: Style.standardSpacing / 2
 
         Image {
             Layout.column: 0
-            Layout.columnSpan: root.text === "" && root.secondaryText == "" ? 2 : 1
+            Layout.columnSpan: !root.hasPrimaryText && !root.hasSecondaryText ? 2 : 1
             Layout.row: 0
             Layout.rowSpan: 2
             Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
             horizontalAlignment: Text.AlignHCenter
             verticalAlignment: Text.AlignVCenter
 
-
             source: root.icon.source
-            visible: root.icon.source !== ""
+            visible: root.hasImage
         }
 
         EnforcedPlainTextLabel {
-            Layout.column: root.icon.source === "" ? 0 : 1
-            Layout.columnSpan: root.icon.source === "" ? 2 : 1
+            Layout.column: root.hasImage ? 1 : 0
+            Layout.columnSpan: root.hasImage ? 1 : 2
             Layout.row: 0
-            Layout.rowSpan: root.secondaryText === "" ? 2 : 1
+            Layout.rowSpan: root.hasSecondaryText ? 1 : 2
             Layout.fillWidth: true
-            horizontalAlignment: root.primary ? Text.AlignHCenter : Text.AlignLeft
+            horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
 
             text: root.text
             wrapMode: Text.Wrap
             color: root.colored ? Style.ncHeaderTextColor : Style.ncTextColor
-            font.bold: root.primary
         }
 
         EnforcedPlainTextLabel {
-            Layout.column: root.icon.source === "" ? 0 : 1
-            Layout.columnSpan: root.icon.source === "" ? 2 : 1
+            Layout.column: root.hasImage ? 1 : 0
+            Layout.columnSpan: root.hasImage ? 1 : 2
             Layout.row: 1
             Layout.fillWidth: true
-            horizontalAlignment: root.primary ? Text.AlignHCenter : Text.AlignLeft
+            horizontalAlignment: Text.AlignLeft
             verticalAlignment: Text.AlignVCenter
 
             text: root.secondaryText
             wrapMode: Text.Wrap
             color: Style.ncSecondaryTextColor
-            visible: root.secondaryText !== ""
+            visible: root.hasSecondaryText
         }
     }
 }
