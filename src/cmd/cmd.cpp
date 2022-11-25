@@ -475,7 +475,13 @@ int main(int argc, char **argv)
                 qDebug() << "Server capabilities" << caps;
                 ctx.account->setCapabilities(caps.toVariantMap());
 
-                if (ctx.account->serverVersionUnsupported()) {
+                switch (ctx.account->serverSupportLevel()) {
+                case Account::ServerSupportLevel::Supported:
+                    break;
+                case Account::ServerSupportLevel::Unknown:
+                    qWarning() << "Failed to detect server version";
+                    break;
+                case Account::ServerSupportLevel::Unsupported:
                     qFatal("Error unsupported server");
                 }
 

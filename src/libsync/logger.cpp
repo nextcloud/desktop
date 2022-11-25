@@ -85,7 +85,7 @@ Logger::~Logger()
 
 QString Logger::loggerPattern()
 {
-    return QStringLiteral("%{time MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
+    return QStringLiteral("%{time yy-MM-dd hh:mm:ss:zzz} [ %{type} %{category} ]%{if-debug}\t[ %{function} ]%{endif}:\t%{message}");
 }
 
 bool Logger::isLoggingToFile() const

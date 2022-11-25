@@ -1,0 +1,6 @@
+Enhancement: Tweak logging format 
+
+The logging format is now better parseable for 3rdparty apps
+that ease debugging.
+
+https://github.com/owncloud/client/pull/10310

@@ -88,6 +88,8 @@ void setUpInitialSyncFolder(AccountStatePtr accountStatePtr, bool useVfs)
                         const QString folderName = FolderMan::instance()->findGoodPathForNewSyncFolder(localDir.filePath(name));
                         auto folder = addFolder(folderName, {}, QUrl::fromEncoded(d.getRoot().getWebDavUrl().toUtf8()), name);
                         folder->setPriority(GraphApi::Drives::getDrivePriority(d));
+                        // save the new priority
+                        folder->saveToSettings();
                     }
                     finalize();
                 }
@@ -231,7 +233,7 @@ void ownCloudGui::slotAccountStateChanged()
 
 void ownCloudGui::slotTrayMessageIfServerUnsupported(Account *account)
 {
-    if (account->serverVersionUnsupported()) {
+    if (account->serverSupportLevel() != Account::ServerSupportLevel::Supported) {
         slotShowTrayMessage(
             tr("Unsupported Server Version"),
             tr("The server on account %1 runs an unsupported version %2. "

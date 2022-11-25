@@ -137,7 +137,7 @@ public:
     void bindValue(int pos, const T &value)
     {
         const auto converted = convertValue(value);
-        if (lcSql().isDebugEnabled()) {
+        if (lcSql().isDebugEnabled() && !_boundValues.isEmpty()) {
             QString sqlValue;
             auto stream = QDebug(&sqlValue).noquote().nospace() << '\'' << value;
             if (typeid(converted) != typeid(value)) {

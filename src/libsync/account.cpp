@@ -288,27 +288,33 @@ bool Account::hasCapabilities() const
 
 void Account::setCapabilities(const Capabilities &caps)
 {
+    const bool versionChanged = caps.status().legacyVersion != _capabilities.status().legacyVersion || caps.status().productversion != _capabilities.status().productversion;
     _capabilities = caps;
-
-    Q_EMIT serverVersionChanged();
+    if (versionChanged) {
+        Q_EMIT serverVersionChanged();
+    }
 }
 
-bool Account::serverVersionUnsupported() const
+Account::ServerSupportLevel Account::serverSupportLevel() const
 {
     if (!hasCapabilities()) {
         // not detected yet, assume it is fine.
-        return false;
+        return ServerSupportLevel::Supported;
     }
 
     // ocis
     if (!capabilities().status().productversion.isEmpty()) {
-        return false;
+        return ServerSupportLevel::Supported;
     }
+
     // Older version which is not "end of life" according to https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule
-    if (capabilities().status().legacyVersion < QVersionNumber(10)) {
-        return true;
+    if (!capabilities().status().legacyVersion.isNull()) {
+        if (capabilities().status().legacyVersion < QVersionNumber(10)) {
+            return ServerSupportLevel::Unsupported;
+        }
+        return ServerSupportLevel::Supported;
     }
-    return false;
+    return ServerSupportLevel::Unknown;
 }
 
 QString Account::defaultSyncRoot() const

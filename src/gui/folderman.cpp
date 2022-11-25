@@ -780,7 +780,7 @@ void FolderMan::slotForwardFolderSyncStateChange()
 void FolderMan::slotServerVersionChanged(Account *account)
 {
     // Pause folders if the server version is unsupported
-    if (account->serverVersionUnsupported()) {
+    if (account->serverSupportLevel() == Account::ServerSupportLevel::Unsupported) {
         qCWarning(lcFolderMan) << "The server version is unsupported:" << account->capabilities().status().versionString()
                                << "pausing all folders on the account";
 
@@ -1433,6 +1433,7 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
                 QStringList() << QStringLiteral("/"));
         }
         qCDebug(lcFolderMan) << "Local sync folder" << localFolder << "successfully created!";
+        newFolder->saveToSettings();
     } else {
         qCWarning(lcFolderMan) << "Failed to create local sync folder!";
     }
@@ -1442,7 +1443,10 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
 Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accountStatePtr, const FolderWizard::Result &config)
 {
     auto f = addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
-    f->setPriority(config.priority);
+    if (f) {
+        f->setPriority(config.priority);
+        f->saveToSettings();
+    }
     return f;
 }
 

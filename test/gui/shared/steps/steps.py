@@ -12,6 +12,7 @@ import builtins
 import shutil
 
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
+from pageObjects.SyncConnectionWizard import SyncConnectionWizard
 from helpers.SetupClientHelper import *
 from helpers.FilesHelper import buildConflictedRegex
 from pageObjects.EnterPassword import EnterPassword
@@ -667,21 +668,21 @@ def step(context, resourceType, resource):
 @Given('the user has paused the file sync')
 def step(context):
     syncWizard = SyncWizard()
-    syncWizard.performAction("Pause sync")
+    syncWizard.performAction(context, "Pause sync")
 
 
 @Given('the user has changed the content of local file "|any|" to:')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
     waitAndWriteFile(
-        join(context.userData['currentUserSyncPath'], filename), fileContent
+        context, join(context.userData['currentUserSyncPath'], filename), fileContent
     )
 
 
 @When('the user resumes the file sync on the client')
 def step(context):
     syncWizard = SyncWizard()
-    syncWizard.performAction("Resume sync")
+    syncWizard.performAction(context, "Resume sync")
 
 
 @Then(
@@ -1254,54 +1255,45 @@ def step(context):
     newAccount.addServer(context)
 
 
-@When('the user opens chose_what_to_sync dialog')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.openSyncDialog()
-
-
 @When('the user selects the following folders to sync:')
 def step(context):
+    syncConnection = SyncConnectionWizard()
+    syncConnection.selectFoldersToSync(context)
+    syncConnection.addSyncConnection()
+
+
+@When('the user selects manual sync folder option in advanced section')
+def step(context):
     newAccount = AccountConnectionWizard()
-    newAccount.selectFoldersToSync(context)
-    clickButton(waitForObject(newAccount.ADD_SYNC_CONNECTION_BUTTON))
+    newAccount.selectManualSyncFolderOption()
+    newAccount.nextStep()
 
 
 @When('the user sorts the folder list by "|any|"')
 def step(context, headerText):
     headerText = headerText.capitalize()
     if headerText in ["Size", "Name"]:
-        newAccount = AccountConnectionWizard()
-        newAccount.sortBy(headerText)
+        syncConnection = SyncConnectionWizard()
+        syncConnection.sortBy(headerText)
     else:
         raise Exception("Sorting by '" + headerText + "' is not supported.")
 
 
-@Then('the dialog chose_what_to_sync should be visible')
-def step(context):
-    newAccount = AccountConnectionWizard()
-    test.compare(
-        waitForObjectExists(newAccount.SELECTIVE_SYNC_DIALOG).visible,
-        True,
-        "Assert selective sync dialog is visible",
-    )
-
-
 @Then('the sync all checkbox should be checked')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    state = waitForObject(newAccount.SYNC_DIALOG_ROOT_FOLDER)["checkState"]
+    syncConnection = SyncConnectionWizard()
+    state = waitForObject(syncConnection.SYNC_DIALOG_ROOT_FOLDER)["checkState"]
     test.compare("checked", state, "Sync all checkbox is checked")
 
 
 @Then("the folders should be in the following order:")
 def step(context):
-    newAccount = AccountConnectionWizard()
+    syncConnection = SyncConnectionWizard()
     rowIndex = 0
     for row in context.table[1:]:
         FOLDER_TREE_ROW = {
             "row": rowIndex,
-            "container": newAccount.SYNC_DIALOG_ROOT_FOLDER,
+            "container": syncConnection.SYNC_DIALOG_ROOT_FOLDER,
             "type": "QModelIndex",
         }
         expectedFolder = row[0]
@@ -1458,60 +1450,29 @@ def step(context):
         waitForObject(AccountConnectionWizard.BASIC_CREDENTIAL_PAGE)
 
 
-@When('the user "|any|" clicks on the next button in sync connection wizard')
-def step(context, userName):
-    newAccount = AccountConnectionWizard()
-    waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
-    syncPath = createUserSyncPath(context, userName)
-    type(newAccount.CHOOSE_LOCAL_SYNC_FOLDER, syncPath)
-    clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+@When('the user sets the sync path in sync connection wizard')
+def step(context):
+    syncConnection = SyncConnectionWizard()
+    syncConnection.setSyncPathInSyncConnectionWizard(context)
 
 
 @When('the user selects "|any|" as a remote destination folder')
 def step(context, folderName):
+    syncConnection = SyncConnectionWizard()
+    syncConnection.selectRemoteDestinationFolder(folderName)
+
+
+@When('the user selects vfs option in advanced section')
+def step(context):
     newAccount = AccountConnectionWizard()
-    waitForObject(newAccount.SELECT_REMOTE_DESTINATION_FOLDER_WIZARD)
-    newAccount.selectARootSyncDirectory(folderName)
-    clickButton(waitForObject(newAccount.ADD_FOLDER_SYNC_CONNECTION_NEXT_BUTTON))
+    newAccount.selectVFSOption()
 
 
-@When(
-    r'^the user adds (the first|another) account with advanced configuration$',
-    regexp=True,
-)
-def step(context, accountType):
+@When(r'^the user (confirms|cancels) the enable experimental vfs option$', regexp=True)
+def step(context, action):
     newAccount = AccountConnectionWizard()
-    if accountType == 'another':
-        toolbar = Toolbar()
-        toolbar.clickAddAccount()
-
-    newAccount.addAccountCredential(context)
-
-
-@When(
-    r'^the user selects (virtual_files|configure_synchronization_manually) option in advanced section$',
-    regexp=True,
-)
-def step(context, advancedConfigOption):
-    newAccount = AccountConnectionWizard()
-    if advancedConfigOption == 'configure_synchronization_manually':
-        clickButton(waitForObject(newAccount.CONF_SYNC_MANUALLY_RADIO_BUTTON))
-        clickButton(waitForObject(newAccount.NEXT_BUTTON))
+    if action == "confirms":
+        newAccount.confirmEnableExperimentalVFSOption()
     else:
-        clickButton(waitForObject(newAccount.VIRTUAL_File_RADIO_BUTTON))
-
-
-@When(
-    "the user selects enable_experimental_placeholder_mode option in enable experimental feature dialogue box"
-)
-def step(context):
-    newAccount = AccountConnectionWizard()
-    clickButton(waitForObject(newAccount.ENABLE_EXPERIMENTAL_FEATURE_BUTTON))
-    clickButton(waitForObject(newAccount.NEXT_BUTTON))
-
-
-@When("the user selects stay_safe option in enable experimental feature dialogue box")
-def step(context):
-    newAccount = AccountConnectionWizard()
-    clickButton(waitForObject(newAccount.STAY_SAFE_BUTTON))
-    clickButton(waitForObject(newAccount.NEXT_BUTTON))
+        newAccount.cancelEnableExperimentalVFSOption()
+    newAccount.nextStep()

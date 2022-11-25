@@ -61,7 +61,8 @@ void logHttp(const QByteArray &verb, const QString &url, const QByteArray &id, c
         if (reply->attribute(QNetworkRequest::HttpPipeliningWasUsedAttribute).toBool()) {
             stream << "Piplined,";
         }
-        stream << duration << ")";
+        const auto durationInMs = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+        stream << durationInMs.count() << "ms)";
     }
     stream << " " << url << " Header: { ";
     for (const auto &it : header) {
