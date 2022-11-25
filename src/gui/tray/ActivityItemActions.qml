@@ -26,7 +26,7 @@ Repeater {
 
     model: root.linksForActionButtons
 
-    CustomButton {
+    Button {
         id: activityActionButton
 
         property string verb: model.modelData.verb

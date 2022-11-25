@@ -52,7 +52,7 @@ GridLayout {
         horizontalAlignment: Text.AlignRight
     }
 
-    CustomButton {
+    Button {
         Layout.row: 0
         Layout.column: 2
         Layout.alignment: Layout.AlignRight | Layout.AlignVCenter

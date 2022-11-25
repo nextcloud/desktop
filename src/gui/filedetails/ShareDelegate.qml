@@ -152,11 +152,10 @@ GridLayout {
 
         spacing: 0
 
-        CustomButton {
+        Button {
             id: createLinkButton
 
             Layout.alignment: Qt.AlignCenter
-            toolTipText: qsTr("Create a new share link")
             Layout.preferredWidth: Style.activityListButtonWidth
             Layout.preferredHeight: Style.activityListButtonHeight
 
@@ -171,7 +170,7 @@ GridLayout {
             onClicked: root.createNewLinkShare()
         }
 
-        CustomButton {
+        Button {
             id: copyLinkButton
 
             function copyShareLink() {
@@ -189,8 +188,6 @@ GridLayout {
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             Layout.preferredWidth: shareLinkCopied ? implicitWidth : Style.activityListButtonWidth
             Layout.preferredHeight: Style.activityListButtonHeight
-
-            toolTipText: qsTr("Copy share link location")
 
             text: shareLinkCopied ? qsTr("Copied!") : ""
 
@@ -219,10 +216,8 @@ GridLayout {
             }
         }
 
-        CustomButton {
+        Button {
             id: moreButton
-
-            toolTipText: qsTr("Share options")
 
             Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
             Layout.preferredWidth: Style.activityListButtonWidth
