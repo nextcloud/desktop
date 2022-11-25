@@ -106,11 +106,18 @@ ApplicationWindow {
 
     Drawer {
         id: userStatusDrawer
+
         width: parent.width
         height: parent.height - Style.trayDrawerMargin
         padding: 0
+
         edge: Qt.BottomEdge
-        modal: true
+        // Having multiple model Popup types (Drawer inherits Popup) can cause
+        // small issues -- in this case, with the emoji popup, which won't
+        // scroll. So only have this modal if the emoji popup is closed
+        modal: userStatusContents.status === Loader.Ready ?
+                   !userStatusContents.item.emojiPopupOpen : true
+
         visible: false
 
         background: Rectangle {
