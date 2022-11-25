@@ -52,7 +52,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
             }
 
-            CustomButton {
+            Button {
                 padding: Style.smallSpacing
                 text: qsTr("Reload")
                 onClicked: reloadMaterialisedItems(accountUserIdAtHost)

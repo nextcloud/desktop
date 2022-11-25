@@ -149,12 +149,12 @@ Page {
                     elide: Text.ElideRight
                 }
 
-                CustomButton {
+                Button {
                     text: qsTr("Signal file provider domain")
                     onClicked: root.controller.signalFileProviderDomain(root.accountUserIdAtHost)
                 }
 
-                CustomButton {
+                Button {
                     text: qsTr("Create debug archive")
                     onClicked: root.controller.createDebugArchive(root.accountUserIdAtHost)
                 }

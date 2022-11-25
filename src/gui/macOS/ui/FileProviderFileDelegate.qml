@@ -86,7 +86,7 @@ Item {
             }
         }
 
-        CustomButton {
+        Button {
             id: deleteButton
 
             Layout.minimumWidth: implicitWidth

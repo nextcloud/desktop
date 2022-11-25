@@ -158,7 +158,7 @@ RowLayout {
                 Layout.alignment: Qt.AlignVCenter | Qt.AlignHCenter
                 spacing: Style.extraSmallSpacing
 
-                CustomButton {
+                Button {
                     id: fileDetailsButton
 
                     width: Style.activityListButtonWidth
@@ -178,7 +178,7 @@ RowLayout {
                     onClicked: Systray.presentShareViewInTray(model.openablePath)
                 }
 
-                CustomButton {
+                Button {
                     id: dismissActionButton
 
                     width: Style.activityListButtonWidth
