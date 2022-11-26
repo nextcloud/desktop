@@ -400,6 +400,16 @@
         <translation>Du ser ud til at have funktionen Virtual Files aktiveret i denne mappe. I øjeblikket er det ikke muligt implicit at downloade virtuelle filer, der er End-to-End-krypteret. For at få den bedste oplevelse med virtuelle filer og ende-til-ende-kryptering skal du sørge for, at den krypterede mappe er markeret med &quot;Gør altid tilgængelig lokalt&quot;.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>Krypter ikke mappe</translation>
@@ -435,6 +445,16 @@
         <location filename="../src/gui/accountsettings.cpp" line="1449"/>
         <source>This account supports End-to-End encryption</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <source>Enable encryption</source>
+        <translation>Slå kryptering til</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -586,6 +606,11 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation type="unfinished"/>
@@ -706,9 +731,14 @@ Denne handling vil annullere alle i øjeblikket kørende synkroniseringer.</tran
         <translation>Fjern forbindelse</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
-        <source>Enable encryption</source>
-        <translation>Slå kryptering til</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <source>This account supports End-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
+        <source>Setup encryption</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

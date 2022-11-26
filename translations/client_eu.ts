@@ -400,6 +400,16 @@
         <translation>Badirudi fitxategi birtualak ezaugarria gaituta duzula karpeta honetan. Momentu honetan, ez da posible muturretik muturrera enkriptatuta dauden fitxategi birtualak inplizituki deskargatzea. Fitxategi birtualekin eta muturretik muturrerako enkriptatzearekin esperientzia onena lortzeko, ziurtatu enkriptatutako karpeta &quot;Beti lokalki eskuragarri&quot; aukera markatuta duela.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>Ez enkriptatu karpeta</translation>
@@ -435,6 +445,16 @@
         <location filename="../src/gui/accountsettings.cpp" line="1449"/>
         <source>This account supports End-to-End encryption</source>
         <translation>Kontu honek muturretik muturrerako zifratzea onartzen du</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <source>Enable encryption</source>
+        <translation>Gaitu zifratzea</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -586,6 +606,11 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Muturretik muturrerako enkriptatzearen gako mnemoteknikoa</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>Zure nortasun kriptografikoa babesteko,  hiztegietako 12 hitzen mnemoniko batekin zifratzen dugu. Mesedez, kontuan hartu horiek eta gorde itzazu. Beharrezkoak izango dira zure kontuan beste gailu batzuk gehitzeko (telefono mugikorra edo ordenagailu eramangarria adibidez).</translation>
@@ -706,9 +731,14 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <translation>Ezabatu konexioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
-        <source>Enable encryption</source>
-        <translation>Gaitu zifratzea</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <source>This account supports End-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
+        <source>Setup encryption</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3995,7 +4025,7 @@ Modu hau berria eta experimentala da. Erabiltzea erabakitzen baduzu, agertzen di
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1063"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>Utzi partekatze hau</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1049"/>

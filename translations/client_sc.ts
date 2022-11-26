@@ -400,6 +400,16 @@
         <translation>Parit chi tengas sa funtzione Archìvios Virtuales ativada in custa cartella. Pro immoe, no faghet a iscarrigare in manera implìtzita archìvios virtuales cun tzifradura end-to-end. Pro otènnere sa mègius esperièntzia cun Archìvios Virtuales e sa tzifradura end-to-end, assegura•ti chi sa cartella tzifrada siat marcada cun &quot;Pone semper a disponimentu in manera locale&quot;.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>No tzifres sa cartella</translation>
@@ -435,6 +445,16 @@
         <location filename="../src/gui/accountsettings.cpp" line="1449"/>
         <source>This account supports End-to-End encryption</source>
         <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <source>Enable encryption</source>
+        <translation>Ativa tzifradura</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -586,6 +606,11 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation type="unfinished"/>
@@ -706,9 +731,14 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <translation>Boga connessione</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
-        <source>Enable encryption</source>
-        <translation>Ativa tzifradura</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <source>This account supports End-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
+        <source>Setup encryption</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

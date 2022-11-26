@@ -400,6 +400,16 @@
         <translation>Sie scheinen die Funktion &quot;Virtuelle Dateien&quot; für diesen Ordner aktiviert zu haben. Im Moment ist es nicht möglich, virtuelle Dateien, die Ende-zu-Ende-verschlüsselt sind, implizit herunterzuladen. Um die beste Erfahrung mit virtuellen Dateien und Ende-zu-Ende-Verschlüsselung zu machen, stellen Sie sicher, dass der verschlüsselte Ordner mit &quot;Immer lokal verfügbar machen&quot; markiert ist.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>Ordner nicht verschlüsseln</translation>
@@ -435,6 +445,16 @@
         <location filename="../src/gui/accountsettings.cpp" line="1449"/>
         <source>This account supports End-to-End encryption</source>
         <translation>Dieses Konto unterstützt Ende-zu-Ende-Verschlüsselung</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <source>Enable encryption</source>
+        <translation>Verschlüsselung aktivieren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -586,6 +606,11 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Gedächtnisstütze für Ende-zu-Ende Verschlüsselung</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>Um Ihre kryptografische Identität zu schützen, verschlüsseln wir sie mit einer Gedächtnisstütze von 12 Wörterbuchwörtern. Bitte notieren Sie sich diese und bewahren Sie sie auf. Sie werden benötigt, um Ihrem Konto weitere Geräte hinzuzufügen (z. B. Ihr Mobiltelefon oder Laptop).</translation>
@@ -706,9 +731,14 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Verbindung entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
-        <source>Enable encryption</source>
-        <translation>Verschlüsselung aktivieren</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <source>This account supports End-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
+        <source>Setup encryption</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

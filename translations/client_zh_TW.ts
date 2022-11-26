@@ -400,6 +400,16 @@
         <translation>您似乎在此資料夾啟用了虛擬檔案的功能。目前無法下載透過端到端加密的虛擬檔案。為了得到最佳的虛擬檔案與端到端加密體驗，請確保已加密的資料夾被標記為「一律可在本機使用」。</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <source>End-to-end Encryption with Virtual Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
         <source>Don&apos;t encrypt folder</source>
         <translation>不加密資料夾</translation>
@@ -435,6 +445,16 @@
         <location filename="../src/gui/accountsettings.cpp" line="1449"/>
         <source>This account supports End-to-End encryption</source>
         <translation>此帳號支援端到端加密</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <source>Enable encryption</source>
+        <translation>啟用加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -586,6 +606,11 @@ This action will abort any currently running synchronization.</source>
         <translation>端到端加密助記詞</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>End-to-end encryption mnemonic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>為了保護您的身份，我們將用含 12 個單詞的助記詞進行加密。請將這些單詞記在一個安全的地方。要將其他裝置（如手機或筆記型電腦）加入您的帳號中，需用到此助記詞。</translation>
@@ -706,9 +731,14 @@ This action will abort any currently running synchronization.</source>
         <translation>移除連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
-        <source>Enable encryption</source>
-        <translation>啟用加密</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <source>This account supports End-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
+        <source>Setup encryption</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
