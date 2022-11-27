@@ -402,12 +402,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Szyfrowanie End-to-End za pomocą wirtualnych plików</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Wygląda na to, że w tym katalogu włączono funkcję plików wirtualnych. W tej chwili nie jest możliwe niejawne pobieranie wirtualnych plików, które są szyfrowane metodą End-to-End. Aby uzyskać najlepsze efekty z plikami wirtualnymi i szyfrowaniem End-to-End, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -449,7 +449,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="251"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>Na tym koncie włączono szyfrowanie typu End-to-End</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1452"/>
@@ -608,7 +608,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Mnemonik szyfrowania End-to-End</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
@@ -733,12 +733,12 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>This account supports End-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>To konto obsługuje szyfrowanie End-to-End</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>Setup encryption</source>
-        <translation type="unfinished"/>
+        <translation>Konfiguracja szyfrowania</translation>
     </message>
 </context>
 <context>

@@ -402,7 +402,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Ändpunkt-till-ändpunkt-kryptering med virtuella filer</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
@@ -738,7 +738,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>Setup encryption</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera kryptering</translation>
     </message>
 </context>
 <context>
