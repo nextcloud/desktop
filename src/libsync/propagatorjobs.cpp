@@ -102,7 +102,7 @@ void PropagateLocalRemove::start()
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
+        done(SyncFileItem::FileNameClash, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
         return;
     }
 
@@ -250,7 +250,7 @@ void PropagateLocalRename::start()
 
             // Fixme: the file that is the reason for the clash could be named here,
             // it would have to come out the localFileNameClash function
-            done(SyncFileItem::NormalError,
+            done(SyncFileItem::FileNameClash,
                 tr("File %1 cannot be renamed to %2 because of a local file name clash")
                     .arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(_item->_renameTarget)));
             return;
