@@ -1287,20 +1287,20 @@ private slots:
     {
         FakeFolder fakeFolder{ FileInfo{} };
         fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().mkdir("toDelete");
         fakeFolder.remoteModifier().insert("A/file");
 
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
         fakeFolder.remoteModifier().insert("A/FILE");
-        QVERIFY(!fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.syncOnce());
 
-        fakeFolder.remoteModifier().mkdir("B");
-        fakeFolder.remoteModifier().rename("A/file", "B/file");
-        fakeFolder.remoteModifier().remove("A");
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().remove("toDelete");
 
-        QVERIFY(!fakeFolder.syncOnce());
-        auto folderA = fakeFolder.currentLocalState().find("A");
+        QVERIFY(fakeFolder.syncOnce());
+        auto folderA = fakeFolder.currentLocalState().find("toDelete");
         QCOMPARE(folderA, nullptr);
     }
 };

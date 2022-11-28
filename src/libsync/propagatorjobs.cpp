@@ -178,7 +178,7 @@ void PropagateLocalMkdir::startLocalMkdir()
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
         qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
-        done(SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr));
+        done(SyncFileItem::FileNameClash, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr));
         return;
     }
     emit propagator()->touchedFile(newDirStr);
