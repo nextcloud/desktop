@@ -5,6 +5,9 @@
  *
  */
 
+#include <QtTest>
+#include <QTextCodec>
+
 #include "syncenginetestutils.h"
 
 #include "caseclashconflictsolver.h"

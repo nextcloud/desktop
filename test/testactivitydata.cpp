@@ -49,7 +49,7 @@ public:
         const auto path = QStringLiteral("path/test.").append(fileFormat);
         const auto fileName = QStringLiteral("test.").append(fileFormat);
         const auto activityType = QStringLiteral("file");
-        const auto activityId = 90000;
+        const auto activityId = QStringLiteral("90000");
         const auto message = QString();
         const auto objectName = QStringLiteral("test.").append(fileFormat);
         const auto link = account->url().toString().append(QStringLiteral("/f/")).append(activityId);

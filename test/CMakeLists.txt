@@ -4,6 +4,8 @@ include(nextcloud_add_test.cmake)
 
 set(CMAKE_AUTOMOC TRUE)
 
+find_package(Qt${QT_VERSION_MAJOR}Core5Compat ${REQUIRED_QT_VERSION} CONFIG QUIET)
+
 add_library(testutils
   STATIC
   syncenginetestutils.cpp
@@ -15,7 +17,7 @@ add_library(testutils
   activitylistmodeltestutils.cpp
 )
 
-target_link_libraries(testutils PUBLIC Nextcloud::sync Qt::Test)
+target_link_libraries(testutils PUBLIC Nextcloud::sync Qt::Test Qt::Core5Compat)
 target_include_directories(testutils PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 set_target_properties(testutils PROPERTIES FOLDER Tests)
 
