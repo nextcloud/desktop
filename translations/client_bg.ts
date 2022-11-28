@@ -402,12 +402,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>Цялостно Криптиране с виртуални файлове</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Изглежда, че функцията за виртуални файлове е активирана в тази папка. В момента не е възможно имплицитно изтегляне на виртуални файлове, които са криптирани цялостно. За да получите най-доброто изживяване с виртуални файлове и цялостно криптиране, уверете се, че криптираната папка е маркирана с „Нека винаги е достъпна локално“.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -449,7 +449,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="251"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>Цялостното криптиране беше активирано за този профил</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1452"/>
@@ -608,7 +608,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Мнемонично криптиране от край до край</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
@@ -733,12 +733,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>This account supports End-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>Този профил поддържа цялостно криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>Setup encryption</source>
-        <translation type="unfinished"/>
+        <translation>Настройки за криптиране</translation>
     </message>
 </context>
 <context>
@@ -1380,7 +1380,7 @@ This can be an issue with your OpenSSL libraries.</source>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="170"/>
         <source>Starting authorization</source>
-        <translation>Стартиране на упълномощяване</translation>
+        <translation>Стартиране на упълномощаване</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.cpp" line="174"/>

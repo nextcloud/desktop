@@ -402,12 +402,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>虛擬檔案的端到端加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>您似乎在此資料夾啟用了虛擬檔案的功能。目前無法下載透過端到端加密的虛擬檔案。為了得到最佳的虛擬檔案與端到端加密體驗，請確保已加密的資料夾被標記為「一律可在本機使用」。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -449,7 +449,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="251"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>此帳號已啟用端到端加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1452"/>
@@ -608,7 +608,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>端到端加密助記字串</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="960"/>
@@ -733,12 +733,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>This account supports End-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>此帳號支援端到端加密</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1465"/>
         <source>Setup encryption</source>
-        <translation type="unfinished"/>
+        <translation>設定加密</translation>
     </message>
 </context>
 <context>
