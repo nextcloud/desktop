@@ -546,7 +546,8 @@ void EditLocallyJob::openFile()
     // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
     // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
     // if the VFS is enabled - we just always call it from a separate thread.
-    QtConcurrent::run([localFilePath]() {
+    QtConcurrent::run([localFilePath, this]() {
+        _accountState->account()->setLockFileState(_relPath, _folderForFile->journalDb(), SyncFileItem::LockStatus::LockedItem);
         QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath));
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
     });
