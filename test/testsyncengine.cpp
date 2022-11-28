@@ -1282,6 +1282,27 @@ private slots:
         QVERIFY(fileThirdSync);
         QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
     }
+
+    void testFolderRemovalWithCaseClash()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().insert("A/FILE");
+        QVERIFY(!fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().mkdir("B");
+        fakeFolder.remoteModifier().rename("A/file", "B/file");
+        fakeFolder.remoteModifier().remove("A");
+
+        QVERIFY(!fakeFolder.syncOnce());
+        auto folderA = fakeFolder.currentLocalState().find("A");
+        QCOMPARE(folderA, nullptr);
+    }
 };
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

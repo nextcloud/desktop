@@ -1333,6 +1333,7 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     if (status != SyncFileItem::Success
         && status != SyncFileItem::Restoration
         && status != SyncFileItem::BlacklistedError
+        && status != SyncFileItem::FileNameClash
         && status != SyncFileItem::Conflict) {
         if (_state != Finished) {
             // Synchronously abort
@@ -1355,12 +1356,12 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         case SyncFileItem::FileLocked:
         case SyncFileItem::Restoration:
         case SyncFileItem::FileNameInvalid:
-        case SyncFileItem::FileNameClash:
         case SyncFileItem::DetailError:
         case SyncFileItem::Success:
             break;
+        case SyncFileItem::FileNameClash:
         case SyncFileItem::BlacklistedError:
-            _errorStatus = SyncFileItem::BlacklistedError;
+            _errorStatus = status;
             break;
         }
     }
