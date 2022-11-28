@@ -321,11 +321,32 @@ void AccountSettings::doExpand()
     }
 }
 
-bool AccountSettings::canEncryptOrDecrypt (const FolderStatusModel::SubFolderInfo* info) {
+bool AccountSettings::canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* info) {
     if (info->_folder->syncResult().status() != SyncResult::Status::Success) {
         QMessageBox msgBox;
         msgBox.setText("Please wait for the folder to sync before trying to encrypt it.");
         msgBox.exec();
+        return false;
+    }
+
+    if (!_accountState->account()->e2e() || _accountState->account()->e2e()->_mnemonic.isEmpty()) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("End-to-end encryption is not configured on this device. "
+                          "Once it is configured, you will be able to encrypt this folder.\n"
+                          "Would you like to set up end-to-end encryption?"));
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        const auto ret = msgBox.exec();
+
+        switch (ret) {
+        case QMessageBox::Ok:
+            slotE2eEncryptionGenerateKeys();
+            break;
+        case QMessageBox::Cancel:
+        default:
+            break;
+        }
+
         return false;
     }
 
