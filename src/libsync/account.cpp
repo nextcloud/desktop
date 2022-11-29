@@ -974,6 +974,7 @@ bool Account::askUserForMnemonic() const
 void Account::setAskUserForMnemonic(const bool ask)
 {
     _e2eAskUserForMnemonic = ask;
+    emit askUserForMnemonicChanged();
 }
 
 } // namespace OCC
