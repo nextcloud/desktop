@@ -333,12 +333,8 @@ void ActivityWidget::slotSendNotificationRequest(const QString &accountName, con
 
     if (validVerbs.contains(verb)) {
         if (auto acc = AccountManager::instance()->account(accountName)) {
-            const auto url = QUrl::fromUserInput(link);
             // TODO: host validation?
-            QNetworkRequest req;
-            req.setUrl(url);
-
-            auto *job = new NotificationConfirmJob(acc->account(), {}, verb, {}, req, this);
+            auto *job = new NotificationConfirmJob(acc->account(), QUrl(link), verb, this);
             job->setWidget(theSender);
             connect(job, &NotificationConfirmJob::finishedSignal,
                 this, [job, this] {

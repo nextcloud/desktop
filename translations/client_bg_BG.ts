@@ -3229,7 +3229,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="43"/>
         <source>share label</source>
-        <translation>етикет за споделяне</translation>
+        <translation>споделен етикет</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.ui" line="20"/>
@@ -3464,12 +3464,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.ui" line="22"/>
         <source>Share with users or groups ...</source>
-        <translation>Споделяне с потребители и групи...</translation>
+        <translation>Споделяне с потребители и групи ...</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите поверителна връзка.</translation>
+        <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите поверителна връзка</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
@@ -3610,13 +3610,13 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="843"/>
         <source>I shared something with you</source>
-        <translation>Споделиха нещо с теб</translation>
+        <translation>Споделих нещо с теб</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="856"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="886"/>
         <source>Share...</source>
-        <translation>Споделяне...</translation>
+        <translation>Споделяне ...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="858"/>

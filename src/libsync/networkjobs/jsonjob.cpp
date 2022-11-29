@@ -75,6 +75,11 @@ JsonApiJob::JsonApiJob(AccountPtr account, const QString &path, const QByteArray
     setQuery(q);
 }
 
+JsonApiJob::JsonApiJob(AccountPtr account, const QString &path, const UrlQuery &arguments, const QNetworkRequest &req, QObject *parent)
+    : JsonApiJob(account, path, QByteArrayLiteral("GET"), arguments, req, parent)
+{
+}
+
 int JsonApiJob::ocsStatus() const
 {
     return _ocsStatus;
