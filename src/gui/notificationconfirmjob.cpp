@@ -23,6 +23,11 @@ namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcNotifications)
 
+NotificationConfirmJob::NotificationConfirmJob(AccountPtr account, const QUrl &rootUrl, const QByteArray &verb, QObject *parent)
+    : JsonApiJob(account, rootUrl, {}, verb, {}, {}, parent)
+{
+}
+
 void NotificationConfirmJob::setWidget(NotificationWidget *widget)
 {
     _widget = widget;
