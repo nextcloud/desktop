@@ -136,6 +136,7 @@ void EditLocallyJob::proceedWithSetup()
     }
 
     _fileName = relPathSplit.last();
+    _folderRelativePath = _localFilePath.mid(_folderForFile->cleanPath().length() + 1);
 
     _folderForFile = findFolderForFile(_relPath, _userId);
 
@@ -542,17 +543,91 @@ void EditLocallyJob::openFile()
         return;
     }
 
-    const auto localFilePath = _localFilePath;
+    const auto localFilePathUrl = QUrl::fromLocalFile(_localFilePath);
     // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
     // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
     // if the VFS is enabled - we just always call it from a separate thread.
-    QtConcurrent::run([localFilePath, this]() {
-        _accountState->account()->setLockFileState(_relPath, _folderForFile->journalDb(), SyncFileItem::LockStatus::LockedItem);
-        QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath));
+    QtConcurrent::run([localFilePathUrl, this]() {
+        if(QDesktopServices::openUrl(localFilePathUrl)) {
+            lockFile();
+        }
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
     });
+}
 
-    Q_EMIT fileOpened();
+void EditLocallyJob::lockFile()
+{
+    Q_ASSERT(_accountState);
+    Q_ASSERT(_accountState->account());
+    Q_ASSERT(_folderForFile);
+
+    if (_accountState->account()->fileLockStatus(_folderForFile->journalDb(), _folderRelativePath) == SyncFileItem::LockStatus::LockedItem) {
+        fileLockSuccess(true);
+        return;
+    }
+
+    _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileSuccess,
+                                      this, [this] {
+        _folderForFile->journalDb()->schedulePathForRemoteDiscovery(_relPath);
+        _folderForFile->scheduleThisFolderSoon();
+    }));
+    _folderConnections.append(connect(_folderForFile, &Folder::syncFinished,
+                                      this, [this](const OCC::SyncResult &result) {
+        Q_UNUSED(result)
+        fileLockSuccess();
+    }));
+    _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileError,
+                                      this, &EditLocallyJob::fileLockError));
+
+    _folderForFile->accountState()->account()->setLockFileState(_relPath,
+                                                                _folderForFile->journalDb(),
+                                                                SyncFileItem::LockStatus::LockedItem);
+}
+
+void EditLocallyJob::disconnectFolderSignals()
+{
+    for (const auto &connection : qAsConst(_folderConnections)) {
+        disconnect(connection);
+    }
+}
+
+void EditLocallyJob::fileLockSuccess(const bool existingLock)
+{
+    qCDebug(lcEditLocallyJob()) << "File lock succeeded, showing notification" << _relPath;
+
+    SyncJournalFileRecord rec;
+    Q_ASSERT(_folderForFile->journalDb()->getFileRecord(_folderRelativePath, &rec));
+    Q_ASSERT(rec.isValid());
+    Q_ASSERT(rec._lockstate._locked);
+
+    const auto lockExpirationTime = rec._lockstate._lockTime + rec._lockstate._lockTimeout;
+    const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+
+    static constexpr auto SECONDS_PER_MINUTE = 60;
+    const auto remainingTimeInMinutes = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
+
+    const auto notificationTitle = existingLock ? tr("File %1 already locked.") :
+                                                  tr("File %1 now locked.");
+
+    Systray::instance()->showMessage(notificationTitle.arg(_fileName),
+                         tr("Lock will last for %1 minutes. "
+                            "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                         QSystemTrayIcon::Information);
+
+    disconnectFolderSignals();
+    Q_EMIT finished();
+}
+
+void EditLocallyJob::fileLockError(const QString &errorMessage)
+{
+    qCWarning(lcEditLocallyJob()) << "File lock failed, showing notification" << _relPath << errorMessage;
+
+    Systray::instance()->showMessage(tr("File %1 could not be locked."),
+                                     errorMessage,
+                                     QSystemTrayIcon::Warning);
+
+    disconnectFolderSignals();
+    Q_EMIT finished();
 }
 
 }

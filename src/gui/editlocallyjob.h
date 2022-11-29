@@ -46,7 +46,7 @@ public:
 signals:
     void setupFinished();
     void error(const QString &message, const QString &informativeText);
-    void fileOpened();
+    void finished();
 
 public slots:
     void startSetup();
@@ -73,6 +73,11 @@ private slots:
     void slotDirectoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
 
     void openFile();
+    void lockFile();
+
+    void fileLockSuccess(const bool existingLock = false);
+    void fileLockError(const QString &errorMessage);
+    void disconnectFolderSignals();
 
 private:
     bool checkIfFileParentSyncIsNeeded(); // returns true if sync will be needed, false otherwise
@@ -91,9 +96,11 @@ private:
 
     QString _fileName;
     QString _localFilePath;
+    QString _folderRelativePath;
     Folder *_folderForFile = nullptr;
     std::unique_ptr<SimpleApiJob> _checkTokenJob;
     QMetaObject::Connection _syncTerminatedConnection = {};
+    QVector<QMetaObject::Connection> _folderConnections;
 };
 
 }
