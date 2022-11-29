@@ -353,9 +353,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
-        <location filename="../src/gui/accountsettings.cpp" line="878"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1396"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
+        <location filename="../src/gui/accountsettings.cpp" line="899"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1417"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -441,18 +441,12 @@
         <translation>Visa mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="249"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1449"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation>Detta konto stödjer ändpunkt-till-ändpunkt-kryptering</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <location filename="../src/gui/accountsettings.cpp" line="252"/>
         <source>End-to-end encryption has been enabled for this account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1473"/>
         <source>Enable encryption</source>
         <translation>Aktivera kryptering</translation>
     </message>
@@ -462,128 +456,140 @@
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="334"/>
+        <location filename="../src/gui/accountsettings.cpp" line="330"/>
+        <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
+Would you like to set up end-to-end encryption?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="355"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Du kan inte kryptera en mapp med innehåll, ta bort filerna.
 Vänta på en ny synk, sedan kryptera den.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="249"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1470"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation>Detta konto stödjer ändpunkt-till-ändpunkt-kryptering</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Encryption failed</source>
         <translation>Kryptering misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Kunde inte kryptera mappen eftersom den inte längre existerar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="470"/>
-        <location filename="../src/gui/accountsettings.cpp" line="558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="579"/>
         <source>Open folder</source>
         <translation>Öppna mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>Encrypt</source>
         <translation>Kryptera</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="495"/>
-        <location filename="../src/gui/accountsettings.cpp" line="561"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
+        <location filename="../src/gui/accountsettings.cpp" line="582"/>
         <source>Edit Ignored Files</source>
         <translation>Redigera ignorerade filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="498"/>
-        <location filename="../src/gui/accountsettings.cpp" line="564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>Create new folder</source>
         <translation>Skapa ny mapp</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="504"/>
-        <location filename="../src/gui/accountsettings.cpp" line="590"/>
+        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Availability</source>
         <translation>Tillgänglighet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="590"/>
         <source>Choose what to sync</source>
         <translation>Välj vad som ska synkroniseras</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="575"/>
+        <location filename="../src/gui/accountsettings.cpp" line="596"/>
         <source>Force sync now</source>
         <translation>Tvinga synkronisering nu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="598"/>
         <source>Restart sync</source>
         <translation>Starta om synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Resume sync</source>
         <translation>Återuppta synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Pause sync</source>
         <translation>Pausa synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="586"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Remove folder sync connection</source>
         <translation>Ta bort anslutning till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="599"/>
+        <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <source>Disable virtual file support …</source>
         <translation>Inaktivera stöd för virtuella filer ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Aktivera stöd för virtuella filer %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="701"/>
+        <location filename="../src/gui/accountsettings.cpp" line="722"/>
         <source>Folder creation failed</source>
         <translation>Kunde inte skapa mappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="702"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Kunde inte skapa lokal mapp &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="757"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Bekräfta radering av anslutning till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="758"/>
+        <location filename="../src/gui/accountsettings.cpp" line="779"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen avbryta synkronisering av mappen &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="765"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Ta bort anslutning till mappsynkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="869"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>Disable virtual file support?</source>
         <translation>Inaktivera stöd för virtuella filer?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="870"/>
+        <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -596,149 +602,149 @@ Den enda fördelen med att inaktivera stöd för virtuella filer är att den sel
 Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="877"/>
+        <location filename="../src/gui/accountsettings.cpp" line="898"/>
         <source>Disable support</source>
         <translation>Inaktivera support</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="958"/>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-End encryption mnemonic</source>
         <translation>End to end krypteringsord</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>End-to-end encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="960"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>För att skydda din krypteringsidentitet, krypterar vi den med en mnemoteknisk av 12 ord. Notera dessa krypteringsord och håll dem säkra. De kommer behövas för att lägga till andra enheter till ditt konto (t.ex. mobiltelefon eller laptop).</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
         <source>Sync Running</source>
         <translation>Synkronisering pågår</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1025"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>En synkronisering pågår.&lt;br/&gt;Vill du avbryta den?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1108"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1129"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) av %2 används. Vissa mappar, inklusive nätverks- eller delade mappar, kan ha andra begränsningar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1109"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1130"/>
         <source>%1 of %2 in use</source>
         <translation>%1 av %2 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1118"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1139"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>Just nu finns ingen utrymmes information tillgänglig</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1142"/>
         <source>%1 in use</source>
         <translation>%1 används</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1148"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
         <source>%1 as %2</source>
         <translation>%1 som %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1155"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1176"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Serverversion %1 stöds inte officiellt! Fortsätt på egen risk.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1157"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1178"/>
         <source>Connected to %1.</source>
         <translation>Ansluten till %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Servern %1 är för tillfället inte tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1164"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1185"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Servern %1 är för närvarande i underhållsläge.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
         <source>Signed out from %1.</source>
         <translation>Utloggad från %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1177"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1198"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Anskaffar autentisering från webbläsaren. &lt;a href=&apos;%1&apos;&gt;Klicka här &lt;/a&gt; för att öppna webbläsaren igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1202"/>
         <source>Connecting to %1 …</source>
         <translation>Ansluter till %1 …</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1186"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1207"/>
         <source>No connection to %1 at %2.</source>
         <translation>Ingen anslutning till %1 vid %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1191"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1212"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Felaktig serverkonfiguration: %1 på %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1202"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1223"/>
         <source>No %1 connection configured.</source>
         <translation>Ingen %1 anslutning konfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1374"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1395"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Dessa mappar har inte synkroniserats för att de är för stora:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1376"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1397"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Det finns mappar som inte synkroniserats för att de är externa lagringsytor:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1377"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1398"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Det finns mappar som inte blivit synkroniserade på grund av att de är för stora eller är externa lagringsytor: </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1389"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1410"/>
         <source>Confirm Account Removal</source>
         <translation>Bekräfta radering an kontot</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1411"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Vill du verkligen avsluta anslutningen till kontot &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Observera:&lt;/b&gt; Detta kommer &lt;b&gt;inte&lt;/b&gt; radera några filer.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1395"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1416"/>
         <source>Remove connection</source>
         <translation>Ta bort anslutning</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
         <source>This account supports End-to-end encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
-        <source>Setup encryption</source>
-        <translation>Aktivera kryptering</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <source>Set up encryption</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>

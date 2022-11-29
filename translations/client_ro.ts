@@ -353,9 +353,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
-        <location filename="../src/gui/accountsettings.cpp" line="878"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1396"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
+        <location filename="../src/gui/accountsettings.cpp" line="899"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1417"/>
         <source>Cancel</source>
         <translation>Anulează</translation>
     </message>
@@ -441,18 +441,12 @@
         <translation>Afișează fraza menmonică</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="249"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1449"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <location filename="../src/gui/accountsettings.cpp" line="252"/>
         <source>End-to-end encryption has been enabled for this account</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1473"/>
         <source>Enable encryption</source>
         <translation>Activează criptarea</translation>
     </message>
@@ -462,128 +456,140 @@
         <translation>Atenție</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="334"/>
+        <location filename="../src/gui/accountsettings.cpp" line="330"/>
+        <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
+Would you like to set up end-to-end encryption?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="355"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Nu se poate cripta un dosar cu conținut, vă rugăm să ștergeți fișierele.
 Așteaptă pentru sincronizare, apoi criptează dosarul.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="249"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1470"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Encryption failed</source>
         <translation>Criptarea a eșuat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Nu se poate cripta acest dosar deoarece nu există</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="470"/>
-        <location filename="../src/gui/accountsettings.cpp" line="558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="579"/>
         <source>Open folder</source>
         <translation>Deschide director</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>Encrypt</source>
         <translation>Encrypt</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="495"/>
-        <location filename="../src/gui/accountsettings.cpp" line="561"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
+        <location filename="../src/gui/accountsettings.cpp" line="582"/>
         <source>Edit Ignored Files</source>
         <translation>Editează fișierele ignorate</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="498"/>
-        <location filename="../src/gui/accountsettings.cpp" line="564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>Create new folder</source>
         <translation>Creați director nou</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="504"/>
-        <location filename="../src/gui/accountsettings.cpp" line="590"/>
+        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Availability</source>
         <translation>Disponibilitate</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="590"/>
         <source>Choose what to sync</source>
         <translation>Alege ce să sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="575"/>
+        <location filename="../src/gui/accountsettings.cpp" line="596"/>
         <source>Force sync now</source>
         <translation>Forțează sync acum</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="598"/>
         <source>Restart sync</source>
         <translation>Repornește sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Resume sync</source>
         <translation>Reia sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Pause sync</source>
         <translation>Pauză sync</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="586"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Remove folder sync connection</source>
         <translation>Elimină conexiunea de sincronizare pentru acest dosar</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="599"/>
+        <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <source>Disable virtual file support …</source>
         <translation>Dezactivează suportul pentru fișiere virtuale ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Activează suportul pentru fișiere virtuale %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>(experimental)</source>
         <translation>(experimental)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="701"/>
+        <location filename="../src/gui/accountsettings.cpp" line="722"/>
         <source>Folder creation failed</source>
         <translation>Crearea directorului a eșuat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="702"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Nu s-a putut creea un dosar local &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="757"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Confirmă eliminarea conexiunii de sincronizare </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="758"/>
+        <location filename="../src/gui/accountsettings.cpp" line="779"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Dorești să oprești sincronizarea dosarului &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notă:&lt;/b&gt; Această funcție &lt;b&gt;nu&lt;/b&gt;va șterge nici-un fișier.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="765"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Elimină conexiunea de sincronizare</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="869"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>Disable virtual file support?</source>
         <translation>Dezactivează suportul pentru fișiere virtuale?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="870"/>
+        <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -596,148 +602,148 @@ Singurul avantaj al dezactivării acestei funcții este că funcția de sincroni
 Această acțiune va opri toate sincronizările în derulare din acest moment.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="877"/>
+        <location filename="../src/gui/accountsettings.cpp" line="898"/>
         <source>Disable support</source>
         <translation>Dezactivează suportul</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="958"/>
+        <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-End encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>End-to-end encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="960"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
         <source>Sync Running</source>
         <translation>Sincronizare în desfășurare</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1025"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Operațiunea de sincronizare este în derulare. &lt;br/&gt;Dorești să o oprești ?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1108"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1129"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%1 (%3%) din %2 în folosire. Unele fișiere, inclusiv dosarele partajate prin rețea, ar putea avea limite diferite.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1109"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1130"/>
         <source>%1 of %2 in use</source>
         <translation>%1 din %2 utilizat</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1118"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1139"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>În acest moment nu există informații legate de folosirea spațiului de stocare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1142"/>
         <source>%1 in use</source>
         <translation>%1 folosiți</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1148"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
         <source>%1 as %2</source>
         <translation>%1 ca %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1155"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1176"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Versiunea serverului %1 este veche și nu mai este menținut!ă Continuă pe propriul tău risc.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1157"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1178"/>
         <source>Connected to %1.</source>
         <translation>Conectat la %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Serverul %1 este temporar indisponibil.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1164"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1185"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Serverul %1 este momentan in mentenanță,</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
         <source>Signed out from %1.</source>
         <translation>Deautentificat de la %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1177"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1198"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Se obține autorizarea de la browser. &lt;a href=&apos;%1&apos;&gt;Click aici&lt;/a&gt; pentru a redeschide browser-ul.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1202"/>
         <source>Connecting to %1 …</source>
         <translation>Se conectează la %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1186"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1207"/>
         <source>No connection to %1 at %2.</source>
         <translation>Nu există nici-o conexiune către %1 la %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1191"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1212"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Eroare de configurare a serverulu: %1 la %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1202"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1223"/>
         <source>No %1 connection configured.</source>
         <translation>Nu există nici-o conexiune configurată la %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1374"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1395"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Există dosare ce nu au fost sincronizate deoarece au o dimenziune prea mare:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1376"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1397"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Există dosare ce nu sunt sincronizate deoarece se află pe stocarea externă:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1377"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1398"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Există dosare ce nu au fost sinscronizate deoarece acestea sunt prea mari sau se află pe stocarea externă:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1389"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1410"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmați ștergerea contului</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1411"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Doriți să ștergeți conexiunea la acest cont &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Notă:&lt;/b&gt;Această acțiune &lt;b&gt;nu&lt;/b&gt;va șterge nici-un fișier.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1395"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1416"/>
         <source>Remove connection</source>
         <translation>Șterge conexiunea</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
         <source>This account supports End-to-end encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
-        <source>Setup encryption</source>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <source>Set up encryption</source>
         <translation type="unfinished"/>
     </message>
 </context>

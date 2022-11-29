@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="44"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 안에</translation>
     </message>
 </context>
 <context>
@@ -26,12 +26,12 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="194"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>무시</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
-        <translation type="unfinished"/>
+        <translation>공유 대화 상자 열기</translation>
     </message>
 </context>
 <context>
@@ -44,7 +44,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityList.qml" line="112"/>
         <source>No activities yet</source>
-        <translation type="unfinished"/>
+        <translation>활동 없음</translation>
     </message>
 </context>
 <context>
@@ -60,12 +60,12 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Talk 알림 호출 아바타</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
         <source>Answer Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Talk 통화 알림에 응답하기</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="249"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="265"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>Talk 통화 알림을 거절하기</translation>
     </message>
 </context>
 <context>
@@ -167,7 +167,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation type="unfinished"/>
+        <translation>파일을 로컬 편집으로 열기</translation>
     </message>
 </context>
 <context>
@@ -175,7 +175,7 @@
     <message>
         <location filename="../src/gui/EmojiPicker.qml" line="133"/>
         <source>No recent emojis</source>
-        <translation type="unfinished"/>
+        <translation>최근 이모지 없음</translation>
     </message>
 </context>
 <context>
@@ -183,7 +183,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="49"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>오류</translation>
     </message>
 </context>
 <context>
@@ -191,12 +191,12 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>활동</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>공유</translation>
     </message>
 </context>
 <context>
@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1 · %2에 대한 세부정보</translation>
     </message>
 </context>
 <context>
@@ -353,9 +353,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
-        <location filename="../src/gui/accountsettings.cpp" line="766"/>
-        <location filename="../src/gui/accountsettings.cpp" line="878"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1396"/>
+        <location filename="../src/gui/accountsettings.cpp" line="787"/>
+        <location filename="../src/gui/accountsettings.cpp" line="899"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1417"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
@@ -402,12 +402,12 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation type="unfinished"/>
+        <translation>가상 파일과 종단간 암호화</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>이 폴더에 가상 파일 기능이 활성화된 것 같습니다. 종단간 암호화 된 가상 파일은 다운로드 할 수 없습니다. 종단간 암호화와 가상 파일 기능의 원활한 동작을 위해 암호화된 폴더가 &quot;로컬에서 항상 사용 가능&quot;한지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -417,7 +417,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="101"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>폴더를 암호화하지 마십시오</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="104"/>
@@ -441,18 +441,12 @@
         <translation>니모닉 표시</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="249"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1449"/>
-        <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="251"/>
+        <location filename="../src/gui/accountsettings.cpp" line="252"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>이 계정에 종단간 암호화가 활성화됨</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1452"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1473"/>
         <source>Enable encryption</source>
         <translation>암호화 사용</translation>
     </message>
@@ -462,128 +456,140 @@
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="334"/>
+        <location filename="../src/gui/accountsettings.cpp" line="330"/>
+        <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
+Would you like to set up end-to-end encryption?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="355"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>내용물이 있는 폴더는 암호화할 수 없습니다. 파일을 삭제하십시오.
 새로운 동기화를 기다린 후 암호화하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="249"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1470"/>
+        <source>This account supports End-to-End encryption</source>
+        <translation>이 계정은 종단간 암호화를 지원합니다</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Encryption failed</source>
         <translation>암호화 실패</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="358"/>
+        <location filename="../src/gui/accountsettings.cpp" line="379"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>폴더가 더 이상 존재하지 않아 해당 폴더를 암호화 할 수 없음</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="470"/>
-        <location filename="../src/gui/accountsettings.cpp" line="558"/>
+        <location filename="../src/gui/accountsettings.cpp" line="491"/>
+        <location filename="../src/gui/accountsettings.cpp" line="579"/>
         <source>Open folder</source>
         <translation>폴더 열기</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="508"/>
         <source>Encrypt</source>
         <translation>암호화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="495"/>
-        <location filename="../src/gui/accountsettings.cpp" line="561"/>
+        <location filename="../src/gui/accountsettings.cpp" line="516"/>
+        <location filename="../src/gui/accountsettings.cpp" line="582"/>
         <source>Edit Ignored Files</source>
         <translation>무시된 파일 수정</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="498"/>
-        <location filename="../src/gui/accountsettings.cpp" line="564"/>
+        <location filename="../src/gui/accountsettings.cpp" line="519"/>
+        <location filename="../src/gui/accountsettings.cpp" line="585"/>
         <source>Create new folder</source>
         <translation>새 폴더 생성</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="504"/>
-        <location filename="../src/gui/accountsettings.cpp" line="590"/>
+        <location filename="../src/gui/accountsettings.cpp" line="525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="611"/>
         <source>Availability</source>
         <translation>사용 가능 여부</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="569"/>
+        <location filename="../src/gui/accountsettings.cpp" line="590"/>
         <source>Choose what to sync</source>
         <translation>동기화 대상 선택</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="575"/>
+        <location filename="../src/gui/accountsettings.cpp" line="596"/>
         <source>Force sync now</source>
         <translation>강제 동기화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="577"/>
+        <location filename="../src/gui/accountsettings.cpp" line="598"/>
         <source>Restart sync</source>
         <translation>동기화 다시 시작</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Resume sync</source>
         <translation>동기화 재개</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="583"/>
+        <location filename="../src/gui/accountsettings.cpp" line="604"/>
         <source>Pause sync</source>
         <translation>동기화 일시 정지</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="586"/>
+        <location filename="../src/gui/accountsettings.cpp" line="607"/>
         <source>Remove folder sync connection</source>
         <translation>동기화 폴더 연결 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="599"/>
+        <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <source>Disable virtual file support …</source>
         <translation>가상 파일 지원 비활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>Enable virtual file support %1 …</source>
         <translation>가상 파일 지원 %1 활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="629"/>
         <source>(experimental)</source>
         <translation>(실험적)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="701"/>
+        <location filename="../src/gui/accountsettings.cpp" line="722"/>
         <source>Folder creation failed</source>
         <translation>폴더 생성 실패</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="702"/>
+        <location filename="../src/gui/accountsettings.cpp" line="723"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;로컬 폴더를 만들 수 없음 &lt;i&gt;%1&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="757"/>
+        <location filename="../src/gui/accountsettings.cpp" line="778"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>동기화 폴더 연결 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="758"/>
+        <location filename="../src/gui/accountsettings.cpp" line="779"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;폴더 &lt;i&gt;%1&lt;/i&gt;과 동기화를 중지합니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;참고:&lt;/b&gt; 어떤 파일도 &lt;b&gt;삭제하지 않습니다.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="765"/>
+        <location filename="../src/gui/accountsettings.cpp" line="786"/>
         <source>Remove Folder Sync Connection</source>
         <translation>동기화 폴더 연결 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="869"/>
+        <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>Disable virtual file support?</source>
         <translation>가상 파일 지원을 비활성화합니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="870"/>
+        <location filename="../src/gui/accountsettings.cpp" line="891"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -596,148 +602,148 @@ This action will abort any currently running synchronization.</source>
 이 동작은 진행중인 동기화를 모두 취소합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="877"/>
+        <location filename="../src/gui/accountsettings.cpp" line="898"/>
         <source>Disable support</source>
         <translation>지원 비활성화</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="958"/>
-        <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
+        <source>End-to-End encryption mnemonic</source>
+        <translation>종단간 암호화 연상 기호</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>종단간 암호화 연상 기호</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="960"/>
+        <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>암호화 신원을 보호하기 위해 12개의 사전 단어를 연상 기호로 사용하여 암호화합니다. 이 내용을 기록하고 안전하게 보관하십시오. 휴대전화나 노트북과 같은 다른 기기를 계정에 추가해야합니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1024"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1045"/>
         <source>Sync Running</source>
         <translation>동기화 </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1025"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1046"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>동기화가 진행중입니다.&lt;br/&gt;종료하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1108"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1129"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>%2의 %1 (%3%) 사용 중. 네트워크 탑재 또는 공유 폴더를 포함한 일부 폴더에는 다른 제한이 있을 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1109"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1130"/>
         <source>%1 of %2 in use</source>
         <translation>%2의 %1 사용중 </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1118"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1139"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>현재 사용 가능한 저장소 사용량 정보가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1121"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1142"/>
         <source>%1 in use</source>
         <translation>%1 사용중</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1148"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1169"/>
         <source>%1 as %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1155"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1176"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>서버 버전 %1은 오래되어 지원되지 않습니다. 책임 하에 진행하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1157"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1178"/>
         <source>Connected to %1.</source>
         <translation>%1에 연결되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1161"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1182"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>서버 %1을 일시적으로 사용할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1164"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1185"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>서버 %1이 현재 유지 보수 모드입니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1167"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1188"/>
         <source>Signed out from %1.</source>
         <translation>%1에서 로그아웃했습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1177"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1198"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>브라우저에서 권한을 얻습니다. 브라우저를 다시 열려면 &lt;a href=&apos;%1&apos;&gt;여기&lt;/a&gt;를 클릭하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1202"/>
         <source>Connecting to %1 …</source>
         <translation>%1에 연결 중...</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1186"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1207"/>
         <source>No connection to %1 at %2.</source>
         <translation>%1와 %2에 연결이 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1191"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1212"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>서버 설정 오류: %2에 있는 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1202"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1223"/>
         <source>No %1 connection configured.</source>
         <translation>%1 연결이 설정되지 않았습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1374"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1395"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>사이즈가 너무 커서 동기화 되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1376"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1397"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>외부 저장소이므로 동기화되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1377"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1398"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>사이즈가 너무 크거나 외부 저장소이므로 동기화되지 않은 폴더가 있습니다:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1389"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1410"/>
         <source>Confirm Account Removal</source>
         <translation>계정 삭제 확인</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1390"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1411"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;계정 &lt;i&gt;%1&lt;/i&gt;과 연결을 삭제합니까?&lt;/p&gt;&lt;p&gt;&lt;b&gt;참고:&lt;/b&gt; 어떤 파일도 &lt;/b&gt;삭제하지 않습니다.&lt;/b&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1395"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1416"/>
         <source>Remove connection</source>
         <translation>연결 삭제</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1461"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
         <source>This account supports End-to-end encryption</source>
-        <translation type="unfinished"/>
+        <translation>이 계정은 종단간 암호화를 지원합니다</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1465"/>
-        <source>Setup encryption</source>
+        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <source>Set up encryption</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -799,7 +805,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="488"/>
         <source>Fetching activities…</source>
-        <translation type="unfinished"/>
+        <translation>활동 불러오는 중...</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/activitylistmodel.cpp" line="493"/>
@@ -1008,7 +1014,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
         <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>종단간의 암호화 암구호를 입력하십시오: &lt;br&gt;&lt;br&gt;사용자: %2&lt;br&gt;계정: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1236"/>
@@ -1226,7 +1232,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
         <source>Invalid token received.</source>
-        <translation type="unfinished"/>
+        <translation>잘못된 토큰을 수신했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
@@ -1234,17 +1240,17 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <source>Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>다시 시도하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>잘못된 파일 경로를 지정했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <source>Could not find an account for local editing.</source>
-        <translation type="unfinished"/>
+        <translation>로컬 편집을 위한 계정을 찾지 못했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
@@ -1254,18 +1260,18 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation type="unfinished"/>
+        <translation>로컬에서 편집하려는 파일을 찾지 못했습니다. 해당 파일이 선택적 동기화에 의해 제외되지 않았는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="137"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="152"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation type="unfinished"/>
+        <translation>로컬에서 편집하려는 파일을 찾지 못했습니다. 해당 파일의 경로가 유효한지, 로컬에서 동기화되었는지 확인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="146"/>
         <source>Could not find a folder to sync.</source>
-        <translation type="unfinished"/>
+        <translation>동기화할 폴더를 찾을 수 없습니다.</translation>
     </message>
 </context>
 <context>
@@ -1284,43 +1290,43 @@ OpenSSL 라이브러리 이슈일 수 있습니다.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1초 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1분 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1시간 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1일 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1개월 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1년 전</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1에 의해 잠김 - %2분 후에 만료됨</numerusform></translation>
     </message>
 </context>
 <context>
@@ -1875,7 +1881,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
         <location filename="../src/gui/folderstatusmodel.cpp" line="1099"/>
         <source>A few seconds left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>수 초 남음, %2의 %1, %4의 파일 %3</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1104"/>
@@ -2206,7 +2212,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="153"/>
         <source>Show call notification dialogs.</source>
-        <translation type="unfinished"/>
+        <translation>통화 알림을 대화 상자에 표시하기.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="167"/>
@@ -2443,7 +2449,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
         <source>Checking rename permissions...</source>
-        <translation type="unfinished"/>
+        <translation>이름 변경 권한 확인 중...</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
@@ -2453,7 +2459,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>오류 %1(으)로 인해 권한을 불러올 수 없음</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
@@ -2493,7 +2499,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
         <source>Could not rename local file. %1</source>
-        <translation type="unfinished"/>
+        <translation>로컬 파일의 이름을 변경할 수 없음. %1</translation>
     </message>
 </context>
 <context>
@@ -2740,7 +2746,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="122"/>
         <source>Empty JSON from OAuth2 redirect</source>
-        <translation type="unfinished"/>
+        <translation>OAuth2 리디렉션에서 보낸 빈 JSON</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="127"/>
@@ -2760,7 +2766,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
         <source>&lt;h1&gt;Wrong account&lt;/h1&gt;&lt;p&gt;You logged in with the account &lt;em&gt;%1&lt;/em&gt;, but must log in with the account &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please log out of %3 in another tab, then &lt;a href=&apos;%4&apos;&gt;click here&lt;/a&gt; and log in with %2.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;잘못된 계정&lt;/h1&gt;&lt;p&gt;귀하는 계정 &lt;em&gt;%1&lt;/em&gt;(으)로 로그인을 시도하였으나, 계정 &lt;em&gt;%2&lt;/em&gt;(으)로 로그인 해야합니다. &lt;br&gt;다른 탭에서 %3을(를) 로그아웃 한 후, &lt;a href=&apos;%4&apos;&gt;여기&lt;/a&gt;를 클릭하여 %2(으)로 로그인 하십시오.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="140"/>
@@ -2973,7 +2979,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="847"/>
         <source>Impossible to get modification time for file in conflict %1</source>
-        <translation type="unfinished"/>
+        <translation>%1(으)로 인해 파일의 수정 시각을 불러올 수 없음</translation>
     </message>
 </context>
 <context>
@@ -3030,7 +3036,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>서버에 대한 인증 된 요청이 &apos;%1&apos;로 리디렉션되었습니다. URL이 잘못되어 서버가 잘못 구성되었습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
@@ -3160,7 +3166,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="98"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudwizard.cpp" line="417"/>
@@ -3316,7 +3322,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="518"/>
         <source>Server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>서버가 %1이(가) 없다고(아니라고) 보고함</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="872"/>
@@ -3326,17 +3332,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="908"/>
         <source>Error while deleting file record %1 from the database</source>
-        <translation type="unfinished"/>
+        <translation>파일 레코드 %1(을)를 데이터베이스에서 제거하는 중 오류 발생</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1176"/>
         <source>Conflict when uploading a folder. It&apos;s going to get cleared!</source>
-        <translation type="unfinished"/>
+        <translation>폴더를 업로드 하던 중 충돌이 발생했습니다. 해당 폴더는 비워질 것입니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1179"/>
         <source>Conflict when uploading a file. It&apos;s going to get removed!</source>
-        <translation type="unfinished"/>
+        <translation>파일을 업로드 하던 중 충돌이 발생했습니다. 해당 파일은 제거될 것입니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1537"/>
@@ -3376,7 +3382,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1823"/>
         <source>Server replied with an error while reading directory &quot;%1&quot; : %2</source>
-        <translation type="unfinished"/>
+        <translation>서버가 디렉토리 &apos;%1&apos;을(를) 읽는 중 오류로 응답함: %2</translation>
     </message>
 </context>
 <context>
@@ -3384,7 +3390,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
         <source>could not delete file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 %1을(를) 삭제할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1207"/>
@@ -3407,7 +3413,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="464"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 %1을(를) 불러올 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="477"/>
@@ -3424,7 +3430,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 제거할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="521"/>
@@ -3476,7 +3482,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1269"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1272"/>
@@ -3517,12 +3523,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="194"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="197"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
 </context>
 <context>
@@ -3535,7 +3541,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="133"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 제거할 수 없음</translation>
     </message>
 </context>
 <context>
@@ -3550,7 +3556,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="302"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="345"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 %1을(를) 불러올 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="331"/>
@@ -3561,18 +3567,18 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
         <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 제거할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
@@ -3595,7 +3601,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotedelete.cpp" line="118"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 제거할 수 없음</translation>
     </message>
 </context>
 <context>
@@ -3621,7 +3627,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="262"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
 </context>
 <context>
@@ -3639,27 +3645,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
         <source>could not get file %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 %1을(를) 불러올 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
         <source>Could not delete file record %1 from local DB</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 제거할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="282"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="285"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="290"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>핀 상태 설정 오류</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="297"/>
@@ -3690,7 +3696,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/propagateupload.cpp" line="389"/>
         <location filename="../src/libsync/propagateupload.cpp" line="402"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1의 &apos;수정 시간&apos;값이 올바르지 않습니다. 이 파일을 서버에 업로드하지 마십시오.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="386"/>
@@ -3715,12 +3721,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="791"/>
         <source>Error updating metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>메타데이터 갱신 오류: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="794"/>
         <source>The file %1 is currently in use</source>
-        <translation type="unfinished"/>
+        <translation>파일 %1(이)가 현재 사용 중입니다.</translation>
     </message>
 </context>
 <context>
@@ -3738,7 +3744,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="484"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>설문조사 URL 누락</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>
@@ -3854,7 +3860,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="115"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>답장</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
@@ -3896,17 +3902,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="502"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>링크 공유</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="510"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>링크 공유</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="764"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>메모 입력</translation>
     </message>
 </context>
 <context>
@@ -3924,7 +3930,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>메모:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
@@ -4028,7 +4034,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1063"/>
         <source>Leave this share</source>
-        <translation type="unfinished"/>
+        <translation>이 공유에서 떠나기</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1049"/>
@@ -4070,7 +4076,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1분 내에 만료됨</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
@@ -4349,12 +4355,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="383"/>
         <source>Could not update file metadata: %1</source>
-        <translation type="unfinished"/>
+        <translation>파일 메타데이터를 업로드할 수 없음: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="393"/>
         <source>Could not set file record to local DB: %1</source>
-        <translation type="unfinished"/>
+        <translation>로컬 데이터베이스에서 파일 레코드 %1을(를) 설정할 수 없음</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="397"/>
@@ -4446,7 +4452,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>일부 파일을 동기화할 수 없습니다!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
@@ -4456,17 +4462,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="218"/>
         <source>%1 of %2 · %3 left</source>
-        <translation type="unfinished"/>
+        <translation>%2 중 %1 · %3 남음</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="222"/>
         <source>%1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 중 %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="227"/>
         <source>Syncing file %1 of %2</source>
-        <translation type="unfinished"/>
+        <translation>%2 중 %1 동기화 중</translation>
     </message>
 </context>
 <context>
@@ -4559,22 +4565,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="393"/>
         <source>Failed to fetch providers.</source>
-        <translation type="unfinished"/>
+        <translation>공급자를 불러오지 못했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="404"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;에 대한 검색 공급자를 불러오지 못했습니다. 오류: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="438"/>
         <source>Search has failed for &apos;%2&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%2&apos;을(를) 검색하지 못했습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="467"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
-        <translation type="unfinished"/>
+        <translation>&apos;%1&apos;을(를) 검색하지 못했습니다. 오류: %2</translation>
     </message>
 </context>
 <context>
@@ -4753,7 +4759,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>유효하지 않은 수정 시간으로 인한 메타데이터 업데이트 오류</translation>
     </message>
 </context>
 <context>
@@ -4774,7 +4780,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
         <source>You have been logged out of your account %1 at %2. Please login again.</source>
-        <translation type="unfinished"/>
+        <translation>귀하의 계정 %1이(가) %2에서 로그아웃 했습니다. 다시 로그인하십시오.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="166"/>
@@ -4813,12 +4819,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Sign up with provider</source>
-        <translation type="unfinished"/>
+        <translation>공급자로 가입</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
         <source>Create account with Provider</source>
-        <translation type="unfinished"/>
+        <translation>공급자로 계정 생성</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="68"/>
@@ -5208,27 +5214,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
         <source>Password required for new share</source>
-        <translation type="unfinished"/>
+        <translation>새 공유를 위한 암호가 필요합니다</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
         <source>Share password</source>
-        <translation type="unfinished"/>
+        <translation>공유에 대한 암호</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>공유가 비활성화됨</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
         <source>This item cannot be shared.</source>
-        <translation type="unfinished"/>
+        <translation>이 항목은 공유할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>공유가 비활성화 되었습니다.</translation>
     </message>
 </context>
 <context>
@@ -5236,7 +5242,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation type="unfinished"/>
+        <translation>사용자나 그룹 검색...</translation>
     </message>
 </context>
 <context>
@@ -5252,7 +5258,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>지금 동기화</translation>
     </message>
 </context>
 <context>
@@ -5260,7 +5266,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="17"/>
         <source>Reply to …</source>
-        <translation type="unfinished"/>
+        <translation>...에 답장</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/TalkReplyTextField.qml" line="53"/>
@@ -5297,7 +5303,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="29"/>
         <source>Load more results</source>
-        <translation type="unfinished"/>
+        <translation>더 많은 결과 불러오기</translation>
     </message>
 </context>
 <context>
@@ -5390,7 +5396,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
-        <translation type="unfinished"/>
+        <translation>숨겨짐</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
@@ -5415,7 +5421,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
@@ -5496,12 +5502,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/common/checksums.cpp" line="380"/>
         <source>The checksum header contained an unknown checksum type &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>체크섬 헤더에 알 수 없는 체크섬 유형 &quot;%1&quot;이 있습니다.</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="385"/>
         <source>The downloaded file does not match the checksum, it will be resumed. &quot;%1&quot; != &quot;%2&quot;</source>
-        <translation type="unfinished"/>
+        <translation>다운로드한 파일이 체크섬과 일치하지 않아 다시 시작됩니다.  &quot;%1&quot; != &quot;%2&quot;</translation>
     </message>
 </context>
 <context>
@@ -5509,7 +5515,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="166"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation type="unfinished"/>
+        <translation>Nextcloud 데스크톱 주 대화상자</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="193"/>
@@ -5626,7 +5632,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="854"/>
         <source>%1 - File activity</source>
-        <translation type="unfinished"/>
+        <translation>%1 - 파일 활동</translation>
     </message>
 </context>
 <context>
@@ -5913,7 +5919,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/sharedialog.cpp" line="106"/>
         <source>Locked by %1 - Expires in %2 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform></translation>
+        <translation><numerusform>%1에 의해 잠김 - %2분 후에 만료됨</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="127"/>
@@ -5951,7 +5957,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
         <source>Note</source>
-        <translation type="unfinished"/>
+        <translation>메모</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
@@ -5986,7 +5992,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
         <source>Link name</source>
-        <translation type="unfinished"/>
+        <translation>링크 이름</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="251"/>
