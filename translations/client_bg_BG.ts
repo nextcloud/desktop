@@ -3469,7 +3469,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите поверителна връзка.</translation>
+        <translation>Можете да насочите хората към този споделен файл или папка %1 като им предоставите поверителна връзка</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
