@@ -49,6 +49,12 @@ class Folder;
 class ShellExtensionsServer;
 class SslErrorDialog;
 
+#ifdef Q_OS_MACOS
+namespace Mac {
+class FileProvider;
+}
+#endif
+
 /**
  * @brief The Application class
  * @ingroup gui
@@ -152,8 +158,10 @@ private:
     QScopedPointer<CrashReporter::Handler> _crashHandler;
 #endif
     QScopedPointer<FolderMan> _folderManager;
-#ifdef Q_OS_WIN
+#if defined(Q_OS_WIN)
     QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
+#elif defined(Q_OS_MACOS)
+    QScopedPointer<Mac::FileProvider> _fileProvider;
 #endif
 };
 

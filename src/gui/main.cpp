@@ -22,10 +22,6 @@
 #include <sys/resource.h>
 #endif
 
-#ifdef Q_OS_MACOS
-#include "macOS/fileprovider.h"
-#endif
-
 #include "application.h"
 #include "cocoainitializer.h"
 #include "theme.h"
@@ -78,7 +74,6 @@ int main(int argc, char **argv)
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
 #ifdef Q_OS_MAC
     Mac::CocoaInitializer cocoaInit; // RIIA
-    const auto fileProvider = OCC::Mac::FileProvider::instance();
 #endif
 
     auto surfaceFormat = QSurfaceFormat::defaultFormat();
