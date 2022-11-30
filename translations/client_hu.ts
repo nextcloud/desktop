@@ -459,7 +459,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>A végpontok közti titkosítás nincs beállítva ezen az eszközön. Ha beállította, akkor titkosíthatja ezt a mappát.
+Szeretné beállítani a végpontok közti titkosítást?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -744,7 +745,7 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Titkosítás beállítása</translation>
     </message>
 </context>
 <context>

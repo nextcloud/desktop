@@ -459,7 +459,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Szyfrowanie end-to-end nie jest skonfigurowane na tym urządzeniu. Po skonfigurowaniu będziesz mógł zaszyfrować ten katalog.
+Czy chcesz skonfigurować szyfrowanie end-to-end?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -744,7 +745,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Włącz szyfrowanie</translation>
     </message>
 </context>
 <context>
