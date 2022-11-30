@@ -459,7 +459,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Šifrování mezi koncovými body není na tomto zařízení nastaveno. Jakmile bude nastaveno, bude možné tuto složku šifrovat.
+Chcete nastavit šifrování mezi koncovými body?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -744,7 +745,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Nastavit šifrování</translation>
     </message>
 </context>
 <context>
