@@ -102,7 +102,7 @@ void PropagateLocalRemove::start()
     qCInfo(lcPropagateLocalRemove) << "Going to delete:" << filename;
 
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
+        done(SyncFileItem::FileNameClash, tr("Could not remove %1 because of a local file name clash").arg(QDir::toNativeSeparators(filename)));
         return;
     }
 
@@ -178,7 +178,7 @@ void PropagateLocalMkdir::startLocalMkdir()
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
         qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
-        done(SyncFileItem::NormalError, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr));
+        done(SyncFileItem::FileNameClash, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr));
         return;
     }
     emit propagator()->touchedFile(newDirStr);
@@ -250,7 +250,7 @@ void PropagateLocalRename::start()
 
             // Fixme: the file that is the reason for the clash could be named here,
             // it would have to come out the localFileNameClash function
-            done(SyncFileItem::NormalError,
+            done(SyncFileItem::FileNameClash,
                 tr("File %1 cannot be renamed to %2 because of a local file name clash")
                     .arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(_item->_renameTarget)));
             return;
