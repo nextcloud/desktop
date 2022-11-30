@@ -16,7 +16,7 @@
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
 
-#include "application.h"
+#include "gui/application.h"
 #include "fileprovider.h"
 
 namespace OCC {

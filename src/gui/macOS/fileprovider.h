@@ -18,7 +18,7 @@
 #include <QObject>
 #include <QScopedPointer>
 
-#include "accountstate.h"
+#include "gui/accountstate.h"
 
 namespace OCC {
 namespace Mac {

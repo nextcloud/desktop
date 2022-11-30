@@ -23,7 +23,7 @@
 #endif
 
 #ifdef Q_OS_MACOS
-#include "fileprovider.h"
+#include "macOS/fileprovider.h"
 #endif
 
 #include "application.h"
