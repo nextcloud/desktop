@@ -542,7 +542,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="668"/>
         <source>Sync Running</source>
-        <translation>Синхронизирането е включено</translation>
+        <translation>Синхронизирането работи</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="669"/>
@@ -692,7 +692,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="760"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>В момента липсва информация за използваното пространство.</translation>
+        <translation>Понастоящем няма налична информация за използването на хранилището.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="796"/>
@@ -779,23 +779,23 @@ Please authenticate using your browser.</source>
 <context>
     <name>OCC::ActivitySettings</name>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="477"/>
-        <location filename="../src/gui/activitywidget.cpp" line="521"/>
+        <location filename="../src/gui/activitywidget.cpp" line="473"/>
+        <location filename="../src/gui/activitywidget.cpp" line="517"/>
         <source>Server Activity</source>
         <translation>Сървърна активност </translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="483"/>
+        <location filename="../src/gui/activitywidget.cpp" line="479"/>
         <source>Sync Protocol</source>
         <translation>Протокол за синхронизация</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="529"/>
+        <location filename="../src/gui/activitywidget.cpp" line="525"/>
         <source>Not Synced</source>
         <translation>Не е синхронизирано</translation>
     </message>
     <message>
-        <location filename="../src/gui/activitywidget.cpp" line="532"/>
+        <location filename="../src/gui/activitywidget.cpp" line="528"/>
         <source>Not Synced (%1)</source>
         <extracomment>%1 is the number of not synced files.</extracomment>
         <translation>Без синхронизация (%1)</translation>
@@ -1175,7 +1175,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/folder.cpp" line="540"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
-        <translation>%1 бе премахната.</translation>
+        <translation>%1 е премахната.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="554"/>
@@ -1353,7 +1353,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="439"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
-        <translation>Открит е стар дневник за синхронизация &apos;%1&apos;, който не може да бъде премахнат. Моля, уверете се, че никое приложение не го използва в момента.</translation>
+        <translation>Открит е стар дневник за синхронизация &apos;%1&apos;, който не може да бъде премахнат. Моля, проверете дали някое приложение не го използва в момента.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1070"/>
@@ -1553,7 +1553,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="924"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Проверка за промени в отдалечената „%1“</translation>
+        <translation>Проверка за промени в отдалечената &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="926"/>
@@ -1901,7 +1901,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="106"/>
         <source>Show sync folders in &amp;Explorer&apos;s Navigation Pane</source>
-        <translation>Показване на папки за синхронизация в &amp;Explorer Навигационен Прозорец</translation>
+        <translation>Показване на папки за синхронизация в &amp;Навигационен панел на Explorer</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="126"/>
@@ -1931,7 +1931,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="77"/>
         <source>Language changes require a restart of this application to take effect.</source>
-        <translation>За да влязат в сила езиковите промени изискват рестартиране на това приложение .</translation>
+        <translation>За да влязат в сила езиковите промени изискват рестартиране на това приложение.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="220"/>
@@ -2210,7 +2210,7 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="424"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Налична е нова версия на клиента %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; е на разположение за изтегляне. Инсталираната версия е %3.</translation>
+        <translation>&lt;p&gt;Налична е нова версия на клиента %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; е на разположение за изтегляне. Инсталираната версия е %3.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="437"/>
@@ -2274,12 +2274,12 @@ Note that using any logging command line options will override the settings.</so
     <message>
         <location filename="../src/gui/networksettings.ui" line="42"/>
         <source>Use system proxy</source>
-        <translation>Използване на системното прокси</translation>
+        <translation>Използване на системно прокси</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="54"/>
         <source>Specify proxy manually as</source>
-        <translation>Задаване на прокси ръчно като</translation>
+        <translation>Задаване ръчно на прокси като</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="84"/>
@@ -2642,12 +2642,12 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1264"/>
         <source>Not allowed to remove, restoring</source>
-        <translation>Не е разрешено премахването, възстановяване</translation>
+        <translation>Не е разрешено премахване, възстановяване</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1177"/>
         <source>Ignored because of the &quot;choose what to sync&quot; blacklist</source>
-        <translation>Пренебрегнато е заради черния списък „изберете какво да синхронизирате“</translation>
+        <translation>Пренебрегнато е заради черния списък &quot;избор на какво да се синхронизира&quot;</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1210"/>
@@ -2841,7 +2841,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="287"/>
         <source>Error setting pin state</source>
-        <translation>Грешка при настройване на пин състоянието</translation>
+        <translation>Грешка при настройване на пин статуса</translation>
     </message>
 </context>
 <context>
@@ -2900,7 +2900,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="213"/>
         <source>Error setting pin state</source>
-        <translation>Грешка при задаване на състояние на ПИН</translation>
+        <translation>Грешка при настройване на статуса на ПИН кода</translation>
     </message>
 </context>
 <context>
@@ -3292,7 +3292,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="147"/>
         <source>Upload only (File Drop)</source>
-        <translation>Само качване (пускане на файл)</translation>
+        <translation>Само качване (Пускане на файл)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="160"/>
@@ -3363,7 +3363,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/sharelinkwidget.cpp" line="118"/>
         <location filename="../src/gui/sharelinkwidget.cpp" line="352"/>
         <source>P&amp;assword protect</source>
-        <translation>З&amp;ащитено с парола</translation>
+        <translation>З&amp;ащита с парола</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="96"/>
@@ -3616,7 +3616,7 @@ for additional privileges during the process.</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="856"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="886"/>
         <source>Share...</source>
-        <translation>Споделяне ...</translation>
+        <translation>Споделяне...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="858"/>
@@ -3768,7 +3768,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="422"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
-        <translation>Не може да се отвори или създаде локална база данни за синхронизация. Уверете се, че имате достъп за запис в папката за синхронизиране.</translation>
+        <translation>Не може да се отвори или създаде локална база данни за синхронизация. Проверете дали имате достъп за запис в папката за синхронизиране.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1013"/>
@@ -4077,7 +4077,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Свързване с %1</translation>
+        <translation>Свързване с &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
@@ -4169,7 +4169,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation>Свързване с %1</translation>
+        <translation>Свързване с &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4195,7 +4195,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="337"/>
         <source>Folder %1: %2</source>
-        <translation>Папка %1: %2</translation>
+        <translation>Папка на %1: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="346"/>
@@ -4264,7 +4264,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="827"/>
         <source>Details...</source>
-        <translation>Детайли...</translation>
+        <translation>Подробности...</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="833"/>
@@ -4394,12 +4394,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="887"/>
         <source>Checking for changes in remote &apos;%1&apos;</source>
-        <translation>Проверка за промени в отдалечената &quot;%1&quot;</translation>
+        <translation>Проверка за промени в отдалечената &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="890"/>
         <source>Checking for changes in local &apos;%1&apos;</source>
-        <translation>Проверка за промени в локалната &quot;%1&quot;</translation>
+        <translation>Проверка за промени в локалната &apos;%1&apos;</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="905"/>
