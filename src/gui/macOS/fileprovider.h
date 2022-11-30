@@ -18,9 +18,10 @@
 #include <QObject>
 #include <QScopedPointer>
 
-#include "gui/accountstate.h"
-
 namespace OCC {
+
+class AccountState;
+
 namespace Mac {
 
 // NOTE: For the file provider extension to work, the app bundle will

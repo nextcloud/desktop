@@ -16,12 +16,16 @@
 #import <Foundation/Foundation.h>
 #import <FileProvider/FileProvider.h>
 
-#include "gui/application.h"
+#include <QLoggingCategory>
+
+#include "gui/accountmanager.h"
+#include "gui/accountstate.h"
+#include "libsync/account.h"
 #include "fileprovider.h"
 
 namespace OCC {
 
-Q_LOGGING_CATEGORY(lcMacFileProvider, "nextcloud.gui.macfileprovider")
+Q_LOGGING_CATEGORY(lcMacFileProvider, "nextcloud.gui.macfileprovider", QtInfoMsg)
 
 namespace Mac {
 

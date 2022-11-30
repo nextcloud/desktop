@@ -656,7 +656,7 @@ endif()
 
 if (APPLE)
     find_package(Qt5 COMPONENTS MacExtras)
-    target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications FileProvider")
+    target_link_libraries(nextcloudCore PUBLIC Qt5::MacExtras "-framework UserNotifications -framework FileProvider")
 endif()
 
 if(WITH_CRASHREPORTER)
