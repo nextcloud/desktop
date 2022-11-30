@@ -39,3 +39,12 @@ QString OCC::Version::suffix()
 {
     return QStringLiteral("@MIRALL_VERSION_SUFFIX@");
 }
+
+QString OCC::Version::displayString()
+{
+    constexpr bool hasSuffix = !std::string_view("@MIRALL_VERSION_SUFFIX@").empty();
+    if (hasSuffix) {
+        return QStringLiteral("%1-%2").arg(versionWithBuildNumber().toString(), suffix());
+    }
+    return versionWithBuildNumber().toString();
+}

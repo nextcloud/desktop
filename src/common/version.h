@@ -43,8 +43,5 @@ OCSYNC_EXPORT QString suffix();
  */
 OCSYNC_EXPORT QString gitSha();
 
-inline auto displayString()
-{
-    return QStringLiteral("%1-%2").arg(versionWithBuildNumber().toString(), suffix());
-}
+OCSYNC_EXPORT QString displayString();
 }
