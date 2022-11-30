@@ -29,6 +29,7 @@ set(client_UI_SRCS
     accountsettings.ui
     conflictdialog.ui
     invalidfilenamedialog.ui
+    caseclashfilenamedialog.ui
     foldercreationdialog.ui
     folderwizardsourcepage.ui
     folderwizardtargetpage.ui
@@ -73,6 +74,8 @@ set(client_SRCS
     application.cpp
     invalidfilenamedialog.h
     invalidfilenamedialog.cpp
+    caseclashfilenamedialog.h
+    caseclashfilenamedialog.cpp
     callstatechecker.h
     callstatechecker.cpp
     conflictdialog.h

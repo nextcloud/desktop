@@ -401,19 +401,7 @@ public:
         : PropagateItemJob(propagator, item)
     {
     }
-    void start() override
-    {
-        SyncFileItem::Status status = _item->_status;
-        if (status == SyncFileItem::NoStatus) {
-            if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
-                status = SyncFileItem::NormalError;
-            } else {
-                status = SyncFileItem::FileIgnored;
-                ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
-            }
-        }
-        done(status, _item->_errorString);
-    }
+    void start() override;
 };
 
 class PropagateUploadFileCommon;
@@ -585,6 +573,14 @@ public:
      */
     bool createConflict(const SyncFileItemPtr &item,
         PropagatorCompositeJob *composite, QString *error);
+
+    /** Handles a case clash conflict by renaming the file 'item'.
+     *
+     * Sets up conflict records.
+     *
+     * Returns true on success, false and error on error.
+     */
+    OCC::Optional<QString> createCaseClashConflict(const SyncFileItemPtr &item, const QString &temporaryDownloadedFile);
 
     // Map original path (as in the DB) to target final path
     QMap<QString, QString> _renamedDirectories;

@@ -372,7 +372,11 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
         case CSYNC_FILE_EXCLUDE_CONFLICT:
             item->_errorString = tr("Conflict: Server version downloaded, local copy renamed and not uploaded.");
             item->_status = SyncFileItem::Conflict;
-        break;
+            break;
+        case CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT:
+            item->_errorString = tr("Case Clash Conflict: Server file downloaded and renamed to avoid clash.");
+            item->_status = SyncFileItem::FileNameClash;
+            break;
         case CSYNC_FILE_EXCLUDE_CANNOT_ENCODE:
             item->_errorString = tr("The filename cannot be encoded on your file system.");
             break;
@@ -688,6 +692,15 @@ void ProcessDirectoryJob::processFileAnalyzeRemoteInfo(
     item->_direction = SyncFileItem::Down;
     item->_modtime = serverEntry.modtime;
     item->_size = serverEntry.size;
+
+    auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
+    if (conflictRecord.isValid() && QString::fromUtf8(conflictRecord.path).contains(QStringLiteral("(case clash from"))) {
+        qCInfo(lcDisco) << "should ignore" << item->_file << "has already a case clash conflict record" << conflictRecord.path;
+
+        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+
+        return;
+    }
 
     auto postProcessServerNew = [=]() mutable {
         if (item->isDirectory()) {
@@ -1119,6 +1132,20 @@ void ProcessDirectoryJob::processFileAnalyzeLocalInfo(
     item->_modtime = localEntry.modtime;
     item->_type = localEntry.isDirectory ? ItemTypeDirectory : localEntry.isVirtualFile ? ItemTypeVirtualFile : ItemTypeFile;
     _childModified = true;
+
+    if (!localEntry.caseClashConflictingName.isEmpty()) {
+        qCInfo(lcDisco) << item->_file << "case clash conflict" << localEntry.caseClashConflictingName;
+        item->_instruction = CSYNC_INSTRUCTION_CONFLICT;
+    }
+
+    auto conflictRecord = _discoveryData->_statedb->caseConflictRecordByBasePath(item->_file);
+    if (conflictRecord.isValid() && QString::fromUtf8(conflictRecord.path).contains(QStringLiteral("(case clash from"))) {
+        qCInfo(lcDisco) << "should ignore" << item->_file << "has already a case clash conflict record" << conflictRecord.path;
+
+        item->_instruction = CSYNC_INSTRUCTION_IGNORE;
+
+        return;
+    }
 
     auto postProcessLocalNew = [item, localEntry, path, this]() {
         // TODO: We may want to execute the same logic for non-VFS mode, as, moving/renaming the same folder by 2 or more clients at the same time is not possible in Web UI.

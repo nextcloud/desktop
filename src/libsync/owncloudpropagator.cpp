@@ -913,6 +913,63 @@ bool OwncloudPropagator::createConflict(const SyncFileItemPtr &item,
     return true;
 }
 
+OCC::Optional<QString> OwncloudPropagator::createCaseClashConflict(const SyncFileItemPtr &item, const QString &temporaryDownloadedFile)
+{
+    auto filename = QString{};
+
+    if (item->_type == ItemType::ItemTypeFile) {
+        filename = fullLocalPath(item->_file);
+    } else if (item->_type == ItemType::ItemTypeVirtualFileDownload) {
+        filename = fullLocalPath(item->_file + syncOptions()._vfs->fileSuffix());
+    }
+
+    const auto conflictModTime = FileSystem::getModTime(filename);
+    if (conflictModTime <= 0) {
+        return tr("Impossible to get modification time for file in conflict %1").arg(filename);
+    }
+
+    const auto conflictFileName = Utility::makeCaseClashConflictFileName(item->_file, Utility::qDateTimeFromTime_t(conflictModTime));
+    const auto conflictFilePath = fullLocalPath(conflictFileName);
+
+    emit touchedFile(filename);
+    emit touchedFile(conflictFilePath);
+
+    qCInfo(lcPropagator) << "rename from" << temporaryDownloadedFile << "to" << conflictFilePath;
+    if (QString renameError; !FileSystem::rename(temporaryDownloadedFile, conflictFilePath, &renameError)) {
+        // If the rename fails, don't replace it.
+
+        // If the file is locked, we want to retry this sync when it
+        // becomes available again.
+        if (FileSystem::isFileLocked(filename)) {
+            emit seenLockedFile(filename);
+        }
+
+        return renameError;
+    }
+    FileSystem::setFileHidden(conflictFilePath, false);
+    qCInfo(lcPropagator) << "Created case clash conflict file" << filename << "->" << conflictFilePath;
+
+    // Create a new conflict record. To get the base etag, we need to read it from the db.
+    auto conflictBasePath = item->_file.toUtf8();
+    if (!item->_renameTarget.isEmpty()) {
+        conflictBasePath = item->_renameTarget.toUtf8();
+    }
+    auto conflictRecord = ConflictRecord{conflictFileName.toUtf8(), {}, item->_previousModtime, {}, conflictBasePath};
+
+    SyncJournalFileRecord baseRecord;
+    if (_journal->getFileRecord(item->_originalFile, &baseRecord) && baseRecord.isValid()) {
+        conflictRecord.baseEtag = baseRecord._etag;
+        conflictRecord.baseFileId = baseRecord._fileId;
+    }
+
+    _journal->setCaseConflictRecord(conflictRecord);
+
+    // Need a new sync to detect the created copy of the conflicting file
+    _anotherSyncNeeded = true;
+
+    return {};
+}
+
 QString OwncloudPropagator::adjustRenamedPath(const QString &original) const
 {
     return OCC::adjustRenamedPath(_renamedDirectories, original);
@@ -1471,6 +1528,25 @@ QString OwncloudPropagator::fullRemotePath(const QString &tmp_file_name) const
 QString OwncloudPropagator::remotePath() const
 {
     return _remoteFolder;
+}
+
+void PropagateIgnoreJob::start()
+{
+    SyncFileItem::Status status = _item->_status;
+    if (status == SyncFileItem::NoStatus) {
+        if (_item->_instruction == CSYNC_INSTRUCTION_ERROR) {
+            status = SyncFileItem::NormalError;
+        } else {
+            status = SyncFileItem::FileIgnored;
+            ASSERT(_item->_instruction == CSYNC_INSTRUCTION_IGNORE);
+        }
+    } else if (status == SyncFileItem::FileNameClash) {
+        const auto conflictRecord = propagator()->_journal->caseConflictRecordByPath(_item->_file);
+        if (conflictRecord.isValid()) {
+            _item->_file = conflictRecord.initialBasePath;
+        }
+    }
+    done(status, _item->_errorString);
 }
 
 }

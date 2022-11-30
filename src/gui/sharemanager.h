@@ -431,6 +431,6 @@ private:
 };
 }
 
-Q_DECLARE_METATYPE(OCC::SharePtr);
+Q_DECLARE_METATYPE(OCC::SharePtr)
 
 #endif // SHAREMANAGER_H

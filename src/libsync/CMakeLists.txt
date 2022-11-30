@@ -121,6 +121,8 @@ set(libsync_SRCS
     creds/credentialscommon.cpp
     creds/keychainchunk.h
     creds/keychainchunk.cpp
+    caseclashconflictsolver.h
+    caseclashconflictsolver.cpp
 )
 
 if (WIN32)

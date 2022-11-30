@@ -58,9 +58,8 @@ bool FileSystem::fileEquals(const QString &fn1, const QString &fn2)
 time_t FileSystem::getModTime(const QString &filename)
 {
     csync_file_stat_t stat;
-    qint64 result = -1;
-    if (csync_vio_local_stat(filename, &stat) != -1
-        && (stat.modtime != 0)) {
+    time_t result = -1;
+    if (csync_vio_local_stat(filename, &stat) != -1 && (stat.modtime != 0)) {
         result = stat.modtime;
     } else {
         result = Utility::qDateTimeToTime_t(QFileInfo(filename).lastModified());
@@ -93,11 +92,11 @@ bool FileSystem::fileChanged(const QString &fileName,
 }
 
 bool FileSystem::verifyFileUnchanged(const QString &fileName,
-    qint64 previousSize,
-    time_t previousMtime)
+                                     qint64 previousSize,
+                                     time_t previousMtime)
 {
-    const qint64 actualSize = getSize(fileName);
-    const time_t actualMtime = getModTime(fileName);
+    const auto actualSize = getSize(fileName);
+    const auto actualMtime = getModTime(fileName);
     if ((actualSize != previousSize && actualMtime > 0) || (actualMtime != previousMtime && previousMtime > 0 && actualMtime > 0)) {
         qCInfo(lcFileSystem) << "File" << fileName << "has changed:"
                              << "size: " << previousSize << "<->" << actualSize

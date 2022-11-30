@@ -178,7 +178,7 @@ void PropagateLocalMkdir::startLocalMkdir()
 
     if (Utility::fsCasePreserving() && propagator()->localFileNameClash(_item->_file)) {
         qCWarning(lcPropagateLocalMkdir) << "New folder to create locally already exists with different case:" << _item->_file;
-        done(SyncFileItem::FileNameClash, tr("Attention, possible case sensitivity clash with %1").arg(newDirStr));
+        done(SyncFileItem::FileNameClash, tr("Folder %1 cannot be created because of a local file or folder name clash!").arg(newDirStr));
         return;
     }
     emit propagator()->touchedFile(newDirStr);
@@ -245,14 +245,14 @@ void PropagateLocalRename::start()
 
         if (QString::compare(_item->_file, _item->_renameTarget, Qt::CaseInsensitive) != 0
             && propagator()->localFileNameClash(_item->_renameTarget)) {
-            // Only use localFileNameClash for the destination if we know that the source was not
-            // the one conflicting  (renaming  A.txt -> a.txt is OK)
 
-            // Fixme: the file that is the reason for the clash could be named here,
-            // it would have to come out the localFileNameClash function
-            done(SyncFileItem::FileNameClash,
-                tr("File %1 cannot be renamed to %2 because of a local file name clash")
-                    .arg(QDir::toNativeSeparators(_item->_file), QDir::toNativeSeparators(_item->_renameTarget)));
+            qCInfo(lcPropagateLocalRename) << "renaming a case clashed file" << _item->_file << _item->_renameTarget;
+            const auto caseClashConflictResult = propagator()->createCaseClashConflict(_item, existingFile);
+            if (caseClashConflictResult) {
+                done(SyncFileItem::SoftError, *caseClashConflictResult);
+            } else {
+                done(SyncFileItem::FileNameClash, tr("File %1 downloaded but it resulted in a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            }
             return;
         }
 

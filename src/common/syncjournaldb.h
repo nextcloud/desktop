@@ -249,6 +249,21 @@ public:
     /// Retrieve a conflict record by path of the file with the conflict tag
     ConflictRecord conflictRecord(const QByteArray &path);
 
+    /// Store a new or updated record in the database
+    void setCaseConflictRecord(const ConflictRecord &record);
+
+    /// Retrieve a conflict record by path of the file with the conflict tag
+    ConflictRecord caseConflictRecordByBasePath(const QString &baseNamePath);
+
+    /// Retrieve a conflict record by path of the file with the conflict tag
+    ConflictRecord caseConflictRecordByPath(const QString &path);
+
+    /// Delete a case clash conflict record by path of the file with the conflict tag
+    void deleteCaseClashConflictByPathRecord(const QString &path);
+
+    /// Return all paths of files with a conflict tag in the name and records in the db
+    QByteArrayList caseClashConflictRecordPaths();
+
     /// Delete a conflict record by path of the file with the conflict tag
     void deleteConflictRecord(const QByteArray &path);
 

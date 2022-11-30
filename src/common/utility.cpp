@@ -624,35 +624,21 @@ QString Utility::makeConflictFileName(
     return conflictFileName;
 }
 
-bool Utility::isConflictFile(const char *name)
-{
-    const char *bname = std::strrchr(name, '/');
-    if (bname) {
-        bname += 1;
-    } else {
-        bname = name;
-    }
-
-    // Old pattern
-    if (std::strstr(bname, "_conflict-"))
-        return true;
-
-    // New pattern
-    if (std::strstr(bname, "(conflicted copy"))
-        return true;
-
-    return false;
-}
-
 bool Utility::isConflictFile(const QString &name)
 {
     auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
 
-    if (bname.contains(QStringLiteral("_conflict-")))
+    if (bname.contains(QStringLiteral("_conflict-"))) {
         return true;
+    }
 
-    if (bname.contains(QStringLiteral("(conflicted copy")))
+    if (bname.contains(QStringLiteral("(conflicted copy"))) {
         return true;
+    }
+
+    if (isCaseClashConflictFile(name)) {
+        return true;
+    }
 
     return false;
 }
@@ -720,6 +706,34 @@ QString Utility::sanitizeForFileName(const QString &name)
         }
     }
     return result;
+}
+
+QString Utility::makeCaseClashConflictFileName(const QString &filename, const QDateTime &datetime)
+{
+    auto conflictFileName(filename);
+    // Add conflict tag before the extension.
+    auto dotLocation = conflictFileName.lastIndexOf(QLatin1Char('.'));
+    // If no extension, add it at the end  (take care of cases like foo/.hidden or foo.bar/file)
+    if (dotLocation <= conflictFileName.lastIndexOf(QLatin1Char('/')) + 1) {
+        dotLocation = conflictFileName.size();
+    }
+
+    auto conflictMarker = QStringLiteral(" (case clash from ");
+    conflictMarker += datetime.toString(QStringLiteral("yyyy-MM-dd hhmmss")) + QLatin1Char(')');
+
+    conflictFileName.insert(dotLocation, conflictMarker);
+    return conflictFileName;
+}
+
+bool Utility::isCaseClashConflictFile(const QString &name)
+{
+    auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+
+    if (bname.contains(QStringLiteral("(case clash from"))) {
+        return true;
+    }
+
+    return false;
 }
 
 } // namespace OCC

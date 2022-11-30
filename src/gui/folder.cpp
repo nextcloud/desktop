@@ -1264,6 +1264,15 @@ void Folder::acceptInvalidFileName(const QString &filePath)
     _engine->addAcceptedInvalidFileName(filePath);
 }
 
+void Folder::acceptCaseClashConflictFileName(const QString &filePath)
+{
+    qCInfo(lcFolder) << "going to delete case clash conflict record" << filePath;
+    _journal.deleteCaseClashConflictByPathRecord(filePath);
+
+    qCInfo(lcFolder) << "going to delete" << path() + filePath;
+    FileSystem::remove(path() + filePath);
+}
+
 void Folder::setSaveBackwardsCompatible(bool save)
 {
     _saveBackwardsCompatible = save;

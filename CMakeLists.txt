@@ -168,6 +168,9 @@ option(BUILD_LIBRARIES_ONLY "BUILD_LIBRARIES_ONLY" OFF)
 # build the GUI component, when disabled only nextcloudcmd is built
 option(BUILD_GUI "BUILD_GUI" ON)
 
+# build the tests
+option(BUILD_TESTING "BUILD_TESTING" ON)
+
 # When this option is enabled, 5xx errors are not added to the blacklist
 # Normally you don't want to enable this option because if a particular file
 # triggers a bug on the server, you want the file to be blacklisted.

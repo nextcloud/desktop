@@ -28,6 +28,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcActivity)
 class AccountState;
 class ConflictDialog;
 class InvalidFilenameDialog;
+class CaseClashFilenameDialog;
 
 /**
  * @brief The ActivityListModel
@@ -157,6 +158,7 @@ private:
     void ingestActivities(const QJsonArray &activities);
     void appendMoreActivitiesAvailableEntry();
     void insertOrRemoveDummyFetchingActivity();
+    void triggerCaseClashAction(Activity activity);
 
     Activity _notificationIgnoredFiles;
     Activity _dummyFetchingActivities;
@@ -179,6 +181,7 @@ private:
 
     QPointer<ConflictDialog> _currentConflictDialog;
     QPointer<InvalidFilenameDialog> _currentInvalidFilenameDialog;
+    QPointer<CaseClashFilenameDialog> _currentCaseClashFilenameDialog;
 
     AccountState *_accountState = nullptr;
     bool _currentlyFetching = false;

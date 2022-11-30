@@ -519,6 +519,18 @@ bool SyncJournalDb::checkConnect()
         return sqlFail(QStringLiteral("Create table conflicts"), createQuery);
     }
 
+    // create the caseconflicts table.
+    createQuery.prepare("CREATE TABLE IF NOT EXISTS caseconflicts("
+        "path TEXT PRIMARY KEY,"
+        "baseFileId TEXT,"
+        "baseEtag TEXT,"
+        "baseModtime INTEGER,"
+        "basePath TEXT UNIQUE"
+        ");");
+    if (!createQuery.exec()) {
+        return sqlFail(QStringLiteral("Create table caseconflicts"), createQuery);
+    }
+
     createQuery.prepare("CREATE TABLE IF NOT EXISTS version("
                         "major INTEGER(8),"
                         "minor INTEGER(8),"
@@ -2199,6 +2211,101 @@ ConflictRecord SyncJournalDb::conflictRecord(const QByteArray &path)
     entry.baseEtag = query->baValue(2);
     entry.initialBasePath = query->baValue(3);
     return entry;
+}
+
+void SyncJournalDb::setCaseConflictRecord(const ConflictRecord &record)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return;
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::SetCaseClashConflictRecordQuery, QByteArrayLiteral("INSERT OR REPLACE INTO caseconflicts "
+                                                                                                            "(path, baseFileId, baseModtime, baseEtag, basePath) "
+                                                                                                            "VALUES (?1, ?2, ?3, ?4, ?5);"),
+                                         _db);
+    ASSERT(query)
+    query->bindValue(1, record.path);
+    query->bindValue(2, record.baseFileId);
+    query->bindValue(3, record.baseModtime);
+    query->bindValue(4, record.baseEtag);
+    query->bindValue(5, record.initialBasePath);
+    ASSERT(query->exec())
+}
+
+ConflictRecord SyncJournalDb::caseConflictRecordByBasePath(const QString &baseNamePath)
+{
+    ConflictRecord entry;
+
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return entry;
+    }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetCaseClashConflictRecordQuery, QByteArrayLiteral("SELECT path, baseFileId, baseModtime, baseEtag, basePath FROM caseconflicts WHERE basePath=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, baseNamePath);
+    ASSERT(query->exec())
+    if (!query->next().hasData)
+        return entry;
+
+    entry.path = query->baValue(0);
+    entry.baseFileId = query->baValue(1);
+    entry.baseModtime = query->int64Value(2);
+    entry.baseEtag = query->baValue(3);
+    entry.initialBasePath = query->baValue(4);
+    return entry;
+}
+
+ConflictRecord SyncJournalDb::caseConflictRecordByPath(const QString &path)
+{
+    ConflictRecord entry;
+
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return entry;
+    }
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetCaseClashConflictRecordByPathQuery, QByteArrayLiteral("SELECT path, baseFileId, baseModtime, baseEtag, basePath FROM caseconflicts WHERE path=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, path);
+    ASSERT(query->exec())
+    if (!query->next().hasData)
+        return entry;
+
+    entry.path = query->baValue(0);
+    entry.baseFileId = query->baValue(1);
+    entry.baseModtime = query->int64Value(2);
+    entry.baseEtag = query->baValue(3);
+    entry.initialBasePath = query->baValue(4);
+    return entry;
+}
+
+void SyncJournalDb::deleteCaseClashConflictByPathRecord(const QString &path)
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect())
+        return;
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::DeleteCaseClashConflictRecordQuery, QByteArrayLiteral("DELETE FROM caseconflicts WHERE path=?1;"), _db);
+    ASSERT(query)
+    query->bindValue(1, path);
+    ASSERT(query->exec())
+}
+
+QByteArrayList SyncJournalDb::caseClashConflictRecordPaths()
+{
+    QMutexLocker locker(&_mutex);
+    if (!checkConnect()) {
+        return {};
+    }
+
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetAllCaseClashConflictPathQuery, QByteArrayLiteral("SELECT path FROM caseconflicts;"), _db);
+    ASSERT(query)
+    ASSERT(query->exec())
+
+    QByteArrayList paths;
+    while (query->next().hasData)
+        paths.append(query->baValue(0));
+
+    return paths;
 }
 
 void SyncJournalDb::deleteConflictRecord(const QByteArray &path)

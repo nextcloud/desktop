@@ -223,10 +223,13 @@ namespace Utility {
     OCSYNC_EXPORT QString makeConflictFileName(
         const QString &fn, const QDateTime &dt, const QString &user);
 
+    OCSYNC_EXPORT QString makeCaseClashConflictFileName(const QString &filename, const QDateTime &datetime);
+
     /** Returns whether a file name indicates a conflict file
      */
-    OCSYNC_EXPORT bool isConflictFile(const char *name);
+    bool isConflictFile(const char *name) = delete;
     OCSYNC_EXPORT bool isConflictFile(const QString &name);
+    OCSYNC_EXPORT bool isCaseClashConflictFile(const QString &name);
 
     /** Find the base name for a conflict file name, using name pattern only
      *

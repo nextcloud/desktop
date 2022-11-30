@@ -41,6 +41,8 @@ QString Progress::asResultString(const SyncFileItem &item)
         }
     case CSYNC_INSTRUCTION_CONFLICT:
         return QCoreApplication::translate("progress", "Server version downloaded, copied changed local file into conflict file");
+    case CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT:
+        return QCoreApplication::translate("progress", "Server version downloaded, copied changed local file into case conflict conflict file");
     case CSYNC_INSTRUCTION_REMOVE:
         return QCoreApplication::translate("progress", "Deleted");
     case CSYNC_INSTRUCTION_EVAL_RENAME:
@@ -65,6 +67,7 @@ QString Progress::asActionString(const SyncFileItem &item)
 {
     switch (item._instruction) {
     case CSYNC_INSTRUCTION_CONFLICT:
+    case CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT:
     case CSYNC_INSTRUCTION_SYNC:
     case CSYNC_INSTRUCTION_NEW:
     case CSYNC_INSTRUCTION_TYPE_CHANGE:
