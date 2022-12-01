@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="212"/>
         <source>Open share dialog</source>
-        <translation>Open share dialog</translation>
+        <translation>Open share dialogue</translation>
     </message>
 </context>
 <context>
@@ -459,7 +459,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
+Would you like to set up end-to-end encryption?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -744,7 +745,7 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Set up encryption</translation>
     </message>
 </context>
 <context>
@@ -2211,7 +2212,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="153"/>
         <source>Show call notification dialogs.</source>
-        <translation>Show call notification dialogs.</translation>
+        <translation>Show call notification dialogues.</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="167"/>
@@ -4487,7 +4488,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/systray.cpp" line="209"/>
         <source>Open main dialog</source>
-        <translation>Open main dialog</translation>
+        <translation>Open main dialogue</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="212"/>
@@ -5512,7 +5513,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/Window.qml" line="166"/>
         <source>Nextcloud desktop main dialog</source>
-        <translation>Nextcloud desktop main dialog</translation>
+        <translation>Nextcloud desktop main dialogue</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="193"/>
