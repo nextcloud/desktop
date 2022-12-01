@@ -92,8 +92,8 @@ void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAcc
     messageBox->setText(AccountSettings::tr("End-to-end Encryption with Virtual Files"));
     messageBox->setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. "
                                                        "At the moment, it is not possible to implicitly download virtual files that are "
-                                                       "End-to-end encrypted. To get the best experience with Virtual Files and "
-                                                       "End-to-end Encryption, make sure the encrypted folder is marked with "
+                                                       "end-to-end encrypted. To get the best experience with virtual files and "
+                                                       "end-to-end encryption, make sure the encrypted folder is marked with "
                                                        "\"Make always available locally\"."));
     messageBox->setIcon(QMessageBox::Warning);
     const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
@@ -1480,7 +1480,7 @@ void AccountSettings::initializeE2eEncryption()
         slotE2eEncryptionMnemonicReady();
     } else {
         _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
-        _ui->encryptionMessage->setText(tr("This account supports End-to-end encryption"));
+        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
         _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
         _ui->encryptionMessage->hide();
 
