@@ -25,6 +25,7 @@
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
+#include <QDesktopServices>
 #include "clientsideencryption.h"
 
 namespace {
@@ -142,19 +143,34 @@ bool AccountManager::restoreFromLegacySettings()
     qCInfo(lcAccountManager) << "Migrate: restoreFromLegacySettings, checking settings group"
                              << Theme::instance()->appName();
 
-         // try to open the correctly themed settings
+    // try to open the correctly themed settings
     auto settings = ConfigFile::settingsWithGroup(Theme::instance()->appName());
 
-         // if the settings file could not be opened, the childKeys list is empty
-         // then try to load settings from a very old place
+    // if the settings file could not be opened, the childKeys list is empty
+    // then try to load settings from a very old place
     if (settings->childKeys().isEmpty()) {
-        // Now try to open the original ownCloud settings to see if they exist.
+        // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
+        const auto legacy2_4CfgSettingsLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
+
+        // 2.5+ (rest of 2.x series)
+        const auto legacy2_5CfgSettingsLocation = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+        const auto legacy2_5CfgFileParentFolder = legacy2_5CfgSettingsLocation.left(legacy2_5CfgSettingsLocation.lastIndexOf('/'));
+
+        // Now try the locations we use today
         const auto fullLegacyCfgFile = QDir::fromNativeSeparators(settings->fileName());
-        // replace the last two segments with ownCloud/owncloud.cfg
         const auto legacyCfgFileParentFolder = fullLegacyCfgFile.left(fullLegacyCfgFile.lastIndexOf('/'));
         const auto legacyCfgFileGrandParentFolder = legacyCfgFileParentFolder.left(legacyCfgFileParentFolder.lastIndexOf('/'));
 
-        for (const auto &configFile : {QString{legacyCfgFileParentFolder + "/" + legacyCfgFileNameC}, QString{legacyCfgFileGrandParentFolder + QLatin1String(legacyRelativeConfigLocationC)}}) {
+        const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
+        const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
+
+        const auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                      legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                      legacyCfgFileParentFolder + legacyCfgFileNamePath,
+                                                      legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+
+        for (const auto &configFile : legacyLocations) {
             if (QFileInfo::exists(configFile)) {
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
 
