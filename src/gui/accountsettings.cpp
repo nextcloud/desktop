@@ -1486,6 +1486,16 @@ void AccountSettings::initializeE2eEncryption()
 
         auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
         connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+
+        connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
+            if (!_accountState->account()->e2e()->_publicKey.isNull()) {
+                _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled on this account with another device."
+                                                   "<br>"
+                                                   "It can be enabled on this device by entering your mnemonic."));
+            }
+        });
+        _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
+        _accountState->account()->e2e()->initialize(_accountState->account());
     }
 }
 
