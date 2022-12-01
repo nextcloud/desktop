@@ -77,6 +77,7 @@ AbstractButton {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                 verticalAlignment: Text.AlignBottom
                 text: name
+                textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: Style.ncTextColor
                 font.pixelSize: Style.topLinePixelSize
@@ -95,6 +96,7 @@ AbstractButton {
                     id: emoji
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
+                    textFormat: Text.PlainText
                     topPadding: -Style.accountLabelsSpacing
                 }
 
@@ -103,6 +105,7 @@ AbstractButton {
                     Layout.fillWidth: true
                     visible: model.statusMessage !== ""
                     text: statusMessage
+                    textFormat: Text.PlainText
                     elide: Text.ElideRight
                     color: Style.ncTextColor
                     font.pixelSize: Style.subLinePixelSize
@@ -116,6 +119,7 @@ AbstractButton {
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 verticalAlignment: Text.AlignTop
                 text: server
+                textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: Style.ncTextColor
                 font.pixelSize: Style.subLinePixelSize

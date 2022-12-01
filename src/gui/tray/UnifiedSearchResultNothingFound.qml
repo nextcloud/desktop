@@ -35,6 +35,7 @@ ColumnLayout {
     Label {
         id: unifiedSearchResultsNoResultsLabelDetails
         text: unifiedSearchResultNothingFoundContainer.text
+        textFormat: Text.PlainText
         color: Style.ncTextColor
         font.pixelSize: Style.topLinePixelSize * 1.25
         wrapMode: Text.Wrap
