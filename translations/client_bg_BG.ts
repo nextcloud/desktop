@@ -745,7 +745,7 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="233"/>
         <source>Unknown account state</source>
-        <translation>Неизвестно състояние на профила</translation>
+        <translation>Неизвестен статус на профил</translation>
     </message>
 </context>
 <context>
@@ -1010,7 +1010,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Когато е активиран режимът &quot;виртуални файлове&quot;, първоначално няма да бъдат изтеглени никакви файлове. Вместо това ще бъде създаден малък файл за всеки файл, който съществува на сървъра. Съдържанието може да бъде изтеглено чрез стартиране на тези файлове или чрез използване на контекстното им меню.
+        <translation>Когато е активиран режимът &quot;виртуални файлове&quot;, първоначално няма да бъдат изтеглени никакви файлове. Вместо това ще бъде създаден малък файл за всеки файл, който съществува на сървъра. Съдържанието може да бъде изтеглено чрез стартиране на тези файлове, или чрез използване на контекстното им меню.
 
 Режимът &quot;виртуални файлове&quot; се изключва взаимно със селективната синхронизация. Неизбраните в момента папки ще бъдат прехвърлени в папки, които са само онлайн, а настройките ви за селективна синхронизация ще бъдат нулирани.
 
@@ -1135,7 +1135,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="309"/>
         <source>Error while reading directory %1</source>
-        <translation>Грешка при четене на директория %1</translation>
+        <translation>Грешка при четене на директорията %1</translation>
     </message>
 </context>
 <context>
@@ -1164,7 +1164,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="229"/>
         <source>%1 should be a folder but is not.</source>
-        <translation>%1 би трябвало да е папка, но не е.</translation>
+        <translation>%1 трябва да е папка, но не е.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="231"/>
@@ -1378,7 +1378,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1183"/>
         <source>Preparing for sync.</source>
-        <translation>Подготовка за синхронизация</translation>
+        <translation>Подготовка за синхронизация.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1186"/>
@@ -1525,7 +1525,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="196"/>
         <source>Fetching folder list from server...</source>
-        <translation>Зареждане на списък с папки от сървъра...</translation>
+        <translation>Извличане на списък с папки от сървъра...</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="150"/>
@@ -1625,7 +1625,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <location filename="../src/gui/folderstatusmodel.cpp" line="1031"/>
         <source>%5 left, %1 of %2, file %3 of %4</source>
         <extracomment>Example text: &quot;5 minutes left, 12 MB of 345 MB, file 6 of 7&quot;</extracomment>
-        <translation>още %5, %1 от %2, файл %3 от %4</translation>
+        <translation>%5 остават, %1 от %2, файл %3 от %4</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="1039"/>
@@ -1736,7 +1736,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="333"/>
         <source>This folder is already being synced.</source>
-        <translation>Тази папка вече е сред тези, които се синхронизират.</translation>
+        <translation>Тази папка вече се синхронизира.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
@@ -1792,7 +1792,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="220"/>
         <source>Server returned wrong content-range</source>
-        <translation>Сървърът върна грешен списък със съдържание</translation>
+        <translation>Сървърът върна грешен диапазон на съдържание</translation>
     </message>
 </context>
 <context>
@@ -1805,7 +1805,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="35"/>
         <source>General Settings</source>
-        <translation>Общи Настройки</translation>
+        <translation>Общи настройки</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
@@ -1881,7 +1881,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/generalsettings.ui" line="219"/>
         <source>Ask for confirmation before synchronizing external storages</source>
-        <translation>Изискване на потвърждение преди синхронизиране на външни дискови устройства</translation>
+        <translation>Запитване за потвърждение преди синхронизирането на външни хранилища</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="48"/>
@@ -2430,7 +2430,7 @@ Note that using any logging command line options will override the settings.</so
         <location filename="../src/libsync/creds/oauth.cpp" line="372"/>
         <location filename="../src/libsync/creds/oauth.cpp" line="382"/>
         <source>Login Error</source>
-        <translation>Грешка при вписването</translation>
+        <translation>Грешка при влизане</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
@@ -2521,7 +2521,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Update status is unknown: Did not check for new updates.</source>
-        <translation>Статусът на актуализиране е неизвестен: Не е правена проверка за нови актуализации.</translation>
+        <translation>Статусът на актуализацията е неизвестен: Не е правена проверка за нови актуализации.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="174"/>
@@ -2552,7 +2552,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="254"/>
         <source>File is listed on the ignore list.</source>
-        <translation>Файлът е посочен в списъка за игнориране.</translation>
+        <translation>Файлът е включен в списъка за игнориране.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="259"/>
@@ -2577,7 +2577,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="286"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Името на файла завършва с празни интервали.</translation>
+        <translation>Името на файла съдържа интервали в края.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="289"/>
@@ -2592,7 +2592,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="296"/>
         <source>Stat failed.</source>
-        <translation>Неуспешно извличане на статистика.</translation>
+        <translation>Статистиката е неуспешна.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="299"/>
@@ -2895,7 +2895,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="220"/>
         <source>Error writing metadata to the database</source>
-        <translation>Грешка при запазване на мета информация в базата данни</translation>
+        <translation>Грешка при запазване на мета информацията в базата данни</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="213"/>
@@ -2971,7 +2971,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="537"/>
         <source>Unexpected return code from server (%1)</source>
-        <translation>Неочакван отговор от сървъра (%1)</translation>
+        <translation>Сървъра (%1) върна неочакван код</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="544"/>
@@ -3259,7 +3259,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="114"/>
         <source>The server does not allow sharing</source>
-        <translation>Сървърът не разрешава споделяне</translation>
+        <translation>Сървърът не позволява споделяне</translation>
     </message>
     <message>
         <location filename="../src/gui/sharedialog.cpp" line="130"/>
@@ -3357,7 +3357,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="20"/>
         <source>Anyone with the link has access to the file/folder</source>
-        <translation>Всеки знаещ тази връзка ще има достъп до файл/папка</translation>
+        <translation>Всеки, който има тази връзка ще има достъп до файла/папката</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="118"/>
@@ -3763,7 +3763,7 @@ for additional privileges during the process.</source>
         <location filename="../src/libsync/syncengine.cpp" line="394"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
-        <translation>На разположение са само %1, минимум %2 са нужни</translation>
+        <translation>Налични са само %1, необходими са поне %2 за стартиране</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="422"/>
@@ -3921,7 +3921,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/common/vfs.cpp" line="76"/>
         <source>The Virtual filesystem feature does not support a drive as sync root</source>
-        <translation>Функцията Виртуална файлова система не поддържа устройство като root за синхронизиране</translation>
+        <translation>Функцията Виртуална файлова система не поддържа синхронизиране, като основно устройство</translation>
     </message>
     <message>
         <location filename="../src/common/vfs.cpp" line="80"/>
@@ -3991,7 +3991,7 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation>Когато е активиран режимът &quot;виртуални файлове&quot;, първоначално няма да бъдат изтеглени никакви файлове. Вместо това ще бъде създаден малък файл за всеки файл, който съществува на сървъра. Съдържанието може да бъде изтеглено чрез стартиране на тези файлове или чрез използване на контекстното им меню.
+        <translation>Когато е активиран режимът &quot;виртуални файлове&quot;, първоначално няма да бъдат изтеглени никакви файлове. Вместо това ще бъде създаден малък файл за всеки файл, който съществува на сървъра. Съдържанието може да бъде изтеглено чрез стартиране на тези файлове, или чрез използване на контекстното им меню.
 
 Режимът &quot;виртуални файлове&quot; се изключва взаимно със селективната синхронизация. Неизбраните в момента папки ще бъдат прехвърлени в папки, които са само онлайн, а настройките ви за селективна синхронизация ще бъдат нулирани.
 
@@ -4259,7 +4259,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="823"/>
         <source>Unknown status</source>
-        <translation>Неизвестно състояние</translation>
+        <translation>Неизвестен статус</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="827"/>
@@ -4279,7 +4279,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="290"/>
         <source>Disconnected from %1</source>
-        <translation>Преустановена връзка с %1</translation>
+        <translation>Прекъсната връзка с %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="238"/>
@@ -4324,7 +4324,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="359"/>
         <source>Up to date (%1)</source>
-        <translation>Актуален (%1)</translation>
+        <translation>Към днешна дата (%1)</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="363"/>
@@ -4389,7 +4389,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="868"/>
         <source>No items synced recently</source>
-        <translation>Няма скоро синхронизирани файлове</translation>
+        <translation>Няма наскоро синхронизирани елементи</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="887"/>
@@ -4489,7 +4489,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="29"/>
         <source>Server URL</source>
-        <translation>Адрес на Сървъра</translation>
+        <translation>URL адрес на сървъра</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="31"/>
@@ -4648,17 +4648,17 @@ Are you sure you want to proceed?</source>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="267"/>
         <source>%n year(s)</source>
-        <translation><numerusform>преди %n година(и) </numerusform><numerusform>преди %n година(и) </numerusform></translation>
+        <translation><numerusform>%n година(и) </numerusform><numerusform>%n година(и) </numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="268"/>
         <source>%n month(s)</source>
-        <translation><numerusform>преди %n месеца(и) </numerusform><numerusform>преди %n месеца(и) </numerusform></translation>
+        <translation><numerusform>%n месец(а) </numerusform><numerusform>%n месец(а) </numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="269"/>
         <source>%n day(s)</source>
-        <translation><numerusform>%n ден(а) </numerusform><numerusform>%n ден(а) </numerusform></translation>
+        <translation><numerusform>%n ден(и) </numerusform><numerusform>%n ден(и) </numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="270"/>
@@ -4787,7 +4787,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="52"/>
         <source>Filesystem access error</source>
-        <translation>Грешка при достъп на файловата система</translation>
+        <translation>Грешка при достъп до файловата система</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="54"/>
@@ -4852,12 +4852,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Waiting to start sync</source>
-        <translation>Изчкване за начало на синхронизацията...</translation>
+        <translation>Изчакване за започване на синхронизация</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync is running</source>
-        <translation>Синхронизаране</translation>
+        <translation>Синхронизацията е стартирана</translation>
     </message>
     <message>
         <location filename="../src/libsync/theme.cpp" line="108"/>
