@@ -12,24 +12,18 @@
  * for more details.
  */
 
-import QtQml 2.15
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
-import Style 1.0
+Label {
+    function resetToPlainText() {
+        if (textFormat !== Text.PlainText) {
+            console.log("WARNING: this label was set to a non-plain text format. Resetting to plain text.")
+            textFormat = Text.PlainText;
+        }
+    }
 
-ToolTip {
-    id: toolTip
-    clip: true
-    delay: Qt.styleHints.mousePressAndHoldInterval
-    contentItem: EnforcedPlainTextLabel {
-        text: toolTip.text
-        textFormat: Text.PlainText
-        color: Style.ncTextColor
-        wrapMode: Text.Wrap
-    }
-    background: Rectangle {
-        border.color: Style.menuBorder
-        color: Style.backgroundColor
-    }
+    textFormat: Text.PlainText
+    onTextFormatChanged: resetToPlainText()
+    Component.onCompleted: resetToPlainText()
 }

@@ -20,6 +20,7 @@ import QtQuick.Window 2.15
 
 import com.nextcloud.desktopclient 1.0 as NC
 import Style 1.0
+import "./tray"
 
 ColumnLayout {
     id: rootLayout
@@ -32,7 +33,7 @@ ColumnLayout {
         Layout.fillWidth: true
         spacing: Style.smallSpacing
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.fillWidth: true
             Layout.bottomMargin: Style.smallSpacing
             horizontalAlignment: Text.AlignHCenter
@@ -117,7 +118,7 @@ ColumnLayout {
         Layout.fillHeight: true
         spacing: Style.smallSpacing
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.fillWidth: true
             Layout.bottomMargin: Style.smallSpacing
             horizontalAlignment: Text.AlignHCenter
@@ -273,7 +274,7 @@ ColumnLayout {
             Layout.fillWidth: true
             spacing: Style.smallSpacing
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: clearComboLabel
 
                 Layout.fillWidth: true

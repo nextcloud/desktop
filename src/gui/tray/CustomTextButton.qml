@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.3
 import Style 1.0
 
-Label {
+EnforcedPlainTextLabel {
     id: root
 
     property string toolTipText: ""
@@ -20,7 +20,6 @@ Label {
     Accessible.onPressAction: root.clicked(null)
 
     text: action ? action.text : ""
-    textFormat: Text.PlainText
     enabled: !action || action.enabled
     onClicked: if (action) action.trigger()
 
