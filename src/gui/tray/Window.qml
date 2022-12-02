@@ -461,7 +461,6 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
-                                textFormat: Text.PlainText
                                 elide: Text.ElideRight
                                 color: UserModel.currentUser.headerTextColor
 
@@ -481,7 +480,6 @@ ApplicationWindow {
                                     visible: UserModel.currentUser.statusEmoji !== ""
                                     width: Style.userStatusEmojiSize
                                     text: UserModel.currentUser.statusEmoji
-                                    textFormat: Text.PlainText
                                 }
                                 EnforcedPlainTextLabel {
                                     id: message
@@ -492,7 +490,6 @@ ApplicationWindow {
                                     text: UserModel.currentUser.statusMessage !== ""
                                           ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser.server
-                                    textFormat: Text.PlainText
                                     elide: Text.ElideRight
                                     color: UserModel.currentUser.headerTextColor
                                     font.pixelSize: Style.subLinePixelSize

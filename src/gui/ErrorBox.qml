@@ -30,6 +30,5 @@ Item {
         color: errorBox.color
         wrapMode: Text.WordWrap
         text: errorBox.text
-        textFormat: Text.PlainText
     }
 }

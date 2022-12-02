@@ -129,7 +129,6 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncTextColor
             visible: text !== ""
         }
@@ -146,7 +145,6 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncTextColor
             visible: text !== ""
         }
@@ -160,7 +158,6 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncSecondaryTextColor
             visible: text !== ""
         }
@@ -174,7 +171,6 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncSecondaryTextColor
             visible: text !== ""
         }

@@ -37,7 +37,6 @@ ComboBox {
         rightPadding: clearComboBox.indicator.width + clearComboBox.spacing
 
         text: clearComboBox.displayText
-        textFormat: Text.PlainText
         color: Style.ncTextColor
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -89,7 +88,6 @@ ComboBox {
         width: clearComboBox.width
         contentItem: EnforcedPlainTextLabel {
             text: modelData.display
-            textFormat: Text.PlainText
             color: Style.ncTextColor
             elide: Text.ElideRight
             verticalAlignment: Text.AlignVCenter
