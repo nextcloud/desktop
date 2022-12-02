@@ -107,7 +107,7 @@ ScrollView {
                 source: "image://svgimage-custom-color/activity.svg/" + Style.ncSecondaryTextColor
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                width: parent.width
                text: qsTr("No activities yet")
                color: Style.ncSecondaryTextColor

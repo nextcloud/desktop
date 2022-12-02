@@ -19,6 +19,7 @@ import QtQuick.Controls 2.15
 
 import com.nextcloud.desktopclient 1.0
 import Style 1.0
+import "../tray"
 
 TabButton {
     id: tabButton
@@ -57,7 +58,7 @@ TabButton {
             }
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             id: tabButtonLabel
             Layout.fillWidth: true
             horizontalAlignment: Text.AlignHCenter

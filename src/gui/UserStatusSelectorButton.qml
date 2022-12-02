@@ -19,6 +19,8 @@ import QtQuick.Controls 2.15
 
 import Style 1.0
 
+import "./tray"
+
 AbstractButton {
     id: root
 
@@ -59,7 +61,7 @@ AbstractButton {
             visible: root.icon.source !== ""
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.column: root.icon.source === "" ? 0 : 1
             Layout.columnSpan: root.icon.source === "" ? 2 : 1
             Layout.row: 0
@@ -75,7 +77,7 @@ AbstractButton {
             font.bold: root.primary
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.column: root.icon.source === "" ? 0 : 1
             Layout.columnSpan: root.icon.source === "" ? 2 : 1
             Layout.row: 1

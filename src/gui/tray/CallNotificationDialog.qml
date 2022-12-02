@@ -192,7 +192,7 @@ Window {
                 }
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: message
                 text: root.subject
                 textFormat: Text.PlainText

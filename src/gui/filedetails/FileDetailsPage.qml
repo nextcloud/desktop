@@ -18,6 +18,7 @@ import QtQuick.Controls 2.15
 
 import com.nextcloud.desktopclient 1.0
 import Style 1.0
+import "../tray"
 
 Page {
     id: root
@@ -94,7 +95,7 @@ Page {
                 fillMode: Image.PreserveAspectFit
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: fileNameLabel
 
                 Layout.fillWidth: true
@@ -106,7 +107,7 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: fileDetailsLabel
 
                 Layout.fillWidth: true
@@ -117,7 +118,7 @@ Page {
                 wrapMode: Text.Wrap
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: fileLockedLabel
 
                 Layout.fillWidth: true

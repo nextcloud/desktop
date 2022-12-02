@@ -208,7 +208,7 @@ GridLayout {
         }
     }
 
-    Label {
+    EnforcedPlainTextLabel {
         id: shareTypeLabel
 
         Layout.fillWidth: true
@@ -222,7 +222,7 @@ GridLayout {
         elide: Text.ElideRight
     }
 
-    Label {
+    EnforcedPlainTextLabel {
         id: linkDetailLabel
 
         Layout.fillWidth: true

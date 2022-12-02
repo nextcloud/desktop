@@ -18,7 +18,7 @@ ColumnLayout {
     Accessible.name: unifiedSearchResultItemFetchMoreText.text
     Accessible.onPressAction: unifiedSearchResultMouseArea.clicked()
 
-    Label {
+    EnforcedPlainTextLabel {
         id: unifiedSearchResultItemFetchMoreText
 
         Layout.fillWidth: true

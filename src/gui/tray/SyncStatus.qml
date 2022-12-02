@@ -47,7 +47,7 @@ RowLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        Text {
+        EnforcedPlainTextLabel {
             id: syncProgressText
 
             Layout.fillWidth: true
@@ -87,7 +87,7 @@ RowLayout {
             }
         }
 
-        Text {
+        EnforcedPlainTextLabel {
             id: syncProgressDetailText
 
             Layout.fillWidth: true

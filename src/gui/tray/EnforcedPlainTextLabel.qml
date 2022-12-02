@@ -1,5 +1,5 @@
 /*
- * Copyright (C) by Claudio Cambra <claudio.cambra@nextcloud.com>
+ * Copyright (C) 2022 by Claudio Cambra <claudio.cambra@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,24 +14,16 @@
 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
-import QtQuick.Layouts 1.15
 
-import Style 1.0
-
-EnforcedPlainTextLabel {
-    property bool hovered: false
-    property color textColor: Style.ncTextColor
-    property color textColorHovered: Style.ncSecondaryTextColor
-    property bool bold: false
+Label {
+    function resetToPlainText() {
+        if (textFormat !== Text.PlainText) {
+            console.log("WARNING: this label was set to a non-plain text format. Resetting to plain text.")
+            textFormat = Text.PlainText;
+        }
+    }
 
     textFormat: Text.PlainText
-    font.underline: true
-    font.bold: bold
-    color: hovered ? textColorHovered : textColor
-
-    horizontalAlignment: Text.AlignLeft
-    verticalAlignment: Text.AlignVCenter
-
-    elide: Text.ElideRight
+    onTextFormatChanged: resetToPlainText()
+    Component.onCompleted: resetToPlainText()
 }
-
