@@ -406,8 +406,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Zdá se, že pro tuto složku máte zapnutou funkci Virtuální soubory. V tuto chvíli není možné výslovně stahovat virtuální soubory, které jsou šifrovány mezi koncovými body. Pokud chcete, aby vám virtuální soubory a šifrování mezi koncovými body fungovalo co nejlépe, ověřte, že šifrovaná složka je označena jako „Vždy zpřístupnit lokálně“.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -428,12 +428,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>No account configured.</source>
         <translation>Nenastaven žádný účet.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="233"/>
-        <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Tento účet podporuje šifrování mezi koncovými body</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
@@ -738,14 +732,20 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Odstranit připojení</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
-        <source>This account supports End-to-end encryption</source>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports end-to-end encryption</source>
         <translation>Tento účet podporuje šifrování mezi koncovými body</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
         <translation>Nastavit šifrování</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1008,13 +1008,18 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
+        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatelské jméno: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatel: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
-        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
+        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatelské jméno: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>

@@ -406,8 +406,8 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
-        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-end encrypted. To get the best experience with Virtual Files and End-to-end Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Wygląda na to, że w tym katalogu włączono funkcję plików wirtualnych. W tej chwili nie jest możliwe niejawne pobieranie wirtualnych plików, które są szyfrowane metodą end-to-end. Aby uzyskać najlepsze efekty z plikami wirtualnymi i szyfrowaniem end-to-end, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
+        <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -428,12 +428,6 @@
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>No account configured.</source>
         <translation>Brak skonfigurowanych kont.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="233"/>
-        <location filename="../src/gui/accountsettings.cpp" line="254"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>To konto obsługuje szyfrowanie end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
@@ -738,14 +732,20 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation>Usuń połączenie</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1483"/>
-        <source>This account supports End-to-end encryption</source>
+        <location filename="../src/gui/accountsettings.cpp" line="233"/>
+        <location filename="../src/gui/accountsettings.cpp" line="254"/>
+        <source>This account supports end-to-end encryption</source>
         <translation>To konto obsługuje szyfrowanie end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
         <translation>Włącz szyfrowanie</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1008,14 +1008,19 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
 <context>
     <name>OCC::ClientSideEncryption</name>
     <message>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
+        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation>Wprowadź hasło szyfrowania end-to-end:&lt;br&gt;&lt;br&gt;Nazwa użytkownika: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+    </message>
+    <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1241"/>
         <source>Please enter your end to end encryption passphrase:&lt;br&gt;&lt;br&gt;User: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Wprowadź hasło szyfrowania end to end:&lt;br&gt;&lt;br&gt;Użytkownik: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1228"/>
-        <source>Please enter your End-to-End encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Wprowadź hasło szyfrowania end-to-end:&lt;br&gt;&lt;br&gt;Nazwa użytkownika: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
+        <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
+        <translation>Wprowadź hasło szyfrowania End-to-End:&lt;br&gt;&lt;br&gt;Nazwa użytkownika: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1236"/>
