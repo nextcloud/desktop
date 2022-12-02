@@ -1,0 +1,24 @@
+name: QML Label component check
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run label component count
+        run: |
+          MATCHESRESULT=$(grep -r -e "^\s*Label\s*[{]" . | wc -l | sed 's/ //g')
+          echo "MATCHES=${MATCHESRESULT}" >> $GITHUB_ENV
+          echo "EXPECTED_MATCHES=1" >> $GITHUB_ENV
+      - name: Check label component use count
+        if: env.MATCHES != env.EXPECTED_MATCHES
+        uses: actions/github-script@v3
+        with:
+          script: |
+              core.setFailed('Using QML Labels! Make sure to use EnforcedPlainTextLabel instead!')
