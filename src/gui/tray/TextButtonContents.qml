@@ -24,7 +24,6 @@ EnforcedPlainTextLabel {
     property color textColorHovered: Style.ncSecondaryTextColor
     property bool bold: false
 
-    textFormat: Text.PlainText
     font.underline: true
     font.bold: bold
     color: hovered ? textColorHovered : textColor

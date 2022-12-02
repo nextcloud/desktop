@@ -90,7 +90,6 @@ RowLayout {
             id: unifiedSearchResultTitleText
             Layout.fillWidth: true
             text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
-            textFormat: Text.PlainText
             elide: Text.ElideRight
             font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
             color: unifiedSearchResultItemDetails.titleColor
@@ -99,7 +98,6 @@ RowLayout {
             id: unifiedSearchResultTextSubline
             Layout.fillWidth: true
             text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
-            textFormat: Text.PlainText
             elide: Text.ElideRight
             font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
             color: unifiedSearchResultItemDetails.sublineColor

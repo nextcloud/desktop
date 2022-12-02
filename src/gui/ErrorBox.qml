@@ -75,7 +75,6 @@ Item {
             color: Style.ncTextColor
             wrapMode: Text.WordWrap
             text: errorBox.text
-            textFormat: Text.PlainText
         }
     }
 }

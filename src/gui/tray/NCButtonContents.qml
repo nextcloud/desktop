@@ -48,7 +48,6 @@ RowLayout {
         Layout.fillWidth: true
 
         text: root.text
-        textFormat: Text.PlainText
 
         visible: root.text !== ""
 

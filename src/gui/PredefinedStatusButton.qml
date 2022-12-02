@@ -46,7 +46,6 @@ AbstractButton {
         EnforcedPlainTextLabel {
             width: root.emojiWidth > 0 ? root.emojiWidth : implicitWidth
             text: emoji
-            textFormat: Text.PlainText
             horizontalAlignment: Image.AlignHCenter
             verticalAlignment: Image.AlignVCenter
         }
@@ -55,7 +54,6 @@ AbstractButton {
             spacing: Style.smallSpacing
             EnforcedPlainTextLabel {
                 text: root.statusText
-                textFormat: Text.PlainText
                 color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
                 font.bold: true
@@ -69,7 +67,6 @@ AbstractButton {
 
             EnforcedPlainTextLabel {
                 text: root.clearAtText
-                textFormat: Text.PlainText
                 color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
             }

@@ -13,7 +13,6 @@ EnforcedPlainTextLabel {
     leftPadding: Style.unifiedSearchResultSectionItemLeftPadding
 
     text: section
-    textFormat: Text.PlainText
     font.pixelSize: Style.unifiedSearchResultTitleFontSize
     color: UserModel.currentUser.accentColor
 
