@@ -204,7 +204,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation type="unfinished"/>
+        <translation>Détails du fichier de %1 · %2</translation>
     </message>
 </context>
 <context>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Il semble que la fonctionnalité des Fichiers Virtuels soit activée sur ce dossier. Pour l&apos;instant, il n&apos;est pas possible de télécharger implicitement des fichiers virtuels qui sont chiffrés de bout en bout. Pour bénéficier d&apos;une expérience optimale avec les fichiers virtuels et le chiffrement de bout en bout, assurez-vous que le dossier chiffré soit marqué par l&apos;option &quot;Toujours rendre disponible localement&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Display mnemonic</source>
-        <translation>Afficher le mnémonique</translation>
+        <translation>Afficher la phrase secrète</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="252"/>
@@ -453,7 +453,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Le chiffrement de bout en bout n&apos;est pas configuré sur cet appareil. Une fois qu&apos;il sera configuré, vous serez en mesure de chiffrer ce dossier.
+Souhaitez-vous configurer le chiffrement de bout en bout ?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -600,17 +601,17 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Phrase secrète du chiffrement de bout en bout</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Phrase secrète du chiffrement de bout en bout</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une mnémonique de 12 mots du dictionnaire. Veuillez les noter et les garder en sécurité. Ils seront nécessaires pour ajouter d’autres appareils à votre compte (comme votre téléphone portable ou votre ordinateur portable).</translation>
+        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une phrase secrète de 12 mots du dictionnaire. Veuillez la noter et la garder en sécurité. Elle sera nécessaire pour ajouter d’autres appareils à votre compte (comme votre smartphone ou votre ordinateur portable).</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1045"/>
@@ -737,12 +738,12 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Configurer le chiffrement</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation type="unfinished"/>
+        <translation>Le chiffrement de bout en bout a été activé sur ce compte avec un autre appareil.&lt;br&gt;Il peut être activé sur cet appareil en entrant votre phrase secrète.</translation>
     </message>
 </context>
 <context>
@@ -1017,7 +1018,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez entrer votre phrase de passe de chiffrement de bout en bout :&lt;br&gt;&lt;br&gt;Nom d&apos;utilisateur : %2&lt;br&gt;Compte : %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1236"/>
@@ -5867,12 +5868,12 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="406"/>
         <source>End to end encryption mnemonic</source>
-        <translation>Chiffrement de bout en bout mnémotechnique</translation>
+        <translation>Chiffrement de bout en bout par phrase secrète</translation>
     </message>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une mnémonique de 12 mots du dictionnaire. Veuillez les noter et les garder en sécurité. Ils seront nécessaires pour ajouter d’autres appareils à votre compte (comme votre téléphone portable ou votre ordinateur portable).</translation>
+        <translation>Pour protéger votre identité cryptographique, nous la chiffrons avec une phrase secrète de 12 mots du dictionnaire. Veuillez la noter et la garder en sécurité. Elle sera nécessaire pour ajouter d’autres appareils à votre compte (comme votre smartphone ou votre ordinateur portable).</translation>
     </message>
 </context>
 <context>

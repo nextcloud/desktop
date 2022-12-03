@@ -4057,7 +4057,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1069"/>
         <source>Copy internal link</source>
-        <translation>Копіювати внутрішнє посилання</translation>
+        <translation>Копіювати посилання</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
