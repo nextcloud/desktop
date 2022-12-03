@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItem.qml" line="44"/>
         <source>In %1</source>
-        <translation type="unfinished"/>
+        <translation>Om %1</translation>
     </message>
 </context>
 <context>
@@ -60,7 +60,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="174"/>
         <source>Talk notification caller avatar</source>
-        <translation type="unfinished"/>
+        <translation>Avatar för samtalsavisering</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="241"/>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer med ändpunkt-till-ändpunkt-kryptering. För virtuella filer och ändpunkt-till-ändpunkt-kryptering, verifiera att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -437,7 +437,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="252"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
+        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats för detta konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1473"/>
@@ -453,7 +453,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Ändpunkt-till-ändpunkt-kryptering är inte konfigurerad på den här enheten. När den är konfigurerad kommer du att kunna kryptera den här mappen.
+Vill du aktivera ändpunkt-till-ändpunkt-kryptering?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -608,7 +609,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Ändpunkt-till-ändpunkt krypteringsord</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
@@ -739,12 +740,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera kryptering</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation type="unfinished"/>
+        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Det kan aktiveras på den här enheten genom att ange ditt krypteringsord.</translation>
     </message>
 </context>
 <context>
@@ -1019,7 +1020,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Ange din lösenordsfras för ändpunkt-till-ändpunkt-kryptering:&lt;br&gt;&lt;br&gt;Användarnamn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1236"/>
@@ -1307,25 +1308,25 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 timme sedan</numerusform><numerusform>%1 timmar sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 dag(ar) sedan</numerusform><numerusform>%1 dag(ar) sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 månad(er) sedan</numerusform><numerusform>%1 månad(er) sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>%1 år sedan</numerusform><numerusform>%1 år sedan</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
@@ -1339,7 +1340,7 @@ Det kan vara problem med dina OpenSSL-bibliotek.</translation>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
-        <translation type="unfinished"/>
+        <translation>Den returnerade server-URL:n börjar inte med HTTPS trots att inloggnings-URL:n började med HTTPS. Inloggning kommer inte att vara möjlig eftersom detta kan vara ett säkerhetsproblem. Kontakta din administratör.</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
@@ -3559,7 +3560,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="331"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte sätta pin-status</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
@@ -3663,7 +3664,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="290"/>
         <source>Error setting pin state</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte sätta pin-status</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemove.cpp" line="297"/>
@@ -3742,7 +3743,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="484"/>
         <source>Poll URL missing</source>
-        <translation type="unfinished"/>
+        <translation>Poll-URL saknas</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="493"/>

@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Görünüşe göre bu klasör için sanal dosyalar özelliğini etkinleştirmişsiniz. Şu anda uçtan uca şifrelenmiş sanal dosyaların örtülü olarak indirilmesi desteklenmiyor. Sanal dosyalar ve uçtan uca şifreleme ile en iyi deneyimi elde etmek için, şifrelenmiş klasörün &quot;Her zaman yerel olarak kullanılabilsin&quot; olarak işaretlendiğinden emin olun.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Display mnemonic</source>
-        <translation>İpucu görüntülensin</translation>
+        <translation>Anımsatıcı görüntülensin</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="252"/>
@@ -453,7 +453,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>Bu aygıtta uçtan uca şifreleme yapılandırılmamış. Yapılandırmayı tamamladığınızda, bu klasörü şifreleyebilirsiniz.
+Uçtan uca şifrelemeyi kurmak ister misiniz?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -608,7 +609,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1001"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Uçtan uca şifreleme parolası</translation>
+        <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
@@ -739,12 +740,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1487"/>
         <source>Set up encryption</source>
-        <translation type="unfinished"/>
+        <translation>Şifreleme kurulumu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation type="unfinished"/>
+        <translation>Bu hesapta uçtan uca şifreleme başka bir aygıt ile etkinleştirilmiş.&lt;br&gt;Anımsatıcınızı yazarak bu aygıt için etkinleştirebilirsiniz.</translation>
     </message>
 </context>
 <context>
