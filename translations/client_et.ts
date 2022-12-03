@@ -3829,7 +3829,7 @@ for additional privileges during the process.</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="445"/>
+        <location filename="../src/libsync/theme.cpp" line="439"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>Versioon %1. Lisainformatsiooni saamiseks külastage &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Teadaolevate vigade ja abi lugemiseks külastage: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Autorid: Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller jt.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Turustatud %4 poolt ja litsenseeritud vastavalt GNU General Public License (GPL) versioonile 2.0.&lt;br/&gt;%5 ja %5 logo on %4 registreeritud kaubamärgid USA-s ja/või teistes maades.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
@@ -4612,12 +4612,12 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>Type of user ID</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="695"/>
+        <location filename="../src/libsync/theme.cpp" line="689"/>
         <source>Username</source>
         <translation>Kasutajanimi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="697"/>
+        <location filename="../src/libsync/theme.cpp" line="691"/>
         <source>E-mail address</source>
         <translation>E-posti aadress</translation>
     </message>
@@ -4720,7 +4720,7 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>ownCloudTheme::aboutVersions()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="423"/>
+        <location filename="../src/libsync/theme.cpp" line="417"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
         <translation>%1 %2%7%8Qt teegid %3, %4%7Kasutatakse virtuaalsete failide pluginat: %5%7%6</translation>
     </message>
@@ -4728,7 +4728,7 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>ownCloudTheme::qtVer</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="413"/>
+        <location filename="../src/libsync/theme.cpp" line="407"/>
         <source>%1 (Built against Qt %2)</source>
         <translation>%1 (Ehitatud vastavalt Qt %2)</translation>
     </message>
@@ -4736,7 +4736,7 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>ownCloudTheme::versionWithSha</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="418"/>
+        <location filename="../src/libsync/theme.cpp" line="412"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
@@ -4844,52 +4844,52 @@ Kas olete kindel, et soovite jätkata?</translation>
 <context>
     <name>theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="99"/>
+        <location filename="../src/libsync/theme.cpp" line="93"/>
         <source>Status undefined</source>
         <translation>Staatus on määramata</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="102"/>
+        <location filename="../src/libsync/theme.cpp" line="96"/>
         <source>Waiting to start sync</source>
         <translation>Oodatakse sünkroniseerimise alustamist</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="105"/>
+        <location filename="../src/libsync/theme.cpp" line="99"/>
         <source>Sync is running</source>
         <translation>Sünkroniseerimine on käimas</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="108"/>
+        <location filename="../src/libsync/theme.cpp" line="102"/>
         <source>Sync Success</source>
         <translation>Sünkroniseerimine on tehtud</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="111"/>
+        <location filename="../src/libsync/theme.cpp" line="105"/>
         <source>Sync Success, some files were ignored.</source>
         <translation>Sünkroniseerimine õnnestus, mõnda faili ignoreeriti.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="114"/>
+        <location filename="../src/libsync/theme.cpp" line="108"/>
         <source>Sync Error</source>
         <translation>Sünkroniseerimise viga</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="117"/>
+        <location filename="../src/libsync/theme.cpp" line="111"/>
         <source>Setup Error</source>
         <translation>Viga sünkroniseerimisel</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="120"/>
+        <location filename="../src/libsync/theme.cpp" line="114"/>
         <source>Preparing to sync</source>
         <translation>Sünkroniseerimiseks valmistumine</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="123"/>
+        <location filename="../src/libsync/theme.cpp" line="117"/>
         <source>Aborting...</source>
         <translation>Tühistamine ...</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="126"/>
+        <location filename="../src/libsync/theme.cpp" line="120"/>
         <source>Sync is paused</source>
         <translation>Sünkroniseerimine on peatatud</translation>
     </message>
