@@ -453,7 +453,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>Auf diesem Gerät ist keine Ende-zu-Ende-Verschlüsselung konfiguriert. Sobald es konfiguriert ist, können Sie diesen Ordner verschlüsseln. Möchten Sie eine Ende-zu-Ende-Verschlüsselung einrichten?</translation>
+        <translation>Auf diesem Gerät ist keine Ende-zu-Ende-Verschlüsselung konfiguriert. Sobald sie konfiguriert ist, können Sie diesen Ordner verschlüsseln. Möchten Sie die Ende-zu-Ende-Verschlüsselung einrichten?</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>

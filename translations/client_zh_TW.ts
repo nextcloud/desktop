@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>您似乎在此資料夾啟用了虛擬檔案的功能。目前無法下載透過端到端加密的虛擬檔案。為了得到最佳的虛擬檔案與端到端加密體驗，請確保已加密的資料夾被標記為「一律可在本機使用」。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -745,7 +745,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1492"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation type="unfinished"/>
+        <translation>已在其他裝置上為此帳號啟用端到端加密。&lt;br&gt;可透過輸入您的助記字串在此裝置上啟用。</translation>
     </message>
 </context>
 <context>
