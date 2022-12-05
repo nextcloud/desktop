@@ -644,7 +644,7 @@ QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data)
         return {};
     }
 
-    /* Initialise the decryption operation. */
+    /* Initialise the encryption operation. */
     if(!EVP_EncryptInit_ex(ctx, EVP_aes_128_gcm(), nullptr, nullptr, nullptr)) {
         qCInfo(lcCse()) << "Error initializing context with aes_128";
         handleErrors();
