@@ -67,6 +67,8 @@ public:
         AccountConnectedRole,
         DisplayActions,
         ShowFileDetailsRole,
+        ShareableRole,
+        DismissableRole,
         IsCurrentUserFileActivityRole,
         ThumbnailRole,
         TalkNotificationConversationTokenRole,

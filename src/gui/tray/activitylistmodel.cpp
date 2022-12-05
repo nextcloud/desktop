@@ -73,6 +73,8 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[PointInTimeRole] = "dateTime";
     roles[DisplayActions] = "displayActions";
     roles[ShowFileDetailsRole] = "showFileDetails";
+    roles[ShareableRole] = "isShareable";
+    roles[DismissableRole] = "isDismissable";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[ThumbnailRole] = "thumbnail";
@@ -344,6 +346,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 _displayActions &&
                 a._fileAction != "file_deleted" &&
                 a._syncFileItemStatus != SyncFileItem::FileIgnored;
+    case DismissableRole:
+        // Do not allow dismissal of things requiring user input regarding syncing
+        return !a._links.isEmpty() &&
+                a._syncFileItemStatus != SyncFileItem::FileNameClash &&
+                a._syncFileItemStatus != SyncFileItem::Conflict &&
+                a._syncFileItemStatus != SyncFileItem::FileNameInvalid;
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
     case ThumbnailRole: {
@@ -741,6 +749,11 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
     if (action._verb == "WEB") {
         Utility::openBrowser(QUrl(action._link));
         return;
+    } else if (action._verb == "FIX_CONFLICT_LOCALLY" &&
+               activity._type == Activity::SyncFileItemType &&
+               (activity._syncFileItemStatus == SyncFileItem::Conflict || activity._syncFileItemStatus == SyncFileItem::FileNameClash)) {
+        slotTriggerDefaultAction(activityIndex);
+        return;
     }
 
     emit sendNotificationRequest(activity._accName, action._link, action._verb, activityIndex);
@@ -767,10 +780,6 @@ AccountState *ActivityListModel::accountState() const
 QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &activity)
 {
     QVariantList customList;
-
-    if (activity._links.size() == 1) {
-        return customList;
-    }
 
     if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
         customList << ActivityListModel::convertLinkToActionButton(activity._links.first());
