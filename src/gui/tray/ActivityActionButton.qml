@@ -40,7 +40,7 @@ AbstractButton {
         text: root.toolTipText
         delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
-        contentItem: Label {
+        contentItem: EnforcedPlainTextLabel {
             text: customTextButtonTooltip.text
             color: Style.ncTextColor
         }

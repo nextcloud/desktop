@@ -42,13 +42,12 @@ RowLayout {
         visible: root.hovered ? root.imageSourceHover !== "" : root.imageSource !== ""
     }
 
-    Label {
+    EnforcedPlainTextLabel {
         id: buttonLabel
 
         Layout.fillWidth: true
 
         text: root.text
-        textFormat: Text.PlainText
 
         visible: root.text !== ""
 

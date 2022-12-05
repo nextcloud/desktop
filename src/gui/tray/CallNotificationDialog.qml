@@ -192,10 +192,9 @@ Window {
                 }
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: message
                 text: root.subject
-                textFormat: Text.PlainText
                 color: root.usingUserAvatar ? "white" : Style.ncTextColor
                 font.pixelSize: Style.topLinePixelSize
                 wrapMode: Text.WordWrap

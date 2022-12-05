@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Style 1.0
+import "./tray"
 
 Item {
     id: errorBox
@@ -42,7 +43,7 @@ Item {
 
         columns: 2
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.fillWidth: true
             color: Style.ncTextColor
             font.bold: true
@@ -64,7 +65,7 @@ Item {
             onClicked: errorBox.closeButtonClicked()
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             id: errorMessage
 
             Layout.fillWidth: true
@@ -74,7 +75,6 @@ Item {
             color: Style.ncTextColor
             wrapMode: Text.WordWrap
             text: errorBox.text
-            textFormat: Text.PlainText
         }
     }
 }

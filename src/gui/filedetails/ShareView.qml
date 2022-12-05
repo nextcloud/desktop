@@ -280,7 +280,7 @@ ColumnLayout {
             anchors.right: parent.right
             anchors.verticalCenter: parent.verticalCenter
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: sharingDisabledLabel
                 width: parent.width
                 text: qsTr("Sharing is disabled")
@@ -289,7 +289,7 @@ ColumnLayout {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
-            Label {
+            EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("This item cannot be shared.")
                 color: Style.ncSecondaryTextColor
@@ -298,7 +298,7 @@ ColumnLayout {
                 verticalAlignment: Text.AlignVCenter
                 visible: !root.shareModel.canShare
             }
-            Label {
+            EnforcedPlainTextLabel {
                 width: parent.width
                 text: qsTr("Sharing is disabled.")
                 color: Style.ncSecondaryTextColor

@@ -71,13 +71,12 @@ AbstractButton {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: accountUser
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                 verticalAlignment: Text.AlignBottom
                 text: name
-                textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: Style.ncTextColor
                 font.pixelSize: Style.topLinePixelSize
@@ -92,20 +91,18 @@ AbstractButton {
                          model.serverHasUserStatus &&
                          (model.statusEmoji !== "" || model.statusMessage !== "")
 
-                Label {
+                EnforcedPlainTextLabel {
                     id: emoji
                     visible: model.statusEmoji !== ""
                     text: statusEmoji
-                    textFormat: Text.PlainText
                     topPadding: -Style.accountLabelsSpacing
                 }
 
-                Label {
+                EnforcedPlainTextLabel {
                     id: message
                     Layout.fillWidth: true
                     visible: model.statusMessage !== ""
                     text: statusMessage
-                    textFormat: Text.PlainText
                     elide: Text.ElideRight
                     color: Style.ncTextColor
                     font.pixelSize: Style.subLinePixelSize
@@ -113,13 +110,12 @@ AbstractButton {
                 }
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: accountServer
                 Layout.fillWidth: true
                 Layout.alignment: Qt.AlignLeft | Qt.AlignTop
                 verticalAlignment: Text.AlignTop
                 text: server
-                textFormat: Text.PlainText
                 elide: Text.ElideRight
                 color: Style.ncTextColor
                 font.pixelSize: Style.subLinePixelSize

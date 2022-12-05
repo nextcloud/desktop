@@ -120,7 +120,7 @@ RowLayout {
 
         spacing: Style.activityContentSpace
 
-        Label {
+        EnforcedPlainTextLabel {
             id: activityTextTitle
             text: (root.activityData.type === "Activity" || root.activityData.type === "Notification") ? root.activityData.subject : root.activityData.message
             height: (text === "") ? 0 : implicitHeight
@@ -129,12 +129,11 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncTextColor
             visible: text !== ""
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             id: activityTextInfo
             text: (root.activityData.type === "Sync") ? root.activityData.displayPath
                                     : (root.activityData.type === "File") ? root.activityData.subject
@@ -146,12 +145,11 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncTextColor
             visible: text !== ""
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             id: activityTextDateTime
             text: root.activityData.dateTime
             height: (text === "") ? 0 : implicitHeight
@@ -160,12 +158,11 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.subLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncSecondaryTextColor
             visible: text !== ""
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             id: talkReplyMessageSent
             text: root.activityData.messageSent
             height: (text === "") ? 0 : implicitHeight
@@ -174,7 +171,6 @@ RowLayout {
             wrapMode: Text.Wrap
             maximumLineCount: 2
             font.pixelSize: Style.topLinePixelSize
-            textFormat: Text.PlainText
             color: Style.ncSecondaryTextColor
             visible: text !== ""
         }

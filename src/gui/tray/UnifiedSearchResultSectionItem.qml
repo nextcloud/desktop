@@ -5,7 +5,7 @@ import QtQuick.Layouts 1.2
 import Style 1.0
 import com.nextcloud.desktopclient 1.0
 
-Label {
+EnforcedPlainTextLabel {
     required property string section
 
     topPadding: Style.unifiedSearchResultSectionItemVerticalPadding
@@ -13,7 +13,6 @@ Label {
     leftPadding: Style.unifiedSearchResultSectionItemLeftPadding
 
     text: section
-    textFormat: Text.PlainText
     font.pixelSize: Style.unifiedSearchResultTitleFontSize
     color: UserModel.currentUser.accentColor
 

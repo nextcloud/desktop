@@ -18,6 +18,7 @@ import QtQuick.Layouts 1.15
 
 import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
+import "./tray"
 
 ColumnLayout {
     NC.EmojiModel {
@@ -54,7 +55,7 @@ ColumnLayout {
                 radius: Style.slightlyRoundedButtonRadius
             }
 
-            contentItem: Label {
+            contentItem: EnforcedPlainTextLabel {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: emoji
@@ -113,7 +114,7 @@ ColumnLayout {
                 radius: Style.slightlyRoundedButtonRadius
             }
 
-            contentItem: Label {
+            contentItem: EnforcedPlainTextLabel {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: modelData === undefined ? "" : modelData.unicode
@@ -126,7 +127,7 @@ ColumnLayout {
             }
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             id: placeholderMessage
             width: parent.width * 0.8
             anchors.centerIn: parent

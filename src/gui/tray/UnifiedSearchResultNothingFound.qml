@@ -21,7 +21,7 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter
     }
 
-    Label {
+    EnforcedPlainTextLabel {
         id: unifiedSearchResultsNoResultsLabel
         text: qsTr("No results for")
         color: Style.menuBorder
@@ -32,10 +32,9 @@ ColumnLayout {
         horizontalAlignment: Text.AlignHCenter
     }
 
-    Label {
+    EnforcedPlainTextLabel {
         id: unifiedSearchResultsNoResultsLabelDetails
         text: unifiedSearchResultNothingFoundContainer.text
-        textFormat: Text.PlainText
         color: Style.ncTextColor
         font.pixelSize: Style.topLinePixelSize * 1.25
         wrapMode: Text.Wrap

@@ -86,20 +86,18 @@ RowLayout {
         Layout.rightMargin: Style.trayHorizontalMargin
         spacing: Style.standardSpacing
 
-        Label {
+        EnforcedPlainTextLabel {
             id: unifiedSearchResultTitleText
             Layout.fillWidth: true
             text: unifiedSearchResultItemDetails.title.replace(/[\r\n]+/g, " ")
-            textFormat: Text.PlainText
             elide: Text.ElideRight
             font.pixelSize: unifiedSearchResultItemDetails.titleFontSize
             color: unifiedSearchResultItemDetails.titleColor
         }
-        Label {
+        EnforcedPlainTextLabel {
             id: unifiedSearchResultTextSubline
             Layout.fillWidth: true
             text: unifiedSearchResultItemDetails.subline.replace(/[\r\n]+/g, " ")
-            textFormat: Text.PlainText
             elide: Text.ElideRight
             font.pixelSize: unifiedSearchResultItemDetails.sublineFontSize
             color: unifiedSearchResultItemDetails.sublineColor
