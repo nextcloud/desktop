@@ -566,22 +566,23 @@ void EditLocallyJob::lockFile()
         return;
     }
 
-    _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileSuccess,
-                                      this, [this] {
-        _folderForFile->journalDb()->schedulePathForRemoteDiscovery(_relPath);
-        _folderForFile->scheduleThisFolderSoon();
+    _folderForFile->setSyncPaused(true);
+
+    _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted,
+                                      this, [this](const SyncFileItemPtr &item) {
+        if (item->_file == _relPath && item->_locked == SyncFileItem::LockStatus::LockedItem) {
+            fileLockSuccess();
+        }
     }));
-    _folderConnections.append(connect(_folderForFile, &Folder::syncFinished,
-                                      this, [this](const OCC::SyncResult &result) {
-        Q_UNUSED(result)
-        fileLockSuccess();
-    }));
+
     _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileError,
                                       this, &EditLocallyJob::fileLockError));
 
     _folderForFile->accountState()->account()->setLockFileState(_relPath,
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem);
+    _folderForFile->journalDb()->schedulePathForRemoteDiscovery(_relPath);
+    FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
 void EditLocallyJob::disconnectFolderSignals()
