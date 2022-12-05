@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run label component count
         run: |
-          MATCHESRESULT=$(grep -r -e "^\s*Label\s*[{]" . | wc -l | sed 's/ //g')
+          MATCHESRESULT=$(find . -iname "*.qml" | xargs grep -r -e "^\s*Label\s*[{]" | wc -l | sed "s/ //g")
           echo "MATCHES=${MATCHESRESULT}" >> $GITHUB_ENV
           echo "EXPECTED_MATCHES=1" >> $GITHUB_ENV
       - name: Check label component use count
