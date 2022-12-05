@@ -95,6 +95,7 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
     _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because of a case clash conflict with an existing file on this system.").arg(_originalFileName));
     _ui->explanationLabel->setText(tr("%1 does not support equal file names with only letter casing differences.").arg(QSysInfo::prettyProductName()));
     _ui->filenameLineEdit->setText(filePathFileInfo.fileName());
+    adjustSize();
 
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
