@@ -51,12 +51,11 @@ Button {
             fillMode: Image.PreserveAspectFit
         }
 
-        Label {
+        EnforcedPlainTextLabel {
             Layout.maximumWidth: icon.width > 0 ? parent.width - icon.width - parent.spacing : parent.width
             Layout.fillWidth: icon.status !== Image.Ready
 
             text: root.text
-            textFormat: Text.PlainText
             font.bold: root.bold
 
             visible: root.text !== ""

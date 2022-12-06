@@ -18,6 +18,7 @@ import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 
 import Style 1.0
+import "./tray"
 
 AbstractButton {
     id: root
@@ -42,33 +43,30 @@ AbstractButton {
     contentItem: Row {
         spacing: root.internalSpacing
 
-        Label {
+        EnforcedPlainTextLabel {
             width: root.emojiWidth > 0 ? root.emojiWidth : implicitWidth
             text: emoji
-            textFormat: Text.PlainText
             horizontalAlignment: Image.AlignHCenter
             verticalAlignment: Image.AlignVCenter
         }
 
         Row {
             spacing: Style.smallSpacing
-            Label {
+            EnforcedPlainTextLabel {
                 text: root.statusText
-                textFormat: Text.PlainText
                 color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
                 font.bold: true
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 text: "-"
                 color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 text: root.clearAtText
-                textFormat: Text.PlainText
                 color: Style.ncTextColor
                 verticalAlignment: Text.AlignVCenter
             }

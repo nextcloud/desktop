@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 import Style 1.0
+import "./tray"
 
 Item {
     id: errorBox
@@ -20,7 +21,7 @@ Item {
         border.color: errorBox.borderColor
     }
 
-    Label {
+    EnforcedPlainTextLabel {
         id: errorMessage
         
         anchors.fill: parent
@@ -29,6 +30,5 @@ Item {
         color: errorBox.color
         wrapMode: Text.WordWrap
         text: errorBox.text
-        textFormat: Text.PlainText
     }
 }

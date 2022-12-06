@@ -287,7 +287,7 @@ ApplicationWindow {
                                     sourceSize.width: Style.headerButtonIconSize
                                     sourceSize.height: Style.headerButtonIconSize
                                 }
-                                Label {
+                                EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14
                                     text: qsTr("Add account")
                                     color: Style.ncTextColor
@@ -456,12 +456,11 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Layout.maximumWidth: parent.width
 
-                            Label {
+                            EnforcedPlainTextLabel {
                                 id: currentAccountUser
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
-                                textFormat: Text.PlainText
                                 elide: Text.ElideRight
                                 color: UserModel.currentUser.headerTextColor
 
@@ -476,14 +475,13 @@ ApplicationWindow {
                                 spacing: Style.accountLabelsSpacing
                                 width: parent.width
 
-                                Label {
+                                EnforcedPlainTextLabel {
                                     id: emoji
                                     visible: UserModel.currentUser.statusEmoji !== ""
                                     width: Style.userStatusEmojiSize
                                     text: UserModel.currentUser.statusEmoji
-                                    textFormat: Text.PlainText
                                 }
-                                Label {
+                                EnforcedPlainTextLabel {
                                     id: message
                                     Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                     Layout.fillWidth: true
@@ -492,7 +490,6 @@ ApplicationWindow {
                                     text: UserModel.currentUser.statusMessage !== ""
                                           ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser.server
-                                    textFormat: Text.PlainText
                                     elide: Text.ElideRight
                                     color: UserModel.currentUser.headerTextColor
                                     font.pixelSize: Style.subLinePixelSize
