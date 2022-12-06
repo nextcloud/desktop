@@ -316,7 +316,7 @@ CmdOptions parseOptions(const QStringList &app_args)
         return option;
     };
 
-    auto silentOption = addOption({ { QStringLiteral("s"), QStringLiteral("silten") }, QStringLiteral("Don't be so verbose.") });
+    auto silentOption = addOption({ { QStringLiteral("s"), QStringLiteral("silent") }, QStringLiteral("Don't be so verbose.") });
     auto httpproxyOption = addOption({ { QStringLiteral("httpproxy") }, QStringLiteral("Specify a http proxy to use."), QStringLiteral("http://server:port") });
     auto trustOption = addOption({ { QStringLiteral("trust") }, QStringLiteral("Trust the SSL certification") });
     auto excludeOption = addOption({ { QStringLiteral("exclude") }, QStringLiteral("Path to an exclude list [file]"), QStringLiteral("file") });
