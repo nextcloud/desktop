@@ -320,6 +320,8 @@ void SyncEngine::conflictRecordMaintenance()
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
+    emit itemDiscovered(item);
+
     if (Utility::isConflictFile(item->_file))
         _seenConflictFiles.insert(item->_file);
     if (item->_instruction == CSYNC_INSTRUCTION_UPDATE_METADATA && !item->isDirectory()) {
@@ -633,8 +635,54 @@ void SyncEngine::startSync()
     connect(_discoveryPhase.data(), &DiscoveryPhase::silentlyExcluded,
         _syncFileStatusTracker.data(), &SyncFileStatusTracker::slotAddSilentlyExcluded);
 
-    auto discoveryJob = new ProcessDirectoryJob(
-        _discoveryPhase.data(), PinState::AlwaysLocal, _journal->keyValueStoreGetInt("last_sync", 0), _discoveryPhase.data());
+    ProcessDirectoryJob *discoveryJob = nullptr;
+
+    if (!singleItemDiscoveryOptions().filePathRelative.isEmpty()) {
+        _discoveryPhase->_listExclusiveFiles.clear();
+        _discoveryPhase->_listExclusiveFiles.push_back(singleItemDiscoveryOptions().filePathRelative);
+    }
+
+    if (!singleItemDiscoveryOptions().discoveryPath.isEmpty() && singleItemDiscoveryOptions().discoveryDirItem) {
+        ProcessDirectoryJob::PathTuple path = {};
+        path._local = path._original = path._server = path._target = singleItemDiscoveryOptions().discoveryPath;
+
+        SyncJournalFileRecord rec;
+        const auto localQueryMode = _journal->getFileRecord(singleItemDiscoveryOptions().discoveryDirItem->_file, &rec) && rec.isValid()
+            ? ProcessDirectoryJob::NormalQuery
+            : ProcessDirectoryJob::ParentDontExist;
+
+        const auto pinState = [this, &rec]() {
+            if (!_syncOptions._vfs || _syncOptions._vfs->mode() == Vfs::Off) {
+                return PinState::AlwaysLocal;
+            }
+            if (!rec.isValid()) {
+                return PinState::OnlineOnly;
+            }
+            const auto pinStateInDb = _journal->internalPinStates().rawForPath(singleItemDiscoveryOptions().discoveryDirItem->_file.toUtf8());
+            if (pinStateInDb) {
+                return *pinStateInDb;
+            }
+            return PinState::Unspecified;
+        }();
+
+        discoveryJob = new ProcessDirectoryJob(
+            _discoveryPhase.data(),
+            pinState,
+            path,
+            singleItemDiscoveryOptions().discoveryDirItem,
+            localQueryMode,
+            _journal->keyValueStoreGetInt("last_sync", 0),
+            _discoveryPhase.data()
+        );
+    } else {
+        discoveryJob = new ProcessDirectoryJob(
+            _discoveryPhase.data(),
+            PinState::AlwaysLocal,
+            _journal->keyValueStoreGetInt("last_sync", 0),
+            _discoveryPhase.data()
+        );
+    }
+    
     _discoveryPhase->startJob(discoveryJob);
     connect(discoveryJob, &ProcessDirectoryJob::etag, this, &SyncEngine::slotRootEtagReceived);
     connect(_discoveryPhase.data(), &DiscoveryPhase::addErrorToGui, this, &SyncEngine::addErrorToGui);
@@ -874,6 +922,8 @@ void SyncEngine::slotPropagationFinished(bool success)
 
 void SyncEngine::finalize(bool success)
 {
+    setSingleItemDiscoveryOptions({});
+
     qCInfo(lcEngine) << "Sync run took " << _stopWatch.addLapTime(QLatin1String("Sync Finished")) << "ms";
     _stopWatch.stop();
 
@@ -1001,6 +1051,16 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
             ++it;
         }
     }
+}
+
+void SyncEngine::setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions)
+{
+    _singleItemDiscoveryOptions = singleItemDiscoveryOptions;
+}
+
+const SyncEngine::SingleItemDiscoveryOptions &SyncEngine::singleItemDiscoveryOptions() const
+{
+    return _singleItemDiscoveryOptions;
 }
 
 bool SyncEngine::shouldDiscoverLocally(const QString &path) const

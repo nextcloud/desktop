@@ -38,6 +38,7 @@
 
 #include "networkjobs.h"
 #include "account.h"
+#include "helpers.h"
 #include "owncloudpropagator.h"
 #include "clientsideencryption.h"
 
@@ -58,25 +59,6 @@ Q_LOGGING_CATEGORY(lcSimpleApiJob, "nextcloud.sync.networkjob.simpleapi", QtInfo
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
 const int notModifiedStatusCode = 304;
-
-QByteArray parseEtag(const char *header)
-{
-    if (!header)
-        return QByteArray();
-    QByteArray arr = header;
-
-    // Weak E-Tags can appear when gzip compression is on, see #3946
-    if (arr.startsWith("W/"))
-        arr = arr.mid(2);
-
-    // https://github.com/owncloud/client/issues/1195
-    arr.replace("-gzip", "");
-
-    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
-        arr = arr.mid(1, arr.length() - 2);
-    }
-    return arr;
-}
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)

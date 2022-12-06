@@ -64,7 +64,6 @@ constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
 }
 
 namespace OCC {
-
 Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
 const char app_password[] = "_app-password";
 
@@ -155,6 +154,25 @@ QString Account::displayName() const
 {
     QString dn = QString("%1@%2").arg(credentials()->user(), _url.host());
     int port = url().port();
+    if (port > 0 && port != 80 && port != 443) {
+        dn.append(QLatin1Char(':'));
+        dn.append(QString::number(port));
+    }
+    return dn;
+}
+
+QString Account::userIdAtHostWithPort() const
+{
+    const auto credentialsUserSplit = credentials() ? credentials()->user().split(QLatin1Char('@')) : QStringList{};
+
+    if (credentialsUserSplit.isEmpty()) {
+        return {};
+    }
+
+    const auto userName = credentialsUserSplit.first();
+
+    QString dn = QStringLiteral("%1@%2").arg(userName, _url.host());
+    const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         dn.append(QLatin1Char(':'));
         dn.append(QString::number(port));

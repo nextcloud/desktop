@@ -57,6 +57,12 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
+    struct SingleItemDiscoveryOptions {
+        QString discoveryPath;
+        QString filePathRelative;
+        SyncFileItemPtr discoveryDirItem;
+    };
+
     SyncEngine(AccountPtr account,
                const QString &localPath,
                const SyncOptions &syncOptions,
@@ -143,6 +149,9 @@ public slots:
      */
     void setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle style, std::set<QString> paths = {});
 
+    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
+    [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
+
     void addAcceptedInvalidFileName(const QString& filePath);
 
 signals:
@@ -156,6 +165,8 @@ signals:
     void itemCompleted(const OCC::SyncFileItemPtr &);
 
     void transmissionProgress(const OCC::ProgressInfo &progress);
+
+    void itemDiscovered(const SyncFileItemPtr &);
 
     /// We've produced a new sync error of a type.
     void syncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
@@ -375,6 +386,8 @@ private:
 
     // A vector of all the (unique) scheduled sync timers
     QVector<QSharedPointer<ScheduledSyncTimer>> _scheduledSyncTimers;
+
+    SingleItemDiscoveryOptions _singleItemDiscoveryOptions;
 };
 }
 
