@@ -59,6 +59,17 @@ ProcessDirectoryJob::ProcessDirectoryJob(const PathTuple &path, const SyncFileIt
     computePinState(parent->_pinState);
 }
 
+ProcessDirectoryJob::ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem, QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent)
+        : QObject(parent)
+        , _dirItem(dirItem)
+        , _lastSyncTimestamp(lastSyncTimestamp)
+        , _queryLocal(queryLocal)
+        , _discoveryData(data)
+        , _currentFolder(path)
+{
+    computePinState(basePinState);
+}
+
 void ProcessDirectoryJob::start()
 {
     qCInfo(lcDisco) << "STARTING" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
@@ -162,6 +173,11 @@ void ProcessDirectoryJob::process()
         PathTuple path;
         path = _currentFolder.addName(e.nameOverride.isEmpty() ? f.first : e.nameOverride);
 
+        if (!_discoveryData->_listExclusiveFiles.isEmpty() && !_discoveryData->_listExclusiveFiles.contains(path._server)) {
+            qCInfo(lcDisco) << "Skipping a file:" << path._server << "as it is not listed in the _listExclusiveFiles";
+            continue;
+        }
+
         if (isVfsWithSuffix()) {
             // Without suffix vfs the paths would be good. But since the dbEntry and localEntry
             // can have different names from f.first when suffix vfs is on, make sure the
@@ -213,6 +229,7 @@ void ProcessDirectoryJob::process()
 
         processFile(std::move(path), e.localEntry, e.serverEntry, e.dbEntry);
     }
+    _discoveryData->_listExclusiveFiles.clear();
     QTimer::singleShot(0, _discoveryData, &DiscoveryPhase::scheduleMoreJobs);
 }
 

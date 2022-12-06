@@ -34,6 +34,7 @@ set(libsync_SRCS
     encryptfolderjob.cpp
     filesystem.h
     filesystem.cpp
+    helpers.cpp
     httplogger.h
     httplogger.cpp
     logger.h

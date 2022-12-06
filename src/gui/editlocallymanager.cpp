@@ -71,6 +71,9 @@ void EditLocallyManager::createJob(const QString &userId,
                                        const QString &relPath,
                                        const QString &token)
 {
+    if (_jobs.contains(token)) {
+        return;
+    }
     const EditLocallyJobPtr job(new EditLocallyJob(userId, relPath, token));
     // We need to make sure the job sticks around until it is finished
     _jobs.insert(token, job);
