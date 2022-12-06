@@ -150,7 +150,7 @@ bool AccountManager::restoreFromLegacySettings()
     // then try to load settings from a very old place
     if (settings->childKeys().isEmpty()) {
         // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
-        const auto legacy2_4CfgSettingsLocation = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        const auto legacy2_4CfgSettingsLocation = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
         const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
 
         // 2.5+ (rest of 2.x series)
