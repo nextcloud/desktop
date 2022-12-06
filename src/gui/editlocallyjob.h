@@ -75,14 +75,20 @@ private slots:
     void openFile();
     void lockFile();
 
-    void fileLockSuccess(const bool existingLock = false);
+    void fileAlreadyLocked();
+    void fileLockSuccess(const SyncFileItemPtr &item);
     void fileLockError(const QString &errorMessage);
+    void fileLockProcedureComplete(const QString &notificationTitle,
+                                   const QString &notificationMessage,
+                                   const bool success);
     void disconnectFolderSignals();
 
 private:
     bool checkIfFileParentSyncIsNeeded(); // returns true if sync will be needed, false otherwise
     const QString getRelativePathToRemoteRootForFile() const; // returns either '/' or a (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     const QString getRelativePathParent() const;
+
+    [[nodiscard]] int fileLockTimeRemainingMinutes(const int lockTime, const int lockTimeOut);
 
     bool _tokenVerified = false;
 

@@ -560,17 +560,20 @@ void EditLocallyJob::lockFile()
     Q_ASSERT(_folderForFile);
 
     if (_accountState->account()->fileLockStatus(_folderForFile->journalDb(), _relativePathToRemoteRoot) == SyncFileItem::LockStatus::LockedItem) {
-        fileLockSuccess(true);
+        fileAlreadyLocked();
         return;
     }
 
-    _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted,
-                                      this, [this](const SyncFileItemPtr &item) {
+    const auto syncEngineFileSlot = [this](const SyncFileItemPtr &item) {
         if (item->_file == _relativePathToRemoteRoot && item->_locked == SyncFileItem::LockStatus::LockedItem) {
-            fileLockSuccess();
+            fileLockSuccess(item);
         }
-    }));
+    };
 
+    _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted,
+                                      this, syncEngineFileSlot));
+    _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered,
+                                      this, syncEngineFileSlot));
     _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileError,
                                       this, &EditLocallyJob::fileLockError));
 
@@ -578,7 +581,10 @@ void EditLocallyJob::lockFile()
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem);
 
-    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent, _relativePathToRemoteRoot, _fileParentItem});
+    const SyncEngine::SingleItemDiscoveryOptions singleItemDiscoveryOptions = {(_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent),
+                                                                               _relativePathToRemoteRoot,
+                                                                               _fileParentItem};
+    _folderForFile->syncEngine().setSingleItemDiscoveryOptions(singleItemDiscoveryOptions);
     FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
@@ -589,43 +595,58 @@ void EditLocallyJob::disconnectFolderSignals()
     }
 }
 
-void EditLocallyJob::fileLockSuccess(const bool existingLock)
+void EditLocallyJob::fileAlreadyLocked()
 {
-    qCDebug(lcEditLocallyJob()) << "File lock succeeded, showing notification" << _relPath;
-
     SyncJournalFileRecord rec;
     Q_ASSERT(_folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec));
     Q_ASSERT(rec.isValid());
     Q_ASSERT(rec._lockstate._locked);
 
-    const auto lockExpirationTime = rec._lockstate._lockTime + rec._lockstate._lockTimeout;
-    const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+    const auto remainingTimeInMinutes = fileLockTimeRemainingMinutes(rec._lockstate._lockTime, rec._lockstate._lockTimeout);
+    fileLockProcedureComplete(tr("File %1 already locked.").arg(_fileName),
+                              tr("Lock will last for %1 minutes. "
+                                 "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                              true);
+}
 
-    static constexpr auto SECONDS_PER_MINUTE = 60;
-    const auto remainingTimeInMinutes = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
+void EditLocallyJob::fileLockSuccess(const SyncFileItemPtr &item)
+{
+    qCDebug(lcEditLocallyJob()) << "File lock succeeded, showing notification" << _relPath;
 
-    const auto notificationTitle = existingLock ? tr("File %1 already locked.") :
-                                                  tr("File %1 now locked.");
-
-    Systray::instance()->showMessage(notificationTitle.arg(_fileName),
-                         tr("Lock will last for %1 minutes. "
-                            "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
-                         QSystemTrayIcon::Information);
-
-    disconnectFolderSignals();
-    Q_EMIT finished();
+    const auto remainingTimeInMinutes = fileLockTimeRemainingMinutes(item->_lockTime, item->_lockTimeout);
+    fileLockProcedureComplete(tr("File %1 now locked.").arg(_fileName),
+                              tr("Lock will last for %1 minutes. "
+                                 "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                              true);
 }
 
 void EditLocallyJob::fileLockError(const QString &errorMessage)
 {
     qCWarning(lcEditLocallyJob()) << "File lock failed, showing notification" << _relPath << errorMessage;
+    fileLockProcedureComplete(tr("File %1 could not be locked."), errorMessage, false);
+}
 
-    Systray::instance()->showMessage(tr("File %1 could not be locked."),
-                                     errorMessage,
-                                     QSystemTrayIcon::Warning);
+void EditLocallyJob::fileLockProcedureComplete(const QString &notificationTitle,
+                                               const QString &notificationMessage,
+                                               const bool success)
+{
+    Systray::instance()->showMessage(notificationTitle,
+                                     notificationMessage,
+                                     success ? QSystemTrayIcon::Information : QSystemTrayIcon::Warning);
 
     disconnectFolderSignals();
     Q_EMIT finished();
+}
+
+int EditLocallyJob::fileLockTimeRemainingMinutes(const int lockTime, const int lockTimeOut)
+{
+    const auto lockExpirationTime = lockTime + lockTimeOut;
+    const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+
+    static constexpr auto SECONDS_PER_MINUTE = 60;
+    const auto remainingTimeInMinutes = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
+
+    return remainingTimeInMinutes;
 }
 
 }
