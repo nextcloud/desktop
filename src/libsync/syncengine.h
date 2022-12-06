@@ -125,8 +125,11 @@ public:
     static void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
     [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
+    [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
 
 public slots:
+    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
+
     void startSync();
 
     /* Abort the sync.  Called from the main thread */
@@ -148,10 +151,6 @@ public slots:
      * sync's style.
      */
     void setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle style, std::set<QString> paths = {});
-
-    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
-    [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
-
     void addAcceptedInvalidFileName(const QString& filePath);
 
 signals:
