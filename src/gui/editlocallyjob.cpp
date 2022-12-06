@@ -136,8 +136,6 @@ void EditLocallyJob::proceedWithSetup()
     }
 
     _fileName = relPathSplit.last();
-    _folderRelativePath = _localFilePath.mid(_folderForFile->cleanPath().length() + 1);
-
     _folderForFile = findFolderForFile(_relPath, _userId);
 
     if (!_folderForFile) {
@@ -561,16 +559,14 @@ void EditLocallyJob::lockFile()
     Q_ASSERT(_accountState->account());
     Q_ASSERT(_folderForFile);
 
-    if (_accountState->account()->fileLockStatus(_folderForFile->journalDb(), _folderRelativePath) == SyncFileItem::LockStatus::LockedItem) {
+    if (_accountState->account()->fileLockStatus(_folderForFile->journalDb(), _relativePathToRemoteRoot) == SyncFileItem::LockStatus::LockedItem) {
         fileLockSuccess(true);
         return;
     }
 
-    _folderForFile->setSyncPaused(true);
-
     _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted,
                                       this, [this](const SyncFileItemPtr &item) {
-        if (item->_file == _relPath && item->_locked == SyncFileItem::LockStatus::LockedItem) {
+        if (item->_file == _relativePathToRemoteRoot && item->_locked == SyncFileItem::LockStatus::LockedItem) {
             fileLockSuccess();
         }
     }));
@@ -581,7 +577,8 @@ void EditLocallyJob::lockFile()
     _folderForFile->accountState()->account()->setLockFileState(_relPath,
                                                                 _folderForFile->journalDb(),
                                                                 SyncFileItem::LockStatus::LockedItem);
-    _folderForFile->journalDb()->schedulePathForRemoteDiscovery(_relPath);
+
+    _folderForFile->syncEngine().setSingleItemDiscoveryOptions({_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent, _relativePathToRemoteRoot, _fileParentItem});
     FolderMan::instance()->forceSyncForFolder(_folderForFile);
 }
 
@@ -597,7 +594,7 @@ void EditLocallyJob::fileLockSuccess(const bool existingLock)
     qCDebug(lcEditLocallyJob()) << "File lock succeeded, showing notification" << _relPath;
 
     SyncJournalFileRecord rec;
-    Q_ASSERT(_folderForFile->journalDb()->getFileRecord(_folderRelativePath, &rec));
+    Q_ASSERT(_folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec));
     Q_ASSERT(rec.isValid());
     Q_ASSERT(rec._lockstate._locked);
 
