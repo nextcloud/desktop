@@ -124,9 +124,6 @@ public:
      */
     void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
 
-    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
-    const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
-
     /**
      * Returns whether the given folder-relative path should be locally discovered
      * given the local discovery options.
@@ -152,6 +149,10 @@ public:
     static void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
     auto getPropagator() { return _propagator; } // for the test
+    const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
+
+public slots:
+    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
 
 signals:
     // During update, before reconcile
