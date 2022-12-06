@@ -831,6 +831,7 @@ bool Folder::reloadExcludes()
 
 void Folder::startSync(const QStringList &pathList)
 {
+    Q_UNUSED(pathList);
     const auto singleItemDiscoveryOptions = _engine->singleItemDiscoveryOptions();
     Q_ASSERT(!singleItemDiscoveryOptions.discoveryDirItem || singleItemDiscoveryOptions.discoveryDirItem->isDirectory());
     if (singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isDirectory()) {
