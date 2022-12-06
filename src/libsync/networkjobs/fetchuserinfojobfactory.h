@@ -48,13 +48,13 @@ class OWNCLOUDSYNC_EXPORT FetchUserInfoJobFactory : public AbstractCoreJobFactor
     Q_OBJECT
 
 public:
-    static FetchUserInfoJobFactory fromBasicAuthCredentials(QNetworkAccessManager *nam, const QString &username, const QString &token, QObject *parent = nullptr);
-    static FetchUserInfoJobFactory fromOAuth2Credentials(QNetworkAccessManager *nam, const QString &bearerToken, QObject *parent = nullptr);
+    static FetchUserInfoJobFactory fromBasicAuthCredentials(QNetworkAccessManager *nam, const QString &username, const QString &token);
+    static FetchUserInfoJobFactory fromOAuth2Credentials(QNetworkAccessManager *nam, const QString &bearerToken);
 
-    CoreJob *startJob(const QUrl &url) override;
+    CoreJob *startJob(const QUrl &url, QObject *parent) override;
 
 private:
-    FetchUserInfoJobFactory(QNetworkAccessManager *nam, const QString &authHeaderValue, QObject *parent = nullptr);
+    FetchUserInfoJobFactory(QNetworkAccessManager *nam, const QString &authHeaderValue);
 
     QString _authorizationHeader;
 };

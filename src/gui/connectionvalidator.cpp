@@ -107,7 +107,7 @@ void ConnectionValidator::slotCheckServerAndAuth()
         nam->ownCloudCookieJar()->setAllCookies(accountCookies);
     }
 
-    auto checkServerJob = CheckServerJobFactory(nam).startJob(_account->url());
+    auto checkServerJob = CheckServerJobFactory(nam).startJob(_account->url(), this);
 
     connect(nam, &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
         Q_UNUSED(reply)

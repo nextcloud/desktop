@@ -24,28 +24,26 @@ Q_LOGGING_CATEGORY(lcFetchUserInfoJob, "sync.networkjob.fetchuserinfojob", QtInf
 
 namespace OCC {
 
-FetchUserInfoJobFactory FetchUserInfoJobFactory::fromBasicAuthCredentials(QNetworkAccessManager *nam, const QString &username, const QString &password, QObject *parent)
+FetchUserInfoJobFactory FetchUserInfoJobFactory::fromBasicAuthCredentials(QNetworkAccessManager *nam, const QString &username, const QString &password)
 {
     QString authorizationHeader = QStringLiteral("Basic %1").arg(QString::fromLocal8Bit(QStringLiteral("%1:%2").arg(username, password).toLocal8Bit().toBase64()));
-    return { nam, authorizationHeader, parent };
+    return { nam, authorizationHeader };
 }
 
-FetchUserInfoJobFactory FetchUserInfoJobFactory::fromOAuth2Credentials(QNetworkAccessManager *nam, const QString &bearerToken, QObject *parent)
+FetchUserInfoJobFactory FetchUserInfoJobFactory::fromOAuth2Credentials(QNetworkAccessManager *nam, const QString &bearerToken)
 {
     QString authorizationHeader = QStringLiteral("Bearer %1").arg(bearerToken);
-    return { nam, authorizationHeader, parent };
+    return { nam, authorizationHeader };
 }
 
-FetchUserInfoJobFactory::FetchUserInfoJobFactory(QNetworkAccessManager *nam, const QString &authHeaderValue, QObject *parent)
-    : AbstractCoreJobFactory(nam, parent)
+FetchUserInfoJobFactory::FetchUserInfoJobFactory(QNetworkAccessManager *nam, const QString &authHeaderValue)
+    : AbstractCoreJobFactory(nam)
     , _authorizationHeader(authHeaderValue)
 {
 }
 
-CoreJob *FetchUserInfoJobFactory::startJob(const QUrl &url)
+CoreJob *FetchUserInfoJobFactory::startJob(const QUrl &url, QObject *parent)
 {
-    auto *job = new CoreJob;
-
     QUrlQuery urlQuery({ { QStringLiteral("format"), QStringLiteral("json") } });
 
     auto req = makeRequest(Utility::concatUrlPath(url, QStringLiteral("ocs/v2.php/cloud/user"), urlQuery));
@@ -58,16 +56,14 @@ CoreJob *FetchUserInfoJobFactory::startJob(const QUrl &url)
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
-    auto reply = nam()->get(req);
+    auto *job = new CoreJob(nam()->get(req), parent);
 
-    connect(reply, &QNetworkReply::finished, job, [reply, job] {
-        reply->deleteLater();
+    connect(job->reply(), &QNetworkReply::finished, job, [job] {
+        const auto data = job->reply()->readAll();
+        const auto statusCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
-        const auto data = reply->readAll();
-        const auto statusCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-
-        if (reply->error() != QNetworkReply::NoError || statusCode != 200) {
-            setJobError(job, tr("Failed to retrieve user info"), reply);
+        if (job->reply()->error() != QNetworkReply::NoError || statusCode != 200) {
+            setJobError(job, tr("Failed to retrieve user info"));
         } else {
             qCDebug(lcFetchUserInfoJob) << data;
 
@@ -81,7 +77,7 @@ CoreJob *FetchUserInfoJobFactory::startJob(const QUrl &url)
 
                 setJobResult(job, QVariant::fromValue(result));
             } else {
-                setJobError(job, error.errorString(), reply);
+                setJobError(job, error.errorString());
             }
         }
     });

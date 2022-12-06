@@ -43,7 +43,7 @@ class OWNCLOUDSYNC_EXPORT CheckServerJobFactory : public AbstractCoreJobFactory
 public:
     using AbstractCoreJobFactory::AbstractCoreJobFactory;
 
-    CoreJob *startJob(const QUrl &url) override;
+    CoreJob *startJob(const QUrl &url, QObject *parent) override;
 
 private:
     int _maxRedirectsAllowed = 5;

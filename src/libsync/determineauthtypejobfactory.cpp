@@ -25,40 +25,36 @@ Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype2",
 
 using namespace OCC;
 
-DetermineAuthTypeJobFactory::DetermineAuthTypeJobFactory(QNetworkAccessManager *nam, QObject *parent)
-    : AbstractCoreJobFactory(nam, parent)
+DetermineAuthTypeJobFactory::DetermineAuthTypeJobFactory(QNetworkAccessManager *nam)
+    : AbstractCoreJobFactory(nam)
 {
 }
 
 DetermineAuthTypeJobFactory::~DetermineAuthTypeJobFactory() = default;
 
-CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
+CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url, QObject *parent)
 {
-    auto job = new CoreJob;
-
     // we explicitly use a legacy dav path here
     auto req = makeRequest(Utility::concatUrlPath(url, Theme::instance()->webDavPath()));
 
     req.setAttribute(HttpCredentials::DontAddCredentialsAttribute, true);
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
 
-    auto *reply = nam()->sendCustomRequest(req, "PROPFIND");
+    auto job = new CoreJob(nam()->sendCustomRequest(req, "PROPFIND"), parent);
 
-    connect(reply, &QNetworkReply::finished, job, [reply, job] {
-        reply->deleteLater();
-
-        switch (reply->error()) {
+    connect(job->reply(), &QNetworkReply::finished, job, [job] {
+        switch (job->reply()->error()) {
         case QNetworkReply::AuthenticationRequiredError:
             break;
         case QNetworkReply::NoError:
-            setJobError(job, tr("Server did not ask for authorization"), reply);
+            setJobError(job, tr("Server did not ask for authorization"));
             return;
         default:
-            setJobError(job, tr("Failed to determine auth type: %1").arg(reply->errorString()), reply);
+            setJobError(job, tr("Failed to determine auth type: %1").arg(job->reply()->errorString()));
             return;
         }
 
-        const auto authChallenge = reply->rawHeader(QByteArrayLiteral("WWW-Authenticate")).toLower();
+        const auto authChallenge = job->reply()->rawHeader(QByteArrayLiteral("WWW-Authenticate")).toLower();
 
         const AuthType authType = [authChallenge]() {
             // we fall back to basic in any case
@@ -73,7 +69,7 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url)
             }
         }();
 
-        qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << reply->url() << "is" << authType;
+        qCInfo(lcDetermineAuthTypeJob) << "Auth type for" << job->reply()->url() << "is" << authType;
         setJobResult(job, qVariantFromValue(authType));
     });
 

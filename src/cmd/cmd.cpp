@@ -464,7 +464,7 @@ int main(int argc, char **argv)
 
     ctx.account->setUrl(baseUrl);
 
-    auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url());
+    auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url(), qApp);
 
     QObject::connect(checkServerJob, &CoreJob::finished, [ctx, checkServerJob] {
         if (checkServerJob->success()) {

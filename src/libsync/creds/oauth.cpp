@@ -374,7 +374,7 @@ void OAuth::startAuthentication()
                         return;
                     }
 
-                    auto *job = FetchUserInfoJobFactory::fromOAuth2Credentials(_networkAccessManager, accessToken, this).startJob(_serverUrl);
+                    auto *job = FetchUserInfoJobFactory::fromOAuth2Credentials(_networkAccessManager, accessToken).startJob(_serverUrl, this);
 
                     connect(job, &CoreJob::finished, this, [=]() {
                         if (!job->success()) {
@@ -607,7 +607,7 @@ void AccountBasedOAuth::fetchWellKnown()
 {
     qCDebug(lcOauth) << "starting CheckServerJob before fetching" << wellKnownPathC;
 
-    auto *checkServerJob = CheckServerJobFactory(_networkAccessManager, this).startJob(_serverUrl);
+    auto *checkServerJob = CheckServerJobFactory(_networkAccessManager).startJob(_serverUrl, this);
 
     connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, this]() {
         if (checkServerJob->success()) {

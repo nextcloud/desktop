@@ -29,10 +29,10 @@ class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJobFactory : public AbstractCoreJobFa
 public:
     using AuthType = DetermineAuthTypeJob::AuthType;
 
-    DetermineAuthTypeJobFactory(QNetworkAccessManager *nam, QObject *parent = nullptr);
+    DetermineAuthTypeJobFactory(QNetworkAccessManager *nam);
     ~DetermineAuthTypeJobFactory() override;
 
-    CoreJob *startJob(const QUrl &url) override;
+    CoreJob *startJob(const QUrl &url, QObject *parent) override;
 };
 
 }

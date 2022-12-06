@@ -45,12 +45,12 @@ void BasicCredentialsSetupWizardState::evaluatePage()
     auto strategy = dynamic_cast<HttpBasicAuthenticationStrategy *>(_context->accountBuilder().authenticationStrategy());
     Q_ASSERT(strategy != nullptr);
 
-    auto checkBasicAuthJob = Jobs::CheckBasicAuthJobFactory(_context->accessManager(), strategy->username(), strategy->password(), this).startJob(_context->accountBuilder().serverUrl());
+    auto checkBasicAuthJob = Jobs::CheckBasicAuthJobFactory(_context->accessManager(), strategy->username(), strategy->password()).startJob(_context->accountBuilder().serverUrl(), this);
 
     connect(checkBasicAuthJob, &CoreJob::finished, this, [checkBasicAuthJob, this, strategy]() {
         if (checkBasicAuthJob->success()) {
             if (checkBasicAuthJob->result().toBool()) {
-                auto fetchUserInfoJob = FetchUserInfoJobFactory::fromBasicAuthCredentials(_context->accessManager(), strategy->username(), strategy->password(), this).startJob(_context->accountBuilder().serverUrl());
+                auto fetchUserInfoJob = FetchUserInfoJobFactory::fromBasicAuthCredentials(_context->accessManager(), strategy->username(), strategy->password()).startJob(_context->accountBuilder().serverUrl(), this);
 
                 connect(fetchUserInfoJob, &CoreJob::finished, this, [this, strategy, fetchUserInfoJob] {
                     if (fetchUserInfoJob->success()) {
