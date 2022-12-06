@@ -181,7 +181,7 @@
 <context>
     <name>ErrorBox</name>
     <message>
-        <location filename="../src/gui/ErrorBox.qml" line="49"/>
+        <location filename="../src/gui/ErrorBox.qml" line="50"/>
         <source>Error</source>
         <translation>Errore</translation>
     </message>
@@ -189,12 +189,12 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="146"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="147"/>
         <source>Activity</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="153"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="154"/>
         <source>Sharing</source>
         <translation type="unfinished"/>
     </message>
