@@ -19,13 +19,19 @@ CentOS
     $ sudo yum -y install epel-release
     $ sudo yum -y install nextcloud-client
 
-Ubuntu/Debian
+Ubuntu
 
 ::
 
     $ sudo add-apt-repository ppa:nextcloud-devs/client
     $ sudo apt update
     $ sudo apt install nextcloud-client
+
+Debian
+
+::
+
+    $ sudo apt install nextcloud-desktop-cmd
 
 
 Refer to the link
