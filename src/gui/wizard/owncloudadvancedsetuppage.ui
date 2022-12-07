@@ -37,7 +37,7 @@
         <string notr="true">TextLabel</string>
        </property>
        <property name="textFormat">
-        <enum>Qt::RichText</enum>
+        <enum>Qt::PlainText</enum>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -57,6 +57,9 @@
          <property name="text">
           <string notr="true">Avatar</string>
          </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
@@ -73,6 +76,9 @@
          <property name="text">
           <string>&amp;Local Folder</string>
          </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
          </property>
@@ -85,12 +91,14 @@
         <widget class="QLabel" name="userNameLabel">
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
          <property name="text">
           <string>Username</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -101,12 +109,14 @@
         <widget class="QLabel" name="localFolderDescriptionLabel">
          <property name="font">
           <font>
-           <weight>75</weight>
            <bold>true</bold>
           </font>
          </property>
          <property name="text">
           <string>Local Folder</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -142,6 +152,9 @@
          </property>
          <property name="text">
           <string notr="true">Free space</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -214,6 +227,9 @@
          <property name="text">
           <string>Server address</string>
          </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
+         </property>
          <property name="alignment">
           <set>Qt::AlignHCenter|Qt::AlignTop</set>
          </property>
@@ -226,6 +242,9 @@
         <widget class="QLabel" name="syncLogoLabel">
          <property name="text">
           <string>Sync Logo</string>
+         </property>
+         <property name="textFormat">
+          <enum>Qt::PlainText</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignCenter</set>
@@ -365,6 +384,9 @@
               <widget class="QLabel" name="confTraillingSizeLabel">
                <property name="text">
                 <string extracomment="Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; ">MB</string>
+               </property>
+               <property name="textFormat">
+                <enum>Qt::PlainText</enum>
                </property>
               </widget>
              </item>
@@ -558,7 +580,6 @@
               <property name="font">
                <font>
                 <pointsize>9</pointsize>
-                <weight>75</weight>
                 <bold>true</bold>
                </font>
               </property>
@@ -639,6 +660,9 @@
        <property name="text">
         <string notr="true">TextLabel</string>
        </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
       </widget>
      </item>
      <item>
@@ -647,7 +671,7 @@
         <string notr="true">TextLabel</string>
        </property>
        <property name="textFormat">
-        <enum>Qt::RichText</enum>
+        <enum>Qt::PlainText</enum>
        </property>
       </widget>
      </item>

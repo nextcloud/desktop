@@ -51,6 +51,11 @@ OwncloudAdvancedSetupPage::OwncloudAdvancedSetupPage(OwncloudWizard *wizard)
     _filePathLabel->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
     _ui.locationsGridLayout->addWidget(_filePathLabel.data(), 3, 3);
 
+    _filePathLabel->setTextFormat(Qt::PlainText);
+    _ui.userNameLabel->setTextFormat(Qt::PlainText);
+    _ui.serverAddressLabel->setTextFormat(Qt::PlainText);
+    _ui.localFolderDescriptionLabel->setTextFormat(Qt::PlainText);
+
     registerField(QLatin1String("OCSyncFromScratch"), _ui.cbSyncFromScratch);
 
     auto sizePolicy = _progressIndi->sizePolicy();
