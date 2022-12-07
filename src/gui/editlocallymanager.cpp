@@ -83,7 +83,7 @@ void EditLocallyManager::createJob(const QString &userId,
 
     connect(job.data(), &EditLocallyJob::error,
             this, removeJob);
-    connect(job.data(), &EditLocallyJob::fileOpened,
+    connect(job.data(), &EditLocallyJob::finished,
             this, removeJob);
     connect(job.data(), &EditLocallyJob::setupFinished,
             job.data(), setupJob);

@@ -136,7 +136,6 @@ void EditLocallyJob::proceedWithSetup()
     }
 
     _fileName = relPathSplit.last();
-
     _folderForFile = findFolderForFile(_relPath, _userId);
 
     if (!_folderForFile) {
@@ -253,7 +252,7 @@ void EditLocallyJob::startSyncBeforeOpening()
 {
     eraseBlacklistRecordForItem();
     if (!checkIfFileParentSyncIsNeeded()) {
-        openFile();
+        lockFile();
         return;
     }
 
@@ -466,7 +465,7 @@ void EditLocallyJob::slotItemCompleted(const OCC::SyncFileItemPtr &item)
     if (item->_file == _relativePathToRemoteRoot) {
         disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted, this, &EditLocallyJob::slotItemCompleted);
         disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
-        openFile();
+        lockFile();
     }
 }
 
@@ -542,16 +541,118 @@ void EditLocallyJob::openFile()
         return;
     }
 
-    const auto localFilePath = _localFilePath;
+    const auto localFilePathUrl = QUrl::fromLocalFile(_localFilePath);
     // In case the VFS mode is enabled and a file is not yet hydrated, we must call QDesktopServices::openUrl
     // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
     // if the VFS is enabled - we just always call it from a separate thread.
-    QtConcurrent::run([localFilePath]() {
-        QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath));
-        Systray::instance()->destroyEditFileLocallyLoadingDialog();
-    });
+    QtConcurrent::run([localFilePathUrl, this]() {
+        if (QDesktopServices::openUrl(localFilePathUrl)) {
+            showError(tr("Could not open %1").arg(_fileName), tr("Please try again."));
+        }
 
-    Q_EMIT fileOpened();
+        Systray::instance()->destroyEditFileLocallyLoadingDialog();
+        emit finished();
+    });
+}
+
+void EditLocallyJob::lockFile()
+{
+    Q_ASSERT(_accountState);
+    Q_ASSERT(_accountState->account());
+    Q_ASSERT(_folderForFile);
+
+    if (_accountState->account()->fileLockStatus(_folderForFile->journalDb(), _relativePathToRemoteRoot) == SyncFileItem::LockStatus::LockedItem) {
+        fileAlreadyLocked();
+        return;
+    }
+
+    const auto syncEngineFileSlot = [this](const SyncFileItemPtr &item) {
+        if (item->_file == _relativePathToRemoteRoot && item->_locked == SyncFileItem::LockStatus::LockedItem) {
+            fileLockSuccess(item);
+        }
+    };
+
+    const auto runSingleFileDiscovery = [this] {
+        const SyncEngine::SingleItemDiscoveryOptions singleItemDiscoveryOptions = {(_relPathParent == QStringLiteral("/") ? QString{} : _relPathParent),
+                                                                                   _relativePathToRemoteRoot,
+                                                                                   _fileParentItem};
+        _folderForFile->syncEngine().setSingleItemDiscoveryOptions(singleItemDiscoveryOptions);
+        FolderMan::instance()->forceSyncForFolder(_folderForFile);
+    };
+
+    _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted,
+                                      this, syncEngineFileSlot));
+    _folderConnections.append(connect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered,
+                                      this, syncEngineFileSlot));
+    _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileSuccess,
+                                      this, runSingleFileDiscovery));
+    _folderConnections.append(connect(_accountState->account().data(), &Account::lockFileError,
+                                      this, &EditLocallyJob::fileLockError));
+
+    _folderForFile->accountState()->account()->setLockFileState(_relPath,
+                                                                _folderForFile->journalDb(),
+                                                                SyncFileItem::LockStatus::LockedItem);
+}
+
+void EditLocallyJob::disconnectFolderSignals()
+{
+    for (const auto &connection : qAsConst(_folderConnections)) {
+        disconnect(connection);
+    }
+}
+
+void EditLocallyJob::fileAlreadyLocked()
+{
+    SyncJournalFileRecord rec;
+    Q_ASSERT(_folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec));
+    Q_ASSERT(rec.isValid());
+    Q_ASSERT(rec._lockstate._locked);
+
+    const auto remainingTimeInMinutes = fileLockTimeRemainingMinutes(rec._lockstate._lockTime, rec._lockstate._lockTimeout);
+    fileLockProcedureComplete(tr("File %1 already locked.").arg(_fileName),
+                              tr("Lock will last for %1 minutes. "
+                                 "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                              true);
+}
+
+void EditLocallyJob::fileLockSuccess(const SyncFileItemPtr &item)
+{
+    qCDebug(lcEditLocallyJob()) << "File lock succeeded, showing notification" << _relPath;
+
+    const auto remainingTimeInMinutes = fileLockTimeRemainingMinutes(item->_lockTime, item->_lockTimeout);
+    fileLockProcedureComplete(tr("File %1 now locked.").arg(_fileName),
+                              tr("Lock will last for %1 minutes. "
+                                 "You can also unlock this file manually once you are finished editing.").arg(remainingTimeInMinutes),
+                              true);
+}
+
+void EditLocallyJob::fileLockError(const QString &errorMessage)
+{
+    qCWarning(lcEditLocallyJob()) << "File lock failed, showing notification" << _relPath << errorMessage;
+    fileLockProcedureComplete(tr("File %1 could not be locked."), errorMessage, false);
+}
+
+void EditLocallyJob::fileLockProcedureComplete(const QString &notificationTitle,
+                                               const QString &notificationMessage,
+                                               const bool success)
+{
+    Systray::instance()->showMessage(notificationTitle,
+                                     notificationMessage,
+                                     success ? QSystemTrayIcon::Information : QSystemTrayIcon::Warning);
+
+    disconnectFolderSignals();
+    openFile();
+}
+
+int EditLocallyJob::fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut)
+{
+    const auto lockExpirationTime = lockTime + lockTimeOut;
+    const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
+
+    static constexpr auto SECONDS_PER_MINUTE = 60;
+    const auto remainingTimeInMinutes = static_cast<int>(remainingTime > 0 ? remainingTime / SECONDS_PER_MINUTE : 0);
+
+    return remainingTimeInMinutes;
 }
 
 }
