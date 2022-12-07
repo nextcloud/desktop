@@ -13,20 +13,21 @@
  */
 
 #include "accountmanager.h"
-#include "configfile.h"
+
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include "common/asserts.h"
-#include <theme.h>
-#include <creds/credentialsfactory.h>
-#include <creds/abstractcredentials.h>
-#include <cookiejar.h>
+#include "creds/credentialsfactory.h"
+#include "creds/abstractcredentials.h"
+#include "libsync/clientsideencryption.h"
+#include "libsync/configfile.h"
+#include "libsync/cookiejar.h"
+#include "libsync/theme.h"
+
 #include <QSettings>
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
-#include <QDesktopServices>
-#include "clientsideencryption.h"
 
 namespace {
 constexpr auto urlC = "url";
