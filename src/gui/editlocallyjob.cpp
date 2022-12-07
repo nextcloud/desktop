@@ -645,7 +645,7 @@ void EditLocallyJob::fileLockProcedureComplete(const QString &notificationTitle,
     openFile();
 }
 
-int EditLocallyJob::fileLockTimeRemainingMinutes(const int lockTime, const int lockTimeOut)
+int EditLocallyJob::fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut)
 {
     const auto lockExpirationTime = lockTime + lockTimeOut;
     const auto remainingTime = QDateTime::currentDateTime().secsTo(QDateTime::fromSecsSinceEpoch(lockExpirationTime));
