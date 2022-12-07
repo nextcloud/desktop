@@ -45,7 +45,7 @@ public:
 signals:
     void setupFinished();
     void error(const QString &message, const QString &informativeText);
-    void fileOpened();
+    void finished();
 
 public slots:
     void startSetup();
@@ -72,11 +72,22 @@ private slots:
     void slotDirectoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
 
     void openFile();
+    void lockFile();
+
+    void fileAlreadyLocked();
+    void fileLockSuccess(const SyncFileItemPtr &item);
+    void fileLockError(const QString &errorMessage);
+    void fileLockProcedureComplete(const QString &notificationTitle,
+                                   const QString &notificationMessage,
+                                   const bool success);
+    void disconnectFolderSignals();
 
 private:
     [[nodiscard]] bool checkIfFileParentSyncIsNeeded(); // returns true if sync will be needed, false otherwise
     [[nodiscard]] const QString getRelativePathToRemoteRootForFile() const; // returns either '/' or a (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     [[nodiscard]] const QString getRelativePathParent() const;
+
+    [[nodiscard]] static int fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut);
 
     bool _tokenVerified = false;
 
@@ -90,9 +101,11 @@ private:
 
     QString _fileName;
     QString _localFilePath;
+    QString _folderRelativePath;
     Folder *_folderForFile = nullptr;
     std::unique_ptr<SimpleApiJob> _checkTokenJob;
     QMetaObject::Connection _syncTerminatedConnection = {};
+    QVector<QMetaObject::Connection> _folderConnections;
 };
 
 }
