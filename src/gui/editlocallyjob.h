@@ -88,7 +88,7 @@ private:
     const QString getRelativePathToRemoteRootForFile() const; // returns either '/' or a (relative path - Folder::remotePath()) for folders pointing to a non-root remote path e.g. '/subfolder' instead of '/'
     const QString getRelativePathParent() const;
 
-    [[nodiscard]] static int fileLockTimeRemainingMinutes(const int lockTime, const int lockTimeOut);
+    [[nodiscard]] static int fileLockTimeRemainingMinutes(const qint64 lockTime, const qint64 lockTimeOut);
 
     bool _tokenVerified = false;
 
