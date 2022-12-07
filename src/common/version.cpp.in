@@ -42,9 +42,10 @@ QString OCC::Version::suffix()
 
 QString OCC::Version::displayString()
 {
-    constexpr bool hasSuffix = !std::string_view("@MIRALL_VERSION_SUFFIX@").empty();
-    if (hasSuffix) {
-        return QStringLiteral("%1-%2").arg(versionWithBuildNumber().toString(), suffix());
-    }
-    return versionWithBuildNumber().toString();
+    // ensure a well-defined version string
+    constexpr std::string_view versionString("@MIRALL_VERSION_STRING@");
+    constexpr std::string_view versionSuffix("@MIRALL_VERSION_SUFFIX@");
+    static_assert(versionString.find("@MIRALL_VERSION_MAJOR@.@MIRALL_VERSION_MINOR@.@MIRALL_VERSION_PATCH@") == 0);
+    static_assert(versionString.rfind("@MIRALL_VERSION_SUFFIX@") == versionString.size() - versionSuffix.size());
+    return QStringLiteral("@MIRALL_VERSION_STRING@");
 }
