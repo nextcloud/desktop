@@ -1087,12 +1087,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::DetermineAuthTypeJobFactory</name>
     <message>
-        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
+        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="50"/>
         <source>Server did not ask for authorization</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="57"/>
+        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="53"/>
         <source>Failed to determine auth type: %1</source>
         <translation type="unfinished"/>
     </message>
@@ -1140,7 +1140,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::FetchUserInfoJobFactory</name>
     <message>
-        <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="70"/>
+        <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="66"/>
         <source>Failed to retrieve user info</source>
         <translation type="unfinished"/>
     </message>
@@ -4028,7 +4028,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Wizard::Jobs::CheckBasicAuthJobFactory</name>
     <message>
-        <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="53"/>
+        <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="51"/>
         <source>Invalid reply received from server</source>
         <translation type="unfinished"/>
     </message>
@@ -4036,17 +4036,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::Wizard::Jobs::ResolveUrlJobFactory</name>
     <message>
-        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="61"/>
+        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="57"/>
         <source>Could not detect compatible server at %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="90"/>
+        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="86"/>
         <source>User rejected redirect from %1 to %2</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="118"/>
+        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="114"/>
         <source>User rejected invalid SSL certificate</source>
         <translation type="unfinished"/>
     </message>

@@ -1096,12 +1096,12 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::DetermineAuthTypeJobFactory</name>
     <message>
-        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="54"/>
+        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="50"/>
         <source>Server did not ask for authorization</source>
         <translation>Sunucu yetki istemedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="57"/>
+        <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="53"/>
         <source>Failed to determine auth type: %1</source>
         <translation>Kimlik doğrulama türü belirlenemedi: %1</translation>
     </message>
@@ -1149,7 +1149,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::FetchUserInfoJobFactory</name>
     <message>
-        <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="70"/>
+        <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="66"/>
         <source>Failed to retrieve user info</source>
         <translation>Kullanıcı bilgileri alınamadı</translation>
     </message>
@@ -4048,7 +4048,7 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::Wizard::Jobs::CheckBasicAuthJobFactory</name>
     <message>
-        <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="53"/>
+        <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="51"/>
         <source>Invalid reply received from server</source>
         <translation>Sunucudan geçersiz yanıt alındı</translation>
     </message>
@@ -4056,17 +4056,17 @@ Bu yeni, deneysel bir moddur. Kullanmaya karar verirseniz, lütfen ortaya çıka
 <context>
     <name>OCC::Wizard::Jobs::ResolveUrlJobFactory</name>
     <message>
-        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="61"/>
+        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="57"/>
         <source>Could not detect compatible server at %1</source>
         <translation>%1 konumunda uyumlu sunucu algılanamadı</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="90"/>
+        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="86"/>
         <source>User rejected redirect from %1 to %2</source>
         <translation>Kullanıcı %1&apos;den %2&apos;ye yönlendirmeyi reddetti</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="118"/>
+        <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="114"/>
         <source>User rejected invalid SSL certificate</source>
         <translation>Kullanıcı geçersiz SSL sertifikasını reddetti</translation>
     </message>
