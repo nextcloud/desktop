@@ -15,10 +15,12 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
+#include <QScopeGuard>
 
 #include <iostream>
 #include <vector>
 
+#include <common/utility.h>
 #include <libsync/filesystem.h>
 
 
@@ -32,8 +34,9 @@
 using namespace std;
 
 namespace {
-bool writeToFile(std::string_view command, const QString &fileName, QFile::OpenMode mode, const QByteArray &data)
+bool writeToFile(std::string_view command, const QString &fileName, QIODevice::OpenMode mode, const QByteArray &data)
 {
+#ifndef Q_OS_WIN
     QFile f(fileName);
     if (!f.open(mode)) {
         cerr << "Error: cannot open file '" << qPrintable(fileName) << "' for " << command << " command: "
@@ -54,6 +57,60 @@ bool writeToFile(std::string_view command, const QString &fileName, QFile::OpenM
         return false;
     }
     f.close();
+#else
+    // Qt bug: [INSERT BUG HERE]
+    // When opening a cloud file results in a cfapi error, Qt does not report an error.
+    // Writes will succeed but not be committed to the file.
+    // Reads will always return 0
+
+    const QFileInfo info(fileName);
+    DWORD creation = OPEN_ALWAYS;
+    if (mode & QIODevice::Truncate) {
+        creation = TRUNCATE_EXISTING;
+        if (!info.exists()) {
+            cerr << "Error: truncating a non existing file '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    } else if (mode & QIODevice::Append) {
+        creation = OPEN_EXISTING;
+        if (!info.exists()) {
+            cerr << "Error: appending to non existing file '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    }
+    auto handle = CreateFileW(reinterpret_cast<const wchar_t *>(fileName.utf16()),
+        GENERIC_WRITE,
+        FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+        {},
+        creation,
+        FILE_ATTRIBUTE_NORMAL,
+        nullptr);
+
+    if (handle == INVALID_HANDLE_VALUE) {
+        const auto error = OCC::Utility::formatWinError(GetLastError());
+        cerr << "Error: cannot open file '" << qPrintable(fileName) << "' for " << command << " command: "
+             << qPrintable(error) << endl;
+        return false;
+    }
+    // cleanup the handle when leaving the scope
+    auto close = qScopeGuard([handle] {
+        CloseHandle(handle);
+    });
+    if (mode & QFile::Append) {
+        LARGE_INTEGER pos;
+        pos.QuadPart = info.size();
+        if (SetFilePointer(handle, pos.LowPart, &pos.HighPart, FILE_BEGIN) == INVALID_SET_FILE_POINTER) {
+            cerr << "Error: cannot seek to EOF in '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    }
+    DWORD bytesWritten;
+    if (!WriteFile(handle, data.constData(), data.size(), &bytesWritten, nullptr) || bytesWritten != data.size()) {
+        const auto error = OCC::Utility::formatWinError(GetLastError());
+        cerr << "Error: wrote " << bytesWritten << " bytes to '" << qPrintable(fileName) << "' instead of requested " << data.size() << " bytes. Error: " << qPrintable(error) << endl;
+        return false;
+    }
+#endif
     return true;
 }
 }
