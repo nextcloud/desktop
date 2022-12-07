@@ -12,6 +12,7 @@
  * for more details.
  */
 
+#include "account.h"
 #include "discovery.h"
 #include "common/filesystembase.h"
 #include "common/syncjournaldb.h"
@@ -250,6 +251,13 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             excluded = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
         } else if (startsWithSpace) {
             excluded = CSYNC_FILE_EXCLUDE_LEADING_SPACE;
+        } else if (entries.serverEntry.isValid() && entries.serverEntry.isE2eEncrypted) {
+            const auto wasE2eEnabledButNotSetup = _discoveryData->_account->e2e()
+                && !_discoveryData->_account->e2e()->_publicKey.isNull()
+                && _discoveryData->_account->e2e()->_privateKey.isNull();
+            if (wasE2eEnabledButNotSetup) {
+                excluded = CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED;
+            }
         }
     }
 
@@ -296,7 +304,10 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
         return false;
-    } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
+    } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE || excluded == CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED) {
+        if (excluded == CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED && isDirectory && path != QStringLiteral("/")) {
+            checkAndUpdateSelectiveSyncListsForE2eeFolders(path);
+        }
         emit _discoveryData->silentlyExcluded(path);
         return true;
     }
@@ -312,6 +323,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
+        case CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED:
         case CSYNC_FILE_SILENTLY_EXCLUDED:
         case CSYNC_FILE_EXCLUDE_AND_REMOVE:
             qFatal("These were handled earlier");
@@ -377,6 +389,27 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     _childIgnored = true;
     emit _discoveryData->itemDiscovered(item);
     return true;
+}
+
+void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path)
+{
+    bool ok = false;
+    auto blackList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    auto selectiveSyncE2eFoldersToRemoveFromBlacklist =
+        _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+    const auto pathWithTrailingSpace = path.endsWith(QLatin1Char('/')) ? path : path + QLatin1Char('/');
+    if (!blackList.contains(pathWithTrailingSpace)) {
+        blackList.push_back(pathWithTrailingSpace);
+        blackList.sort();
+        _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+    }
+    // record it into a separate list to automatically remove from blacklist once the e2EE gets set up
+    if (!selectiveSyncE2eFoldersToRemoveFromBlacklist.contains(pathWithTrailingSpace)) {
+        selectiveSyncE2eFoldersToRemoveFromBlacklist.push_back(pathWithTrailingSpace);
+        selectiveSyncE2eFoldersToRemoveFromBlacklist.sort();
+        _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
+                                                       selectiveSyncE2eFoldersToRemoveFromBlacklist);
+    }
 }
 
 void ProcessDirectoryJob::processFile(PathTuple path,

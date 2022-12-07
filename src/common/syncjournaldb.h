@@ -168,7 +168,9 @@ public:
         SelectiveSyncWhiteList = 2,
         /** List of big sync folders that have not been confirmed by the user yet and that the UI
          * should notify about */
-        SelectiveSyncUndecidedList = 3
+        SelectiveSyncUndecidedList = 3,
+        /** List of encrypted folders that will need to be removed from the blacklist when E2EE gets set up*/
+        SelectiveSyncE2eFoldersToRemoveFromBlacklist = 4,
     };
     /* return the specified list from the database */
     QStringList getSelectiveSyncList(SelectiveSyncListType type, bool *ok);

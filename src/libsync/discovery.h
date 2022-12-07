@@ -148,6 +148,9 @@ private:
     // path is the full relative path of the file. localName is the base name of the local entry.
     bool handleExcluded(const QString &path, const Entries &entries, bool isHidden);
 
+    // check if the path is an e2e encrypted and the e2ee is not set up, and insert it into a corresponding list in the sync journal
+    void checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path);
+
     /** Reconcile local/remote/db information for a single item.
      *
      * Can be a file or a directory.
