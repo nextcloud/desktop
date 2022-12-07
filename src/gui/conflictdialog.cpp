@@ -53,6 +53,8 @@ ConflictDialog::ConflictDialog(QWidget *parent)
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setText(tr("Keep selected version"));
 
+    _ui->conflictMessage->setTextFormat(Qt::PlainText);
+
     connect(_ui->localVersionRadio, &QCheckBox::toggled, this, &ConflictDialog::updateButtonStates);
     connect(_ui->localVersionButton, &QToolButton::clicked, this, [=] {
         QDesktopServices::openUrl(QUrl::fromLocalFile(_solver->localVersionFilename()));

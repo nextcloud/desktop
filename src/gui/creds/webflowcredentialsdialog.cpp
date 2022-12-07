@@ -36,6 +36,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     _containerLayout->setMargin(margin);
 
     _infoLabel = new QLabel();
+    _infoLabel->setTextFormat(Qt::PlainText);
     _infoLabel->setAlignment(Qt::AlignCenter);
     _containerLayout->addWidget(_infoLabel);
 
@@ -65,6 +66,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     connect(app, &Application::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
 
     _errorLabel = new QLabel();
+    _errorLabel->setTextFormat(Qt::PlainText);
     _errorLabel->hide();
     _containerLayout->addWidget(_errorLabel);
 
