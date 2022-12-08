@@ -304,18 +304,6 @@ void Logger::rotateLog()
         _logFile.setFileTime(now, QFileDevice::FileTime::FileBirthTime);
 
         QtConcurrent::run([now, previousLog, dir, maxLogFiles = _maxLogFiles] {
-            // Expire old log files and deal with conflicts
-            auto files = dir.entryList(QStringList(QStringLiteral("*%1-*.log.gz").arg(qApp->applicationName())), QDir::Files, QDir::Name);
-            if (files.size() > maxLogFiles) {
-                std::sort(files.begin(), files.end(), std::greater<QString>());
-                // remove the maxLogFiles newest, we keep them
-                files.erase(files.begin(), files.begin() + maxLogFiles);
-                for (const auto &s : files) {
-                    if (!QFile::remove(dir.absoluteFilePath(s))) {
-                        std::cerr << "Failed to remove: " << qPrintable(s) << std::endl;
-                    }
-                }
-            }
             // Compress the previous log file.
             if (!previousLog.isEmpty() && QFileInfo::exists(previousLog)) {
                 QString compressedName = QStringLiteral("%1.gz").arg(previousLog);
@@ -323,6 +311,21 @@ void Logger::rotateLog()
                     QFile::remove(previousLog);
                 } else {
                     QFile::remove(compressedName);
+                }
+            }
+
+            // Expire old log files and deal with conflicts
+            {
+                auto oldLogFiles = dir.entryList(QStringList(QStringLiteral("*%1-*.log.gz").arg(qApp->applicationName())), QDir::Files, QDir::Name);
+
+                // keeping the last maxLogFiles files in total (need to subtract one from maxLogFiles to ensure the limit)
+                std::sort(oldLogFiles.begin(), oldLogFiles.end(), std::greater<QString>());
+                oldLogFiles.erase(oldLogFiles.begin(), oldLogFiles.begin() + std::min(maxLogFiles - 1, oldLogFiles.size()));
+
+                for (const auto &s : oldLogFiles) {
+                    if (!QFile::remove(dir.absoluteFilePath(s))) {
+                        qCWarning(lcUtility) << "Failed to remove old log file" << s;
+                    }
                 }
             }
         });
