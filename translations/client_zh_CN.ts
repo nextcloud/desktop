@@ -1032,7 +1032,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
-        <location filename="../src/gui/conflictdialog.cpp" line="94"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="96"/>
         <source>Conflicting versions of %1.</source>
         <translation>％1 的版本冲突。</translation>
     </message>
@@ -1081,32 +1081,32 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
-        <location filename="../src/gui/conflictdialog.cpp" line="177"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="179"/>
         <source>Keep selected version</source>
         <translation>保留所选版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="148"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
         <translation>打开本地版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="156"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="158"/>
         <source>Open server version</source>
         <translation>打开服务器版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="174"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep both versions</source>
         <translation>保留两个版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="175"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep local version</source>
         <translation>保留本地版本</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="176"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
         <translation>保留服务器版本</translation>
     </message>
@@ -1241,6 +1241,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="128"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
         <source>Please try again.</source>
         <translation>请重试</translation>
     </message>
@@ -1262,26 +1263,52 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="134"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="148"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="147"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="143"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="163"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="171"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="178"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="142"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="162"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="170"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="177"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="484"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="483"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
+        <source>Could not open %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="612"/>
+        <source>File %1 already locked.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="613"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="624"/>
+        <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="623"/>
+        <source>File %1 now locked.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="632"/>
+        <source>File %1 could not be locked.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2422,17 +2449,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>不能同步此文件，因为其名称包含了这个系统不允许的字符。</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
+        <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
+        <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
         <translation>请输入新文件名：</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
+        <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
         <source>New filename</source>
         <translation>新文件名</translation>
     </message>
@@ -2442,18 +2469,13 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>重命名文件</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="89"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
-        <source>Checking rename permissions …</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2462,52 +2484,57 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <source>Checking rename permissions …</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>您没有重命名此文件的权限。请文件的作者重新命名它。</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="160"/>
         <source>Filename contains leading spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="162"/>
         <source>Filename contains trailing spaces.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="167"/>
         <source>Use invalid name</source>
         <translation>使用的名称无效</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="208"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>文件名包含非法字符：%1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="221"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>无法重命名文件。请确保您已连接到服务器。</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="232"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>无法重命名文件，因为服务器上已经存在同名文件。请换一个名字。</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
         <source>Could not rename local file. %1</source>
         <translation>不能重命名本地文件。 %1</translation>
     </message>
@@ -2851,66 +2878,66 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="65"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="70"/>
         <source>Connect</source>
         <translation>连接</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="99"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="238"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>使用 &amp;虚拟文件，而非立即下载内容 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="99"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="238"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
         <source>(experimental)</source>
         <translation>(实验性)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="234"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="239"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows 分区根目录不支持虚拟文件作为本地文件夹。请在驱动器号下选择有效的子文件夹。 </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="271"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="276"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 文件夹 &quot;%2&quot; 已同步至本地文件夹 &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>同步文件夹 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>警告:本地文件夹不是空的。选择一个分辨率！</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 剩余空间</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="374"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="379"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>虚拟文件对所选文件夹不可用</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="434"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="439"/>
         <source>Local Sync Folder</source>
         <translation>本地同步文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="477"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="518"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="523"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="535"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="540"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>本地文件夹可用空间不足！</translation>
     </message>
@@ -4978,17 +5005,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="74"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
         <source>&amp;Local Folder</source>
         <translation>本地文件夹(&amp;L)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
         <translation>用户名</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
         <translation>本地文件夹</translation>
     </message>
@@ -4998,58 +5025,58 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>用户名</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
         <translation>选择不同的文件夹</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Server address</source>
         <translation>服务器地址</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
         <translation>同步图标</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
         <translation>从服务器同步所有内容 </translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="341"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
         <translation>同步大小超过此数值的文件夹前，先询问用户</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="367"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="410"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
         <translation>同步外部存储前，先询问用户</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="453"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
         <source>Choose what to sync</source>
         <translation>选择要同步的内容</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="591"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
         <translation>保留本地数据</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="607"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;当该选项被勾选，当前目录的内容将被删除，并开始同步服务器内容。&lt;/p&gt;&lt;p&gt;如果本地内容要被上传到服务器，不要勾选该选项。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="610"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
         <translation>删除本地文件夹并开始一次干净的同步</translation>
     </message>
