@@ -210,7 +210,7 @@ Page {
                 fillMode: Image.PreserveAspectFit
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: headLabel
 
                 Layout.fillWidth: true
@@ -237,7 +237,7 @@ Page {
                 onClicked: root.closeShareDetails()
             }
 
-            Label {
+            EnforcedPlainTextLabel {
                 id: secondaryLabel
 
                 Layout.fillWidth: true
