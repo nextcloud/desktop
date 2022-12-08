@@ -206,15 +206,19 @@ ColumnLayout {
 
             TextField {
                 id: userStatusMessageTextField
+
+                property color borderColor: activeFocus ? Style.ncBlue : Style.menuBorder
+
                 Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight + (Style.smallSpacing * 2)
+
                 placeholderText: qsTr("What is your status?")
                 placeholderTextColor: Style.ncSecondaryTextColor
                 text: userStatusSelectorModel.userStatusMessage
                 color: Style.ncTextColor
+                verticalAlignment: TextInput.AlignVCenter
                 selectByMouse: true
                 onEditingFinished: userStatusSelectorModel.userStatusMessage = text
-
-                property color borderColor: activeFocus ? Style.ncBlue : Style.menuBorder
 
                 background: Rectangle {
                     radius: Style.slightlyRoundedButtonRadius
