@@ -46,7 +46,7 @@ signals:
     void setupFinished();
     void error(const QString &message, const QString &informativeText);
     void finished();
-
+    void callShowError(const QString &message, const QString &informativeText);
 public slots:
     void startSetup();
     void startEditLocally();
