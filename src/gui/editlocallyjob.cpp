@@ -37,6 +37,7 @@ EditLocallyJob::EditLocallyJob(const QString &userId,
     , _relPath(relPath)
     , _token(token)
 {
+    connect(this, &EditLocallyJob::callShowError, this, &EditLocallyJob::showError, Qt::QueuedConnection);
 }
 
 void EditLocallyJob::startSetup()
@@ -546,8 +547,8 @@ void EditLocallyJob::openFile()
     // from a separate thread, or, there will be a freeze. To avoid searching for a specific folder and checking
     // if the VFS is enabled - we just always call it from a separate thread.
     QtConcurrent::run([localFilePathUrl, this]() {
-        if (QDesktopServices::openUrl(localFilePathUrl)) {
-            showError(tr("Could not open %1").arg(_fileName), tr("Please try again."));
+        if (!QDesktopServices::openUrl(localFilePathUrl)) {
+            emit callShowError(tr("Could not open %1").arg(_fileName), tr("Please try again."));
         }
 
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
