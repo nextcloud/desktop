@@ -324,7 +324,7 @@ void Logger::rotateLog()
 
                 for (const auto &s : oldLogFiles) {
                     if (!QFile::remove(dir.absoluteFilePath(s))) {
-                        qCWarning(lcUtility) << "Failed to remove old log file" << s;
+                        std::cerr << "warning: failed to remove old log file" << qPrintable(s) << std::endl;
                     }
                 }
             }
