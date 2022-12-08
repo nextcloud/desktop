@@ -943,7 +943,29 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
 
 bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 {
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file);
+    const auto checkFileShouldBeEncrypted = [this] (const SyncFileItemPtr &item) -> bool {
+        const auto path = item->_file;
+        const auto slashPosition = path.lastIndexOf('/');
+        const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+        SyncJournalFileRecord parentRec;
+        bool ok = _journal->getFileRecord(parentPath, &parentRec);
+        if (!ok) {
+            return false;
+        }
+
+        const auto accountPtr = account();
+
+        if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
+            !parentRec.isValid() ||
+            !parentRec._isE2eEncrypted) {
+            return false;
+        }
+
+        return true;
+    };
+
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
