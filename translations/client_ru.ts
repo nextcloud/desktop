@@ -1035,7 +1035,7 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.ui" line="20"/>
-        <location filename="../src/gui/conflictdialog.cpp" line="94"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="96"/>
         <source>Conflicting versions of %1.</source>
         <translation>Конфликт версий файла «%1».</translation>
     </message>
@@ -1084,32 +1084,32 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/conflictdialog.cpp" line="54"/>
-        <location filename="../src/gui/conflictdialog.cpp" line="177"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="179"/>
         <source>Keep selected version</source>
         <translation>Оставить выбранную версию</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="148"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="150"/>
         <source>Open local version</source>
         <translation>Открыть локальную версию</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="156"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="158"/>
         <source>Open server version</source>
         <translation>Открыть серверную версию</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="174"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="176"/>
         <source>Keep both versions</source>
         <translation>Оставить обе версии</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="175"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="177"/>
         <source>Keep local version</source>
         <translation>Оставить локальную версию</translation>
     </message>
     <message>
-        <location filename="../src/gui/conflictdialog.cpp" line="176"/>
+        <location filename="../src/gui/conflictdialog.cpp" line="178"/>
         <source>Keep server version</source>
         <translation>Оставить серверную версию</translation>
     </message>
@@ -1244,6 +1244,7 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="128"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
         <source>Please try again.</source>
         <translation>Попробуйте ещё раз.</translation>
     </message>
@@ -1265,26 +1266,52 @@ This action will abort any currently running synchronization.</source>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="134"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="148"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="147"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Не удалось найти файл для локального редактирования. Убедитесь, что путь к этому файлу действителен, а также что файл синхронизирован и сохранён локально.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="143"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="163"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="171"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="178"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="142"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="162"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="170"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="177"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Не удалось найти файл для локального редактирования. Убедитесь, что файл не исключён из выборочной синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="484"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="483"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
+        <source>Could not open %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="612"/>
+        <source>File %1 already locked.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="613"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="624"/>
+        <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="623"/>
+        <source>File %1 now locked.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="632"/>
+        <source>File %1 could not be locked.</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -2423,17 +2450,17 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Файл не может быть синхронизирован, поскольку он содержит символы, недопустимые в этой системе.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.ui" line="36"/>
+        <location filename="../src/gui/invalidfilenamedialog.ui" line="39"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.ui" line="49"/>
+        <location filename="../src/gui/invalidfilenamedialog.ui" line="55"/>
         <source>Please enter a new name for the file:</source>
         <translation>Введите новое имя для файла:</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.ui" line="62"/>
+        <location filename="../src/gui/invalidfilenamedialog.ui" line="71"/>
         <source>New filename</source>
         <translation>Новое имя файла</translation>
     </message>
@@ -2443,19 +2470,14 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Переименуйте файл</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="88"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="91"/>
         <source>The file &quot;%1&quot; could not be synced because the name contains characters which are not allowed on this system.</source>
         <translation>Файл «%1» не может быть синхронизирован, так как его имя содержит символы, неподдерживаемые используемой системой.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="89"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="92"/>
         <source>The following characters are not allowed on the system: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; leading/trailing spaces</source>
         <translation>Используемая система не поддерживает следующие символы: * &quot; | &amp; ? , ; : \ / ~ &lt; &gt; и символы пробела в начале и конце имени.</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
-        <source>Checking rename permissions …</source>
-        <translation>Выполняется проверка прав доступа для переименования…</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="96"/>
@@ -2463,52 +2485,57 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Выполняется проверка прав доступа для переименования…</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="126"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="99"/>
+        <source>Checking rename permissions …</source>
+        <translation>Выполняется проверка прав доступа для переименования…</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="129"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
         <translation>У вас нет разрешения на переименование этого файла. Попросите автора файла переименовать его.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="131"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="134"/>
         <source>Failed to fetch permissions with error %1</source>
         <translation>Не удалось получить разрешения: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="154"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading and trailing spaces.</source>
         <translation>Имя файла содержит пробелы в начале или на конце.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="160"/>
         <source>Filename contains leading spaces.</source>
         <translation>Имя файла содержит пробелы в начале.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="159"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="162"/>
         <source>Filename contains trailing spaces.</source>
         <translation>Имя файла содержит пробелы на конце.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="164"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="167"/>
         <source>Use invalid name</source>
         <translation>Использовать некорректное имя</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="208"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="211"/>
         <source>Filename contains illegal characters: %1</source>
         <translation>Имя файла содержит недопустимые символы: % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="221"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="224"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
         <translation>Не удалось переименовать файл. Убедитесь, что вы подключены к серверу.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="232"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="235"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Невозможно переименовать файл, поскольку файл с таким именем уже существует на сервере. Пожалуйста, выберите другое имя.</translation>
     </message>
     <message>
-        <location filename="../src/gui/invalidfilenamedialog.cpp" line="268"/>
+        <location filename="../src/gui/invalidfilenamedialog.cpp" line="271"/>
         <source>Could not rename local file. %1</source>
         <translation>Не удалось переименовать локальный файл: %1</translation>
     </message>
@@ -2855,66 +2882,66 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="65"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="70"/>
         <source>Connect</source>
         <translation>Подключиться</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="99"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="238"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Использовать &amp;виртуальные файлы вместо загрузки %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="99"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="238"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
         <source>(experimental)</source>
         <translation>(экспериментальная функция)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="234"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="239"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>В ОС Windows механизм виртуальных файлов не поддерживается для корневой уровня файловой системы. Для продолжения выберите папку на диске, а не сам диск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="271"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="276"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 каталог «%2» синхронизирован с локальной папкой «%3»</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="274"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Синхронизировать папку «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Предупреждение: локальная папка не пуста. Выберите действие!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 свободного места</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="374"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="379"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Использование виртуальные файлов недоступно для выбранной папки.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="434"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="439"/>
         <source>Local Sync Folder</source>
         <translation>Локальный каталог синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="477"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="518"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="523"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="535"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="540"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Недостаточно свободного места в локальной папке.</translation>
     </message>
@@ -4988,17 +5015,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OwncloudAdvancedSetupPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="74"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="77"/>
         <source>&amp;Local Folder</source>
         <translation>&amp;Локальная папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="93"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="98"/>
         <source>Username</source>
         <translation>Имя пользователя</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="109"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="116"/>
         <source>Local Folder</source>
         <translation>Локальная папка</translation>
     </message>
@@ -5008,58 +5035,58 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Имя пользователя</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="125"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="135"/>
         <source>Choose different folder</source>
         <translation>Выбрать папку назначения</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="215"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
         <source>Server address</source>
         <translation>Адрес сервера</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="228"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="244"/>
         <source>Sync Logo</source>
         <translation>Синхронизация логотипа</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="285"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="304"/>
         <source>Synchronize everything from server</source>
         <translation>Синхронизировать всё с сервером</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="341"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="360"/>
         <source>Ask before syncing folders larger than</source>
         <translation>Спрашивать перед синхронизацией папок размером более</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="367"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="386"/>
         <source>MB</source>
         <extracomment>Trailing part of &quot;Ask confirmation before syncing folder larger than&quot; </extracomment>
         <translation>МБ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="410"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="432"/>
         <source>Ask before syncing external storages</source>
         <translation>Спрашивать перед синхронизацией внешних хранилищ</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="453"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="475"/>
         <source>Choose what to sync</source>
         <translation>Уточнить объекты</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="591"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="612"/>
         <source>Keep local data</source>
         <translation>Сохранить локальные данные</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="607"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="628"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If this box is checked, existing content in the local folder will be erased to start a clean sync from the server.&lt;/p&gt;&lt;p&gt;Do not check this if the local content should be uploaded to the servers folder.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Если этот флажок отмечен, то существующее содержимое локальной папки будет удалено и будет запущен процесс синхронизации с сервера.&lt;/p&gt;&lt;p&gt;Не отмечайте, если содержимое должно быть загружено на сервер.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="610"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.ui" line="631"/>
         <source>Erase local folder and start a clean sync</source>
         <translation>Удалите локальную папку и начните чистую синхронизацию</translation>
     </message>
