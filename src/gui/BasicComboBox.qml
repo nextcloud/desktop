@@ -24,7 +24,10 @@ import "./tray"
 ComboBox {
     id: clearComboBox
 
-    padding: Style.standardSpacing
+    topPadding: Style.smallSpacing + topInset
+    leftPadding: Style.smallSpacing + leftInset
+    rightPadding: Style.smallSpacing + rightInset
+    bottomPadding: Style.smallSpacing + bottomInset
 
     background: Rectangle {
         radius: Style.slightlyRoundedButtonRadius
@@ -33,7 +36,7 @@ ComboBox {
     }
 
     contentItem: EnforcedPlainTextLabel {
-        leftPadding: 0
+        leftPadding: clearComboBox.leftPadding
         rightPadding: clearComboBox.indicator.width + clearComboBox.spacing
 
         text: clearComboBox.displayText
@@ -43,8 +46,10 @@ ComboBox {
     }
 
     indicator: ColorOverlay {
-        x: clearComboBox.width - clearComboBox.rightPadding
-        y: clearComboBox.topPadding + (clearComboBox.availableHeight - height) / 2
+        anchors.right: clearComboBox.right
+        anchors.rightMargin: clearComboBox.rightPadding
+        anchors.verticalCenter: clearComboBox.verticalCenter
+
         cached: true
         color: Style.ncTextColor
         width: source.width
