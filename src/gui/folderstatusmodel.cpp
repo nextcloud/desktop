@@ -138,9 +138,15 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
 
     const Columns column = static_cast<Columns>(index.column());
     const auto itemType = classify(index);
-    if (column == Columns::ItemType) {
+    switch (column) {
+    case Columns::ItemType:
         return itemType;
+    case Columns::IsUsingSpaces:
+        return _accountState->supportsSpaces();
+    default:
+        break;
     }
+
     switch (itemType) {
     case AddButton: {
         if (role == Qt::ToolTipRole) {
@@ -267,12 +273,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return tr("Local folder: %1").arg(f->shortGuiLocalPath());
         case Columns::IsReady:
             return f->isReady();
-        case Columns::IsUsingSpaces:
-            return _accountState->supportsSpaces();
         case Columns::IsDeployed:
             return f->isDeployed();
         case Columns::Priority:
             return f->priority() + 1; // add one to have a higher prio than the hacked add button
+        case Columns::IsUsingSpaces: // handled before
+            [[fallthrough]];
         case Columns::ItemType: // handled before
             [[fallthrough]];
         case Columns::ColumnCount:
