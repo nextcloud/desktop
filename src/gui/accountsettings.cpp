@@ -258,6 +258,7 @@ void AccountSettings::slotE2eEncryptionGenerateKeys()
 {
     connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotE2eEncryptionInitializationFinished);
     _accountState->account()->setE2eEncryptionKeysGenerationAllowed(true);
+    _accountState->account()->setAskUserForMnemonic(true);
     _accountState->account()->e2e()->initialize(_accountState->account());
 }
 
@@ -271,6 +272,7 @@ void AccountSettings::slotE2eEncryptionInitializationFinished(bool isNewMnemonic
             displayMnemonic(_accountState->account()->e2e()->_mnemonic);
         }
     }
+    _accountState->account()->setAskUserForMnemonic(false);
 }
 
 void AccountSettings::slotEncryptFolderFinished(int status)

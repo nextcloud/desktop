@@ -86,6 +86,7 @@ class OWNCLOUDSYNC_EXPORT Account : public QObject
     Q_PROPERTY(QString prettyName READ prettyName NOTIFY prettyNameChanged)
     Q_PROPERTY(QUrl url MEMBER _url)
     Q_PROPERTY(bool e2eEncryptionKeysGenerationAllowed MEMBER _e2eEncryptionKeysGenerationAllowed)
+    Q_PROPERTY(bool askUserForMnemonic READ askUserForMnemonic WRITE setAskUserForMnemonic NOTIFY askUserForMnemonicChanged)
 
 public:
     static AccountPtr create();
@@ -314,10 +315,13 @@ public:
     void setE2eEncryptionKeysGenerationAllowed(bool allowed);
     [[nodiscard]] bool e2eEncryptionKeysGenerationAllowed() const;
 
+    [[nodiscard]] bool askUserForMnemonic() const;
+
 public slots:
     /// Used when forgetting credentials
     void clearQNAMCache();
     void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
+    void setAskUserForMnemonic(const bool ask);
 
 signals:
     /// Emitted whenever there's network activity
@@ -340,6 +344,7 @@ signals:
     void accountChangedAvatar();
     void accountChangedDisplayName();
     void prettyNameChanged();
+    void askUserForMnemonicChanged();
 
     /// Used in RemoteWipe
     void appPasswordRetrieved(QString);
@@ -370,6 +375,7 @@ private:
     bool _trustCertificates = false;
 
     bool _e2eEncryptionKeysGenerationAllowed = false;
+    bool _e2eAskUserForMnemonic = false;
 
     QWeakPointer<Account> _sharedThis;
     QString _id;

@@ -966,4 +966,15 @@ void Account::setE2eEncryptionKeysGenerationAllowed(bool allowed)
     return _e2eEncryptionKeysGenerationAllowed;
 }
 
+bool Account::askUserForMnemonic() const
+{
+    return _e2eAskUserForMnemonic;
+}
+
+void Account::setAskUserForMnemonic(const bool ask)
+{
+    _e2eAskUserForMnemonic = ask;
+    emit askUserForMnemonicChanged();
+}
+
 } // namespace OCC
