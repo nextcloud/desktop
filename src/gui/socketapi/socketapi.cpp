@@ -512,15 +512,35 @@ void SocketApi::processEncryptRequest(const QString &localFile)
     Q_ASSERT(QFileInfo(localFile).isDir());
 
     const auto fileData = FileData::get(localFile);
-    const auto folder = fileData.folder;
-    const auto account = folder->accountState()->account();
-    const auto rec = fileData.journalRecord();
 
+    const auto folder = fileData.folder;
     Q_ASSERT(folder);
+
+    const auto account = folder->accountState()->account();
     Q_ASSERT(account);
+
+    const auto rec = fileData.journalRecord();
     Q_ASSERT(rec.isValid());
 
-    auto choppedPath = rec._path.chopped(1);
+    if (!account->e2e() || account->e2e()->_mnemonic.isEmpty()) {
+        const int ret = QMessageBox::critical(nullptr,
+                                              tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
+                                              tr("The account %1 does not have end-to-end encryption configured. "
+                                                 "Please configure this in your account settings to enable folder encryption.").arg(account->prettyName()));
+        Q_UNUSED(ret)
+        return;
+    }
+
+    auto path = rec._path;
+    // Folder records have directory paths in Foo/Bar/ convention...
+    // But EncryptFolderJob expects directory path Foo/Bar convention
+    auto choppedPath = path;
+    if (choppedPath.endsWith('/') && choppedPath != QStringLiteral("/")) {
+        choppedPath.chop(1);
+    }
+    if (choppedPath.startsWith('/') && choppedPath != QStringLiteral("/")) {
+        choppedPath = choppedPath.mid(1);
+    }
 
     auto job = new OCC::EncryptFolderJob(account, folder->journalDb(), choppedPath, rec.numericFileId(), this);
     connect(job, &OCC::EncryptFolderJob::finished, this, [fileData, job](const int status) {
@@ -532,7 +552,7 @@ void SocketApi::processEncryptRequest(const QString &localFile)
         }
     });
     job->setProperty(encryptJobPropertyFolder, QVariant::fromValue(folder));
-    job->setProperty(encryptJobPropertyPath, QVariant::fromValue(rec._path));
+    job->setProperty(encryptJobPropertyPath, QVariant::fromValue(path));
     job->start();
 }
 
