@@ -9,12 +9,14 @@
         <file>src/gui/ErrorBox.qml</file>
         <file>src/gui/filedetails/FileActivityView.qml</file>
         <file>src/gui/filedetails/FileDetailsPage.qml</file>
+        <file>src/gui/filedetails/FileDetailsView.qml</file>
         <file>src/gui/filedetails/FileDetailsWindow.qml</file>
         <file>src/gui/filedetails/NCInputTextEdit.qml</file>
         <file>src/gui/filedetails/NCInputTextField.qml</file>
         <file>src/gui/filedetails/NCTabButton.qml</file>
         <file>src/gui/filedetails/ShareeDelegate.qml</file>
         <file>src/gui/filedetails/ShareDelegate.qml</file>
+        <file>src/gui/filedetails/ShareDetailsPage.qml</file>
         <file>src/gui/filedetails/ShareeSearchField.qml</file>
         <file>src/gui/filedetails/ShareView.qml</file>
         <file>src/gui/tray/Window.qml</file>

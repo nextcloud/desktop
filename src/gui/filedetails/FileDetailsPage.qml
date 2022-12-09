@@ -24,7 +24,7 @@ Page {
     id: root
 
     property var accountState: ({})
-    property string localPath: ({})
+    property string localPath: ""
 
     // We want the SwipeView to "spill" over the edges of the window to really
     // make it look nice. If we apply page-wide padding, however, the swipe
@@ -33,6 +33,7 @@ Page {
     // padding, which we have to apply selectively to achieve our desired effect.
     property int intendedPadding: Style.standardSpacing * 2
     property int iconSize: 32
+    property StackView rootStackView: StackView {}
 
     property FileDetails fileDetails: FileDetails {
         id: fileDetails
@@ -186,6 +187,7 @@ Page {
             fileDetails: root.fileDetails
             horizontalPadding: root.intendedPadding
             iconSize: root.iconSize
+            rootStackView: root.rootStackView
         }
     }
 }

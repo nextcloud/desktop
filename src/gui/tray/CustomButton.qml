@@ -18,6 +18,8 @@ Button {
     property alias contentsFont: contents.font
 
     property alias bgColor: bgRectangle.color
+    property alias bgNormalColor: bgRectangle.normalColor
+    property alias bgHoverColor: bgRectangle.hoverColor
     property alias bgNormalOpacity: bgRectangle.normalOpacity
     property alias bgHoverOpacity: bgRectangle.hoverOpacity
 
