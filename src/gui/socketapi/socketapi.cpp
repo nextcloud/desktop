@@ -1155,6 +1155,33 @@ void SocketApi::sendSharingContextMenuOptions(const FileData &fileData, SocketLi
     //listener->sendMessage(QLatin1String("MENU_ITEM:EMAIL_PRIVATE_LINK") + flagString + tr("Send private link by email …"));
 }
 
+void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
+                                                    const FileData &fileData,
+                                                    const bool isE2eEncryptedPath,
+                                                    const OCC::SocketListener* const listener) const
+{
+    if (!fileInfo.isDir() || isE2eEncryptedPath) {
+        return;
+    }
+
+    bool anyAncestorEncrypted = false;
+    auto ancestor = fileData.parentFolder();
+    while (ancestor.journalRecord().isValid()) {
+        if (ancestor.journalRecord()._isE2eEncrypted) {
+            anyAncestorEncrypted = true;
+            break;
+        }
+
+        ancestor = ancestor.parentFolder();
+    }
+
+    if (!anyAncestorEncrypted) {
+        const auto isOnTheServer = fileData.journalRecord().isValid();
+        const auto flagString = isOnTheServer ? QLatin1String("::") : QLatin1String(":d:");
+        listener->sendMessage(QStringLiteral("MENU_ITEM:ENCRYPT") + flagString + tr("Encrypt"));
+    }
+}
+
 void SocketApi::sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
                                                Folder* const syncFolder,
                                                const FileData &fileData,
@@ -1282,23 +1309,6 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
         }
 
-        if (fileInfo.isDir() && !isE2eEncryptedPath) {
-            bool anyAncestorEncrypted = false;
-            auto ancestor = fileData.parentFolder();
-            while (ancestor.journalRecord().isValid()) {
-                if (ancestor.journalRecord()._isE2eEncrypted) {
-                    anyAncestorEncrypted = true;
-                    break;
-                }
-
-                ancestor = ancestor.parentFolder();
-            }
-
-            if (!anyAncestorEncrypted) {
-                listener->sendMessage(QStringLiteral("MENU_ITEM:ENCRYPT") + flagString + tr("Encrypt"));
-            }
-        }
-
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
         if (editor) {
             //listener->sendMessage(QLatin1String("MENU_ITEM:EDIT") + flagString + tr("Edit via ") + editor->name());
@@ -1307,6 +1317,7 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
             listener->sendMessage(QLatin1String("MENU_ITEM:OPEN_PRIVATE_LINK") + flagString + tr("Open in browser"));
         }
 
+        sendEncryptFolderCommandMenuEntries(fileInfo, fileData, isE2eEncryptedPath, listener);
         sendLockFileCommandMenuEntries(fileInfo, syncFolder, fileData, listener);
         sendSharingContextMenuOptions(fileData, listener, !isE2eEncryptedPath);
 

@@ -153,8 +153,15 @@ private:
     // Sends the context menu options relating to sharing to listener
     void sendSharingContextMenuOptions(const FileData &fileData, SocketListener *listener, bool enabled);
 
-    void
-    sendLockFileCommandMenuEntries(const QFileInfo &fileInfo, Folder *const syncFolder, const FileData &fileData, const SocketListener *const listener) const;
+    void sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
+                                             const FileData &fileData,
+                                             const bool isE2eEncryptedPath,
+                                             const OCC::SocketListener* const listener) const;
+
+    void sendLockFileCommandMenuEntries(const QFileInfo &fileInfo,
+                                        Folder *const syncFolder,
+                                        const FileData &fileData,
+                                        const SocketListener *const listener) const;
 
     void sendLockFileInfoMenuEntries(const QFileInfo &fileInfo,
                                      Folder* const syncFolder,
