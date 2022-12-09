@@ -155,6 +155,7 @@ ApplicationWindow {
         edge: Qt.RightEdge
         modal: true
         visible: false
+        clip: true
 
         background: Rectangle {
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
@@ -188,13 +189,13 @@ ApplicationWindow {
                                                 fileDetailsDrawer.pageToShow);
                 }
             }
-            sourceComponent: FileDetailsPage {
+            sourceComponent: FileDetailsView {
                 id: fileDetails
 
                 width: parent.width
                 height: parent.height
 
-                background: null
+                backgroundsVisible: false
                 accountState: fileDetailsDrawer.folderAccountState
                 localPath: fileDetailsDrawer.fileLocalPath
                 showCloseButton: true

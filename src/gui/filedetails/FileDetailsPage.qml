@@ -37,6 +37,7 @@ Page {
     property int iconSize: 32
     property StackView rootStackView: StackView {}
     property bool showCloseButton: false
+    property bool backgroundsVisible: true
 
     property FileDetails fileDetails: FileDetails {
         id: fileDetails
@@ -64,6 +65,7 @@ Page {
 
     background: Rectangle {
         color: Style.backgroundColor
+        visible: root.backgroundsVisible
     }
 
     header: ColumnLayout {
@@ -210,6 +212,7 @@ Page {
             horizontalPadding: root.intendedPadding
             iconSize: root.iconSize
             rootStackView: root.rootStackView
+            backgroundsVisible: root.backgroundsVisible
         }
     }
 }

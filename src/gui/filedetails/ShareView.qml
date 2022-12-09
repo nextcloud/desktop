@@ -30,6 +30,7 @@ ColumnLayout {
     property FileDetails fileDetails: FileDetails {}
     property int horizontalPadding: 0
     property int iconSize: 32
+    property bool backgroundsVisible: true
 
     readonly property bool sharingPossible: shareModel && shareModel.canShare && shareModel.sharingEnabled
     readonly property bool userGroupSharingPossible: sharingPossible && shareModel.userGroupSharingEnabled
@@ -225,6 +226,7 @@ ColumnLayout {
                     iconSize: root.iconSize
                     fileDetails: root.fileDetails
                     rootStackView: root.rootStackView
+                    backgroundsVisible: root.backgroundsVisible
                     canCreateLinkShares: root.publicLinkSharingPossible
 
                     onCreateNewLinkShare: {
