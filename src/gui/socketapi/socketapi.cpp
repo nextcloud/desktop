@@ -546,13 +546,14 @@ void SocketApi::processEncryptRequest(const QString &localFile)
     connect(job, &OCC::EncryptFolderJob::finished, this, [fileData, job](const int status) {
         if (status == OCC::EncryptFolderJob::Error) {
             const int ret = QMessageBox::critical(nullptr,
-                                                  tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
-                                                  tr("Server replied with error: %1").arg(job->errorString()));
+                                                  tr("Failed to encrypt folder"),
+                                                  tr("Could not encrypt the following folder: \"%1\". \n\n"
+                                                     "Server replied with error: %2").arg(fileData.folderRelativePath, job->errorString()));
             Q_UNUSED(ret)
         } else {
             const int ret = QMessageBox::information(nullptr,
-                                                     tr("Folder at \"%1\" encrypted successfully").arg(fileData.folderRelativePath),
-                                                     {});
+                                                     tr("Folder encrypted successfully").arg(fileData.folderRelativePath),
+                                                     tr("The following folder was encrypted successfully: \"%1\"").arg(fileData.folderRelativePath));
             Q_UNUSED(ret)
         }
     });
