@@ -97,30 +97,20 @@ void ConnectionValidator::systemProxyLookupDone(const QNetworkProxy &proxy)
 // The actual check
 void ConnectionValidator::slotCheckServerAndAuth()
 {
-    // in order to receive all ssl erorrs we need a fresh QNam
-    auto nam = _account->credentials()->createAM();
-    nam->setCustomTrustedCaCertificates(_account->approvedCerts());
+    auto checkServerFactory = CheckServerJobFactory::createFromAccount(_account, _clearCookies, this);
+    auto checkServerJob = checkServerFactory.startJob(_account->url(), this);
 
-    // do we start with the old cookies or new
-    if (!_clearCookies) {
-        const auto accountCookies = _account->accessManager()->ownCloudCookieJar()->allCookies();
-        nam->ownCloudCookieJar()->setAllCookies(accountCookies);
-    }
-
-    auto checkServerJob = CheckServerJobFactory(nam).startJob(_account->url(), this);
-
-    connect(nam, &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
+    connect(checkServerJob->reply()->manager(), &AccessManager::sslErrors, this, [this](QNetworkReply *reply, const QList<QSslError> &errors) {
         Q_UNUSED(reply)
         Q_EMIT sslErrors(errors);
     });
 
-    connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, nam, this]() {
-        nam->deleteLater();
+    connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, this]() {
         if (checkServerJob->success()) {
             const auto result = checkServerJob->result().value<CheckServerJobResult>();
 
             // adopt the new cookies
-            _account->accessManager()->setCookieJar(nam->cookieJar());
+            _account->accessManager()->setCookieJar(checkServerJob->reply()->manager()->cookieJar());
 
             slotStatusFound(result.serverUrl(), result.statusObject());
         } else {

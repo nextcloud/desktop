@@ -1,0 +1,6 @@
+Bugfix: Only clear cookies if enabled in theme, clear cookies before OAuth2
+
+We fixed a bug that enabled the explicit cookie clearing required for F5 BIG-IP setups unconditionally.
+We fixed a bug where the cookie clearing was not performed during OAuth2.
+
+https://github.com/owncloud/client/pull/10338

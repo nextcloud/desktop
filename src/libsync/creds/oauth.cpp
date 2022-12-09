@@ -607,7 +607,7 @@ void AccountBasedOAuth::fetchWellKnown()
 {
     qCDebug(lcOauth) << "starting CheckServerJob before fetching" << wellKnownPathC;
 
-    auto *checkServerJob = CheckServerJobFactory(_networkAccessManager).startJob(_serverUrl, this);
+    auto *checkServerJob = CheckServerJobFactory::createFromAccount(_account, true, this).startJob(_serverUrl, this);
 
     connect(checkServerJob, &CoreJob::finished, this, [checkServerJob, this]() {
         if (checkServerJob->success()) {

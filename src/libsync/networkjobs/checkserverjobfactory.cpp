@@ -13,8 +13,14 @@
  */
 
 #include "checkserverjobfactory.h"
+
 #include "common/utility.h"
-#include "creds/httpcredentials.h"
+#include "libsync/accessmanager.h"
+#include "libsync/account.h"
+#include "libsync/cookiejar.h"
+#include "libsync/creds/httpcredentials.h"
+#include "libsync/theme.h"
+
 #include <QJsonParseError>
 
 namespace {
@@ -57,6 +63,20 @@ QJsonObject CheckServerJobResult::statusObject() const
 QUrl CheckServerJobResult::serverUrl() const
 {
     return _serverUrl;
+}
+
+CheckServerJobFactory CheckServerJobFactory::createFromAccount(const AccountPtr &account, bool clearCookies, QObject *parent)
+{
+    // in order to receive all ssl erorrs we need a fresh QNam
+    auto nam = account->credentials()->createAM();
+    nam->setCustomTrustedCaCertificates(account->approvedCerts());
+    nam->setParent(parent);
+    // do we start with the old cookies or new
+    if (!(clearCookies && Theme::instance()->connectionValidatorClearCookies())) {
+        const auto accountCookies = account->accessManager()->ownCloudCookieJar()->allCookies();
+        nam->ownCloudCookieJar()->setAllCookies(accountCookies);
+    }
+    return CheckServerJobFactory(nam);
 }
 
 CoreJob *CheckServerJobFactory::startJob(const QUrl &url, QObject *parent)
