@@ -101,7 +101,6 @@ public:
     static FolderMan *instance();
 
     int setupFolders();
-    int setupFoldersMigration();
 
     /** Find folder setting keys that need to be ignored or deleted for being too new.
      *
