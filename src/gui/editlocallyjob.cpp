@@ -450,6 +450,7 @@ void EditLocallyJob::startEditLocally()
             _syncTerminatedConnection = {};
             startSyncBeforeOpening();
         });
+        _folderForFile->setSilenceErrorsUntilNextSync(true);
         _folderForFile->slotTerminateSync();
 
         return;

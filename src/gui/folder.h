@@ -368,6 +368,8 @@ public slots:
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
 
+    void setSilenceErrorsUntilNextSync(bool silenceErrors);
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
@@ -505,6 +507,8 @@ private:
     /** Whether this folder has just switched to VFS or not
      */
     bool _hasSwitchedToVfs = false;
+
+    bool _silenceErrorsUntilNextSync = false;
 
     /**
      * Watches this folder's local directory for changes.

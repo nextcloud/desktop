@@ -308,6 +308,10 @@ void Folder::setSyncPaused(bool paused)
 
 void Folder::setSyncState(SyncResult::Status state)
 {
+    if (_silenceErrorsUntilNextSync && state == SyncResult::Error) {
+        _syncResult.setStatus(SyncResult::Status::Success);
+        return;
+    }
     _syncResult.setStatus(state);
 }
 
@@ -832,6 +836,7 @@ bool Folder::reloadExcludes()
 void Folder::startSync(const QStringList &pathList)
 {
     Q_UNUSED(pathList);
+    setSilenceErrorsUntilNextSync(false);
     const auto singleItemDiscoveryOptions = _engine->singleItemDiscoveryOptions();
     Q_ASSERT(!singleItemDiscoveryOptions.discoveryDirItem || singleItemDiscoveryOptions.discoveryDirItem->isDirectory());
     if (singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isDirectory()) {
@@ -962,8 +967,10 @@ void Folder::setDirtyNetworkLimits()
 
 void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
-    _syncResult.appendErrorString(message);
-    emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+    if (!_silenceErrorsUntilNextSync) {
+        _syncResult.appendErrorString(message);
+        emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+    }
 }
 
 void Folder::slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
@@ -998,6 +1005,9 @@ void Folder::slotSyncFinished(bool success)
 
     if (syncError) {
         _syncResult.setStatus(SyncResult::Error);
+        if (_silenceErrorsUntilNextSync) {
+            _syncResult.setStatus(SyncResult::Status::Success);
+        }
     } else if (_syncResult.foundFilesNotSynced()) {
         _syncResult.setStatus(SyncResult::Problem);
     } else if (_definition.paused) {
@@ -1149,6 +1159,11 @@ void Folder::slotScheduleThisFolder()
 void Folder::slotNextSyncFullLocalDiscovery()
 {
     _timeSinceLastFullLocalDiscovery.invalidate();
+}
+
+void Folder::setSilenceErrorsUntilNextSync(bool silenceErrors)
+{
+    _silenceErrorsUntilNextSync = silenceErrors;
 }
 
 void Folder::schedulePathForLocalDiscovery(const QString &relativePath)
