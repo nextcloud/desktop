@@ -26,6 +26,7 @@
 #include "deletejob.h"
 #include "folderman.h"
 #include "folder.h"
+#include "encryptfolderjob.h"
 #include "theme.h"
 #include "common/syncjournalfilerecord.h"
 #include "syncengine.h"
@@ -81,6 +82,11 @@
 // The first number should be changed if there is an incompatible change that breaks old clients.
 // The second number should be changed when there are new features.
 #define MIRALL_SOCKET_API_VERSION "1.1"
+
+namespace {
+constexpr auto encryptJobPropertyFolder = "folder";
+constexpr auto encryptJobPropertyPath = "path";
+}
 
 namespace {
 
@@ -501,6 +507,35 @@ void SocketApi::processFileActivityRequest(const QString &localFile)
     emit fileActivityCommandReceived(fileData.localPath);
 }
 
+void SocketApi::processEncryptRequest(const QString &localFile)
+{
+    Q_ASSERT(QFileInfo(localFile).isDir());
+
+    const auto fileData = FileData::get(localFile);
+    const auto folder = fileData.folder;
+    const auto account = folder->accountState()->account();
+    const auto rec = fileData.journalRecord();
+
+    Q_ASSERT(folder);
+    Q_ASSERT(account);
+    Q_ASSERT(rec.isValid());
+
+    auto choppedPath = rec._path.chopped(1);
+
+    auto job = new OCC::EncryptFolderJob(account, folder->journalDb(), choppedPath, rec.numericFileId(), this);
+    connect(job, &OCC::EncryptFolderJob::finished, this, [fileData, job](const int status) {
+        if (status == OCC::EncryptFolderJob::Error) {
+            const int ret = QMessageBox::critical(nullptr,
+                                                  tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
+                                                  tr("Server replied with error: %1").arg(job->errorString()));
+            Q_UNUSED(ret)
+        }
+    });
+    job->setProperty(encryptJobPropertyFolder, QVariant::fromValue(folder));
+    job->setProperty(encryptJobPropertyPath, QVariant::fromValue(rec._path));
+    job->start();
+}
+
 void SocketApi::processShareRequest(const QString &localFile, SocketListener *listener)
 {
     auto theme = Theme::instance();
@@ -601,6 +636,13 @@ void SocketApi::command_ACTIVITY(const QString &localFile, SocketListener *liste
     Q_UNUSED(listener);
 
     processFileActivityRequest(localFile);
+}
+
+void SocketApi::command_ENCRYPT(const QString &localFile, SocketListener *listener)
+{
+    Q_UNUSED(listener);
+
+    processEncryptRequest(localFile);
 }
 
 void SocketApi::command_MANAGE_PUBLIC_LINKS(const QString &localFile, SocketListener *listener)
@@ -1215,8 +1257,26 @@ void SocketApi::command_GET_MENU_ITEMS(const QString &argument, OCC::SocketListe
 
         const QFileInfo fileInfo(fileData.localPath);
         sendLockFileInfoMenuEntries(fileInfo, syncFolder, fileData, listener, record);
+
         if (!fileInfo.isDir()) {
             listener->sendMessage(QLatin1String("MENU_ITEM:ACTIVITY") + flagString + tr("Activity"));
+        }
+
+        if (fileInfo.isDir() && !isE2eEncryptedPath) {
+            bool anyAncestorEncrypted = false;
+            auto ancestor = fileData.parentFolder();
+            while (ancestor.journalRecord().isValid()) {
+                if (ancestor.journalRecord()._isE2eEncrypted) {
+                    anyAncestorEncrypted = true;
+                    break;
+                }
+
+                ancestor = ancestor.parentFolder();
+            }
+
+            if (!anyAncestorEncrypted) {
+                listener->sendMessage(QStringLiteral("MENU_ITEM:ENCRYPT") + flagString + tr("Encrypt"));
+            }
         }
 
         DirectEditor* editor = getDirectEditorForLocalFile(fileData.localPath);
