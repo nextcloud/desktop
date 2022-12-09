@@ -1,5 +1,10 @@
 #include "QtCore/qurl.h"
+#include "account.h"
+#include "accountstate.h"
+#include "accountmanager.h"
 #include "config.h"
+#include "systray.h"
+#include "tray/talkreply.h"
 #include <QString>
 #include <QWindow>
 #include <QLoggingCategory>
@@ -8,6 +13,58 @@
 #import <UserNotifications/UserNotifications.h>
 
 Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
+
+/************************* Private utility functions *************************/
+
+namespace {
+
+void sendTalkReply(UNNotificationResponse *response, UNNotificationContent* content)
+{
+    if (!response || !content) {
+        qCWarning(lcMacSystray()) << "Invalid notification response or content."
+                                  << "Can't send talk reply.";
+        return;
+    }
+
+    UNTextInputNotificationResponse *textInputResponse = (UNTextInputNotificationResponse*)response;
+
+    if (!textInputResponse) {
+        qCWarning(lcMacSystray()) << "Notification response was not a text input response."
+                                  << "Can't send talk reply.";
+        return;
+    }
+
+    NSString *reply = textInputResponse.userText;
+    NSString *token = [content.userInfo objectForKey:@"token"];
+    NSString *account = [content.userInfo objectForKey:@"account"];
+    NSString *replyTo = [content.userInfo objectForKey:@"replyTo"];
+
+    const auto qReply = QString::fromNSString(reply);
+    const auto qReplyTo = QString::fromNSString(replyTo);
+    const auto qToken = QString::fromNSString(token);
+    const auto qAccount = QString::fromNSString(account);
+
+    const auto accountState = OCC::AccountManager::instance()->accountFromUserId(qAccount);
+
+    if (!accountState) {
+        qCWarning(lcMacSystray()) << "Could not find account matching" << qAccount
+                                  << "Can't send talk reply.";
+        return;
+    }
+
+    qCDebug(lcMacSystray()) << "Sending talk reply from macOS notification."
+                            << "Reply is:" << qReply
+                            << "Replying to:" << qReplyTo
+                            << "Token:" << qToken
+                            << "Account:" << qAccount;
+
+    QPointer<OCC::TalkReply> talkReply = new OCC::TalkReply(accountState.data(), OCC::Systray::instance());
+    talkReply->sendReplyMessage(qToken, qReply, qReplyTo);
+}
+
+} // anonymous namespace
+
+/**************************** Objective-C classes ****************************/
 
 @interface NotificationCenterDelegate : NSObject
 @end
@@ -34,10 +91,14 @@ Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
     UNNotificationContent* content = response.notification.request.content;
     if ([content.categoryIdentifier isEqualToString:@"UPDATE"]) {
 
-        if ([response.actionIdentifier isEqualToString:@"DOWNLOAD_ACTION"] || [response.actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier])
-        {
+        if ([response.actionIdentifier isEqualToString:@"DOWNLOAD_ACTION"] || [response.actionIdentifier isEqualToString:UNNotificationDefaultActionIdentifier]) {
             qCDebug(lcMacSystray()) << "Opening update download url in browser.";
             [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:[content.userInfo objectForKey:@"webUrl"]]];
+        }
+    } else if ([content.categoryIdentifier isEqualToString:@"TALK_MESSAGE"]) {
+
+        if ([response.actionIdentifier isEqualToString:@"TALK_REPLY_ACTION"]) {
+            sendTalkReply(response, content);
         }
     }
 
@@ -45,12 +106,9 @@ Q_LOGGING_CATEGORY(lcMacSystray, "nextcloud.gui.macsystray")
 }
 @end
 
-namespace OCC {
+/********************* Methods accessible to C++ Systray *********************/
 
-enum MacNotificationAuthorizationOptions {
-    Default = 0,
-    Provisional
-};
+namespace OCC {
 
 double menuBarThickness()
 {
@@ -93,10 +151,24 @@ void registerNotificationCategories(const QString &localisedDownloadString) {
           intentIdentifiers:@[]
           options:UNNotificationCategoryOptionNone];
 
-    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithObjects:generalCategory, updateCategory, nil]];
+    // Create the custom action for talk notifications
+    UNTextInputNotificationAction* talkReplyAction = [UNTextInputNotificationAction
+            actionWithIdentifier:@"TALK_REPLY_ACTION"
+            title:QObject::tr("Reply").toNSString()
+            options:UNNotificationActionOptionNone
+            textInputButtonTitle:QObject::tr("Reply").toNSString()
+            textInputPlaceholder:QObject::tr("Send a Nextcloud Talk reply").toNSString()];
+
+    UNNotificationCategory* talkReplyCategory = [UNNotificationCategory
+            categoryWithIdentifier:@"TALK_MESSAGE"
+            actions:@[talkReplyAction]
+            intentIdentifiers:@[]
+            options:UNNotificationCategoryOptionNone];
+
+    [[UNUserNotificationCenter currentNotificationCenter] setNotificationCategories:[NSSet setWithObjects:generalCategory, updateCategory, talkReplyCategory, nil]];
 }
 
-void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOption = MacNotificationAuthorizationOptions::Provisional)
+void checkNotificationAuth(MacNotificationAuthorizationOptions additionalAuthOption)
 {
     UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
     UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert + UNAuthorizationOptionSound;
@@ -170,6 +242,30 @@ void sendOsXUpdateNotification(const QString &title, const QString &message, con
     [center addNotificationRequest:request withCompletionHandler:nil];
 }
 
+void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState)
+{
+    UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+    checkNotificationAuth();
+
+    if (!accountState || !accountState->account()) {
+        sendOsXUserNotification(title, message);
+        return;
+    }
+
+    NSString *accountNS = accountState->account()->displayName().toNSString();
+    NSString *tokenNS = token.toNSString();
+    NSString *replyToNS = replyTo.toNSString();
+
+    UNMutableNotificationContent* content = basicNotificationContent(title, message);
+    content.categoryIdentifier = @"TALK_MESSAGE";
+    content.userInfo = [NSDictionary dictionaryWithObjects:@[accountNS, tokenNS, replyToNS] forKeys:@[@"account", @"token", @"replyTo"]];
+
+    UNTimeIntervalNotificationTrigger* trigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats: NO];
+    UNNotificationRequest* request = [UNNotificationRequest requestWithIdentifier:@"NCTalkMessageNotification" content:content trigger:trigger];
+
+    [center addNotificationRequest:request withCompletionHandler:nil];
+}
+
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window)
 {
     NSView *nativeView = (NSView *)window->winId();
@@ -185,5 +281,4 @@ bool osXInDarkMode()
     return [osxMode containsString:@"Dark"];
 }
 
-}
-
+} // OCC namespace
