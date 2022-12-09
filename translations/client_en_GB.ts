@@ -1236,85 +1236,85 @@ This action will abort any currently running synchronization.</translation>
 <context>
     <name>OCC::EditLocallyJob</name>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
         <source>Invalid token received.</source>
         <translation>Invalid token received.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="61"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="128"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="551"/>
         <source>Please try again.</source>
         <translation>Please try again.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="67"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
         <translation>Invalid file path was provided.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="75"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <source>Could not find an account for local editing.</source>
         <translation>Could not find an account for local editing.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="117"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="128"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <source>Could not validate the request to open a file from server.</source>
         <translation>Could not validate the request to open a file from server.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="134"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="147"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="148"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
         <translation>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="142"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="162"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="170"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="177"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="143"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="163"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="171"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="178"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
         <translation>Could not find a file for local editing. Make sure it is not excluded via selective sync.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="483"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="484"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Server error: PROPFIND reply is not XML formatted!</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
         <translation>Could not find a remote file info for local editing. Make sure its path is valid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="550"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="551"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="612"/>
-        <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>Could not open %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="613"/>
-        <location filename="../src/gui/editlocallyjob.cpp" line="624"/>
+        <source>File %1 already locked.</source>
+        <translation>File %1 already locked.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/editlocallyjob.cpp" line="614"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="625"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="623"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="624"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>File %1 now locked.</translation>
     </message>
     <message>
-        <location filename="../src/gui/editlocallyjob.cpp" line="632"/>
+        <location filename="../src/gui/editlocallyjob.cpp" line="633"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>File %1 could not be locked.</translation>
     </message>
 </context>
 <context>
