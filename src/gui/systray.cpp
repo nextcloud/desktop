@@ -491,9 +491,9 @@ void Systray::showTalkMessage(const QString &title, const QString &message, cons
 #if defined(Q_OS_MACOS) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
     sendOsXTalkNotification(title, message, token, replyTo, accountState);
 #else // TODO: Implement custom notifications (i.e. actionable) for other OSes
-    Q_UNUSED(replyTo);
-    Q_UNUSED(token);
-    Q_UNUSED(accountState);
+    Q_UNUSED(replyTo)
+    Q_UNUSED(token)
+    Q_UNUSED(accountState)
     showMessage(title, message);
 #endif
 }
