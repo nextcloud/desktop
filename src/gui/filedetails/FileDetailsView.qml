@@ -22,14 +22,24 @@ import Style 1.0
 StackView {
     id: root
 
-    property var accountState: ({})
-    property string localPath: ""
+    signal closeButtonClicked
+
+    property alias accountState: fileDetailsPage.accountState
+    property alias localPath: fileDetailsPage.localPath
+    property alias showCloseButton: fileDetailsPage.showCloseButton
+    property bool backgroundsVisible: true
+
+    background: Rectangle {
+        color: Style.backgroundColor
+        visible: root.backgroundsVisible
+    }
 
     initialItem: FileDetailsPage {
+        id: fileDetailsPage
         width: parent.width
         height: parent.height
-        accountState: root.accountState
-        localPath: root.localPath
+        backgroundsVisible: root.backgroundsVisible
         rootStackView: root
+        onCloseButtonClicked: root.closeButtonClicked()
     }
 }

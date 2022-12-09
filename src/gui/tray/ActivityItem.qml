@@ -51,8 +51,6 @@ ItemDelegate {
 
             activityData: model
 
-            onShareButtonClicked: Systray.createShareDialog(model.openablePath)
-
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.activityIndex)
         }
 

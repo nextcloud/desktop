@@ -76,7 +76,7 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[ObjectNameRole] = "objectName";
     roles[PointInTimeRole] = "dateTime";
     roles[DisplayActions] = "displayActions";
-    roles[ShareableRole] = "isShareable";
+    roles[ShowFileDetailsRole] = "showFileDetails";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[ThumbnailRole] = "thumbnail";
@@ -342,7 +342,7 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
         return (ast && ast->isConnected());
     case DisplayActions:
         return _displayActions;
-    case ShareableRole:
+    case ShowFileDetailsRole:
         return !data(index, PathRole).toString().isEmpty() &&
                 a._objectType == QStringLiteral("files") &&
                 _displayActions &&

@@ -41,6 +41,8 @@ Page {
     signal setPassword(string password)
     signal setNote(string note)
 
+    property bool backgroundsVisible: true
+
     property FileDetails fileDetails: FileDetails {}
     property var shareModelData: ({})
 
@@ -177,6 +179,7 @@ Page {
 
     background: Rectangle {
         color: Style.backgroundColor
+        visible: root.backgroundsVisible
     }
 
     header: ColumnLayout {

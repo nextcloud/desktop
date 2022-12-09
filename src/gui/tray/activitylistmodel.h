@@ -65,7 +65,7 @@ public:
         PointInTimeRole,
         AccountConnectedRole,
         DisplayActions,
-        ShareableRole,
+        ShowFileDetailsRole,
         IsCurrentUserFileActivityRole,
         ThumbnailRole,
         TalkNotificationConversationTokenRole,

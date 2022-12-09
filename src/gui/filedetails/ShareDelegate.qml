@@ -47,6 +47,7 @@ GridLayout {
     property int iconSize: 32
     property FileDetails fileDetails: FileDetails {}
     property StackView rootStackView: StackView {}
+    property bool backgroundsVisible: true
 
     property bool canCreateLinkShares: true
 
@@ -221,6 +222,7 @@ GridLayout {
 
                     width: parent.width
                     height: parent.height
+                    backgroundsVisible: root.backgroundsVisible
 
                     fileDetails: root.fileDetails
                     shareModelData: model

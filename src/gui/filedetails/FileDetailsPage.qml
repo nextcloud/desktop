@@ -23,6 +23,8 @@ import "../tray"
 Page {
     id: root
 
+    signal closeButtonClicked
+
     property var accountState: ({})
     property string localPath: ""
 
@@ -34,6 +36,8 @@ Page {
     property int intendedPadding: Style.standardSpacing * 2
     property int iconSize: 32
     property StackView rootStackView: StackView {}
+    property bool showCloseButton: false
+    property bool backgroundsVisible: true
 
     property FileDetails fileDetails: FileDetails {
         id: fileDetails
@@ -61,6 +65,7 @@ Page {
 
     background: Rectangle {
         color: Style.backgroundColor
+        visible: root.backgroundsVisible
     }
 
     header: ColumnLayout {
@@ -70,11 +75,12 @@ Page {
             id: headerGridLayout
 
             readonly property bool showFileLockedString: root.fileDetails.lockExpireString !== ""
+            readonly property int textRightMargin: root.showCloseButton ? root.intendedPadding : 0
 
             Layout.fillWidth: parent
             Layout.topMargin: root.topPadding
 
-            columns: 2
+            columns: root.showCloseButton ? 3 : 2
             rows: showFileLockedString ? 3 : 2
 
             rowSpacing: Style.standardSpacing / 2
@@ -100,7 +106,7 @@ Page {
                 id: fileNameLabel
 
                 Layout.fillWidth: true
-                Layout.rightMargin: root.intendedPadding
+                Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.name
                 color: Style.ncTextColor
@@ -108,11 +114,29 @@ Page {
                 wrapMode: Text.Wrap
             }
 
+            CustomButton {
+                id: closeButton
+
+                Layout.rowSpan: headerGridLayout.rows
+                Layout.preferredWidth: Style.iconButtonWidth
+                Layout.preferredHeight: width
+                Layout.rightMargin: headerGridLayout.textRightMargin
+
+                imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+                bgColor: Style.lightHover
+                bgNormalOpacity: 0
+                toolTipText: qsTr("Dismiss")
+
+                visible: root.showCloseButton
+
+                onClicked: root.closeButtonClicked()
+            }
+
             EnforcedPlainTextLabel {
                 id: fileDetailsLabel
 
                 Layout.fillWidth: true
-                Layout.rightMargin: root.intendedPadding
+                Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: `${root.fileDetails.sizeString} · ${root.fileDetails.lastChangedString}`
                 color: Style.ncSecondaryTextColor
@@ -123,7 +147,7 @@ Page {
                 id: fileLockedLabel
 
                 Layout.fillWidth: true
-                Layout.rightMargin: root.intendedPadding
+                Layout.rightMargin: headerGridLayout.textRightMargin
 
                 text: root.fileDetails.lockExpireString
                 color: Style.ncSecondaryTextColor
@@ -188,6 +212,7 @@ Page {
             horizontalPadding: root.intendedPadding
             iconSize: root.iconSize
             rootStackView: root.rootStackView
+            backgroundsVisible: root.backgroundsVisible
         }
     }
 }
