@@ -549,6 +549,11 @@ void SocketApi::processEncryptRequest(const QString &localFile)
                                                   tr("Failed to encrypt folder at \"%1\"").arg(fileData.folderRelativePath),
                                                   tr("Server replied with error: %1").arg(job->errorString()));
             Q_UNUSED(ret)
+        } else {
+            const int ret = QMessageBox::information(nullptr,
+                                                     tr("Folder at \"%1\" encrypted successfully").arg(fileData.folderRelativePath),
+                                                     {});
+            Q_UNUSED(ret)
         }
     });
     job->setProperty(encryptJobPropertyFolder, QVariant::fromValue(folder));
