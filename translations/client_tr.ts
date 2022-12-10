@@ -29,6 +29,11 @@
         <translation>Yok say</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation>Paylaşma penceresini aç</translation>
@@ -189,12 +194,17 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="147"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
         <translation>İşlem</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="154"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
         <translation>Paylaşım</translation>
     </message>
@@ -607,7 +617,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Uçtan uca şifreleme anımsatıcısı</translation>
     </message>
@@ -738,12 +748,12 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Bu hesap uçtan uca şifrelemeyi destekliyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
         <source>Set up encryption</source>
         <translation>Şifreleme kurulumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
         <translation>Bu hesapta uçtan uca şifreleme başka bir aygıt ile etkinleştirilmiş.&lt;br&gt;Anımsatıcınızı yazarak bu aygıt için etkinleştirebilirsiniz.</translation>
     </message>
@@ -1018,7 +1028,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı:%2&lt;br&gt;Hesap:%3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Lütfen uçtan uca şifreleme parolasını yazın:&lt;br&gt;&lt;br&gt;Kullanıcı adı: %2&lt;br&gt;Hesap: %3&lt;br&gt;</translation>
     </message>
@@ -3427,7 +3437,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>could not delete file %1 from local DB</source>
         <translation>%1 dosyası yerel veritabanından silinemedi</translation>
     </message>
@@ -5251,27 +5261,27 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
 <context>
     <name>ShareView</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
         <translation>Yeni paylaşım için parola gerekli</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
         <source>Share password</source>
         <translation>Parolayı paylaş</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
         <source>Sharing is disabled</source>
         <translation>Paylaşım devre dışı</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
         <source>This item cannot be shared.</source>
         <translation>Bu öge paylaşılamaz.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
         <source>Sharing is disabled.</source>
         <translation>Paylaşım devre dışı.</translation>
     </message>
@@ -5604,11 +5614,6 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Geçerli kullanıcı avatarı</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="408"/>
-        <source>Current account avatar</source>
-        <translation>Geçerli hesap avatarı</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation>Kullanıcının geçerli durumu: Çevrimiçi</translation>
@@ -5619,6 +5624,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Kullanıcının geçerli durumu: Rahatsız etmeyin</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
+        <source>Current account avatar</source>
+        <translation>Geçerli hesap avatarı</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>Hesabın geçerli durumu: Çevrimiçi</translation>
@@ -5627,6 +5637,11 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>Hesabın geçerli durumu: Rahatsız etmeyin </translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <source>%1 - File activity</source>
+        <translation>%1 - Dosya işlemi</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="513"/>
@@ -5667,11 +5682,6 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <location filename="../src/gui/tray/Window.qml" line="790"/>
         <source>Unified search results list</source>
         <translation>Birleşik arama sonuçları listesi</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 - Dosya işlemi</translation>
     </message>
 </context>
 <context>

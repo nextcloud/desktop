@@ -29,6 +29,11 @@
         <translation>Ignorer</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation>Ouvrir la boîte de dialogue de partage</translation>
@@ -189,12 +194,17 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="147"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
         <translation>Activité</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="154"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
         <translation>Partage</translation>
     </message>
@@ -604,7 +614,7 @@ Cette action entraînera l&apos;interruption de toute synchronisation en cours.<
         <translation>Phrase secrète du chiffrement de bout en bout</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Phrase secrète du chiffrement de bout en bout</translation>
     </message>
@@ -736,12 +746,12 @@ Vous prenez vos propres risques.</translation>
         <translation>Ce compte prend en charge le chiffrement de bout en bout.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
         <source>Set up encryption</source>
         <translation>Configurer le chiffrement</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
         <translation>Le chiffrement de bout en bout a été activé sur ce compte avec un autre appareil.&lt;br&gt;Il peut être activé sur cet appareil en entrant votre phrase secrète.</translation>
     </message>
@@ -1016,7 +1026,7 @@ Vous prenez vos propres risques.</translation>
         <translation>Merci de saisir votre phrase secrète E2E : &lt;br&gt;&lt;br&gt;Utilisateur : %2&lt;br&gt;Compte : %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Veuillez entrer votre phrase de passe de chiffrement de bout en bout :&lt;br&gt;&lt;br&gt;Nom d&apos;utilisateur : %2&lt;br&gt;Compte : %3&lt;br&gt;</translation>
     </message>
@@ -3427,7 +3437,7 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>could not delete file %1 from local DB</source>
         <translation>Impossible de supprimer le fichier %1 de la base de données locale</translation>
     </message>
@@ -5251,27 +5261,27 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
 <context>
     <name>ShareView</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
         <translation>Mot de passe requis pour le nouveau partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
         <source>Share password</source>
         <translation>Mot de passe du partage</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
         <source>Sharing is disabled</source>
         <translation>Le partage est désactivté</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
         <source>This item cannot be shared.</source>
         <translation>L&apos;élément ne peut pas être partagé.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
         <source>Sharing is disabled.</source>
         <translation>Le partage est désactivé.</translation>
     </message>
@@ -5604,11 +5614,6 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Avatar de l&apos;utilisateur courant</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="408"/>
-        <source>Current account avatar</source>
-        <translation>Avatar actuel du compte</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation>Le statut actuel de l&apos;utilisateur est en ligne</translation>
@@ -5619,6 +5624,11 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <translation>Le statut actuel de l&apos;utilisateur est ne pas déranger</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
+        <source>Current account avatar</source>
+        <translation>Avatar actuel du compte</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation> Le statut actuel du compte est &quot;en ligne&quot;</translation>
@@ -5627,6 +5637,11 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation> Le statut actuel du compte est &quot;ne pas déranger&quot;</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <source>%1 - File activity</source>
+        <translation>%1 - Activité de fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="513"/>
@@ -5667,11 +5682,6 @@ Il s&apos;agit d&apos;un nouveau mode expérimental. Si vous décidez de l&apos;
         <location filename="../src/gui/tray/Window.qml" line="790"/>
         <source>Unified search results list</source>
         <translation>Liste de résultats de recherche unifiée</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 - Activité de fichier</translation>
     </message>
 </context>
 <context>
