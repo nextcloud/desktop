@@ -29,6 +29,11 @@
         <translation>Zahodit</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation>Otevřít dialog sdílení</translation>
@@ -189,12 +194,17 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="147"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
         <translation>Aktivita</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="154"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
         <translation>Sdílení</translation>
     </message>
@@ -607,7 +617,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Mnemotechnická fráze pro šifrování mezi koncovými body</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Mnemotechnická fráze pro šifrování mezi koncovými body</translation>
     </message>
@@ -738,12 +748,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Tento účet podporuje šifrování mezi koncovými body</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
         <source>Set up encryption</source>
         <translation>Nastavit šifrování</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
         <translation>Šifrování mezi koncovými body pro tento účet bylo zapnuté z jiného zařízení.&lt;br&gt;Na stávajícím zařízení je možné ho zapnout zadáním vaší mnemotechnické.</translation>
     </message>
@@ -1018,7 +1028,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatel: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Zadejte heslovou frázi pro šifrování mezi koncovými body: &lt;br&gt;&lt;br&gt;Uživatelské jméno: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
@@ -3427,7 +3437,7 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>could not delete file %1 from local DB</source>
         <translation>nepodařilo se smazat soubor %1 lokální databáze</translation>
     </message>
@@ -5251,27 +5261,27 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
 <context>
     <name>ShareView</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
         <translation>Pro nové sdílení je zapotřebí hesla</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
         <source>Share password</source>
         <translation>Heslo ke sdílení</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
         <source>Sharing is disabled</source>
         <translation>Sdílení je vypnuto</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
         <source>This item cannot be shared.</source>
         <translation>Tuto položku nelze nasdílet.</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
         <source>Sharing is disabled.</source>
         <translation>Sdílení je vypnuto.</translation>
     </message>
@@ -5604,11 +5614,6 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Zástupný obrázek stávajícího uživatele</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="408"/>
-        <source>Current account avatar</source>
-        <translation>Stávající zástupný obrázek uživatele</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation>Stávající stav uživatele je online</translation>
@@ -5619,6 +5624,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <translation>Stávající stav uživatele je nerušit</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
+        <source>Current account avatar</source>
+        <translation>Stávající zástupný obrázek uživatele</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>Stávající stav účtu je online</translation>
@@ -5627,6 +5637,11 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>Stávající stav účtu je nerušit</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <source>%1 - File activity</source>
+        <translation>%1 – aktivita ohledně souboru</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="513"/>
@@ -5667,11 +5682,6 @@ Toto je nový, experimentální režim. Pokud se jej rozhodnete používat, pros
         <location filename="../src/gui/tray/Window.qml" line="790"/>
         <source>Unified search results list</source>
         <translation>Seznam výsledků sjednoceného vyhledávání</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 – aktivita ohledně souboru</translation>
     </message>
 </context>
 <context>

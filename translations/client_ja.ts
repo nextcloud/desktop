@@ -29,6 +29,11 @@
         <translation>閉じる</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
+        <source>Open file details</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
         <source>Open share dialog</source>
         <translation>共有ダイアログを開く</translation>
@@ -189,12 +194,17 @@
 <context>
     <name>FileDetailsPage</name>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="147"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
         <translation>アクティビティ</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="154"/>
+        <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
         <translation>共有</translation>
     </message>
@@ -606,7 +616,7 @@ This action will abort any currently running synchronization.</source>
         <translation>エンドツーエンドの暗号化ニーモニック</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1001"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
         <source>End-to-end encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
@@ -737,12 +747,12 @@ This action will abort any currently running synchronization.</source>
         <translation>このアカウントはE2E暗号化に対応しています</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1487"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
         <source>Set up encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1492"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
         <translation type="unfinished"/>
     </message>
@@ -1017,7 +1027,7 @@ This action will abort any currently running synchronization.</source>
         <translation>エンドツーエンドの暗号化パスフレーズを入力してください：&lt;br&gt; &lt;br&gt;ユーザー：%2&lt;br&gt;アカウント：%3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1251"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -3426,7 +3436,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1205"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1227"/>
         <source>could not delete file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
@@ -5250,27 +5260,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>ShareView</name>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="88"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
         <translation>新規共有に必要なパスワード</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="130"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
         <source>Share password</source>
         <translation>パスワードを共有</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="286"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
         <source>Sharing is disabled</source>
         <translation>共有は無効になっています</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="294"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
         <source>This item cannot be shared.</source>
         <translation>このアイテムは共有できません</translation>
     </message>
     <message>
-        <location filename="../src/gui/filedetails/ShareView.qml" line="303"/>
+        <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
         <source>Sharing is disabled.</source>
         <translation>共有は無効になっています</translation>
     </message>
@@ -5603,11 +5613,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>現在のユーザーアバター</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/Window.qml" line="408"/>
-        <source>Current account avatar</source>
-        <translation>現在のアバター</translation>
-    </message>
-    <message>
         <location filename="../src/gui/tray/Window.qml" line="412"/>
         <source>Current user status is online</source>
         <translation>現在のユーザーステータスはオンラインです</translation>
@@ -5618,6 +5623,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>現在のユーザーステータスは取り込み中です</translation>
     </message>
     <message>
+        <location filename="../src/gui/tray/Window.qml" line="408"/>
+        <source>Current account avatar</source>
+        <translation>現在のアバター</translation>
+    </message>
+    <message>
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is online</source>
         <translation>現在のステータスはオンラインです</translation>
@@ -5626,6 +5636,11 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="447"/>
         <source>Current account status is do not disturb</source>
         <translation>現在のステータスは取り込み中です</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/tray/Window.qml" line="851"/>
+        <source>%1 - File activity</source>
+        <translation>%1 - ファイルアクティビティ</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="513"/>
@@ -5666,11 +5681,6 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/tray/Window.qml" line="790"/>
         <source>Unified search results list</source>
         <translation>統合検索結果</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/tray/Window.qml" line="851"/>
-        <source>%1 - File activity</source>
-        <translation>%1 - ファイルアクティビティ</translation>
     </message>
 </context>
 <context>
