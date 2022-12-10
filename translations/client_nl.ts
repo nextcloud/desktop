@@ -1053,27 +1053,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Geen ownCloud-account geconfigureerd</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="326"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Werk de server bij naar de nieuwste versie en herstart het programma.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="145"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Authenticatiefout: Gebruikersnaam of wachtwoord onjuist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="130"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
         <source>timeout</source>
         <translation>time-out</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="218"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
         <source>The provided credentials are not correct</source>
         <translation>De verstrekte inloggegevens zijn niet juist</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="325"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
         <source>The configured server for this client is too old.</source>
         <translation>De voor dit programma ingestelde server is te oud</translation>
     </message>

@@ -1048,27 +1048,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ownCloud 계정이 설정되지 않았음</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="326"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>최신 서버로 업데이트한 다음 클라이언트를 다시 시작하십시오.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="145"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>인증 오류: 사용자 이름이나 암호가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="130"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
         <source>timeout</source>
         <translation>시간 제한</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="218"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
         <source>The provided credentials are not correct</source>
         <translation>지정한 인증 정보가 올바르지 않음</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="325"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"/>
     </message>

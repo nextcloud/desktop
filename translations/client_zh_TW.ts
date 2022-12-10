@@ -1051,27 +1051,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>沒有設置 ownCloud 帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="326"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>請將伺服器端更新到最新版並重新啟動客戶端</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="145"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>驗證錯誤︰使用者名稱或是密碼錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="130"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
         <source>timeout</source>
         <translation>逾時</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="218"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
         <source>The provided credentials are not correct</source>
         <translation>提供的憑證不正確</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="325"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"/>
     </message>

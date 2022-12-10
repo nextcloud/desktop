@@ -1053,27 +1053,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>ไม่มีการกำหนดค่าบัญชี ownCloud </translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="326"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>กรุณาอัปเดตเซิร์ฟเวอร์ใหม่ใหม่ที่สุดและรีสตาร์ทไคลเอนต์</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="145"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>ข้อผิดพลาดในการตรวจสอบ: ทั้งชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="130"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
         <source>timeout</source>
         <translation>หมดเวลา</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="218"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
         <source>The provided credentials are not correct</source>
         <translation>ระบุหนังสือรับรองไม่ถูกต้อง</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="325"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"/>
     </message>
