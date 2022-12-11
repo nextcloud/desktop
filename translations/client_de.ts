@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Dateidetails öffnen</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Ablehnen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
@@ -1302,18 +1302,18 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="551"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 konnte nicht geöffnet werden</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="613"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>Datei %1 bereits gesperrt.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="614"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="625"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Die Sperre dauert noch %1 Minuten. Sie können diese Datei auch manuell entsperren, sobald Sie mit der Bearbeitung fertig sind.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="624"/>

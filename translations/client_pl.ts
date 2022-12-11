@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Otwórz szczegóły pliku</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Odrzuć</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
@@ -417,7 +417,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Wygląda na to, że w tym katalogu włączono funkcję plików wirtualnych. W tej chwili nie jest możliwe niejawne pobieranie wirtualnych plików, które są szyfrowane metodą end-to-end. Aby uzyskać najlepsze efekty z plikami wirtualnymi i szyfrowaniem end-to-end, upewnij się, że zaszyfrowany katalog jest oznaczony jako &quot;Dostępne zawsze lokalnie&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -755,7 +755,7 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1494"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation type="unfinished"/>
+        <translation>Szyfrowanie end-to-end zostało włączone na tym koncie na innym urządzeniu. Można je włączyć na tym urządzeniu, wprowadzając swój mnemonik.</translation>
     </message>
 </context>
 <context>
@@ -1293,38 +1293,38 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="484"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Błąd serwera: odpowiedź PROPFIND nie ma formatu XML!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można znaleźć informacji o zdalnym pliku do edycji lokalnej. Upewnij się, że jego ścieżka jest poprawna.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="551"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>Nie można otworzyć %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="613"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 jest już zablokowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="614"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="625"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation type="unfinished"/>
+        <translation>Blokada będzie trwała przez %1 minut. Możesz także odblokować ten plik ręcznie po zakończeniu edycji.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="624"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>Plik %1 jest teraz zablokowany.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="633"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>Nie można zablokować pliku %1.</translation>
     </message>
 </context>
 <context>
