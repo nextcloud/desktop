@@ -6,7 +6,7 @@ source_file = client_en.ts
 source_lang = en
 file_filter = client_<lang>.ts
 type = TS
+minimum_perc = 75
 
 # de_DE holds the formal translation which we want as default
 lang_map = de_DE: de, de: de-informal, pt_PT: pt, cs_CZ: cs, et_EE: et, fi_FI: fi, ja_JP: ja, hu_HU: hu, sk_SK: client_sk, th_TH: th
-

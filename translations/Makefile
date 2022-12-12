@@ -24,10 +24,9 @@ l10n-push:
 # pull all translation from transifex
 .PHONY: l10n-pull
 l10n-pull:
-	tx -d pull --force --skip --all --minimum-perc=75
+	tx -d pull --force --skip --all
 
 # tx might apply changes to .tx/config, we don't want that
 .PHONY: l10n-clean
 l10n-clean:
 	git checkout .tx/config
-
