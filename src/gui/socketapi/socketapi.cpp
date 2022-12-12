@@ -1166,7 +1166,8 @@ void SocketApi::sendEncryptFolderCommandMenuEntries(const QFileInfo &fileInfo,
                                                     const bool isE2eEncryptedPath,
                                                     const OCC::SocketListener* const listener) const
 {
-    if (!fileData.folder ||
+    if (!listener ||
+            !fileData.folder ||
             !fileData.folder->accountState() ||
             !fileData.folder->accountState()->account() ||
             !fileData.folder->accountState()->account()->capabilities().clientSideEncryptionAvailable() ||
