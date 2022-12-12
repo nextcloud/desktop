@@ -19,7 +19,7 @@ MouseArea {
     property var fetchMoreTriggerClicked: function(){}
     property var resultClicked: function(){}
 
-    enabled: !isFetchMoreTrigger || !isSearchInProgress
+    enabled: !isSearchInProgress
     hoverEnabled: enabled
 
     height: Style.unifiedSearchItemHeight
