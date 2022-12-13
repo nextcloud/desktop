@@ -1293,7 +1293,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="484"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation type="unfinished"/>
+        <translation>Erro no servidor: resposta PROPFIND não está formatado em XML!</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="486"/>
@@ -1303,12 +1303,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="551"/>
         <source>Could not open %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível abrir %1</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="613"/>
         <source>File %1 already locked.</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo %1 já está bloqueado.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="614"/>
@@ -1319,12 +1319,12 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="624"/>
         <source>File %1 now locked.</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo %1 bloqueado.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="633"/>
         <source>File %1 could not be locked.</source>
-        <translation type="unfinished"/>
+        <translation>Arquivo %1 não pode ser bloqueado.</translation>
     </message>
 </context>
 <context>
