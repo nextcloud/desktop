@@ -4,8 +4,7 @@ find_package(KF5Archive REQUIRED)
 find_package(KF5GuiAddons)
 
 if(QUICK_COMPILER)
-    if (${QT_MAJOR_VERSION} STREQUAL "6")
-    else()
+    if (${QT_VERSION_MAJOR} STREQUAL "5")
         set(REQUIRED_QT_VERSION "5.15.0")
         find_package(Qt${QT_MAJOR_VERSION} ${REQUIRED_QT_VERSION} CONFIG REQUIRED QuickCompiler)
         set_package_properties(Qt5QuickCompiler PROPERTIES
