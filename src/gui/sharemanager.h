@@ -52,6 +52,7 @@ public:
      * Need to be in sync with Sharee::Type
      */
     enum ShareType {
+        TypeInternalLink = -2,
         TypePlaceholderLink = -1,
         TypeUser = Sharee::User,
         TypeGroup = Sharee::Group,

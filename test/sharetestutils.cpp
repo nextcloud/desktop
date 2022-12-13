@@ -143,7 +143,9 @@ void ShareTestHelper::setup()
 
     const auto folderMan = FolderMan::instance();
     QCOMPARE(folderMan, &fm);
-    QVERIFY(folderMan->addFolder(accountState.data(), folderDefinition(fakeFolder.localPath())));
+    auto folderDef = folderDefinition(fakeFolder.localPath());
+    folderDef.targetPath = QString();
+    QVERIFY(folderMan->addFolder(accountState.data(), folderDef));
     const auto folder = FolderMan::instance()->folder(fakeFolder.localPath());
     QVERIFY(folder);
     QVERIFY(fakeFolder.syncOnce());
