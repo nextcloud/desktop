@@ -13,6 +13,7 @@
  */
 
 #include "logger.h"
+#include "configfile.h"
 #include "theme.h"
 
 #include <QCoreApplication>
@@ -65,7 +66,7 @@ Logger *Logger::instance()
 
 Logger::Logger(QObject *parent)
     : QObject(parent)
-    , _maxLogFiles(minLogsToKeepC)
+    , _maxLogFiles(std::max(ConfigFile().automaticDeleteOldLogs(), minLogsToKeepC))
 {
     qSetMessagePattern(loggerPattern());
     _crashLog.resize(crashLogSizeC);
@@ -175,7 +176,7 @@ void Logger::setLogFile(const QString &name)
 
 void Logger::setMaxLogFiles(int i)
 {
-    _maxLogFiles = std::max(i, minLogsToKeepC);
+    _maxLogFiles = std::max(i, std::max(ConfigFile().automaticDeleteOldLogs(), minLogsToKeepC));
 }
 
 void Logger::setLogDir(const QString &dir)

@@ -102,12 +102,6 @@ static chrono::milliseconds millisecondsValue(const QSettings &setting, const QS
 ConfigFile::ConfigFile()
 {
     QSettings::setDefaultFormat(QSettings::IniFormat);
-    // run init only once
-    static bool init = [this]() {
-        setLogHttp(logHttp());
-        return false;
-    }();
-    Q_UNUSED(init);
 }
 
 bool ConfigFile::setConfDir(const QString &value)
@@ -797,12 +791,18 @@ void ConfigFile::setAutomaticDeleteOldLogs(int number)
     settings.setValue(numberOfLogsToKeepC(), number);
 }
 
-void ConfigFile::setLogHttp(bool b)
+void ConfigFile::configureHttpLogging(std::optional<bool> enable)
 {
+    if (enable == std::nullopt) {
+        enable = logHttp();
+    }
+
     auto settings = makeQSettings();
-    settings.setValue(logHttpC(), b);
-    const QSet<QString> rule = { QStringLiteral("sync.httplogger=true") };
-    if (b) {
+    settings.setValue(logHttpC(), enable.value());
+
+    static const QSet<QString> rule = { QStringLiteral("sync.httplogger=true") };
+
+    if (enable.value()) {
         Logger::instance()->addLogRule(rule);
     } else {
         Logger::instance()->removeLogRule(rule);
