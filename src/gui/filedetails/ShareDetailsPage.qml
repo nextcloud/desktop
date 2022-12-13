@@ -72,7 +72,6 @@ Page {
     readonly property bool passwordEnforced: shareModelData.passwordEnforced
 
     readonly property bool isLinkShare: shareModelData.shareType === ShareModel.ShareTypeLink
-    readonly property bool isPlaceholderLinkShare: shareModelData.shareType === ShareModel.ShareTypePlaceholderLink
 
     property bool waitingForEditingAllowedChange: false
     property bool waitingForNoteEnabledChange: false
