@@ -1638,7 +1638,7 @@ static QString canonicalPath(const QString &path)
         const auto parentPath = selFile.dir().path();
 
         // It's possible for the parentPath to match the path
-        // (possibly we've arrived at a non-existant drive root on Windows)
+        // (possibly we've arrived at a non-existent drive root on Windows)
         // and recursing would be fatal.
         if (parentPath == path) {
             return path;
