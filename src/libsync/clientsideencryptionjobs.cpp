@@ -177,7 +177,7 @@ bool UnlockEncryptFolderApiJob::finished()
     if (retCode != 200) {
         qCInfo(lcCseJob()) << "error unlocking file" << path() << errorString() << retCode;
         qCInfo(lcCseJob()) << "Full Error Log" << reply()->readAll();
-        emit error(_fileId, retCode);
+        emit error(_fileId, retCode, errorString());
         return true;
     }
     emit success(_fileId);
@@ -241,7 +241,7 @@ bool LockEncryptFolderApiJob::finished()
     int retCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
     if (retCode != 200) {
         qCInfo(lcCseJob()) << "error locking file" << path() << errorString() << retCode;
-        emit error(_fileId, retCode);
+        emit error(_fileId, retCode, errorString());
         return true;
     }
 
@@ -282,7 +282,7 @@ bool SetEncryptionFlagApiJob::finished()
         emit success(_fileId);
     } else {
         qCInfo(lcCseJob()) << "Setting the encrypted flag failed with" << path() << errorString() << retCode;
-        emit error(_fileId, retCode);
+        emit error(_fileId, retCode, errorString());
     }
     return true;
 }
