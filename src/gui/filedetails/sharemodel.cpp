@@ -130,11 +130,8 @@ QVariant ShareModel::data(const QModelIndex &index, const int role) const
             return startOfExpireDayUTC.toMSecsSinceEpoch();
         }
         }
-    } else if (share->getShareType() == Share::TypeInternalLink) {
-        switch(role) {
-        case LinkRole:
-            return _privateLinkUrl;
-        }
+    } else if (share->getShareType() == Share::TypeInternalLink && role == LinkRole) {
+        return _privateLinkUrl;
     }
 
     switch(role) {
