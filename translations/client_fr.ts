@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir les détails du fichier</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Rejeter</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
