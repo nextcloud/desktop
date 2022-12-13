@@ -1256,9 +1256,11 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        auto localState = fakeFolder.currentLocalState();
+        QCOMPARE(localState, fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
-        const auto fileFirstSync = fakeFolder.currentLocalState().find(testFile);
+        const auto fileFirstSync = localState.find(testFile);
+
         QVERIFY(fileFirstSync);
         QCOMPARE(fileFirstSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 2);
 
@@ -1266,9 +1268,10 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
+        localState = fakeFolder.currentLocalState();
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
-        const auto fileSecondSync = fakeFolder.currentLocalState().find(testFile);
+        const auto fileSecondSync = localState.find(testFile);
         QVERIFY(fileSecondSync);
         QCOMPARE(fileSecondSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 1);
 
@@ -1276,9 +1279,10 @@ private slots:
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
         QVERIFY(fakeFolder.syncOnce());
-        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        localState = fakeFolder.currentLocalState();
+        QCOMPARE(localState, fakeFolder.currentRemoteState());
         QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
-        const auto fileThirdSync = fakeFolder.currentLocalState().find(testFile);
+        const auto fileThirdSync = localState.find(testFile);
         QVERIFY(fileThirdSync);
         QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
     }
