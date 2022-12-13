@@ -72,7 +72,7 @@ jobs:
 
               $binFolder = "$buildFolder\bin"
 
-              & OpenCppCoverage.exe --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300
+              & OpenCppCoverage.exe --optimized_build --quiet --sources ${{ github.workspace }} --modules $binFolder\*.dll* --export_type cobertura:${{ env.COBERTURA_COVERAGE_FILE }} --cover_children -- ctest --output-on-failure --timeout 300
           }
           
           runTestsAndCreateCoverage
