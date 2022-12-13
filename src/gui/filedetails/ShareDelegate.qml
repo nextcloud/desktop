@@ -59,6 +59,7 @@ GridLayout {
     readonly property string detailText: model.detailText ?? ""
     readonly property string iconUrl: model.iconUrl ?? ""
     readonly property string avatarUrl: model.avatarUrl ?? ""
+    readonly property string link: model.link ?? ""
 
     anchors.left: parent.left
     anchors.right: parent.right
