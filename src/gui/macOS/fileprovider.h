@@ -12,15 +12,11 @@
  * for more details.
  */
 
-#ifndef FILEPROVIDER_H
-#define FILEPROVIDER_H
+#pragma once
 
 #include <QObject>
-#include <QScopedPointer>
 
 namespace OCC {
-
-class AccountState;
 
 namespace Mac {
 
@@ -31,23 +27,11 @@ class FileProvider : public QObject
 {
 public:
     static FileProvider *instance();
-    ~FileProvider() override;
-
-    void setupFileProviderDomains();
-
-private slots:
-    void addFileProviderDomainForAccount(AccountState *accountState);
-    void removeFileProviderDomainForAccount(AccountState *accountState);
-    void setFileProviderForAccountIsConnected(AccountState *accountState);
+    ~FileProvider() = default;
 
 private:
     explicit FileProvider(QObject *parent = nullptr);
-    static FileProvider *_instance;
-    class Private;
-    QScopedPointer<Private> d;
 };
 
 } // namespace Mac
 } // namespace OCC
-
-#endif

@@ -282,7 +282,9 @@ IF( APPLE )
     list(APPEND client_SRCS systray.mm)
     list(APPEND client_SRCS
         macOS/fileprovider.h
-        macOS/fileprovider_mac.mm)
+        macOS/fileprovider_mac.mm
+        macOS/fileproviderdomainmanager.h
+        macOS/fileproviderdomainmanager_mac.mm)
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp
