@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>553</width>
+    <width>451</width>
     <height>349</height>
    </rect>
   </property>
@@ -50,7 +50,7 @@
        <item>
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>Local case clash file</string>
+          <string>Existing file</string>
          </property>
         </widget>
        </item>
@@ -118,7 +118,7 @@
            <item>
             <widget class="QLabel" name="localVersionLink">
              <property name="text">
-              <string>Open original version</string>
+              <string>Open existing file</string>
              </property>
             </widget>
            </item>
@@ -162,7 +162,7 @@
        <item>
         <widget class="QLabel" name="label_5">
          <property name="text">
-          <string>Server case clash file</string>
+          <string>Case clashing file</string>
          </property>
         </widget>
        </item>
@@ -224,7 +224,7 @@
            <item>
             <widget class="QLabel" name="remoteVersionLink">
              <property name="text">
-              <string>Open incoming conflict version</string>
+              <string>Open clashing file</string>
              </property>
             </widget>
            </item>
@@ -265,7 +265,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Please enter a new name for the remote file:</string>
+      <string>Please enter a new name for the clashing file:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>

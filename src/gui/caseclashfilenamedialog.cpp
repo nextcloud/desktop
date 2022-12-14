@@ -100,7 +100,7 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
 
     const auto preexistingConflictingFile = caseClashConflictFile(_filePath);
     updateFileWidgetGroup(preexistingConflictingFile,
-                          tr("Open local version"),
+                          tr("Open existing file"),
                           _ui->localVersionFilename,
                           _ui->localVersionLink,
                           _ui->localVersionMtime,
@@ -108,7 +108,7 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
                           _ui->localVersionButton);
 
     updateFileWidgetGroup(conflictTaggedPath,
-                          tr("Open server version"),
+                          tr("Open clashing file"),
                           _ui->remoteVersionFilename,
                           _ui->remoteVersionLink,
                           _ui->remoteVersionMtime,
