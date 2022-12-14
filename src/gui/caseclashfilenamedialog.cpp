@@ -76,17 +76,19 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
     , _conflictSolver(conflictFilePath, conflictTaggedPath, folder->remotePath(), folder->path(), account, folder->journalDb())
     , _account(account)
     , _folder(folder)
-    , _filePath(std::move(filePath))
+    , _filePath(std::move(conflictFilePath))
 {
     Q_ASSERT(_account);
     Q_ASSERT(_folder);
 
     const auto filePathFileInfo = QFileInfo(_filePath);
+    const auto conflictFileName = filePathFileInfo.fileName();
+
     _relativeFilePath = filePathFileInfo.path() + QStringLiteral("/");
     _relativeFilePath = _relativeFilePath.replace(folder->path(), QLatin1String());
     _relativeFilePath = _relativeFilePath.isEmpty() ? QString() : _relativeFilePath + QStringLiteral("/");
 
-    _originalFileName = _relativeFilePath + filePathFileInfo.fileName();
+    _originalFileName = _relativeFilePath + conflictFileName;
 
     _ui->setupUi(this);
     _ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
@@ -94,11 +96,37 @@ CaseClashFilenameDialog::CaseClashFilenameDialog(AccountPtr account,
 
     _ui->descriptionLabel->setText(tr("The file \"%1\" could not be synced because of a case clash conflict with an existing file on this system.").arg(_originalFileName));
     _ui->explanationLabel->setText(tr("%1 does not support equal file names with only letter casing differences.").arg(QSysInfo::prettyProductName()));
-    _ui->filenameLineEdit->setText(filePathFileInfo.fileName());
+    _ui->filenameLineEdit->setText(conflictFileName);
+
+    const auto preexistingConflictingFile = caseClashConflictFile(_filePath);
+    updateFileWidgetGroup(preexistingConflictingFile,
+                          tr("Open local version"),
+                          _ui->localVersionFilename,
+                          _ui->localVersionLink,
+                          _ui->localVersionMtime,
+                          _ui->localVersionSize,
+                          _ui->localVersionButton);
+
+    updateFileWidgetGroup(conflictTaggedPath,
+                          tr("Open server version"),
+                          _ui->remoteVersionFilename,
+                          _ui->remoteVersionLink,
+                          _ui->remoteVersionMtime,
+                          _ui->remoteVersionSize,
+                          _ui->remoteVersionButton);
+    // Display incoming conflict filename, not conflict-tagged filename
+    _ui->remoteVersionFilename->setText(filePathFileInfo.fileName());
+
     adjustSize();
 
     connect(_ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(_ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+    connect(_ui->localVersionButton, &QToolButton::clicked, this, [preexistingConflictingFile] {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(preexistingConflictingFile));
+    });
+    connect(_ui->remoteVersionButton, &QToolButton::clicked, this, [conflictTaggedPath] {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(conflictTaggedPath));
+    });
 
     _ui->errorLabel->setText({}/*
         tr("Checking rename permissions …")*/);
