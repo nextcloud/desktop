@@ -3962,7 +3962,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="541"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>內部連結</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="797"/>
@@ -4052,34 +4052,36 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>加密位於「%1」的資料夾失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>帳號 %1 沒有設定端到端加密。請在您的帳號設定中設定這個以啟用資料夾加密。</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>加密資料夾失敗</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;. 
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>無法加密以下資料夾：「%1」。
+
+伺服器回覆錯誤：%2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>資料夾加密成功</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>以下資料夾加密成功：「%1」</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="678"/>
@@ -4153,7 +4155,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1193"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>加密</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
