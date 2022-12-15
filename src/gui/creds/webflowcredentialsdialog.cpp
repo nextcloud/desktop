@@ -6,7 +6,6 @@
 #include "theme.h"
 #include "application.h"
 #include "owncloudgui.h"
-#include "headerbanner.h"
 #include "wizard/owncloudwizardcommon.h"
 #ifdef WITH_WEBENGINE
 #include "wizard/webview.h"
