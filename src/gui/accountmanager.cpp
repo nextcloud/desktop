@@ -173,43 +173,43 @@ bool AccountManager::restoreFromLegacySettings()
 
         for (const auto &configFile : legacyLocations) {
             if (const QFileInfo configFileInfo(configFile);
-                    configFileInfo.exists()) {
+                    configFileInfo.exists() && configFileInfo.isReadable()) {
 
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
 
-                if (configFileInfo.isReadable()) {
-                    std::unique_ptr<QSettings> oCSettings(new QSettings(configFile, QSettings::IniFormat));
-                    if (oCSettings->status() != QSettings::Status::NoError) {
-                        qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
+                std::unique_ptr<QSettings> oCSettings(new QSettings(configFile, QSettings::IniFormat));
+                if (oCSettings->status() != QSettings::Status::NoError) {
+                    qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
+                }
+
+                // Check the theme url to see if it is the same url that the oC config was for
+                auto overrideUrl = Theme::instance()->overrideServerUrl();
+                qCInfo(lcAccountManager) << "Migrate: overrideUrl" << overrideUrl;
+                if (!overrideUrl.isEmpty()) {
+                    if (overrideUrl.endsWith('/')) {
+                        overrideUrl.chop(1);
+                    }
+                    auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                    if (oCUrl.endsWith('/')) {
+                        oCUrl.chop(1);
                     }
 
-                    // Check the theme url to see if it is the same url that the oC config was for
-                    auto overrideUrl = Theme::instance()->overrideServerUrl();
-                    qCInfo(lcAccountManager) << "Migrate: overrideUrl" << overrideUrl;
-                    if (!overrideUrl.isEmpty()) {
-                        if (overrideUrl.endsWith('/')) {
-                            overrideUrl.chop(1);
-                        }
-                        auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
-                        if (oCUrl.endsWith('/')) {
-                            oCUrl.chop(1);
-                        }
-
-                        // in case the urls are equal reset the settings object to read from
-                        // the ownCloud settings object
-                        qCInfo(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
-                                                 << (oCUrl == overrideUrl ? "Yes" : "No");
-                        if (oCUrl == overrideUrl) {
-                            qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
-                            settings = std::move(oCSettings);
-                        }
-                    } else {
+                    // in case the urls are equal reset the settings object to read from
+                    // the ownCloud settings object
+                    qCInfo(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
+                                             << (oCUrl == overrideUrl ? "Yes" : "No");
+                    if (oCUrl == overrideUrl) {
                         qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
                         settings = std::move(oCSettings);
                     }
-
-                    break;
+                } else {
+                    qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
+                    settings = std::move(oCSettings);
                 }
+
+                break;
+            } else {
+                qCInfo(lcAccountManager) << "Migrate: could not read old config " << configFile;
             }
         }
     }
