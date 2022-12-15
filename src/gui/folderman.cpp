@@ -39,9 +39,9 @@
 #include <QNetworkProxy>
 
 namespace {
-constexpr auto accountsC = "Accounts";
-constexpr auto foldersC = "Folders";
-constexpr auto versionC = "version";
+constexpr auto settingsAccountsC = "Accounts";
+constexpr auto settingsFoldersC = "Folders";
+constexpr auto settingsVersionC = "version";
 constexpr auto maxFoldersVersion = 1;
 }
 
@@ -322,7 +322,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
                     f->switchToVirtualFiles();
                 }
                 // Migrate the old "usePlaceholders" setting to the root folder pin state
-                if (settings.value(QLatin1String(versionC), 1).toInt() == 1
+                if (settings.value(QLatin1String(settingsVersionC), 1).toInt() == 1
                     && settings.value(QLatin1String("usePlaceholders"), false).toBool()) {
                     qCInfo(lcFolderMan) << "Migrate: From usePlaceholders to PinState::OnlineOnly";
                     f->setRootPinState(PinState::OnlineOnly);
@@ -377,11 +377,11 @@ void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringLi
 
     auto processSubgroup = [&](const QString &name) {
         settings->beginGroup(name);
-        const int foldersVersion = settings->value(QLatin1String(versionC), 1).toInt();
+        const int foldersVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
         if (foldersVersion <= maxFoldersVersion) {
             foreach (const auto &folderAlias, settings->childGroups()) {
                 settings->beginGroup(folderAlias);
-                const int folderVersion = settings->value(QLatin1String(versionC), 1).toInt();
+                const int folderVersion = settings->value(QLatin1String(settingsVersionC), 1).toInt();
                 if (folderVersion > FolderDefinition::maxSettingsVersion()) {
                     ignoreKeys->append(settings->group());
                 }
@@ -518,12 +518,12 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
         return nullptr;
     }
 
-    settings.beginGroup(accountsC);
+    settings.beginGroup(settingsAccountsC);
     const auto rootChildGroups = settings.childGroups();
     for (const auto &accountId : rootChildGroups) {
         qCDebug(lcFolderMan) << "try to migrate accountId:" << accountId;
         settings.beginGroup(accountId);
-        settings.beginGroup(foldersC);
+        settings.beginGroup(settingsFoldersC);
 
         if (settings.childGroups().isEmpty()) {
             continue;
