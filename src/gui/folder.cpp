@@ -197,6 +197,20 @@ Folder::~Folder()
     _engine.reset();
 }
 
+static bool longPathsEnabledOnWindows()
+{
+    static std::optional<bool> longPathsEnabled = {};
+
+    if (!longPathsEnabled.has_value()) {
+        QSettings fsSettings(QStringLiteral("HKEY_LOCAL_MACHINE\\SYSTEM\\CurrentControlSet\\Control\\FileSystem"), QSettings::NativeFormat);
+        QVariant longPathsEnabled = fsSettings.value(QStringLiteral("LongPathsEnabled"));
+        qCDebug(lcFolder) << "LongPathsEnabled:" << longPathsEnabled;
+        longPathsEnabled = longPathsEnabled.value<uint32_t>() == 1;
+    }
+
+    return longPathsEnabled.value();
+}
+
 bool Folder::checkLocalPath()
 {
 #ifdef Q_OS_WIN
@@ -217,9 +231,20 @@ bool Folder::checkLocalPath()
 
     QString error;
     if (fi.isDir() && fi.isReadable() && fi.isWritable()) {
-        qCDebug(lcFolder) << "Checked local path ok";
-        if (!_journal.open()) {
-            error = tr("%1 failed to open the database.").arg(_definition.localPath());
+#ifdef Q_OS_WIN
+        const auto dbNameLength = std::string_view(".sync_journal.db").size();
+        if (_canonicalLocalPath.size() + dbNameLength > MAX_PATH) {
+            if (!longPathsEnabledOnWindows()) {
+                error = tr("The path '%1' is too long. Either enable long paths in the Windows settings, or choose a different folder.").arg(_canonicalLocalPath);
+            }
+        }
+#endif
+
+        if (error.isEmpty()) {
+            qCDebug(lcFolder) << "Checked local path ok";
+            if (!_journal.open()) {
+                error = tr("%1 failed to open the database.").arg(_definition.localPath());
+            }
         }
     } else {
         // Check directory again
