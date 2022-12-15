@@ -49,7 +49,7 @@
 namespace {
 #ifndef VERSION_C
 #define VERSION_C
-constexpr auto versionC= "version";
+constexpr auto versionC = "version";
 #endif
 }
 namespace OCC {

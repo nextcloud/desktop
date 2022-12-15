@@ -13,19 +13,21 @@
  */
 
 #include "accountmanager.h"
-#include "configfile.h"
+
 #include "sslerrordialog.h"
 #include "proxyauthhandler.h"
 #include "common/asserts.h"
-#include <theme.h>
-#include <creds/credentialsfactory.h>
-#include <creds/abstractcredentials.h>
-#include <cookiejar.h>
+#include "creds/credentialsfactory.h"
+#include "creds/abstractcredentials.h"
+#include "libsync/clientsideencryption.h"
+#include "libsync/configfile.h"
+#include "libsync/cookiejar.h"
+#include "libsync/theme.h"
+
 #include <QSettings>
 #include <QDir>
 #include <QNetworkAccessManager>
 #include <QMessageBox>
-#include "clientsideencryption.h"
 
 namespace {
 constexpr auto urlC = "url";
@@ -49,7 +51,7 @@ constexpr auto httpAuthPrefix = "http_";
 constexpr auto webflowAuthPrefix = "webflow_";
 
 constexpr auto legacyRelativeConfigLocationC = "/ownCloud/owncloud.cfg";
-constexpr auto legacyOcSettingsC = "ownCloud";
+constexpr auto legacyCfgFileNameC = "owncloud.cfg";
 
 // The maximum versions that this client can read
 constexpr auto maxAccountsVersion = 2;
@@ -148,47 +150,81 @@ bool AccountManager::restoreFromLegacySettings()
     // if the settings file could not be opened, the childKeys list is empty
     // then try to load settings from a very old place
     if (settings->childKeys().isEmpty()) {
-        // Now try to open the original ownCloud settings to see if they exist.
-        auto oCCfgFile = QDir::fromNativeSeparators(settings->fileName());
-        // replace the last two segments with ownCloud/owncloud.cfg
-        oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
-        oCCfgFile = oCCfgFile.left(oCCfgFile.lastIndexOf('/'));
-        oCCfgFile += QLatin1String(legacyRelativeConfigLocationC);
+        // Legacy settings used QDesktopServices to get the location for the config folder in 2.4 and before
+        const auto legacy2_4CfgSettingsLocation = QString(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation) + QStringLiteral("/data"));
+        const auto legacy2_4CfgFileParentFolder = legacy2_4CfgSettingsLocation.left(legacy2_4CfgSettingsLocation.lastIndexOf('/'));
 
-        qCInfo(lcAccountManager) << "Migrate: checking old config " << oCCfgFile;
+        // 2.5+ (rest of 2.x series)
+        const auto legacy2_5CfgSettingsLocation = QStandardPaths::writableLocation(Utility::isWindows() ? QStandardPaths::AppDataLocation : QStandardPaths::AppConfigLocation);
+        const auto legacy2_5CfgFileParentFolder = legacy2_5CfgSettingsLocation.left(legacy2_5CfgSettingsLocation.lastIndexOf('/'));
 
-        QFileInfo fi(oCCfgFile);
-        if (fi.isReadable()) {
-            std::unique_ptr<QSettings> oCSettings(new QSettings(oCCfgFile, QSettings::IniFormat));
-            oCSettings->beginGroup(QLatin1String(legacyOcSettingsC));
+        // Now try the locations we use today
+        const auto fullLegacyCfgFile = QDir::fromNativeSeparators(settings->fileName());
+        const auto legacyCfgFileParentFolder = fullLegacyCfgFile.left(fullLegacyCfgFile.lastIndexOf('/'));
+        const auto legacyCfgFileGrandParentFolder = legacyCfgFileParentFolder.left(legacyCfgFileParentFolder.lastIndexOf('/'));
 
-            // Check the theme url to see if it is the same url that the oC config was for
-            auto overrideUrl = Theme::instance()->overrideServerUrl();
-            if (!overrideUrl.isEmpty()) {
-                if (overrideUrl.endsWith('/')) {
-                    overrideUrl.chop(1);
+        const auto legacyCfgFileNamePath = QString(QStringLiteral("/") + legacyCfgFileNameC);
+        const auto legacyCfgFileRelativePath = QString(legacyRelativeConfigLocationC);
+
+        const auto legacyLocations = QVector<QString>{legacy2_4CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                      legacy2_5CfgFileParentFolder + legacyCfgFileRelativePath,
+                                                      legacyCfgFileParentFolder + legacyCfgFileNamePath,
+                                                      legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
+
+        for (const auto &configFile : legacyLocations) {
+            if (const QFileInfo configFileInfo(configFile);
+                    configFileInfo.exists() && configFileInfo.isReadable()) {
+
+                qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
+
+                auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
+                if (oCSettings->status() != QSettings::Status::NoError) {
+                    qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
                 }
-                auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
-                if (oCUrl.endsWith('/')) {
-                    oCUrl.chop(1);
-                }
 
-                // in case the urls are equal reset the settings object to read from
-                // the ownCloud settings object
-                qCInfo(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
-                                         << (oCUrl == overrideUrl ? "Yes" : "No");
-                if (oCUrl == overrideUrl) {
+                // Check the theme url to see if it is the same url that the oC config was for
+                auto overrideUrl = Theme::instance()->overrideServerUrl();
+                qCInfo(lcAccountManager) << "Migrate: overrideUrl" << overrideUrl;
+                if (!overrideUrl.isEmpty()) {
+                    if (overrideUrl.endsWith('/')) {
+                        overrideUrl.chop(1);
+                    }
+                    auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                    if (oCUrl.endsWith('/')) {
+                        oCUrl.chop(1);
+                    }
+
+                    // in case the urls are equal reset the settings object to read from
+                    // the ownCloud settings object
+                    qCInfo(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
+                                             << (oCUrl == overrideUrl ? "Yes" : "No");
+                    if (oCUrl == overrideUrl) {
+                        qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
+                        settings = std::move(oCSettings);
+                    }
+                } else {
+                    qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
                     settings = std::move(oCSettings);
                 }
+
+                break;
+            } else {
+                qCInfo(lcAccountManager) << "Migrate: could not read old config " << configFile;
             }
         }
     }
 
     // Try to load the single account.
     if (!settings->childKeys().isEmpty()) {
-        if (const auto acc = loadAccountHelper(*settings)) {
-            addAccount(acc);
-            return true;
+        settings->beginGroup(accountsC);
+        const auto childGroups = settings->childGroups();
+        for (const auto &accountId : childGroups) {
+            settings->beginGroup(accountId);
+            if (const auto acc = loadAccountHelper(*settings)) {
+                addAccount(acc);
+
+                return true;
+            }
         }
     }
     return false;
