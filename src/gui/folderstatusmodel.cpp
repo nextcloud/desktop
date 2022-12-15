@@ -60,6 +60,8 @@ static bool sortByFolderHeader(const FolderStatusModel::SubFolderInfo &lhs, cons
 
 void FolderStatusModel::setAccountState(const AccountState *accountState)
 {
+    connect(accountState->account()->e2e(), &OCC::ClientSideEncryption::initializationFinished, this, &FolderStatusModel::e2eInitializationFinished);
+
     beginResetModel();
     _dirty = false;
     _folders.clear();
@@ -153,41 +155,49 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
     case SubFolder: {
-        const auto &x = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
-        const auto supportsSelectiveSync = x._folder && x._folder->supportsSelectiveSync();
+        const auto &subfolderInfo = static_cast<SubFolderInfo *>(index.internalPointer())->_subs.at(index.row());
+        const auto supportsSelectiveSync = subfolderInfo._folder && subfolderInfo._folder->supportsSelectiveSync();
 
         switch (role) {
-        case Qt::DisplayRole:
+        case Qt::DisplayRole: {
             //: Example text: "File.txt (23KB)"
-            return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
+            const auto &xParent = static_cast<SubFolderInfo *>(index.internalPointer());
+            const auto suffix = (subfolderInfo._isNonDecryptable && subfolderInfo._checked && (!xParent || !xParent->_isEncrypted))
+                ? tr(" - %1").arg("Could not decrypt!")
+                : QString{};
+            return subfolderInfo._size < 0 ? QString(subfolderInfo._name + suffix) : QString(tr("%1 (%2)").arg(subfolderInfo._name, Utility::octetsToString(subfolderInfo._size)) + suffix);
+        }
         case Qt::ToolTipRole:
-            return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
+            return QString(QLatin1String("<qt>") + Utility::escape(subfolderInfo._size < 0 ? subfolderInfo._name : tr("%1 (%2)").arg(subfolderInfo._name, Utility::octetsToString(subfolderInfo._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
             if (supportsSelectiveSync) {
-                return x._checked;
+                return subfolderInfo._checked;
             } else {
                 return QVariant();
             }
         case Qt::DecorationRole: {
-            if (x._isEncrypted) {
-                return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
-            } else if (x._size > 0 && isAnyAncestorEncrypted(index)) {
+            if (subfolderInfo._isNonDecryptable && subfolderInfo._checked) {
                 return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
             }
-            return QFileIconProvider().icon(x._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
+            if (subfolderInfo._isEncrypted) {
+                return QIcon(QLatin1String(":/client/theme/lock-https.svg"));
+            } else if (subfolderInfo._size > 0 && isAnyAncestorEncrypted(index)) {
+                return QIcon(QLatin1String(":/client/theme/lock-broken.svg"));
+            }
+            return QFileIconProvider().icon(subfolderInfo._isExternal ? QFileIconProvider::Network : QFileIconProvider::Folder);
         }
         case Qt::ForegroundRole:
-            if (x._isUndecided) {
+            if (subfolderInfo._isUndecided || (subfolderInfo._isNonDecryptable && subfolderInfo._checked)) {
                 return QColor(Qt::red);
             }
             break;
         case FileIdRole:
-            return x._fileId;
+            return subfolderInfo._fileId;
         case FolderStatusDelegate::FolderPathRole: {
-            auto f = x._folder;
+            auto f = subfolderInfo._folder;
             if (!f)
                 return QVariant();
-            return QVariant(f->path() + x._path);
+            return QVariant(f->path() + subfolderInfo._path);
         }
         }
     }
@@ -742,6 +752,10 @@ void FolderStatusModel::slotUpdateDirectories(const QStringList &list)
         newInfo._isEncrypted = encryptionMap.value(removeTrailingSlash(path)).toString() == QStringLiteral("1");
         newInfo._path = relativePath;
 
+        newInfo._isNonDecryptable = newInfo._isEncrypted
+            && _accountState->account()->e2e() && !_accountState->account()->e2e()->_publicKey.isNull()
+            && _accountState->account()->e2e()->_privateKey.isNull();
+
         SyncJournalFileRecord rec;
         if (!parentInfo->_folder->journalDb()->getFileRecordByE2eMangledName(removeTrailingSlash(relativePath), &rec)) {
             qCWarning(lcFolderStatus) << "Could not get file record by E2E Mangled Name from local DB" << removeTrailingSlash(relativePath);
@@ -1131,6 +1145,15 @@ void FolderStatusModel::slotSetProgress(const ProgressInfo &progress)
     }
     pi->_overallPercent = qBound(0, overallPercent, 100);
     emit dataChanged(index(folderIndex), index(folderIndex), roles);
+}
+
+void FolderStatusModel::e2eInitializationFinished(bool isNewMnemonicGenerated)
+{
+    Q_UNUSED(isNewMnemonicGenerated);
+
+    for (int i = 0; i < _folders.count(); ++i) {
+        resetAndFetch(index(i));
+    }
 }
 
 void FolderStatusModel::slotFolderSyncStateChange(Folder *f)

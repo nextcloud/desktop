@@ -111,6 +111,11 @@ protected slots:
 
     void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
                                   const QVector<int> &roles);
+    void slotPossiblyUnblacklistE2EeFoldersAndRestartSync();
+
+private slots:
+    void updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const;
+    void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
 
 private:
     void displayMnemonic(const QString &mnemonic);
@@ -139,6 +144,8 @@ private:
     QAction *_addAccountAction;
 
     bool _menuShown;
+
+    QHash<QString, QMetaObject::Connection> _folderConnections;
 };
 
 } // namespace OCC

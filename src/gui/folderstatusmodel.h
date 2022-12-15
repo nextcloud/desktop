@@ -80,6 +80,8 @@ public:
 
         Qt::CheckState _checked = Qt::Checked;
 
+        bool _isNonDecryptable = false;
+
         // Whether this has a FetchLabel subrow
         [[nodiscard]] bool hasLabel() const;
 
@@ -125,6 +127,7 @@ public slots:
     void slotSyncAllPendingBigFolders();
     void slotSyncNoPendingBigFolders();
     void slotSetProgress(const OCC::ProgressInfo &progress);
+    void e2eInitializationFinished(bool isNewMnemonicGenerated);
 
 private slots:
     void slotUpdateDirectories(const QStringList &);

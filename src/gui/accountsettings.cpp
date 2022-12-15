@@ -1370,6 +1370,70 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
     }
 }
 
+void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
+{
+    if (_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+        return;
+    }
+
+    disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
+
+    for (const auto folder : FolderMan::instance()->map()) {
+        if (folder->accountState() != _accountState) {
+            continue;
+        }
+        bool ok = false;
+        const auto foldersToRemoveFromBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        if (foldersToRemoveFromBlacklist.isEmpty()) {
+            continue;
+        }
+        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+        const auto blackListSize = blackList.size();
+        if (blackListSize == 0) {
+            continue;
+        }
+        for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
+            blackList.removeAll(pathToRemoveFromBlackList);
+        }
+        if (blackList.size() != blackListSize) {
+            if (folder->isSyncRunning()) {
+                folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
+                return;
+            }
+            updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
+        }
+    }
+}
+
+void AccountSettings::updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const
+{
+    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+    for (const auto &pathToRemoteDiscover : foldersToRemoveFromBlacklist) {
+        folder->journalDb()->schedulePathForRemoteDiscovery(pathToRemoteDiscover);
+    }
+    FolderMan::instance()->scheduleFolder(folder);
+}
+
+void AccountSettings::folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist)
+{
+    if (_folderConnections.contains(folder->alias())) {
+        qCWarning(lcAccountSettings) << "Folder " << folder->alias() << "is already terminating the sync.";
+        return;
+    }
+    // in case sync is already running - terminate it and start a new one
+    const QMetaObject::Connection syncTerminatedConnection = connect(folder, &Folder::syncFinished, this, [this, blackList, folder, foldersToRemoveFromBlacklist]() {
+        const auto foundConnectionIt = _folderConnections.find(folder->alias());
+        if (foundConnectionIt != _folderConnections.end()) {
+            disconnect(*foundConnectionIt);
+            _folderConnections.erase(foundConnectionIt);
+        }
+        updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
+    });
+    _folderConnections.insert(folder->alias(), syncTerminatedConnection);
+    folder->slotTerminateSync();
+}
+
 void AccountSettings::refreshSelectiveSyncStatus()
 {
     QString msg;
@@ -1478,6 +1542,8 @@ void AccountSettings::customizeStyle()
 
 void AccountSettings::initializeE2eEncryption()
 {
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
+
     if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
         slotE2eEncryptionMnemonicReady();
     } else {
@@ -1493,7 +1559,9 @@ void AccountSettings::initializeE2eEncryption()
             if (!_accountState->account()->e2e()->_publicKey.isNull()) {
                 _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled on this account with another device."
                                                    "<br>"
-                                                   "It can be enabled on this device by entering your mnemonic."));
+                                                   "It can be enabled on this device by entering your mnemonic."
+                                                   "<br>"
+                                                   "This will enable synchronisation of existing encrypted folders."));
             }
         });
         _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
