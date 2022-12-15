@@ -177,7 +177,7 @@ bool AccountManager::restoreFromLegacySettings()
 
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
 
-                std::unique_ptr<QSettings> oCSettings(new QSettings(configFile, QSettings::IniFormat));
+                auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
                 if (oCSettings->status() != QSettings::Status::NoError) {
                     qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
                 }
