@@ -172,11 +172,12 @@ bool AccountManager::restoreFromLegacySettings()
                                                       legacyCfgFileGrandParentFolder + legacyCfgFileRelativePath};
 
         for (const auto &configFile : legacyLocations) {
-            if (QFileInfo::exists(configFile)) {
+            if (const QFileInfo configFileInfo(configFile);
+                    configFileInfo.exists()) {
+
                 qCInfo(lcAccountManager) << "Migrate: checking old config " << configFile;
 
-                QFileInfo fi(configFile);
-                if (fi.isReadable()) {
+                if (configFileInfo.isReadable()) {
                     std::unique_ptr<QSettings> oCSettings(new QSettings(configFile, QSettings::IniFormat));
                     if (oCSettings->status() != QSettings::Status::NoError) {
                         qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
