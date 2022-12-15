@@ -507,7 +507,7 @@ Folder *FolderMan::setupFolderFromOldConfigFile(const QString &file, AccountStat
 
     // Check if the filename is equal to the group setting. If not, use the group
     // name as an alias.
-    QStringList groups = settings.childGroups();
+    const auto groups = settings.childGroups();
     if (groups.isEmpty()) {
         qCWarning(lcFolderMan) << "empty file:" << cfgFile.filePath();
         return folder;
