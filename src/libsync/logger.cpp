@@ -301,12 +301,12 @@ void Logger::enterNextLogFile()
 
         // Tentative new log name, will be adjusted if one like this already exists
         QDateTime now = QDateTime::currentDateTime();
-        QString newLogName = now.toString("yyyyMMdd_HHmm") + "_owncloud.log";
+        QString newLogName = now.toString("yyyyMMdd_HHmm") + "_nextcloud.log";
 
         // Expire old log files and deal with conflicts
-        QStringList files = dir.entryList(QStringList("*owncloud.log.*"),
-            QDir::Files, QDir::Name);
-        const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*owncloud\.log\.(\d+).*)"));
+        QStringList files = dir.entryList(QStringList("*owncloud.log.*"), QDir::Files, QDir::Name) +
+            dir.entryList(QStringList("*nextcloud.log.*"), QDir::Files, QDir::Name);
+        const QRegularExpression rx(QRegularExpression::anchoredPattern(R"(.*(next|own)cloud\.log\.(\d+).*)"));
         int maxNumber = -1;
         foreach (const QString &s, files) {
             if (_logExpire > 0) {
@@ -317,7 +317,7 @@ void Logger::enterNextLogFile()
             }
             const auto rxMatch = rx.match(s);
             if (s.startsWith(newLogName) && rxMatch.hasMatch()) {
-                maxNumber = qMax(maxNumber, rxMatch.captured(1).toInt());
+                maxNumber = qMax(maxNumber, rxMatch.captured(2).toInt());
             }
         }
         newLogName.append("." + QString::number(maxNumber + 1));
