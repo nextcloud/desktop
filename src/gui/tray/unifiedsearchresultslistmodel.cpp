@@ -579,13 +579,13 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
 
     QVector<UnifiedSearchResult> newEntries;
 
-    const auto makeResourceUrl = [](const QString &resourceUrl, const QUrl &accountUrl) {
-        QUrl finalResurceUrl(resourceUrl);
-        if (finalResurceUrl.scheme().isEmpty() && accountUrl.scheme().isEmpty()) {
-            finalResurceUrl = accountUrl;
-            finalResurceUrl.setPath(resourceUrl);
+    const auto makeResourceUrl = [](const QUrl &resourceUrl, const QUrl &accountUrl) {
+        QUrl finalResourceUrl(resourceUrl);
+        if (finalResourceUrl.isRelative() && !accountUrl.isRelative()) {
+            finalResourceUrl = accountUrl;
+            finalResourceUrl.setPath(resourceUrl.toString());
         }
-        return finalResurceUrl;
+        return finalResourceUrl;
     };
 
     for (const auto &entry : entries) {
@@ -601,7 +601,7 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
         result._title = entryMap.value(QStringLiteral("title")).toString();
         result._subline = entryMap.value(QStringLiteral("subline")).toString();
 
-        const auto resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toString();
+        const auto resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toUrl();
         const auto accountUrl = (_accountState && _accountState->account()) ? _accountState->account()->url() : QUrl();
 
         result._resourceUrl = makeResourceUrl(resourceUrl, accountUrl);
