@@ -465,6 +465,15 @@ void PropagateDownloadFile::start()
         return;
     }
 
+    SyncJournalFileRecord record;
+    const auto etagChangedButFileHasNotChanged = propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()
+        && (record._etag != _item->_etag && record._modtime == _item->_modtime);
+
+    if (etagChangedButFileHasNotChanged) {
+        updateMetadata(false);
+        return;
+    }
+
     const auto account = propagator()->account();
     if (!account->capabilities().clientSideEncryptionAvailable() ||
         !parentRec.isValid() ||
@@ -657,8 +666,8 @@ void PropagateDownloadFile::startDownload()
         tmpFileName = createDownloadTmpFileName(_item->_file);
     }
     _tmpFile.setFileName(propagator()->fullLocalPath(tmpFileName));
-
     _resumeStart = _tmpFile.size();
+
     if (_resumeStart > 0 && _resumeStart == _item->_size) {
         qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
         downloadFinished();
