@@ -580,11 +580,12 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
     QVector<UnifiedSearchResult> newEntries;
 
     const auto makeResourceUrl = [](const QUrl &resourceUrl, const QUrl &accountUrl) {
-        QUrl finalResourceUrl(resourceUrl);
-        if (finalResourceUrl.isRelative() && !accountUrl.isRelative()) {
-            finalResourceUrl = accountUrl;
-            finalResourceUrl.setPath(resourceUrl.toString());
+        if (!resourceUrl.isRelative()) {
+            return resourceUrl;
         }
+
+        QUrl finalResourceUrl(accountUrl);
+        finalResourceUrl.setPath(resourceUrl.toString());
         return finalResourceUrl;
     };
 
