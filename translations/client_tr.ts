@@ -748,14 +748,14 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
         <translation>Bu hesap uçtan uca şifrelemeyi destekliyor</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Set up encryption</source>
         <translation>Şifreleme kurulumu</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
-        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation>Bu hesapta uçtan uca şifreleme başka bir aygıt ile etkinleştirilmiş.&lt;br&gt;Anımsatıcınızı yazarak bu aygıt için etkinleştirebilirsiniz.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1825,6 +1825,11 @@ Bu işlemi yanlışlıkla yaptıysanız ve dosyalarınızı korumak istiyorsanı
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Eşitlenecek bir klasör eklemek için bu düğmeye tıklayın.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
+        <source> - %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -3379,7 +3384,7 @@ Bu yeni ve deneysel bir özelliktir. Kullanmaya karar verirseniz, lütfen karş�
         <translation>Değiştirilme zamanı geçersiz olduğundan eşitlenemedi</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="925"/>
+        <location filename="../src/libsync/discovery.cpp" line="958"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>%1 dosya kaydı veritabanından silinirken sorun çıktı</translation>
     </message>

@@ -748,14 +748,14 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <translation>Detta konto stödjer ändpunkt-till-ändpunkt-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Set up encryption</source>
         <translation>Aktivera kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
-        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Det kan aktiveras på den här enheten genom att ange ditt krypteringsord.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1828,6 +1828,11 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
         <translation>Klicka på den här knappen för att lägga till en mapp att synkronisera.</translation>
     </message>
     <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
+        <source> - %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
         <location filename="../src/gui/folderstatusmodel.cpp" line="164"/>
         <source>%1 (%2)</source>
@@ -1973,7 +1978,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     <message>
         <location filename="../src/gui/folderwatcher.cpp" line="126"/>
         <source>The watcher did not receive a test notification.</source>
-        <translation type="unfinished"/>
+        <translation>Bevakaren fick ingen testnotifikation.</translation>
     </message>
 </context>
 <context>
@@ -2588,7 +2593,9 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It will also delete log files after a couple of hours to avoid consuming too much disk space.
 If enabled, logs will be written to %1</source>
-        <translation type="unfinished"/>
+        <translation>Klienten kan skriva felsökningsloggar till en temporär mapp. Dessa loggar är till stor hjälp för att diagnostisera problem.
+Eftersom loggfiler kan bli stora kommer klienten att skapa en ny för varje synkroniseringskörning och komprimera äldre loggar. Den kommer även radera loggfiler efter några timmar för att undvika att förbruka för mycket diskutrymme.
+Om aktiverat kommer loggar att skrivas till %1</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.cpp" line="64"/>
@@ -3376,7 +3383,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="925"/>
+        <location filename="../src/libsync/discovery.cpp" line="958"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fel vid borttagning av filpost %1 från databasen</translation>
     </message>
@@ -3629,7 +3636,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation type="unfinished"/>
+        <translation>Kunde inte propagera namnbyte på katalogen i hierarkin</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
@@ -5385,7 +5392,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultItemSkeleton.qml" line="15"/>
         <source>Search result skeleton.</source>
-        <translation type="unfinished"/>
+        <translation>Sökresultatskelett</translation>
     </message>
 </context>
 <context>
