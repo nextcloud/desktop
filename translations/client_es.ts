@@ -748,14 +748,14 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
         <translation>Esta cuenta soporta cifrado punto a punto</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Set up encryption</source>
         <translation>Configurar cifrado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
-        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation>El cifrado de extremo a extremo ha sido habilitado en esta cuenta con otro dispositivo. &lt;br&gt; puede ser habilitado en este dispositivo ingresando su mnemónico.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1827,6 +1827,11 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Haga clic en este botón para añadir una carpeta a sincronizar</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
+        <source> - %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -3381,7 +3386,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>No se puede sincronizar debido a una hora de modificación no válida</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="925"/>
+        <location filename="../src/libsync/discovery.cpp" line="958"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Error mientras se borraba el registro de archivo %1 de la base de datos</translation>
     </message>
@@ -3963,7 +3968,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="541"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Enlace interno</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="797"/>
@@ -4053,34 +4058,36 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo cifrar carpeta en &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>La cuenta %1 no tiene el cifrado de extremo a extremo configurado. Por favor configure esto en sus opciones de cuenta para habilitar el cifrado de carpetas.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Fallo al cifrar la carpeta</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;. 
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>No se pudo cifrar la siguiente carpeta: &quot;%1&quot;
+
+El servidor respondió con el error: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>Se cifró la carpeta exitosamente</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>La siguiente carpeta se cifró con éxito: &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="678"/>
@@ -4154,7 +4161,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1193"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Cifrar</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>

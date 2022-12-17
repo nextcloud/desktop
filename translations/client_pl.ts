@@ -748,14 +748,14 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
         <translation>To konto obsługuje szyfrowanie end-to-end</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Set up encryption</source>
         <translation>Włącz szyfrowanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
-        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation>Szyfrowanie end-to-end zostało włączone na tym koncie na innym urządzeniu. Można je włączyć na tym urządzeniu, wprowadzając swój mnemonik.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1826,6 +1826,11 @@ Jeśli to był przypadek i zdecydujesz się zachować swoje pliki, zostaną one 
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Kliknij ten przycisk, aby dodać katalog do synchronizacji.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
+        <source> - %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -3380,7 +3385,7 @@ To nowy, eksperymentalny tryb. Jeśli zdecydujesz się z niego skorzystać, zgł
         <translation>Nie można zsynchronizować z powodu nieprawidłowego czasu modyfikacji</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="925"/>
+        <location filename="../src/libsync/discovery.cpp" line="958"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Błąd podczas usuwania rekordu pliku %1 z bazy danych</translation>
     </message>

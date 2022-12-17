@@ -748,14 +748,14 @@ Ez a művelet megszakítja a jelenleg futó szinkronizálást.</translation>
         <translation>Ez a fiók támogatja a végpontok közötti titkosítást</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1489"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
         <source>Set up encryption</source>
         <translation>Titkosítás beállítása</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1494"/>
-        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.</source>
-        <translation>A végpontok közti titkosítás egy másik eszközről engedélyezve lett ezen a fiókon.&lt;br&gt;A mnemonikus kód megadásával ezen az eszközön is engedélyezheti.</translation>
+        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1826,6 +1826,11 @@ Ha ez véletlen volt, és úgy dönt, hogy megtartja ezeket a fájlokat, akkor �
         <location filename="../src/gui/folderstatusmodel.cpp" line="151"/>
         <source>Click this button to add a folder to synchronize.</source>
         <translation>Kattintson erre a gombra egy szinkronizálandó mappa hozzáadásához.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
+        <source> - %1</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -3381,7 +3386,7 @@ Ez egy új, kísérleti mód. Ha úgy dönt, hogy használja, akkor jelezze nek�
         <translation>Az érvénytelen módosítási idő miatt nem lehet szinkronizálni</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="925"/>
+        <location filename="../src/libsync/discovery.cpp" line="958"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Hiba történt a(z) %1 fájlrekord adatbázisból törlése során</translation>
     </message>
