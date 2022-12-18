@@ -755,7 +755,7 @@ This action will abort any currently running synchronization.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1560"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</translation>
     </message>
 </context>
 <context>

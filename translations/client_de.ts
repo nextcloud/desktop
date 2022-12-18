@@ -754,7 +754,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1560"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Die Ende-zu-Ende-Verschlüsselung wurde auf diesem Konto mit einem anderen Gerät aktiviert.&lt;br&gt;Sie kann auf diesem Gerät durch Eingabe Ihrer Mnemonik aktiviert werden.&lt;br&gt;Dadurch wird die Synchronisierung vorhandener verschlüsselter Ordner aktiviert.</translation>
     </message>
 </context>
 <context>
@@ -1829,7 +1829,7 @@ Falls dies ein Missgeschick war und Sie sich zum Behalten der Dateien entscheide
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source> - %1</source>
-        <translation type="unfinished"/>
+        <translation> - %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
