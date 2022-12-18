@@ -6082,7 +6082,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="201"/>
         <source>File drop (upload only)</source>
-        <translation>Soltar arquivo (somente envio)</translation>
+        <translation>Depósito de arquivos (somente envios)</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.cpp" line="219"/>
