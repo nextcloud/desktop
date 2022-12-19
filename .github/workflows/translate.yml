@@ -46,6 +46,8 @@ jobs:
       - name: update-repo-before-commit
         run: |
           git status
+          git add translations/client_*.ts
+          git status
           git stash
           git pull --ff-only origin
 
