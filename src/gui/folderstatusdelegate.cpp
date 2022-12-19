@@ -126,7 +126,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QFontMetrics subFm(subFont);
     QFontMetrics aliasFm(aliasFont);
-    QFontMetrics progressFm(progressFont);
 
     int aliasMargin = aliasFm.height() / 2;
     int margin = subFm.height() / 4;
@@ -156,7 +155,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
     auto aliasText = qvariant_cast<QString>(index.data(HeaderRole));
     auto pathText = qvariant_cast<QString>(index.data(FolderPathRole));
-    auto remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
     auto conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
     auto errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
     auto infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
