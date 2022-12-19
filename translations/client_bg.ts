@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>Отваряне на подробности за файл</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -196,7 +196,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Отхвърляне</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
@@ -755,7 +755,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1560"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Цялостното криптиране е активирано в този профил с друго устройство.&lt;br&gt;То може да бъде активирано на това устройство, като въведете мнемониката си. &lt;br&gt;Това ще позволи синхронизиране на съществуващите криптирани папки.</translation>
     </message>
 </context>
 <context>
@@ -1830,7 +1830,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source> - %1</source>
-        <translation type="unfinished"/>
+        <translation> - %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -3967,7 +3967,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="541"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Вътрешна връзка</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="797"/>
@@ -4057,34 +4057,36 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно криптиране на папка в „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation type="unfinished"/>
+        <translation>В профил %1 не е конфигурирано цялостно криптиране. Моля, конфигурирайте това в настройките на вашият профил, за да активирате криптирането на папки.</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Неуспешно криптиране на папка</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;. 
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да криптира следната папка: „%1“. 
+
+Сървърът отговори с грешка: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation type="unfinished"/>
+        <translation>Папката е криптирана успешно</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation type="unfinished"/>
+        <translation>Следната папка беше криптирана успешно: „%1“</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="678"/>
@@ -4158,7 +4160,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1193"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Криптиране</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1083"/>
