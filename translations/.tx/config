@@ -1,7 +1,7 @@
 [main]
 host = https://www.transifex.com
 
-[owncloud.client]
+[o:owncloud-org:p:owncloud:r:client]
 source_file = client_en.ts
 source_lang = en
 file_filter = client_<lang>.ts
