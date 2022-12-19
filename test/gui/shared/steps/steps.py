@@ -179,8 +179,7 @@ def getCreatedUsersFromMiddleware(context):
 def step(context, accountType):
     newAccount = AccountConnectionWizard()
     if accountType == 'another':
-        toolbar = Toolbar()
-        toolbar.clickAddAccount()
+        Toolbar.openNewAccountSetup()
 
     newAccount.addAccount(context)
 
@@ -191,15 +190,24 @@ def step(context):
     newAccount.addUserCreds(context)
 
 
-@Then('an account should be displayed with the displayname |any| and host |any|')
+@Then('the account with displayname "|any|" and host "|any|" should be displayed')
 def step(context, displayname, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
-    accountStatus = AccountStatus(context, displayname, host)
 
     test.compare(
-        accountStatus.getText(),
+        Toolbar.getDisplayedAccountText(displayname, host),
         displayname + "\n" + host,
+    )
+
+
+@Then('the account with displayname "|any|" and host "|any|" should not be displayed')
+def step(context, displayname, host):
+    displayname = substituteInLineCodes(context, displayname)
+    host = substituteInLineCodes(context, host)
+
+    waitFor(
+        lambda: (not object.exists(Toolbar.getItemSelector(displayname + "@" + host))),
     )
 
 
@@ -223,28 +231,6 @@ def getPasswordForUser(context, username):
     return getUserInfo(context, username, 'password')
 
 
-def isConnecting():
-    return "Connecting to" in str(
-        waitForObjectExists(names.stack_connectLabel_QLabel).text
-    )
-
-
-def waitUntilConnectionIsConfigured(context):
-    timeout = context.userData['maxSyncTimeout'] * 1000
-
-    result = waitFor(
-        lambda: isConnecting(),
-        timeout,
-    )
-
-    if not result:
-        raise Exception(
-            "Timeout waiting for connection to be configured for "
-            + str(timeout)
-            + " milliseconds"
-        )
-
-
 @Given('user "|any|" has set up a client with default settings')
 def step(context, username):
     password = getPasswordForUser(context, username)
@@ -256,7 +242,9 @@ def step(context, username):
         newAccount.acceptCertificate()
         newAccount.oidcLogin(username, password, True)
     else:
-        waitUntilConnectionIsConfigured(context)
+        AccountStatus.waitUntilConnectionIsConfigured(
+            context.userData['maxSyncTimeout'] * 1000
+        )
         enterUserPassword = EnterPassword()
         enterUserPassword.enterPassword(password)
 
@@ -273,8 +261,7 @@ def step(context):
 def step(context, accountType):
     newAccount = AccountConnectionWizard()
     if accountType == 'another':
-        toolbar = Toolbar()
-        toolbar.clickAddAccount()
+        Toolbar.openNewAccountSetup()
 
     newAccount.addAccount(context)
 
@@ -712,8 +699,7 @@ def step(context, filename):
 
 @When('the user clicks on the activity tab')
 def step(context):
-    toolbar = Toolbar()
-    toolbar.clickActivity()
+    Toolbar.openActivity()
 
 
 @Then('a conflict warning should be shown for |integer| files')
@@ -940,59 +926,32 @@ def step(context, resource):
 
 @When('the user "|any|" logs out of the client-UI')
 def step(context, username):
-    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
-    accountStatus.accountAction("Log out")
-
-
-def isUserSignedOut(context, username):
-    displayname = getDisplaynameForUser(context, username)
-    server = context.userData['localBackendUrl']
-    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
-    test.compare(
-        str(waitForObjectExists(accountStatus.SIGNED_OUT_TEXT_BAR).text),
-        'Signed out from <a href="'
-        + server
-        + '">'
-        + server
-        + '</a> as <i>'
-        + displayname
-        + '</i>.',
-    )
-
-
-def isUserSignedIn(context, username):
-    displayname = getDisplaynameForUser(context, username)
-    server = context.userData['localBackendUrl']
-    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
-    test.compare(
-        str(waitForObjectExists(accountStatus.SIGNED_OUT_TEXT_BAR).text),
-        'Connected '
-        + 'to <a href="'
-        + server
-        + '">'
-        + server
-        + '</a> as <i>'
-        + displayname
-        + '</i>.',
-    )
+    AccountStatus.logout()
 
 
 @Then('user "|any|" should be signed out')
 def step(context, username):
-    isUserSignedOut(context, username)
+    displayname = getDisplaynameForUser(context, username)
+    server = context.userData['localBackendUrl']
+    test.compare(
+        AccountStatus.isUserSignedOut(displayname, server),
+        True,
+        "User '%s' is signed out" % username,
+    )
 
 
 @Given('user "|any|" has logged out of the client-UI')
 def step(context, username):
-    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
-    accountStatus.accountAction("Log out")
-    isUserSignedOut(context, username)
+    AccountStatus.logout()
+    displayname = getDisplaynameForUser(context, username)
+    server = context.userData['localBackendUrl']
+    if not AccountStatus.isUserSignedOut(displayname, server):
+        raise Exception("Failed to logout user '%s'" % username)
 
 
 @When('user "|any|" logs in to the client-UI')
 def step(context, username):
-    accountStatus = AccountStatus(context, getDisplaynameForUser(context, username))
-    accountStatus.accountAction("Log in")
+    AccountStatus.login()
     password = getPasswordForUser(context, username)
 
     if context.userData['ocis']:
@@ -1008,7 +967,13 @@ def step(context, username):
 
 @Then('user "|any|" should be connect to the client-UI')
 def step(context, username):
-    isUserSignedIn(context, username)
+    displayname = getDisplaynameForUser(context, username)
+    server = context.userData['localBackendUrl']
+    test.compare(
+        AccountStatus.isUserSignedIn(displayname, server),
+        True,
+        "User '%s' is connected" % username,
+    )
 
 
 @When('the user removes the connection for user "|any|" and host |any|')
@@ -1017,21 +982,7 @@ def step(context, username, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
 
-    accountStatus = AccountStatus(context, displayname, host)
-    accountStatus.removeConnection()
-
-
-@Then('an account with the displayname |any| and host |any| should not be displayed')
-def step(context, displayname, host):
-    displayname = substituteInLineCodes(context, displayname)
-    host = substituteInLineCodes(context, host)
-    toolbar = Toolbar()
-    displayedAccountText = toolbar.getDisplayedAccountText(displayname, host)
-
-    test.compare(
-        displayedAccountText,
-        displayname + "\n" + host,
-    )
+    AccountStatus.removeAccountConnection()
 
 
 @Then('connection wizard should be visible')

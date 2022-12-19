@@ -135,7 +135,6 @@ loginRequiredDialog_OCC_LoginRequiredDialog = {"name": "LoginRequiredDialog", "t
 loginRequiredDialog_contentWidget_QStackedWidget = {"name": "contentWidget", "type": "QStackedWidget", "visible": 1, "window": loginRequiredDialog_OCC_LoginRequiredDialog}
 enable_experimental_feature_QMessageBox = {"type": "QMessageBox", "unnamed": 1, "visible": 1, "windowTitle": "Enable experimental feature?"}
 enable_experimental_feature_Enable_experimental_placeholder_mode_QPushButton = {"text": "Enable experimental placeholder mode", "type": "QPushButton", "unnamed": 1, "visible": 1, "window": enable_experimental_feature_QMessageBox}
-stack_connectLabel_QLabel = {"container": settings_stack_QStackedWidget, "name": "connectLabel", "type": "QLabel", "visible": 1}
 o_folderList_ownCloud_QModelIndex = {"column": 0, "container": stack_folderList_QTreeView, "text": "ownCloud", "type": "QModelIndex"}
 contentWidget_contentWidget_QStackedWidget = {"container": setupWizardWindow_contentWidget_QStackedWidget, "name": "contentWidget", "type": "QStackedWidget", "visible": 1}
 o_folderList_Personal_QModelIndex = {"column": 0, "container": stack_folderList_QTreeView, "text": "Personal", "type": "QModelIndex"}

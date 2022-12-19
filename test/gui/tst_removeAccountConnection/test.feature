@@ -14,7 +14,8 @@ Feature: remove account connection
       | user     | Brian          |
       | password | AaBb2Cc3Dd4    |
     When the user removes the connection for user "Brian" and host %local_server_hostname%
-    Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
+    Then the account with displayname "Brian Murphy" and host "%local_server_hostname%" should not be displayed
+    But the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
 
 
   Scenario: remove the only account connection
