@@ -19,7 +19,7 @@ l10n-read:
 # push the changed from l10n-read
 .PHONY: l10n-push
 l10n-push:
-	tx push -s --skip --no-interactive
+	tx push -s --skip
 
 # pull all translation from transifex
 .PHONY: l10n-pull
