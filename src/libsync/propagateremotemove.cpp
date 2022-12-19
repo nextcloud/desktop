@@ -82,8 +82,6 @@ void PropagateRemoteMove::start()
     QString origin = propagator()->adjustRenamedPath(_item->_file);
     qCInfo(lcPropagateRemoteMove) << origin << _item->_renameTarget;
 
-    QString targetFile(propagator()->fullLocalPath(_item->_renameTarget));
-
     if (origin == _item->_renameTarget) {
         // The parent has been renamed already so there is nothing more to do.
 
