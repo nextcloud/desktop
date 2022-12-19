@@ -231,9 +231,9 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
     appendSharees(replyDataObject);
     appendSharees(replyDataExactMatchObject);
 
-    Q_EMIT beginResetModel();
+    beginResetModel();
     _sharees = newSharees;
-    Q_EMIT endResetModel();
+    endResetModel();
 
     Q_EMIT shareesReady();
 }
