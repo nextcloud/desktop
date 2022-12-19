@@ -219,7 +219,7 @@ void GETFileJob::slotMetaDataChanged()
     qint64 start = 0;
     QByteArray ranges = reply()->rawHeader("Content-Range");
     if (!ranges.isEmpty()) {
-        const QRegularExpression rx("bytes (\\d+)-");
+        static const QRegularExpression rx("bytes (\\d+)-");
         const auto rxMatch = rx.match(ranges);
         if (rxMatch.hasMatch()) {
             start = rxMatch.captured(1).toLongLong();
