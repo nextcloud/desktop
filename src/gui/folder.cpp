@@ -1335,51 +1335,28 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
 void Folder::removeLocalE2eFiles()
 {
     qCDebug(lcFolder) << "Removing local E2EE files";
-    QByteArrayList e2eFiles;
-    const auto couldGetFiles = _journal.getFilesBelowPath("", [&e2eFiles](const SyncJournalFileRecord &rec) {
-        if (rec._isE2eEncrypted) {
-            e2eFiles.append(rec._path);
+    QStringList e2eFoldersToBlacklist;
+    const auto couldGetFiles = _journal.getFilesBelowPath("", [&e2eFoldersToBlacklist](const SyncJournalFileRecord &rec) {
+        if (rec.isValid() && rec._isE2eEncrypted && rec.isDirectory()) {
+            e2eFoldersToBlacklist.append(rec._path);
         }
     });
 
     if (!couldGetFiles) {
-        qCWarning(lcFolder) << "Could not fetch E2EE files to delete in this folder:" << path();
+        qCWarning(lcFolder) << "Could not fetch E2EE folders to blacklist in this folder:" << path();
         return;
-    } else if (e2eFiles.isEmpty()) {
-        qCWarning(lcFolder) << "No E2EE files found at path" << path();
+    } else if (e2eFoldersToBlacklist.isEmpty()) {
+        qCWarning(lcFolder) << "No E2EE folders found at path" << path();
         return;
     }
 
     const auto currentSyncPaused = syncPaused();
     setSyncPaused(true);
 
-    qCInfo(lcFolder) << "About to remove: " << e2eFiles;
+    qCInfo(lcFolder) << "About to blacklist: " << e2eFoldersToBlacklist;
 
-    for (const auto &e2eFilePath : qAsConst(e2eFiles)) {
-        if (!_journal.deleteFileRecord(e2eFilePath, true)) {
-            qCWarning(lcFolder) << "Failed to delete file record from local DB" << e2eFilePath
-                                << "it might have already been deleted.";
-            continue;
-        }
-
-        qCInfo(lcFolder) << "Removing local copy of" << e2eFilePath;
-
-        const auto fullPath = QString(path() + e2eFilePath);
-        const QFileInfo pathInfo(fullPath);
-
-        if (pathInfo.isDir() && pathInfo.exists()) {
-            QDir dir(fullPath);
-            if (!dir.removeRecursively()) {
-                qCWarning(lcFolder) << "Unable to remove directory and contents at:" << fullPath;
-            }
-        } else if (pathInfo.exists()) {
-            if (!QFile::remove(fullPath)) {
-                qCWarning(lcFolder) << "Unable to delete file:" << fullPath;
-            }
-        } else {
-            qCWarning(lcFolder) << "Unable to delete:" << fullPath << "as it does not exist!";
-        }
-    }
+    // Will get deleted from blacklist if encryption is set up again later
+    _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, e2eFoldersToBlacklist);
 
     setSyncPaused(currentSyncPaused);
     _journal.forceRemoteDiscoveryNextSync();
