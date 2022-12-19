@@ -1,7 +1,5 @@
 import names
 import squish
-import object
-from urllib.parse import urlparse
 
 
 class AccountStatus:
@@ -17,12 +15,6 @@ class AccountStatus:
         "visible": 1,
         "window": names.settings_OCC_SettingsDialog,
     }
-    SIGNED_OUT_TEXT_BAR = {
-        "container": names.settings_stack_QStackedWidget,
-        "name": "connectLabel",
-        "type": "QLabel",
-        "visible": 1,
-    }
     REMOVE_CONNECTION_BUTTON = {
         "container": names.settings_stack_QStackedWidget,
         "text": "Remove connection",
@@ -37,29 +29,18 @@ class AccountStatus:
         "unnamed": 1,
         "visible": 1,
     }
-    FOLDER_SYNC_CONNECTION = {
-        "column": 0,
-        "container": names.stack_folderList_QTreeView,
-        "text": "%s",
-        "type": "QModelIndex",
+    ACCOUNT_CONNECTION_LABEL = {
+        "container": names.settings_stack_QStackedWidget,
+        "name": "connectLabel",
+        "type": "QLabel",
+        "visible": 1,
     }
 
-    settingsdialogToolbutton = None
-
-    def __init__(self, context, displayname, host=None):
-        if host == None:
-            host = urlparse(context.userData['localBackendUrl']).netloc
-        self.settingsdialogToolbutton = {
-            "name": "settingsdialog_toolbutton_" + displayname + "@" + host,
-            "type": "QToolButton",
-            "visible": 1,
-        }
-        squish.clickButton(squish.waitForObject(self.settingsdialogToolbutton))
-
-    def accountAction(self, action):
+    @staticmethod
+    def accountAction(action):
         squish.sendEvent(
             "QMouseEvent",
-            squish.waitForObject(self.ACCOUNT_BUTTON),
+            squish.waitForObject(AccountStatus.ACCOUNT_BUTTON),
             squish.QEvent.MouseButtonPress,
             0,
             0,
@@ -67,17 +48,60 @@ class AccountStatus:
             0,
             0,
         )
-        squish.activateItem(squish.waitForObjectItem(self.ACCOUNT_MENU, action))
-
-    def removeConnection(self):
-        self.accountAction("Remove")
-        squish.clickButton(squish.waitForObject(self.REMOVE_CONNECTION_BUTTON))
-        squish.waitFor(
-            lambda: (not object.exists(self.settingsdialogToolbutton)),
+        squish.activateItem(
+            squish.waitForObjectItem(AccountStatus.ACCOUNT_MENU, action)
         )
 
-    def getText(self):
-        return str(squish.waitForObjectExists(self.settingsdialogToolbutton).text)
+    @staticmethod
+    def removeAccountConnection():
+        AccountStatus.accountAction("Remove")
+        squish.clickButton(squish.waitForObject(AccountStatus.REMOVE_CONNECTION_BUTTON))
+
+    @staticmethod
+    def logout():
+        AccountStatus.accountAction("Log out")
+
+    @staticmethod
+    def login():
+        AccountStatus.accountAction("Log in")
+
+    @staticmethod
+    def getAccountConnectionLabel():
+        return str(
+            squish.waitForObjectExists(AccountStatus.ACCOUNT_CONNECTION_LABEL).text
+        )
+
+    @staticmethod
+    def isConnecting():
+        return "Connecting to" in AccountStatus.getAccountConnectionLabel()
+
+    @staticmethod
+    def isUserSignedOut(displayname, server):
+        signedout_text = 'Signed out from <a href="{server}">{server}</a> as <i>{displayname}</i>.'.format(
+            server=server, displayname=displayname
+        )
+        return signedout_text == AccountStatus.getAccountConnectionLabel()
+
+    @staticmethod
+    def isUserSignedIn(displayname, server):
+        signedin_text = 'Connected to <a href="{server}">{server}</a> as <i>{displayname}</i>.'.format(
+            server=server, displayname=displayname
+        )
+        return signedin_text == AccountStatus.getAccountConnectionLabel()
+
+    @staticmethod
+    def waitUntilConnectionIsConfigured(timeout=5000):
+        result = squish.waitFor(
+            lambda: AccountStatus.isConnecting(),
+            timeout,
+        )
+
+        if not result:
+            raise Exception(
+                "Timeout waiting for connection to be configured for "
+                + str(timeout)
+                + " milliseconds"
+            )
 
     @staticmethod
     def confirmRemoveAllFiles():

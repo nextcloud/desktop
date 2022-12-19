@@ -1,34 +1,33 @@
-import names
 import squish
 
 
 class Toolbar:
-    ACTIVITY_BUTTON = {
-        "name": "settingsdialog_toolbutton_Activity",
-        "type": "QToolButton",
-        "visible": 1,
-        "window": names.settings_OCC_SettingsDialog,
-    }
-    ADD_ACCOUNT_BUTTON = {
-        "name": "settingsdialog_toolbutton_Add account",
-        "type": "QToolButton",
-        "visible": 1,
-        "window": names.settings_OCC_SettingsDialog,
-    }
+    @staticmethod
+    def getItemSelector(item_name):
+        return {
+            "name": "settingsdialog_toolbutton_%s" % item_name,
+            "type": "QToolButton",
+            "visible": 1,
+        }
 
-    def clickActivity(self):
-        squish.clickButton(squish.waitForObject(self.ACTIVITY_BUTTON))
+    @staticmethod
+    def openActivity():
+        squish.clickButton(squish.waitForObject(Toolbar.getItemSelector("Activity")))
 
-    def clickAddAccount(self):
-        squish.clickButton(squish.waitForObject(self.ADD_ACCOUNT_BUTTON))
+    @staticmethod
+    def openNewAccountSetup():
+        squish.clickButton(squish.waitForObject(Toolbar.getItemSelector("Add account")))
 
-    def getDisplayedAccountText(self, displayname, host):
+    @staticmethod
+    def openAccount(displayname, host):
+        squish.clickButton(
+            squish.waitForObject(Toolbar.getItemSelector(displayname + "@" + host))
+        )
+
+    @staticmethod
+    def getDisplayedAccountText(displayname, host):
         return str(
             squish.waitForObjectExists(
-                {
-                    "name": "settingsdialog_toolbutton_" + displayname + "@" + host,
-                    "type": "QToolButton",
-                    "visible": 1,
-                }
+                Toolbar.getItemSelector(displayname + "@" + host)
             ).text
         )

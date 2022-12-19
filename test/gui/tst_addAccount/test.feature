@@ -15,7 +15,7 @@ Feature: adding accounts
             | server   | %local_server% |
             | user     | Alice          |
             | password | 1234           |
-        Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
+        Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
 
 
     Scenario: Adding multiple accounts
@@ -25,8 +25,8 @@ Feature: adding accounts
             | server   | %local_server% |
             | user     | Brian          |
             | password | AaBb2Cc3Dd4    |
-        Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
-        And an account should be displayed with the displayname Brian Murphy and host %local_server_hostname%
+        Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
+        And the account with displayname "Brian Murphy" and host "%local_server_hostname%" should be displayed
 
 
     @skipOnOCIS
@@ -67,5 +67,5 @@ Feature: adding accounts
             | password | 1234           |
         When the user selects vfs option in advanced section
         And the user cancels the enable experimental vfs option
-        Then an account should be displayed with the displayname Alice Hansen and host %local_server_hostname%
+        Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed
         And VFS enabled baseline image should not match the default screenshot
