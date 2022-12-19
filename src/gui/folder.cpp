@@ -1359,7 +1359,11 @@ void Folder::removeLocalE2eFiles()
     _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, e2eFoldersToBlacklist);
 
     setSyncPaused(currentSyncPaused);
-    _journal.forceRemoteDiscoveryNextSync();
+
+    for (const auto &path : qAsConst(e2eFoldersToBlacklist)) {
+        _journal.schedulePathForRemoteDiscovery(path);
+    }
+
     scheduleThisFolderSoon();
 }
 
