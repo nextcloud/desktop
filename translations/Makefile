@@ -19,12 +19,12 @@ l10n-read:
 # push the changed from l10n-read
 .PHONY: l10n-push
 l10n-push:
-	tx -d push -s --skip --no-interactive
+	tx push -s --skip --no-interactive
 
 # pull all translation from transifex
 .PHONY: l10n-pull
 l10n-pull:
-	tx -d pull --force --skip --all
+	tx pull --force --skip --all
 
 # tx might apply changes to .tx/config, we don't want that
 .PHONY: l10n-clean
