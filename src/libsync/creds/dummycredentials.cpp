@@ -52,12 +52,12 @@ bool DummyCredentials::stillValid(QNetworkReply *reply)
 void DummyCredentials::fetchFromKeychain()
 {
     _wasFetched = true;
-    Q_EMIT(fetched());
+    emit fetched();
 }
 
 void DummyCredentials::askFromUser()
 {
-    Q_EMIT(asked());
+    emit asked();
 }
 
 void DummyCredentials::persist()
