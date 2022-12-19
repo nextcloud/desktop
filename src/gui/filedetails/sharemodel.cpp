@@ -314,7 +314,7 @@ void ShareModel::initShareManager()
         connect(_manager.data(), &ShareManager::serverError, this, [this](const int code, const QString &message){
             _hasInitialShareFetchCompleted = true;
             Q_EMIT hasInitialShareFetchCompletedChanged();
-            serverError(code, message);
+            emit serverError(code, message);
         });
 
         _manager->fetchShares(_sharePath);

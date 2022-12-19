@@ -523,7 +523,7 @@ void HttpCredentials::persist()
         // it's just written if it gets passed into the constructor.
         _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
     }
-    _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account);
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {
