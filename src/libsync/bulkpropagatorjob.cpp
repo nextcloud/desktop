@@ -256,10 +256,6 @@ void BulkPropagatorJob::checkPropagationIsDone()
 void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
                                                         UploadFileInfo fileToUpload)
 {
-    // Reuse the content checksum as the transmission checksum if possible
-    const auto supportedTransmissionChecksums =
-        propagator()->account()->capabilities().supportedChecksumTypes();
-
     // Compute the transmission checksum.
     auto computeChecksum = std::make_unique<ComputeChecksum>(this);
     if (uploadChecksumEnabled()) {
