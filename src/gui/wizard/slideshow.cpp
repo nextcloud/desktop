@@ -55,6 +55,8 @@ void SlideShow::setInterval(int interval)
 
     _interval = interval;
     maybeRestartTimer();
+
+    emit intervalChanged();
 }
 
 int SlideShow::currentSlide() const
