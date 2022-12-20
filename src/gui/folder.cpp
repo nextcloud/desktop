@@ -1335,10 +1335,32 @@ void Folder::slotAboutToRemoveAllFiles(SyncFileItem::Direction dir, std::functio
 void Folder::removeLocalE2eFiles()
 {
     qCDebug(lcFolder) << "Removing local E2EE files";
+
+    const QDir folderRootDir(path());
     QStringList e2eFoldersToBlacklist;
-    const auto couldGetFiles = _journal.getFilesBelowPath("", [&e2eFoldersToBlacklist](const SyncJournalFileRecord &rec) {
+    const auto couldGetFiles = _journal.getFilesBelowPath("", [this, &e2eFoldersToBlacklist, &folderRootDir](const SyncJournalFileRecord &rec) {
+        // We only want to add the root-most encrypted folder to the blacklist
         if (rec.isValid() && rec._isE2eEncrypted && rec.isDirectory()) {
-            e2eFoldersToBlacklist.append(rec._path);
+            QDir pathDir(rec._path);
+            bool parentPathEncrypted = false;
+
+            while (pathDir.cdUp() && pathDir != folderRootDir) {
+                SyncJournalFileRecord rec;
+                const auto currentCanonicalPath = pathDir.canonicalPath();
+                const auto ok = _journal.getFileRecord(currentCanonicalPath, &rec);
+                if (!ok) {
+                    qCWarning(lcFolder) << "Failed to get file record for" << currentCanonicalPath;
+                }
+
+                if (rec._isE2eEncrypted) {
+                    parentPathEncrypted = true;
+                    break;
+                }
+            }
+
+            if (!parentPathEncrypted) {
+                e2eFoldersToBlacklist.append(rec._path);
+            }
         }
     });
 
