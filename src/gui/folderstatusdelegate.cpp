@@ -126,7 +126,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QFontMetrics subFm(subFont);
     QFontMetrics aliasFm(aliasFont);
-    QFontMetrics progressFm(progressFont);
 
     int aliasMargin = aliasFm.height() / 2;
     int margin = subFm.height() / 4;
@@ -156,7 +155,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
     auto aliasText = qvariant_cast<QString>(index.data(HeaderRole));
     auto pathText = qvariant_cast<QString>(index.data(FolderPathRole));
-    auto remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
     auto conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
     auto errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
     auto infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
@@ -222,15 +220,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     auto palette = option.palette;
-
-    if (qApp->style()->inherits("QWindowsVistaStyle")) {
-        // Hack: Windows Vista's light blue is not contrasting enough for white
-
-        // (code from QWindowsVistaStyle::drawControl for CE_ItemViewItem)
-        palette.setColor(QPalette::All, QPalette::HighlightedText, palette.color(QPalette::Active, QPalette::Text));
-        palette.setColor(QPalette::All, QPalette::Highlight, palette.base().color().darker(108));
-    }
-
 
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
