@@ -1355,7 +1355,13 @@ void Folder::removeLocalE2eFiles()
 
     qCInfo(lcFolder) << "About to blacklist: " << e2eFoldersToBlacklist;
 
+    bool ok = false;
+    const auto existingBlacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+    Q_ASSERT(ok);
+
     // Will get deleted from blacklist if encryption is set up again later
+    const auto expandedBlacklist = existingBlacklist + e2eFoldersToBlacklist;
+    _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, expandedBlacklist);
     _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, e2eFoldersToBlacklist);
 
     setSyncPaused(currentSyncPaused);
