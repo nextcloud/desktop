@@ -414,7 +414,7 @@ void EditLocallyJob::showErrorNotification(const QString &message, const QString
     });
 
     if (foundFolder != folderMap.cend()) {
-        (*foundFolder)->syncEngine().addErrorToGui(SyncFileItem::SoftError, message, informativeText);
+        emit (*foundFolder)->syncEngine().addErrorToGui(SyncFileItem::SoftError, message, informativeText);
     }
 }
 
