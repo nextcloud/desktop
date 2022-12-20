@@ -753,7 +753,7 @@ Vous prenez vos propres risques.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1560"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>Le chiffrement de bout en bout a été activé sur ce compte avec un autre appareil.&lt;br&gt;Il peut être activé sur cet appareil en entrant votre phrase secrète.&lt;br&gt;Cela permettra la synchronisation des dossiers chiffrés existants.</translation>
     </message>
 </context>
 <context>
@@ -1829,7 +1829,7 @@ S&apos;il s&apos;agissait d&apos;un accident et que vous choisissiez de conserve
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source> - %1</source>
-        <translation type="unfinished"/>
+        <translation> - %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
