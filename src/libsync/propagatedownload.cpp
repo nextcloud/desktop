@@ -1106,13 +1106,39 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 {
     _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
+    const auto localFilePath = propagator()->fullLocalPath(_item->_file);
+    SyncJournalFileRecord record;
+    if (_item->_instruction != CSYNC_INSTRUCTION_CONFLICT && FileSystem::fileExists(localFilePath)
+        && (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid())
+        && (record._modtime == _item->_modtime && record._etag != _item->_etag)) {
+        const auto computeChecksum = new ComputeChecksum(this);
+        computeChecksum->setChecksumType(checksumType);
+        connect(computeChecksum, &ComputeChecksum::done, this, &PropagateDownloadFile::localFileContentChecksumComputed);
+        computeChecksum->start(localFilePath);
+        return;
+    }
+
+    finalizeDownload();
+}
+
+void PropagateDownloadFile::localFileContentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+{
+    if (_item->_checksumHeader == makeChecksumHeader(checksumType, checksum)) {
+        FileSystem::remove(_tmpFile.fileName());
+        updateMetadata(false);
+        return;
+    }
+    finalizeDownload();
+}
+
+void PropagateDownloadFile::finalizeDownload()
+{
     if (_isEncrypted) {
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
-          downloadFinished();
+            downloadFinished();
         } else {
-          done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString());
+            done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString());
         }
-
     } else {
         downloadFinished();
     }
