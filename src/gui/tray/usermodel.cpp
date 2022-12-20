@@ -493,24 +493,24 @@ void User::slotProgressInfo(const QString &folder, const ProgressInfo &progress)
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !QFileInfo(f->path() + activity._file).exists()) {
+            if (activity._syncFileItemStatus == SyncFileItem::Conflict && !QFileInfo::exists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
-            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !QFileInfo(f->path() + activity._file).exists()) {
-                _activityModel->removeActivityFromActivityList(activity);
-                continue;
-            }
-
-
-            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !QFileInfo(f->path() + activity._file).exists()) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileLocked && !QFileInfo::exists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
 
 
-            if (!QFileInfo(f->path() + activity._file).exists()) {
+            if (activity._syncFileItemStatus == SyncFileItem::FileIgnored && !QFileInfo::exists(f->path() + activity._file)) {
+                _activityModel->removeActivityFromActivityList(activity);
+                continue;
+            }
+
+
+            if (!QFileInfo::exists(f->path() + activity._file)) {
                 _activityModel->removeActivityFromActivityList(activity);
                 continue;
             }
