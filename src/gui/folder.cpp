@@ -1372,9 +1372,6 @@ void Folder::removeLocalE2eFiles()
         return;
     }
 
-    const auto currentSyncPaused = syncPaused();
-    setSyncPaused(true);
-
     qCInfo(lcFolder) << "About to blacklist: " << e2eFoldersToBlacklist;
 
     bool ok = false;
@@ -1386,13 +1383,16 @@ void Folder::removeLocalE2eFiles()
     _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, expandedBlacklist);
     _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, e2eFoldersToBlacklist);
 
-    setSyncPaused(currentSyncPaused);
+    if(isBusy()) {
+        slotTerminateSync();
+    }
 
     for (const auto &path : qAsConst(e2eFoldersToBlacklist)) {
         _journal.schedulePathForRemoteDiscovery(path);
+        schedulePathForLocalDiscovery(path);
     }
 
-    scheduleThisFolderSoon();
+    slotScheduleThisFolder();
 }
 
 QString Folder::fileFromLocalPath(const QString &localPath) const
