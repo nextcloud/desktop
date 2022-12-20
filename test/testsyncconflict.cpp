@@ -599,6 +599,42 @@ private slots:
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
     }
 
+    void testEtagChangeFileNotChangedGeneratesNoConflicts()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("A/fake_conflict", 'W');
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!itemConflict(completeSpy, "A/fake_conflict"));
+
+        completeSpy.clear();
+
+        fakeFolder.remoteModifier().setContents("A/fake_conflict", 'W');
+        fakeFolder.localModifier().setContents("A/fake_conflict", 'W');
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!itemConflict(completeSpy, "A/fake_conflict"));
+    }
+
+    void testEtagChangeFileChangedGeneratesConflicts()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("A/real_conflict", 'W');
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!itemConflict(completeSpy, "A/real_conflict"));
+
+        completeSpy.clear();
+
+        fakeFolder.remoteModifier().setContents("A/real_conflict", 'W');
+        fakeFolder.localModifier().setContents("A/real_conflict", 'L');
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemConflict(completeSpy, "A/real_conflict"));
+    }
+
     // Test what happens if we remove entries both on the server, and locally
     void testRemoveRemove()
     {
