@@ -38,6 +38,12 @@ Q_SIGNALS:
      * Can be used to, e.g., set the focus on widgets in order to make navigation with the keyboard easier.
      */
     void pageDisplayed();
+
+    /**
+     * Emitted whenever the content widgets on the page have their content changed. Useful in cases where changes
+     * cannot just be detected with an event filter, e.g., when a user pastes data using the context menu.
+     */
+    void contentChanged();
 };
 
 }

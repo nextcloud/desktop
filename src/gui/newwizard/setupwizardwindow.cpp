@@ -130,6 +130,8 @@ void SetupWizardWindow::displayPage(AbstractSetupWizardPage *page, SetupWizardSt
     // bring to front if necessary
     ownCloudGui::raiseDialog(this);
 
+    connect(_currentPage, &AbstractSetupWizardPage::contentChanged, this, &SetupWizardWindow::slotUpdateNextButton);
+
     QTimer::singleShot(0, [this]() {
         // this can optionally be overwritten by the page
         Q_EMIT _currentPage->pageDisplayed();
@@ -201,16 +203,6 @@ void SetupWizardWindow::slotUpdateNextButton()
 bool SetupWizardWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (!_transitioning) {
-        // whenever the user types another character somewhere inside the page, we can re-evaluate whether to enable the next button
-        switch (event->type()) {
-        case QEvent::KeyPress:
-        case QEvent::KeyRelease:
-            slotUpdateNextButton();
-            break;
-        default:
-            break;
-        }
-
         if (obj == _currentPage || obj == this) {
             if (event->type() == QEvent::KeyPress) {
                 auto keyEvent = dynamic_cast<QKeyEvent *>(event);
@@ -244,7 +236,9 @@ SetupWizardWindow::~SetupWizardWindow() noexcept
 
 void SetupWizardWindow::slotMoveToNextPage()
 {
-    slotStartTransition();
-    Q_EMIT nextButtonClicked();
+    if (OC_ENSURE(_currentPage->validateInput())) {
+        slotStartTransition();
+        Q_EMIT nextButtonClicked();
+    }
 }
 }

@@ -44,6 +44,9 @@ BasicLoginWidget::BasicLoginWidget(QWidget *parent)
     Utility::setModal(this);
 
     setFocusProxy(_ui->usernameLineEdit);
+
+    connect(_ui->usernameLineEdit, &QLineEdit::textChanged, this, &AbstractLoginWidget::contentChanged);
+    connect(_ui->passwordLineEdit, &QLineEdit::textChanged, this, &AbstractLoginWidget::contentChanged);
 }
 
 BasicLoginWidget::~BasicLoginWidget()
