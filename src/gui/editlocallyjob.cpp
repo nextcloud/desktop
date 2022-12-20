@@ -319,7 +319,7 @@ bool EditLocallyJob::isTokenValid(const QString &token)
 
     // Token is an alphanumeric string 128 chars long.
     // Ensure that is what we received and what we are sending to the server.
-    const QRegularExpression tokenRegex("^[a-zA-Z0-9]{128}$");
+    static const QRegularExpression tokenRegex("^[a-zA-Z0-9]{128}$");
     const auto regexMatch = tokenRegex.match(token);
 
     return regexMatch.hasMatch();

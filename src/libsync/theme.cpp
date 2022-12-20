@@ -813,7 +813,8 @@ void Theme::replaceLinkColorStringBackgroundAware(QString &linkString)
 
 void Theme::replaceLinkColorString(QString &linkString, const QColor &newColor)
 {
-    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"), QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
+    static const QRegularExpression linkRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)");
+    linkString.replace(linkRegularExpression, QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
 }
 
 QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)

@@ -840,7 +840,7 @@ bool JsonApiJob::finished()
 
     QString jsonStr = QString::fromUtf8(reply()->readAll());
     if (jsonStr.contains("<?xml version=\"1.0\"?>")) {
-        const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
+        static const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
         const auto rexMatch = rex.match(jsonStr);
         if (rexMatch.hasMatch()) {
             // this is a error message coming back from ocs.
@@ -850,7 +850,7 @@ bool JsonApiJob::finished()
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
-        const QRegularExpression rex(R"("statuscode":(\d+))");
+        static const QRegularExpression rex(R"("statuscode":(\d+))");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
         const auto rxMatch = rex.match(jsonStr);
         if (rxMatch.hasMatch()) {
