@@ -888,106 +888,106 @@ Please authenticate using your browser.</source>
         <translation>දිගටම කරගෙන යන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="319"/>
+        <location filename="../src/gui/application.cpp" line="323"/>
         <source>Error accessing the configuration file</source>
         <translation>වින්‍යාස ගොනුවට ප්‍රවේශ වීමේ දෝෂයකි</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="320"/>
+        <location filename="../src/gui/application.cpp" line="324"/>
         <source>There was an error while accessing the configuration file at %1.</source>
         <translation>%1හි වින්‍යාස ගොනුවට ප්‍රවේශ වීමේදී දෝෂයක් ඇති විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="323"/>
+        <location filename="../src/gui/application.cpp" line="327"/>
         <source>Quit %1</source>
         <translation>%1න් ඉවත් වන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="590"/>
+        <location filename="../src/gui/application.cpp" line="594"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
         <translation>%1 අනුවාදය %2
 ගොනු සමමුහුර්ත කිරීමේ ඩෙස්ක්ටොප් උපයෝගීතාව.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="595"/>
+        <location filename="../src/gui/application.cpp" line="599"/>
         <source>For more information, see %1</source>
         <comment>link to homepage</comment>
         <translation>වැඩි විස්තර සඳහා, %1බලන්න</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="609"/>
+        <location filename="../src/gui/application.cpp" line="613"/>
         <source>Show the settings dialog while starting.</source>
         <translation>ආරම්භ කිරීමේදී සැකසුම් සංවාදය පෙන්වන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="610"/>
+        <location filename="../src/gui/application.cpp" line="614"/>
         <source>Quit the running instance.</source>
         <translation>ධාවන අවස්ථාවෙන් ඉවත් වන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="611"/>
+        <location filename="../src/gui/application.cpp" line="615"/>
         <source>Write log to file (use - to write to stdout).</source>
         <translation>ගොනුවට ලොගය ලියන්න (භාවිතා කරන්න - stdout වෙත ලිවීමට).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="612"/>
+        <location filename="../src/gui/application.cpp" line="616"/>
         <source>Write each sync log output in a new file in folder.</source>
         <translation>එක් එක් සමමුහුර්ත ලොග් ප්‍රතිදානය ෆෝල්ඩරයේ නව ගොනුවක ලියන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="613"/>
+        <location filename="../src/gui/application.cpp" line="617"/>
         <source>Flush the log file after every write.</source>
         <translation>සෑම ලිවීමකටම පසු ලොග් ගොනුව ෆ්ලෂ් කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="614"/>
+        <location filename="../src/gui/application.cpp" line="618"/>
         <source>Output debug-level messages in the log.</source>
         <translation>ලොගයේ නිදොස් මට්ටමේ පණිවිඩ ප්‍රතිදානය කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="615"/>
-        <location filename="../src/gui/application.cpp" line="616"/>
+        <location filename="../src/gui/application.cpp" line="619"/>
+        <location filename="../src/gui/application.cpp" line="620"/>
         <source>Override UI language.</source>
         <translation>UI භාෂාව අභිබවා යන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="617"/>
+        <location filename="../src/gui/application.cpp" line="621"/>
         <source>Use the given configuration folder.</source>
         <translation>ලබා දී ඇති වින්‍යාස ෆෝල්ඩරය භාවිතා කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="618"/>
+        <location filename="../src/gui/application.cpp" line="622"/>
         <source>Enable debug mode.</source>
         <translation>නිදොස් කිරීමේ මාදිලිය සබල කරන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>Virtual file system file to be opened (optional).</source>
         <translation>විවෘත කළ යුතු අතථ්‍ය ගොනු පද්ධති ගොනුව (විකල්ප).</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="621"/>
+        <location filename="../src/gui/application.cpp" line="625"/>
         <source>[&lt;vfs file&gt;]</source>
         <translation>[&lt;vfs file&gt;]</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="637"/>
+        <location filename="../src/gui/application.cpp" line="641"/>
         <source>--logfile and --logdir are mutually exclusive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="651"/>
+        <location filename="../src/gui/application.cpp" line="655"/>
         <source>Invalid path passed to --confdir</source>
         <translation>වලංගු නොවන මාර්ගයක් --confdir වෙත ගොස් ඇත</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="664"/>
+        <location filename="../src/gui/application.cpp" line="668"/>
         <source>Error: unknown language &quot;%1&quot; (use --list-languages to get a complete list of supported translations)</source>
         <translation>දෝෂය: නොදන්නා භාෂාව &quot;%1&quot; (සහාය දක්වන පරිවර්තන සම්පූර්ණ ලැයිස්තුවක් ලබා ගැනීමට --list-languages භාවිතා කරන්න)</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="673"/>
+        <location filename="../src/gui/application.cpp" line="677"/>
         <source>Available translations: %1</source>
         <translation>පවතින පරිවර්තන: %1</translation>
     </message>
@@ -1338,122 +1338,122 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderMan</name>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="438"/>
+        <location filename="../src/gui/folderman.cpp" line="416"/>
         <source>Could not reset folder state</source>
         <translation>ෆෝල්ඩර තත්ත්වය යළි පිහිටුවීමට නොහැකි විය</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="439"/>
+        <location filename="../src/gui/folderman.cpp" line="417"/>
         <source>An old sync journal &apos;%1&apos; was found, but could not be removed. Please make sure that no application is currently using it.</source>
         <translation>පැරණි සමමුහුර්ත සඟරාවක් &apos;%1&apos; හමු වූ නමුත් ඉවත් කළ නොහැකි විය. කරුණාකර කිසිදු යෙදුමක් දැනට එය භාවිතා නොකරන බවට වග බලා ගන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1070"/>
+        <location filename="../src/gui/folderman.cpp" line="1048"/>
         <source> (backup)</source>
         <translation> (උපස්ථ)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1075"/>
+        <location filename="../src/gui/folderman.cpp" line="1053"/>
         <source> (backup %1)</source>
         <translation> (උපස්ථ %1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1177"/>
+        <location filename="../src/gui/folderman.cpp" line="1155"/>
         <source>Undefined State.</source>
         <translation>නිර්වචනය නොකළ රාජ්යය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1180"/>
+        <location filename="../src/gui/folderman.cpp" line="1158"/>
         <source>Waiting to start syncing.</source>
         <translation>සමමුහුර්ත කිරීම ආරම්භ කිරීමට රැඳී සිටිමින්.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1183"/>
+        <location filename="../src/gui/folderman.cpp" line="1161"/>
         <source>Preparing for sync.</source>
         <translation>සමමුහුර්ත කිරීම සඳහා සූදානම් වෙමින්</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1186"/>
+        <location filename="../src/gui/folderman.cpp" line="1164"/>
         <source>Sync is running.</source>
         <translation>සමමුහුර්ත කිරීම ක්රියාත්මක වේ.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1191"/>
+        <location filename="../src/gui/folderman.cpp" line="1169"/>
         <source>Sync was successful, unresolved conflicts.</source>
         <translation>සමමුහුර්ත කිරීම සාර්ථක විය, නොවිසඳුණු ගැටුම්.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1193"/>
+        <location filename="../src/gui/folderman.cpp" line="1171"/>
         <source>Last Sync was successful.</source>
         <translation>අවසාන සමමුහුර්ත කිරීම සාර්ථක විය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1199"/>
+        <location filename="../src/gui/folderman.cpp" line="1177"/>
         <source>Setup Error.</source>
         <translation>පිහිටුවීමේ දෝෂය.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1202"/>
+        <location filename="../src/gui/folderman.cpp" line="1180"/>
         <source>User Abort.</source>
         <translation>පරිශීලක Abort.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1205"/>
+        <location filename="../src/gui/folderman.cpp" line="1183"/>
         <source>Sync is paused.</source>
         <translation>සමමුහුර්ත කිරීම විරාම කර ඇත.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1211"/>
+        <location filename="../src/gui/folderman.cpp" line="1189"/>
         <source>%1 (Sync is paused)</source>
         <translation>%1 (සමමුහුර්ත කිරීම විරාම කර ඇත)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1240"/>
+        <location filename="../src/gui/folderman.cpp" line="1218"/>
         <source>No valid folder selected!</source>
         <translation>වලංගු ෆෝල්ඩරයක් තෝරා නැත!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1248"/>
+        <location filename="../src/gui/folderman.cpp" line="1226"/>
         <source>The folder %1 is used in a folder sync connection!</source>
         <translation>ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවයක ෆෝල්ඩරය %1 භාවිතා වේ!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1255"/>
+        <location filename="../src/gui/folderman.cpp" line="1233"/>
         <source>The selected path does not exist!</source>
         <translation>තෝරාගත් මාර්ගය නොපවතී!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1259"/>
+        <location filename="../src/gui/folderman.cpp" line="1237"/>
         <source>The selected path is not a folder!</source>
         <translation>තෝරාගත් මාර්ගය ෆෝල්ඩරයක් නොවේ!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1263"/>
+        <location filename="../src/gui/folderman.cpp" line="1241"/>
         <source>You have no permission to write to the selected folder!</source>
         <translation>තෝරාගත් ෆෝල්ඩරයට ලිවීමට ඔබට අවසර නැත!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1278"/>
+        <location filename="../src/gui/folderman.cpp" line="1256"/>
         <source>There is already a sync from the server to this local folder. Please pick another local folder!</source>
         <translation>සේවාදායකයෙන් මෙම දේශීය ෆෝල්ඩරයට දැනටමත් සමමුහුර්ත කිරීමක් ඇත. කරුණාකර වෙනත් දේශීය ෆෝල්ඩරයක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1282"/>
+        <location filename="../src/gui/folderman.cpp" line="1260"/>
         <source>The local folder %1 already contains a folder used in a folder sync connection. Please pick another one!</source>
         <translation>දේශීය ෆෝල්ඩරය %1 හි දැනටමත් ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවයක භාවිතා කරන ලද ෆෝල්ඩරයක් අඩංගු වේ. කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1288"/>
+        <location filename="../src/gui/folderman.cpp" line="1266"/>
         <source>The local folder %1 is already contained in a folder used in a folder sync connection. Please pick another one!</source>
         <translation>දේශීය ෆෝල්ඩරය %1 දැනටමත් ෆෝල්ඩර සමමුහුර්ත සම්බන්ධතාවයක භාවිතා කරන ෆෝල්ඩරයක අඩංගු වේ. කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1295"/>
+        <location filename="../src/gui/folderman.cpp" line="1273"/>
         <source>%1 Please pick another one!</source>
         <translation>%1 කරුණාකර වෙනත් එකක් තෝරන්න!</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1378"/>
+        <location filename="../src/gui/folderman.cpp" line="1356"/>
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
@@ -1462,7 +1462,7 @@ Please consider removing this folder from the account and adding it again.</sour
 කරුණාකර මෙම ෆෝල්ඩරය ගිණුමෙන් ඉවත් කර එය නැවත එක් කිරීමට සලකා බලන්න.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1456"/>
+        <location filename="../src/gui/folderman.cpp" line="1434"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"/>
     </message>
