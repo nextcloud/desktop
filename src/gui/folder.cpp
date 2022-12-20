@@ -1387,6 +1387,32 @@ void Folder::removeLocalE2eFiles()
         slotTerminateSync();
     }
 
+    for (const auto &e2eFilePath : qAsConst(e2eFoldersToBlacklist)) {
+         if (!_journal.deleteFileRecord(e2eFilePath, true)) {
+             qCWarning(lcFolder) << "Failed to delete file record from local DB" << e2eFilePath
+                                 << "it might have already been deleted.";
+             continue;
+         }
+
+         qCDebug(lcFolder) << "Removing local copy of" << e2eFilePath;
+
+         const auto fullPath = QString(path() + e2eFilePath);
+         const QFileInfo pathInfo(fullPath);
+
+         if (pathInfo.isDir() && pathInfo.exists()) {
+             QDir dir(fullPath);
+             if (!dir.removeRecursively()) {
+                 qCWarning(lcFolder) << "Unable to remove directory and contents at:" << fullPath;
+             }
+         } else if (pathInfo.exists()) {
+             if (!QFile::remove(fullPath)) {
+                 qCWarning(lcFolder) << "Unable to delete:" << fullPath;
+             }
+         } else {
+             qCWarning(lcFolder) << "Unable to delete:" << fullPath << "as it does not exist!";
+         }
+     }
+
     for (const auto &path : qAsConst(e2eFoldersToBlacklist)) {
         _journal.schedulePathForRemoteDiscovery(path);
         schedulePathForLocalDiscovery(path);
