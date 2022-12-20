@@ -465,15 +465,6 @@ void PropagateDownloadFile::start()
         return;
     }
 
-    SyncJournalFileRecord record;
-    const auto etagChangedButFileHasNotChanged = propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid()
-        && (record._etag != _item->_etag && record._modtime == _item->_modtime);
-
-    if (etagChangedButFileHasNotChanged) {
-        updateMetadata(false);
-        return;
-    }
-
     const auto account = propagator()->account();
     if (!account->capabilities().clientSideEncryptionAvailable() ||
         !parentRec.isValid() ||
@@ -667,7 +658,6 @@ void PropagateDownloadFile::startDownload()
     }
     _tmpFile.setFileName(propagator()->fullLocalPath(tmpFileName));
     _resumeStart = _tmpFile.size();
-
     if (_resumeStart > 0 && _resumeStart == _item->_size) {
         qCInfo(lcPropagateDownload) << "File is already complete, no need to download";
         downloadFinished();
@@ -1114,6 +1104,19 @@ void PropagateDownloadFile::transmissionChecksumValidated(const QByteArray &chec
 void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
 {
     _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
+
+    SyncJournalFileRecord record;
+    const auto isFakeConflictForChangedEtag = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
+        && (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid())
+        && (record._modtime == _item->_modtime && record._etag != _item->_etag)
+        && (!record._checksumHeader.isEmpty() && record._checksumHeader == _item->_checksumHeader);
+
+    if (isFakeConflictForChangedEtag) {
+        FileSystem::remove(_tmpFile.fileName());
+        _item->_instruction = CSYNC_INSTRUCTION_SYNC;
+        updateMetadata(false);
+        return;
+    }
 
     if (_isEncrypted) {
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
