@@ -1107,10 +1107,9 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 
     const auto localFilePath = propagator()->fullLocalPath(_item->_file);
     SyncJournalFileRecord record;
-    if (FileSystem::fileExists(localFilePath)
+    if (_item->_instruction != CSYNC_INSTRUCTION_CONFLICT && FileSystem::fileExists(localFilePath)
         && (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid())
         && (record._modtime == _item->_modtime && record._etag != _item->_etag)) {
-
         auto computeChecksum = new ComputeChecksum(this);
         computeChecksum->setChecksumType(checksumType);
         connect(computeChecksum, &ComputeChecksum::done, this, &PropagateDownloadFile::localFileContentChecksumComputed);
@@ -1125,7 +1124,6 @@ void PropagateDownloadFile::localFileContentChecksumComputed(const QByteArray &c
 {
     if (_item->_checksumHeader == makeChecksumHeader(checksumType, checksum)) {
         FileSystem::remove(_tmpFile.fileName());
-        _item->_instruction = CSYNC_INSTRUCTION_SYNC;
         updateMetadata(false);
         return;
     }
