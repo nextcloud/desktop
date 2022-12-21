@@ -1,0 +1,5 @@
+Bugfix: Fix the display of the version string for released builds
+
+We removed a trailing `-` in the version string of released clients.
+
+https://github.com/owncloud/client/pull/10329

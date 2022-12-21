@@ -39,3 +39,13 @@ QString OCC::Version::suffix()
 {
     return QStringLiteral("@MIRALL_VERSION_SUFFIX@");
 }
+
+QString OCC::Version::displayString()
+{
+    // ensure a well-defined version string
+    constexpr std::string_view versionString("@MIRALL_VERSION_STRING@");
+    constexpr std::string_view versionSuffix("@MIRALL_VERSION_SUFFIX@");
+    static_assert(versionString.find("@MIRALL_VERSION_MAJOR@.@MIRALL_VERSION_MINOR@.@MIRALL_VERSION_PATCH@") == 0);
+    static_assert(versionString.rfind("@MIRALL_VERSION_SUFFIX@") == versionString.size() - versionSuffix.size());
+    return QStringLiteral("@MIRALL_VERSION_STRING@");
+}

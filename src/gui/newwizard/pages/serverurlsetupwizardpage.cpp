@@ -36,6 +36,8 @@ ServerUrlSetupWizardPage::ServerUrlSetupWizardPage(const QUrl &serverUrl)
     if (!Theme::instance()->wizardUrlPostfix().isEmpty()) {
         _ui->urlLineEdit->setPostfix(Theme::instance()->wizardUrlPostfix());
     }
+
+    connect(_ui->urlLineEdit, &QLineEdit::textChanged, this, &AbstractSetupWizardPage::contentChanged);
 }
 
 QString ServerUrlSetupWizardPage::userProvidedUrl() const

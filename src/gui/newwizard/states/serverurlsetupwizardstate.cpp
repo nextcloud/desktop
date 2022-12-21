@@ -106,9 +106,9 @@ void ServerUrlSetupWizardState::evaluatePage()
         _context->resetAccessManager();
 
         // first, we must resolve the actual server URL
-        auto resolveJob = Jobs::ResolveUrlJobFactory(_context->accessManager()).startJob(serverUrl);
+        auto resolveJob = Jobs::ResolveUrlJobFactory(_context->accessManager()).startJob(serverUrl, this);
 
-        connect(resolveJob, &CoreJob::finished, this, [this, resolveJob]() {
+        connect(resolveJob, &CoreJob::finished, resolveJob, [this, resolveJob]() {
             resolveJob->deleteLater();
 
             if (!resolveJob->success()) {
@@ -123,7 +123,7 @@ void ServerUrlSetupWizardState::evaluatePage()
                 Q_EMIT evaluationSuccessful();
             } else {
                 // next, we need to find out which kind of authentication page we have to present to the user
-                auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager(), this).startJob(resolvedUrl);
+                auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(resolvedUrl, this);
 
                 connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, resolvedUrl]() {
                     authTypeJob->deleteLater();

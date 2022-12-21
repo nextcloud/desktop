@@ -316,7 +316,7 @@ CmdOptions parseOptions(const QStringList &app_args)
         return option;
     };
 
-    auto silentOption = addOption({ { QStringLiteral("s"), QStringLiteral("silten") }, QStringLiteral("Don't be so verbose.") });
+    auto silentOption = addOption({ { QStringLiteral("s"), QStringLiteral("silent") }, QStringLiteral("Don't be so verbose.") });
     auto httpproxyOption = addOption({ { QStringLiteral("httpproxy") }, QStringLiteral("Specify a http proxy to use."), QStringLiteral("http://server:port") });
     auto trustOption = addOption({ { QStringLiteral("trust") }, QStringLiteral("Trust the SSL certification") });
     auto excludeOption = addOption({ { QStringLiteral("exclude") }, QStringLiteral("Path to an exclude list [file]"), QStringLiteral("file") });
@@ -464,7 +464,7 @@ int main(int argc, char **argv)
 
     ctx.account->setUrl(baseUrl);
 
-    auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url());
+    auto *checkServerJob = CheckServerJobFactory(ctx.account->accessManager()).startJob(ctx.account->url(), qApp);
 
     QObject::connect(checkServerJob, &CoreJob::finished, [ctx, checkServerJob] {
         if (checkServerJob->success()) {

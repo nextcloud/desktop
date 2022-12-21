@@ -13,6 +13,7 @@
  */
 
 #include "logger.h"
+#include "configfile.h"
 #include "theme.h"
 
 #include <QCoreApplication>
@@ -65,7 +66,7 @@ Logger *Logger::instance()
 
 Logger::Logger(QObject *parent)
     : QObject(parent)
-    , _maxLogFiles(minLogsToKeepC)
+    , _maxLogFiles(std::max(ConfigFile().automaticDeleteOldLogs(), minLogsToKeepC))
 {
     qSetMessagePattern(loggerPattern());
     _crashLog.resize(crashLogSizeC);
@@ -175,7 +176,7 @@ void Logger::setLogFile(const QString &name)
 
 void Logger::setMaxLogFiles(int i)
 {
-    _maxLogFiles = std::max(i, minLogsToKeepC);
+    _maxLogFiles = std::max(i, std::max(ConfigFile().automaticDeleteOldLogs(), minLogsToKeepC));
 }
 
 void Logger::setLogDir(const QString &dir)
@@ -304,18 +305,6 @@ void Logger::rotateLog()
         _logFile.setFileTime(now, QFileDevice::FileTime::FileBirthTime);
 
         QtConcurrent::run([now, previousLog, dir, maxLogFiles = _maxLogFiles] {
-            // Expire old log files and deal with conflicts
-            auto files = dir.entryList(QStringList(QStringLiteral("*%1-*.log.gz").arg(qApp->applicationName())), QDir::Files, QDir::Name);
-            if (files.size() > maxLogFiles) {
-                std::sort(files.begin(), files.end(), std::greater<QString>());
-                // remove the maxLogFiles newest, we keep them
-                files.erase(files.begin(), files.begin() + maxLogFiles);
-                for (const auto &s : files) {
-                    if (!QFile::remove(dir.absoluteFilePath(s))) {
-                        std::cerr << "Failed to remove: " << qPrintable(s) << std::endl;
-                    }
-                }
-            }
             // Compress the previous log file.
             if (!previousLog.isEmpty() && QFileInfo::exists(previousLog)) {
                 QString compressedName = QStringLiteral("%1.gz").arg(previousLog);
@@ -323,6 +312,21 @@ void Logger::rotateLog()
                     QFile::remove(previousLog);
                 } else {
                     QFile::remove(compressedName);
+                }
+            }
+
+            // Expire old log files and deal with conflicts
+            {
+                auto oldLogFiles = dir.entryList(QStringList(QStringLiteral("*%1-*.log.gz").arg(qApp->applicationName())), QDir::Files, QDir::Name);
+
+                // keeping the last maxLogFiles files in total (need to subtract one from maxLogFiles to ensure the limit)
+                std::sort(oldLogFiles.begin(), oldLogFiles.end(), std::greater<QString>());
+                oldLogFiles.erase(oldLogFiles.begin(), oldLogFiles.begin() + std::min(maxLogFiles - 1, oldLogFiles.size()));
+
+                for (const auto &s : oldLogFiles) {
+                    if (!QFile::remove(dir.absoluteFilePath(s))) {
+                        std::cerr << "warning: failed to remove old log file" << qPrintable(s) << std::endl;
+                    }
                 }
             }
         });

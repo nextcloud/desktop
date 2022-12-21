@@ -131,37 +131,6 @@ bool DiskFileModifier::applyModifications()
     return helper.succeeded;
 }
 
-bool DiskFileModifier::applyModificationsAndSync(FakeFolder &ff, OCC::Vfs::Mode mode)
-{
-    if (mode == OCC::Vfs::Off || mode == OCC::Vfs::WithSuffix) { // Classic mode:
-        if (!applyModifications()) {
-            return false;
-        }
-        return ff.syncOnce();
-    }
-
-    // Non-classic mode:
-
-    HelperProcess p(_rootDir, _processArguments);
-    _processArguments.clear();
-
-    do {
-        // process any pending events
-        QThread::currentThread()->eventDispatcher()->processEvents(QEventLoop::AllEvents);
-        // wait a bit to get the helper started with it's work
-        std::this_thread::sleep_for(50ms);
-        // process any output from the helper
-        QThread::currentThread()->eventDispatcher()->processEvents(QEventLoop::AllEvents);
-        // now we might need to sync
-        if (!ff.syncOnce()) {
-            return false;
-        }
-        QThread::currentThread()->eventDispatcher()->processEvents(QEventLoop::AllEvents);
-    } while (!p.finished);
-
-    return p.succeeded;
-}
-
 FileInfo FileInfo::A12_B12_C12_S12()
 {
     FileInfo fi { QString {}, {

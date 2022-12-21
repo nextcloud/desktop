@@ -36,6 +36,8 @@ BasicCredentialsSetupWizardPage::BasicCredentialsSetupWizardPage(const QUrl &ser
     connect(this, &AbstractSetupWizardPage::pageDisplayed, this, [this]() {
         _ui->basicLoginWidget->setFocus();
     });
+
+    connect(_ui->basicLoginWidget, &AbstractLoginWidget::contentChanged, this, &AbstractSetupWizardPage::contentChanged);
 }
 
 BasicCredentialsSetupWizardPage *BasicCredentialsSetupWizardPage::createForWebFinger(const QUrl &serverUrl, const QString &username)

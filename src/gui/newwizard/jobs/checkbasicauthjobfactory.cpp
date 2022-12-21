@@ -25,10 +25,8 @@
 
 namespace OCC::Wizard::Jobs {
 
-CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url)
+CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url, QObject *parent)
 {
-    auto *job = new CoreJob;
-
     QNetworkRequest req(Utility::concatUrlPath(url, Theme::instance()->webDavPath()));
 
     req.setAttribute(QNetworkRequest::AuthenticationReuseAttribute, QNetworkRequest::Manual);
@@ -36,21 +34,21 @@ CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url)
     QString authorizationHeader = QStringLiteral("Basic %1").arg(QString::fromLocal8Bit(QStringLiteral("%1:%2").arg(_username, _password).toLocal8Bit().toBase64()));
     req.setRawHeader("Authorization", authorizationHeader.toLocal8Bit());
 
-    auto *reply = nam()->sendCustomRequest(req, "PROPFIND");
+    auto *job = new CoreJob(nam()->sendCustomRequest(req, "PROPFIND"), parent);
 
-    connect(reply, &QNetworkReply::finished, job, [reply, job]() {
-        switch (reply->error()) {
+    connect(job->reply(), &QNetworkReply::finished, job, [job]() {
+        switch (job->reply()->error()) {
         case QNetworkReply::NoError:
             setJobResult(job, true);
             return;
         case QNetworkReply::AuthenticationRequiredError:
-            if (OC_ENSURE(reply->rawHeader(QByteArrayLiteral("WWW-Authenticate")).toLower().contains("basic "))) {
+            if (OC_ENSURE(job->reply()->rawHeader(QByteArrayLiteral("WWW-Authenticate")).toLower().contains("basic "))) {
                 setJobResult(job, false);
                 return;
             }
             Q_FALLTHROUGH();
         default:
-            setJobError(job, tr("Invalid reply received from server"), reply);
+            setJobError(job, tr("Invalid reply received from server"));
             return;
         }
     });
@@ -60,8 +58,8 @@ CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url)
     return job;
 }
 
-CheckBasicAuthJobFactory::CheckBasicAuthJobFactory(QNetworkAccessManager *nam, const QString &username, const QString &password, QObject *parent)
-    : AbstractCoreJobFactory(nam, parent)
+CheckBasicAuthJobFactory::CheckBasicAuthJobFactory(QNetworkAccessManager *nam, const QString &username, const QString &password)
+    : AbstractCoreJobFactory(nam)
     , _username(username)
     , _password(password)
 {

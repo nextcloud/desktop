@@ -48,7 +48,7 @@ void WebFingerSetupWizardState::evaluatePage()
         qDebug() << "WebFinger server sent href" << webFinger->href();
 
         // next, we need to find out which kind of authentication page we have to present to the user
-        auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager(), this).startJob(webFinger->href());
+        auto authTypeJob = DetermineAuthTypeJobFactory(_context->accessManager()).startJob(webFinger->href(), this);
 
         connect(authTypeJob, &CoreJob::finished, authTypeJob, [this, authTypeJob, webFingerSetupWizardPage, webFinger]() {
             authTypeJob->deleteLater();

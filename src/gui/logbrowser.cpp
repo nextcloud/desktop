@@ -17,21 +17,22 @@
 #include "stdio.h"
 #include <iostream>
 
-#include <QDialogButtonBox>
-#include <QLayout>
-#include <QPushButton>
-#include <QLabel>
-#include <QDir>
-#include <QTextStream>
-#include <QMessageBox>
-#include <QCoreApplication>
-#include <QSettings>
 #include <QAction>
+#include <QCoreApplication>
 #include <QDesktopServices>
+#include <QDialogButtonBox>
+#include <QDir>
+#include <QLabel>
+#include <QLayout>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QSettings>
+#include <QTextStream>
+#include <optional>
 
 #include "configfile.h"
-#include "logger.h"
 #include "guiutility.h"
+#include "logger.h"
 #include "ui_logbrowser.h"
 
 namespace OCC {
@@ -52,8 +53,8 @@ LogBrowser::LogBrowser(QWidget *parent)
     connect(ui->enableLoggingButton, &QCheckBox::toggled, this, &LogBrowser::togglePermanentLogging);
 
     ui->httpLogButton->setChecked(ConfigFile().logHttp());
-    connect(ui->httpLogButton, &QCheckBox::toggled, this, [](bool b) {
-        ConfigFile().setLogHttp(b);
+    connect(ui->httpLogButton, &QCheckBox::toggled, this, [](bool enable) {
+        ConfigFile().configureHttpLogging(std::make_optional(enable));
     });
 
     ui->spinBox_numberOflogsToKeep->setValue(ConfigFile().automaticDeleteOldLogs());

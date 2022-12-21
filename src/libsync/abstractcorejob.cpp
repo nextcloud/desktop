@@ -17,8 +17,8 @@
 
 using namespace OCC;
 
-AbstractCoreJobFactory::AbstractCoreJobFactory(QNetworkAccessManager *nam, QObject *parent)
-    : QObject(parent)
+AbstractCoreJobFactory::AbstractCoreJobFactory(QNetworkAccessManager *nam)
+    : QObject()
     , _nam(nam)
 {
 }
@@ -37,9 +37,9 @@ void AbstractCoreJobFactory::setJobResult(CoreJob *job, const QVariant &result)
     job->setResult(result);
 }
 
-void AbstractCoreJobFactory::setJobError(CoreJob *job, const QString &errorMessage, QNetworkReply *reply)
+void AbstractCoreJobFactory::setJobError(CoreJob *job, const QString &errorMessage)
 {
-    job->setError(errorMessage, reply);
+    job->setError(errorMessage);
 }
 
 const QVariant &CoreJob::result() const
@@ -72,19 +72,21 @@ void CoreJob::setResult(const QVariant &result)
     Q_EMIT finished();
 }
 
-void CoreJob::setError(const QString &errorMessage, QNetworkReply *reply)
+void CoreJob::setError(const QString &errorMessage)
 {
     assertNotFinished();
 
     _errorMessage = errorMessage;
-    _reply = reply;
 
     Q_EMIT finished();
 }
 
-CoreJob::CoreJob(QObject *parent)
+CoreJob::CoreJob(QNetworkReply *reply, QObject *parent)
     : QObject(parent)
+    , _reply(reply)
 {
+    Q_ASSERT(!qobject_cast<AbstractCoreJobFactory *>(parent));
+    _reply->setParent(this);
 }
 
 void CoreJob::assertNotFinished()

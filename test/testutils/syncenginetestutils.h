@@ -143,8 +143,7 @@ public:
     void rename(const QString &from, const QString &to) override;
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
 
-    bool applyModifications();
-    Q_REQUIRED_RESULT bool applyModificationsAndSync(FakeFolder &ff, OCC::Vfs::Mode mode);
+    Q_REQUIRED_RESULT bool applyModifications();
 
     // prevent implicit cast to quint64
     template <typename T>
@@ -640,8 +639,10 @@ public:
 
     Q_REQUIRED_RESULT bool applyLocalModificationsAndSync()
     {
-        auto mode = _syncEngine->syncOptions()._vfs->mode();
-        return _localModifier.applyModificationsAndSync(*this, mode);
+        if (!_localModifier.applyModifications()) {
+            return false;
+        }
+        return syncOnce();
     }
 
     Q_REQUIRED_RESULT bool applyLocalModificationsWithoutSync()

@@ -63,15 +63,9 @@ QString blackTheme()
     return QStringLiteral("black");
 }
 
-constexpr bool strings_equal(char const *a, char const *b)
-{
-    return *a == *b && (*a == '\0' || strings_equal(a + 1, b + 1));
-}
-
 constexpr bool isVanilla()
 {
-    // TODO: c++17 stringview
-    return strings_equal(APPLICATION_SHORTNAME, "ownCloud");
+    return std::string_view(APPLICATION_SHORTNAME) == "ownCloud";
 }
 }
 namespace OCC {

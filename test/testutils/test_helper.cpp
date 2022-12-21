@@ -15,10 +15,12 @@
 #include <QCoreApplication>
 #include <QDir>
 #include <QFile>
+#include <QScopeGuard>
 
 #include <iostream>
 #include <vector>
 
+#include <common/utility.h>
 #include <libsync/filesystem.h>
 
 
@@ -30,6 +32,88 @@
  */
 
 using namespace std;
+
+namespace {
+bool writeToFile(std::string_view command, const QString &fileName, QIODevice::OpenMode mode, const QByteArray &data)
+{
+#ifndef Q_OS_WIN
+    QFile f(fileName);
+    if (!f.open(mode)) {
+        cerr << "Error: cannot open file '" << qPrintable(fileName) << "' for " << command << " command: "
+             << qPrintable(f.errorString()) << endl;
+        return false;
+    }
+    const auto written = f.write(data);
+
+    if (mode & QFile::Append) {
+        if (!f.seek(f.size())) {
+            cerr << "Error: cannot seek to EOF in '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    }
+
+    if (written != data.size()) {
+        cerr << "Error: wrote " << written << " bytes to '" << qPrintable(fileName) << "' instead of requested " << data.size() << " bytes" << endl;
+        return false;
+    }
+    f.close();
+#else
+    // Qt bug: [INSERT BUG HERE]
+    // When opening a cloud file results in a cfapi error, Qt does not report an error.
+    // Writes will succeed but not be committed to the file.
+    // Reads will always return 0
+
+    const QFileInfo info(fileName);
+    DWORD creation = OPEN_ALWAYS;
+    if (mode & QIODevice::Truncate) {
+        creation = TRUNCATE_EXISTING;
+        if (!info.exists()) {
+            cerr << "Error: truncating a non existing file '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    } else if (mode & QIODevice::Append) {
+        creation = OPEN_EXISTING;
+        if (!info.exists()) {
+            cerr << "Error: appending to non existing file '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    }
+    auto handle = CreateFileW(reinterpret_cast<const wchar_t *>(fileName.utf16()),
+        GENERIC_WRITE,
+        FILE_SHARE_WRITE | FILE_SHARE_READ | FILE_SHARE_DELETE,
+        {},
+        creation,
+        FILE_ATTRIBUTE_NORMAL,
+        nullptr);
+
+    if (handle == INVALID_HANDLE_VALUE) {
+        const auto error = OCC::Utility::formatWinError(GetLastError());
+        cerr << "Error: cannot open file '" << qPrintable(fileName) << "' for " << command << " command: "
+             << qPrintable(error) << endl;
+        return false;
+    }
+    // cleanup the handle when leaving the scope
+    auto close = qScopeGuard([handle] {
+        CloseHandle(handle);
+    });
+    if (mode & QFile::Append) {
+        LARGE_INTEGER pos;
+        pos.QuadPart = info.size();
+        if (SetFilePointer(handle, pos.LowPart, &pos.HighPart, FILE_BEGIN) == INVALID_SET_FILE_POINTER) {
+            cerr << "Error: cannot seek to EOF in '" << qPrintable(fileName) << "' for " << command << " command" << endl;
+            return false;
+        }
+    }
+    DWORD bytesWritten;
+    if (!WriteFile(handle, data.constData(), data.size(), &bytesWritten, nullptr) || bytesWritten != data.size()) {
+        const auto error = OCC::Utility::formatWinError(GetLastError());
+        cerr << "Error: wrote " << bytesWritten << " bytes to '" << qPrintable(fileName) << "' instead of requested " << data.size() << " bytes. Error: " << qPrintable(error) << endl;
+        return false;
+    }
+#endif
+    return true;
+}
+}
 
 /**
  * @brief The abstract Command class. You know, from the pattern.
@@ -114,20 +198,8 @@ public:
     bool execute(QDir &rootDir) const override
     {
         cerr << name << endl;
-        QFile f(rootDir.filePath(_fileName));
-        if (!f.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-            cerr << "Error: cannot open file '" << qPrintable(_fileName) << "' for " << name << " command: "
-                 << qPrintable(f.errorString()) << endl;
-            return false;
-        }
         int count = _count == -1 ? 32 : _count;
-        auto written = f.write(QByteArray(count, _ch));
-        if (written != count) {
-            cerr << "Error: wrote " << written << " bytes to '" << qPrintable(_fileName) << "' instead of requested " << _count << " bytes" << endl;
-            return false;
-        }
-        f.close();
-        return true;
+        return writeToFile(name, rootDir.filePath(_fileName), QIODevice::WriteOnly | QIODevice::Truncate, QByteArray(count, _ch));
     }
 
     static Command *parse(QStringListIterator &it)
@@ -222,28 +294,14 @@ public:
     bool execute(QDir &rootDir) const override
     {
         cerr << name << endl;
-        QFile f(rootDir.filePath(_fileName));
-        if (!f.open(QIODevice::WriteOnly | QIODevice::Append)) {
-            cerr << "Error: cannot open file '" << qPrintable(_fileName) << "' for " << name << " command: "
-                 << qPrintable(f.errorString()) << endl;
-            return false;
-        }
+
         if (_ch == '\0') {
             cerr << "Error: appending a NUL byte is probably a failure somewhere else." << endl;
             return false;
         }
         cerr << ".... file: " << qPrintable(_fileName) << ", byte: " << _ch << endl;
-        if (!f.seek(f.size())) {
-            cerr << "Error: cannot seek to EOF in '" << qPrintable(_fileName) << "' for " << name << " command";
-            return false;
-        }
-        auto written = f.write(QByteArray(1, _ch));
-        if (written != 1) {
-            cerr << "Error: wrote " << written << " bytes to '" << qPrintable(_fileName) << "' instead of requested 1 bytes" << endl;
-            return false;
-        }
-        f.close();
-        return true;
+        return writeToFile(name, rootDir.filePath(_fileName), QIODevice::WriteOnly | QIODevice::Append, QByteArray(1, _ch));
+        ;
     }
 
     static Command *parse(QStringListIterator &it)
@@ -283,23 +341,12 @@ public:
     {
         cerr << name << " '" << qPrintable(_fileName) << "' with "
              << _count << " " << _ch << " characters" << endl;
-        QFile f(rootDir.filePath(_fileName));
-        if (f.exists()) {
+        if (QFileInfo::exists(rootDir.filePath(_fileName))) {
             cerr << "Error: file '" << qPrintable(_fileName) << "' for " << name << " command already exists" << endl;
             return false;
         }
-        if (!f.open(QIODevice::WriteOnly)) {
-            cerr << "Error: cannot open file '" << qPrintable(_fileName) << "' for " << name << " command: "
-                 << qPrintable(f.errorString()) << endl;
-            return false;
-        }
-        auto written = f.write(QByteArray(_count, _ch));
-        if (written != _count) {
-            cerr << "Error: wrote " << written << " bytes to '" << qPrintable(_fileName) << "' instead of requested " << _count << " bytes" << endl;
-            return false;
-        }
-        f.close();
-        return true;
+
+        return writeToFile(name, rootDir.filePath(_fileName), QIODevice::WriteOnly, QByteArray(_count, _ch));
     }
 
     static Command *parse(QStringListIterator &it)

@@ -23,9 +23,9 @@ class CheckBasicAuthJobFactory : public AbstractCoreJobFactory
     Q_OBJECT
 
 public:
-    CheckBasicAuthJobFactory(QNetworkAccessManager *nam, const QString &username, const QString &password, QObject *parent = nullptr);
+    CheckBasicAuthJobFactory(QNetworkAccessManager *nam, const QString &username, const QString &password);
 
-    CoreJob *startJob(const QUrl &url) override;
+    CoreJob *startJob(const QUrl &url, QObject *parent) override;
 
 private:
     QString _username;

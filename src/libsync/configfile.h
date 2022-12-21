@@ -15,14 +15,17 @@
 #ifndef CONFIGFILE_H
 #define CONFIGFILE_H
 
+#include "common/result.h"
 #include "owncloudlib.h"
-#include <memory>
+
 #include <QSharedPointer>
 #include <QSettings>
 #include <QString>
 #include <QVariant>
+
 #include <chrono>
-#include "common/result.h"
+#include <memory>
+#include <optional>
 
 class QWidget;
 class QHeaderView;
@@ -105,8 +108,13 @@ public:
     void setAutomaticDeleteOldLogs(int number);
 
     /** Whether to log http traffic */
-    void setLogHttp(bool b);
     bool logHttp() const;
+
+    /**
+     * Set up HTTP logging.
+     * This method should be called during application startup to make sure no messages are missed.
+     */
+    void configureHttpLogging(std::optional<bool> enable = std::nullopt);
 
     // Whether experimental UI options should be shown
     bool showExperimentalOptions() const;

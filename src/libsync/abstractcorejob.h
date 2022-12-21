@@ -37,7 +37,7 @@ class OWNCLOUDSYNC_EXPORT CoreJob : public QObject
     friend class AbstractCoreJobFactory;
 
 public:
-    explicit CoreJob(QObject *parent = nullptr);
+    explicit CoreJob(QNetworkReply *reply, QObject *parent);
 
     [[nodiscard]] const QVariant &result() const;
 
@@ -59,9 +59,8 @@ protected:
      * Set job error details. This emits the finished() signal, and marks the job as failed.
      * The job result or error can be set only once.
      * @param errorMessage network error or other suitable error message
-     * @param reply reply received from server
      */
-    void setError(const QString &errorMessage, QNetworkReply *reply = nullptr);
+    void setError(const QString &errorMessage);
 
 Q_SIGNALS:
     /**
@@ -96,6 +95,7 @@ private:
  */
 class OWNCLOUDSYNC_EXPORT AbstractCoreJobFactory : public QObject
 {
+    // TODO: 4.0 don't inherit QObject
     Q_OBJECT
 
 public:
@@ -104,7 +104,7 @@ public:
      * @param nam network access manager used to send the requests
      * @param parent optional parent which will be set at this object's parent as well as all jobs' parent.
      */
-    explicit AbstractCoreJobFactory(QNetworkAccessManager *nam, QObject *parent = nullptr);
+    explicit AbstractCoreJobFactory(QNetworkAccessManager *nam);
     ~AbstractCoreJobFactory() override;
 
     /**
@@ -112,7 +112,7 @@ public:
      * @param url URL to send request to
      * @return job
      */
-    virtual CoreJob *startJob(const QUrl &url) = 0;
+    virtual CoreJob *startJob(const QUrl &url, QObject *parent) = 0;
 
 protected:
     [[nodiscard]] QNetworkAccessManager *nam() const;
@@ -127,9 +127,8 @@ protected:
     /**
      * Set job error details. Needed because the jobs' methods are protected, and this class is a friend of Job.
      * @param errorMessage network error or other suitable error message
-     * @param networkError network error instance or NoError if the error is not caused by a network issue
      */
-    static void setJobError(CoreJob *job, const QString &errorMessage, QNetworkReply *reply);
+    static void setJobError(CoreJob *job, const QString &errorMessage);
 
     /**
      * Factory to create QNetworkRequests with properly set timeout.

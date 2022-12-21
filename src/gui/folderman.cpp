@@ -253,13 +253,6 @@ int FolderMan::setupFolders()
 
     auto settings = ConfigFile::settingsWithGroup(QStringLiteral("Accounts"));
     const auto &accountsWithSettings = settings->childGroups();
-    if (accountsWithSettings.isEmpty()) {
-        int r = setupFoldersMigration();
-        if (r > 0) {
-            AccountManager::instance()->save(false); // don't save credentials, they had not been loaded from keychain
-        }
-        return r;
-    }
 
     qCInfo(lcFolderMan) << "Setup folders from settings file";
 
@@ -380,21 +373,6 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
         }
         settings.endGroup();
     }
-}
-
-int FolderMan::setupFoldersMigration()
-{
-    _folderConfigPath = ConfigFile::configPath() + QLatin1String("folders");
-
-    qCInfo(lcFolderMan) << "Setup folders from " << _folderConfigPath << "(migration)";
-
-    QDir dir(_folderConfigPath);
-    //We need to include hidden files just in case the alias starts with '.'
-    dir.setFilter(QDir::Files | QDir::Hidden);
-    const auto &list = dir.entryList();
-    OC_ENFORCE_X(list.isEmpty(), "Migration from < 2.0 is no longer supported");
-    // return the number of valid folders.
-    return _folders.size();
 }
 
 void FolderMan::backwardMigrationSettingsKeys(QStringList *deleteKeys, QStringList *ignoreKeys)
