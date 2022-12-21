@@ -218,6 +218,11 @@ void AccountSettings::createAccountToolbox()
     connect(_toggleSignInOutAction, &QAction::triggered, this, &AccountSettings::slotToggleSignInState);
     menu->addAction(_toggleSignInOutAction);
 
+    _toggleReconnect = menu->addAction(tr("Reconnect"));
+    connect(_toggleReconnect, &QAction::triggered, this, [this] {
+        _accountState->checkConnectivity(true);
+    });
+
     QAction *action = new QAction(tr("Remove"), this);
     menu->addAction(action);
     connect(action, &QAction::triggered, this, &AccountSettings::slotDeleteAccount);
@@ -916,8 +921,9 @@ void AccountSettings::slotAccountStateChanged()
     // sync user interface buttons.
     refreshSelectiveSyncStatus();
 
-    /* set the correct label for the Account toolbox button */
     if (_accountState) {
+        _toggleReconnect->setEnabled(!_accountState->isConnected());
+        // set the correct label for the Account toolbox button
         if (_accountState->isSignedOut()) {
             _toggleSignInOutAction->setText(tr("Log in"));
         } else {

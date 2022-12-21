@@ -1,0 +1,6 @@
+Enhancement: Add a `Reconnect` option to the account menu, when dissconnected
+
+We added a `Reconnect` button to the account menu, this allows to trigger a manual reconnect try.
+Note: The client would try to reconnect by itself at some point.
+
+https://github.com/owncloud/client/issues/10294

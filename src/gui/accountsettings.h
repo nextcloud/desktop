@@ -105,7 +105,7 @@ private:
     AccountStatePtr _accountState;
     QuotaInfo *_quotaInfo = nullptr;
     QAction *_toggleSignInOutAction;
-    QAction *_addAccountAction;
+    QAction *_toggleReconnect;
 
     // needed to make sure we show only one dialog at a time
     QPointer<LoginRequiredDialog> _askForOAuthLoginDialog = nullptr;
