@@ -188,6 +188,7 @@ void AccountState::setState(State state)
             // Check if we are actually down for maintenance.
             // To do this we must clear the connection validator that just
             // produced the 503. It's finished anyway and will delete itself.
+            _connectionValidator->deleteLater();
             _connectionValidator.clear();
             checkConnectivity();
         }
@@ -380,6 +381,7 @@ void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status sta
         // this code should only be needed when upgrading from a < 3.0 release where capabilities where not cached
         // The last check was _waitingForNewCredentials = true so we only checked ValidateServer
         // now check again and fetch capabilities
+        _connectionValidator->deleteLater();
         _connectionValidator.clear();
         checkConnectivity();
         return;
@@ -498,7 +500,7 @@ void AccountState::slotCredentialsAsked(AbstractCredentials *credentials)
         // When new credentials become available we always want to restart the
         // connection validation, even if it's currently running.
         _connectionValidator->deleteLater();
-        _connectionValidator = nullptr;
+        _connectionValidator.clear();
     }
 
     checkConnectivity();
