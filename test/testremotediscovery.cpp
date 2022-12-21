@@ -154,7 +154,7 @@ private slots:
         // Check the same discovery error on the sync root
         //
         errorFolder = fakeFolder.account()->davPath();
-        fatalErrorPrefix = QLatin1String("Server replied with an error while reading directory '' : ");
+        fatalErrorPrefix = QLatin1String("Server replied with an error while reading directory '/' : ");
         errorSpy.clear();
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(errorSpy.size(), 1);
