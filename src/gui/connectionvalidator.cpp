@@ -116,6 +116,8 @@ void ConnectionValidator::slotCheckServerAndAuth()
         } else {
             switch (checkServerJob->reply()->error()) {
             case QNetworkReply::OperationCanceledError:
+                [[fallthrough]];
+            case QNetworkReply::TimeoutError:
                 qCWarning(lcConnectionValidator) << checkServerJob;
                 _errors.append(tr("timeout"));
                 reportResult(Timeout);
@@ -335,6 +337,7 @@ bool ConnectionValidator::checkServerInfo()
 
 void ConnectionValidator::reportResult(Status status)
 {
+    qCDebug(lcConnectionValidator) << status;
     emit connectionResult(status, _errors);
     deleteLater();
 }
