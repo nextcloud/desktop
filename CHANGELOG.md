@@ -1,3 +1,39 @@
+Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
+=======================================
+The following sections list the changes in ownCloud Desktop Client unreleased relevant to
+ownCloud admins and users.
+
+[unreleased]: https://github.com/owncloud/client/compare/v3.0.0...master
+
+Summary
+-------
+
+* Bugfix - Fix the display of the version string for released builds: [#10329](https://github.com/owncloud/client/pull/10329)
+* Bugfix - Only clear cookies if enabled in theme, clear cookies before OAuth2: [#10338](https://github.com/owncloud/client/pull/10338)
+* Bugfix - Display `Add a Space` instead of `Add Folder Sync Connection` with oCIS: [#10340](https://github.com/owncloud/client/pull/10340)
+
+Details
+-------
+
+* Bugfix - Fix the display of the version string for released builds: [#10329](https://github.com/owncloud/client/pull/10329)
+
+   We removed a trailing `-` in the version string of released clients.
+
+   https://github.com/owncloud/client/pull/10329
+
+* Bugfix - Only clear cookies if enabled in theme, clear cookies before OAuth2: [#10338](https://github.com/owncloud/client/pull/10338)
+
+   We fixed a bug that enabled the explicit cookie clearing required for F5 BIG-IP setups
+   unconditionally. We fixed a bug where the cookie clearing was not performed during OAuth2.
+
+   https://github.com/owncloud/client/pull/10338
+
+* Bugfix - Display `Add a Space` instead of `Add Folder Sync Connection` with oCIS: [#10340](https://github.com/owncloud/client/pull/10340)
+
+   We fixed a bug where the wrong text was displayed on the "add" button.
+
+   https://github.com/owncloud/client/pull/10340
+
 Changelog for ownCloud Desktop Client [3.0.0] (2022-11-30)
 =======================================
 The following sections list the changes in ownCloud Desktop Client 3.0.0 relevant to
