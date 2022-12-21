@@ -105,9 +105,6 @@ SetupWizardWindow *SetupWizardController::window()
 
 void SetupWizardController::changeStateTo(SetupWizardState nextState)
 {
-    // should take care of cleaning up the page once the function has finished
-    QScopedPointer<AbstractSetupWizardState> page(_currentState);
-
     // validate initial state
     Q_ASSERT(nextState == SetupWizardState::ServerUrlState || _currentState != nullptr);
 
