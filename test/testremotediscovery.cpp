@@ -83,7 +83,7 @@ private slots:
         // 200 should be an error since propfind should return 207
         QTest::newRow("200") << 200 << itemErrorMessage << false;
         QTest::newRow("InvalidXML") << +InvalidXML << "Unknown error" << false;
-        QTest::newRow("Timeout") << +Timeout << "Operation canceled" << false;
+        QTest::newRow("Timeout") << +Timeout << "Connection timed out" << false;
     }
 
 
