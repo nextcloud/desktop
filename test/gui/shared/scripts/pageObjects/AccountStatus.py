@@ -106,16 +106,3 @@ class AccountStatus:
     @staticmethod
     def confirmRemoveAllFiles():
         squish.clickButton(squish.waitForObject(AccountStatus.REMOVE_ALL_FILES))
-
-    @staticmethod
-    def openAccountMenu(context):
-        # The account menu does not have its unique identifier
-        # So we are clicking at (718, 27) of "stack_folderList_QTreeView" object
-        item_text = "Personal" if context.userData['ocis'] else "ownCloud"
-        squish.mouseClick(
-            squish.waitForObjectItem(names.stack_folderList_QTreeView, item_text),
-            718,
-            27,
-            squish.Qt.NoModifier,
-            squish.Qt.LeftButton,
-        )

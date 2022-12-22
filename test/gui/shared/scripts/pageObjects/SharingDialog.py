@@ -1,5 +1,6 @@
 import names
 import squish
+import object
 import test
 
 
@@ -28,6 +29,12 @@ class SharingDialog:
         "container": names.sharingDialogUG_scrollArea_QScrollArea,
         "name": "permissionShare",
         "type": "QCheckBox",
+        "visible": 1,
+    }
+    DELETE_SHARE_BUTTON = {
+        "container": names.sharingDialogUG_scrollArea_QScrollArea,
+        "name": "deleteShareButton",
+        "type": "QToolButton",
         "visible": 1,
     }
     SHARING_DIALOG_CLOSE_BUTTON = {
@@ -90,8 +97,10 @@ class SharingDialog:
             squish.clickButton(squish.waitForObject(self.SHARE_PERMISSIONS_CHECKBOX))
 
         # wait for share to complete
-        self.SHARING_DIALOG_CONTRIBUTOR_ROW["occurrence"] = collaboratorCount
-        squish.waitForObjectExists(self.SHARING_DIALOG_CONTRIBUTOR_ROW)
+        # create the copy of the selector to avoid mutating the original
+        collaborator_row_selector = self.SHARING_DIALOG_CONTRIBUTOR_ROW.copy()
+        collaborator_row_selector["occurrence"] = collaboratorCount
+        squish.waitForObjectExists(collaborator_row_selector)
 
     def getSharingDialogMessage(self):
         return str(squish.waitForObjectExists(self.SHARING_DIALOG).text)
@@ -130,14 +139,14 @@ class SharingDialog:
         ) = self.getAvailablePermission()
 
         if 'share' in removePermissionsList and isSharePermissionAvailable:
-            squish.clickButton(
-                squish.waitForObject(names.scrollArea_permissionShare_QCheckBox)
-            )
+            squish.clickButton(squish.waitForObject(self.SHARE_PERMISSIONS_CHECKBOX))
 
         if 'edit' in removePermissionsList and isEditPermissionAvailable:
-            squish.clickButton(
-                squish.waitForObject(names.scrollArea_permissionsEdit_QCheckBox)
-            )
+            squish.clickButton(squish.waitForObject(self.EDIT_PERMISSIONS_CHECKBOX))
+
+    @staticmethod
+    def unshareWith(collaborator):
+        squish.clickButton(squish.waitForObject(SharingDialog.DELETE_SHARE_BUTTON))
 
     def verifyResource(self, resource):
         test.compare(
@@ -145,5 +154,35 @@ class SharingDialog:
             resource,
         )
 
-    def closeSharingDialog(self):
-        squish.clickButton(squish.waitForObject(self.SHARING_DIALOG_CLOSE_BUTTON))
+    @staticmethod
+    def closeSharingDialog():
+        squish.clickButton(
+            squish.waitForObject(SharingDialog.SHARING_DIALOG_CLOSE_BUTTON)
+        )
+
+    @staticmethod
+    def getCollaborators():
+        squish.waitForObject(SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW)
+        return squish.findAllObjects(SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW)
+
+    @staticmethod
+    def hasEditPermission():
+        if not object.exists(SharingDialog.EDIT_PERMISSIONS_CHECKBOX):
+            return False
+        return squish.waitForObjectExists(
+            SharingDialog.EDIT_PERMISSIONS_CHECKBOX
+        ).checked
+
+    @staticmethod
+    def hasSharePermission():
+        if not object.exists(SharingDialog.SHARE_PERMISSIONS_CHECKBOX):
+            return False
+        return squish.waitForObjectExists(
+            SharingDialog.SHARE_PERMISSIONS_CHECKBOX
+        ).checked
+
+    @staticmethod
+    def getCollaboratorName(occurrence=1):
+        selector = SharingDialog.SHARING_DIALOG_CONTRIBUTOR_ROW.copy()
+        selector["occurrence"] = occurrence
+        return str(squish.waitForObjectExists(selector).text)

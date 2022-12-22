@@ -1,5 +1,6 @@
 import names
 import squish
+import object
 import test
 from datetime import datetime
 
@@ -70,6 +71,16 @@ class PublicLinkDialog:
         "name": "radio_uploadOnly",
         "type": "QRadioButton",
         "visible": 1,
+    }
+    DELETE_LINK_BUTTON = {
+        "container": names.oCC_ShareLinkWidget_linkShares_QTableWidget,
+        "type": "QToolButton",
+        "occurrence": 2,
+    }
+    CONFIRM_LINK_DELETE_BUTTON = {
+        "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
+        "text": "Delete",
+        "type": "QPushButton",
     }
 
     # to store current default public link expiry date
@@ -268,6 +279,16 @@ class PublicLinkDialog:
             squish.waitForObject(
                 names.oCC_ShareLinkWidget_pushButton_setPassword_QPushButton
             )
+        )
+
+    @staticmethod
+    def deletePublicLink():
+        squish.clickButton(squish.waitForObject(PublicLinkDialog.DELETE_LINK_BUTTON))
+        squish.clickButton(
+            squish.waitForObject(PublicLinkDialog.CONFIRM_LINK_DELETE_BUTTON)
+        )
+        squish.waitFor(
+            lambda: (not object.exists(PublicLinkDialog.DELETE_LINK_BUTTON)),
         )
 
     def verifyPublicLinkName(self, publicLinkName):
