@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import names
 import os
 import sys
 from os import listdir, rename
@@ -388,7 +387,7 @@ def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
     shareItem = SharingDialog()
     shareItem.addCollaborator(receiver, permissions)
-    shareItem.closeSharingDialog()
+    SharingDialog.closeSharingDialog()
 
 
 @When('the user adds following collaborators of resource "|any|" using the client-UI')
@@ -402,7 +401,7 @@ def step(context, resource):
         permissions = row[1]
         shareItem.addCollaborator(receiver, permissions, False, count + 1)
 
-    shareItem.closeSharingDialog()
+    SharingDialog.closeSharingDialog()
 
 
 @When(
@@ -421,7 +420,7 @@ def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
     shareItem = SharingDialog()
     shareItem.addCollaborator(receiver, permissions, True)
-    shareItem.closeSharingDialog()
+    SharingDialog.closeSharingDialog()
 
 
 @Then(
@@ -447,24 +446,8 @@ def collaboratorShouldBeListed(
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
 
-    waitForObject(
-        {
-            "container": names.sharingDialogUG_scrollArea_QScrollArea,
-            "name": "sharedWith",
-            "type": "QLabel",
-            "visible": 1,
-        }
-    )
-
     # findAllObjects: This functionfinds and returns a list of object references identified by the symbolic or real (multi-property) name objectName.
-    sharedWithObj = findAllObjects(
-        {
-            "container": names.sharingDialogUG_scrollArea_QScrollArea,
-            "name": "sharedWith",
-            "type": "QLabel",
-            "visible": 1,
-        }
-    )
+    sharedWithObj = SharingDialog.getCollaborators()
 
     #     we use sharedWithObj list from above while verifying if users are listed or not.
     #     For this we need an index value i.e receiverCount
@@ -473,15 +456,14 @@ def collaboratorShouldBeListed(
 
     test.compare(str(sharedWithObj[receiverCount].text), receiver)
     test.compare(
-        waitForObjectExists(names.scrollArea_permissionsEdit_QCheckBox).checked,
+        SharingDialog.hasEditPermission(),
         ('edit' in permissionsList),
     )
     test.compare(
-        waitForObjectExists(names.scrollArea_permissionShare_QCheckBox).checked,
+        SharingDialog.hasSharePermission(),
         ('share' in permissionsList),
     )
-    shareItem = SharingDialog()
-    shareItem.closeSharingDialog()
+    SharingDialog.closeSharingDialog()
 
 
 @When('the user waits for the files to sync')
@@ -654,8 +636,7 @@ def step(context, resourceType, resource):
 
 @Given('the user has paused the file sync')
 def step(context):
-    syncWizard = SyncWizard()
-    syncWizard.performAction(context, "Pause sync")
+    SyncWizard.pauseSync(context)
 
 
 @Given('the user has changed the content of local file "|any|" to:')
@@ -668,8 +649,7 @@ def step(context, filename):
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    syncWizard = SyncWizard()
-    syncWizard.performAction(context, "Resume sync")
+    SyncWizard.resumeSync(context)
 
 
 @Then(
@@ -700,26 +680,6 @@ def step(context, filename):
 @When('the user clicks on the activity tab')
 def step(context):
     Toolbar.openActivity()
-
-
-@Then('a conflict warning should be shown for |integer| files')
-def step(context, files):
-    clickTab(waitForObject(names.stack_QTabWidget), "Not Synced ({})".format(files))
-    test.compare(
-        waitForObjectExists(
-            names.oCC_IssuesWidget_treeWidget_QTreeWidget
-        ).topLevelItemCount,
-        files,
-    )
-    test.compare(
-        waitForObjectExists(names.oCC_IssuesWidget_treeWidget_QTreeWidget).visible, True
-    )
-    test.compare(
-        waitForObjectExists(
-            names.o_treeWidget_Conflict_Server_version_downloaded_local_copy_renamed_and_not_uploaded_QModelIndex
-        ).displayText,
-        "Conflict: Server version downloaded, local copy renamed and not uploaded.",
-    )
 
 
 @Then('the table of conflict warnings should include file "|any|"')
@@ -845,8 +805,7 @@ def step(context, resource, expiryDate):
 
     publicLinkDialog.verifyExpirationDate(expiryDate)
 
-    shareItem = SharingDialog()
-    shareItem.closeSharingDialog()
+    SharingDialog.closeSharingDialog()
 
 
 def setExpirationDateWithVerification(resource, publicLinkName, expireDate):
@@ -1001,17 +960,13 @@ def step(context):
 )
 def step(context, permissions, receiver, resource):
     openSharingDialog(context, resource)
-    test.compare(
-        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
-    )
-
     shareItem = SharingDialog()
     shareItem.removePermissions(permissions)
 
 
 @When("the user closes the sharing dialog")
 def step(context):
-    clickButton(waitForObject(names.sharingDialog_Close_QPushButton))
+    SharingDialog.closeSharingDialog()
 
 
 @Then(
@@ -1096,41 +1051,25 @@ def step(context, user, resource, content):
     waitAndTryToWriteFile(context, resource, content)
 
 
-def enableVFSSupport(context, vfsBtnText):
-    AccountStatus.openAccountMenu(context)
-    activateItem(waitForObjectItem(names.settings_QMenu, vfsBtnText))
-    clickButton(
-        waitForObject(
-            names.enable_experimental_feature_Enable_experimental_placeholder_mode_QPushButton
-        )
-    )
-
-
 @When("the user enables virtual file support")
 def step(context):
-    enableVFSSupport(context, "Enable virtual file support (experimental)...")
+    SyncWizard.enableVFS(context)
 
 
 @Then('the "|any|" button should be available')
-def step(context, btnText):
-    AccountStatus.openAccountMenu(context)
-    waitForObjectItem(names.settings_QMenu, btnText)
+def step(context, item):
+    SyncWizard.openMenu(context)
+    SyncWizard.hasMenuItem(item)
 
 
 @Given("the user has enabled virtual file support")
 def step(context):
-    enableVFSSupport(context, "Enable virtual file support (experimental)...")
+    SyncWizard.enableVFS(context)
 
 
 @When("the user disables virtual file support")
 def step(context):
-    AccountStatus.openAccountMenu(context)
-    activateItem(
-        waitForObjectItem(names.settings_QMenu, "Disable virtual file support...")
-    )
-    clickButton(
-        waitForObject(names.disable_virtual_file_support_Disable_support_QPushButton)
-    )
+    SyncWizard.disableVFS(context)
 
 
 @When('the user accepts the certificate')
@@ -1183,10 +1122,7 @@ def step(context, itemType, resource):
 )
 def step(context, resource, receiver):
     openSharingDialog(context, resource)
-    test.compare(
-        str(waitForObjectExists(names.scrollArea_sharedWith_QLabel).text), receiver
-    )
-    clickButton(waitForObject(names.scrollArea_deleteShareButton_QToolButton))
+    SharingDialog.unshareWith(receiver)
 
 
 @Given('the user has added the following server address:')
@@ -1259,17 +1195,7 @@ def step(context, resource):
     openSharingDialog(context, resource)
     publicLinkDialog = PublicLinkDialog()
     publicLinkDialog.openPublicLinkDialog()
-
-    test.compare(
-        str(waitForObjectExists(publicLinkDialog.ITEM_TO_SHARE).text),
-        resource.replace(context.userData['currentUserSyncPath'], ''),
-    )
-    clickButton(waitForObject(names.linkShares_QToolButton_2))
-    clickButton(waitForObject(names.oCC_ShareLinkWidget_Delete_QPushButton))
-
-    waitFor(
-        lambda: (not object.exists(names.linkShares_QToolButton_2)),
-    )
+    PublicLinkDialog.deletePublicLink()
 
 
 @When(
@@ -1333,17 +1259,7 @@ def step(context):
 def step(context):
     for index, collaborator in enumerate(context.table[1:], start=1):
         test.compare(
-            str(
-                waitForObjectExists(
-                    {
-                        "container": names.sharingDialogUG_scrollArea_QScrollArea,
-                        "name": "sharedWith",
-                        "occurrence": index,
-                        "type": "QLabel",
-                        "visible": 1,
-                    }
-                ).text
-            ),
+            SharingDialog.getCollaboratorName(index),
             collaborator[0],
         )
 
