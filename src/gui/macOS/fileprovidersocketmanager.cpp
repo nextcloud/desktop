@@ -16,6 +16,8 @@
 
 #include <QLocalSocket>
 
+#include "fileprovidersocketcontroller.h"
+
 namespace OCC
 {
 
@@ -61,6 +63,26 @@ void FileProviderSocketManager::slotNewConnection()
         return;
     }
 
+    connect(socket, &QLocalSocket::disconnected,
+            this, &FileProviderSocketManager::slotOnDisconnected);
+    connect(socket, &QLocalSocket::destroyed,
+            this, &FileProviderSocketManager::slotSocketDestroyed);
+
+    const FileProviderSocketControllerPtr controller(new FileProviderSocketController(socket));
+    _socketControllers.insert(socket, controller);
+}
+
+void FileProviderSocketManager::slotOnDisconnected()
+{
+    const auto socket = qobject_cast<QLocalSocket *>(sender());
+    Q_ASSERT(socket);
+    socket->deleteLater();
+}
+
+void FileProviderSocketManager::slotSocketDestroyed(QObject *object)
+{
+    const auto socket = qobject_cast<QLocalSocket *>(object);
+    _socketControllers.remove(socket);
 }
 
 } // namespace Mac

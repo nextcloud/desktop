@@ -23,6 +23,9 @@ namespace OCC
 
 namespace Mac {
 
+class FileProviderSocketController;
+using FileProviderSocketControllerPtr = QSharedPointer<FileProviderSocketController>;
+
 #ifdef Q_OS_MACOS
 QString fileProviderSocketPath();
 #endif
@@ -37,10 +40,13 @@ public:
 private slots:
     void startListening();
     void slotNewConnection();
+    void slotOnDisconnected();
+    void slotSocketDestroyed(QObject *object);
 
 private:
     QString _socketPath;
     QLocalServer _socketServer;
+    QHash<QLocalSocket*, FileProviderSocketControllerPtr> _socketControllers;
 };
 
 } // namespace Mac
