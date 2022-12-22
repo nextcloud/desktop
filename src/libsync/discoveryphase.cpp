@@ -487,6 +487,8 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
         && !contentType.contains(QLatin1String("application/xml; charset=utf-8"))) {
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
 
+    } else if (_proFindJob->timedOut()) {
+        msg = tr("Connection timed out");
     }
     emit finished(HttpError{ httpCode, msg });
     deleteLater();

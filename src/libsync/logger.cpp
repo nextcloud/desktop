@@ -203,7 +203,7 @@ void Logger::setLogDebug(bool debug)
 
 QString Logger::temporaryFolderLogDirPath() const
 {
-    return QDir::temp().filePath(QStringLiteral("%1-logdir").arg(qApp->applicationName()));
+    return QDir::temp().absoluteFilePath(QStringLiteral("%1-logdir").arg(QCoreApplication::applicationName()));
 }
 
 void Logger::setupTemporaryFolderLogDir()

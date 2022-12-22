@@ -703,47 +703,47 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="217"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Signed out</source>
         <translation>I dalë</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="219"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Disconnected</source>
         <translation>I shkëputur</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="221"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Connected</source>
         <translation>I lidhur</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="223"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Service unavailable</source>
         <translation>Shërbimi nuk po punon</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="225"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Maintenance mode</source>
         <translation>Mënyra mirëmbajtje</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="227"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Network error</source>
         <translation>Gabim rrjeti</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="229"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Configuration error</source>
         <translation>Gabim formësimi</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="231"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Asking Credentials</source>
         <translation>Po kërkohen Kredencialet</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="233"/>
+        <location filename="../src/gui/accountstate.cpp" line="234"/>
         <source>Unknown account state</source>
         <translation>Gjendje e panjohur llogarie</translation>
     </message>
@@ -1060,27 +1060,27 @@ Kjo është një mënyrë e re, eksperimentale. Nëse vendosni ta përdorni, ju 
         <translation>Nuk ka llogari ownCloud të formësuar</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="318"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Ju lutemi, përditësoni shërbyesin me versionin më të ri dhe rinisni klientin.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Gabim mirëfilltësimi: Ose emri i përdoruesit, ose fjalëkalimi është i gabuar.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
         <source>timeout</source>
         <translation>mbarim kohe</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
         <source>The provided credentials are not correct</source>
         <translation>Kredencialet e dhëna s’janë të sakta</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="317"/>
         <source>The configured server for this client is too old.</source>
         <translation>Shërbyesi i formësuar për këtë klient është shumë i vjetër.</translation>
     </message>
@@ -4154,12 +4154,12 @@ Jeni i sigurt se doni të ecet më tej?</translation>
         <translation>Pasuesi &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Cancel Setup</source>
         <translation>Anuloni Ujdisjen</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
         <translation>Doni vërtet të anuloni ujdisjen e llogarisë?</translation>
     </message>

@@ -293,18 +293,22 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
             timeout = 0s;
             break;
         case QNetworkReply::HostNotFoundError:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case QNetworkReply::TimeoutError:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
+        // Qt reports OperationCanceledError if the request timed out
+        case QNetworkReply::OperationCanceledError:
+            [[fallthrough]];
         case QNetworkReply::TemporaryNetworkFailureError:
             nextTry = 0;
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         default:
             timeout = 30s;
         }
         if (nextTry >= TokenRefreshMaxRetries) {
             qCWarning(lcHttpCredentials) << "Too many failed refreshs" << nextTry << "-> log out";
             forgetSensitiveData();
+            Q_EMIT authenticationFailed();
             Q_EMIT _account->invalidCredentials();
             return;
         }

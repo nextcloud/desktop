@@ -701,47 +701,47 @@ Please authenticate using your browser.</source>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="217"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Signed out</source>
         <translation>已登出</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="219"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Disconnected</source>
         <translation>已經離線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="221"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Connected</source>
         <translation>已連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="223"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Service unavailable</source>
         <translation>服務無法使用</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="225"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Maintenance mode</source>
         <translation>維護模式</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="227"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Network error</source>
         <translation>網路異常</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="229"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Configuration error</source>
         <translation>設定錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="231"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Asking Credentials</source>
         <translation>詢問憑證</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="233"/>
+        <location filename="../src/gui/accountstate.cpp" line="234"/>
         <source>Unknown account state</source>
         <translation>未知的帳號狀態</translation>
     </message>
@@ -1051,27 +1051,27 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>沒有設置 ownCloud 帳號</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="318"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>請將伺服器端更新到最新版並重新啟動客戶端</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>驗證錯誤︰使用者名稱或是密碼錯誤</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
         <source>timeout</source>
         <translation>逾時</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
         <source>The provided credentials are not correct</source>
         <translation>提供的憑證不正確</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="317"/>
         <source>The configured server for this client is too old.</source>
         <translation type="unfinished"/>
     </message>
@@ -4133,12 +4133,12 @@ Are you sure you want to proceed?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Cancel Setup</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
         <translation type="unfinished"/>
     </message>

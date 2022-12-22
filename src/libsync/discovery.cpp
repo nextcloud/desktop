@@ -1432,7 +1432,7 @@ DiscoverySingleDirectoryJob *ProcessDirectoryJob::startAsyncServerQuery()
             } else {
                 // Fatal for the root job since it has no SyncFileItem, or for the network errors
                 emit _discoveryData->fatalError(tr("Server replied with an error while reading directory '%1' : %2")
-                    .arg(_currentFolder._server, results.error().message));
+                                                    .arg(_currentFolder._server.isEmpty() ? QStringLiteral("/") : _currentFolder._server, results.error().message));
             }
         }
     });

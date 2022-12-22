@@ -83,7 +83,7 @@ private slots:
         // 200 should be an error since propfind should return 207
         QTest::newRow("200") << 200 << itemErrorMessage << false;
         QTest::newRow("InvalidXML") << +InvalidXML << "Unknown error" << false;
-        QTest::newRow("Timeout") << +Timeout << "Operation canceled" << false;
+        QTest::newRow("Timeout") << +Timeout << "Connection timed out" << false;
     }
 
 
@@ -154,7 +154,7 @@ private slots:
         // Check the same discovery error on the sync root
         //
         errorFolder = fakeFolder.account()->davPath();
-        fatalErrorPrefix = QLatin1String("Server replied with an error while reading directory '' : ");
+        fatalErrorPrefix = QLatin1String("Server replied with an error while reading directory '/' : ");
         errorSpy.clear();
         QVERIFY(!fakeFolder.applyLocalModificationsAndSync());
         QCOMPARE(errorSpy.size(), 1);

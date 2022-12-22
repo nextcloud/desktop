@@ -664,7 +664,7 @@ void AccountBasedOAuth::refreshAuthentication(const QString &refreshToken)
                         qCWarning(lcOauth) << "Error while refreshing the token:" << error << data.value(QStringLiteral("error_description")).toString();
                     }
                 } else if (reply->error() != QNetworkReply::NoError) {
-                    qCWarning(lcOauth) << "Error while refreshing the token:" << reply->error() << ":" << reply->errorString() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+                    qCWarning(lcOauth) << "Error while refreshing the token:" << reply->error() << ":" << reply->errorString() << reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
                     Q_EMIT refreshError(reply->error(), reply->errorString());
                     return;
                 } else {
