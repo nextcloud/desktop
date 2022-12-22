@@ -305,6 +305,7 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
         if (nextTry >= TokenRefreshMaxRetries) {
             qCWarning(lcHttpCredentials) << "Too many failed refreshs" << nextTry << "-> log out";
             forgetSensitiveData();
+            Q_EMIT authenticationFailed();
             Q_EMIT _account->invalidCredentials();
             return;
         }
