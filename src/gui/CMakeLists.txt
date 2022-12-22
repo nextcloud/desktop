@@ -285,6 +285,8 @@ IF( APPLE )
         macOS/fileprovider_mac.mm
         macOS/fileproviderdomainmanager.h
         macOS/fileproviderdomainmanager_mac.mm
+        macOS/fileprovidersocketcontroller.h
+        macOS/fileprovidersocketcontroller.cpp
         macOS/fileprovidersocketmanager.h
         macOS/fileprovidersocketmanager.cpp
         macOS/fileprovidersocketmanager_mac.mm)
