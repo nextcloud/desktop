@@ -14,17 +14,36 @@
 
 #include "fileprovidersocketcontroller.h"
 
-namespace OCC
-{
+#include <QLoggingCategory>
 
-namespace Mac
-{
+namespace OCC {
+
+namespace Mac {
+
+Q_LOGGING_CATEGORY(lcFileProviderSocketController, "nextcloud.gui.macos.fileprovider.socketcontroller", QtInfoMsg)
 
 FileProviderSocketController::FileProviderSocketController(QLocalSocket *socket, QObject *parent)
     : QObject{parent}
     , _socket(socket)
 {
+    connect(socket, &QLocalSocket::disconnected,
+            this, &FileProviderSocketController::slotOnDisconnected);
+    connect(socket, &QLocalSocket::destroyed,
+            this, &FileProviderSocketController::slotSocketDestroyed);
+}
 
+void FileProviderSocketController::slotOnDisconnected()
+{
+    qCInfo(lcFileProviderSocketController) << "File provider socket disconnected";
+    _socket->deleteLater();
+    Q_EMIT socketDestroyed(_socket);
+}
+
+void FileProviderSocketController::slotSocketDestroyed(QObject *object)
+{
+    Q_UNUSED(object)
+    qCInfo(lcFileProviderSocketController) << "File provider socket object has been destroyed, destroying controller";
+    Q_EMIT socketDestroyed(_socket);
 }
 
 }

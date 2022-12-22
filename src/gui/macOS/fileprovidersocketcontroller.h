@@ -18,11 +18,9 @@
 #include <QPointer>
 #include <QLocalSocket>
 
-namespace OCC
-{
+namespace OCC {
 
-namespace Mac
-{
+namespace Mac {
 
 class FileProviderSocketController : public QObject
 {
@@ -30,6 +28,13 @@ class FileProviderSocketController : public QObject
 
 public:
     explicit FileProviderSocketController(QLocalSocket *socket, QObject *parent = nullptr);
+
+signals:
+    void socketDestroyed(const QLocalSocket * const socket);
+
+private slots:
+    void slotOnDisconnected();
+    void slotSocketDestroyed(QObject *object);
 
 private:
     QPointer<QLocalSocket> _socket;

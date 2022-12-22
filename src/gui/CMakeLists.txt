@@ -287,9 +287,9 @@ IF( APPLE )
         macOS/fileproviderdomainmanager_mac.mm
         macOS/fileprovidersocketcontroller.h
         macOS/fileprovidersocketcontroller.cpp
-        macOS/fileprovidersocketmanager.h
-        macOS/fileprovidersocketmanager.cpp
-        macOS/fileprovidersocketmanager_mac.mm)
+        macOS/fileprovidersocketserver.h
+        macOS/fileprovidersocketserver.cpp
+        macOS/fileprovidersocketserver_mac.mm)
 
     if(SPARKLE_FOUND AND BUILD_UPDATER)
         # Define this, we need to check in updater.cpp

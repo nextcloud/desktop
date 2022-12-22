@@ -18,8 +18,7 @@
 #include <QLocalServer>
 #include <QLoggingCategory>
 
-namespace OCC
-{
+namespace OCC {
 
 namespace Mac {
 
@@ -30,23 +29,22 @@ using FileProviderSocketControllerPtr = QSharedPointer<FileProviderSocketControl
 QString fileProviderSocketPath();
 #endif
 
-class FileProviderSocketManager : public QObject
+class FileProviderSocketServer : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit FileProviderSocketManager(QObject *parent = nullptr);
+    explicit FileProviderSocketServer(QObject *parent = nullptr);
 
 private slots:
     void startListening();
     void slotNewConnection();
-    void slotOnDisconnected();
-    void slotSocketDestroyed(QObject *object);
+    void slotSocketDestroyed(const QLocalSocket * const socket);
 
 private:
     QString _socketPath;
     QLocalServer _socketServer;
-    QHash<QLocalSocket*, FileProviderSocketControllerPtr> _socketControllers;
+    QHash<const QLocalSocket*, FileProviderSocketControllerPtr> _socketControllers;
 };
 
 } // namespace Mac
