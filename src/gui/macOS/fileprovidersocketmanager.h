@@ -27,12 +27,12 @@ namespace Mac {
 QString fileProviderSocketPath();
 #endif
 
-class FileProviderSocketController : public QObject
+class FileProviderSocketManager : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit FileProviderSocketController(QObject *parent = nullptr);
+    explicit FileProviderSocketManager(QObject *parent = nullptr);
 
 private slots:
     void startListening();
@@ -41,7 +41,6 @@ private slots:
 private:
     QString _socketPath;
     QLocalServer _socketServer;
-
 };
 
 } // namespace Mac

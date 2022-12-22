@@ -12,7 +12,9 @@
  * for more details.
  */
 
-#include "fileprovidersocketcontroller.h"
+#include "fileprovidersocketmanager.h"
+
+#include <QLocalSocket>
 
 namespace OCC
 {
@@ -20,9 +22,9 @@ namespace OCC
 namespace Mac
 {
 
-Q_LOGGING_CATEGORY(lcFileProviderSocketController, "nextcloud.gui.macos.fileprovider.socketcontroller", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcFileProviderSocketManager, "nextcloud.gui.macos.fileprovider.socketmanager", QtInfoMsg)
 
-FileProviderSocketController::FileProviderSocketController(QObject *parent)
+FileProviderSocketManager::FileProviderSocketManager(QObject *parent)
     : QObject{parent}
 {
 #ifdef Q_OS_MACOS
@@ -31,24 +33,24 @@ FileProviderSocketController::FileProviderSocketController(QObject *parent)
     startListening();
 }
 
-void FileProviderSocketController::startListening()
+void FileProviderSocketManager::startListening()
 {
     QLocalServer::removeServer(_socketPath);
 
     const auto serverStarted = _socketServer.listen(_socketPath);
     if (!serverStarted) {
-        qCWarning(lcFileProviderSocketController) << "Could not start file provider socket server"
-                                                  << _socketPath;
-    } else {
-        qCInfo(lcFileProviderSocketController) << "File provider socket server started, listening"
+        qCWarning(lcFileProviderSocketManager) << "Could not start file provider socket server"
                                                << _socketPath;
+    } else {
+        qCInfo(lcFileProviderSocketManager) << "File provider socket server started, listening"
+                                            << _socketPath;
     }
 
     connect(&_socketServer, &QLocalServer::newConnection,
-            this, &FileProviderSocketController::slotNewConnection);
+            this, &FileProviderSocketManager::slotNewConnection);
 }
 
-void FileProviderSocketController::slotNewConnection()
+void FileProviderSocketManager::slotNewConnection()
 {
     if (!_socketServer.hasPendingConnections()) {
         return;
@@ -58,6 +60,7 @@ void FileProviderSocketController::slotNewConnection()
     if (!socket) {
         return;
     }
+
 }
 
 } // namespace Mac
