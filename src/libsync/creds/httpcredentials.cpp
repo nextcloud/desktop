@@ -293,12 +293,15 @@ bool HttpCredentials::refreshAccessTokenInternal(int tokenRefreshRetriesCount)
             timeout = 0s;
             break;
         case QNetworkReply::HostNotFoundError:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         case QNetworkReply::TimeoutError:
-            Q_FALLTHROUGH();
+            [[fallthrough]];
+        // Qt reports OperationCanceledError if the request timed out
+        case QNetworkReply::OperationCanceledError:
+            [[fallthrough]];
         case QNetworkReply::TemporaryNetworkFailureError:
             nextTry = 0;
-            Q_FALLTHROUGH();
+            [[fallthrough]];
         default:
             timeout = 30s;
         }
