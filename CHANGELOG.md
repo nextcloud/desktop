@@ -11,6 +11,8 @@ Summary
 * Bugfix - Fix the display of the version string for released builds: [#10329](https://github.com/owncloud/client/pull/10329)
 * Bugfix - Only clear cookies if enabled in theme, clear cookies before OAuth2: [#10338](https://github.com/owncloud/client/pull/10338)
 * Bugfix - Display `Add a Space` instead of `Add Folder Sync Connection` with oCIS: [#10340](https://github.com/owncloud/client/pull/10340)
+* Bugfix - Correctly detect timeouts during token refrshs: [#10373](https://github.com/owncloud/client/pull/10373)
+* Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
 
 Details
 -------
@@ -33,6 +35,17 @@ Details
    We fixed a bug where the wrong text was displayed on the "add" button.
 
    https://github.com/owncloud/client/pull/10340
+
+* Bugfix - Correctly detect timeouts during token refrshs: [#10373](https://github.com/owncloud/client/pull/10373)
+
+   https://github.com/owncloud/client/pull/10373
+
+* Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
+
+   We added a `Reconnect` button to the account menu, this allows to trigger a manual reconnect
+   try. Note: The client would try to reconnect by itself at some point.
+
+   https://github.com/owncloud/client/issues/10294
 
 Changelog for ownCloud Desktop Client [3.0.0] (2022-11-30)
 =======================================
