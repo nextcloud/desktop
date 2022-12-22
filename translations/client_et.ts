@@ -703,47 +703,47 @@ Palun autentige end brauseri abil.</translation>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="217"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Signed out</source>
         <translation>Välja logitud</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="219"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Disconnected</source>
         <translation>Lahti ühendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="221"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Connected</source>
         <translation>Ühendatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="223"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Service unavailable</source>
         <translation>Teenus pole saadaval</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="225"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Maintenance mode</source>
         <translation>Hooldusrežiim</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="227"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Network error</source>
         <translation>Võrgu viga</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="229"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Configuration error</source>
         <translation>Seadistamise tõrge</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="231"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Asking Credentials</source>
         <translation>Kasutajatunnuste küsimine</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="233"/>
+        <location filename="../src/gui/accountstate.cpp" line="234"/>
         <source>Unknown account state</source>
         <translation>Tundmatu konto staatus</translation>
     </message>
@@ -1060,27 +1060,27 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
         <translation>Ühtegi ownCloud kontot pole seadistatud</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="318"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Palun uuenda server viimasele versioonile ning taaskäivita klient.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Autentimise viga: kasutajanimi või parool on vale</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
         <source>timeout</source>
         <translation>aegumine</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
         <source>The provided credentials are not correct</source>
         <translation>Sisestatud kasutajatunnused pole õiged</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="317"/>
         <source>The configured server for this client is too old.</source>
         <translation>Selle kliendi jaoks seadistatud server on liiga vana.</translation>
     </message>
@@ -4153,12 +4153,12 @@ Kas olete kindel, et soovite jätkata?</translation>
         <translation>Järgmine &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Cancel Setup</source>
         <translation>Tühista seadistamine</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
         <translation>Kas te tõesti soovite konto seadistamise tühistada?</translation>
     </message>

@@ -703,47 +703,47 @@ Por favor, autentiquese usando su navegador.</translation>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="217"/>
+        <location filename="../src/gui/accountstate.cpp" line="218"/>
         <source>Signed out</source>
         <translation>Cerrar sesión</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="219"/>
+        <location filename="../src/gui/accountstate.cpp" line="220"/>
         <source>Disconnected</source>
         <translation>Desconectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="221"/>
+        <location filename="../src/gui/accountstate.cpp" line="222"/>
         <source>Connected</source>
         <translation>Conectado</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="223"/>
+        <location filename="../src/gui/accountstate.cpp" line="224"/>
         <source>Service unavailable</source>
         <translation>Servicio no disponible</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="225"/>
+        <location filename="../src/gui/accountstate.cpp" line="226"/>
         <source>Maintenance mode</source>
         <translation>Modo mantenimiento</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="227"/>
+        <location filename="../src/gui/accountstate.cpp" line="228"/>
         <source>Network error</source>
         <translation>Error en la red</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="229"/>
+        <location filename="../src/gui/accountstate.cpp" line="230"/>
         <source>Configuration error</source>
         <translation>Error en la configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="231"/>
+        <location filename="../src/gui/accountstate.cpp" line="232"/>
         <source>Asking Credentials</source>
         <translation>Solicitando credenciales</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="233"/>
+        <location filename="../src/gui/accountstate.cpp" line="234"/>
         <source>Unknown account state</source>
         <translation>Estado de cuenta desconocido</translation>
     </message>
@@ -1060,27 +1060,27 @@ Este es nuevo modo en fase experimental. Si decide usarlo, por favor repórtenos
         <translation>No se ha configurado ninguna cuenta de ownCloud</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="316"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="318"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Por favor, actualice a la última versión del servidor y reinicie el cliente</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="135"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="137"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Error de autenticación: El usuario o la contraseña son incorrectos</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="120"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="122"/>
         <source>timeout</source>
         <translation>tiempo de espera</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="208"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="210"/>
         <source>The provided credentials are not correct</source>
         <translation>Las credenciales proporcionadas no son correctas</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="315"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="317"/>
         <source>The configured server for this client is too old.</source>
         <translation>El servidor configurado para este cliente es demasiado antiguo.</translation>
     </message>
@@ -4153,12 +4153,12 @@ Está seguro que quiere continuar?</translation>
         <translation>Siguiente &gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Cancel Setup</source>
         <translation>Cancelar configuración</translation>
     </message>
     <message>
-        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="156"/>
+        <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
         <translation>Desea realmente cancelar la configuración de la cuenta?</translation>
     </message>
