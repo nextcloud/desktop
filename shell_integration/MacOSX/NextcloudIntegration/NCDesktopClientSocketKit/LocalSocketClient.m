@@ -24,7 +24,7 @@
 @interface LocalSocketClient()
 {
     NSString* _socketPath;
-    LineProcessor* _lineProcessor;
+    id<LineProcessor> _lineProcessor;
 
     int _sock;
     dispatch_queue_t _localSocketQueue;
@@ -37,7 +37,8 @@
 
 @implementation LocalSocketClient
 
-- (instancetype)initWithSocketPath:(NSString*)socketPath lineProcessor:(LineProcessor*)lineProcessor
+- (instancetype)initWithSocketPath:(NSString*)socketPath
+                     lineProcessor:(id<LineProcessor>)lineProcessor
 {
     NSLog(@"Initiating local socket client.");
     self = [super init];

@@ -15,9 +15,10 @@
 
 #import <Cocoa/Cocoa.h>
 #import <FinderSync/FinderSync.h>
+#import <NCDesktopClientSocketKit/LocalSocketClient.h>
+
 #import "SyncClient.h"
-#import "LineProcessor.h"
-#import "LocalSocketClient.h"
+#import "FinderSyncSocketLineProcessor.h"
 
 @interface FinderSync : FIFinderSync <SyncClientDelegate>
 {
@@ -28,7 +29,7 @@
     NSCondition *_menuIsComplete;
 }
 
-@property LineProcessor *lineProcessor;
+@property FinderSyncSocketLineProcessor *lineProcessor;
 @property LocalSocketClient *localSocketClient;
 
 @end

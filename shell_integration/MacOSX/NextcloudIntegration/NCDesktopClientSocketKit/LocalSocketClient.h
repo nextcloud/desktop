@@ -12,7 +12,7 @@
  * for more details.
  */
 
-#import "LineProcessor.h"
+#import <NCDesktopClientSocketKit/LineProcessor.h>
 
 #ifndef LocalSocketClient_h
 #define LocalSocketClient_h
@@ -38,7 +38,7 @@
 @interface LocalSocketClient : NSObject
 
 - (instancetype)initWithSocketPath:(NSString*)socketPath
-                     lineProcessor:(LineProcessor*)lineProcessor;
+                     lineProcessor:(id<LineProcessor>)lineProcessor;
 - (BOOL)isConnected;
 - (void)start;
 - (void)restart;

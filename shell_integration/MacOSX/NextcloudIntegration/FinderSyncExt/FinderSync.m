@@ -62,7 +62,7 @@
         NSLog(@"Socket path: %@", socketPath.path);
 
         if (socketPath.path) {
-            self.lineProcessor = [[LineProcessor alloc] initWithDelegate:self];
+            self.lineProcessor = [[FinderSyncSocketLineProcessor alloc] initWithDelegate:self];
             self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath.path
                                                                      lineProcessor:self.lineProcessor];
             [self.localSocketClient start];

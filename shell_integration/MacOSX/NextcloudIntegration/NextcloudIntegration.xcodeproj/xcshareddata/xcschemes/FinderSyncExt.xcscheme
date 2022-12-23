@@ -52,6 +52,17 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "53903D142956164F00D0B308"
+               BuildableName = "NCDesktopClientSocketKitTests.xctest"
+               BlueprintName = "NCDesktopClientSocketKitTests"
+               ReferencedContainer = "container:NextcloudIntegration.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

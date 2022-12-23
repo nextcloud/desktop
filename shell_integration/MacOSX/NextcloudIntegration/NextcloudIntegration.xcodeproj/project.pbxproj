@@ -12,8 +12,17 @@
 		538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396E27F4765000FA63D5 /* FileProviderItem.swift */; };
 		538E397127F4765000FA63D5 /* FileProviderEnumerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */; };
 		538E397627F4765000FA63D5 /* FileProviderExt.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 538E396727F4765000FA63D5 /* FileProviderExt.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		539158AC27BE71A900816F56 /* LineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* LineProcessor.m */; };
-		539158B327BEC98A00816F56 /* LocalSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158B227BEC98A00816F56 /* LocalSocketClient.m */; };
+		53903D1E2956164F00D0B308 /* NCDesktopClientSocketKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 53903D0E2956164F00D0B308 /* NCDesktopClientSocketKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		53903D212956164F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; };
+		53903D222956164F00D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		53903D2A295616F000D0B308 /* LocalSocketClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158B227BEC98A00816F56 /* LocalSocketClient.m */; };
+		53903D2B2956173000D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; };
+		53903D2C2956173000D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		53903D302956173F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; };
+		53903D312956173F00D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		53903D352956184400D0B308 /* LocalSocketClient.h in Headers */ = {isa = PBXBuildFile; fileRef = 539158B127BE891500816F56 /* LocalSocketClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		53903D37295618A400D0B308 /* LineProcessor.h in Headers */ = {isa = PBXBuildFile; fileRef = 53903D36295618A400D0B308 /* LineProcessor.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */; };
 		C2B573BA1B1CD91E00303B36 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573D21B1CD94B00303B36 /* main.m in Resources */ = {isa = PBXBuildFile; fileRef = C2B573B91B1CD91E00303B36 /* main.m */; };
 		C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */ = {isa = PBXBuildFile; fileRef = C2B573DD1B1CD9CE00303B36 /* FinderSync.m */; };
@@ -33,6 +42,27 @@
 			remoteGlobalIDString = 538E396627F4765000FA63D5;
 			remoteInfo = FileProviderExt;
 		};
+		53903D1F2956164F00D0B308 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 53903D0B2956164F00D0B308;
+			remoteInfo = NCDesktopClientSocketKit;
+		};
+		53903D2D2956173000D0B308 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 53903D0B2956164F00D0B308;
+			remoteInfo = NCDesktopClientSocketKit;
+		};
+		53903D322956173F00D0B308 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 53903D0B2956164F00D0B308;
+			remoteInfo = NCDesktopClientSocketKit;
+		};
 		C2B573DF1B1CD9CE00303B36 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C2B573951B1CD88000303B36 /* Project object */;
@@ -43,6 +73,39 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		53903D232956165000D0B308 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				53903D222956164F00D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53903D2F2956173000D0B308 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				53903D2C2956173000D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53903D342956173F00D0B308 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				53903D312956173F00D0B308 /* NCDesktopClientSocketKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2B573E11B1CD9CE00303B36 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 8;
@@ -65,9 +128,12 @@
 		538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderEnumerator.swift; sourceTree = "<group>"; };
 		538E397227F4765000FA63D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		538E397327F4765000FA63D5 /* FileProviderExt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FileProviderExt.entitlements; sourceTree = "<group>"; };
-		539158A927BE606500816F56 /* LineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineProcessor.h; sourceTree = "<group>"; };
+		53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = NCDesktopClientSocketKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		53903D0E2956164F00D0B308 /* NCDesktopClientSocketKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NCDesktopClientSocketKit.h; sourceTree = "<group>"; };
+		53903D36295618A400D0B308 /* LineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LineProcessor.h; sourceTree = "<group>"; };
+		539158A927BE606500816F56 /* FinderSyncSocketLineProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FinderSyncSocketLineProcessor.h; sourceTree = "<group>"; };
 		539158AA27BE67CC00816F56 /* SyncClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SyncClient.h; sourceTree = "<group>"; };
-		539158AB27BE71A900816F56 /* LineProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LineProcessor.m; sourceTree = "<group>"; };
+		539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FinderSyncSocketLineProcessor.m; sourceTree = "<group>"; };
 		539158B127BE891500816F56 /* LocalSocketClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LocalSocketClient.h; sourceTree = "<group>"; };
 		539158B227BEC98A00816F56 /* LocalSocketClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LocalSocketClient.m; sourceTree = "<group>"; };
 		C2B573B11B1CD91E00303B36 /* desktopclient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = desktopclient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +157,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */,
+				53903D302956173F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53903D092956164F00D0B308 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +172,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53903D212956164F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +180,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53903D2B2956173000D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,12 +207,24 @@
 			path = FileProviderExt;
 			sourceTree = "<group>";
 		};
+		53903D0D2956164F00D0B308 /* NCDesktopClientSocketKit */ = {
+			isa = PBXGroup;
+			children = (
+				53903D0E2956164F00D0B308 /* NCDesktopClientSocketKit.h */,
+				539158B127BE891500816F56 /* LocalSocketClient.h */,
+				539158B227BEC98A00816F56 /* LocalSocketClient.m */,
+				53903D36295618A400D0B308 /* LineProcessor.h */,
+			);
+			path = NCDesktopClientSocketKit;
+			sourceTree = "<group>";
+		};
 		C2B573941B1CD88000303B36 = {
 			isa = PBXGroup;
 			children = (
 				C2B573B31B1CD91E00303B36 /* desktopclient */,
 				C2B573D81B1CD9CE00303B36 /* FinderSyncExt */,
 				538E396B27F4765000FA63D5 /* FileProviderExt */,
+				53903D0D2956164F00D0B308 /* NCDesktopClientSocketKit */,
 				538E396827F4765000FA63D5 /* Frameworks */,
 				C2B573B21B1CD91E00303B36 /* Products */,
 			);
@@ -148,6 +236,7 @@
 				C2B573B11B1CD91E00303B36 /* desktopclient.app */,
 				C2B573D71B1CD9CE00303B36 /* FinderSyncExt.appex */,
 				538E396727F4765000FA63D5 /* FileProviderExt.appex */,
+				53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,10 +264,8 @@
 				539158AA27BE67CC00816F56 /* SyncClient.h */,
 				C2B573DC1B1CD9CE00303B36 /* FinderSync.h */,
 				C2B573DD1B1CD9CE00303B36 /* FinderSync.m */,
-				539158A927BE606500816F56 /* LineProcessor.h */,
-				539158AB27BE71A900816F56 /* LineProcessor.m */,
-				539158B127BE891500816F56 /* LocalSocketClient.h */,
-				539158B227BEC98A00816F56 /* LocalSocketClient.m */,
+				539158A927BE606500816F56 /* FinderSyncSocketLineProcessor.h */,
+				539158AB27BE71A900816F56 /* FinderSyncSocketLineProcessor.m */,
 				C2B573D91B1CD9CE00303B36 /* Supporting Files */,
 			);
 			path = FinderSyncExt;
@@ -200,6 +287,19 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		53903D072956164F00D0B308 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				53903D352956184400D0B308 /* LocalSocketClient.h in Headers */,
+				53903D37295618A400D0B308 /* LineProcessor.h in Headers */,
+				53903D1E2956164F00D0B308 /* NCDesktopClientSocketKit.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
 		538E396627F4765000FA63D5 /* FileProviderExt */ = {
 			isa = PBXNativeTarget;
@@ -208,10 +308,12 @@
 				538E396327F4765000FA63D5 /* Sources */,
 				538E396427F4765000FA63D5 /* Frameworks */,
 				538E396527F4765000FA63D5 /* Resources */,
+				53903D342956173F00D0B308 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				53903D332956173F00D0B308 /* PBXTargetDependency */,
 			);
 			name = FileProviderExt;
 			packageProductDependencies = (
@@ -219,6 +321,24 @@
 			productName = FileProviderExt;
 			productReference = 538E396727F4765000FA63D5 /* FileProviderExt.appex */;
 			productType = "com.apple.product-type.app-extension";
+		};
+		53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 53903D282956165000D0B308 /* Build configuration list for PBXNativeTarget "NCDesktopClientSocketKit" */;
+			buildPhases = (
+				53903D072956164F00D0B308 /* Headers */,
+				53903D082956164F00D0B308 /* Sources */,
+				53903D092956164F00D0B308 /* Frameworks */,
+				53903D0A2956164F00D0B308 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NCDesktopClientSocketKit;
+			productName = NCDesktopClientSocketKit;
+			productReference = 53903D0C2956164F00D0B308 /* NCDesktopClientSocketKit.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		C2B573B01B1CD91E00303B36 /* desktopclient */ = {
 			isa = PBXNativeTarget;
@@ -228,12 +348,14 @@
 				C2B573AE1B1CD91E00303B36 /* Frameworks */,
 				C2B573AF1B1CD91E00303B36 /* Resources */,
 				C2B573E11B1CD9CE00303B36 /* Embed App Extensions */,
+				53903D232956165000D0B308 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */,
 				538E397527F4765000FA63D5 /* PBXTargetDependency */,
+				53903D202956164F00D0B308 /* PBXTargetDependency */,
 			);
 			name = desktopclient;
 			productName = desktopclient;
@@ -248,10 +370,12 @@
 				C2B573D41B1CD9CE00303B36 /* Frameworks */,
 				C2B573D51B1CD9CE00303B36 /* Resources */,
 				5B3335471CA058E200E11A45 /* ShellScript */,
+				53903D2F2956173000D0B308 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				53903D2E2956173000D0B308 /* PBXTargetDependency */,
 			);
 			name = FinderSyncExt;
 			productName = FinderSyncExt;
@@ -264,11 +388,15 @@
 		C2B573951B1CD88000303B36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1330;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					538E396627F4765000FA63D5 = {
 						CreatedOnToolsVersion = 13.3;
+						ProvisioningStyle = Manual;
+					};
+					53903D0B2956164F00D0B308 = {
+						CreatedOnToolsVersion = 14.2;
 						ProvisioningStyle = Manual;
 					};
 					C2B573B01B1CD91E00303B36 = {
@@ -307,12 +435,20 @@
 				C2B573B01B1CD91E00303B36 /* desktopclient */,
 				C2B573D61B1CD9CE00303B36 /* FinderSyncExt */,
 				538E396627F4765000FA63D5 /* FileProviderExt */,
+				53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		538E396527F4765000FA63D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		53903D0A2956164F00D0B308 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -369,6 +505,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		53903D082956164F00D0B308 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				53903D2A295616F000D0B308 /* LocalSocketClient.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C2B573AD1B1CD91E00303B36 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -381,8 +525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				539158B327BEC98A00816F56 /* LocalSocketClient.m in Sources */,
-				539158AC27BE71A900816F56 /* LineProcessor.m in Sources */,
+				539158AC27BE71A900816F56 /* FinderSyncSocketLineProcessor.m in Sources */,
 				C2B573DE1B1CD9CE00303B36 /* FinderSync.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -394,6 +537,21 @@
 			isa = PBXTargetDependency;
 			target = 538E396627F4765000FA63D5 /* FileProviderExt */;
 			targetProxy = 538E397427F4765000FA63D5 /* PBXContainerItemProxy */;
+		};
+		53903D202956164F00D0B308 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */;
+			targetProxy = 53903D1F2956164F00D0B308 /* PBXContainerItemProxy */;
+		};
+		53903D2E2956173000D0B308 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */;
+			targetProxy = 53903D2D2956173000D0B308 /* PBXContainerItemProxy */;
+		};
+		53903D332956173F00D0B308 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 53903D0B2956164F00D0B308 /* NCDesktopClientSocketKit */;
+			targetProxy = 53903D322956173F00D0B308 /* PBXContainerItemProxy */;
 		};
 		C2B573E01B1CD9CE00303B36 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -438,7 +596,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = FileProviderExt;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -485,7 +643,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = FileProviderExt;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -497,6 +655,123 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		53903D242956165000D0B308 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.NCDesktopClientSocketKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		53903D252956165000D0B308 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.owncloud.NCDesktopClientSocketKit;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 5.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
@@ -777,6 +1052,15 @@
 			buildConfigurations = (
 				538E397727F4765000FA63D5 /* Debug */,
 				538E397827F4765000FA63D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		53903D282956165000D0B308 /* Build configuration list for PBXNativeTarget "NCDesktopClientSocketKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				53903D242956165000D0B308 /* Debug */,
+				53903D252956165000D0B308 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
