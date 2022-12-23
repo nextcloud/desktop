@@ -37,23 +37,17 @@
 
 @interface LocalSocketClient : NSObject
 
-@property NSString* socketPath;
-@property LineProcessor* lineProcessor;
-@property int sock;
-@property dispatch_queue_t localSocketQueue;
-@property dispatch_source_t readSource;
-@property dispatch_source_t writeSource;
-@property NSMutableData* inBuffer;
-@property NSMutableData* outBuffer;
-
-- (instancetype)init:(NSString*)socketPath lineProcessor:(LineProcessor*)lineProcessor;
+- (instancetype)initWithSocketPath:(NSString*)socketPath
+                     lineProcessor:(LineProcessor*)lineProcessor;
 - (BOOL)isConnected;
 - (void)start;
 - (void)restart;
 - (void)closeConnection;
 - (NSString*)strErr;
-- (void)askOnSocket:(NSString*)path query:(NSString*)verb;
-- (void)askForIcon:(NSString*)path isDirectory:(BOOL)isDirectory;
+- (void)askOnSocket:(NSString*)path
+              query:(NSString*)verb;
+- (void)askForIcon:(NSString*)path
+       isDirectory:(BOOL)isDirectory;
 - (void)readFromSocket;
 - (void)writeToSocket;
 - (void)processInBuffer;
