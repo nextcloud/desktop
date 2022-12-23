@@ -107,6 +107,14 @@ protected slots:
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
     void slotGuiIsShowingSettings();
 
+private slots:
+    void handleAccountSetupFromCommandLine();
+    void fetchUserName();
+    void checkLastModifiedWithPropfind();
+    void accountSetupFromCommandLinePropfindHandleSuccess();
+    void accountSetupFromCommandLinePropfindHandleFailure();
+    void printAccountSetupFromCommandLineStatusAndExit(const QString &status, bool isFailure);
+
 private:
     void setHelp();
 
@@ -132,6 +140,11 @@ private:
     bool _quitInstance = false;
     QString _logFile;
     QString _logDir;
+    QString _appPassword;
+    QString _userId;
+    QString _baseDir;
+    QString _remoteDir;
+    QUrl _serverUrl;
     int _logExpire;
     bool _logFlush;
     bool _logDebug;
@@ -144,6 +157,8 @@ private:
 
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
+
+    AccountPtr _account;
 
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;

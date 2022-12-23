@@ -24,6 +24,7 @@
 #include "accountstate.h"
 #include "editlocallymanager.h"
 #include "connectionvalidator.h"
+#include "filesystem.h"
 #include "folder.h"
 #include "folderman.h"
 #include "logger.h"
@@ -34,6 +35,7 @@
 #include "clientproxy.h"
 #include "accountmanager.h"
 #include "creds/abstractcredentials.h"
+#include "creds/webflowcredentials.h"
 #include "pushnotifications.h"
 #include "shellextensionsserver.h"
 
@@ -411,6 +413,10 @@ Application::Application(int &argc, char **argv)
     _gui->createTray();
 
     handleEditLocallyFromOptions();
+
+    if (!_appPassword.isEmpty() && !_userId.isEmpty() && !_baseDir.isEmpty() && _serverUrl.isValid()) {
+        handleAccountSetupFromCommandLine();
+    }
 }
 
 Application::~Application()
@@ -663,7 +669,37 @@ void Application::parseOptions(const QStringList &options)
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
-        }
+        } else if (option == QLatin1String("--apppassword")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _appPassword = it.next();
+            } else {
+                showHint("apppassword not specified");
+            }
+        } else if (option == QLatin1String("--userid")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _userId = it.next();
+            } else {
+                showHint("userid not specified");
+            }
+        } else if (option == QLatin1String("--basedir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _baseDir = it.next();
+            } else {
+                showHint("basedir not specified");
+            }
+        } else if (option == QLatin1String("--remotedir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _remoteDir = it.next();
+            } else {
+                showHint("remotedir not specified");
+            }
+        } else if (option == QLatin1String("--serverurl")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                _serverUrl = it.next();
+            } else {
+                showHint("serverurl not specified");
+            }
+        } 
         else {
             showHint("Unrecognized option '" + option.toStdString() + "'");
         }
@@ -847,6 +883,184 @@ void Application::showMainDialog()
 void Application::slotGuiIsShowingSettings()
 {
     emit isShowingSettingsDialog();
+}
+
+void Application::handleAccountSetupFromCommandLine()
+{
+    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
+        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
+        return;
+    }
+
+    QDir dir(_baseDir);
+    if (dir.exists() && !dir.isEmpty()) {
+        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Local folder %1 already exists and is non-empty!").arg(QDir::toNativeSeparators(_baseDir)), true);
+        return;
+    }
+
+    qInfo() << "Creating folder" << _baseDir;
+    if (!dir.exists()  && !dir.mkpath(".")) {
+        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Folder creation failed. Could not create local folder %1").arg(QDir::toNativeSeparators(_baseDir)), true);
+        return;
+    }
+
+    FileSystem::setFolderMinimumPermissions(_baseDir);
+    Utility::setupFavLink(_baseDir);
+
+    const auto credentials = new WebFlowCredentials(_userId, _appPassword);
+    _account = AccountManager::createAccount();
+    _account->setCredentials(credentials);
+    _account->setUrl(_serverUrl);
+    
+    _userId.clear();
+    _appPassword.clear();
+    _serverUrl.clear();
+
+    fetchUserName();
+}
+
+void Application::checkLastModifiedWithPropfind()
+{
+    const auto job = new PropfindJob(_account, "/", this);
+    job->setIgnoreCredentialFailure(true);
+    // There is custom redirect handling in the error handler,
+    // so don't automatically follow redirects.
+    job->setFollowRedirects(false);
+    job->setProperties(QList<QByteArray>() << "getlastmodified");
+    connect(job, &PropfindJob::result, this, &Application::accountSetupFromCommandLinePropfindHandleSuccess);
+    connect(job, &PropfindJob::finishedWithError, this, &Application::accountSetupFromCommandLinePropfindHandleFailure);
+    job->start();
+}
+
+void Application::accountSetupFromCommandLinePropfindHandleSuccess()
+{
+    const auto accountManager = AccountManager::instance();
+    const auto accountState = accountManager->addAccount(_account);
+    accountManager->save();
+
+    FolderDefinition definition;
+    definition.localPath = _baseDir;
+    definition.targetPath = FolderDefinition::prepareTargetPath(!_remoteDir.isEmpty() ? _remoteDir : QStringLiteral("/"));
+    definition.virtualFilesMode = bestAvailableVfsMode();
+
+    const auto folderMan = FolderMan::instance();
+
+    definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
+    definition.alias = folderMan->map().size() > 0 ? QString::number(folderMan->map().size()) : QString::number(0);
+
+    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
+        definition.navigationPaneClsid = QUuid::createUuid();
+    }
+
+    folderMan->setSyncEnabled(false);
+
+    if (const auto folder = folderMan->addFolder(accountState, definition)) {
+        if (definition.virtualFilesMode != Vfs::Off) {
+            folder->setRootPinState(PinState::OnlineOnly);
+        }
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, QStringList() << QLatin1String("/"));
+        qInfo() << QStringLiteral("Folder %1 setup from command line success.").arg(definition.localPath);
+        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
+    } else {
+        accountManager->deleteAccount(accountState);
+        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line failed, due to folder creation failure.").arg(_account->displayName()), false);
+    }
+}
+
+void Application::accountSetupFromCommandLinePropfindHandleFailure()
+{
+    const auto job = qobject_cast<PropfindJob *>(sender());
+    if (!job) {
+        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Cannot check for authed redirects. This slot should be invoked from PropfindJob!"), true);
+        return;
+    }
+    const auto reply = job->reply();
+
+    QString errorMsg;
+
+    // If there were redirects on the *authed* requests, also store
+    // the updated server URL, similar to redirects on status.php.
+    QUrl redirectUrl = reply->attribute(QNetworkRequest::RedirectionTargetAttribute).toUrl();
+    if (!redirectUrl.isEmpty()) {
+        qInfo() << "Authed request was redirected to" << redirectUrl.toString();
+
+        // strip the expected path
+        auto path = redirectUrl.path();
+        static QString expectedPath = "/" + _account->davPath();
+        if (path.endsWith(expectedPath)) {
+            path.chop(expectedPath.size());
+            redirectUrl.setPath(path);
+
+            qInfo() << "Setting account url to" << redirectUrl.toString();
+            _account->setUrl(redirectUrl);
+            checkLastModifiedWithPropfind();
+        }
+        errorMsg = tr("The authenticated request to the server was redirected to "
+                      "\"%1\". The URL is bad, the server is misconfigured.")
+                       .arg(Utility::escape(redirectUrl.toString()));
+
+        // A 404 is actually a success: we were authorized to know that the folder does
+        // not exist. It will be created later...
+    } else if (reply->error() == QNetworkReply::ContentNotFoundError) {
+        accountSetupFromCommandLinePropfindHandleSuccess();
+    } else if (reply->error() != QNetworkReply::NoError) {
+        if (!_account->credentials()->stillValid(reply)) {
+            errorMsg = tr("Access forbidden by server. To verify that you have proper access, "
+                          "<a href=\"%1\">click here</a> to access the service with your browser.")
+                           .arg(Utility::escape(_account->url().toString()));
+        } else {
+            errorMsg = job->errorStringParsingBody();
+        }
+        // Something else went wrong, maybe the response was 200 but with invalid data.
+    } else {
+        errorMsg = tr("There was an invalid response to an authenticated WebDAV request");
+    }
+    printAccountSetupFromCommandLineStatusAndExit( QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName()).arg(errorMsg), true);
+}
+
+void Application::printAccountSetupFromCommandLineStatusAndExit(const QString &status, bool isFailure)
+{
+    if (isFailure) {
+        qWarning() << status;
+    } else {
+        qInfo() << status;
+    }
+    _userId.clear();
+    _appPassword.clear();
+    _serverUrl.clear();
+    _baseDir.clear();
+    _remoteDir.clear();
+    _account.clear();
+    QTimer::singleShot(0, this, [isFailure]() {
+        if (isFailure) {
+            qApp->exit(1);
+        } else {
+            // we might need another wait to quit such that we won't end up with syncjournal being locked and lock not lifted
+            qApp->quit();
+        }
+    });
+}
+
+void Application::fetchUserName()
+{
+    const auto fetchUserNameJob = new JsonApiJob(_account, QStringLiteral("/ocs/v1.php/cloud/user"));
+    connect(fetchUserNameJob, &JsonApiJob::jsonReceived, this, [this](const QJsonDocument &json, int statusCode) {
+        sender()->deleteLater();
+
+        if (statusCode != 100) {
+            printAccountSetupFromCommandLineStatusAndExit("Could not fetch username.", true);
+            return;
+        }
+
+        const auto objData = json.object().value("ocs").toObject().value("data").toObject();
+        const auto userId = objData.value("id").toString("");
+        const auto displayName = objData.value("display-name").toString("");
+        _account->setDavUser(userId);
+        _account->setDavDisplayName(displayName);
+
+        checkLastModifiedWithPropfind();
+    });
+    fetchUserNameJob->start();
 }
 
 void Application::openVirtualFile(const QString &filename)
