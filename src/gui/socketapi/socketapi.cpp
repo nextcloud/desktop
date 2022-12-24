@@ -547,7 +547,7 @@ void SocketApi::processEncryptRequest(const QString &localFile)
         if (status == OCC::EncryptFolderJob::Error) {
             const int ret = QMessageBox::critical(nullptr,
                                                   tr("Failed to encrypt folder"),
-                                                  tr("Could not encrypt the following folder: \"%1\". \n\n"
+                                                  tr("Could not encrypt the following folder: \"%1\".\n\n"
                                                      "Server replied with error: %2").arg(fileData.folderRelativePath, job->errorString()));
             Q_UNUSED(ret)
         } else {
