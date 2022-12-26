@@ -13,13 +13,29 @@
  */
 
 import FileProvider
+import OSLog
+import NCDesktopClientSocketKit
 
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
+    let socketClient: LocalSocketClient
     
     required init(domain: NSFileProviderDomain) {
         self.domain = domain
         // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
+
+        let bundle = Bundle(for: type(of: self))
+        guard let fileProviderSocketApiPrefix = bundle.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
+            NSLog("Could not start file provider socket client properly as SocketApiPrefix is missing")
+            self.socketClient = LocalSocketClient()
+            super.init()
+            return;
+        }
+
+        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: fileProviderSocketApiPrefix)
+        let socketPath = containerUrl?.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
+        self.socketClient = LocalSocketClient(socketPath: socketPath?.path, lineProcessor: nil)
+        self.socketClient.start();
         super.init()
     }
     

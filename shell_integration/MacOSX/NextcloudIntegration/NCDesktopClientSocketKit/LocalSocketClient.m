@@ -40,7 +40,7 @@
 - (instancetype)initWithSocketPath:(NSString*)socketPath
                      lineProcessor:(id<LineProcessor>)lineProcessor
 {
-    NSLog(@"Initiating local socket client.");
+    NSLog(@"Initiating local socket client pointing to %@", socketPath);
     self = [super init];
     
     if(self) {

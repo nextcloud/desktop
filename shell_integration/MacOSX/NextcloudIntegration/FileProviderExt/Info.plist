@@ -13,5 +13,7 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>$(PRODUCT_MODULE_NAME).FileProviderExtension</string>
 	</dict>
+	<key>SocketApiPrefix</key>
+	<string>$(OC_SOCKETAPI_TEAM_IDENTIFIER_PREFIX)$(OC_APPLICATION_REV_DOMAIN)</string>
 </dict>
 </plist>

@@ -16,6 +16,8 @@
 
 #include <QObject>
 
+#include "fileprovidersocketserver.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -31,6 +33,7 @@ public:
 
 private:
     explicit FileProvider(QObject *parent = nullptr);
+    FileProviderSocketServer _socketServer;
 };
 
 } // namespace Mac
