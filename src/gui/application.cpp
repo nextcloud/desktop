@@ -141,29 +141,31 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+    const auto versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
 
-    if (versionChanged) {
-        QDir directory(configFile.configPath());
-        const auto anyConfigFileList = directory.entryInfoList({"*.cfg"}, QDir::Files);
-        for (const auto &file : anyConfigFileList) {
-            if (file.baseName() != APPLICATION_CONFIG_NAME) {
-                QFile::rename(file.canonicalFilePath(), configFile.configFile());
-                break;
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    auto warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+
+    if (!versionChanged && !warningMessage) {
+        return true;
+    }
+
+    // back up all old config file
+    QStringList backupFilesList;
+    QDir directory(configFile.configPath());
+    const auto anyConfigFileList = directory.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &file : anyConfigFileList) {
+        const auto fileName = file.fileName();
+        backupFilesList.append(configFile.backup(fileName));
+        if (file.baseName() != APPLICATION_CONFIG_NAME) {
+            if (!QFile::rename(fileName, configFile.configFile())) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << file.baseName() << "to" << configFile.configFile();
             }
         }
     }
 
-    // We want to message the user either for destructive changes,
-    // or if we're ignoring something and the client version changed.
-    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
-
-    if (!versionChanged && !warningMessage)
-        return true;
-
-    const auto backupFile = configFile.backup();
-
-    if (warningMessage) {
+    if (warningMessage || backupFilesList.count() > 0) {
         QString boldMessage;
         if (!deleteKeys.isEmpty()) {
             boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
@@ -180,7 +182,7 @@ bool Application::configVersionMigration()
                "%1<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%2</i>.")
-                .arg(boldMessage, backupFile));
+                .arg(boldMessage, backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 
