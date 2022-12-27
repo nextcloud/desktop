@@ -248,12 +248,22 @@ Application::Application(int &argc, char **argv)
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_DEPRECATED
         QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+
+        // macOS 10.11.x does not like trailing slash for rename/move.
+        if (oldDir.endsWith('/')) {
+            oldDir.chop(1);
+        }
+
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             auto confDir = ConfigFile().configPath();
-            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+
+            // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/')) {
+                confDir.chop(1);
+            }
+
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
 
             if (!QFile::rename(oldDir, confDir)) {
