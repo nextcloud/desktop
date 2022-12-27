@@ -143,6 +143,17 @@ bool Application::configVersionMigration()
     // (The client version is adjusted further down)
     bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
 
+    if (versionChanged) {
+        QDir directory(configFile.configPath());
+        const auto anyConfigFileList = directory.entryInfoList({"*.cfg"}, QDir::Files);
+        for (const auto &file : anyConfigFileList) {
+            if (file.baseName() != APPLICATION_CONFIG_NAME) {
+                QFile::rename(file.canonicalFilePath(), configFile.configFile());
+                break;
+            }
+        }
+    }
+
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
     bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
