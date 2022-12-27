@@ -430,12 +430,15 @@ QString ConfigFile::excludeFileFromSystem()
     return fi.absoluteFilePath();
 }
 
-QString ConfigFile::backup() const
+QString ConfigFile::backup(const QString fileName) const
 {
-    QString baseFile = configFile();
+    QString baseFile = configPath() + fileName;
     auto versionString = clientVersionString();
-    if (!versionString.isEmpty())
+
+    if (!versionString.isEmpty()) {
         versionString.prepend('_');
+    }
+
     QString backupFile =
         QString("%1.backup_%2%3")
             .arg(baseFile)
@@ -445,10 +448,13 @@ QString ConfigFile::backup() const
     // If this exact file already exists it's most likely that a backup was
     // already done. (two backup calls directly after each other, potentially
     // even with source alterations in between!)
-    if (!QFile::exists(backupFile)) {
-        QFile f(baseFile);
-        f.copy(backupFile);
+    QFile f(baseFile);
+
+    // QFile does not overwrite it
+    if(!f.copy(backupFile)) {
+        qCWarning(lcConfigFile) << "Failed to create a backup of the config file" << baseFile;
     }
+
     return backupFile;
 }
 
