@@ -247,9 +247,7 @@ Application::Application(int &argc, char **argv)
 #endif
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_DEPRECATED
-        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
-        // behavior of adding "data" to the path
-        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
         if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
         QT_WARNING_POP
         setApplicationName(_theme->appName());
