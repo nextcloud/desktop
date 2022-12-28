@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396E27F4765000FA63D5 /* FileProviderItem.swift */; };
@@ -121,6 +122,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
@@ -201,6 +203,7 @@
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
 				538E396E27F4765000FA63D5 /* FileProviderItem.swift */,
 				538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */,
+				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
 				538E397227F4765000FA63D5 /* Info.plist */,
 				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
 			);
@@ -501,6 +504,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
+				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */,
 				538E397127F4765000FA63D5 /* FileProviderEnumerator.swift in Sources */,
 			);
