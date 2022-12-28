@@ -20,7 +20,10 @@
 -(instancetype)initWithDelegate:(id<SyncClientDelegate>)delegate
 {
     NSLog(@"Init line processor with delegate.");
-    self.delegate = delegate;
+    self = [super init];
+    if (self) {
+        self.delegate = delegate;
+    }
     return self;
 }
 
