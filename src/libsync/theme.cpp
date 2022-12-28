@@ -344,7 +344,32 @@ Theme::Theme()
     : QObject(nullptr)
 {
 #if defined(Q_OS_WIN)
-    reserveDarkPalette = QPalette(QColor(49,49,49,255), QColor(35,35,35,255)); // Windows 11 button and window dark colours
+    // Windows does not provide a dark theme for Win32 apps so let's come up with a palette
+    // Credit to https://github.com/Jorgen-VikingGod/Qt-Frameless-Window-DarkStyle
+
+    reserveDarkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::WindowText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
+                                QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Base, QColor(42, 42, 42));
+    reserveDarkPalette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+    reserveDarkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+    reserveDarkPalette.setColor(QPalette::ToolTipText, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::Text, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Dark, QColor(35, 35, 35));
+    reserveDarkPalette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+    reserveDarkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::ButtonText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::ButtonText,
+                                QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::BrightText, Qt::red);
+    reserveDarkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+    reserveDarkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
+    reserveDarkPalette.setColor(QPalette::HighlightedText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::HighlightedText,
+                                QColor(127, 127, 127));
 #endif
 }
 
