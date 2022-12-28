@@ -102,8 +102,9 @@ class SharingDialog:
         collaborator_row_selector["occurrence"] = collaboratorCount
         squish.waitForObjectExists(collaborator_row_selector)
 
-    def getSharingDialogMessage(self):
-        return str(squish.waitForObjectExists(self.SHARING_DIALOG).text)
+    @staticmethod
+    def getSharingDialogMessage():
+        return str(squish.waitForObjectExists(SharingDialog.SHARING_DIALOG).text)
 
     def getErrorText(self):
         return str(squish.waitForObjectExists(self.SHARING_DIALOG_ERROR).text)

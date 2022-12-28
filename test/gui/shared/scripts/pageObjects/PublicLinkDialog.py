@@ -41,7 +41,6 @@ class PublicLinkDialog:
         "type": "QPushButton",
         "visible": 1,
     }
-
     PUBLIC_LINK_NAME = {
         "column": 0,
         "container": names.oCC_ShareLinkWidget_linkShares_QTableWidget,
@@ -81,6 +80,12 @@ class PublicLinkDialog:
         "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
         "text": "Delete",
         "type": "QPushButton",
+    }
+    UPDATE_PASSWORD_BUTTON = {
+        "container": names.qt_tabwidget_stackedwidget_OCC_ShareLinkWidget_OCC_ShareLinkWidget,
+        "name": "pushButton_setPassword",
+        "type": "QPushButton",
+        "visible": 1,
     }
 
     # to store current default public link expiry date
@@ -136,7 +141,7 @@ class PublicLinkDialog:
         squish.clickButton(squish.waitForObject(self.CREATE_SHARE_BUTTON))
         squish.waitFor(
             lambda: (
-                squish.waitForObject(names.linkShares_0_0_QModelIndex).displayText
+                squish.waitForObject(PublicLinkDialog.PUBLIC_LINK_NAME).displayText
                 == "Public link"
             )
         )
@@ -268,7 +273,7 @@ class PublicLinkDialog:
         squish.clickButton(squish.waitForObject(self.CREATE_SHARE_BUTTON))
         squish.waitFor(
             lambda: (
-                squish.findObject(names.linkShares_0_0_QModelIndex).displayText
+                squish.findObject(PublicLinkDialog.PUBLIC_LINK_NAME).displayText
                 == "Public link"
             )
         )
@@ -276,9 +281,7 @@ class PublicLinkDialog:
     def changePassword(self, password):
         self.setPassword(password)
         squish.clickButton(
-            squish.waitForObject(
-                names.oCC_ShareLinkWidget_pushButton_setPassword_QPushButton
-            )
+            squish.waitForObject(PublicLinkDialog.UPDATE_PASSWORD_BUTTON)
         )
 
     @staticmethod

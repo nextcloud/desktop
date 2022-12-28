@@ -4,16 +4,24 @@ from helpers.SetupClientHelper import getClientDetails, createUserSyncPath
 
 
 class SyncConnectionWizard:
-    ADD_FOLDER_SYNC_CONNECTION_WIZARD = (
-        names.add_Folder_Sync_Connection_FolderWizardSourcePage_OCC_FolderWizardLocalPath
-    )
+    ADD_FOLDER_SYNC_CONNECTION_WIZARD = {
+        "name": "FolderWizardSourcePage",
+        "type": "OCC::FolderWizardLocalPath",
+        "visible": 1,
+        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
+    }
     CHOOSE_LOCAL_SYNC_FOLDER = {
         "name": "localFolderLineEdit",
         "type": "QLineEdit",
         "visible": 1,
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
-    NEXT_BUTTON = names.add_Folder_Sync_Connection_qt_passive_wizardbutton1_QPushButton
+    NEXT_BUTTON = {
+        "name": "__qt__passive_wizardbutton1",
+        "type": "QPushButton",
+        "visible": 1,
+        "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
+    }
     SYNC_DIALOG_ROOT_FOLDER = {
         "column": 0,
         "container": names.add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget,
@@ -31,9 +39,19 @@ class SyncConnectionWizard:
         "visible": 1,
         "window": names.add_Folder_Sync_Connection_OCC_FolderWizard,
     }
-    SELECT_REMOTE_DESTINATION_FOLDER_WIZARD = (
-        names.add_Folder_Sync_Connection_groupBox_QGroupBox
-    )
+    REMOTE_FOLDER_TREE = {
+        "container": names.add_Folder_Sync_Connection_groupBox_QGroupBox,
+        "name": "folderTreeWidget",
+        "type": "QTreeWidget",
+        "visible": 1,
+    }
+    SELECTIVE_SYNC_FOLDER_TREE = {
+        "container": names.add_Folder_Sync_Connection_Deselect_remote_folders_you_do_not_wish_to_synchronize_QTreeWidget,
+        "orientation": 1,
+        "type": "QHeaderView",
+        "unnamed": 1,
+        "visible": 1,
+    }
 
     def setSyncPathInSyncConnectionWizard(self, context):
         squish.waitForObject(self.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
@@ -46,11 +64,8 @@ class SyncConnectionWizard:
         squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
 
     def selectRemoteDestinationFolder(self, folder):
-        squish.waitForObject(self.SELECT_REMOTE_DESTINATION_FOLDER_WIZARD)
         squish.mouseClick(
-            squish.waitForObjectItem(
-                names.groupBox_folderTreeWidget_QTreeWidget, folder
-            ),
+            squish.waitForObjectItem(SyncConnectionWizard.REMOTE_FOLDER_TREE, folder),
             0,
             0,
             squish.Qt.NoModifier,
@@ -83,7 +98,7 @@ class SyncConnectionWizard:
         squish.mouseClick(
             squish.waitForObject(
                 {
-                    "container": names.deselect_remote_folders_you_do_not_wish_to_synchronize_QHeaderView,
+                    "container": SyncConnectionWizard.SELECTIVE_SYNC_FOLDER_TREE,
                     "text": headerText,
                     "type": "HeaderViewItem",
                     "visible": True,
