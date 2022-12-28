@@ -26,6 +26,8 @@ FileProviderSocketController::FileProviderSocketController(QLocalSocket *socket,
     : QObject{parent}
     , _socket(socket)
 {
+    connect(socket, &QLocalSocket::readyRead,
+            this, &FileProviderSocketController::slotReadyRead);
     connect(socket, &QLocalSocket::disconnected,
             this, &FileProviderSocketController::slotOnDisconnected);
     connect(socket, &QLocalSocket::destroyed,
@@ -44,6 +46,15 @@ void FileProviderSocketController::slotSocketDestroyed(QObject *object)
     Q_UNUSED(object)
     qCInfo(lcFileProviderSocketController) << "File provider socket object has been destroyed, destroying controller";
     Q_EMIT socketDestroyed(_socket);
+}
+
+void FileProviderSocketController::slotReadyRead()
+{
+    Q_ASSERT(_socket);
+    while(_socket->canReadLine()) {
+        const QString line = QString::fromUtf8(_socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
+        Q_UNUSED(line);
+    }
 }
 
 }

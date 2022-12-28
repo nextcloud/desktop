@@ -35,6 +35,7 @@ signals:
 private slots:
     void slotOnDisconnected();
     void slotSocketDestroyed(QObject *object);
+    void slotReadyRead();
 
 private:
     QPointer<QLocalSocket> _socket;
