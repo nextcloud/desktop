@@ -200,26 +200,31 @@
     }
 }
 
-- (void)askOnSocket:(NSString *)path query:(NSString *)verb
+- (void)sendMessage:(NSString *)message
 {
-    NSString *line = [NSString stringWithFormat:@"%@:%@\n", verb, path];
     dispatch_async(_localSocketQueue, ^(void) {
         if(![self isConnected]) {
             return;
         }
-        
+
         BOOL writeSourceIsSuspended = [self->_outBuffer length] == 0;
-        
-        [self->_outBuffer appendData:[line dataUsingEncoding:NSUTF8StringEncoding]];
-        
-        NSLog(@"Writing to out buffer: '%@'", line);
+
+        [self->_outBuffer appendData:[message dataUsingEncoding:NSUTF8StringEncoding]];
+
+        NSLog(@"Writing to out buffer: '%@'", message);
         NSLog(@"Out buffer now %li bytes", [self->_outBuffer length]);
-        
+
         if(writeSourceIsSuspended) {
             NSLog(@"Resuming write dispatch source.");
             dispatch_resume(self->_writeSource);
         }
     });
+}
+
+- (void)askOnSocket:(NSString *)path query:(NSString *)verb
+{
+    NSString *line = [NSString stringWithFormat:@"%@:%@\n", verb, path];
+    [self sendMessage:line];
 }
 
 - (void)writeToSocket

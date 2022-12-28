@@ -46,6 +46,7 @@
 - (void)restart;
 - (void)closeConnection;
 
+- (void)sendMessage:(NSString*)message;
 - (void)askOnSocket:(NSString*)path
               query:(NSString*)verb;
 - (void)askForIcon:(NSString*)path
