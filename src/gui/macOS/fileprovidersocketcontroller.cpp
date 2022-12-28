@@ -57,6 +57,24 @@ void FileProviderSocketController::slotReadyRead()
     }
 }
 
+void FileProviderSocketController::sendMessage(const QString &message) const
+{
+    if (!_socket) {
+        qCWarning(lcFileProviderSocketController) << "Not sending message on dead file provider socket:" << message;
+        return;
+    }
+
+    qCDebug(lcFileProviderSocketController) << "Sending File Provider socket message:" << message;
+    const auto lineEndChar = '\n';
+    const auto messageToSend = message.endsWith(lineEndChar) ? message : message + lineEndChar;
+    const auto bytesToSend = messageToSend.toUtf8();
+    const auto sent = _socket->write(bytesToSend);
+
+    if (sent != bytesToSend.length()) {
+        qCWarning(lcFileProviderSocketController) << "Could not send all data on file provider socket for:" << message;
+    }
+}
+
 }
 
 }

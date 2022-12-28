@@ -32,6 +32,9 @@ public:
 signals:
     void socketDestroyed(const QLocalSocket * const socket);
 
+public slots:
+    void sendMessage(const QString &message) const;
+
 private slots:
     void slotOnDisconnected();
     void slotSocketDestroyed(QObject *object);
