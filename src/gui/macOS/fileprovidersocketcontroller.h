@@ -18,6 +18,8 @@
 #include <QPointer>
 #include <QLocalSocket>
 
+#include "accountstate.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -34,14 +36,21 @@ signals:
 
 public slots:
     void sendMessage(const QString &message) const;
+    void start();
 
 private slots:
     void slotOnDisconnected();
     void slotSocketDestroyed(QObject *object);
     void slotReadyRead();
 
+    void parseReceivedLine(const QString &receivedLine);
+    void requestFileProviderDomainInfo() const;
+
 private:
+    static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);
+
     QPointer<QLocalSocket> _socket;
+    AccountStatePtr _accountState;
 };
 
 } // namespace Mac

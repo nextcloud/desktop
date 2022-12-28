@@ -16,6 +16,8 @@
 
 #include <QLoggingCategory>
 
+#include "accountmanager.h"
+
 namespace OCC {
 
 namespace Mac {
@@ -53,8 +55,51 @@ void FileProviderSocketController::slotReadyRead()
     Q_ASSERT(_socket);
     while(_socket->canReadLine()) {
         const QString line = QString::fromUtf8(_socket->readLine().trimmed()).normalized(QString::NormalizationForm_C);
-        Q_UNUSED(line);
+        qCDebug(lcFileProviderSocketController) << "Received message in file provider socket:" << line;
+
+        parseReceivedLine(line);
     }
+}
+
+void FileProviderSocketController::parseReceivedLine(const QString &receivedLine)
+{
+    if (receivedLine.isEmpty()) {
+        qCWarning(lcFileProviderSocketController) << "Received empty line, can't parse.";
+        return;
+    }
+
+    const auto argPos = receivedLine.indexOf(QLatin1Char(':'));
+    if (argPos == -1) {
+        qCWarning(lcFileProviderSocketController) << "Received line:"
+                                                  << receivedLine
+                                                  << "is incorrectly structured. Can't parse.";
+        return;
+    }
+
+    const auto command = receivedLine.mid(0, argPos);
+    const auto argument = receivedLine.mid(argPos + 1);
+
+    if (command == QStringLiteral("FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY")) {
+        _accountState = accountStateFromFileProviderDomainIdentifier(argument);
+        return;
+    }
+
+    qCWarning(lcFileProviderSocketController) << "Unknown command or reply:" << receivedLine;
+}
+
+AccountStatePtr FileProviderSocketController::accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier)
+{
+    Q_ASSERT(!domainIdentifier.isEmpty());
+
+    // We use Account's userIdAtHostWithPort() as the file provider domain's identifier in FileProviderDomainManager.
+    // We can use this string to get a matching account here.
+    const auto accountForReceivedDomainIdentifier = AccountManager::instance()->accountFromUserId(domainIdentifier);
+    if (!accountForReceivedDomainIdentifier) {
+        qCWarning(lcFileProviderSocketController) << "Could not find account matching user id matching file provider domain identifier:"
+                                                  << domainIdentifier;
+    }
+
+    return accountForReceivedDomainIdentifier;
 }
 
 void FileProviderSocketController::sendMessage(const QString &message) const
@@ -73,6 +118,20 @@ void FileProviderSocketController::sendMessage(const QString &message) const
     if (sent != bytesToSend.length()) {
         qCWarning(lcFileProviderSocketController) << "Could not send all data on file provider socket for:" << message;
     }
+}
+
+
+void FileProviderSocketController::start()
+{
+    Q_ASSERT(_socket);
+    requestFileProviderDomainInfo();
+}
+
+void FileProviderSocketController::requestFileProviderDomainInfo() const
+{
+    Q_ASSERT(_socket);
+    const auto requestMessage = QStringLiteral("SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER");
+    sendMessage(requestMessage);
 }
 
 }

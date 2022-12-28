@@ -41,7 +41,7 @@ class FileProviderDomainManager::Private {
     void addFileProviderDomain(const AccountState *accountState)
     {
         const QString accountDisplayName = accountState->account()->displayName();
-        const QString accountId = accountState->account()->id();
+        const QString accountId = accountState->account()->userIdAtHostWithPort();
 
         qCDebug(lcMacFileProviderDomainManager) << "Adding new file provider domain for account with id: " << accountId;
 

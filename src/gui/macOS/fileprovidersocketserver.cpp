@@ -66,6 +66,8 @@ void FileProviderSocketServer::slotNewConnection()
     connect(socketController.data(), &FileProviderSocketController::socketDestroyed,
             this, &FileProviderSocketServer::slotSocketDestroyed);
     _socketControllers.insert(socket, socketController);
+
+    socketController->start();
 }
 
 void FileProviderSocketServer::slotSocketDestroyed(const QLocalSocket * const socket)
