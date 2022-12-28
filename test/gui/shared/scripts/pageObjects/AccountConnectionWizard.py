@@ -6,16 +6,56 @@ import test
 
 
 class AccountConnectionWizard:
-    SERVER_ADDRESS_BOX = names.contentWidget_urlLineEdit_QLineEdit
-    NEXT_BUTTON = names.setupWizardWindow_nextButton_QPushButton
-    CONFIRM_INSECURE_CONNECTION_BUTTON = names.insecure_connection_Confirm_QPushButton
-    USERNAME_BOX = names.contentWidget_usernameLineEdit_QLineEdit
-    PASSWORD_BOX = names.contentWidget_passwordLineEdit_QLineEdit
-    SELECT_LOCAL_FOLDER = names.localDirectoryGroupBox_localDirectoryLineEdit_QLineEdit
-    DIRECTORY_NAME_BOX = (
-        names.localDirectoryGroupBox_chooseLocalDirectoryButton_QToolButton
-    )
-    CHOOSE_BUTTON = names.qFileDialog_Choose_QPushButton
+    SERVER_ADDRESS_BOX = {
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "name": "urlLineEdit",
+        "type": "QLineEdit",
+        "visible": 1,
+    }
+    NEXT_BUTTON = {
+        "name": "nextButton",
+        "type": "QPushButton",
+        "visible": 1,
+        "window": names.setupWizardWindow_OCC_Wizard_SetupWizardWindow,
+    }
+    CONFIRM_INSECURE_CONNECTION_BUTTON = {
+        "text": "Confirm",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+        "window": names.insecure_connection_QMessageBox,
+    }
+    USERNAME_BOX = {
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "name": "usernameLineEdit",
+        "type": "QLineEdit",
+        "visible": 1,
+    }
+    PASSWORD_BOX = {
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "name": "passwordLineEdit",
+        "type": "QLineEdit",
+        "visible": 1,
+    }
+    SELECT_LOCAL_FOLDER = {
+        "container": names.advancedConfigGroupBox_localDirectoryGroupBox_QGroupBox,
+        "name": "localDirectoryLineEdit",
+        "type": "QLineEdit",
+        "visible": 1,
+    }
+    DIRECTORY_NAME_BOX = {
+        "container": names.advancedConfigGroupBox_localDirectoryGroupBox_QGroupBox,
+        "name": "chooseLocalDirectoryButton",
+        "type": "QToolButton",
+        "visible": 1,
+    }
+    CHOOSE_BUTTON = {
+        "text": "Choose",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+        "window": names.qFileDialog_QFileDialog,
+    }
     ERROR_LABEL = {
         "name": "errorMessageLabel",
         "type": "QLabel",
@@ -46,15 +86,12 @@ class AccountConnectionWizard:
         "type": "QPushButton",
         "visible": 1,
     }
-    ADVANCE_SETUP_PAGE = {
-        "name": "OwncloudAdvancedSetupPage",
-        "type": "OCC::OwncloudAdvancedSetupPage",
+    CONF_SYNC_MANUALLY_RADIO_BUTTON = {
+        "container": names.advancedConfigGroupBox_syncModeGroupBox_QGroupBox,
+        "name": "configureSyncManuallyRadioButton",
+        "type": "QRadioButton",
         "visible": 1,
-        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
     }
-    CONF_SYNC_MANUALLY_RADIO_BUTTON = (
-        names.syncModeGroupBox_configureSyncManuallyRadioButton_QRadioButton
-    )
     ADVANCED_CONFIGURATION_CHECKBOX = {
         "container": names.setupWizardWindow_contentWidget_QStackedWidget,
         "name": "advancedConfigGroupBox",
@@ -67,11 +104,26 @@ class AccountConnectionWizard:
         "type": "QLineEdit",
         "visible": 1,
     }
-    VIRTUAL_FILE_RADIO_BUTTON = names.syncModeGroupBox_useVfsRadioButton_QRadioButton
-    ENABLE_EXPERIMENTAL_FEATURE_BUTTON = (
-        names.contentWidget_Enable_experimental_placeholder_mode_QPushButton
-    )
-    STAY_SAFE_BUTTON = names.contentWidget_Stay_safe_QPushButton
+    VIRTUAL_FILE_RADIO_BUTTON = {
+        "container": names.advancedConfigGroupBox_syncModeGroupBox_QGroupBox,
+        "name": "useVfsRadioButton",
+        "type": "QRadioButton",
+        "visible": 1,
+    }
+    ENABLE_EXPERIMENTAL_FEATURE_BUTTON = {
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "text": "Enable experimental placeholder mode",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+    }
+    STAY_SAFE_BUTTON = {
+        "container": names.setupWizardWindow_contentWidget_QStackedWidget,
+        "text": "Stay safe",
+        "type": "QPushButton",
+        "unnamed": 1,
+        "visible": 1,
+    }
 
     def __init__(self):
         pass
@@ -126,19 +178,10 @@ class AccountConnectionWizard:
         )
         self.nextStep()
 
-    def oidcLogin(self, username, password, relogin=False):
+    def oidcLogin(self, username, password):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
-        if relogin:
-            self.COPY_URL_TO_CLIPBOARD_BUTTON[
-                "container"
-            ] = names.loginRequiredDialog_contentWidget_QStackedWidget
-            squish.clickButton(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
-        else:
-            self.COPY_URL_TO_CLIPBOARD_BUTTON[
-                "container"
-            ] = names.contentWidget_contentWidget_QStackedWidget
-            squish.clickButton(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
+        squish.clickButton(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
 
         authorize_via_webui(username, password)
 

@@ -18,6 +18,42 @@ class Activity:
         "unnamed": 1,
         "visible": 1,
     }
+    NOT_SYNCED_TABLE = {
+        "container": names.qt_tabwidget_stackedwidget_OCC_IssuesWidget_OCC_IssuesWidget,
+        "name": "_tableView",
+        "type": "QTableView",
+        "visible": 1,
+    }
+
+    @staticmethod
+    def getTabText(tab_index):
+        return squish.waitForObjectExists(
+            {
+                "container": Activity.SUBTAB_CONTAINER,
+                "index": tab_index,
+                "type": "TabItem",
+            }
+        ).text
+
+    @staticmethod
+    def getNotSyncedFileSelector(resource):
+        return {
+            "column": 1,
+            "container": Activity.NOT_SYNCED_TABLE,
+            "text": resource,
+            "type": "QModelIndex",
+        }
+
+    @staticmethod
+    def getNotSyncedStatus(row):
+        return squish.waitForObjectExists(
+            {
+                "column": 6,
+                "row": row,
+                "container": Activity.NOT_SYNCED_TABLE,
+                "type": "QModelIndex",
+            }
+        ).text
 
     def clickTab(self, tabName):
         tabFound = False
@@ -27,13 +63,7 @@ class Activity:
         # So to overcome this the following approach has been implemented
         tabCount = squish.waitForObjectExists(self.SUBTAB_CONTAINER).count
         for index in range(tabCount):
-            tabText = squish.waitForObjectExists(
-                {
-                    "container": names.stack_qt_tabwidget_tabbar_QTabBar,
-                    "index": index,
-                    "type": "TabItem",
-                }
-            ).text
+            tabText = Activity.getTabText(index)
 
             if tabName in tabText:
                 tabFound = True
@@ -44,18 +74,13 @@ class Activity:
             raise Exception("Tab not found: " + tabName)
 
     def checkFileExist(self, filename):
-        squish.waitForObject(names.settings_OCC_SettingsDialog)
         squish.waitForObjectExists(
-            {
-                "column": 1,
-                "container": names.oCC_IssuesWidget_tableView_QTableView,
-                "text": RegularExpression(buildConflictedRegex(filename)),
-                "type": "QModelIndex",
-            }
+            Activity.getNotSyncedFileSelector(
+                RegularExpression(buildConflictedRegex(filename))
+            )
         )
 
     def checkBlackListedResourceExist(self, context, filename):
-        squish.waitForObject(names.settings_OCC_SettingsDialog)
 
         result = squish.waitFor(
             lambda: self.isResourceBlackListed(context, filename),
@@ -68,25 +93,11 @@ class Activity:
         try:
             # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
             fileRow = squish.waitForObject(
-                {
-                    "column": 1,
-                    "container": names.oCC_IssuesWidget_tableView_QTableView,
-                    "text": filename,
-                    "type": "QModelIndex",
-                },
+                Activity.getNotSyncedFileSelector(filename),
                 context.userData['lowestSyncTimeout'] * 1000,
             )["row"]
-            squish.waitForObjectExists(
-                {
-                    "column": 6,
-                    "row": fileRow,
-                    "container": names.oCC_IssuesWidget_tableView_QTableView,
-                    "text": "Blacklisted",
-                    "type": "QModelIndex",
-                },
-                context.userData['lowestSyncTimeout'] * 1000,
-            )
-
-            return True
+            if Activity.getNotSyncedStatus(fileRow) == "Blacklisted":
+                return True
+            return False
         except:
             return False
