@@ -137,7 +137,6 @@
     NSLog(@"Starting to read from socket");
     
     dispatch_resume(_readSource);
-    [self askOnSocket:@"" query:@"GET_STRINGS"];
 }
 
 - (void)restart

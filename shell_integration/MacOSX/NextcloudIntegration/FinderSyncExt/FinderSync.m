@@ -66,6 +66,7 @@
             self.localSocketClient = [[LocalSocketClient alloc] initWithSocketPath:socketPath.path
                                                                      lineProcessor:self.lineProcessor];
             [self.localSocketClient start];
+            [self.localSocketClient askOnSocket:@"" query:@"GET_STRINGS"];
         } else {
             NSLog(@"No socket path. Not initiating local socket client.");
             self.localSocketClient = nil;
