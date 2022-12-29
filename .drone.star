@@ -21,7 +21,7 @@ OC_CI_PHP = "owncloudci/php:%s"
 OC_CI_TRANSIFEX = "owncloudci/transifex:latest"
 OC_CI_WAIT_FOR = "owncloudci/wait-for:latest"
 OC_OCIS = "owncloud/ocis:%s"
-OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.2"
+OC_TEST_MIDDLEWARE = "owncloud/owncloud-test-middleware:1.8.3"
 OC_UBUNTU = "owncloud/ubuntu:20.04"
 
 # Eventually, we have to use image built on ubuntu
