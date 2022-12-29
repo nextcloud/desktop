@@ -148,7 +148,7 @@
         <Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
             <Directory Id="INSTALLDIR" Name="$(var.AppName)">
                 <!-- Shell Extensions -->
-                <Directory Id="ShellExtDir" Name="shellext" />
+                <Directory Id="ShellExtDir" />
             </Directory>
         </Directory>
 
