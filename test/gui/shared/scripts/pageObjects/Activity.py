@@ -55,41 +55,45 @@ class Activity:
             }
         ).text
 
-    def clickTab(self, tabName):
+    @staticmethod
+    def clickTab(tabName):
         tabFound = False
 
         # Selecting tab by name fails for "Not Synced" when there are no unsynced files
         # Because files count will be appended like "Not Synced (2)"
         # So to overcome this the following approach has been implemented
-        tabCount = squish.waitForObjectExists(self.SUBTAB_CONTAINER).count
+        tabCount = squish.waitForObjectExists(Activity.SUBTAB_CONTAINER).count
         for index in range(tabCount):
             tabText = Activity.getTabText(index)
 
             if tabName in tabText:
                 tabFound = True
-                squish.clickTab(squish.waitForObject(self.SUBTAB), tabText)
+                squish.clickTab(squish.waitForObject(Activity.SUBTAB), tabText)
                 break
 
         if not tabFound:
             raise Exception("Tab not found: " + tabName)
 
-    def checkFileExist(self, filename):
+    @staticmethod
+    def checkFileExist(filename):
         squish.waitForObjectExists(
             Activity.getNotSyncedFileSelector(
                 RegularExpression(buildConflictedRegex(filename))
             )
         )
 
-    def checkBlackListedResourceExist(self, context, filename):
+    @staticmethod
+    def checkBlackListedResourceExist(context, filename):
 
         result = squish.waitFor(
-            lambda: self.isResourceBlackListed(context, filename),
+            lambda: Activity.isResourceBlackListed(context, filename),
             context.userData['maxSyncTimeout'] * 1000,
         )
 
         return result
 
-    def isResourceBlackListed(self, context, filename):
+    @staticmethod
+    def isResourceBlackListed(context, filename):
         try:
             # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
             fileRow = squish.waitForObject(

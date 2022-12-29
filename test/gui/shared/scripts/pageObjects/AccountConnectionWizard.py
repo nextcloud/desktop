@@ -125,25 +125,28 @@ class AccountConnectionWizard:
         "visible": 1,
     }
 
-    def __init__(self):
-        pass
-
-    def sanitizeFolderPath(self, folderPath):
+    @staticmethod
+    def sanitizeFolderPath(folderPath):
         return folderPath.rstrip("/")
 
-    def addServer(self, context):
+    @staticmethod
+    def addServer(context):
         clientDetails = getClientDetails(context)
-        squish.mouseClick(squish.waitForObject(self.SERVER_ADDRESS_BOX))
+        squish.mouseClick(
+            squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
+        )
         squish.type(
-            squish.waitForObject(self.SERVER_ADDRESS_BOX),
+            squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX),
             clientDetails['server'],
         )
-        self.nextStep()
+        AccountConnectionWizard.nextStep()
 
         if not context.userData['ocis']:
             try:
                 squish.clickButton(
-                    squish.waitForObject(self.CONFIRM_INSECURE_CONNECTION_BUTTON, 1000)
+                    squish.waitForObject(
+                        AccountConnectionWizard.CONFIRM_INSECURE_CONNECTION_BUTTON, 1000
+                    )
                 )
             except:
                 test.log(
@@ -152,77 +155,137 @@ class AccountConnectionWizard:
                 )
                 pass
 
-    def acceptCertificate(self):
-        squish.clickButton(squish.waitForObject(self.ACCEPT_CERTIFICATE_YES))
+    @staticmethod
+    def acceptCertificate():
+        squish.clickButton(
+            squish.waitForObject(AccountConnectionWizard.ACCEPT_CERTIFICATE_YES)
+        )
 
-    def addUserCreds(self, context):
+    @staticmethod
+    def addUserCreds(context):
         clientDetails = getClientDetails(context)
 
         if context.userData['ocis']:
-            self.oidcLogin(clientDetails['user'], clientDetails['password'])
+            AccountConnectionWizard.oidcLogin(
+                clientDetails['user'], clientDetails['password']
+            )
         else:
-            self.basicLogin(clientDetails['user'], clientDetails['password'])
+            AccountConnectionWizard.basicLogin(
+                clientDetails['user'], clientDetails['password']
+            )
 
-    def basicLogin(self, username, password):
+    @staticmethod
+    def basicLogin(username, password):
         squish.type(
-            squish.waitForObject(self.USERNAME_BOX),
+            squish.waitForObject(AccountConnectionWizard.USERNAME_BOX),
             username,
         )
         squish.type(
-            squish.waitForObject(self.USERNAME_BOX),
+            squish.waitForObject(AccountConnectionWizard.USERNAME_BOX),
             "<Tab>",
         )
         squish.type(
-            squish.waitForObject(self.PASSWORD_BOX),
+            squish.waitForObject(AccountConnectionWizard.PASSWORD_BOX),
             password,
         )
-        self.nextStep()
+        AccountConnectionWizard.nextStep()
 
-    def oidcLogin(self, username, password):
+    @staticmethod
+    def oidcLogin(username, password):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
-        squish.clickButton(squish.waitForObject(self.COPY_URL_TO_CLIPBOARD_BUTTON))
+        squish.clickButton(
+            squish.waitForObject(AccountConnectionWizard.COPY_URL_TO_CLIPBOARD_BUTTON)
+        )
 
         authorize_via_webui(username, password)
 
-    def nextStep(self):
-        squish.clickButton(squish.waitForObject(self.NEXT_BUTTON))
+    @staticmethod
+    def nextStep():
+        squish.clickButton(squish.waitForObject(AccountConnectionWizard.NEXT_BUTTON))
 
-    def selectSyncFolder(self, context):
+    @staticmethod
+    def selectSyncFolder(context):
         clientDetails = getClientDetails(context)
         # create sync folder for user
         syncPath = createUserSyncPath(context, clientDetails['user'])
 
-        squish.waitForObject(self.ADVANCED_CONFIGURATION_CHECKBOX).setChecked(True)
-        squish.mouseClick(squish.waitForObject(self.DIRECTORY_NAME_BOX))
-        squish.type(squish.waitForObject(self.DIRECTORY_NAME_EDIT_BOX), syncPath)
-        squish.clickButton(squish.waitForObject(self.CHOOSE_BUTTON))
-        test.compare(
-            str(squish.waitForObjectExists(self.SELECT_LOCAL_FOLDER).text),
-            self.sanitizeFolderPath(syncPath),
+        squish.waitForObject(
+            AccountConnectionWizard.ADVANCED_CONFIGURATION_CHECKBOX
+        ).setChecked(True)
+        squish.mouseClick(
+            squish.waitForObject(AccountConnectionWizard.DIRECTORY_NAME_BOX)
         )
+        squish.type(
+            squish.waitForObject(AccountConnectionWizard.DIRECTORY_NAME_EDIT_BOX),
+            syncPath,
+        )
+        squish.clickButton(squish.waitForObject(AccountConnectionWizard.CHOOSE_BUTTON))
 
-    def addAccount(self, context):
-        self.addAccountCredential(context)
-        self.nextStep()
+    @staticmethod
+    def addAccount(context):
+        AccountConnectionWizard.addAccountCredential(context)
+        AccountConnectionWizard.nextStep()
 
-    def addAccountCredential(self, context):
-        self.addServer(context)
+    @staticmethod
+    def addAccountCredential(context):
+        AccountConnectionWizard.addServer(context)
         if context.userData['ocis']:
-            self.acceptCertificate()
-        self.addUserCreds(context)
-        self.selectSyncFolder(context)
+            AccountConnectionWizard.acceptCertificate()
+        AccountConnectionWizard.addUserCreds(context)
+        AccountConnectionWizard.selectSyncFolder(context)
 
-    def selectManualSyncFolderOption(self):
-        squish.clickButton(squish.waitForObject(self.CONF_SYNC_MANUALLY_RADIO_BUTTON))
-
-    def selectVFSOption(self):
-        squish.clickButton(squish.waitForObject(self.VIRTUAL_FILE_RADIO_BUTTON))
-
-    def confirmEnableExperimentalVFSOption(self):
+    @staticmethod
+    def selectManualSyncFolderOption():
         squish.clickButton(
-            squish.waitForObject(self.ENABLE_EXPERIMENTAL_FEATURE_BUTTON)
+            squish.waitForObject(
+                AccountConnectionWizard.CONF_SYNC_MANUALLY_RADIO_BUTTON
+            )
         )
 
-    def cancelEnableExperimentalVFSOption(self):
-        squish.clickButton(squish.waitForObject(self.STAY_SAFE_BUTTON))
+    @staticmethod
+    def selectVFSOption():
+        squish.clickButton(
+            squish.waitForObject(AccountConnectionWizard.VIRTUAL_FILE_RADIO_BUTTON)
+        )
+
+    @staticmethod
+    def confirmEnableExperimentalVFSOption():
+        squish.clickButton(
+            squish.waitForObject(
+                AccountConnectionWizard.ENABLE_EXPERIMENTAL_FEATURE_BUTTON
+            )
+        )
+
+    @staticmethod
+    def cancelEnableExperimentalVFSOption():
+        squish.clickButton(
+            squish.waitForObject(AccountConnectionWizard.STAY_SAFE_BUTTON)
+        )
+
+    @staticmethod
+    def getErrorMessage():
+        return str(squish.waitForObjectExists(AccountConnectionWizard.ERROR_LABEL).text)
+
+    @staticmethod
+    def isNewConnectionWindowVisible():
+        visible = False
+        try:
+            squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
+            visible = True
+        except:
+            pass
+        return visible
+
+    @staticmethod
+    def isCredentialWindowVisible(context):
+        visible = False
+        try:
+            if context.userData['ocis']:
+                squish.waitForObject(AccountConnectionWizard.OAUTH_CREDENTIAL_PAGE)
+            else:
+                squish.waitForObject(AccountConnectionWizard.BASIC_CREDENTIAL_PAGE)
+            visible = True
+        except:
+            pass
+        return visible
