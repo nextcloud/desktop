@@ -17,10 +17,10 @@ from helpers.FilesHelper import buildConflictedRegex
 from pageObjects.EnterPassword import EnterPassword
 from pageObjects.PublicLinkDialog import PublicLinkDialog
 from pageObjects.SharingDialog import SharingDialog
-from pageObjects.SyncWizard import SyncWizard
+from pageObjects.SyncConnection import SyncConnection
 from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
-from pageObjects.AccountStatus import AccountStatus
+from pageObjects.AccountSetting import AccountSetting
 
 from helpers.SyncHelper import (
     SYNC_STATUS,
@@ -176,17 +176,14 @@ def getCreatedUsersFromMiddleware(context):
 
 @Given(r'the user has added (the first|another) account with', regexp=True)
 def step(context, accountType):
-    newAccount = AccountConnectionWizard()
     if accountType == 'another':
         Toolbar.openNewAccountSetup()
-
-    newAccount.addAccount(context)
+    AccountConnectionWizard.addAccount(context)
 
 
 @When('the user adds the following wrong user credentials:')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.addUserCreds(context)
+    AccountConnectionWizard.addUserCreds(context)
 
 
 @Then('the account with displayname "|any|" and host "|any|" should be displayed')
@@ -237,11 +234,10 @@ def step(context, username):
     setUpClient(context, username, displayName, context.userData['clientConfigFile'])
 
     if context.userData['ocis']:
-        newAccount = AccountConnectionWizard()
-        newAccount.acceptCertificate()
+        AccountConnectionWizard.acceptCertificate()
         EnterPassword.oidcReLogin(username, password)
     else:
-        AccountStatus.waitUntilConnectionIsConfigured(
+        AccountSetting.waitUntilConnectionIsConfigured(
             context.userData['maxSyncTimeout'] * 1000
         )
         EnterPassword.enterPassword(password)
@@ -257,17 +253,14 @@ def step(context):
 
 @When(r'^the user adds (the first|another) account with$', regexp=True)
 def step(context, accountType):
-    newAccount = AccountConnectionWizard()
     if accountType == 'another':
         Toolbar.openNewAccountSetup()
-
-    newAccount.addAccount(context)
+    AccountConnectionWizard.addAccount(context)
 
 
 @Given('the user has added the following account information:')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.addAccountCredential(context)
+    AccountConnectionWizard.addAccountCredential(context)
 
 
 def getSocketConnection():
@@ -384,21 +377,19 @@ def executeStepThroughMiddleware(context, step):
 )
 def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
-    shareItem = SharingDialog()
-    shareItem.addCollaborator(receiver, permissions)
+    SharingDialog.addCollaborator(receiver, permissions)
     SharingDialog.closeSharingDialog()
 
 
 @When('the user adds following collaborators of resource "|any|" using the client-UI')
 def step(context, resource):
     openSharingDialog(context, resource)
-    shareItem = SharingDialog()
 
     # In the following loop we are trying to share resource with given permission to one user at a time given from the data table in the feature file
     for count, row in enumerate(context.table[1:]):
         receiver = row[0]
         permissions = row[1]
-        shareItem.addCollaborator(receiver, permissions, False, count + 1)
+        SharingDialog.addCollaborator(receiver, permissions, False, count + 1)
 
     SharingDialog.closeSharingDialog()
 
@@ -408,8 +399,7 @@ def step(context, resource):
 )
 def step(context, receiver, resource):
     openSharingDialog(context, resource)
-    shareItem = SharingDialog()
-    shareItem.selectCollaborator(receiver)
+    SharingDialog.selectCollaborator(receiver)
 
 
 @When(
@@ -417,8 +407,7 @@ def step(context, receiver, resource):
 )
 def step(context, receiver, resource, permissions):
     openSharingDialog(context, resource)
-    shareItem = SharingDialog()
-    shareItem.addCollaborator(receiver, permissions, True)
+    SharingDialog.addCollaborator(receiver, permissions, True)
     SharingDialog.closeSharingDialog()
 
 
@@ -635,7 +624,7 @@ def step(context, resourceType, resource):
 
 @Given('the user has paused the file sync')
 def step(context):
-    SyncWizard.pauseSync(context)
+    SyncConnection.pauseSync(context)
 
 
 @Given('the user has changed the content of local file "|any|" to:')
@@ -648,7 +637,7 @@ def step(context, filename):
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    SyncWizard.resumeSync(context)
+    SyncConnection.resumeSync(context)
 
 
 @Then(
@@ -683,24 +672,21 @@ def step(context):
 
 @Then('the table of conflict warnings should include file "|any|"')
 def step(context, filename):
-    activity = Activity()
-    activity.checkFileExist(filename)
+    Activity.checkFileExist(filename)
 
 
 @Then('the file "|any|" should be blacklisted')
 def step(context, filename):
-    activity = Activity()
     test.compare(
         True,
-        activity.checkBlackListedResourceExist(context, filename),
+        Activity.checkBlackListedResourceExist(context, filename),
         "File is blacklisted",
     )
 
 
 @When('the user selects "|any|" tab in the activity')
 def step(context, tabName):
-    activity = Activity()
-    activity.clickTab(tabName)
+    Activity.clickTab(tabName)
 
 
 def openSharingDialog(context, resource, itemType='file'):
@@ -716,14 +702,12 @@ def openSharingDialog(context, resource, itemType='file'):
 @When('the user opens the public links dialog of "|any|" using the client-UI')
 def step(context, resource):
     openSharingDialog(context, resource)
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.openPublicLinkDialog()
+    PublicLinkDialog.openPublicLinkTab()
 
 
 @When("the user toggles the password protection using the client-UI")
 def step(context):
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.togglePassword()
+    PublicLinkDialog.togglePassword()
 
 
 @Then('the password progress indicator should not be visible in the client-UI')
@@ -764,11 +748,8 @@ def createPublicLinkShare(
 ):
     resource = getResourcePath(context, resource)
     openSharingDialog(context, resource)
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.openPublicLinkDialog()
-    publicLinkDialog.createPublicLink(
-        context, resource, password, permissions, expireDate, name
-    )
+    PublicLinkDialog.openPublicLinkTab()
+    PublicLinkDialog.createPublicLink(password, permissions, expireDate, name)
 
 
 @When(
@@ -788,22 +769,14 @@ def step(context, resource, password):
 @Then('the expiration date of the last public link of file "|any|" should be "|any|"')
 def step(context, resource, expiryDate):
     openSharingDialog(context, resource)
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.openPublicLinkDialog()
+    PublicLinkDialog.openPublicLinkTab()
 
     if expiryDate.strip("%") == "default":
         expiryDate = PublicLinkDialog.getDefaultExpiryDate()
-
-    publicLinkDialog.verifyExpirationDate(expiryDate)
+    actualExpiryDate = PublicLinkDialog.getExpirationDate()
+    test.compare(expiryDate, actualExpiryDate)
 
     SharingDialog.closeSharingDialog()
-
-
-def setExpirationDateWithVerification(resource, publicLinkName, expireDate):
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.verifyResource(resource)
-    publicLinkDialog.verifyPublicLinkName(publicLinkName)
-    publicLinkDialog.setExpirationDate(expireDate)
 
 
 @When('the user edits the public link named "|any|" of file "|any|" changing following')
@@ -813,7 +786,7 @@ def step(context, publicLinkName, resource):
         if row[0] == 'expireDate':
             expireDate = row[1]
             break
-    setExpirationDateWithVerification(resource, publicLinkName, expireDate)
+    PublicLinkDialog.setExpirationDate(expireDate)
 
 
 @When(
@@ -853,9 +826,8 @@ def step(context):
 def createPublicShareWithRole(context, resource, role):
     resource = sanitizePath(substituteInLineCodes(context, resource))
     openSharingDialog(context, resource)
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.openPublicLinkDialog()
-    publicLinkDialog.createPublicLinkWithRole(role)
+    PublicLinkDialog.openPublicLinkTab()
+    PublicLinkDialog.createPublicLinkWithRole(role)
 
 
 @When(
@@ -876,7 +848,7 @@ def step(context, resource):
 
 @When('the user "|any|" logs out of the client-UI')
 def step(context, username):
-    AccountStatus.logout()
+    AccountSetting.logout()
 
 
 @Then('user "|any|" should be signed out')
@@ -884,7 +856,7 @@ def step(context, username):
     displayname = getDisplaynameForUser(context, username)
     server = context.userData['localBackendUrl']
     test.compare(
-        AccountStatus.isUserSignedOut(displayname, server),
+        AccountSetting.isUserSignedOut(displayname, server),
         True,
         "User '%s' is signed out" % username,
     )
@@ -892,16 +864,16 @@ def step(context, username):
 
 @Given('user "|any|" has logged out of the client-UI')
 def step(context, username):
-    AccountStatus.logout()
+    AccountSetting.logout()
     displayname = getDisplaynameForUser(context, username)
     server = context.userData['localBackendUrl']
-    if not AccountStatus.isUserSignedOut(displayname, server):
+    if not AccountSetting.isUserSignedOut(displayname, server):
         raise Exception("Failed to logout user '%s'" % username)
 
 
 @When('user "|any|" logs in to the client-UI')
 def step(context, username):
-    AccountStatus.login()
+    AccountSetting.login()
     password = getPasswordForUser(context, username)
 
     if context.userData['ocis']:
@@ -918,7 +890,7 @@ def step(context, username):
     displayname = getDisplaynameForUser(context, username)
     server = context.userData['localBackendUrl']
     test.compare(
-        AccountStatus.isUserSignedIn(displayname, server),
+        AccountSetting.isUserSignedIn(displayname, server),
         True,
         "User '%s' is connected" % username,
     )
@@ -930,12 +902,16 @@ def step(context, username, host):
     displayname = substituteInLineCodes(context, displayname)
     host = substituteInLineCodes(context, host)
 
-    AccountStatus.removeAccountConnection()
+    AccountSetting.removeAccountConnection()
 
 
 @Then('connection wizard should be visible')
 def step(context):
-    waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
+    test.compare(
+        AccountConnectionWizard.isNewConnectionWindowVisible(),
+        True,
+        "Connection window is visible",
+    )
 
 
 @Then("the following tabs in the toolbar should match the default baseline")
@@ -949,8 +925,7 @@ def step(context):
 )
 def step(context, permissions, receiver, resource):
     openSharingDialog(context, resource)
-    shareItem = SharingDialog()
-    shareItem.removePermissions(permissions)
+    SharingDialog.removePermissions(permissions)
 
 
 @When("the user closes the sharing dialog")
@@ -964,9 +939,7 @@ def step(context):
 def step(context, permissions, user, resource):
     permissionsList = permissions.split(',')
 
-    shareItem = SharingDialog()
-    shareItem.verifyResource(resource)
-    editChecked, shareChecked = shareItem.getAvailablePermission()
+    editChecked, shareChecked = SharingDialog.getAvailablePermission()
 
     if 'edit' in permissionsList:
         test.compare(editChecked, False)
@@ -977,8 +950,7 @@ def step(context, permissions, user, resource):
 
 @Then('the error "|any|" should be displayed')
 def step(context, errorMessage):
-    sharingDialog = SharingDialog()
-    test.compare(sharingDialog.getErrorText(), errorMessage)
+    test.compare(SharingDialog.getErrorText(), errorMessage)
 
 
 @When(
@@ -987,8 +959,7 @@ def step(context, errorMessage):
 def step(context, resource, group):
     openSharingDialog(context, resource)
 
-    sharingDialog = SharingDialog()
-    sharingDialog.selectCollaborator(group, True)
+    SharingDialog.selectCollaborator(group, True)
 
 
 # performing actions immediately after completing the sync from the server does not work
@@ -1042,29 +1013,28 @@ def step(context, user, resource, content):
 
 @When("the user enables virtual file support")
 def step(context):
-    SyncWizard.enableVFS(context)
+    SyncConnection.enableVFS(context)
 
 
 @Then('the "|any|" button should be available')
 def step(context, item):
-    SyncWizard.openMenu(context)
-    SyncWizard.hasMenuItem(item)
+    SyncConnection.openMenu(context)
+    SyncConnection.hasMenuItem(item)
 
 
 @Given("the user has enabled virtual file support")
 def step(context):
-    SyncWizard.enableVFS(context)
+    SyncConnection.enableVFS(context)
 
 
 @When("the user disables virtual file support")
 def step(context):
-    SyncWizard.disableVFS(context)
+    SyncConnection.disableVFS(context)
 
 
 @When('the user accepts the certificate')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.acceptCertificate()
+    AccountConnectionWizard.acceptCertificate()
 
 
 @Then('the lock shown should be closed')
@@ -1074,8 +1044,7 @@ def step(context):
 
 @Then('error "|any|" should be displayed')
 def step(context, errorMsg):
-    newAccount = AccountConnectionWizard()
-    test.compare(str(waitForObjectExists(newAccount.ERROR_LABEL).text), errorMsg)
+    test.compare(AccountConnectionWizard.getErrorMessage(), errorMsg)
 
 
 @When(r'the user deletes the (file|folder) "([^"]*)"', regexp=True)
@@ -1101,7 +1070,7 @@ def step(context, itemType, resource):
     # a dialog will popup asking to confirm "Remove all files"
     if isSyncFolderEmpty:
         try:
-            AccountStatus.confirmRemoveAllFiles()
+            AccountSetting.confirmRemoveAllFiles()
         except:
             pass
 
@@ -1116,10 +1085,9 @@ def step(context, resource, receiver):
 
 @Given('the user has added the following server address:')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.addServer(context)
+    AccountConnectionWizard.addServer(context)
     test.compare(
-        waitForObjectExists(newAccount.BASIC_CREDENTIAL_PAGE).visible,
+        AccountConnectionWizard.isCredentialWindowVisible(context),
         True,
         "Assert credentials page is visible",
     )
@@ -1127,53 +1095,43 @@ def step(context):
 
 @When('the user adds the following server address:')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.addServer(context)
+    AccountConnectionWizard.addServer(context)
 
 
 @When('the user selects the following folders to sync:')
 def step(context):
-    syncConnection = SyncConnectionWizard()
-    syncConnection.selectFoldersToSync(context)
-    syncConnection.addSyncConnection()
+    SyncConnectionWizard.selectFoldersToSync(context)
+    SyncConnectionWizard.addSyncConnection()
 
 
 @When('the user selects manual sync folder option in advanced section')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.selectManualSyncFolderOption()
-    newAccount.nextStep()
+    AccountConnectionWizard.selectManualSyncFolderOption()
+    AccountConnectionWizard.nextStep()
 
 
 @When('the user sorts the folder list by "|any|"')
 def step(context, headerText):
     headerText = headerText.capitalize()
     if headerText in ["Size", "Name"]:
-        syncConnection = SyncConnectionWizard()
-        syncConnection.sortBy(headerText)
+        SyncConnectionWizard.sortBy(headerText)
     else:
         raise Exception("Sorting by '" + headerText + "' is not supported.")
 
 
 @Then('the sync all checkbox should be checked')
 def step(context):
-    syncConnection = SyncConnectionWizard()
-    state = waitForObject(syncConnection.SYNC_DIALOG_ROOT_FOLDER)["checkState"]
-    test.compare("checked", state, "Sync all checkbox is checked")
+    test.compare(
+        SyncConnectionWizard.isRootFolderChecked(), True, "Sync all checkbox is checked"
+    )
 
 
 @Then("the folders should be in the following order:")
 def step(context):
-    syncConnection = SyncConnectionWizard()
     rowIndex = 0
     for row in context.table[1:]:
-        FOLDER_TREE_ROW = {
-            "row": rowIndex,
-            "container": syncConnection.SYNC_DIALOG_ROOT_FOLDER,
-            "type": "QModelIndex",
-        }
         expectedFolder = row[0]
-        actualFolder = waitForObjectExists(FOLDER_TREE_ROW).displayText
+        actualFolder = SyncConnectionWizard.getItemNameFromRow(rowIndex)
         test.compare(actualFolder, expectedFolder)
 
         rowIndex += 1
@@ -1182,8 +1140,7 @@ def step(context):
 @When('the user deletes the public link for file "|any|"')
 def step(context, resource):
     openSharingDialog(context, resource)
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.openPublicLinkDialog()
+    PublicLinkDialog.openPublicLinkTab()
     PublicLinkDialog.deletePublicLink()
 
 
@@ -1191,9 +1148,7 @@ def step(context, resource):
     'the user changes the password of public link "|any|" to "|any|" using the client-UI'
 )
 def step(context, publicLinkName, password):
-    publicLinkDialog = PublicLinkDialog()
-    publicLinkDialog.verifyPublicLinkName(publicLinkName)
-    publicLinkDialog.changePassword(password)
+    PublicLinkDialog.changePassword(password)
 
 
 @Then(
@@ -1214,8 +1169,7 @@ def step(context, resource):
 
 
 def searchCollaborator(collaborator):
-    shareItem = SharingDialog()
-    shareItem.searchCollaborator(collaborator)
+    SharingDialog.searchCollaborator(collaborator)
 
 
 @When('the user searches for collaborator "|any|" using the client-UI')
@@ -1232,16 +1186,12 @@ def step(context, collaborator):
 
 @Then('the following users should be listed as suggested collaborators:')
 def step(context):
-    shareItem = SharingDialog()
     for collaborator in context.table[1:]:
-        exists = False
-        try:
-            waitForObjectItem(shareItem.SUGGESTED_COLLABORATOR, collaborator[0])
-            exists = True
-        except LookupError as e:
-            pass
-
-        test.compare(exists, True, "Assert user '" + collaborator[0] + "' is listed")
+        test.compare(
+            SharingDialog.isUserInSuggestionList(collaborator[0]),
+            True,
+            "Assert user '" + collaborator[0] + "' is listed",
+        )
 
 
 @Then('the collaborators should be listed in the following order:')
@@ -1300,35 +1250,32 @@ def step(context, username, foldername):
 
 @Then("credentials wizard should be visible")
 def step(context):
-    if context.userData['ocis']:
-        waitForObject(AccountConnectionWizard.OAUTH_CREDENTIAL_PAGE)
-    else:
-        waitForObject(AccountConnectionWizard.BASIC_CREDENTIAL_PAGE)
+    test.compare(
+        AccountConnectionWizard.isCredentialWindowVisible(context),
+        True,
+        "Credentials wizard is visible",
+    )
 
 
 @When('the user sets the sync path in sync connection wizard')
 def step(context):
-    syncConnection = SyncConnectionWizard()
-    syncConnection.setSyncPathInSyncConnectionWizard(context)
+    SyncConnectionWizard.setSyncPathInSyncConnectionWizard(context)
 
 
 @When('the user selects "|any|" as a remote destination folder')
 def step(context, folderName):
-    syncConnection = SyncConnectionWizard()
-    syncConnection.selectRemoteDestinationFolder(folderName)
+    SyncConnectionWizard.selectRemoteDestinationFolder(folderName)
 
 
 @When('the user selects vfs option in advanced section')
 def step(context):
-    newAccount = AccountConnectionWizard()
-    newAccount.selectVFSOption()
+    AccountConnectionWizard.selectVFSOption()
 
 
 @When(r'^the user (confirms|cancels) the enable experimental vfs option$', regexp=True)
 def step(context, action):
-    newAccount = AccountConnectionWizard()
     if action == "confirms":
-        newAccount.confirmEnableExperimentalVFSOption()
+        AccountConnectionWizard.confirmEnableExperimentalVFSOption()
     else:
-        newAccount.cancelEnableExperimentalVFSOption()
-    newAccount.nextStep()
+        AccountConnectionWizard.cancelEnableExperimentalVFSOption()
+    AccountConnectionWizard.nextStep()

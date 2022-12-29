@@ -24,9 +24,6 @@ class EnterPassword:
         "visible": 1,
     }
 
-    def __init__(self):
-        pass
-
     @staticmethod
     def enterPassword(password):
         squish.waitForObject(EnterPassword.PASSWORD_BOX)

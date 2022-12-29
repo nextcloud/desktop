@@ -2,7 +2,7 @@ import names
 import squish
 
 
-class SyncWizard:
+class SyncConnection:
     FOLDER_SYNC_CONNECTION = {
         "container": names.settings_stack_QStackedWidget,
         "name": "_folderList",
@@ -31,7 +31,7 @@ class SyncWizard:
     def openMenu(context):
         item_text = "Personal" if context.userData['ocis'] else "ownCloud"
         squish.openContextMenu(
-            squish.waitForObjectItem(SyncWizard.FOLDER_SYNC_CONNECTION, item_text),
+            squish.waitForObjectItem(SyncConnection.FOLDER_SYNC_CONNECTION, item_text),
             0,
             0,
             squish.Qt.NoModifier,
@@ -39,33 +39,33 @@ class SyncWizard:
 
     @staticmethod
     def performAction(context, action):
-        SyncWizard.openMenu(context)
-        squish.activateItem(squish.waitForObjectItem(SyncWizard.MENU, action))
+        SyncConnection.openMenu(context)
+        squish.activateItem(squish.waitForObjectItem(SyncConnection.MENU, action))
 
     @staticmethod
     def pauseSync(context):
-        SyncWizard.performAction(context, "Pause sync")
+        SyncConnection.performAction(context, "Pause sync")
 
     @staticmethod
     def resumeSync(context):
-        SyncWizard.performAction(context, "Resume sync")
+        SyncConnection.performAction(context, "Resume sync")
 
     @staticmethod
     def enableVFS(context):
-        SyncWizard.performAction(
+        SyncConnection.performAction(
             context, "Enable virtual file support (experimental)..."
         )
         squish.clickButton(
-            squish.waitForObject(SyncWizard.ENABLE_VFS_CONFIRMATION_BUTTON)
+            squish.waitForObject(SyncConnection.ENABLE_VFS_CONFIRMATION_BUTTON)
         )
 
     @staticmethod
     def disableVFS(context):
-        SyncWizard.performAction(context, "Disable virtual file support...")
+        SyncConnection.performAction(context, "Disable virtual file support...")
         squish.clickButton(
-            squish.waitForObject(SyncWizard.DISABLE_VFS_CONFIRMATION_BUTTON)
+            squish.waitForObject(SyncConnection.DISABLE_VFS_CONFIRMATION_BUTTON)
         )
 
     @staticmethod
     def hasMenuItem(item):
-        return squish.waitForObjectItem(SyncWizard.MENU, item)
+        return squish.waitForObjectItem(SyncConnection.MENU, item)

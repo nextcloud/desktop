@@ -2,7 +2,7 @@ import names
 import squish
 
 
-class AccountStatus:
+class AccountSetting:
     ACCOUNT_BUTTON = {
         "container": names.settings_stack_QStackedWidget,
         "name": "_accountToolbox",
@@ -40,7 +40,7 @@ class AccountStatus:
     def accountAction(action):
         squish.sendEvent(
             "QMouseEvent",
-            squish.waitForObject(AccountStatus.ACCOUNT_BUTTON),
+            squish.waitForObject(AccountSetting.ACCOUNT_BUTTON),
             squish.QEvent.MouseButtonPress,
             0,
             0,
@@ -49,50 +49,52 @@ class AccountStatus:
             0,
         )
         squish.activateItem(
-            squish.waitForObjectItem(AccountStatus.ACCOUNT_MENU, action)
+            squish.waitForObjectItem(AccountSetting.ACCOUNT_MENU, action)
         )
 
     @staticmethod
     def removeAccountConnection():
-        AccountStatus.accountAction("Remove")
-        squish.clickButton(squish.waitForObject(AccountStatus.REMOVE_CONNECTION_BUTTON))
+        AccountSetting.accountAction("Remove")
+        squish.clickButton(
+            squish.waitForObject(AccountSetting.REMOVE_CONNECTION_BUTTON)
+        )
 
     @staticmethod
     def logout():
-        AccountStatus.accountAction("Log out")
+        AccountSetting.accountAction("Log out")
 
     @staticmethod
     def login():
-        AccountStatus.accountAction("Log in")
+        AccountSetting.accountAction("Log in")
 
     @staticmethod
     def getAccountConnectionLabel():
         return str(
-            squish.waitForObjectExists(AccountStatus.ACCOUNT_CONNECTION_LABEL).text
+            squish.waitForObjectExists(AccountSetting.ACCOUNT_CONNECTION_LABEL).text
         )
 
     @staticmethod
     def isConnecting():
-        return "Connecting to" in AccountStatus.getAccountConnectionLabel()
+        return "Connecting to" in AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def isUserSignedOut(displayname, server):
         signedout_text = 'Signed out from <a href="{server}">{server}</a> as <i>{displayname}</i>.'.format(
             server=server, displayname=displayname
         )
-        return signedout_text == AccountStatus.getAccountConnectionLabel()
+        return signedout_text == AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def isUserSignedIn(displayname, server):
         signedin_text = 'Connected to <a href="{server}">{server}</a> as <i>{displayname}</i>.'.format(
             server=server, displayname=displayname
         )
-        return signedin_text == AccountStatus.getAccountConnectionLabel()
+        return signedin_text == AccountSetting.getAccountConnectionLabel()
 
     @staticmethod
     def waitUntilConnectionIsConfigured(timeout=5000):
         result = squish.waitFor(
-            lambda: AccountStatus.isConnecting(),
+            lambda: AccountSetting.isConnecting(),
             timeout,
         )
 
@@ -105,4 +107,4 @@ class AccountStatus:
 
     @staticmethod
     def confirmRemoveAllFiles():
-        squish.clickButton(squish.waitForObject(AccountStatus.REMOVE_ALL_FILES))
+        squish.clickButton(squish.waitForObject(AccountSetting.REMOVE_ALL_FILES))
