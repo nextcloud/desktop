@@ -65,6 +65,8 @@ set(client_SRCS
     accountmanager.cpp
     accountsettings.h
     accountsettings.cpp
+    accountsetupcommandlinemanager.h
+    accountsetupcommandlinemanager.cpp
     application.h
     application.cpp
     invalidfilenamedialog.h
