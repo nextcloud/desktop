@@ -90,7 +90,7 @@ namespace {
         "  --userid             : userId (username as on the server) to pass when creating an account via command-line.\n"
         "  --apppassword        : appPassword to pass when creating an account via command-line.\n"
         "  --localdirpath       : (optional) path where to create a local sync folder when creating an account via command-line.\n"
-        "  --nonvfsmode         : whether to set up a non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
+        "  --isvfsenabled       : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
         "  --remotedirpath      : (optional) path to a remote subfolder when creating an account via command-line.\n"
         "  --serverurl          : a server URL to use when creating an account via command-line.\n";
 

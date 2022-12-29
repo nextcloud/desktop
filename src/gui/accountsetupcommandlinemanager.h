@@ -14,51 +14,12 @@
 
 #pragma once
 
-#include "account.h"
-#include "accountstate.h"
-
+#include <QObject>
+#include <QString>
 #include <QStringList>
+#include <QUrl>
 
 namespace OCC {
-
-class AccountSetupFromCommandLineJob : public QObject
-{
-    Q_OBJECT
-public:
-    AccountSetupFromCommandLineJob(QString appPassword,
-                                   QString userId,
-                                   QUrl serverUrl,
-                                   QString localDirPath = {},
-                                   bool nonVfsMode = false,
-                                   QString remoteDirPath = QStringLiteral("/"),
-                                   QObject *parent = nullptr);
-
-public slots:
-    void handleAccountSetupFromCommandLine();
-
-private slots:
-    void checkLastModifiedWithPropfind();
-
-    void accountSetupFromCommandLinePropfindHandleSuccess();
-
-    void accountSetupFromCommandLinePropfindHandleFailure();
-
-    void printAccountSetupFromCommandLineStatusAndExit(const QString &status, bool isFailure);
-
-    void fetchUserName();
-
-private:
-    QString _appPassword;
-    QString _userId;
-    QUrl _serverUrl;
-    QString _localDirPath;
-    bool _nonVfsMode = false;
-    QString _remoteDirPath;
-
-    AccountPtr _account;
-};
-
-
 class AccountSetupCommandLineManager
 {
 public:
@@ -76,7 +37,7 @@ private:
     static QUrl _serverUrl;
     static QString _remoteDirPath;
     static QString _localDirPath;
-    static bool _nonVfsMode;
+    static bool _isVfsEnabled;
 };
 
 }
