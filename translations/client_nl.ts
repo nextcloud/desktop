@@ -24,7 +24,7 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation type="unfinished"/>
+        <translation>Na het afronden van deze wizard kunt u handmatig synchronisatiemappen instellen.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="89"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation type="unfinished"/>
+        <translation>Kon %1 niet openen in browser. Foutmelding: %2.</translation>
     </message>
 </context>
 <context>
@@ -94,7 +94,7 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
-        <translation type="unfinished"/>
+        <translation>De checksum header is verkeerd geformatteerd: %1</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="129"/>
@@ -135,7 +135,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="29"/>
         <source>Tomahawk Crash Reporter</source>
-        <translation type="unfinished"/>
+        <translation>Tomahawk Crash Reporter</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="104"/>
@@ -160,14 +160,14 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.ui" line="284"/>
         <source>You can disable sending crash reports in the configuration dialog.</source>
-        <translation type="unfinished"/>
+        <translation>U kunt het versturen van crash rapportages uitzetten in de configuratie.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="112"/>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="119"/>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="155"/>
         <source>We cannot gather useful debug information on your system.</source>
-        <translation type="unfinished"/>
+        <translation>Er kon geen bruikbare debug informatie op uw systeem gevonden worden.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="113"/>
@@ -181,12 +181,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="148"/>
         <source>Ready to send debug information (&lt;a href=&quot;%1&quot;&gt;view backtrace&lt;/a&gt;).</source>
-        <translation type="unfinished"/>
+        <translation>Klaar om debug informatie te versturen. (&lt;a href=&quot;%1&quot;&gt;backtrace bekijken&lt;/a&gt;)</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="164"/>
         <source>Gathering debug information...</source>
-        <translation type="unfinished"/>
+        <translation>Bezig met het verzamelen van debug informatie...</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
@@ -196,12 +196,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="300"/>
         <source>Sent! &lt;b&gt;Many thanks&lt;/b&gt;. Please refer to crash &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt; (click to copy) in bug reports.</source>
-        <translation type="unfinished"/>
+        <translation>Verzonden! &lt;b&gt;Harrtelijk bedankt&lt;/b&gt;. Gebruik de link &lt;a href=&quot;clipboard://%1&quot;&gt;&lt;b&gt;%1&lt;/b&gt;&lt;/a&gt;(klik om te kopiëren) om naar te refereren in bug reports.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
         <source>Failed to send crash info.</source>
-        <translation type="unfinished"/>
+        <translation>Het versturen van crash informatie faalde.</translation>
     </message>
 </context>
 <context>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Opnieuw verbinden</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
@@ -913,7 +913,8 @@ Hernieuw de authenticatie met de web browser.</translation>
         <location filename="../src/gui/application.cpp" line="594"/>
         <source>%1 version %2<byte value="xd"/>
 File synchronization desktop utility.</source>
-        <translation type="unfinished"/>
+        <translation>%1 versie %2&lt;byte value=&quot;xd&quot;/&gt;
+Bestandssynchronisatie desktop software tool.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="599"/>
@@ -929,48 +930,48 @@ File synchronization desktop utility.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="614"/>
         <source>Quit the running instance.</source>
-        <translation type="unfinished"/>
+        <translation>Stop het lopende programma.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="615"/>
         <source>Write log to file (use - to write to stdout).</source>
-        <translation type="unfinished"/>
+        <translation>Schrijf log naar bestand (gebruik - om naar stdout te schrijven).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="616"/>
         <source>Write each sync log output in a new file in folder.</source>
-        <translation type="unfinished"/>
+        <translation>Schrijf elk synchronisatie log naar een nieuw bestand in de map.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="617"/>
         <source>Flush the log file after every write.</source>
-        <translation type="unfinished"/>
+        <translation>Schrijf naar logbestand bij elke regel.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="618"/>
         <source>Output debug-level messages in the log.</source>
-        <translation type="unfinished"/>
+        <translation>Schrijf debug-level berichten naar het logboek.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="619"/>
         <location filename="../src/gui/application.cpp" line="620"/>
         <source>Override UI language.</source>
-        <translation type="unfinished"/>
+        <translation>Forceer GUI taal.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="621"/>
         <source>Use the given configuration folder.</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik de aangegeven configuratie map.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="622"/>
         <source>Enable debug mode.</source>
-        <translation type="unfinished"/>
+        <translation>Zet debug modus aan.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="625"/>
         <source>Virtual file system file to be opened (optional).</source>
-        <translation type="unfinished"/>
+        <translation>Virtueel bestandssysteem bestand dat geopend wordt (optioneel).</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="625"/>
@@ -1014,7 +1015,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Als de &quot;virtuele bestanden&quot;-modus is ingeschakeld, worden in het begin geen bestanden gedownload. In plaats hiervan wordt een klein &quot;%1&quot; bestand aangemaakt voor elk bestand dat bestaat op de server. De inhoud kan worden gedownload door deze bestanden uit te voeren, of door hun contextmenu&apos;s te gebruiken.
+
+De virtuele bestanden-modus is wederzijds exclusief met selectieve synchronisatie. Op dit moment worden ongeselecteerde mappen vertaald naar alleen-online mappen en je selectieve synchronisatie-instellingen zullen worden gereset.
+
+Overschakelen naar deze modus zal alle op dit moment lopende synchronisaties onderbreken.
+
+Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld dan alsjeblieft alle problemen waar je tegenaan loopt.</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
@@ -1088,7 +1095,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/creds/credentialmanager.cpp" line="208"/>
         <source>Failed to parse credentials %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon inloggegevens niet verwerken %1</translation>
     </message>
 </context>
 <context>
@@ -1101,7 +1108,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="53"/>
         <source>Failed to determine auth type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon authenticatietype niet bepalen: %1</translation>
     </message>
 </context>
 <context>
@@ -1205,7 +1212,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/folder.cpp" line="222"/>
         <source>%1 failed to open the database.</source>
-        <translation type="unfinished"/>
+        <translation>%1 kon database niet openen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="233"/>
@@ -1467,7 +1474,9 @@ Als dit een ongelukje was en u de bestanden wilt behouden, worden ze opnieuw ges
         <source>Multiple accounts are sharing the folder %1.
 This configuration is know to lead to dataloss and is no longer supported.
 Please consider removing this folder from the account and adding it again.</source>
-        <translation type="unfinished"/>
+        <translation>Meerdere accounts delen de map %1.
+Deze configuratie wordt niet langer ondersteund en kan tot dataverlies leiden.
+Overweeg om deze map te verwijderen van dit account en om hem opnieuw toe te voegen.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1434"/>
@@ -1962,7 +1971,7 @@ Let op dat dit alleen selecteert uit welke pool upgrades worden gehaald, en dat 
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="329"/>
         <source>(use default)</source>
-        <translation type="unfinished"/>
+        <translation>(gebruik standaard)</translation>
     </message>
 </context>
 <context>
@@ -2152,7 +2161,7 @@ Omdat logbestanden groot kunnen worden, zal de client voor elke synchronisatie e
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>Logbestanden die moeten worden behouden:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
@@ -2438,7 +2447,7 @@ Let op dat het gebruik van command line logopties deze instelling zullen oversch
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Verkeerde gebruiker&lt;/h1&gt;&lt;p&gt;U bent ingelogd met de gebruiker &lt;em&gt;%1&lt;/em&gt;, maar u moet inloggen met gebruiker &lt;em&gt;%2&lt;/em&gt;. &lt;br&gt;Ga terug naar de %3 client en herstart de authenticatie.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
@@ -2702,7 +2711,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <location filename="../src/libsync/propagatedownload.cpp" line="368"/>
         <location filename="../src/libsync/propagatedownload.cpp" line="454"/>
         <source>File %1 can not be downloaded because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Kon bestand %1 niet downloaden vanwege een lokaal bestandsnaam conflict met %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
@@ -2722,7 +2731,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="701"/>
         <source>Broken webserver returned empty content length for non-empty file on resume</source>
-        <translation type="unfinished"/>
+        <translation>Kapotte webserver retourneerde een leeg antwoord voor een niet-leeg bestand bij het resumeren.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="708"/>
@@ -2737,7 +2746,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="895"/>
         <source>File %1 cannot be saved because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Kon bestand %1 niet opslaan vanwege een lokaal bestandsconflict met %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1014"/>
@@ -2777,7 +2786,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="176"/>
         <source>Can not create local folder %1 because of a local file name clash with %2</source>
-        <translation type="unfinished"/>
+        <translation>Kon lokale map %1 niet aanmaken vanwege een lokaal bestandsnaam conflict met %2</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="195"/>
@@ -2805,7 +2814,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="109"/>
         <source>Could not remove %1 because of a local file name clash with %2!</source>
-        <translation type="unfinished"/>
+        <translation>Kon %1 niet verwijderen vanwege een lokaal bestandsnaam conflict met %2!</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="89"/>
@@ -2870,7 +2879,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="187"/>
         <source>Setting file status failed due to file lock</source>
-        <translation type="unfinished"/>
+        <translation>Kon een bestandsstatus niet zetten vanwege een bestandslock.</translation>
     </message>
 </context>
 <context>
@@ -2969,7 +2978,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="532"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>De server vroeg om een verwijderde legacy feature (polling).</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadng.cpp" line="537"/>
@@ -3010,7 +3019,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="219"/>
         <source>The server did ask for a removed legacy feature(polling)</source>
-        <translation type="unfinished"/>
+        <translation>De server vroeg om een verwijderde legacy feature (polling).</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateuploadv1.cpp" line="239"/>
@@ -3472,7 +3481,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>U kunt mensen verwijzen naar dit gedeelde bestand of map %1 door hen een privélink te geven</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
@@ -3884,7 +3893,9 @@ vragen om extra autorisaties tijdens installatie.</translation>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation type="unfinished"/>
+        <translation>Een update is beschikbaar voor deze AppImage van %1. Wilt u deze update installeren?
+
+De update wordt uitgevoerd op de achtergrond en zal het bestaande AppImage bestand overschrijven. U zult de applicatie moeten herstarten om de update te voltooien.</translation>
     </message>
 </context>
 <context>
@@ -3892,7 +3903,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="40"/>
         <source>Change url permanently to %1</source>
-        <translation type="unfinished"/>
+        <translation>Wijzig de URL permanent naar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="41"/>
@@ -3902,12 +3913,12 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="47"/>
         <source>Url update requested for %1</source>
-        <translation type="unfinished"/>
+        <translation>U wordt gevraagd om de URL %1 te wijzigen</translation>
     </message>
     <message>
         <location filename="../src/gui/updateurldialog.cpp" line="48"/>
         <source>The url for %1 changed from %2 to %3, do you want to accept the changed url?</source>
-        <translation type="unfinished"/>
+        <translation>De URL voor %1 is veranderd van %2 naar %3, wilt u deze wijziging accepteren?</translation>
     </message>
 </context>
 <context>
@@ -3941,7 +3952,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/plugins/vfs/suffix/vfs_suffix.cpp" line="110"/>
         <source>Cannot create a placeholder because a file with the placeholder name already exist</source>
-        <translation type="unfinished"/>
+        <translation>Kon geen plaatsvervanger aanmaken omdat er al een bestand met dezelfde naam bestaat.</translation>
     </message>
 </context>
 <context>
@@ -3957,7 +3968,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="30"/>
         <source>Use &amp;virtual files instead of downloading content immediately</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik &amp;virtuele bestanden in plaats van bestanden downloaden.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="55"/>
@@ -3967,12 +3978,12 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="73"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>De feature virtueel bestandssysteem is niet beschikbaar voor deze installatie.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
-        <translation type="unfinished"/>
+        <translation>De feature virtueel bestandssysteem is nog niet stabiel. Wees voorzichtig bij het gebruik.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
@@ -3993,7 +4004,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Als de &quot;virtuele bestanden&quot;-modus is ingeschakeld, worden in het begin geen bestanden gedownload. In plaats hiervan wordt een klein &quot;%1&quot; bestand aangemaakt voor elk bestand dat bestaat op de server. De inhoud kan worden gedownload door deze bestanden uit te voeren, of door hun contextmenu&apos;s te gebruiken.
+
+De virtuele bestanden-modus is wederzijds exclusief met selectieve synchronisatie. Op dit moment worden ongeselecteerde mappen vertaald naar alleen-online mappen en je selectieve synchronisatie-instellingen zullen worden gereset.
+
+Overschakelen naar deze modus zal alle op dit moment lopende synchronisaties onderbreken.
+
+Dit is een nieuwe, experimentele modus. Als je besluit deze te gebruiken, meld dan alsjeblieft alle problemen waar je tegenaan loopt.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
@@ -4055,12 +4072,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="57"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Kon geen compatibele server detecteren bij %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="86"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>De gebruiker wees de verwijzing van %1 naar %2 af</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="114"/>
@@ -4104,7 +4121,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.cpp" line="16"/>
         <source>Welcome to %1</source>
-        <translation>Welkom op %1</translation>
+        <translation>Welkom bij %1</translation>
     </message>
 </context>
 <context>
@@ -4134,7 +4151,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Onveilige server afgewezen door gebruiker</translation>
     </message>
 </context>
 <context>
@@ -4152,12 +4169,12 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>Annuleer installatie</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>Weet u zeker dat u het instellen van uw account wilt annuleren?</translation>
     </message>
 </context>
 <context>
@@ -4173,12 +4190,12 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij het verwerken van WebFinger antwoord: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>WebFinger endpoint stuurde geen href attribuut</translation>
     </message>
 </context>
 <context>
@@ -4196,7 +4213,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="346"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Onopgeloste %1 conflicten</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
@@ -4477,7 +4494,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>Wat is uw serveradres?</translation>
     </message>
 </context>
 <context>
@@ -4679,7 +4696,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="94"/>
         <source>Shutting down %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 aan het afsluiten</translation>
     </message>
 </context>
 <context>
@@ -4727,7 +4744,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="407"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Gebouwd met Qt %2)</translation>
     </message>
 </context>
 <context>
