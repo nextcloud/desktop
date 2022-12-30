@@ -230,6 +230,10 @@ private slots:
     void transmissionChecksumValidated(const QByteArray &checksumType, const QByteArray &checksum);
     /// Called when the download's checksum computation is done
     void contentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+    /// Called when the local file's checksum computation is done
+    void localFileContentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum);
+
+    void finalizeDownload();
     void downloadFinished();
     /// Called when it's time to update the db metadata
     void updateMetadata(bool isConflict);
