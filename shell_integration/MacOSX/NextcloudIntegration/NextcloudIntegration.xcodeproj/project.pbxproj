@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
+		536EFC36295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
 		538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396C27F4765000FA63D5 /* FileProviderExtension.swift */; };
 		538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 538E396E27F4765000FA63D5 /* FileProviderItem.swift */; };
@@ -123,6 +124,7 @@
 
 /* Begin PBXFileReference section */
 		536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderSocketLineProcessor.swift; sourceTree = "<group>"; };
+		536EFC35295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderDomainNextcloudAccountData.swift; sourceTree = "<group>"; };
 		538E396727F4765000FA63D5 /* FileProviderExt.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FileProviderExt.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		538E396C27F4765000FA63D5 /* FileProviderExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileProviderExtension.swift; sourceTree = "<group>"; };
@@ -200,12 +202,13 @@
 		538E396B27F4765000FA63D5 /* FileProviderExt */ = {
 			isa = PBXGroup;
 			children = (
+				536EFC35295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift */,
+				538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */,
 				538E396C27F4765000FA63D5 /* FileProviderExtension.swift */,
 				538E396E27F4765000FA63D5 /* FileProviderItem.swift */,
-				538E397027F4765000FA63D5 /* FileProviderEnumerator.swift */,
 				536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */,
-				538E397227F4765000FA63D5 /* Info.plist */,
 				538E397327F4765000FA63D5 /* FileProviderExt.entitlements */,
+				538E397227F4765000FA63D5 /* Info.plist */,
 			);
 			path = FileProviderExt;
 			sourceTree = "<group>";
@@ -361,6 +364,8 @@
 				53903D202956164F00D0B308 /* PBXTargetDependency */,
 			);
 			name = desktopclient;
+			packageProductDependencies = (
+			);
 			productName = desktopclient;
 			productReference = C2B573B11B1CD91E00303B36 /* desktopclient.app */;
 			productType = "com.apple.product-type.application";
@@ -503,6 +508,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				536EFC36295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift in Sources */,
 				538E396D27F4765000FA63D5 /* FileProviderExtension.swift in Sources */,
 				536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */,
 				538E396F27F4765000FA63D5 /* FileProviderItem.swift in Sources */,
