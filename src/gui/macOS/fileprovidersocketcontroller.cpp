@@ -81,6 +81,7 @@ void FileProviderSocketController::parseReceivedLine(const QString &receivedLine
 
     if (command == QStringLiteral("FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY")) {
         _accountState = accountStateFromFileProviderDomainIdentifier(argument);
+        sendAccountKeychainEntryKey();
         return;
     }
 
@@ -132,6 +133,22 @@ void FileProviderSocketController::requestFileProviderDomainInfo() const
     Q_ASSERT(_socket);
     const auto requestMessage = QStringLiteral("SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER");
     sendMessage(requestMessage);
+}
+
+void FileProviderSocketController::sendAccountKeychainEntryKey() const
+{
+    Q_ASSERT(_accountState);
+    const auto account = _accountState->account();
+    Q_ASSERT(account);
+    const auto credentials = account->credentials();
+    Q_ASSERT(credentials);
+    const auto accountUrl = account->url().toString();
+    const auto accountUser = account->credentials()->user();
+    const auto accountId = account->id();
+    const auto accountKey = credentials->keychainKey(accountUrl, accountUser, accountId);
+
+    const auto message = QString(QStringLiteral("ACCOUNT_KEYCHAIN_NAME:") + accountKey);
+    sendMessage(message);
 }
 
 }
