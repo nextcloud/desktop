@@ -19,6 +19,7 @@ import NCDesktopClientSocketKit
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
     var socketClient: LocalSocketClient = LocalSocketClient()
+    var ncAccount: FileProviderDomainNextcloudAccountData  = FileProviderDomainNextcloudAccountData()
 
     required init(domain: NSFileProviderDomain) {
         self.domain = domain
@@ -93,10 +94,14 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
         self.socketClient.start();
     }
 
-    func sendDelegateFileProviderDomainIdentifier() {
+    func sendFileProviderDomainIdentifier() {
         let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
         let argument = domain.identifier.rawValue
         let message = command + ":" + argument + "\n"
         socketClient.sendMessage(message)
+    }
+
+    func setupDomainAccount(keychainAccount:String) {
+        ncAccount = FileProviderDomainNextcloudAccountData(withKeychainAccount:keychainAccount)
     }
 }

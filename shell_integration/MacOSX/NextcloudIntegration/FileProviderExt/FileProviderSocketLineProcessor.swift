@@ -25,7 +25,7 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
     func process(_ line: String) {
         NSLog("Processing file provider line: %@", line)
 
-        let splitLine = line.split(separator: ":")
+        let splitLine = line.split(separator: ":", maxSplits: 1)
         guard let commandSubsequence = splitLine.first else {
             NSLog("Input line did not have a first element")
             return;
@@ -34,7 +34,11 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
 
         NSLog("Received command: %@", command)
         if (command == "SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER") {
-            delegate.sendDelegateFileProviderDomainIdentifier()
+            delegate.sendFileProviderDomainIdentifier()
+        } else if (command == "ACCOUNT_KEYCHAIN_NAME") {
+            guard let keychainAccountSubsequence = splitLine.last else { return }
+            let keychainAccountString = String(keychainAccountSubsequence)
+            delegate.setupDomainAccount(keychainAccount:keychainAccountString)
         }
     }
 }
