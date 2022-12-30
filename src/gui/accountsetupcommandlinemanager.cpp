@@ -19,6 +19,29 @@ namespace OCC
 {
 Q_LOGGING_CATEGORY(lcAccountSetupCommandLineManager, "nextcloud.gui.accountsetupcommandlinemanager", QtInfoMsg)
 
+AccountSetupCommandLineManager *AccountSetupCommandLineManager::_instance = nullptr;
+
+AccountSetupCommandLineManager::AccountSetupCommandLineManager(QObject *parent)
+    : QObject{parent}
+{
+}
+
+AccountSetupCommandLineManager *AccountSetupCommandLineManager::instance()
+{
+    if (!_instance) {
+        _instance = new AccountSetupCommandLineManager();
+    }
+    return _instance;
+}
+
+void AccountSetupCommandLineManager::destroy()
+{
+    if (_instance) {
+        _instance->deleteLater();
+        _instance = nullptr;
+    }
+}
+
 bool AccountSetupCommandLineManager::parseCommandlineOption(const QString &option, QStringListIterator &optionsIterator, QString &errorMessage)
 {
     if (option == QStringLiteral("--apppassword")) {
@@ -67,16 +90,16 @@ bool AccountSetupCommandLineManager::parseCommandlineOption(const QString &optio
     return false;
 }
 
-bool AccountSetupCommandLineManager::isCommandLineParsed()
+bool AccountSetupCommandLineManager::isCommandLineParsed() const
 {
     return !_appPassword.isEmpty() && !_userId.isEmpty() && _serverUrl.isValid();
 }
 
-void AccountSetupCommandLineManager::setupAccountFromCommandLine(QObject *parent)
+void AccountSetupCommandLineManager::setupAccountFromCommandLine()
 {
     if (isCommandLineParsed()) {
         qCInfo(lcAccountSetupCommandLineManager) << QStringLiteral("Command line has been parsed and account setup parameters have been found. Attempting setup a new account %1...").arg(_userId);
-        const auto accountSetupJob = new AccountSetupFromCommandLineJob(_appPassword, _userId, _serverUrl, _localDirPath, _isVfsEnabled, _remoteDirPath, parent);
+        const auto accountSetupJob = new AccountSetupFromCommandLineJob(_appPassword, _userId, _serverUrl, _localDirPath, _isVfsEnabled, _remoteDirPath, parent());
         accountSetupJob->handleAccountSetupFromCommandLine();
     } else {
         qCInfo(lcAccountSetupCommandLineManager) << QStringLiteral("No account setup parameters have been found, or they are invalid. Proceed with normal startup...");
@@ -88,11 +111,4 @@ void AccountSetupCommandLineManager::setupAccountFromCommandLine(QObject *parent
     _localDirPath.clear();
     _isVfsEnabled = true;
 }
-
-QString AccountSetupCommandLineManager::_appPassword;
-QString AccountSetupCommandLineManager::_userId;
-QUrl AccountSetupCommandLineManager::_serverUrl;
-QString AccountSetupCommandLineManager::_remoteDirPath;
-QString AccountSetupCommandLineManager::_localDirPath;
-bool AccountSetupCommandLineManager::_isVfsEnabled = true;
 }

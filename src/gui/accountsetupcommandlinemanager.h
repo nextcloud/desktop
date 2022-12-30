@@ -20,24 +20,32 @@
 #include <QUrl>
 
 namespace OCC {
-class AccountSetupCommandLineManager
+class AccountSetupCommandLineManager : public QObject
 {
+    Q_OBJECT
+
 public:
-    [[nodiscard]] static bool parseCommandlineOption(const QString &option, QStringListIterator &optionsIterator, QString &errorMessage);
+    [[nodiscard]] static AccountSetupCommandLineManager *instance();
+    static void destroy();
 
-    [[nodiscard]] static bool isCommandLineParsed();
+    [[nodiscard]] bool parseCommandlineOption(const QString &option, QStringListIterator &optionsIterator, QString &errorMessage);
 
-    static void setupAccountFromCommandLine(QObject *parent = nullptr);
+    [[nodiscard]] bool isCommandLineParsed() const;
+
+public slots:
+    void setupAccountFromCommandLine();
 
 private:
-    explicit AccountSetupCommandLineManager() = delete;
+    explicit AccountSetupCommandLineManager(QObject *parent = nullptr);
 
-    static QString _appPassword;
-    static QString _userId;
-    static QUrl _serverUrl;
-    static QString _remoteDirPath;
-    static QString _localDirPath;
-    static bool _isVfsEnabled;
+    static AccountSetupCommandLineManager *_instance;
+
+    QString _appPassword;
+    QString _userId;
+    QUrl _serverUrl;
+    QString _remoteDirPath;
+    QString _localDirPath;
+    bool _isVfsEnabled;
 };
 
 }

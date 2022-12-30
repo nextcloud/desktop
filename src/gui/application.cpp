@@ -419,9 +419,10 @@ Application::Application(int &argc, char **argv)
 
     handleEditLocallyFromOptions();
 
-    if (AccountSetupCommandLineManager::isCommandLineParsed()) {
-        AccountSetupCommandLineManager::setupAccountFromCommandLine(this);
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
     }
+    AccountSetupCommandLineManager::destroy();
 }
 
 Application::~Application()
@@ -590,9 +591,10 @@ void Application::slotParseMessage(const QString &msg, QObject *)
 
         handleEditLocallyFromOptions();
 
-        if (AccountSetupCommandLineManager::isCommandLineParsed()) {
-            AccountSetupCommandLineManager::setupAccountFromCommandLine(this);
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
         }
+        AccountSetupCommandLineManager::destroy();
 
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
@@ -681,7 +683,7 @@ void Application::parseOptions(const QStringList &options)
         }
         else {
             QString errorMessage;
-            if (!AccountSetupCommandLineManager::parseCommandlineOption(option, it, errorMessage)) {
+            if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
                 if (!errorMessage.isEmpty()) {
                     showHint(errorMessage.toStdString());
                     return;
