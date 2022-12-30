@@ -21,6 +21,7 @@
 
 #include "config.h"
 #include "account.h"
+#include "accountsetupcommandlinemanager.h"
 #include "accountstate.h"
 #include "editlocallymanager.h"
 #include "connectionvalidator.h"
@@ -85,7 +86,13 @@ namespace {
         "  --logflush           : flush the log file after every write.\n"
         "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n"
-        "  --background         : launch the application in the background.\n";
+        "  --background         : launch the application in the background.\n"
+        "  --userid             : userId (username as on the server) to pass when creating an account via command-line.\n"
+        "  --apppassword        : appPassword to pass when creating an account via command-line.\n"
+        "  --localdirpath       : (optional) path where to create a local sync folder when creating an account via command-line.\n"
+        "  --isvfsenabled       : whether to set a VFS or non-VFS folder (1 for 'yes' or 0 for 'no') when creating an account via command-line.\n"
+        "  --remotedirpath      : (optional) path to a remote subfolder when creating an account via command-line.\n"
+        "  --serverurl          : a server URL to use when creating an account via command-line.\n";
 
     QString applicationTrPath()
     {
@@ -411,6 +418,11 @@ Application::Application(int &argc, char **argv)
     _gui->createTray();
 
     handleEditLocallyFromOptions();
+
+    if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+        AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+    }
+    AccountSetupCommandLineManager::destroy();
 }
 
 Application::~Application()
@@ -579,6 +591,11 @@ void Application::slotParseMessage(const QString &msg, QObject *)
 
         handleEditLocallyFromOptions();
 
+        if (AccountSetupCommandLineManager::instance()->isCommandLineParsed()) {
+            AccountSetupCommandLineManager::instance()->setupAccountFromCommandLine();
+        }
+        AccountSetupCommandLineManager::destroy();
+
     } else if (msg.startsWith(QLatin1String("MSG_SHOWMAINDIALOG"))) {
         qCInfo(lcApplication) << "Running for" << _startedAt.elapsed() / 1000.0 << "sec";
         if (_startedAt.elapsed() < 10 * 1000) {
@@ -665,7 +682,14 @@ void Application::parseOptions(const QStringList &options)
             }
         }
         else {
-            showHint("Unrecognized option '" + option.toStdString() + "'");
+            QString errorMessage;
+            if (!AccountSetupCommandLineManager::instance()->parseCommandlineOption(option, it, errorMessage)) {
+                if (!errorMessage.isEmpty()) {
+                    showHint(errorMessage.toStdString());
+                    return;
+                }
+                showHint("Unrecognized option '" + option.toStdString() + "'");
+            }
         }
     }
 }
