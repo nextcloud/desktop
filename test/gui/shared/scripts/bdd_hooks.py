@@ -21,18 +21,12 @@ import urllib.request
 import os
 import builtins
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
+from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from datetime import datetime
 
 # this will reset in every test suite
 previousFailResultCount = 0
 previousErrorResultCount = 0
-
-# socket messages
-socket_messages = []
-
-# Whether wait has been made or not after account is set up
-# This is useful for waiting only for the first time
-waitedAfterSync = False
 
 
 @OnScenarioStart
@@ -192,16 +186,10 @@ def waitUntilAppIsKilled(context, pid=0):
 
 @OnScenarioEnd
 def hook(context):
-    global socketConnect, socket_messages, waitedAfterSync, previousFailResultCount, previousErrorResultCount, waitedAfterSync
+    clearWaitedAfterSync()
+    closeSocketConnection()
 
-    # reset waited after sync flag
-    waitedAfterSync = False
-
-    # close socket connection and clear messages
-    socket_messages.clear()
-    if socketConnect:
-        socketConnect.connected = False
-        socketConnect._sock.close()
+    global previousFailResultCount, previousErrorResultCount
 
     # capture a screenshot if there is error or test failure in the current scenario execution
     if scenarioFailed() and os.getenv('CI'):
