@@ -1359,7 +1359,8 @@ void Folder::removeLocalE2eFiles()
             }
 
             if (!parentPathEncrypted) {
-                e2eFoldersToBlacklist.append(rec._path);
+                const auto pathAdjusted = rec._path.endsWith('/') ? rec._path : QString(rec._path + QStringLiteral("/"));
+                e2eFoldersToBlacklist.append(pathAdjusted);
             }
         }
     });
@@ -1378,47 +1379,28 @@ void Folder::removeLocalE2eFiles()
     const auto existingBlacklist = _journal.getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
     Q_ASSERT(ok);
 
-    // Will get deleted from blacklist if encryption is set up again later
-    const auto expandedBlacklist = existingBlacklist + e2eFoldersToBlacklist;
-    _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, expandedBlacklist);
-    _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, e2eFoldersToBlacklist);
-
-    if(isBusy()) {
-        slotTerminateSync();
-    }
-
-    for (const auto &e2eFilePath : qAsConst(e2eFoldersToBlacklist)) {
-         if (!_journal.deleteFileRecord(e2eFilePath, true)) {
-             qCWarning(lcFolder) << "Failed to delete file record from local DB" << e2eFilePath
-                                 << "it might have already been deleted.";
-             continue;
-         }
-
-         qCDebug(lcFolder) << "Removing local copy of" << e2eFilePath;
-
-         const auto fullPath = QString(path() + e2eFilePath);
-         const QFileInfo pathInfo(fullPath);
-
-         if (pathInfo.isDir() && pathInfo.exists()) {
-             QDir dir(fullPath);
-             if (!dir.removeRecursively()) {
-                 qCWarning(lcFolder) << "Unable to remove directory and contents at:" << fullPath;
-             }
-         } else if (pathInfo.exists()) {
-             if (!QFile::remove(fullPath)) {
-                 qCWarning(lcFolder) << "Unable to delete:" << fullPath;
-             }
-         } else {
-             qCWarning(lcFolder) << "Unable to delete:" << fullPath << "as it does not exist!";
-         }
-     }
+    const auto existingBlacklistSet = existingBlacklist.toSet();
+    auto expandedBlacklistSet = existingBlacklist.toSet();
 
     for (const auto &path : qAsConst(e2eFoldersToBlacklist)) {
-        _journal.schedulePathForRemoteDiscovery(path);
-        schedulePathForLocalDiscovery(path);
+        expandedBlacklistSet.insert(path);
     }
 
-    slotScheduleThisFolder();
+    // same as in void FolderStatusModel::slotApplySelectiveSync()
+    // only start sync if blackList has changed
+    // database lists will get updated during discovery
+    const auto changes = (existingBlacklistSet - expandedBlacklistSet) + (expandedBlacklistSet - existingBlacklistSet);
+    if (!changes.isEmpty()) {
+        _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
+        if (isBusy()) {
+            slotTerminateSync();
+        }
+        foreach (const auto &it, changes) {
+            _journal.schedulePathForRemoteDiscovery(it);
+            schedulePathForLocalDiscovery(it);
+        }
+        FolderMan::instance()->scheduleFolderForImmediateSync(this);
+    }
 }
 
 QString Folder::fileFromLocalPath(const QString &localPath) const

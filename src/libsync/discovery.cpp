@@ -217,7 +217,14 @@ void ProcessDirectoryJob::process()
         if (handleExcluded(path._target, e, isHidden))
             continue;
 
-        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original)) {
+        const auto isEncryptedFolderButE2eIsNotSetup = e.serverEntry.isValid() && e.serverEntry.isE2eEncrypted &&
+            _discoveryData->_account->e2e() && !_discoveryData->_account->e2e()->_publicKey.isNull() && _discoveryData->_account->e2e()->_privateKey.isNull();
+
+        if (isEncryptedFolderButE2eIsNotSetup) {
+            checkAndUpdateSelectiveSyncListsForE2eeFolders(path._server + "/");
+        }
+
+        if (_queryServer == InBlackList || _discoveryData->isInSelectiveSyncBlackList(path._original) || isEncryptedFolderButE2eIsNotSetup) {
             processBlacklisted(path, e.localEntry, e.dbEntry);
             continue;
         }
@@ -251,13 +258,6 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
             excluded = CSYNC_FILE_EXCLUDE_TRAILING_SPACE;
         } else if (startsWithSpace) {
             excluded = CSYNC_FILE_EXCLUDE_LEADING_SPACE;
-        } else if (entries.serverEntry.isValid() && entries.serverEntry.isE2eEncrypted) {
-            const auto wasE2eEnabledButNotSetup = _discoveryData->_account->e2e()
-                && !_discoveryData->_account->e2e()->_publicKey.isNull()
-                && _discoveryData->_account->e2e()->_privateKey.isNull();
-            if (wasE2eEnabledButNotSetup) {
-                excluded = CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED;
-            }
         }
     }
 
@@ -304,10 +304,7 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 
     if (excluded == CSYNC_NOT_EXCLUDED && !entries.localEntry.isSymLink) {
         return false;
-    } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE || excluded == CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED) {
-        if (excluded == CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED && isDirectory && path != QStringLiteral("/")) {
-            checkAndUpdateSelectiveSyncListsForE2eeFolders(path);
-        }
+    } else if (excluded == CSYNC_FILE_SILENTLY_EXCLUDED || excluded == CSYNC_FILE_EXCLUDE_AND_REMOVE) {
         emit _discoveryData->silentlyExcluded(path);
         return true;
     }
@@ -323,7 +320,6 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
     } else {
         switch (excluded) {
         case CSYNC_NOT_EXCLUDED:
-        case CSYNC_FILE_E2E_COULD_NOT_DECRYPT_EXCLUDED:
         case CSYNC_FILE_SILENTLY_EXCLUDED:
         case CSYNC_FILE_EXCLUDE_AND_REMOVE:
             qFatal("These were handled earlier");
@@ -394,22 +390,21 @@ bool ProcessDirectoryJob::handleExcluded(const QString &path, const Entries &ent
 void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path)
 {
     bool ok = false;
-    auto blackList = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
-    auto selectiveSyncE2eFoldersToRemoveFromBlacklist =
-        _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+
     const auto pathWithTrailingSpace = path.endsWith(QLatin1Char('/')) ? path : path + QLatin1Char('/');
-    if (!blackList.contains(pathWithTrailingSpace)) {
-        blackList.push_back(pathWithTrailingSpace);
-        blackList.sort();
-        _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
-    }
+
+    auto blackListSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
+    blackListSet.insert(pathWithTrailingSpace);
+    auto blackList = blackListSet.toList();
+    blackList.sort();
+    _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+
+    auto toRemoveFromBlacklistSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok).toSet();
+    toRemoveFromBlacklistSet.insert(pathWithTrailingSpace);
     // record it into a separate list to automatically remove from blacklist once the e2EE gets set up
-    if (!selectiveSyncE2eFoldersToRemoveFromBlacklist.contains(pathWithTrailingSpace)) {
-        selectiveSyncE2eFoldersToRemoveFromBlacklist.push_back(pathWithTrailingSpace);
-        selectiveSyncE2eFoldersToRemoveFromBlacklist.sort();
-        _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist,
-                                                       selectiveSyncE2eFoldersToRemoveFromBlacklist);
-    }
+    auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.toList();
+    toRemoveFromBlacklist.sort();
+    _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, toRemoveFromBlacklist);
 }
 
 void ProcessDirectoryJob::processFile(PathTuple path,
