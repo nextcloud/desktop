@@ -9,3 +9,7 @@ def buildConflictedRegex(filename):
         )
     else:
         return '%s \(conflicted copy \d{4}-\d{2}-\d{2} \d{6}\)' % (filename)
+
+
+def sanitizePath(path):
+    return path.replace('//', '/')
