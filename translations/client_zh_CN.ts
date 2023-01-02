@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation type="unfinished"/>
+        <translation>打开文件的详细信息</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -80,7 +80,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
         <source>Decline Talk call notification</source>
-        <translation type="unfinished"/>
+        <translation>拒绝通话通知</translation>
     </message>
 </context>
 <context>
@@ -407,7 +407,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>您似乎在此文件夹上启用了虚拟文件功能。目前，不可能隐式下载端到端加密的虚拟文件。为了获得虚拟文件和端到端加密的最佳体验，请确保加密文件夹被标记为“始终在本地可用”。  </translation>
+        <translation>你似乎在这个文件夹上启用了虚拟文件功能。目前，不可能隐含下载端到端加密的虚拟文件。为了获得虚拟文件和端到端加密的最佳体验，请确保加密的文件夹被标记为 &quot;始终在本地可用&quot;。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="92"/>
@@ -417,7 +417,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>你似乎在这个文件夹上启用了虚拟文件功能。目前，不可能隐含下载端到端加密的虚拟文件。为了获得虚拟文件和端到端加密的最佳体验，请确保加密的文件夹被标记为 &quot;始终在本地可用&quot;。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -463,7 +463,8 @@
         <location filename="../src/gui/accountsettings.cpp" line="330"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation type="unfinished"/>
+        <translation>该设备上没有配置端对端加密。一旦配置好了，你就可以对这个文件夹进行加密。
+你想设置端到端加密吗？</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="355"/>
@@ -619,7 +620,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation type="unfinished"/>
+        <translation>为了保护您的加密身份，我们用 12 个字典中的助记词对其进行加密。请记下这些并妥善保管。在向您的账户添加其他设备（如您的手机或笔记本电脑）时将需要它们。</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1045"/>
@@ -750,6 +751,24 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1560"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
+        <translation>在这个账户上已经在另一个设备上启用了端到端加密。&lt;br&gt;可以通过输入你的助记符在这个设备上启用它。&lt;br&gt;这将使现有的加密文件夹得到同步。</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountSetupFromCommandLineJob</name>
+    <message>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation>对服务器的认证请求被重定向到 &quot;%1&quot;。URL 有错误，服务器配置有误。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
+        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
+        <translation>服务器禁止访问。为了验证你是否有适当的访问权限，请&lt;a href=&quot;%1&quot;&gt;点击这里&lt;/a&gt;用你的浏览器访问该服务。</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -1739,7 +1758,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1549"/>
         <source>Last sync was successful.</source>
-        <translation type="unfinished"/>
+        <translation>最后一次同步已成功。</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1555"/>
@@ -3469,7 +3488,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1278"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
@@ -3684,12 +3703,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>服务器返回的 HTTP 状态错误，应返回 201，但返回的是“%1 %2”。</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
         <source>could not get file %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation type="unfinished"/>
     </message>
@@ -4057,7 +4076,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
-        <source>Could not encrypt the following folder: &quot;%1&quot;. 
+        <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
         <translation type="unfinished"/>
@@ -5293,6 +5312,82 @@ Server replied with error: %2</source>
     </message>
 </context>
 <context>
+    <name>ShareDelegate</name>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
+        <source>Create a new share link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
+        <source>Copy share link location</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
+        <source>Share options</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShareDetailsPage</name>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
+        <source>An error occurred setting the share password.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
+        <source>Edit share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
+        <source>Share label</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
+        <source>Allow editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
+        <source>Password protect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
+        <source>Set expiration date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
+        <source>Note to recipient</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
+        <source>Unshare</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
+        <source>Add another link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
+        <source>Copy share link</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ShareView</name>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
@@ -5387,6 +5482,22 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="29"/>
         <source>Load more results</source>
         <translation>加载更多结果</translation>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultNothingFound</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
+        <source>No results for</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultSectionItem</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
+        <source>Search results section %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5936,7 +6047,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="100"/>
         <source>Make always available locally</source>
-        <translation>使文件总是本地可用</translation>
+        <translation>始终在本地可用</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="105"/>

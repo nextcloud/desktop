@@ -755,7 +755,25 @@ Además, esta acción interrumpirá cualquier sincronización en curso.</transla
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1560"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation type="unfinished"/>
+        <translation>El cifrado de extremo a extremo ha sido habilitado en esta cuenta con otro dispositivo.&lt;br&gt; puede ser habilitado en este dispositivo ingresando su mnemónico.&lt;br&gt; Esto habilitará la sincronización de las carpetas cifradas existentes</translation>
+    </message>
+</context>
+<context>
+    <name>OCC::AccountSetupFromCommandLineJob</name>
+    <message>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
+        <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
+        <translation>La petición autenticada al servidor ha sido redirigida a &quot;%1&quot;. La URL es errónea, el servidor está mal configurado.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
+        <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
+        <translation>Acceso denegado por el servidor. Para verificar que tiene acceso, &lt;a href=&quot;%1&quot;&gt;haga clic aquí&lt;/a&gt; para acceder al servicio desde el navegador.</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
+        <source>There was an invalid response to an authenticated WebDAV request</source>
+        <translation>Ha habido una respuesta no válida a una solicitud autenticada de WebDAV</translation>
     </message>
 </context>
 <context>
@@ -1831,7 +1849,7 @@ Si esto ha sido un accidente, y decides mantener tus archivos, serán re-sincron
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source> - %1</source>
-        <translation type="unfinished"/>
+        <translation> - %1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -3484,7 +3502,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="512"/>
-        <location filename="../src/libsync/propagatedownload.cpp" line="1252"/>
+        <location filename="../src/libsync/propagatedownload.cpp" line="1278"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>No fue posible borrar el registro del archivo %1 de la base de datos local</translation>
     </message>
@@ -3699,12 +3717,12 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
         <translation>El código HTTP devuelto por el servidor es erróneo. Esperado 201, pero recibido &quot;%1 %2&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="250"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="248"/>
         <source>could not get file %1 from local DB</source>
         <translation>no fue posible obtener el archivo %1 de la base de datos local</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemove.cpp" line="262"/>
+        <location filename="../src/libsync/propagateremotemove.cpp" line="260"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>No fue posible borrar el registro del archivo %1 de la base de datos local</translation>
     </message>
@@ -4072,7 +4090,7 @@ Esta es un modo nuevo y experimental. Si decides usarlo, por favor, informa de c
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
-        <source>Could not encrypt the following folder: &quot;%1&quot;. 
+        <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
         <translation>No se pudo cifrar la siguiente carpeta: &quot;%1&quot;
@@ -5310,6 +5328,82 @@ El servidor respondió con el error: %2</translation>
     </message>
 </context>
 <context>
+    <name>ShareDelegate</name>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
+        <source>Create a new share link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
+        <source>Copy share link location</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
+        <source>Share options</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ShareDetailsPage</name>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
+        <source>An error occurred setting the share password.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
+        <source>Edit share</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
+        <source>Dismiss</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
+        <source>Share label</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
+        <source>Allow editing</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
+        <source>Password protect</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
+        <source>Set expiration date</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
+        <source>Note to recipient</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
+        <source>Unshare</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
+        <source>Add another link</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
+        <source>Copy share link</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ShareView</name>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
@@ -5404,6 +5498,22 @@ El servidor respondió con el error: %2</translation>
         <location filename="../src/gui/tray/UnifiedSearchResultListItem.qml" line="29"/>
         <source>Load more results</source>
         <translation>Cargar más resultados</translation>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultNothingFound</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
+        <source>No results for</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>UnifiedSearchResultSectionItem</name>
+    <message>
+        <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
+        <source>Search results section %1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
