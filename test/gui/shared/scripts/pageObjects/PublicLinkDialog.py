@@ -92,11 +92,12 @@ class PublicLinkDialog:
     defaultExpiryDate = ''
 
     @staticmethod
+    def parseDate(date):
+        return str(datetime.strptime(date, '%m/%d/%y')).split(' ')[0]
+
+    @staticmethod
     def setDefaultExpiryDate(defaultDate):
-        defaultDate = datetime.strptime(defaultDate, '%m/%d/%y')
-        PublicLinkDialog.defaultExpiryDate = (
-            f"{defaultDate.year}-{defaultDate.month}-{defaultDate.day}"
-        )
+        PublicLinkDialog.defaultExpiryDate = PublicLinkDialog.parseDate(defaultDate)
 
     @staticmethod
     def getDefaultExpiryDate():
@@ -309,4 +310,4 @@ class PublicLinkDialog:
                 PublicLinkDialog.EXPIRATION_DATE_FIELD
             ).displayText
         )
-        return str(datetime.strptime(defaultDate, '%m/%d/%y')).split(' ')[0]
+        return PublicLinkDialog.parseDate(defaultDate)
