@@ -101,7 +101,7 @@ void FolderWatcherPrivate::startWatching()
 
     CFRelease(pathsToWatch);
     CFRelease(folderCF);
-    FSEventStreamScheduleWithRunLoop(_stream, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
+    FSEventStreamSetDispatchQueue(_stream, dispatch_get_main_queue());
     FSEventStreamStart(_stream);
 }
 
