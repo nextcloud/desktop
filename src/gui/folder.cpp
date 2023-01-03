@@ -1395,7 +1395,7 @@ void Folder::removeLocalE2eFiles()
         if (isBusy()) {
             slotTerminateSync();
         }
-        foreach (const auto &it, changes) {
+        for (const auto &it : changes) {
             _journal.schedulePathForRemoteDiscovery(it);
             schedulePathForLocalDiscovery(it);
         }
