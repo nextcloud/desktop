@@ -1390,6 +1390,10 @@ void Folder::removeLocalE2eFiles()
     // only start sync if blackList has changed
     // database lists will get updated during discovery
     const auto changes = (existingBlacklistSet - expandedBlacklistSet) + (expandedBlacklistSet - existingBlacklistSet);
+
+    _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, expandedBlacklistSet.values());
+    _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, changes.values());
+
     if (!changes.isEmpty()) {
         _journal.setSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, QStringList());
         if (isBusy()) {
