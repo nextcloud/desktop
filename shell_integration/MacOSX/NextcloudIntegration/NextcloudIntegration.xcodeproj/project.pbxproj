@@ -3,10 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E52965C6FA001E0C6A /* NextcloudKit */; };
+		5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6E72965DAD8001E0C6A /* NextcloudKit */; };
+		5307A6EB2965DB8D001E0C6A /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 5307A6EA2965DB8D001E0C6A /* RealmSwift */; };
 		536EFBF7295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFBF6295CF58100F4CB13 /* FileProviderSocketLineProcessor.swift */; };
 		536EFC36295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536EFC35295E3C1100F4CB13 /* FileProviderDomainNextcloudAccountData.swift */; };
 		538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538E396927F4765000FA63D5 /* UniformTypeIdentifiers.framework */; };
@@ -160,6 +163,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5307A6EB2965DB8D001E0C6A /* RealmSwift in Frameworks */,
+				5307A6E82965DAD8001E0C6A /* NextcloudKit in Frameworks */,
 				538E396A27F4765000FA63D5 /* UniformTypeIdentifiers.framework in Frameworks */,
 				53903D302956173F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
 			);
@@ -176,6 +181,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5307A6E62965C6FA001E0C6A /* NextcloudKit in Frameworks */,
 				53903D212956164F00D0B308 /* NCDesktopClientSocketKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -323,6 +329,8 @@
 			);
 			name = FileProviderExt;
 			packageProductDependencies = (
+				5307A6E72965DAD8001E0C6A /* NextcloudKit */,
+				5307A6EA2965DB8D001E0C6A /* RealmSwift */,
 			);
 			productName = FileProviderExt;
 			productReference = 538E396727F4765000FA63D5 /* FileProviderExt.appex */;
@@ -365,6 +373,7 @@
 			);
 			name = desktopclient;
 			packageProductDependencies = (
+				5307A6E52965C6FA001E0C6A /* NextcloudKit */,
 			);
 			productName = desktopclient;
 			productReference = C2B573B11B1CD91E00303B36 /* desktopclient.app */;
@@ -436,6 +445,8 @@
 			);
 			mainGroup = C2B573941B1CD88000303B36;
 			packageReferences = (
+				5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */,
+				5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = C2B573B21B1CD91E00303B36 /* Products */;
 			projectDirPath = "";
@@ -606,7 +617,11 @@
 				INFOPLIST_FILE = FileProviderExt/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FileProviderExt;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -653,7 +668,11 @@
 				INFOPLIST_FILE = FileProviderExt/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = FileProviderExt;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 12.0;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -663,8 +682,9 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -707,8 +727,14 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
@@ -764,8 +790,14 @@
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @loader_path/Frameworks";
-				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = (
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MARKETING_VERSION = 1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -778,8 +810,9 @@
 				SUPPORTED_PLATFORMS = macosx;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -892,7 +925,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = desktopclient/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -940,7 +976,10 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = desktopclient/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -991,7 +1030,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = FinderSyncExt/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OC_APPLICATION_NAME = ownCloud;
@@ -1041,7 +1084,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				INFOPLIST_FILE = FinderSyncExt/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OC_APPLICATION_NAME = ownCloud;
@@ -1104,6 +1151,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/nextcloud/NextcloudKit";
+			requirement = {
+				branch = work/macify;
+				kind = branch;
+			};
+		};
+		5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.33.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5307A6E52965C6FA001E0C6A /* NextcloudKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
+			productName = NextcloudKit;
+		};
+		5307A6E72965DAD8001E0C6A /* NextcloudKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5307A6E42965C6FA001E0C6A /* XCRemoteSwiftPackageReference "NextcloudKit" */;
+			productName = NextcloudKit;
+		};
+		5307A6EA2965DB8D001E0C6A /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5307A6E92965DB57001E0C6A /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C2B573951B1CD88000303B36 /* Project object */;
 }
