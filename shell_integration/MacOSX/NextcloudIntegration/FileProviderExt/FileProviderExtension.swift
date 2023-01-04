@@ -21,8 +21,19 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
 
     let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
-    var socketClient: LocalSocketClient = LocalSocketClient()
-    var ncAccount: FileProviderDomainNextcloudAccountData  = FileProviderDomainNextcloudAccountData()
+    var ncAccount: FileProviderDomainNextcloudAccountData = FileProviderDomainNextcloudAccountData()
+    lazy var socketClient: LocalSocketClient? = {
+        guard let fileProviderSocketApiPrefix = appGroupIdentifier else {
+            NSLog("Could not start file provider socket client properly as SocketApiPrefix is missing")
+            return nil;
+        }
+
+        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: fileProviderSocketApiPrefix)
+        let socketPath = containerUrl?.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
+        let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
+
+        return LocalSocketClient(socketPath: socketPath?.path, lineProcessor: lineProcessor)
+    }()
 
     let urlSessionIdentifier: String = "com.nextcloud.session.upload.fileproviderext"
     let urlSessionMaximumConnectionsPerHost = 5
@@ -43,7 +54,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
         // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
 
         super.init()
-        startLocalSocketClient()
+        self.socketClient?.start()
     }
     
     func invalidate() {
@@ -94,26 +105,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     }
 
     // MARK: Nextcloud desktop client communication
-
-    func startLocalSocketClient() {
-        guard let fileProviderSocketApiPrefix = appGroupIdentifier else {
-            NSLog("Could not start file provider socket client properly as SocketApiPrefix is missing")
-            return;
-        }
-
-        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: fileProviderSocketApiPrefix)
-        let socketPath = containerUrl?.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
-        let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
-
-        self.socketClient = LocalSocketClient(socketPath: socketPath?.path, lineProcessor: lineProcessor)
-        self.socketClient.start();
-    }
-
     func sendFileProviderDomainIdentifier() {
         let command = "FILE_PROVIDER_DOMAIN_IDENTIFIER_REQUEST_REPLY"
         let argument = domain.identifier.rawValue
         let message = command + ":" + argument + "\n"
-        socketClient.sendMessage(message)
+        socketClient?.sendMessage(message)
     }
 
     func setupDomainAccount(keychainAccount:String) {
