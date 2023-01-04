@@ -21,7 +21,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
 
     let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
-    var ncAccount: FileProviderDomainNextcloudAccountData = FileProviderDomainNextcloudAccountData()
+    var ncAccount: NextcloudAccount?
     lazy var socketClient: LocalSocketClient? = {
         guard let fileProviderSocketApiPrefix = appGroupIdentifier else {
             NSLog("Could not start file provider socket client properly as SocketApiPrefix is missing")
@@ -113,6 +113,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     }
 
     func setupDomainAccount(keychainAccount:String) {
-        ncAccount = FileProviderDomainNextcloudAccountData(withKeychainAccount:keychainAccount)
+        ncAccount = NextcloudAccount(withKeychainAccount:keychainAccount)
     }
 }
