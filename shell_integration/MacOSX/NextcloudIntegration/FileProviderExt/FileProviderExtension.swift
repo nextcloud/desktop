@@ -15,11 +15,28 @@
 import FileProvider
 import OSLog
 import NCDesktopClientSocketKit
+import NextcloudKit
 
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let domain: NSFileProviderDomain
+
+    let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var socketClient: LocalSocketClient = LocalSocketClient()
     var ncAccount: FileProviderDomainNextcloudAccountData  = FileProviderDomainNextcloudAccountData()
+
+    let urlSessionIdentifier: String = "com.nextcloud.session.upload.fileproviderext"
+    let urlSessionMaximumConnectionsPerHost = 5
+    lazy var urlSession: URLSession = {
+        let configuration = URLSessionConfiguration.background(withIdentifier: urlSessionIdentifier)
+        configuration.allowsCellularAccess = true
+        configuration.sessionSendsLaunchEvents = true
+        configuration.isDiscretionary = false
+        configuration.httpMaximumConnectionsPerHost = urlSessionMaximumConnectionsPerHost
+        configuration.requestCachePolicy = NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData
+        configuration.sharedContainerIdentifier = appGroupIdentifier
+        let session = URLSession(configuration: configuration, delegate: NKBackground.shared, delegateQueue: OperationQueue.main)
+        return session
+    }()
 
     required init(domain: NSFileProviderDomain) {
         self.domain = domain
@@ -79,10 +96,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     // MARK: Nextcloud desktop client communication
 
     func startLocalSocketClient() {
-        let bundle = Bundle(for: type(of: self))
-        guard let fileProviderSocketApiPrefix = bundle.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
+        guard let fileProviderSocketApiPrefix = appGroupIdentifier else {
             NSLog("Could not start file provider socket client properly as SocketApiPrefix is missing")
-
             return;
         }
 
