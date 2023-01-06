@@ -579,15 +579,6 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
 
     QVector<UnifiedSearchResult> newEntries;
 
-    const auto makeResourceUrl = [](const QString &resourceUrl, const QUrl &accountUrl) {
-        QUrl finalResurceUrl(resourceUrl);
-        if (finalResurceUrl.scheme().isEmpty() && accountUrl.scheme().isEmpty()) {
-            finalResurceUrl = accountUrl;
-            finalResurceUrl.setPath(resourceUrl);
-        }
-        return finalResurceUrl;
-    };
-
     for (const auto &entry : entries) {
         const auto entryMap = entry.toMap();
         if (entryMap.isEmpty()) {
@@ -601,10 +592,10 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
         result._title = entryMap.value(QStringLiteral("title")).toString();
         result._subline = entryMap.value(QStringLiteral("subline")).toString();
 
-        const auto resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toString();
+        const auto resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toUrl();
         const auto accountUrl = (_accountState && _accountState->account()) ? _accountState->account()->url() : QUrl();
 
-        result._resourceUrl = makeResourceUrl(resourceUrl, accountUrl);
+        result._resourceUrl = openableResourceUrl(resourceUrl, accountUrl);
         const auto darkIconsData = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
                                                                      entryMap.value(QStringLiteral("icon")).toString(), accountUrl, true);
         const auto lightIconsData = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
@@ -622,6 +613,17 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
     } else {
         appendResults(newEntries, provider);
     }
+}
+
+QUrl UnifiedSearchResultsListModel::openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl)
+{
+    if (!resourceUrl.isRelative()) {
+        return resourceUrl;
+    }
+
+    QUrl finalResourceUrl(accountUrl);
+    finalResourceUrl.setPath(resourceUrl.toString());
+    return finalResourceUrl;
 }
 
 void UnifiedSearchResultsListModel::appendResults(QVector<UnifiedSearchResult> results, const UnifiedSearchProvider &provider)

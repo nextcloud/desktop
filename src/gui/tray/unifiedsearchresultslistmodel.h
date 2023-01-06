@@ -119,6 +119,8 @@ private slots:
     void slotSearchForProviderFinished(const QJsonDocument &json, int statusCode);
 
 private:
+    static QUrl openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl);
+
     QMap<QString, UnifiedSearchProvider> _providers;
     QVector<UnifiedSearchResult> _results;
 
