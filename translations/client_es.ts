@@ -5332,17 +5332,17 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Crear un nuevo enlace de recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Copiar dirección del recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Opciones del recurso compartido</translation>
     </message>
 </context>
 <context>
@@ -5350,57 +5350,57 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Ocurrió un error al establecer la contraseña del recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Editar recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Descartar</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Etiqueta del recurso compartido</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Permitir edición</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Proteger con contraseña</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Fijar fecha de caducidad</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Nota para el destinatario</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Dejar de compartir</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Añadir otro enlace</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Copiar enlace de recurso compartido</translation>
     </message>
 </context>
 <context>
@@ -5505,7 +5505,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>No se encontraron resultados para</translation>
     </message>
 </context>
 <context>
@@ -5513,7 +5513,7 @@ El servidor respondió con el error: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Sección %1 de resultados de búsqueda</translation>
     </message>
 </context>
 <context>

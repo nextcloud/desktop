@@ -5330,17 +5330,17 @@ Server antwortete mit folgendem Fehler: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Neuen Freigabe-Link erstellen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Standort des Freigabelinks kopieren</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Freigabeoptionen</translation>
     </message>
 </context>
 <context>
@@ -5348,57 +5348,57 @@ Server antwortete mit folgendem Fehler: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Beim Festlegen des Freigabekennworts ist ein Fehler aufgetreten.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe bearbeiten</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Ablehnen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe-Label</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Bearbeitung erlauben</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Passwortschutz</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Ablaufdatum setzen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Notiz an Empfänger</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe aufheben</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Weiteren Link hinzufügen</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Freigabe-Link kopieren</translation>
     </message>
 </context>
 <context>
@@ -5503,7 +5503,7 @@ Server antwortete mit folgendem Fehler: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Keine Ergebnisse für</translation>
     </message>
 </context>
 <context>
@@ -5511,7 +5511,7 @@ Server antwortete mit folgendem Fehler: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Suchergebnisse Abschnitt %1</translation>
     </message>
 </context>
 <context>

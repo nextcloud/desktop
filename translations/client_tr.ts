@@ -5368,37 +5368,37 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Düzenlenebilsin</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Parola koruması</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Son kullanma tarihini ayarla</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Alıcıya not</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşımdan kaldır</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Başka bir bağlantı ekle</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Paylaşım bağlantısını kopyala</translation>
     </message>
 </context>
 <context>
@@ -5503,7 +5503,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Şunun için bir sonuç bulunamadı</translation>
     </message>
 </context>
 <context>
@@ -5511,7 +5511,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 bölümü için arama sonuçları</translation>
     </message>
 </context>
 <context>
