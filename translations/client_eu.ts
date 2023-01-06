@@ -679,7 +679,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1173"/>
         <source>Server %1 is currently in maintenance mode.</source>
-        <translation>%1 zerbitzaria une honetan mantenu lanetan dago.</translation>
+        <translation>%1 zerbitzaria une honetan mantentze lanetan dago.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1176"/>
@@ -801,7 +801,7 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="157"/>
         <source>Maintenance mode</source>
-        <translation>Mantenu lanetan</translation>
+        <translation>Mantentze lanetan</translation>
     </message>
     <message>
         <location filename="../src/gui/accountstate.cpp" line="159"/>
