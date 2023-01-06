@@ -276,7 +276,7 @@ void ShareUserGroupWidget::slotSharesFetched(const QList<QSharedPointer<Share>> 
         }
 
 
-        Q_ASSERT(Share::isShareTypeUserGroupEmailRoomOrRemote(share->getShareType()));
+        Q_ASSERT(Share::isShareTypeUserGroupEmailRoomRemoteOrCircle(share->getShareType()));
         auto userGroupShare = qSharedPointerDynamicCast<UserGroupShare>(share);
         auto *s = new ShareUserLine(_account, userGroupShare, _maxSharingPermissions, _isFile, _parentScrollArea);
         connect(s, &ShareUserLine::visualDeletionDone, this, &ShareUserGroupWidget::getShares);

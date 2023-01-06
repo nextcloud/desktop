@@ -146,10 +146,14 @@ void Share::deleteShare()
     job->deleteShare(getId());
 }
 
-bool Share::isShareTypeUserGroupEmailRoomOrRemote(const ShareType type)
+bool Share::isShareTypeUserGroupEmailRoomRemoteOrCircle(const ShareType type)
 {
-    return (type == Share::TypeUser || type == Share::TypeGroup || type == Share::TypeEmail || type == Share::TypeRoom
-        || type == Share::TypeRemote);
+    return (type == Share::TypeUser ||
+        type == Share::TypeGroup ||
+        type == Share::TypeEmail ||
+        type == Share::TypeRoom ||
+        type == Share::TypeRemote ||
+        type == Share::TypeCircle);
 }
 
 void Share::slotDeleted()
@@ -323,7 +327,7 @@ UserGroupShare::UserGroupShare(AccountPtr account,
     , _note(note)
     , _expireDate(expireDate)
 {
-    Q_ASSERT(Share::isShareTypeUserGroupEmailRoomOrRemote(shareType));
+    Q_ASSERT(Share::isShareTypeUserGroupEmailRoomRemoteOrCircle(shareType));
     Q_ASSERT(shareWith);
 }
 
@@ -493,7 +497,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 
         if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
-        } else if (Share::isShareTypeUserGroupEmailRoomOrRemote(static_cast <Share::ShareType>(shareType))) {
+        } else if (Share::isShareTypeUserGroupEmailRoomRemoteOrCircle(static_cast <Share::ShareType>(shareType))) {
             newShare = parseUserGroupShare(data);
         } else {
             newShare = parseShare(data);
