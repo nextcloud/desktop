@@ -374,12 +374,14 @@ Application::Application(int &argc, char **argv)
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
+    if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty()
+        && !AccountSetupCommandLineManager::instance()->isCommandLineParsed())) {
         // If there is an error reading the account settings, try again
         // after a couple of seconds, if that fails, give up.
         // (non-existence is not an error)
         Utility::sleep(5);
-        if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
+        if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty()
+            && !AccountSetupCommandLineManager::instance()->isCommandLineParsed())) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
                 nullptr,
