@@ -188,7 +188,7 @@ void SyncFileStatusTracker::incSyncCountAndEmitStatusChanged(const QString &rela
         // We passed from OK to SYNC, increment the parent to keep it marked as
         // SYNC while we propagate ourselves and our own children.
         const auto choppedPath = relativePath.endsWith('/') ? relativePath.chopped(1) : relativePath;
-        int lastSlashIndex = choppedPath.lastIndexOf('/');
+        const auto lastSlashIndex = choppedPath.lastIndexOf('/');
         if (lastSlashIndex != -1) {
             incSyncCountAndEmitStatusChanged(relativePath.left(lastSlashIndex), UnknownShared);
         } else if (!choppedPath.isEmpty()) {
@@ -211,7 +211,7 @@ void SyncFileStatusTracker::decSyncCountAndEmitStatusChanged(const QString &rela
 
         // We passed from SYNC to OK, decrement our parent.
         const auto choppedPath = relativePath.endsWith('/') ? relativePath.chopped(1) : relativePath;
-        int lastSlashIndex = choppedPath.lastIndexOf('/');
+        const auto lastSlashIndex = choppedPath.lastIndexOf('/');
         if (lastSlashIndex != -1) {
             decSyncCountAndEmitStatusChanged(choppedPath.left(lastSlashIndex), UnknownShared);
         } else if (!choppedPath.isEmpty()) {
