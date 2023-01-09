@@ -102,13 +102,18 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSu
     const auto accountManager = AccountManager::instance();
     const auto accountState = accountManager->addAccount(_account);
     accountManager->save();
+    accountState->checkConnectivity();
 
-    if (!_localDirPath.isEmpty()) {
-        setupLocalSyncFolder(accountState);
-    } else {
-        qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
-        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
-    }
+    connect(accountState, &OCC::AccountState::stateChanged, this, [this, accountManager, accountState](OCC::AccountState::State state) {
+        if (state == OCC::AccountState::State::Connected) {
+            if (!_localDirPath.isEmpty()) {
+                setupLocalSyncFolder(accountState);
+            } else {
+                qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
+                printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
+            }
+        }
+    });
 }
 
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFailure()
