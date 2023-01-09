@@ -253,7 +253,7 @@ void EditLocallyJob::startSyncBeforeOpening()
 {
     eraseBlacklistRecordForItem();
     if (!checkIfFileParentSyncIsNeeded()) {
-        lockFile();
+        processLocalItem();
         return;
     }
 
@@ -467,7 +467,7 @@ void EditLocallyJob::slotItemCompleted(const OCC::SyncFileItemPtr &item)
     if (item->_file == _relativePathToRemoteRoot) {
         disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemCompleted, this, &EditLocallyJob::slotItemCompleted);
         disconnect(&_folderForFile->syncEngine(), &SyncEngine::itemDiscovered, this, &EditLocallyJob::slotItemDiscovered);
-        lockFile();
+        processLocalItem();
     }
 }
 
@@ -555,6 +555,21 @@ void EditLocallyJob::openFile()
         Systray::instance()->destroyEditFileLocallyLoadingDialog();
         emit finished();
     });
+}
+
+void EditLocallyJob::processLocalItem()
+{
+    Q_ASSERT(_folderForFile);
+
+    SyncJournalFileRecord rec;
+    const auto ok = _folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec);
+    Q_ASSERT(ok);
+
+    if (rec.isDirectory()) { // Directories not lock-able
+        openFile();
+    } else {
+        lockFile();
+    }
 }
 
 void EditLocallyJob::lockFile()
