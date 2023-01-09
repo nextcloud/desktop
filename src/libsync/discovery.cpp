@@ -395,14 +395,14 @@ void ProcessDirectoryJob::checkAndUpdateSelectiveSyncListsForE2eeFolders(const Q
 
     auto blackListSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok).toSet();
     blackListSet.insert(pathWithTrailingSpace);
-    auto blackList = blackListSet.toList();
+    auto blackList = blackListSet.values();
     blackList.sort();
     _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
 
     auto toRemoveFromBlacklistSet = _discoveryData->_statedb->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok).toSet();
     toRemoveFromBlacklistSet.insert(pathWithTrailingSpace);
     // record it into a separate list to automatically remove from blacklist once the e2EE gets set up
-    auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.toList();
+    auto toRemoveFromBlacklist = toRemoveFromBlacklistSet.values();
     toRemoveFromBlacklist.sort();
     _discoveryData->_statedb->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, toRemoveFromBlacklist);
 }
