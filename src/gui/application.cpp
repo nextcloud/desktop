@@ -430,6 +430,8 @@ Application::Application(int &argc, char **argv)
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
         _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
 
+    _isRunningAccountSetupOnDeployment = AccountSetupCommandLineManager::instance()->isCommandLineParsed();
+
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
     _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec); // check for connection every 32 seconds.
@@ -543,7 +545,10 @@ void Application::slotCheckConnection()
 {
     if (AccountManager::instance()->accounts().isEmpty()) {
         // let gui open the setup wizard
-        _gui->slotOpenSettingsDialog();
+        if (!_isRunningAccountSetupOnDeployment) {
+            _gui->slotOpenSettingsDialog();
+        }
+        _isRunningAccountSetupOnDeployment = false;
 
         _checkConnectionTimer.stop(); // don't popup the wizard on interval;
     }
