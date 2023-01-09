@@ -15,7 +15,6 @@
 #include "accountsetupfromcommandlinejob.h"
 
 #include "accountmanager.h"
-#include "accountstate.h"
 #include "creds/webflowcredentials.h"
 #include "filesystem.h"
 #include "folder.h"
@@ -97,23 +96,43 @@ void AccountSetupFromCommandLineJob::checkLastModifiedWithPropfind()
     job->start();
 }
 
+void AccountSetupFromCommandLineJob::accountCheckConnectivityFinished(OCC::AccountState::State state)
+{
+    disconnect(_accountState, &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
+    if (_checkConnectivityTimeout.isActive()) {
+        _checkConnectivityTimeout.stop();
+    }
+
+    if (state == OCC::AccountState::State::Connected) {
+        if (!_localDirPath.isEmpty()) {
+            setupLocalSyncFolder(_accountState);
+        } else {
+            qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
+            printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
+        }
+    } else {
+        AccountManager::instance()->deleteAccount(_accountState);
+        printAccountSetupFromCommandLineStatusAndExit(
+            QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName()).arg(QStringLiteral("could not connect the account")),
+            true);
+    }
+}
+
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSuccess()
 {
     const auto accountManager = AccountManager::instance();
-    const auto accountState = accountManager->addAccount(_account);
+    _accountState = accountManager->addAccount(_account);
     accountManager->save();
-    accountState->checkConnectivity();
+    connect(_accountState, &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
+    _accountState->checkConnectivity();
 
-    connect(accountState, &OCC::AccountState::stateChanged, this, [this, accountManager, accountState](OCC::AccountState::State state) {
-        if (state == OCC::AccountState::State::Connected) {
-            if (!_localDirPath.isEmpty()) {
-                setupLocalSyncFolder(accountState);
-            } else {
-                qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
-                printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
-            }
-        }
+    connect(&_checkConnectivityTimeout, &QTimer::timeout, this, [this]() {
+        accountCheckConnectivityFinished(_accountState->state());
     });
+
+    _checkConnectivityTimeout.setInterval(1000 * 30);
+    _checkConnectivityTimeout.setSingleShot(true);
+    _checkConnectivityTimeout.start();
 }
 
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFailure()
