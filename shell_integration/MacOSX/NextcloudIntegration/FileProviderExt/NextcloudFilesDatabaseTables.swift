@@ -96,3 +96,21 @@ class NextcloudFileMetadataTable: Object {
         return "ocId"
     }
 }
+
+class NextcloudDirectoryMetadataTable: Object {
+    @objc dynamic var account = ""
+    @objc dynamic var colorFolder: String?
+    @objc dynamic var e2eEncrypted: Bool = false
+    @objc dynamic var etag = ""
+    @objc dynamic var favorite: Bool = false
+    @objc dynamic var fileId = ""
+    @objc dynamic var ocId = ""
+    @objc dynamic var offline: Bool = false
+    @objc dynamic var permissions = ""
+    @objc dynamic var richWorkspace: String?
+    @objc dynamic var serverUrl = ""
+
+    override static func primaryKey() -> String {
+        return "ocId"
+    }
+}
