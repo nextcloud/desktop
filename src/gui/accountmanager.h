@@ -119,5 +119,6 @@ Q_SIGNALS:
     void accountRemoved(OCC::AccountState *account);
     void accountSyncConnectionRemoved(OCC::AccountState *account);
     void removeAccountFolders(OCC::AccountState *account);
+    void accountCredentialsSaved(OCC::Account *account);
 };
 }

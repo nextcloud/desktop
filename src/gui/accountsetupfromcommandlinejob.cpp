@@ -118,11 +118,8 @@ void AccountSetupFromCommandLineJob::accountCheckConnectivityFinished(OCC::Accou
     }
 }
 
-void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSuccess()
+void AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone()
 {
-    const auto accountManager = AccountManager::instance();
-    _accountState = accountManager->addAccount(_account);
-    accountManager->save();
     connect(_accountState, &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
     _accountState->checkConnectivity();
 
@@ -133,6 +130,15 @@ void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSu
     _checkConnectivityTimeout.setInterval(1000 * 30);
     _checkConnectivityTimeout.setSingleShot(true);
     _checkConnectivityTimeout.start();
+}
+
+void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSuccess()
+{
+    const auto accountManager = AccountManager::instance();
+    _accountState = accountManager->addAccount(_account); 
+    accountManager->saveAccount(_account.data());
+    connect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
+    _account->saveCredentials();
 }
 
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFailure()

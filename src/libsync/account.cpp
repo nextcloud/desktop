@@ -977,4 +977,9 @@ void Account::setAskUserForMnemonic(const bool ask)
     emit askUserForMnemonicChanged();
 }
 
+void Account::saveCredentials()
+{
+    _credentials->persist();
+}
+
 } // namespace OCC

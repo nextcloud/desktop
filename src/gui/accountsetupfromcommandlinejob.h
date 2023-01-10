@@ -48,6 +48,8 @@ private slots:
 
     void accountCheckConnectivityFinished(OCC::AccountState::State state);
 
+    void accountCredentialsWriteJoobDone();
+
     void accountSetupFromCommandLinePropfindHandleSuccess();
 
     void accountSetupFromCommandLinePropfindHandleFailure();
@@ -65,7 +67,7 @@ private:
     QString _localDirPath;
     bool _isVfsEnabled = true;
     QString _remoteDirPath;
-    AccountState *_accountState;
+    AccountState *_accountState = nullptr;
     AccountPtr _account;
     QTimer _checkConnectivityTimeout;
 };

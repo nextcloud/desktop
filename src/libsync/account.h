@@ -322,6 +322,7 @@ public slots:
     void clearQNAMCache();
     void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
     void setAskUserForMnemonic(const bool ask);
+    void saveCredentials();
 
 signals:
     /// Emitted whenever there's network activity
@@ -360,6 +361,8 @@ signals:
 
     void lockFileSuccess();
     void lockFileError(const QString&);
+
+    void credentialsWriteJobDone();
 
 protected Q_SLOTS:
     void slotCredentialsFetched();
