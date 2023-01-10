@@ -98,8 +98,6 @@ private:
     [[nodiscard]] bool isAccountIdAvailable(const QString &id) const;
     [[nodiscard]] QString generateFreeAccountId() const;
 
-    // Adds an account to the tracked list, emitting accountAdded()
-    void addAccountState(AccountState *accountState);
 
     AccountManager() = default;
     QList<AccountStatePtr> _accounts;
@@ -107,12 +105,17 @@ private:
     QSet<QString> _additionalBlockedAccountIds;
 
 public slots:
+    // Adds an account to the tracked list, emitting accountAdded()
+    void addAccountState(AccountState *accountState);
+
     /// Saves account data, not including the credentials
     void saveAccount(OCC::Account *a);
 
     /// Saves account state data, not including the account
-    void saveAccountState(OCC::AccountState *a);
+    void saveAccountState(OCC::AccountState *account);
 
+    /// Sets account id if not set (call only before adding it to the AccountManager)
+    void setIdForAccount(OCC::Account *a);
 
 Q_SIGNALS:
     void accountAdded(OCC::AccountState *account);

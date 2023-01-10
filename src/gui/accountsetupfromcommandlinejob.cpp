@@ -98,22 +98,26 @@ void AccountSetupFromCommandLineJob::checkLastModifiedWithPropfind()
 
 void AccountSetupFromCommandLineJob::accountCheckConnectivityFinished(OCC::AccountState::State state)
 {
-    disconnect(_accountState, &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
+    disconnect(_accountState.data(), &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
     if (_checkConnectivityTimeout.isActive()) {
         _checkConnectivityTimeout.stop();
     }
 
-    _accountState->startCheckConnectivity();
+    auto accountState = _accountState.take();
 
     if (state == OCC::AccountState::State::Connected) {
+        const auto accountManager = AccountManager::instance();
+        accountManager->addAccountState(accountState);
+        accountManager->save(false);
+
         if (!_localDirPath.isEmpty()) {
-            setupLocalSyncFolder(_accountState);
+            setupLocalSyncFolder(accountState);
         } else {
             qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
             printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
         }
     } else {
-        AccountManager::instance()->deleteAccount(_accountState);
+        _accountState->deleteLater();
         printAccountSetupFromCommandLineStatusAndExit(
             QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName()).arg(QStringLiteral("could not connect the account")),
             true);
@@ -124,7 +128,7 @@ void AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone()
 {
     disconnect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
 
-    connect(_accountState, &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
+    connect(_accountState.data(), &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
     _accountState->checkConnectivity();
 
     connect(&_checkConnectivityTimeout, &QTimer::timeout, this, [this]() {
@@ -138,9 +142,8 @@ void AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone()
 
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSuccess()
 {
-    const auto accountManager = AccountManager::instance();
-    _accountState = accountManager->addAccount(_account, false);
-    accountManager->saveAccount(_account.data());
+    AccountManager::instance()->setIdForAccount(_account.data());
+    _accountState = new OCC::AccountState(_account, false);
     connect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
     _account->saveCredentials();
 }

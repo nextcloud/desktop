@@ -67,7 +67,7 @@ private:
     QString _localDirPath;
     bool _isVfsEnabled = true;
     QString _remoteDirPath;
-    AccountState *_accountState = nullptr;
+    AccountStatePtr _accountState;
     AccountPtr _account;
     QTimer _checkConnectivityTimeout;
 };
