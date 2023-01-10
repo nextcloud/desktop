@@ -68,14 +68,18 @@ class NextcloudFilesDatabaseManager : NSObject {
         super.init()
     }
 
-    func getFileMetadataFromOcId(ocId: String) -> NextcloudFileMetadataTable? {
+    private func ncDatabase() -> Realm {
         let realm = try! Realm()
         realm.refresh()
-        return realm.objects(NextcloudFileMetadataTable.self).filter("ocId == %@", ocId).first
+        return realm
     }
 
-    func getFileMetadataFromFileProviderItemIdentifier(identifier: NSFileProviderItemIdentifier) -> NextcloudFileMetadataTable? {
+    func fileMetadataFromOcId(ocId: String) -> NextcloudFileMetadataTable? {
+        return ncDatabase().objects(NextcloudFileMetadataTable.self).filter("ocId == %@", ocId).first
+    }
+
+    func fileMetadataFromFileProviderItemIdentifier(identifier: NSFileProviderItemIdentifier) -> NextcloudFileMetadataTable? {
         let ocId = identifier.rawValue
-        return getFileMetadataFromOcId(ocId: ocId)
+        return fileMetadataFromOcId(ocId: ocId)
     }
 }
