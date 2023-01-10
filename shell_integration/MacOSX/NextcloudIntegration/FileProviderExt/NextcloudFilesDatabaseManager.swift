@@ -26,7 +26,6 @@ class NextcloudFilesDatabaseManager : NSObject {
     var databasePath: URL?
 
     let schemaVersion: UInt64 = 100
-    var validDatabase: Bool = false
 
     override init() {
         self.relativeDatabaseFilePath = self.relativeDatabaseFolderPath + self.databaseFilename
@@ -61,11 +60,16 @@ class NextcloudFilesDatabaseManager : NSObject {
         do {
             let realm = try Realm()
             print("Successfully started Realm db for FileProviderExt")
-            self.validDatabase = true
         } catch let error as NSError {
             print("Error opening Realm db: %@", error.localizedDescription)
         }
 
         super.init()
+    }
+
+    func getFileMetadataFromOcId(ocId: String) -> NextcloudFileMetadataTable? {
+        let realm = try! Realm()
+        realm.refresh()
+        return realm.objects(NextcloudFileMetadataTable.self).filter("ocId == %@", ocId).first
     }
 }
