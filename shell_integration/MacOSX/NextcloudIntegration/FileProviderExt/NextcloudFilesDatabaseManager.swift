@@ -14,6 +14,7 @@
 
 import Foundation
 import RealmSwift
+import FileProvider
 
 class NextcloudFilesDatabaseManager : NSObject {
     static let shared = {
@@ -71,5 +72,10 @@ class NextcloudFilesDatabaseManager : NSObject {
         let realm = try! Realm()
         realm.refresh()
         return realm.objects(NextcloudFileMetadataTable.self).filter("ocId == %@", ocId).first
+    }
+
+    func getFileMetadataFromFileProviderItemIdentifier(identifier: NSFileProviderItemIdentifier) -> NextcloudFileMetadataTable? {
+        let ocId = identifier.rawValue
+        return getFileMetadataFromOcId(ocId: ocId)
     }
 }
