@@ -88,7 +88,8 @@ bool AccountManager::restore(bool alsoRestoreLegacySettings)
     }
 
     // If there are no accounts, check the old format.
-    if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
+    if (settings->childGroups().isEmpty()
+        && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
         return true;
     }
