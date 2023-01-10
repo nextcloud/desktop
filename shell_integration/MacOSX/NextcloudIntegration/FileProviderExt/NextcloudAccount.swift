@@ -16,9 +16,9 @@ import Foundation
 import FileProvider
 
 class NextcloudAccount: NSObject {
-    let webDavUrlSuffix: String = "/remote.php/dav"
+    let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
     let username, password: String?
-    let serverUrl, davUrl: URL?
+    let serverUrl, davFilesUrl: URL?
 
     var isNull: Bool {
         return username?.isEmpty ?? false || serverUrl?.absoluteString.isEmpty ?? false
@@ -46,12 +46,12 @@ class NextcloudAccount: NSObject {
             return nil
         }
 
-        let davUrlUrl = serverUrlUrl.appendingPathComponent(webDavUrlSuffix)
+        let davFilesUrlUrl = serverUrlUrl.appendingPathComponent(webDavFilesUrlSuffix + usernameString)
 
         username = usernameString
         password = passwordString
         serverUrl = serverUrlUrl
-        davUrl = davUrlUrl
+        davFilesUrl = davFilesUrlUrl
 
         super.init()
     }

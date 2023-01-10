@@ -18,15 +18,13 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
-    let ncAccount: NextcloudAccount
     var serverUrl: URL?
     
-    init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount) {
+    init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount?) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
-        self.ncAccount = ncAccount
 
         if enumeratedItemIdentifier == .rootContainer {
-            self.serverUrl = ncAccount.serverUrl
+            self.serverUrl = ncAccount?.davFilesUrl
         } else {
             let dbManager = NextcloudFilesDatabaseManager.shared
             if let itemMetadata = dbManager.fileMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier),
