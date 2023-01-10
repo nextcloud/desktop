@@ -49,7 +49,11 @@ AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPasswo
 
 void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
-    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
+    const auto userIdSplit = _userId.split((QLatin1Char('@')));
+
+    const auto userIdParsed = QStringLiteral("%1@%2").arg(userIdSplit.first()).arg(_serverUrl.host());
+
+    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host())) || AccountManager::instance()->accountFromUserId(userIdParsed)) {
         printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
         return;
     }
