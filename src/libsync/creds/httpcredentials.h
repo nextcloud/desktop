@@ -88,7 +88,7 @@ public:
     [[nodiscard]] bool ready() const override;
     void fetchFromKeychain() override;
     bool stillValid(QNetworkReply *reply) override;
-    void persist() override;
+    void persist(bool saveAccount = true) override;
     [[nodiscard]] QString user() const override;
     // the password or token
     [[nodiscard]] QString password() const override;

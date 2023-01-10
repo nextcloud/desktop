@@ -47,7 +47,7 @@ public:
      * Add this account in the list of saved accounts.
      * Typically called from the wizard
      */
-    AccountState *addAccount(const AccountPtr &newAccount);
+    AccountState *addAccount(const AccountPtr &newAccount, bool startCheckConnection = true);
 
     /**
      * remove all accounts

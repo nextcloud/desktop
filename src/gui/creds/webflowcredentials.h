@@ -54,7 +54,7 @@ public:
     void askFromUser() override;
 
     bool stillValid(QNetworkReply *reply) override;
-    void persist() override;
+    void persist(bool saveAccount = true) override;
     void invalidateToken() override;
     void forgetSensitiveData() override;
 

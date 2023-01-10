@@ -436,7 +436,7 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
     return {};
 }
 
-AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
+AccountState *AccountManager::addAccount(const AccountPtr &newAccount, bool startCheckConnection)
 {
     auto id = newAccount->id();
     if (id.isEmpty() || !isAccountIdAvailable(id)) {
@@ -444,7 +444,7 @@ AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
     }
     newAccount->_id = id;
 
-    const auto newAccountState = new AccountState(newAccount);
+    const auto newAccountState = new AccountState(newAccount, startCheckConnection);
     addAccountState(newAccountState);
     return newAccountState;
 }

@@ -509,7 +509,7 @@ void HttpCredentials::forgetSensitiveData()
     _previousPassword.clear();
 }
 
-void HttpCredentials::persist()
+void HttpCredentials::persist(bool saveAccount)
 {
     if (_user.isEmpty()) {
         // We never connected or fetched the user, there is nothing to save.
@@ -523,7 +523,9 @@ void HttpCredentials::persist()
         // it's just written if it gets passed into the constructor.
         _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
     }
-    emit _account->wantsAccountSaved(_account);
+    if (saveAccount) {
+        emit _account->wantsAccountSaved(_account);
+    }
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {

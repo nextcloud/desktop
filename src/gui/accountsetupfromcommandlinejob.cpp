@@ -103,6 +103,8 @@ void AccountSetupFromCommandLineJob::accountCheckConnectivityFinished(OCC::Accou
         _checkConnectivityTimeout.stop();
     }
 
+    _accountState->startCheckConnectivity();
+
     if (state == OCC::AccountState::State::Connected) {
         if (!_localDirPath.isEmpty()) {
             setupLocalSyncFolder(_accountState);
@@ -120,6 +122,8 @@ void AccountSetupFromCommandLineJob::accountCheckConnectivityFinished(OCC::Accou
 
 void AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone()
 {
+    disconnect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
+
     connect(_accountState, &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
     _accountState->checkConnectivity();
 
@@ -135,7 +139,7 @@ void AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone()
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSuccess()
 {
     const auto accountManager = AccountManager::instance();
-    _accountState = accountManager->addAccount(_account); 
+    _accountState = accountManager->addAccount(_account, false);
     accountManager->saveAccount(_account.data());
     connect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
     _account->saveCredentials();

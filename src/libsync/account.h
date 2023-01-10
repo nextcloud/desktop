@@ -322,7 +322,7 @@ public slots:
     void clearQNAMCache();
     void slotHandleSslErrors(QNetworkReply *, QList<QSslError>);
     void setAskUserForMnemonic(const bool ask);
-    void saveCredentials();
+    void saveCredentials(bool saveAccount = false);
 
 signals:
     /// Emitted whenever there's network activity

@@ -39,7 +39,7 @@ namespace OCC {
 
 Q_LOGGING_CATEGORY(lcAccountState, "nextcloud.gui.account.state", QtInfoMsg)
 
-AccountState::AccountState(AccountPtr account)
+AccountState::AccountState(AccountPtr account, bool startCheckConnection)
     : QObject()
     , _account(account)
     , _state(AccountState::Disconnected)
@@ -69,11 +69,9 @@ AccountState::AccountState(AccountPtr account)
         }
     });
 
-    connect(&_checkConnectionTimer, &QTimer::timeout, this, &AccountState::slotCheckConnection);
-    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
-    _checkConnectionTimer.start();
-
-    QTimer::singleShot(0, this, &AccountState::slotCheckConnection);
+    if (startCheckConnection) {
+        startCheckConnectivity();
+    }
 }
 
 AccountState::~AccountState() = default;
@@ -322,6 +320,15 @@ void AccountState::checkConnectivity()
         //#endif
         conValidator->checkServerAndAuth();
     }
+}
+
+void AccountState::startCheckConnectivity()
+{
+    connect(&_checkConnectionTimer, &QTimer::timeout, this, &AccountState::slotCheckConnection);
+    _checkConnectionTimer.setInterval(ConnectionValidator::DefaultCallingIntervalMsec);
+    _checkConnectionTimer.start();
+
+    QTimer::singleShot(0, this, &AccountState::slotCheckConnection);
 }
 
 void AccountState::slotConnectionValidatorResult(ConnectionValidator::Status status, const QStringList &errors)

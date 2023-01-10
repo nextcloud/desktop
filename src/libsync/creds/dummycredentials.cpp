@@ -60,8 +60,9 @@ void DummyCredentials::askFromUser()
     emit asked();
 }
 
-void DummyCredentials::persist()
+void DummyCredentials::persist(bool saveAccount)
 {
+    Q_UNUSED(saveAccount)
 }
 
 } // namespace OCC
