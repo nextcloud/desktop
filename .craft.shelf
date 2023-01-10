@@ -23,9 +23,6 @@ version = latest
 [dev-utils/breakpad-tools]
 version = cmake
 
-[dev-utils/clazy]
-version = 1.11
-
 [dev-utils/cmake]
 version = latest
 
@@ -71,15 +68,6 @@ version = 2.2.0
 [kde/frameworks/extra-cmake-modules]
 version = 5.99.0
 
-[kde/frameworks/tier1/syntax-highlighting]
-version = 5.99.0
-
-[libs/boost/boost-bjam]
-version = 1.76.0
-
-[libs/boost/boost-headers]
-version = 1.76.0
-
 [libs/cairo]
 version = 1.16.0
 
@@ -121,12 +109,6 @@ version = 2.9.7
 
 [libs/libzstd]
 version = 1.5.0
-
-[libs/llvm-meta/clang]
-version = 13.0.1
-
-[libs/llvm-meta/llvm]
-version = 13.0.1
 
 [libs/openssl]
 version = 1.1.1q
@@ -184,9 +166,6 @@ version = master
 
 [python-modules/virtualenv]
 version = master
-
-[qt-apps/gammaray]
-version = 2.11.3
 
 [qt-apps/kdstatemachineeditor]
 version = 1.2.8
