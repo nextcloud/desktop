@@ -145,7 +145,6 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
   if (!found) {
       encryptedFile.encryptionKey = EncryptionHelper::generateRandom(16);
       encryptedFile.encryptedFilename = EncryptionHelper::generateRandomFilename();
-      encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
       encryptedFile.fileVersion = 1;
       encryptedFile.metadataKey = 1;
       encryptedFile.originalFilename = fileName;
@@ -159,6 +158,8 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
           encryptedFile.mimetype = QByteArrayLiteral("httpd/unix-directory");
       }
   }
+  
+  encryptedFile.initializationVector = EncryptionHelper::generateRandom(16);
 
   _item->_encryptedFileName = _remoteParentPath + QLatin1Char('/') + encryptedFile.encryptedFilename;
   _item->_isEncrypted = true;
