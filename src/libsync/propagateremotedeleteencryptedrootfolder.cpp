@@ -83,6 +83,11 @@ void PropagateRemoteDeleteEncryptedRootFolder::slotFolderEncryptedMetadataReceiv
 
     FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
+    if (!metadata.isMetadataSetup()) {
+        taskFailed();
+        return;
+    }
+
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED_ROOTFOLDER) << "It's a root encrypted folder. Let's remove nested items first.";
 
     metadata.removeAllEncryptedFiles();

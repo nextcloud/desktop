@@ -200,23 +200,26 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
     qCDebug(lcHydration) << "Metadata Received reading" << e2eMangledName();
     const QString filename = e2eMangledName();
     auto meta = new FolderMetadata(_account, json.toJson(QJsonDocument::Compact));
-    const QVector<EncryptedFile> files = meta->files();
 
-    EncryptedFile encryptedInfo = {};
+    if (meta->isMetadataSetup()) {
+        const QVector<EncryptedFile> files = meta->files();
 
-    const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
-    for (const EncryptedFile &file : files) {
-        if (encryptedFileExactName == file.encryptedFilename) {
-            EncryptedFile encryptedInfo = file;
-            encryptedInfo = file;
+        EncryptedFile encryptedInfo = {};
 
-            qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
-            _transferDataSocket = _transferDataServer->nextPendingConnection();
-            _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
+        const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
+        for (const EncryptedFile &file : files) {
+            if (encryptedFileExactName == file.encryptedFilename) {
+                EncryptedFile encryptedInfo = file;
+                encryptedInfo = file;
 
-            connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
-            _job->start();
-            return;
+                qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
+                _transferDataSocket = _transferDataServer->nextPendingConnection();
+                _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
+
+                connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
+                _job->start();
+                return;
+            }
         }
     }
 
