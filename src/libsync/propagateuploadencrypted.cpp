@@ -120,9 +120,18 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray
 void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
-
   // Encrypt File!
   _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+
+  if (!_metadata->isMetadataSetup()) {
+      if (_isFolderLocked) {
+          connect(this, &PropagateUploadEncrypted::folderUnlocked, this, &PropagateUploadEncrypted::error);
+          unlockFolder();
+      } else {
+          emit error();
+      }
+      return;
+  }
 
   QFileInfo info(_propagator->fullLocalPath(_item->_file));
   const QString fileName = info.fileName();
@@ -197,15 +206,13 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
   if (statusCode == 404) {
     auto job = new StoreMetaDataApiJob(_propagator->account(),
-                                       _folderId,
-                                       _metadata->encryptedMetadata());
+                                       _folderId, _metadata->encryptedMetadata());
     connect(job, &StoreMetaDataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
     connect(job, &StoreMetaDataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
     job->start();
   } else {
     auto job = new UpdateMetadataApiJob(_propagator->account(),
-                                      _folderId,
-                                      _metadata->encryptedMetadata(),
+                                      _folderId, _metadata->encryptedMetadata(),
                                       _folderToken);
 
     connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
