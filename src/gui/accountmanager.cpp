@@ -179,6 +179,7 @@ bool AccountManager::restoreFromLegacySettings()
                 auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
                 if (oCSettings->status() != QSettings::Status::NoError) {
                     qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
+                    break;
                 }
 
                 // Check the theme url to see if it is the same url that the oC config was for
