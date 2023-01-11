@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QNetworkReply>
+#include <QScopedPointer>
 #include <QFile>
 #include <QTemporaryFile>
 
@@ -76,7 +77,7 @@ private:
 
   QByteArray _generatedKey;
   QByteArray _generatedIv;
-  FolderMetadata *_metadata;
+  QScopedPointer<FolderMetadata> _metadata;
   EncryptedFile _encryptedFile;
   QString _completeFileName;
 };

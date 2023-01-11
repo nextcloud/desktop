@@ -121,7 +121,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 {
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
   // Encrypt File!
-  _metadata = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
+  _metadata.reset(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode));
 
   if (!_metadata->isMetadataSetup()) {
       if (_isFolderLocked) {
