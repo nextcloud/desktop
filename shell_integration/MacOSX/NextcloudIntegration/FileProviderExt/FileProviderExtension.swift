@@ -23,16 +23,15 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: NextcloudAccount?
     lazy var socketClient: LocalSocketClient? = {
-        guard let fileProviderSocketApiPrefix = appGroupIdentifier else {
-            NSLog("Could not start file provider socket client properly as SocketApiPrefix is missing")
+        guard let containerUrl = pathForAppGroupContainer() else {
+            NSLog("Could not start file provider socket client properly as could not get container url")
             return nil;
         }
 
-        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: fileProviderSocketApiPrefix)
-        let socketPath = containerUrl?.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
+        let socketPath = containerUrl.appendingPathComponent(".fileprovidersocket", conformingTo: .archive)
         let lineProcessor = FileProviderSocketLineProcessor(delegate: self)
 
-        return LocalSocketClient(socketPath: socketPath?.path, lineProcessor: lineProcessor)
+        return LocalSocketClient(socketPath: socketPath.path, lineProcessor: lineProcessor)
     }()
 
     let urlSessionIdentifier: String = "com.nextcloud.session.upload.fileproviderext"
