@@ -16,6 +16,20 @@ import Foundation
 import RealmSwift
 
 class NextcloudFileMetadataTable: Object {
+    enum Status: Int {
+        case downloadError = -4
+        case downloading = -3
+        case inDownload = -2
+        case waitDownload = -1
+
+        case normal = 0
+
+        case waitUpload = 1
+        case inUpload = 2
+        case uploading = 3
+        case uploadError = 4
+    }
+
     override func isEqual(_ object: Any?) -> Bool {
         if let object = object as? NextcloudFileMetadataTable {
             return self.fileId == object.fileId &&
