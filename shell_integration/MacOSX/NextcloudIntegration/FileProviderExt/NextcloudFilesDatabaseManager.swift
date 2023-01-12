@@ -83,4 +83,8 @@ class NextcloudFilesDatabaseManager : NSObject {
     func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
         return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", itemMetadata.account, itemMetadata.serverUrl).first
     }
+
+    func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
+        return ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId).first
+    }
 }
