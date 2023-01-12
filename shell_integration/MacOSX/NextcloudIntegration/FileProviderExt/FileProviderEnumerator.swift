@@ -18,6 +18,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
+    private let maxItemsPerFileProviderPage = 100
     var serverUrl: URL?
     
     init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount?) {
@@ -76,5 +77,33 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     func currentSyncAnchor(completionHandler: @escaping (NSFileProviderSyncAnchor?) -> Void) {
         completionHandler(anchor)
+    }
+
+    // MARK: - Helper methods
+
+    func completeObserver(observer: NSFileProviderEnumerationObserver, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?) {
+        guard itemMetadatas != nil else { observer.finishEnumerating(upTo: nil); return }
+        var items: [NSFileProviderItem] = []
+
+        for itemMetadata in itemMetadatas! {
+            if itemMetadata.e2eEncrypted { continue }
+
+            createFileOrDirectoryLocally(metadata: itemMetadata)
+
+            if let parentItemIdentifier = parentItemIdentifierFromMetadata(itemMetadata) {
+                let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier)
+                items.append(item)
+            }
+        }
+
+        observer.didEnumerate(items)
+
+        if items.count == maxItemsPerFileProviderPage {
+            let nextPage = numPage + 1
+            let providerPage = NSFileProviderPage("\(nextPage)".data(using: .utf8)!)
+            observer.finishEnumerating(upTo: providerPage)
+        } else {
+            observer.finishEnumerating(upTo: nil)
+        }
     }
 }
