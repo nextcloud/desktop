@@ -14,39 +14,106 @@
 
 import FileProvider
 import UniformTypeIdentifiers
+import NextcloudKit
 
 class FileProviderItem: NSObject, NSFileProviderItem {
 
-    // TODO: implement an initializer to create an item from your extension's backing model
-    // TODO: implement the accessors to return the values from your extension's backing model
-    
-    private let identifier: NSFileProviderItemIdentifier
-    
-    init(identifier: NSFileProviderItemIdentifier) {
-        self.identifier = identifier
+    enum FileProviderItemTransferError: Error {
+        case downloadError
+        case uploadError
     }
+
+    let metadata: NextcloudItemMetadataTable
+    let parentItemIdentifier: NSFileProviderItemIdentifier
     
     var itemIdentifier: NSFileProviderItemIdentifier {
-        return identifier
-    }
-    
-    var parentItemIdentifier: NSFileProviderItemIdentifier {
-        return .rootContainer
+        return NSFileProviderItemIdentifier(metadata.ocId)
     }
     
     var capabilities: NSFileProviderItemCapabilities {
-        return [.allowsReading, .allowsWriting, .allowsRenaming, .allowsReparenting, .allowsTrashing, .allowsDeleting]
+        guard !metadata.directory else {
+            return [ .allowsAddingSubItems,
+                     .allowsContentEnumerating,
+                     .allowsReading,
+                     .allowsDeleting,
+                     .allowsRenaming ]
+        }
+        guard !metadata.lock else {
+            return [ .allowsReading ]
+        }
+        return [ .allowsWriting,
+                 .allowsReading,
+                 .allowsDeleting,
+                 .allowsRenaming,
+                 .allowsReparenting ]
     }
     
     var itemVersion: NSFileProviderItemVersion {
-        NSFileProviderItemVersion(contentVersion: "a content version".data(using: .utf8)!, metadataVersion: "a metadata version".data(using: .utf8)!)
+        NSFileProviderItemVersion(contentVersion: metadata.etag.data(using: .utf8)!,
+                                  metadataVersion: metadata.etag.data(using: .utf8)!)
     }
     
     var filename: String {
-        return identifier.rawValue
+        return metadata.fileNameView
     }
     
     var contentType: UTType {
-        return identifier == NSFileProviderItemIdentifier.rootContainer ? .folder : .plainText
+        if self.itemIdentifier == .rootContainer || metadata.directory {
+            return .folder
+        }
+
+        let internalType = NKCommon.shared.getInternalType(fileName: metadata.fileNameView,
+                                                           mimeType: "",
+                                                           directory: metadata.directory)
+        return UTType(filenameExtension: internalType.ext) ?? .content
+    }
+
+    var documentSize: NSNumber? {
+        return NSNumber(value: metadata.size)
+    }
+
+    var creationDate: Date? {
+        return metadata.creationDate as Date
+    }
+
+    var lastUsedDate: Date? {
+        return metadata.date as Date
+    }
+
+    var isDownloaded: Bool {
+        return metadata.directory || isFileSynced(metadata: metadata)
+    }
+
+    var isDownloading: Bool {
+        return metadata.status == NextcloudItemMetadataTable.Status.downloading.rawValue
+    }
+
+    var downloadingError: Error? {
+        if metadata.status == NextcloudItemMetadataTable.Status.downloadError.rawValue {
+            return FileProviderItemTransferError.downloadError
+        }
+        return nil
+    }
+
+    var isUploaded: Bool {
+        return NextcloudFilesDatabaseManager.shared.localFileMetadataFromOcId(metadata.ocId) != nil
+    }
+
+    var isUploading: Bool {
+        return metadata.status == NextcloudItemMetadataTable.Status.uploading.rawValue
+    }
+
+    var uploadingError: Error? {
+        if metadata.status == NextcloudItemMetadataTable.Status.uploadError.rawValue {
+            return FileProviderItemTransferError.uploadError
+        } else {
+            return nil
+        }
+    }
+
+    init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier) {
+        self.metadata = metadata
+        self.parentItemIdentifier = parentItemIdentifier
+        super.init()
     }
 }

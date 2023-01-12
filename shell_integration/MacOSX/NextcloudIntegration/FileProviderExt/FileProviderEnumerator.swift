@@ -27,8 +27,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             self.serverUrl = ncAccount?.davFilesUrl
         } else {
             let dbManager = NextcloudFilesDatabaseManager.shared
-            if let itemMetadata = dbManager.fileMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier),
-               let itemDirectoryMetadata = dbManager.directoryMetadataForFile(itemMetadata) {
+            if let itemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier),
+               let itemDirectoryMetadata = dbManager.parentDirectoryMetadataForItem(itemMetadata) {
 
                 self.serverUrl = URL(string: itemDirectoryMetadata.serverUrl + "/" + itemMetadata.fileName)
             }
@@ -41,6 +41,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     func invalidate() {
         // TODO: perform invalidation of server connection if necessary
     }
+
+    // MARK: - Protocol methods
 
     func enumerateItems(for observer: NSFileProviderEnumerationObserver, startingAt page: NSFileProviderPage) {
         /* TODO:
@@ -55,7 +57,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about the items returned by the server (possibly multiple times)
          - inform the observer that you are finished with this page
          */
-        observer.didEnumerate([FileProviderItem(identifier: NSFileProviderItemIdentifier("a file"))])
+        //observer.didEnumerate([FileProviderItem(identifier: NSFileProviderItemIdentifier("a file"))])
         observer.finishEnumerating(upTo: nil)
     }
     
