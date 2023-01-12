@@ -22,3 +22,8 @@ func pathForAppGroupContainer() -> URL? {
 
     return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
 }
+
+func pathForFileProviderExtData() -> URL? {
+    let containerUrl = pathForAppGroupContainer()
+    return containerUrl?.appendingPathExtension("FileProviderExt/")
+}
