@@ -22,9 +22,6 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
      </property>
@@ -68,9 +65,6 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
-       </property>
-       <property name="text">
-        <string>TextLabel</string>
        </property>
        <property name="textFormat">
         <enum>Qt::RichText</enum>
@@ -137,9 +131,6 @@
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
-     </property>
-     <property name="text">
-      <string>TextLabel</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>

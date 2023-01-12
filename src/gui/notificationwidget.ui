@@ -102,9 +102,6 @@
              <pointsize>8</pointsize>
             </font>
            </property>
-           <property name="text">
-            <string>TextLabel</string>
-           </property>
            <property name="alignment">
             <set>Qt::AlignBottom|Qt::AlignLeading|Qt::AlignLeft</set>
            </property>

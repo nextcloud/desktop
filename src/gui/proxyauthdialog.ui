@@ -62,9 +62,6 @@
      </item>
      <item row="0" column="1">
       <widget class="QLabel" name="proxyAddress">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
        </property>

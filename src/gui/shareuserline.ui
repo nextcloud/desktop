@@ -24,16 +24,10 @@
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="avatar">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
       </widget>
      </item>
      <item>
       <widget class="QLabel" name="sharedWith">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
        </property>

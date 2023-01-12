@@ -165,9 +165,6 @@
         <property name="frameShadow">
          <enum>QFrame::Plain</enum>
         </property>
-        <property name="text">
-         <string>TextLabel</string>
-        </property>
         <property name="textFormat">
          <enum>Qt::RichText</enum>
         </property>
