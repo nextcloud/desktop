@@ -206,13 +206,15 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDo
 
   if (statusCode == 404) {
     auto job = new StoreMetaDataApiJob(_propagator->account(),
-                                       _folderId, _metadata->encryptedMetadata());
+                                       _folderId,
+                                       _metadata->encryptedMetadata());
     connect(job, &StoreMetaDataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
     connect(job, &StoreMetaDataApiJob::error, this, &PropagateUploadEncrypted::slotUpdateMetadataError);
     job->start();
   } else {
     auto job = new UpdateMetadataApiJob(_propagator->account(),
-                                      _folderId, _metadata->encryptedMetadata(),
+                                      _folderId,
+                                      _metadata->encryptedMetadata(),
                                       _folderToken);
 
     connect(job, &UpdateMetadataApiJob::success, this, &PropagateUploadEncrypted::slotUpdateMetadataSuccess);
