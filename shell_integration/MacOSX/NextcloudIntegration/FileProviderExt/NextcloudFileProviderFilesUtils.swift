@@ -27,3 +27,51 @@ func pathForFileProviderExtData() -> URL? {
     let containerUrl = pathForAppGroupContainer()
     return containerUrl?.appendingPathExtension("FileProviderExt/")
 }
+
+func pathForFileProviderExtFiles() -> URL? {
+    let fileProviderDataUrl = pathForFileProviderExtData()
+    return fileProviderDataUrl?.appendingPathExtension("Files/")
+}
+
+@discardableResult func localPathForNCDirectory(ocId: String) throws -> URL {
+    guard let fileProviderFilesPathUrl = pathForFileProviderExtFiles() else {
+        throw URLError(.badURL)
+    }
+
+    let folderPathUrl = fileProviderFilesPathUrl.appendingPathExtension(ocId)
+    let folderPath = folderPathUrl.path
+
+    if !FileManager.default.fileExists(atPath: folderPath) {
+        try FileManager.default.createDirectory(at: folderPathUrl, withIntermediateDirectories: true)
+    }
+
+    return folderPathUrl
+}
+
+@discardableResult func localPathForNCDirectory(directoryMetadata: NextcloudDirectoryMetadataTable) throws -> URL {
+    let ocId = directoryMetadata.ocId
+    return try localPathForNCDirectory(ocId: ocId)
+}
+
+@discardableResult func localPathForNCDirectory(fileMetadata: NextcloudFileMetadataTable) throws -> URL {
+    let ocId = fileMetadata.ocId
+    return try localPathForNCDirectory(ocId: ocId)
+}
+
+@discardableResult func localPathForNCFile(ocId: String, fileNameView: String) throws -> URL {
+    let fileFolderPathUrl = try localPathForNCDirectory(ocId: ocId)
+    let filePathUrl = fileFolderPathUrl.appendingPathExtension(fileNameView)
+    let filePath = filePathUrl.path
+
+    if !FileManager.default.fileExists(atPath: filePath) {
+        FileManager.default.createFile(atPath: filePath, contents: nil)
+    }
+
+    return filePathUrl
+}
+
+@discardableResult func localPathForNCFile(fileMetadata: NextcloudFileMetadataTable) throws -> URL {
+    let ocId = fileMetadata.ocId
+    let fileNameView = fileMetadata.fileNameView
+    return try localPathForNCFile(ocId: ocId, fileNameView: fileNameView)
+}
