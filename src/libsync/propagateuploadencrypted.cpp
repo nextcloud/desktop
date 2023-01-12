@@ -120,6 +120,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray
 void PropagateUploadEncrypted::slotFolderEncryptedMetadataReceived(const QJsonDocument &json, int statusCode)
 {
   qCDebug(lcPropagateUploadEncrypted) << "Metadata Received, Preparing it for the new file." << json.toVariant();
+
   // Encrypt File!
   _metadata.reset(new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode));
 
