@@ -13,6 +13,7 @@
  */
 
 import Foundation
+import FileProvider
 
 func pathForAppGroupContainer() -> URL? {
     guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
@@ -74,4 +75,16 @@ func pathForFileProviderExtFiles() -> URL? {
     let ocId = fileMetadata.ocId
     let fileNameView = fileMetadata.fileNameView
     return try localPathForNCFile(ocId: ocId, fileNameView: fileNameView)
+}
+
+func createFileOrDirectoryLocally(metadata: NextcloudFileMetadataTable) {
+    do {
+        if metadata.directory {
+            try localPathForNCDirectory(ocId: metadata.ocId)
+        } else {
+            try localPathForNCFile(fileMetadata: metadata)
+        }
+    } catch let error {
+        print("Could not create NC file or directory locally, received error: %@", error)
+    }
 }
