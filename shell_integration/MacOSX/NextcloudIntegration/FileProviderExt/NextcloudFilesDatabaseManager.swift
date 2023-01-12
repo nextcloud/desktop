@@ -50,7 +50,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         let config = Realm.Configuration(
             fileURL: self.databasePath,
             schemaVersion: self.schemaVersion,
-            objectTypes: [NextcloudFileMetadataTable.self]
+            objectTypes: [NextcloudItemMetadataTable.self]
         )
 
         Realm.Configuration.defaultConfiguration = config
@@ -71,17 +71,16 @@ class NextcloudFilesDatabaseManager : NSObject {
         return realm
     }
 
-    func fileMetadataFromOcId(_ ocId: String) -> NextcloudFileMetadataTable? {
-        return ncDatabase().objects(NextcloudFileMetadataTable.self).filter("ocId == %@", ocId).first
+    func itemMetadataFromOcId(_ ocId: String) -> NextcloudItemMetadataTable? {
+        return ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first
     }
 
-    func fileMetadataFromFileProviderItemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> NextcloudFileMetadataTable? {
+    func itemMetadataFromFileProviderItemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> NextcloudItemMetadataTable? {
         let ocId = identifier.rawValue
-        return fileMetadataFromOcId(ocId)
+        return itemMetadataFromOcId(ocId)
     }
 
-    func directoryMetadataForFile(_ fileMetadata: NextcloudFileMetadataTable) -> NextcloudDirectoryMetadataTable? {
-        return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", fileMetadata.account, fileMetadata.serverUrl).first
+    func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
+        return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", itemMetadata.account, itemMetadata.serverUrl).first
     }
-
 }

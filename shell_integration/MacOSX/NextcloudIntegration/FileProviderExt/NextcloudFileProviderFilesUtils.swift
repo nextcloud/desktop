@@ -54,8 +54,8 @@ func pathForFileProviderExtFiles() -> URL? {
     return try localPathForNCDirectory(ocId: ocId)
 }
 
-@discardableResult func localPathForNCDirectory(fileMetadata: NextcloudFileMetadataTable) throws -> URL {
-    let ocId = fileMetadata.ocId
+@discardableResult func localPathForNCDirectory(itemMetadata: NextcloudItemMetadataTable) throws -> URL {
+    let ocId = itemMetadata.ocId
     return try localPathForNCDirectory(ocId: ocId)
 }
 
@@ -71,44 +71,45 @@ func pathForFileProviderExtFiles() -> URL? {
     return filePathUrl
 }
 
-@discardableResult func localPathForNCFile(fileMetadata: NextcloudFileMetadataTable) throws -> URL {
-    let ocId = fileMetadata.ocId
-    let fileNameView = fileMetadata.fileNameView
+@discardableResult func localPathForNCFile(itemMetadata: NextcloudItemMetadataTable) throws -> URL {
+    let ocId = itemMetadata.ocId
+    let fileNameView = itemMetadata.fileNameView
     return try localPathForNCFile(ocId: ocId, fileNameView: fileNameView)
 }
 
-func createFileOrDirectoryLocally(metadata: NextcloudFileMetadataTable) {
+func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
     do {
         if metadata.directory {
             try localPathForNCDirectory(ocId: metadata.ocId)
         } else {
-            try localPathForNCFile(fileMetadata: metadata)
+            try localPathForNCFile(itemMetadata: metadata)
         }
     } catch let error {
         print("Could not create NC file or directory locally, received error: %@", error)
     }
 }
 
-func parentItemIdentifierFromMetadata(_ metadata: NextcloudFileMetadataTable) -> NSFileProviderItemIdentifier? {
+func parentItemIdentifierFromMetadata(_ metadata: NextcloudItemMetadataTable) -> NSFileProviderItemIdentifier? {
     let homeServerFilesUrl = metadata.urlBase + "/remote.php/dav/files/" + metadata.userId
     let ncDatabase = NextcloudFilesDatabaseManager.shared
 
-    guard let itemParentDirectory = ncDatabase.directoryMetadataForFile(metadata) else { return nil }
+    guard let itemParentDirectory = ncDatabase.parentDirectoryMetadataForItem(metadata) else { return nil }
     if itemParentDirectory.serverUrl == homeServerFilesUrl {
         return .rootContainer
-    } else if let parentDirectoryMetadata = ncDatabase.fileMetadataFromOcId(itemParentDirectory.ocId) {
+    } else if let parentDirectoryMetadata = ncDatabase.itemMetadataFromOcId(itemParentDirectory.ocId) {
         return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
     }
 
     return nil
 }
 
-func isFileSynced(metadata: NextcloudFileMetadataTable) -> Bool {
+func isFileSynced(metadata: NextcloudItemMetadataTable) -> Bool {
+    guard metadata.directory else { return false }
     do {
-        let localPathForFile = try localPathForNCFile(fileMetadata: metadata)
+        let localPathForFile = try localPathForNCFile(itemMetadata: metadata)
         let localFileAttributes = try FileManager.default.attributesOfItem(atPath: localPathForFile.path)
         let localFileSize = localFileAttributes[.size] as? Int64
-        
+
         return localFileSize == metadata.size
     } catch let error {
         print("Could not check if file %@ is synced, received error: %@", metadata.fileNameView, error)
