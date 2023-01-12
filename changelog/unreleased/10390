@@ -1,0 +1,6 @@
+Enhancement: (Re)introduce "sync hidden files" parameter in owncloudcmd
+
+There used to be an option to enable the synchronization of hidden files using the -h parameter which collided with the --help option and subsequently was removed.
+A new --sync-hidden-files parameter was introduced to fill in the missing feature.
+
+https://github.com/owncloud/client/issues/10390
