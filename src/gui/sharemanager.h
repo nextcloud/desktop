@@ -52,6 +52,7 @@ public:
      * Need to be in sync with Sharee::Type
      */
     enum ShareType {
+        TypeSecureFileDropPlaceholderLink = -3,
         TypeInternalLink = -2,
         TypePlaceholderLink = -1,
         TypeUser = Sharee::User,
@@ -376,6 +377,8 @@ public:
     void createLinkShare(const QString &path,
         const QString &name,
         const QString &password);
+
+    void createSecureFileDropShare(const QString &path, const QString &name, const QString &password);
 
     /**
      * Tell the manager to create a new share

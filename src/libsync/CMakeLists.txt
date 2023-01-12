@@ -99,6 +99,8 @@ set(libsync_SRCS
     syncoptions.cpp
     theme.h
     theme.cpp
+    updatefiledropmetadata.h
+    updatefiledropmetadata.cpp
     clientsideencryption.h
     clientsideencryption.cpp
     clientsideencryptionjobs.h

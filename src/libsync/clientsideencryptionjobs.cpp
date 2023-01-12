@@ -293,8 +293,10 @@ bool LockEncryptFolderApiJob::finished()
 
     qCInfo(lcCseJob()) << "lock folder finished with code" << retCode << " for:" << path() << " for fileId: " << _fileId << " token:" << token;
 
-    const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
-    _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    if (!_publicKey.isNull()) {
+        const auto folderTokenEncrypted = EncryptionHelper::encryptStringAsymmetric(_publicKey, token);
+        _journalDb->setE2EeLockedFolder(_fileId, folderTokenEncrypted);
+    }
 
     //TODO: Parse the token and submit.
     emit success(_fileId, token);

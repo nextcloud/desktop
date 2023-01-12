@@ -22,6 +22,7 @@
 #include "propagateremotemove.h"
 #include "propagateremotemkdir.h"
 #include "bulkpropagatorjob.h"
+#include "updatefiledropmetadata.h"
 #include "propagatorjobs.h"
 #include "filesystem.h"
 #include "common/utility.h"
@@ -584,7 +585,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
                                       directoriesToRemove,
                                       removedDirectory,
                                       items);
-        } else {
+        } else if (!directories.top().second->_item->_isFileDropDetected) {
             startFilePropagation(item,
                                  directories,
                                  directoriesToRemove,
@@ -644,6 +645,11 @@ void OwncloudPropagator::startDirectoryPropagation(const SyncFileItemPtr &item,
     } else {
         const auto currentDirJob = directories.top().second;
         currentDirJob->appendJob(directoryPropagationJob.get());
+    }
+    if (item->_isFileDropDetected) {
+        directoryPropagationJob->appendJob(new UpdateFileDropMetadataJob(this, item->_file));
+        item->_instruction = CSYNC_INSTRUCTION_NONE;
+        _anotherSyncNeeded = true;
     }
     directories.push(qMakePair(item->destination() + "/", directoryPropagationJob.release()));
 }
@@ -1066,7 +1072,7 @@ OwncloudPropagator *PropagatorJob::propagator() const
 
 // ================================================================================
 
-PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism()
+PropagatorJob::JobParallelism PropagatorCompositeJob::parallelism() const
 {
     // If any of the running sub jobs is not parallel, we have to wait
     for (int i = 0; i < _runningJobs.count(); ++i) {
@@ -1215,7 +1221,7 @@ PropagateDirectory::PropagateDirectory(OwncloudPropagator *propagator, const Syn
     connect(&_subJobs, &PropagatorJob::finished, this, &PropagateDirectory::slotSubJobsFinished);
 }
 
-PropagatorJob::JobParallelism PropagateDirectory::parallelism()
+PropagatorJob::JobParallelism PropagateDirectory::parallelism() const
 {
     // If any of the non-finished sub jobs is not parallel, we have to wait
     if (_firstJob && _firstJob->parallelism() != FullParallelism) {
@@ -1330,7 +1336,7 @@ PropagateRootDirectory::PropagateRootDirectory(OwncloudPropagator *propagator)
     connect(&_dirDeletionJobs, &PropagatorJob::finished, this, &PropagateRootDirectory::slotDirDeletionJobsFinished);
 }
 
-PropagatorJob::JobParallelism PropagateRootDirectory::parallelism()
+PropagatorJob::JobParallelism PropagateRootDirectory::parallelism() const
 {
     // the root directory parallelism isn't important
     return WaitForFinished;

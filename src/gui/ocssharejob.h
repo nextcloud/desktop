@@ -111,6 +111,8 @@ public:
     void createLinkShare(const QString &path, const QString &name,
         const QString &password);
 
+    void createSecureFileDropLinkShare(const QString &path, const QString &name, const QString &password);
+
     /**
      * Create a new share
      *

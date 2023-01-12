@@ -111,8 +111,7 @@ void PropagateUploadEncrypted::slotFolderEncryptedMetadataError(const QByteArray
     Q_UNUSED(fileId);
     Q_UNUSED(httpReturnCode);
     qCDebug(lcPropagateUploadEncrypted()) << "Error Getting the encrypted metadata. Pretend we got empty metadata.";
-    FolderMetadata emptyMetadata(_propagator->account());
-    emptyMetadata.encryptedMetadata();
+    const FolderMetadata emptyMetadata(_propagator->account());
     auto json = QJsonDocument::fromJson(emptyMetadata.encryptedMetadata());
     slotFolderEncryptedMetadataReceived(json, httpReturnCode);
 }
