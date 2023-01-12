@@ -21,7 +21,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         return NextcloudFilesDatabaseManager();
     }()
 
-    let relativeDatabaseFolderPath: String = "FileProviderExt/Database/"
+    let relativeDatabaseFolderPath: String = "Database/"
     let databaseFilename: String = "fileproviderextdatabase.realm"
     let relativeDatabaseFilePath: String
     var databasePath: URL?
@@ -31,23 +31,20 @@ class NextcloudFilesDatabaseManager : NSObject {
     override init() {
         self.relativeDatabaseFilePath = self.relativeDatabaseFolderPath + self.databaseFilename
 
-        guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
+        guard let fileProviderDataDirUrl = pathForFileProviderExtData() else {
             super.init()
             return
         }
 
-        let containerUrl = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
-        self.databasePath = containerUrl?.appendingPathExtension(self.relativeDatabaseFilePath)
+        self.databasePath = fileProviderDataDirUrl.appendingPathExtension(self.relativeDatabaseFilePath)
 
         // Disable file protection for directory DB
         // https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/#std-label-ios-open-a-local-realm
-        if let folderPathURL = containerUrl?.appendingPathComponent(self.relativeDatabaseFolderPath) {
-            let folderPath = folderPathURL.path
-            do {
-                try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: folderPath)
-            } catch {
-                print("Could not set permission level for File Provider database folder")
-            }
+        let folderPath = fileProviderDataDirUrl.appendingPathComponent(self.relativeDatabaseFolderPath).path
+        do {
+            try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: folderPath)
+        } catch {
+            print("Could not set permission level for File Provider database folder")
         }
 
         let config = Realm.Configuration(
