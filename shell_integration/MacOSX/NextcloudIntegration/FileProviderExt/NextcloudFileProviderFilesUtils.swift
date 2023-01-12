@@ -88,3 +88,17 @@ func createFileOrDirectoryLocally(metadata: NextcloudFileMetadataTable) {
         print("Could not create NC file or directory locally, received error: %@", error)
     }
 }
+
+func parentItemIdentifierFromMetadata(_ metadata: NextcloudFileMetadataTable) -> NSFileProviderItemIdentifier? {
+    let homeServerFilesUrl = metadata.urlBase + "/remote.php/dav/files/" + metadata.userId
+    let ncDatabase = NextcloudFilesDatabaseManager.shared
+
+    guard let itemParentDirectory = ncDatabase.directoryMetadataForFile(metadata) else { return nil }
+    if itemParentDirectory.serverUrl == homeServerFilesUrl {
+        return .rootContainer
+    } else if let parentDirectoryMetadata = ncDatabase.fileMetadataFromOcId(itemParentDirectory.ocId) {
+        return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
+    }
+
+    return nil
+}
