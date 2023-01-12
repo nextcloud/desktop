@@ -102,3 +102,17 @@ func parentItemIdentifierFromMetadata(_ metadata: NextcloudFileMetadataTable) ->
 
     return nil
 }
+
+func isFileSynced(metadata: NextcloudFileMetadataTable) -> Bool {
+    do {
+        let localPathForFile = try localPathForNCFile(fileMetadata: metadata)
+        let localFileAttributes = try FileManager.default.attributesOfItem(atPath: localPathForFile.path)
+        let localFileSize = localFileAttributes[.size] as? Int64
+        
+        return localFileSize == metadata.size
+    } catch let error {
+        print("Could not check if file %@ is synced, received error: %@", metadata.fileNameView, error)
+    }
+
+    return false
+}
