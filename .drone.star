@@ -46,7 +46,7 @@ dir = {
 }
 
 oc10_server_version = "latest"  # stable release
-ocis_server_version = "2.0.0-rc.2"
+ocis_server_version = "2.0.0"
 
 def main(ctx):
     build_trigger = {
