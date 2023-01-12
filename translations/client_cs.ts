@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Znovu připojit</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
@@ -1738,7 +1738,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="336"/>
         <source>This folder can&apos;t be synced. Please choose another one.</source>
-        <translation type="unfinished"/>
+        <translation>Tento adresář nemůže být synchronizován. Prosím vyberte jiný.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardremotepath.cpp" line="339"/>
@@ -1779,7 +1779,7 @@ Please consider removing this folder from the account and adding it again.</sour
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="181"/>
         <source>We received a different E-Tag for resuming. Retrying next time.</source>
-        <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkusím znovu příště.</translation>
+        <translation>Obdrželi jsme jiný E-Tag pro pokračování. Zkouším znovu.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="192"/>
@@ -2074,7 +2074,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="174"/>
         <source>The file %1 was ignored as its name is reserved by %2</source>
-        <translation type="unfinished"/>
+        <translation>Soubor %1 byl ignorován, protože jeho jméno je rezervováno %2</translation>
     </message>
     <message>
         <location filename="../src/gui/issueswidget.cpp" line="204"/>
@@ -2412,7 +2412,7 @@ Poznámka: Spouštění aplikace s parametrem přepíše toto nastavení.</trans
         <source>The reply from the server did not contain all expected fields
 :%1</source>
         <translation>Odpověď serveru neobsahovala všechna očekávaná pole:
-%1</translation>
+:%1</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="368"/>
@@ -2625,7 +2625,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="419"/>
         <source>server reported no %1</source>
-        <translation type="unfinished"/>
+        <translation>server nenareportoval žádné %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="1251"/>
@@ -2855,7 +2855,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="143"/>
         <source>Error writing metadata to the database: %1</source>
-        <translation type="unfinished"/>
+        <translation>Chyba zápisu metadat do databáze: %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateremotemkdir.cpp" line="187"/>
@@ -3766,7 +3766,7 @@ můžete být požádáni o dodatečná oprávnění.</translation>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1013"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
-        <translation type="unfinished"/>
+        <translation>Málo místa na disku: Stahování, která by snížila volné místo pod %1 byla přeskočena.</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="1020"/>
@@ -4018,12 +4018,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
         <source>Failed to fetch user display name</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se získat uživatelské jméno</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation type="unfinished"/>
+        <translation>Přihlášení selhalo: uživatelské jméno a/nebo heslo nejsou správné</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
@@ -4036,7 +4036,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="51"/>
         <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
+        <translation>Obdržena neplatná odpověď serveru</translation>
     </message>
 </context>
 <context>
@@ -4044,7 +4044,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="57"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Nepodařilo se detekovat kompatibilní server na %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="86"/>
@@ -4054,7 +4054,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="114"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>Uživatel odmítl neplatný SSL certifikát</translation>
     </message>
 </context>
 <context>
@@ -4072,7 +4072,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Prosím použijte Váš prohlížeč k přihlášení k %1.</translation>
     </message>
 </context>
 <context>
@@ -4101,18 +4101,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>Neplatná URL serveru</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Nezabezpečené připojení</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>Připojení k %1 není zabezpečeno.
+Jste si jisti, že chcete pokračovat?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
@@ -4122,7 +4123,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Nezabezpečený server byl zamítnut uživatelem</translation>
     </message>
 </context>
 <context>
@@ -4145,7 +4146,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete zrušit nastavování účtu?</translation>
     </message>
 </context>
 <context>
@@ -4184,7 +4185,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="346"/>
         <source>Unresolved %1 conflicts</source>
-        <translation type="unfinished"/>
+        <translation>Nevyřešeno %1 konfliktů</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="348"/>
