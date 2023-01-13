@@ -346,6 +346,13 @@ Theme::Theme()
 #if defined(Q_OS_WIN)
     reserveDarkPalette = QPalette(QColor(49,49,49,255), QColor(35,35,35,255)); // Windows 11 button and window dark colours
 #endif
+
+#ifdef APPLICATION_SERVER_URL_ENFORCE
+    _forceOverrideServerUrl = true;
+#endif
+#ifdef APPLICATION_SERVER_URL
+    _overrideServerUrl = QString::fromLatin1(APPLICATION_SERVER_URL);
+#endif
 }
 
 // If this option returns true, the client only supports one folder to sync.
@@ -386,20 +393,17 @@ QString Theme::conflictHelpUrl() const
 
 QString Theme::overrideServerUrl() const
 {
-#ifdef APPLICATION_SERVER_URL
-    return QString::fromLatin1(APPLICATION_SERVER_URL);
-#else
-    return QString();
-#endif
+    return _overrideServerUrl;
 }
 
 bool Theme::forceOverrideServerUrl() const
 {
-#ifdef APPLICATION_SERVER_URL_ENFORCE
-    return true;
-#else
-    return false;
-#endif
+    return _forceOverrideServerUrl;
+}
+
+bool Theme::startLoginFlowAutomatically() const
+{
+    return _startLoginFlowAutomatically;
 }
 
 bool Theme::enableStaplingOCSP() const
@@ -939,6 +943,29 @@ bool Theme::darkMode()
 #else
     return Theme::isDarkColor(QGuiApplication::palette().window().color());
 #endif
+}
+
+void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
+{
+    if (_overrideServerUrl != overrideServerUrl) {
+        _overrideServerUrl = overrideServerUrl;
+        emit overrideServerUrlChanged();
+    }
+}
+void Theme::setForceOverrideServerUrl(bool forceOverride)
+{
+    if (_forceOverrideServerUrl != forceOverride) {
+        _forceOverrideServerUrl = forceOverride;
+        emit forceOverrideServerUrlChanged();
+    }
+}
+
+void Theme::setStartLoginFlowAutomatically(bool startLoginFlowAuto)
+{
+    if (_startLoginFlowAutomatically != startLoginFlowAuto) {
+        _startLoginFlowAutomatically = startLoginFlowAuto;
+        emit startLoginFlowAutomaticallyChanged();
+    }
 }
 
 } // end namespace client

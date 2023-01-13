@@ -186,6 +186,12 @@ public:
     QString updateChannel() const;
     void setUpdateChannel(const QString &channel);
 
+    QString overrideServerUrl() const;
+    void setOverrideServerUrl(const QString &url);
+
+    QString overrideLocalDir() const;
+    void setOverrideLocalDir(const QString &localDir);
+
     void saveGeometryHeader(QHeaderView *header);
     void restoreGeometryHeader(QHeaderView *header);
 
