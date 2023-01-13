@@ -68,7 +68,7 @@ class NextcloudItemMetadataTable: Object {
     @objc dynamic var isExtractFile: Bool = false
     @objc dynamic var livePhoto: Bool = false
     @objc dynamic var mountType = ""
-    @objc dynamic var name = ""                                             // for unifiedSearch is the provider.id
+    @objc dynamic var name = "" // for unifiedSearch is the provider.id
     @objc dynamic var note = ""
     @objc dynamic var ocId = ""
     @objc dynamic var ownerId = ""
@@ -86,7 +86,7 @@ class NextcloudItemMetadataTable: Object {
     @objc dynamic var quotaAvailableBytes: Int64 = 0
     @objc dynamic var resourceType = ""
     @objc dynamic var richWorkspace: String?
-    @objc dynamic var serverUrl = ""
+    @objc dynamic var serverUrl = "" // For parent directory!!
     @objc dynamic var session = ""
     @objc dynamic var sessionError = ""
     @objc dynamic var sessionSelector = ""
