@@ -75,6 +75,12 @@ class NextcloudFilesDatabaseManager : NSObject {
         return ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first
     }
 
+    func itemMetadatas(account: String, serverUrl: String) -> [NextcloudItemMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl)
+        let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
+        return Array(sortedMetadatas.map { $0 })
+    }
+
     func itemMetadataFromFileProviderItemIdentifier(_ identifier: NSFileProviderItemIdentifier) -> NextcloudItemMetadataTable? {
         let ocId = identifier.rawValue
         return itemMetadataFromOcId(ocId)
