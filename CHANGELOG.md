@@ -11,7 +11,9 @@ Summary
 * Bugfix - Fix the display of the version string for released builds: [#10329](https://github.com/owncloud/client/pull/10329)
 * Bugfix - Only clear cookies if enabled in theme, clear cookies before OAuth2: [#10338](https://github.com/owncloud/client/pull/10338)
 * Bugfix - Display `Add a Space` instead of `Add Folder Sync Connection` with oCIS: [#10340](https://github.com/owncloud/client/pull/10340)
+* Bugfix - Mac: Don't inherit the environment of the installer after an update: [#10346](https://github.com/owncloud/client/issues/10346)
 * Bugfix - Correctly detect timeouts during token refrshs: [#10373](https://github.com/owncloud/client/pull/10373)
+* Bugfix - Open in web if debug logs are turned off: [#10387](https://github.com/owncloud/client/pull/10387)
 * Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
 
 Details
@@ -36,9 +38,19 @@ Details
 
    https://github.com/owncloud/client/pull/10340
 
+* Bugfix - Mac: Don't inherit the environment of the installer after an update: [#10346](https://github.com/owncloud/client/issues/10346)
+
+   https://github.com/owncloud/client/issues/10346
+
 * Bugfix - Correctly detect timeouts during token refrshs: [#10373](https://github.com/owncloud/client/pull/10373)
 
    https://github.com/owncloud/client/pull/10373
+
+* Bugfix - Open in web if debug logs are turned off: [#10387](https://github.com/owncloud/client/pull/10387)
+
+   Due to a bug opening the browser only worked if logging was enabled.
+
+   https://github.com/owncloud/client/pull/10387
 
 * Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
 
