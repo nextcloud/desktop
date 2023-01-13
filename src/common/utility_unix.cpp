@@ -111,19 +111,6 @@ void Utility::setLaunchOnStartup(const QString &appName, const QString &guiName,
     }
 }
 
-#ifdef Q_OS_LINUX
-QString Utility::appImageLocation()
-{
-    static const auto value = qEnvironmentVariable("APPIMAGE");
-    return value;
-}
-
-bool Utility::runningInAppImage()
-{
-    return !Utility::appImageLocation().isEmpty();
-}
-#endif
-
 bool Utility::hasDarkSystray()
 {
     return true;

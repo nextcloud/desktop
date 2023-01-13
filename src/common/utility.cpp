@@ -628,6 +628,27 @@ QString Utility::renderTemplate(QString templ, const QMap<QString, QString> &val
     return templ;
 }
 
+QString Utility::appImageLocation()
+{
+#ifdef Q_OS_LINUX
+    Q_ASSERT(Utility::runningInAppImage());
+    static const auto value = qEnvironmentVariable("APPIMAGE");
+    return value;
+#else
+    Q_UNREACHABLE();
+    return QString();
+#endif
+}
+
+bool Utility::runningInAppImage()
+{
+#ifdef Q_OS_LINUX
+    return qEnvironmentVariableIsSet("APPIMAGE");
+#else
+    return false;
+#endif
+}
+
 } // namespace OCC
 
 QDebug operator<<(QDebug debug, nanoseconds in)
