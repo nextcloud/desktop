@@ -381,10 +381,8 @@ OCSYNC_EXPORT Q_DECLARE_LOGGING_CATEGORY(lcUtility)
     }
 
 
-#ifdef Q_OS_LINUX
     OCSYNC_EXPORT QString appImageLocation();
     OCSYNC_EXPORT bool runningInAppImage();
-#endif
 } // Utility namespace
 /** @} */ // \addtogroup
 

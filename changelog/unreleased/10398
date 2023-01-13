@@ -1,0 +1,3 @@
+Bugfix: We fixed building the client on non linux unix systems
+
+https://github.com/owncloud/client/issues/10398
