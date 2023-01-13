@@ -17,7 +17,7 @@ import FileProvider
 
 class NextcloudAccount: NSObject {
     let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
-    let username, password: String?
+    let username, password, ncKitAccount: String?
     let serverUrl, davFilesUrl: URL?
 
     var isNull: Bool {
@@ -50,6 +50,7 @@ class NextcloudAccount: NSObject {
 
         username = usernameString
         password = passwordString
+        ncKitAccount = usernameString + " " + serverUrlString
         serverUrl = serverUrlUrl
         davFilesUrl = davFilesUrlUrl
 
