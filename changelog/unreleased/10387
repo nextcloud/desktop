@@ -1,0 +1,5 @@
+Bugfix: Open in web if debug logs are turned off
+
+Due to a bug opening the browser only worked if logging was enabled.
+
+https://github.com/owncloud/client/pull/10387

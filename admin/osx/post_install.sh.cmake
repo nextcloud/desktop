@@ -20,7 +20,7 @@ fi
 
 if [[ -f "${INSTALLER_TEMP}/OC_RESTART_NEEDED" ]]; then
     if [[ "${COMMAND_LINE_INSTALL}" = "" ]]; then
-        /bin/launchctl asuser "${LOGGED_IN_USER_ID}" /usr/bin/open -g "/Applications/@APPLICATION_EXECUTABLE@.app"
+        /bin/launchctl kickstart "gui/${LOGGED_IN_USER_ID}/@APPLICATION_REV_DOMAIN@"
     fi
 fi
 

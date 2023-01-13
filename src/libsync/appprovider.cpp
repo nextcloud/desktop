@@ -82,7 +82,8 @@ bool AppProvider::open(const AccountPtr &account, const QString &localPath, cons
         QObject::connect(job, &JsonJob::finishedSignal, [job, localPath] {
             if (job->httpStatusCode() == 200) {
                 const auto url = QUrl(job->data().value(QStringLiteral("uri")).toString());
-                qCDebug(lcAppProvider) << "start browser" << url << QDesktopServices::openUrl(url);
+                const auto result = QDesktopServices::openUrl(url);
+                qCDebug(lcAppProvider) << "start browser" << url << result;
             } else {
                 QMetaObject::invokeMethod(qApp, "slotShowGuiMessage", Qt::QueuedConnection,
                     Q_ARG(QString, QCoreApplication::translate("AppProvider", "Error")),

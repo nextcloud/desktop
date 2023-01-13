@@ -1,0 +1,3 @@
+Bugfix: Mac: Don't inherit the environment of the installer after an update
+
+https://github.com/owncloud/client/issues/10346
