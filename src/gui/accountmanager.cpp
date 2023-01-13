@@ -69,7 +69,7 @@ AccountManager *AccountManager::instance()
     return &instance;
 }
 
-bool AccountManager::restore()
+bool AccountManager::restore(bool alsoRestoreLegacySettings)
 {
     QStringList skipSettingsKeys;
     backwardMigrationSettingsKeys(&skipSettingsKeys, &skipSettingsKeys);
@@ -88,8 +88,7 @@ bool AccountManager::restore()
     }
 
     // If there are no accounts, check the old format.
-    if (settings->childGroups().isEmpty()
-        && !settings->contains(QLatin1String(versionC))) {
+    if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
         return true;
     }

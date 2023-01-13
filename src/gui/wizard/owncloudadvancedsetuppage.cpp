@@ -193,6 +193,16 @@ void OwncloudAdvancedSetupPage::initializePage()
     if (nextButton) {
         nextButton->setDefault(true);
     }
+    if (Theme::instance()->forceOverrideServerUrl()) {
+        QTimer::singleShot(0, this, [this]() {
+            connect(_ocWizard, &QDialog::accepted, []() {
+                ConfigFile cfg;
+                cfg.setOverrideServerUrl({});
+                cfg.setOverrideLocalDir({});
+            });
+            _ocWizard->accept();
+        });
+    }
 }
 
 void OwncloudAdvancedSetupPage::fetchUserAvatar()
