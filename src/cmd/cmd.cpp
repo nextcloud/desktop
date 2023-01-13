@@ -331,6 +331,7 @@ CmdOptions parseOptions(const QStringList &app_args)
     auto maxRetriesOption = addOption({ { QStringLiteral("max-sync-retries") }, QStringLiteral("Retries maximum n times (default to 3)"), QStringLiteral("n") });
     auto uploadLimitOption = addOption({ { QStringLiteral("uplimit") }, QStringLiteral("Limit the upload speed of files to n KB/s"), QStringLiteral("n") });
     auto downloadLimitption = addOption({ { QStringLiteral("downlimit") }, QStringLiteral("Limit the download speed of files to n KB/s"), QStringLiteral("n") });
+    auto syncHiddenFilesOption = addOption({ { QStringLiteral("sync-hidden-files") }, QStringLiteral("Enables synchronization of hidden files") });
 
     auto logdebugOption = addOption({ { QStringLiteral("logdebug") }, QStringLiteral("More verbose logging") });
 
@@ -405,6 +406,9 @@ CmdOptions parseOptions(const QStringList &app_args)
     }
     if (parser.isSet(downloadLimitption)) {
         options.downlimit = parser.value(downloadLimitption).toInt() * 1000;
+    }
+    if (parser.isSet(syncHiddenFilesOption)) {
+        options.ignoreHiddenFiles = false;
     }
     if (parser.isSet(logdebugOption)) {
         Logger::instance()->setLogFile(QStringLiteral("-"));
