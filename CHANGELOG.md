@@ -15,6 +15,7 @@ Summary
 * Bugfix - Correctly detect timeouts during token refrshs: [#10373](https://github.com/owncloud/client/pull/10373)
 * Bugfix - Open in web if debug logs are turned off: [#10387](https://github.com/owncloud/client/pull/10387)
 * Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
+* Enhancement - (Re)introduce "sync hidden files" parameter in owncloudcmd: [#10390](https://github.com/owncloud/client/issues/10390)
 
 Details
 -------
@@ -58,6 +59,14 @@ Details
    try. Note: The client would try to reconnect by itself at some point.
 
    https://github.com/owncloud/client/issues/10294
+
+* Enhancement - (Re)introduce "sync hidden files" parameter in owncloudcmd: [#10390](https://github.com/owncloud/client/issues/10390)
+
+   There used to be an option to enable the synchronization of hidden files using the -h parameter
+   which collided with the --help option and subsequently was removed. A new
+   --sync-hidden-files parameter was introduced to fill in the missing feature.
+
+   https://github.com/owncloud/client/issues/10390
 
 Changelog for ownCloud Desktop Client [3.0.0] (2022-11-30)
 =======================================
