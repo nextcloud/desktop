@@ -1,5 +1,6 @@
 import re
 import sys
+import test
 from os.path import join, realpath
 from squish import waitFor, snooze
 
