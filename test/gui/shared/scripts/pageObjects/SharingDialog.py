@@ -1,7 +1,6 @@
 import names
 import squish
 import object
-import test
 
 
 class SharingDialog:

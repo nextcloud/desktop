@@ -1,6 +1,5 @@
 import names
 import squish
-from helpers.SetupClientHelper import getClientDetails, createUserSyncPath
 
 
 class SyncConnectionWizard:
