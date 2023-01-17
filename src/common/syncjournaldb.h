@@ -115,7 +115,7 @@ public:
         int _errorCount = 0;
         bool _valid = false;
         QByteArray _contentChecksum;
-        QByteArray _path;
+        QString _path; // stored as utf16
         /**
          * Returns true if this entry refers to a chunked upload that can be continued.
          * (As opposed to a small file transfer which is stored in the db so we can detect the case

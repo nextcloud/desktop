@@ -893,7 +893,7 @@ void SyncEngine::setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QS
     // add running upload to the local discovery
     const auto info = _journal->getUploadInfos();
     for (const auto &i : info) {
-        _localDiscoveryPaths.insert(QString::fromUtf8(i._path));
+        _localDiscoveryPaths.insert(i._path);
     }
 
     // Normalize to make sure that no path is a contained in another.

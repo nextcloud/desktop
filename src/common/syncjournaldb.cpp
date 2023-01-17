@@ -1426,6 +1426,7 @@ SyncJournalDb::UploadInfo SyncJournalDb::getUploadInfo(const QString &file)
 
     UploadInfo res;
     if (query->next().hasData) {
+        res._path = file;
         res._chunk = query->intValue(0);
         res._transferid = query->intValue(1);
         res._errorCount = query->intValue(2);
@@ -1461,7 +1462,7 @@ std::vector<SyncJournalDb::UploadInfo> SyncJournalDb::getUploadInfos()
         info._size = query->int64Value(3);
         info._modtime = query->int64Value(4);
         info._contentChecksum = query->baValue(5);
-        info._path = query->baValue(6);
+        info._path = query->stringValue(6);
         info._valid = true;
         res.push_back(std::move(info));
     }
