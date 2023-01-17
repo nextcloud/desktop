@@ -244,6 +244,13 @@ public:
      * When true, the respective UI controls will be disabled
      */
     virtual bool forceOverrideServerUrl() const;
+
+    /**
+     * Automatically start login flow
+     *
+     * When true, the browser will get opened automatically
+     */
+    virtual bool startLoginFlowAutomatically() const;
     
     /**
      * Enable OCSP stapling for SSL handshakes
@@ -597,6 +604,11 @@ public:
     QPalette systemPalette();
     bool darkMode();
 
+public slots:
+    virtual void setOverrideServerUrl(const QString &overrideServerUrl);
+    virtual void setForceOverrideServerUrl(bool forceOverride);
+    virtual void setStartLoginFlowAutomatically(bool startLoginFlowAuto);
+
 protected:
 #ifndef TOKEN_AUTH_ONLY
     QIcon themeIcon(const QString &name, bool sysTray = false) const;
@@ -615,6 +627,9 @@ signals:
     void systrayUseMonoIconsChanged(bool);
     void systemPaletteChanged(const QPalette &palette);
     void darkModeChanged();
+    void overrideServerUrlChanged();
+    void forceOverrideServerUrlChanged();
+    void startLoginFlowAutomaticallyChanged();
 
 private:
     Theme(Theme const &);
@@ -628,6 +643,10 @@ private:
     static Theme *_instance;
     bool _mono = false;
     bool _paletteSignalsConnected = false;
+
+    QString _overrideServerUrl;
+    bool _forceOverrideServerUrl = false;
+    bool _startLoginFlowAutomatically = false;
 
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;

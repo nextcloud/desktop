@@ -41,7 +41,7 @@ public:
      * Returns false if there was an error reading the settings,
      * but note that settings not existing is not an error.
      */
-    bool restore();
+    bool restore(bool alsoRestoreLegacySettings = true);
 
     /**
      * Add this account in the list of saved accounts.
