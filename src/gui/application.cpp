@@ -87,6 +87,8 @@ namespace {
         "  --logdebug           : also output debug-level messages in the log.\n"
         "  --confdir <dirname>  : Use the given configuration folder.\n"
         "  --background         : launch the application in the background.\n"
+        "  --overrideserverurl  : specify a server URL to use for the force override to be used in the account setup wizard.\n"
+        "  --overridelocaldir   : specify a local dir to be used in the account setup wizard.\n"
         "  --userid             : userId (username as on the server) to pass when creating an account via command-line.\n"
         "  --apppassword        : appPassword to pass when creating an account via command-line.\n"
         "  --localdirpath       : (optional) path where to create a local sync folder when creating an account via command-line.\n"
@@ -335,12 +337,12 @@ Application::Application(int &argc, char **argv)
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    if (!AccountManager::instance()->restore()) {
+    if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
         // If there is an error reading the account settings, try again
         // after a couple of seconds, if that fails, give up.
         // (non-existence is not an error)
         Utility::sleep(5);
-        if (!AccountManager::instance()->restore()) {
+        if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
                 nullptr,
@@ -620,6 +622,8 @@ void Application::parseOptions(const QStringList &options)
     if (it.hasNext())
         it.next();
 
+    bool shouldExit = false;
+
     //parse options; if help or bad option exit
     while (it.hasNext()) {
         QString option = it.next();
@@ -680,6 +684,26 @@ void Application::parseOptions(const QStringList &options)
                 qCInfo(lcApplication) << errorParsingLocalFileEditingUrl;
                 showHint(errorParsingLocalFileEditingUrl.toStdString());
             }
+        } else if (option == QStringLiteral("--overrideserverurl")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                const auto overrideUrl = it.next();
+                const auto isUrlValid = (overrideUrl.startsWith(QStringLiteral("http://")) || overrideUrl.startsWith(QStringLiteral("https://")))
+                    && QUrl::fromUserInput(overrideUrl).isValid();
+                if (!isUrlValid) {
+                    showHint("Invalid URL passed to --overrideserverurl");
+                } else {
+                    ConfigFile().setOverrideServerUrl(overrideUrl);
+                    shouldExit = true;
+                }
+            } else {
+                showHint("Invalid URL passed to --overrideserverurl");
+            }
+        } else if (option == QStringLiteral("--overridelocaldir")) {
+            if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
+                ConfigFile().setOverrideLocalDir(it.next());
+            } else {
+                showHint("Invalid URL passed to --overridelocaldir");
+            }
         }
         else {
             QString errorMessage;
@@ -691,6 +715,9 @@ void Application::parseOptions(const QStringList &options)
                 showHint("Unrecognized option '" + option.toStdString() + "'");
             }
         }
+    }
+    if (shouldExit) {
+        std::exit(0);
     }
 }
 

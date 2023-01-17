@@ -67,6 +67,8 @@ static constexpr char autoUpdateCheckC[] = "autoUpdateCheck";
 static constexpr char updateCheckIntervalC[] = "updateCheckInterval";
 static constexpr char updateSegmentC[] = "updateSegment";
 static constexpr char updateChannelC[] = "updateChannel";
+static constexpr char overrideServerUrlC[] = "overrideServerUrl";
+static constexpr char overrideLocalDirC[] = "overrideLocalDir";
 static constexpr char geometryC[] = "geometry";
 static constexpr char timeoutC[] = "timeout";
 static constexpr char chunkSizeC[] = "chunkSize";
@@ -686,6 +688,30 @@ void ConfigFile::setUpdateChannel(const QString &channel)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(updateChannelC), channel);
+}
+
+[[nodiscard]] QString ConfigFile::overrideServerUrl() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(overrideServerUrlC), {}).toString();
+}
+
+void ConfigFile::setOverrideServerUrl(const QString &url)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(overrideServerUrlC), url);
+}
+
+[[nodiscard]] QString ConfigFile::overrideLocalDir() const
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    return settings.value(QLatin1String(overrideLocalDirC), {}).toString();
+}
+
+void ConfigFile::setOverrideLocalDir(const QString &localDir)
+{
+    QSettings settings(configFile(), QSettings::IniFormat);
+    settings.setValue(QLatin1String(overrideLocalDirC), localDir);
 }
 
 void ConfigFile::setProxyType(int proxyType,
