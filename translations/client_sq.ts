@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Rilidhu</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
@@ -1558,7 +1558,8 @@ Ju lutemi, shihni mundësinë e heqjes së kësaj dosjeje nga llogaria dhe të s
         <location filename="../src/gui/folderstatusmodel.cpp" line="296"/>
         <source>Signed out
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Dalë
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
