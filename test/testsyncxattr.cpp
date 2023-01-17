@@ -963,7 +963,7 @@ private slots:
         QCOMPARE(*vfs->availability("online"), VfsItemAvailability::OnlineOnly);
         QCOMPARE(*vfs->availability("local"), VfsItemAvailability::AlwaysLocal);
 
-        auto r = vfs->availability("nonexistant");
+        auto r = vfs->availability("nonexistent");
         QVERIFY(!r);
         QCOMPARE(r.error(), Vfs::AvailabilityError::NoSuchItem);
     }
