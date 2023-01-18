@@ -247,7 +247,7 @@ void PropagateRemoteMove::finalize()
     SyncJournalFileRecord oldRecord;
     propagator()->_journal->getFileRecord(_item->_originalFile, &oldRecord);
     auto &vfs = propagator()->syncOptions()._vfs;
-    auto pinState = vfs->pinState(_item->_renameTarget);
+    auto pinState = vfs->pinState(_item->_originalFile);
 
     const auto targetFile = propagator()->fullLocalPath(_item->_renameTarget);
 
