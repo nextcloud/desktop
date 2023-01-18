@@ -73,18 +73,20 @@ void PropagateDownloadEncrypted::checkFolderEncryptedMetadata(const QJsonDocumen
   qCDebug(lcPropagateDownloadEncrypted) << "Metadata Received reading"
                                         << _item->_instruction << _item->_file << _item->_encryptedFileName;
   const QString filename = _info.fileName();
-  auto meta = new FolderMetadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
-  const QVector<EncryptedFile> files = meta->files();
+  const FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact));
+  if (metadata.isMetadataSetup()) {
+      const QVector<EncryptedFile> files = metadata.files();
 
-  const QString encryptedFilename = _item->_encryptedFileName.section(QLatin1Char('/'), -1);
-  for (const EncryptedFile &file : files) {
-    if (encryptedFilename == file.encryptedFilename) {
-      _encryptedInfo = file;
+      const QString encryptedFilename = _item->_encryptedFileName.section(QLatin1Char('/'), -1);
+      for (const EncryptedFile &file : files) {
+          if (encryptedFilename == file.encryptedFilename) {
+              _encryptedInfo = file;
 
-      qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
-      emit fileMetadataFound();
-      return;
-    }
+              qCDebug(lcPropagateDownloadEncrypted) << "Found matching encrypted metadata for file, starting download";
+              emit fileMetadataFound();
+              return;
+          }
+      }
   }
 
   emit failed();

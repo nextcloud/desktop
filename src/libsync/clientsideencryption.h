@@ -180,6 +180,7 @@ public:
     void removeEncryptedFile(const EncryptedFile& f);
     void removeAllEncryptedFiles();
     QVector<EncryptedFile> files() const;
+    bool isMetadataSetup() const;
 
 
 private:

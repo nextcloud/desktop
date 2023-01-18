@@ -1390,6 +1390,12 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
   QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
   QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
+
+  if (metadataKeys.isEmpty()) {
+      qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
+      return;
+  }
+
   QByteArray sharing = metadataObj["sharing"].toString().toLocal8Bit();
   QJsonObject files = metaDataDoc.object()["files"].toObject();
 
@@ -1418,14 +1424,19 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
   qCDebug(lcCse) << "Sharing: " << sharing;
   if (sharing.size()) {
-      auto sharingDecrypted = decryptJsonObject(sharing, _metadataKeys.last());
-      qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
+      const auto metaDataKey = !_metadataKeys.isEmpty() ? _metadataKeys.last() : QByteArray{};
+      if (metaDataKey.isEmpty()) {
+          qCDebug(lcCse) << "Failed to decrypt sharing! Empty metadata key!";
+      } else {
+          auto sharingDecrypted = decryptJsonObject(sharing, metaDataKey);
+          qCDebug(lcCse) << "Sharing Decrypted" << sharingDecrypted;
 
-      //Sharing is also a JSON object, so extract it and populate.
-      auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
-      auto sharingObj = sharingDoc.object();
-      for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
-        _sharing.push_back({it.key(), it.value().toString()});
+          // Sharing is also a JSON object, so extract it and populate.
+          auto sharingDoc = QJsonDocument::fromJson(sharingDecrypted);
+          auto sharingObj = sharingDoc.object();
+          for (auto it = sharingObj.constBegin(), end = sharingObj.constEnd(); it != end; it++) {
+              _sharing.push_back({it.key(), it.value().toString()});
+          }
       }
   } else {
       qCDebug(lcCse) << "Skipping sharing section since it is empty";
@@ -1441,9 +1452,9 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         file.initializationVector = QByteArray::fromBase64(fileObj["initializationVector"].toString().toLocal8Bit());
 
         //Decrypt encrypted part
-        QByteArray key = _metadataKeys[file.metadataKey];
+        const auto key = _metadataKeys.value(file.metadataKey, {});
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
-        auto decryptedFile = decryptJsonObject(encryptedFile, key);
+        auto decryptedFile = !key.isEmpty() ? decryptJsonObject(encryptedFile, key) : QByteArray{};
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
         auto decryptedFileObj = decryptedFileDoc.object();
 
@@ -1503,6 +1514,11 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
     return EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata);
 }
 
+bool FolderMetadata::isMetadataSetup() const
+{
+    return !_metadataKeys.isEmpty();
+}
+
 void FolderMetadata::setupEmptyMetadata() {
     qCDebug(lcCse) << "Settint up empty metadata";
     QByteArray newMetadataPass = EncryptionHelper::generateRandom(16);
@@ -1517,6 +1533,11 @@ void FolderMetadata::setupEmptyMetadata() {
 QByteArray FolderMetadata::encryptedMetadata() {
     qCDebug(lcCse) << "Generating metadata";
 
+    if (_metadataKeys.isEmpty()) {
+        qCDebug(lcCse) << "Metadata generation failed! Empty metadata key!";
+        return {};
+    }
+
     QJsonObject metadataKeys;
     for (auto it = _metadataKeys.constBegin(), end = _metadataKeys.constEnd(); it != end; it++) {
         /*
@@ -1526,16 +1547,6 @@ QByteArray FolderMetadata::encryptedMetadata() {
         const QByteArray encryptedKey = encryptMetadataKey(it.value().toBase64());
         metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
     }
-
-    /* NO SHARING IN V1
-    QJsonObject recepients;
-    for (auto it = _sharing.constBegin(), end = _sharing.constEnd(); it != end; it++) {
-        recepients.insert(it->first, it->second);
-    }
-    QJsonDocument recepientDoc;
-    recepientDoc.setObject(recepients);
-    QString sharingEncrypted = encryptJsonObject(recepientDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
-    */
 
     QJsonObject metadata = {
       {"metadataKeys", metadataKeys},

@@ -199,24 +199,27 @@ void OCC::HydrationJob::slotCheckFolderEncryptedMetadata(const QJsonDocument &js
     // TODO: the following code is borrowed from PropagateDownloadEncrypted (see HydrationJob::onNewConnection() for explanation of next steps)
     qCDebug(lcHydration) << "Metadata Received reading" << e2eMangledName();
     const QString filename = e2eMangledName();
-    auto meta = new FolderMetadata(_account, json.toJson(QJsonDocument::Compact));
-    const QVector<EncryptedFile> files = meta->files();
+    const FolderMetadata metadata(_account, json.toJson(QJsonDocument::Compact));
 
-    EncryptedFile encryptedInfo = {};
+    if (metadata.isMetadataSetup()) {
+        const QVector<EncryptedFile> files = metadata.files();
 
-    const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
-    for (const EncryptedFile &file : files) {
-        if (encryptedFileExactName == file.encryptedFilename) {
-            EncryptedFile encryptedInfo = file;
-            encryptedInfo = file;
+        EncryptedFile encryptedInfo = {};
 
-            qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
-            _transferDataSocket = _transferDataServer->nextPendingConnection();
-            _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
+        const QString encryptedFileExactName = e2eMangledName().section(QLatin1Char('/'), -1);
+        for (const EncryptedFile &file : files) {
+            if (encryptedFileExactName == file.encryptedFilename) {
+                EncryptedFile encryptedInfo = file;
+                encryptedInfo = file;
 
-            connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
-            _job->start();
-            return;
+                qCDebug(lcHydration) << "Found matching encrypted metadata for file, starting download" << _requestId << _folderPath;
+                _transferDataSocket = _transferDataServer->nextPendingConnection();
+                _job = new GETEncryptedFileJob(_account, _remotePath + e2eMangledName(), _transferDataSocket, {}, {}, 0, encryptedInfo, this);
+
+                connect(qobject_cast<GETEncryptedFileJob *>(_job), &GETEncryptedFileJob::finishedSignal, this, &HydrationJob::onGetFinished);
+                _job->start();
+                return;
+            }
         }
     }
 
