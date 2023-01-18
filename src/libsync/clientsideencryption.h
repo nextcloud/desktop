@@ -183,6 +183,7 @@ public:
     void removeEncryptedFile(const EncryptedFile& f);
     void removeAllEncryptedFiles();
     [[nodiscard]] QVector<EncryptedFile> files() const;
+    [[nodiscard]] bool isMetadataSetup() const;
 
 
 private:
