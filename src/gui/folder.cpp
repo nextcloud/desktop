@@ -1005,7 +1005,7 @@ void Folder::startSync()
 
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
-    QMetaObject::invokeMethod(_engine.data(), "startSync", Qt::QueuedConnection);
+    QMetaObject::invokeMethod(_engine.data(), &SyncEngine::startSync, Qt::QueuedConnection);
 
     emit syncStarted();
 }
