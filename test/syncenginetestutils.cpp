@@ -1176,7 +1176,7 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
                 continue;
             }
             char contentChar = content.at(0);
-            templateFi.children.insert(diskChild.fileName(), FileInfo { diskChild.fileName(), diskChild.size(), contentChar });
+            templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar, diskChild.lastModified()});
         }
     }
 }
