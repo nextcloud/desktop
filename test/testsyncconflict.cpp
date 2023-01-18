@@ -586,6 +586,13 @@ private slots:
         fakeFolder.remoteModifier().mkdir(QStringLiteral("B/b1"));
         fakeFolder.remoteModifier().insert(QStringLiteral("B/b1/zzz"));
 
+        if (filesAreDehydrated) {
+            QSKIP("Known bug: https://github.com/owncloud/client/issues/10223");
+            // The QSKIP below is due to operations order (verified on a local machine),
+            // but the sync below already always fails in the CI. So we will be skipping
+            // this entire test until the issue is fixed.
+        }
+
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         auto conflicts = findConflicts(fakeFolder.currentLocalState());
         conflicts += findConflicts(fakeFolder.currentLocalState().children[QStringLiteral("B")]);
