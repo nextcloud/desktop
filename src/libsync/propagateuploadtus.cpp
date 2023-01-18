@@ -257,7 +257,6 @@ void PropagateUploadFileTUS::slotChunkFinished()
 void PropagateUploadFileTUS::finalize(const QString &etag, const QByteArray &fileId)
 {
     OC_ASSERT(_finished);
-    qCDebug(lcPropagateUploadTUS) << _item->_etag << etag << fileId;
     _item->_etag = etag;
     if (!fileId.isEmpty()) {
         if (!_item->_fileId.isEmpty() && _item->_fileId != fileId) {
