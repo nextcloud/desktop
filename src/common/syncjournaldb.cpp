@@ -42,15 +42,17 @@
 #define IS_PREFIX_PATH_OR_EQUAL(prefix, path) \
     "(" path " == " prefix " OR " IS_PREFIX_PATH_OF(prefix, path) ")"
 
+namespace {
+// base query used to select file record objects, used in combination with WHERE statements.
+const auto getFileRecordQueryC = QByteArrayLiteral("SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize,"
+                                                   " ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum,"
+                                                   " FROM metadata"
+                                                   " LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id ");
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcDb, "sync.database", QtInfoMsg)
-
-#define GET_FILE_RECORD_QUERY \
-        "SELECT path, inode, modtime, type, md5, fileid, remotePerm, filesize," \
-        "  ignoredChildrenRemote, contentchecksumtype.name || ':' || contentChecksum" \
-        " FROM metadata" \
-        "  LEFT JOIN checksumtype as contentchecksumtype ON metadata.contentChecksumTypeId == contentchecksumtype.id"
 
 static void fillFileRecordFromGetQuery(SyncJournalFileRecord &rec, SqlQuery &query)
 {
@@ -684,7 +686,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal(QStringLiteral("update database structure: add filesize col"));
     }
 
-    if (1) {
+    {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_inode ON metadata(inode);");
         if (!query.exec()) {
@@ -694,7 +696,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal(QStringLiteral("update database structure: add inode index"));
     }
 
-    if (1) {
+    {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_path ON metadata(path);");
         if (!query.exec()) {
@@ -704,7 +706,7 @@ bool SyncJournalDb::updateMetadataTableStructure()
         commitInternal(QStringLiteral("update database structure: add path index"));
     }
 
-    if (1) {
+    {
         SqlQuery query(_db);
         query.prepare("CREATE INDEX IF NOT EXISTS metadata_parent ON metadata(parent_hash(path));");
         if (!query.exec()) {
@@ -991,7 +993,7 @@ bool SyncJournalDb::getFileRecord(const QByteArray &filename, SyncJournalFileRec
         return false;
 
     if (!filename.isEmpty()) {
-        const auto query = _queryManager.get(PreparedSqlQueryManager::GetFileRecordQuery, QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE phash=?1"), _db);
+        const auto query = _queryManager.get(PreparedSqlQueryManager::GetFileRecordQuery, getFileRecordQueryC + QByteArrayLiteral("WHERE phash=?1"), _db);
         if (!query) {
             return false;
         }
@@ -1031,7 +1033,7 @@ bool SyncJournalDb::getFileRecordByInode(quint64 inode, SyncJournalFileRecord *r
 
     if (!checkConnect())
         return false;
-    const auto query = _queryManager.get(PreparedSqlQueryManager::GetFileRecordQueryByInode, QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE inode=?1"), _db);
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetFileRecordQueryByInode, getFileRecordQueryC + QByteArrayLiteral("WHERE inode=?1"), _db);
     if (!query)
         return false;
 
@@ -1059,7 +1061,7 @@ bool SyncJournalDb::getFileRecordsByFileId(const QByteArray &fileId, const std::
     if (!checkConnect())
         return false;
 
-    const auto query = _queryManager.get(PreparedSqlQueryManager::GetFileRecordQueryByFileId, QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE fileid=?1"), _db);
+    const auto query = _queryManager.get(PreparedSqlQueryManager::GetFileRecordQueryByFileId, getFileRecordQueryC + QByteArrayLiteral("WHERE fileid=?1"), _db);
     if (!query) {
         return false;
     }
@@ -1119,7 +1121,7 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
         // and find nothing. So, unfortunately, we have to use a different query for
         // retrieving the whole tree.
 
-        const auto query = _queryManager.get(PreparedSqlQueryManager::GetAllFilesQuery, QByteArrayLiteral(GET_FILE_RECORD_QUERY " ORDER BY path||'/' ASC"), _db);
+        const auto query = _queryManager.get(PreparedSqlQueryManager::GetAllFilesQuery, getFileRecordQueryC + QByteArrayLiteral("ORDER BY path||'/' ASC"), _db);
         if (!query) {
             return false;
         }
@@ -1127,7 +1129,7 @@ bool SyncJournalDb::getFilesBelowPath(const QByteArray &path, const std::functio
     } else {
         // This query is used to skip discovery and fill the tree from the
         // database instead
-        const auto query = _queryManager.get(PreparedSqlQueryManager::GetFilesBelowPathQuery, QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE " IS_PREFIX_PATH_OF("?1", "path")
+        const auto query = _queryManager.get(PreparedSqlQueryManager::GetFilesBelowPathQuery, getFileRecordQueryC + QByteArrayLiteral("WHERE " IS_PREFIX_PATH_OF("?1", "path")
                                                                                                   // We want to ensure that the contents of a directory are sorted
                                                                                                   // directly behind the directory itself. Without this ORDER BY
                                                                                                   // an ordering like foo, foo-2, foo/file would be returned.
@@ -1154,7 +1156,7 @@ bool SyncJournalDb::listFilesInPath(const QByteArray& path,
     if (!checkConnect())
         return false;
 
-    const auto query = _queryManager.get(PreparedSqlQueryManager::ListFilesInPathQuery, QByteArrayLiteral(GET_FILE_RECORD_QUERY " WHERE parent_hash(path) = ?1 ORDER BY path||'/' ASC"), _db);
+    const auto query = _queryManager.get(PreparedSqlQueryManager::ListFilesInPathQuery, getFileRecordQueryC + QByteArrayLiteral("WHERE parent_hash(path) = ?1 ORDER BY path||'/' ASC"), _db);
     if (!query) {
         return false;
     }
@@ -2267,7 +2269,7 @@ bool SyncJournalDb::open()
     return checkConnect();
 }
 
-bool SyncJournalDb::isOpen()
+bool SyncJournalDb::isOpen() const
 {
     QMutexLocker lock(&_mutex);
     return _db.isOpen();

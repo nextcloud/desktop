@@ -45,7 +45,7 @@ public:
     explicit SqlDatabase();
     ~SqlDatabase();
 
-    bool isOpen();
+    bool isOpen() const;
     bool openOrCreateReadWrite(const QString &filename);
     bool openReadOnly(const QString &filename);
     bool transaction();

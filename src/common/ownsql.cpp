@@ -66,7 +66,7 @@ SqlDatabase::~SqlDatabase()
 }
 
 
-bool SqlDatabase::isOpen()
+bool SqlDatabase::isOpen() const
 {
     return _db != nullptr;
 }

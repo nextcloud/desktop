@@ -212,7 +212,7 @@ public:
     bool open();
 
     /** Returns whether the db is currently openend. */
-    bool isOpen();
+    bool isOpen() const;
 
     /** Close the database */
     void close();
@@ -389,7 +389,7 @@ private:
 
     SqlDatabase _db;
     QString _dbFile;
-    QMutex _mutex; // Public functions are protected with the mutex.
+    mutable QMutex _mutex; // Public functions are protected with the mutex.
     QMap<CheckSums::Algorithm, int> _checksymTypeCache;
     int _transaction;
     bool _metadataTableIsEmpty;
