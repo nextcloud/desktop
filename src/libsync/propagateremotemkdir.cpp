@@ -176,8 +176,6 @@ void PropagateRemoteMkdir::retryUpdateMetadata(std::chrono::steady_clock::time_p
                     retryUpdateMetadata(start, item);
                 });
                 return;
-            case Vfs::ConvertToPlaceholderResult::Error:
-                Q_UNREACHABLE();
             }
         } else {
             done(SyncFileItem::FatalError, result.error());

@@ -758,6 +758,12 @@ void SyncEngine::slotPropagationFinished(bool success)
 
     conflictRecordMaintenance();
 
+    // update placeholders for files that where marked as dirty in a previous run
+    qCInfo(lcEngine) << "Updating files marked as dirty";
+    for (const auto &record : _journal->getFileRecordsWithDirtyPlaceholders()) {
+        _propagator->updateMetadata(*SyncFileItem::fromSyncJournalFileRecord(record));
+    }
+
     _journal->deleteStaleFlagsEntries();
     _journal->commit(QStringLiteral("All Finished."), false);
 

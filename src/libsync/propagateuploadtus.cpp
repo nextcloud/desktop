@@ -59,9 +59,8 @@ UploadDevice *PropagateUploadFileTUS::prepareDevice(const quint64 &chunkSize)
     const QString localFileName = propagator()->fullLocalPath(_item->_file);
     // If the file is currently locked, we want to retry the sync
     // when it becomes available again.
-    const auto lockMode = propagator()->syncOptions().requiredLockMode();
-    if (FileSystem::isFileLocked(localFileName, lockMode)) {
-        emit propagator()->seenLockedFile(localFileName, lockMode);
+    if (FileSystem::isFileLocked(localFileName, FileSystem::LockMode::Shared)) {
+        emit propagator()->seenLockedFile(localFileName, FileSystem::LockMode::Shared);
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(localFileName));
         return nullptr;
     }

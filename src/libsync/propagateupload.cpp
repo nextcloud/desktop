@@ -571,17 +571,10 @@ void PropagateUploadFileCommon::finalize()
         return;
     }
 
-
-#ifdef Q_OS_WIN
-    m_fileLock.close();
-#endif
     // Update the database entry
     const auto result = propagator()->updateMetadata(*_item);
     if (!result) {
         done(SyncFileItem::FatalError, tr("Error updating metadata: %1").arg(result.error()));
-        return;
-    } else if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
-        done(SyncFileItem::SoftError, tr("The file %1 is currently in use").arg(_item->_file));
         return;
     }
 

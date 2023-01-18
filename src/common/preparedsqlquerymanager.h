@@ -29,7 +29,7 @@ class OCSYNC_EXPORT PreparedSqlQuery
 public:
     ~PreparedSqlQuery();
 
-    explicit operator bool() const { return _ok; }
+    operator bool() const { return _ok; }
 
     SqlQuery *operator->() const
     {
@@ -94,6 +94,8 @@ public:
         CountDehydratedFilesQuery,
         SetPinStateQuery,
         WipePinStateQuery,
+
+        GetFileReocrdsWithDirtyPlaceholdersQuery,
 
         PreparedQueryCount
     };

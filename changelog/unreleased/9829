@@ -1,0 +1,7 @@
+Enhancement: Sync virtual files that are locked by office etc
+
+We now upload locked files again when Windows virtual files are used.
+This was disabled in 2.9.0 as it caused the file metadata and the locked files to get out of sync.
+The new solution implements explicit handling of outdated placeholders.
+
+https://github.com/owncloud/client/issues/9829

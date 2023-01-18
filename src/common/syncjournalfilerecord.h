@@ -58,6 +58,7 @@ public:
     qint64 _fileSize = 0;
     RemotePermissions _remotePerm;
     bool _serverHasIgnoredFiles = false;
+    bool _hasDirtyPlaceholder = false;
     QByteArray _checksumHeader;
 };
 

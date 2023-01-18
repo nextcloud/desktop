@@ -63,6 +63,7 @@ public:
     bool getFileRecordsByFileId(const QByteArray &fileId, const std::function<void(const SyncJournalFileRecord &)> &rowCallback);
     bool getFilesBelowPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
     bool listFilesInPath(const QByteArray &path, const std::function<void(const SyncJournalFileRecord&)> &rowCallback);
+    const QVector<SyncJournalFileRecord> getFileRecordsWithDirtyPlaceholders() const;
     Result<void, QString> setFileRecord(const SyncJournalFileRecord &record);
 
     bool deleteFileRecord(const QString &filename, bool recursively = false);
@@ -416,7 +417,7 @@ private:
      */
     QByteArray _journalMode;
 
-    PreparedSqlQueryManager _queryManager;
+    mutable PreparedSqlQueryManager _queryManager;
 
     /**
      * Whether the db was already closed, prevent recreation

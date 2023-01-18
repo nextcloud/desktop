@@ -795,10 +795,14 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::updateMetad
 {
     const QString fsPath = fullLocalPath(item.destination());
     const auto result = updatePlaceholder(item, fsPath, {});
-    if (!result || result.get() != Vfs::ConvertToPlaceholderResult::Ok) {
+    if (!result) {
         return result;
     }
-    const auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    auto record = item.toSyncJournalFileRecordWithInode(fsPath);
+    if (result.get() == Vfs::ConvertToPlaceholderResult::Locked) {
+        record._hasDirtyPlaceholder = true;
+        Q_EMIT seenLockedFile(fullLocalPath(item._file), FileSystem::LockMode::Exclusive);
+    }
     const auto dBresult = _journal->setFileRecord(record);
     if (!dBresult) {
         return dBresult.error();

@@ -92,9 +92,8 @@ void PropagateUploadFileNG::doStartUpload()
     const QString fileName = propagator()->fullLocalPath(_item->_file);
     // If the file is currently locked, we want to retry the sync
     // when it becomes available again.
-    const auto lockMode = propagator()->syncOptions().requiredLockMode();
-    if (FileSystem::isFileLocked(fileName, lockMode)) {
-        emit propagator()->seenLockedFile(fileName, lockMode);
+    if (FileSystem::isFileLocked(fileName, FileSystem::LockMode::Shared)) {
+        emit propagator()->seenLockedFile(fileName, FileSystem::LockMode::Shared);
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(fileName)));
         return;
     }
@@ -356,19 +355,6 @@ void PropagateUploadFileNG::doFinalMove()
     headers[QByteArrayLiteral("OC-Total-File-Length")] = QByteArray::number(_item->_size);
 
     const QString source = chunkPath() + QStringLiteral("/.file");
-
-#ifdef Q_OS_WIN
-    // Try to accuire a lock on the file and keep it until we done.
-    // If the file is locked, abort before we perform the move on the server
-    const QString fileName = propagator()->fullLocalPath(_item->_file);
-    const auto lockMode = propagator()->syncOptions().requiredLockMode();
-    m_fileLock = FileSystem::lockFile(fileName, lockMode);
-    if (!m_fileLock) {
-        emit propagator()->seenLockedFile(fileName, lockMode);
-        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(fileName)));
-        return;
-    }
-#endif
 
     auto job = new MoveJob(propagator()->account(), propagator()->account()->url(), source, destination, headers, this);
     addChildJob(job);

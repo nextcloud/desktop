@@ -106,14 +106,6 @@ public:
     void setPathPattern(const QString &pattern);
 
 
-    /**
-     * The required file lock mode
-     */
-    FileSystem::LockMode requiredLockMode() const
-    {
-        return _vfs->mode() == Vfs::WindowsCfApi ? FileSystem::LockMode::Exclusive : FileSystem::LockMode::Shared;
-    }
-
 private:
     /**
      * Only sync files that mathc the expression

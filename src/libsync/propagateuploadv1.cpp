@@ -43,9 +43,8 @@ void PropagateUploadFileV1::doStartUpload()
     const QString fileName = propagator()->fullLocalPath(_item->_file);
     // If the file is currently locked, we want to retry the sync
     // when it becomes available again.
-    const auto lockMode = propagator()->syncOptions().requiredLockMode();
-    if (FileSystem::isFileLocked(fileName, lockMode)) {
-        emit propagator()->seenLockedFile(fileName, lockMode);
+    if (FileSystem::isFileLocked(fileName, FileSystem::LockMode::Shared)) {
+        emit propagator()->seenLockedFile(fileName, FileSystem::LockMode::Shared);
         abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(QDir::toNativeSeparators(fileName)));
         return;
     }

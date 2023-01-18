@@ -121,7 +121,6 @@ public:
     };
     Q_ENUM(Mode)
     enum class ConvertToPlaceholderResult {
-        Error,
         Ok,
         Locked
     };
