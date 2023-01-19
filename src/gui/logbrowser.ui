@@ -68,8 +68,7 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.&lt;/p&gt;&lt;p&gt;Since log files can get large, the client will start a new one for each sync run and compress older ones.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
