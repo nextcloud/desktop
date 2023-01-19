@@ -922,7 +922,7 @@ void AccountSettings::slotAccountStateChanged()
     refreshSelectiveSyncStatus();
 
     if (_accountState) {
-        _toggleReconnect->setEnabled(!_accountState->isConnected());
+        _toggleReconnect->setEnabled(!_accountState->isConnected() && !_accountState->isSignedOut());
         // set the correct label for the Account toolbox button
         if (_accountState->isSignedOut()) {
             _toggleSignInOutAction->setText(tr("Log in"));
