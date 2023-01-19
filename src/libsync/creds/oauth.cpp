@@ -225,7 +225,7 @@ void logCredentialsJobResult(CredentialJob *credentialsJob)
     qCDebug(lcOauth) << "credentials job has finished";
 
     if (!credentialsJob->data().isValid()) {
-        qCCritical(lcOauth) << "Failed to read client id" << credentialsJob->errorString();
+        qCInfo(lcOauth) << "Failed to read client id" << credentialsJob->errorString();
     }
 }
 }
