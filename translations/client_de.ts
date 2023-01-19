@@ -1702,7 +1702,7 @@ Erwägung Sie, diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation>Einen Lokalen Ordner auswählen</translation>
+        <translation>Einen lokalen Ordner auswählen</translation>
     </message>
 </context>
 <context>
@@ -2137,7 +2137,7 @@ Objekte, bei denen das Löschen erlaubt ist, werden gelöscht, falls sie die Lö
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
         <translation>Der Client kann Debug-Logs in einen temporären Ordner schreiben. Die darin enthaltenen Informationen sind hilfreich zur Diagnose von Problemen.
-Da diese Logs sehr groß werden können, erstellt der Client für jede Synchronisierung ein neues Log und komprimiert Ältere. Es empfiehlt sich, die automatische Löschung von Log-Dateien nach ein paar Stunden einzuschalten. Damit wird verhindert, dass zu viel Speicherplatz belegt wird. </translation>
+Da diese Logs sehr groß werden können, erstellt der Client für jede Synchronisierung ein neues Log und komprimiert ältere. Es empfiehlt sich, die automatische Löschung von Log-Dateien nach ein paar Stunden einzuschalten. Damit wird verhindert, dass zu viel Speicherplatz belegt wird. </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
@@ -2493,7 +2493,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
         <source>Could not download update. Please click &lt;a href=&apos;%1&apos;&gt;here&lt;/a&gt; to download the update manually.</source>
-        <translation>Aktualisierung kann nicht herunter geladen werden. Bitte klicken Sie &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt;, um die Aktualisierung manuell herunterzuladen.</translation>
+        <translation>Aktualisierung kann nicht heruntergeladen werden. Bitte klicken Sie &lt;a href=&apos;%1&apos;&gt;hier&lt;/a&gt;, um die Aktualisierung manuell herunterzuladen.</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
