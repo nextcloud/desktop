@@ -4,37 +4,37 @@
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="33"/>
         <source>✓ You&apos;re all set!</source>
-        <translation type="unfinished"/>
+        <translation>✓ Está tudo pronto!</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="68"/>
         <source>Advanced configuration</source>
-        <translation type="unfinished"/>
+        <translation>Configuração avançada</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="140"/>
         <source>Configure files download:</source>
-        <translation type="unfinished"/>
+        <translation>Configure arquivos para download:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="147"/>
         <source>Download everything</source>
-        <translation type="unfinished"/>
+        <translation>Baixe tudo</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="157"/>
         <source>After completing this wizard, you can set up folder synchronization manually.</source>
-        <translation type="unfinished"/>
+        <translation>Depois de concluir este assistente, você pode configurar a sincronização de pastas manualmente.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="160"/>
         <source>Configure synchronization manually</source>
-        <translation type="unfinished"/>
+        <translation>Configure sincronização manual</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="207"/>
         <source>Choose local download directory:</source>
-        <translation type="unfinished"/>
+        <translation>Escolha o diretório local para download</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.ui" line="219"/>
@@ -71,7 +71,7 @@
     <message>
         <location filename="../src/libsync/appprovider.cpp" line="90"/>
         <source>Failed to open %1 in web. Error: %2.</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao abrir %1 na web. Erro: %2.</translation>
     </message>
 </context>
 <context>
@@ -94,12 +94,12 @@
     <message>
         <location filename="../src/common/checksums.cpp" line="125"/>
         <source>The checksum header is malformed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Cabeçalho checksum inválido: %1</translation>
     </message>
     <message>
         <location filename="../src/common/checksums.cpp" line="129"/>
         <source>The checksum header contained an unknown checksum type &apos;%1&apos;</source>
-        <translation>A cabeçalho da soma de verificação continha um tipo de soma de verificação desconhecido &apos;%1&apos;</translation>
+        <translation>Cabeçalho de verificação checksum contém um tipo de checksum desconhecido &apos;%1&apos;</translation>
     </message>
 </context>
 <context>
@@ -323,7 +323,7 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/loginrequireddialog.ui" line="20"/>
         <source>Login required</source>
-        <translation type="unfinished"/>
+        <translation>Login necessário</translation>
     </message>
 </context>
 <context>
@@ -354,12 +354,12 @@
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="63"/>
         <source>Open Browser</source>
-        <translation type="unfinished"/>
+        <translation>Navegador Aberto</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="76"/>
         <source>Copy URL to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copiar URL para a área de transferência</translation>
     </message>
     <message>
         <location filename="../src/gui/loginrequireddialog/oauthloginwidget.ui" line="176"/>
@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Reconectar</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
@@ -589,12 +589,14 @@ Esta ação irá anular qualquer sincronização atualmente em execução.</tran
         <source>The account %1 is currently logged out.
 
 Please authenticate using your browser.</source>
-        <translation type="unfinished"/>
+        <translation>A conta %1 está desconectada no momento.
+
+Por favor, autentique usando seu navegador.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="875"/>
         <source>Reauthorization required.</source>
-        <translation type="unfinished"/>
+        <translation>Reautorização necessária.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="884"/>
@@ -604,17 +606,17 @@ Please authenticate using your browser.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="890"/>
         <source>No connection to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Sem conexão com %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="894"/>
         <source>Server configuration error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Erro de configuração do servidor: %1.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="905"/>
         <source>No connection configured.</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma conexão configurada.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="928"/>
@@ -979,7 +981,7 @@ Utilitário de sincronização de arquivos na área de trabalho. </translation>
     <message>
         <location filename="../src/gui/application.cpp" line="641"/>
         <source>--logfile and --logdir are mutually exclusive</source>
-        <translation type="unfinished"/>
+        <translation>--logfile e --logdir são mutuamente exclusivos</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="655"/>
@@ -1013,7 +1015,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Quando o modo &quot;arquivos virtuais&quot; estiver ativado, nenhum arquivo será baixado inicialmente. Em vez disso, um pequeno arquivo será criado para cada arquivo existente no servidor. O conteúdo pode ser baixado executando esses arquivos ou usando seu menu de contexto.
+
+O modo de arquivos virtuais é mutuamente exclusivo com sincronização seletiva. As pastas atualmente não selecionadas serão convertidas em pastas somente online e suas configurações de sincronização seletiva serão redefinidas.
+
+Mudar para este modo abortará qualquer sincronização em execução.
+
+Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer problemas que surgirem.</translation>
     </message>
     <message>
         <location filename="../src/gui/askexperimentalvirtualfilesfeaturemessagebox.cpp" line="23"/>
@@ -1079,7 +1087,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/connectionvalidator.cpp" line="317"/>
         <source>The configured server for this client is too old.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor configurado para este cliente é muito antigo.</translation>
     </message>
 </context>
 <context>
@@ -1095,12 +1103,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="50"/>
         <source>Server did not ask for authorization</source>
-        <translation type="unfinished"/>
+        <translation>Servidor não pediu autorização</translation>
     </message>
     <message>
         <location filename="../src/libsync/determineauthtypejobfactory.cpp" line="53"/>
         <source>Failed to determine auth type: %1</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao determinar o tipo de autenticação: %1</translation>
     </message>
 </context>
 <context>
@@ -1153,7 +1161,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/networkjobs/fetchuserinfojobfactory.cpp" line="66"/>
         <source>Failed to retrieve user info</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao recuperar informações do usuário</translation>
     </message>
 </context>
 <context>
@@ -1472,7 +1480,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1434"/>
         <source>%1 - %2@%3</source>
-        <translation type="unfinished"/>
+        <translation>%1 - %2@%3</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1493,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="47"/>
         <source>Add a Space</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar um Espaço</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusdelegate.cpp" line="298"/>
@@ -1530,7 +1538,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="156"/>
         <source>Click this button to add a space.</source>
-        <translation type="unfinished"/>
+        <translation>Clique neste botão para adicionar um espaço.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="230"/>
@@ -1548,7 +1556,8 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
         <location filename="../src/gui/folderstatusmodel.cpp" line="296"/>
         <source>Signed out
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Assinado
+%1</translation>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="930"/>
@@ -1693,7 +1702,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/folderwizard/folderwizardlocalpath.cpp" line="100"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Selecione a pasta local</translation>
     </message>
 </context>
 <context>
@@ -1810,7 +1819,7 @@ Considere remover esta pasta da conta e adicioná-la novamente.</translation>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="55"/>
         <source>Start on &amp;Login</source>
-        <translation type="unfinished"/>
+        <translation>Começar em &amp;Login</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="73"/>
@@ -1981,7 +1990,7 @@ Observe que isso seleciona apenas de qual conjunto de atualizações são retira
     <message>
         <location filename="../src/gui/creds/httpcredentialsgui.cpp" line="116"/>
         <source>Please enter your password to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, digite sua senha para entrar em sua conta.</translation>
     </message>
 </context>
 <context>
@@ -2149,7 +2158,7 @@ Como os arquivos de log podem ficar grandes, o cliente iniciará um novo para ca
     <message>
         <location filename="../src/gui/logbrowser.ui" line="132"/>
         <source>Log files to keep:</source>
-        <translation type="unfinished"/>
+        <translation>Arquivos de registro a serem mantidos:</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="167"/>
@@ -2436,22 +2445,22 @@ foi baixado. A versão instalada é %3.&lt;/p&gt;</translation>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="401"/>
         <source>&lt;h1&gt;Wrong user&lt;/h1&gt;&lt;p&gt;You logged-in with user &lt;em&gt;%1&lt;/em&gt;, but must login with user &lt;em&gt;%2&lt;/em&gt;.&lt;br&gt;Please return to the %3 client and restart the authentication.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;usuário errado&lt;/h1&gt;&lt;p&gt;Você se conectou com o usuário&lt;em&gt;%1&lt;/em&gt;, mas deve fazer login com o usuário 4%2&lt;/em&gt;.&lt;br&gt;Por favor, retorne ao %3 cliente e reinicie a autenticação.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="405"/>
         <source>Wrong user</source>
-        <translation type="unfinished"/>
+        <translation>usuário errado</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="409"/>
         <source>&lt;h1&gt;Login Successful&lt;/h1&gt;&lt;p&gt;You can close this window.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Login bem-sucedido&lt;/h1&gt;&lt;p&gt;Você pode fechar esta janela.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="410"/>
         <source>Login Successful</source>
-        <translation type="unfinished"/>
+        <translation>Login bem-sucedido</translation>
     </message>
     <message>
         <location filename="../src/libsync/creds/oauth.cpp" line="564"/>
@@ -3469,7 +3478,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="94"/>
         <source>You can direct people to this shared file or folder %1 by giving them a private link</source>
-        <translation type="unfinished"/>
+        <translation>Você pode direcionar as pessoas para este arquivo ou pasta compartilhada %1 dando a eles um link privado</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="216"/>
@@ -3652,7 +3661,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="975"/>
         <source>Open in %1</source>
-        <translation type="unfinished"/>
+        <translation>Aberto em %1</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="983"/>
@@ -3706,7 +3715,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesdelegate.cpp" line="162"/>
         <source>Open in Web</source>
-        <translation type="unfinished"/>
+        <translation>Abrir na web</translation>
     </message>
 </context>
 <context>
@@ -3714,7 +3723,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="45"/>
         <source>Sync</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizar</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="47"/>
@@ -3724,17 +3733,17 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="49"/>
         <source>Subtitle</source>
-        <translation type="unfinished"/>
+        <translation>Subtítulo</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="51"/>
         <source>Web URL</source>
-        <translation type="unfinished"/>
+        <translation>URL da Web</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="53"/>
         <source>Web Dav URL</source>
-        <translation type="unfinished"/>
+        <translation>URL de Davi Web</translation>
     </message>
     <message>
         <location filename="../src/gui/spaces/spacesmodel.cpp" line="55"/>
@@ -3832,7 +3841,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="439"/>
         <source>&lt;p&gt;Version %1. For more information visit &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;For known issues and help, please visit: &lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;By Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Versão %1. Para mais informações visite &lt;a href=&quot;%2&quot;&gt;https://%3&lt;/a&gt;&lt;/p&gt;&lt;p&gt;Para problemas conhecidos e ajuda, visite:&lt;a href=&quot;https://central.owncloud.org/c/desktop-client&quot;&gt;https://central.owncloud.org&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;small&gt;Por Klaas Freitag, Daniel Molkentin, Olivier Goffart, Markus Götz,  Jan-Christoph Borchardt, Thomas Müller,&lt;br&gt;Dominik Schmidt, Michael Stingl, Hannah von Reth, Fabian Müller and others.&lt;/small&gt;&lt;/p&gt;&lt;p&gt;Copyright ownCloud GmbH&lt;/p&gt;&lt;p&gt;Distributed by %4 and licensed under the GNU General Public License (GPL) Version 2.0.&lt;br/&gt;%5 and the %5 logo are registered trademarks of %4 in the United States, other countries, or both.&lt;/p&gt;&lt;p&gt;&lt;small&gt;%6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3840,7 +3849,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="14"/>
         <source>TLS Certificate Error</source>
-        <translation type="unfinished"/>
+        <translation>Erro de certificado TLS</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.ui" line="42"/>
@@ -3850,7 +3859,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="29"/>
         <source>Cannot connect securely to %1</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível conectar-se com segurança a %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="69"/>
@@ -3860,7 +3869,7 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;com certificado %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organização %2&lt;br/&gt;Unidade: %3&lt;br/&gt;País: %4&lt;/p&gt;&lt;p&gt;Impressão digital (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Impressão digital (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Impressão digital (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Data efetiva: %8Data de validade: %9&lt;/div&gt;&lt;h3&gt;Emissor: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organização: %11&lt;br/&gt;Unidade: %12&lt;br/&gt;Pàis: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -3868,19 +3877,21 @@ for additional privileges during the process.</source>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="36"/>
         <source>Installed version: %1</source>
-        <translation type="unfinished"/>
+        <translation>Versão instalada: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="37"/>
         <source>Available update: %1</source>
-        <translation type="unfinished"/>
+        <translation>Atualização disponível:%1</translation>
     </message>
     <message>
         <location filename="../src/gui/updater/appimageupdateavailabledialog.cpp" line="38"/>
         <source>An update is available for this AppImage of %1. Do you want to install this update?
 
 The update will be performed in the background, and overwrite the current AppImage file. You need to restart the app to complete the update.</source>
-        <translation type="unfinished"/>
+        <translation>Uma atualização está disponível para este AppImage de %1. Deseja instalar esta atualização?
+
+A atualização será executada em segundo plano e substituirá o arquivo AppImage atual. Você precisa reiniciar o aplicativo para concluir a atualização.</translation>
     </message>
 </context>
 <context>
@@ -3945,7 +3956,7 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/states/accountconfiguredsetupwizardstate.cpp" line="64"/>
         <source>Invalid local download directory: %1</source>
-        <translation type="unfinished"/>
+        <translation>Diretório de download local inválido:%1</translation>
     </message>
 </context>
 <context>
@@ -3958,22 +3969,22 @@ The update will be performed in the background, and overwrite the current AppIma
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="55"/>
         <source>%1 (recommended)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (recomendado)</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="73"/>
         <source>The virtual filesystem feature is not available for this installation.</source>
-        <translation type="unfinished"/>
+        <translation>O recurso de sistema de arquivos virtual não está disponível para esta instalação.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="75"/>
         <source>The virtual filesystem feature is not stable yet. Use with caution.</source>
-        <translation type="unfinished"/>
+        <translation>O recurso do sistema de arquivos virtual ainda não está estável. Use com cuidado.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="79"/>
         <source>Select the local folder</source>
-        <translation type="unfinished"/>
+        <translation>Selecione a pasta local</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="120"/>
@@ -3989,7 +4000,13 @@ The virtual files mode is mutually exclusive with selective sync. Currently unse
 Switching to this mode will abort any currently running synchronization.
 
 This is a new, experimental mode. If you decide to use it, please report any issues that come up.</source>
-        <translation type="unfinished"/>
+        <translation>Quando o modo &quot;arquivos virtuais&quot; estiver ativado, nenhum arquivo será baixado inicialmente. Em vez disso, um pequeno arquivo será criado para cada arquivo existente no servidor. O conteúdo pode ser baixado executando esses arquivos ou usando seu menu de contexto.
+
+O modo de arquivos virtuais é mutuamente exclusivo com sincronização seletiva. As pastas atualmente não selecionadas serão convertidas em pastas somente online e suas configurações de sincronização seletiva serão redefinidas.
+
+Mudar para este modo abortará qualquer sincronização em execução.
+
+Este é um novo modo experimental. Se você decidir usá-lo, informe quaisquer problemas que surgirem.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/accountconfiguredwizardpage.cpp" line="136"/>
@@ -4007,12 +4024,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="27"/>
         <source>Please enter your credentials to log in to your account.</source>
-        <translation type="unfinished"/>
+        <translation>Insira suas credenciais para fazer login em sua conta.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/basiccredentialssetupwizardpage.cpp" line="34"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Conectando a &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4020,22 +4037,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="42"/>
         <source>Invalid credentials</source>
-        <translation type="unfinished"/>
+        <translation>Credenciais inválidas</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="65"/>
         <source>Failed to fetch user display name</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao buscar o nome de exibição do usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="70"/>
         <source>Login failed: username and/or password incorrect</source>
-        <translation type="unfinished"/>
+        <translation>Falha no login: nome de usuário e/ou senha incorretos</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/basiccredentialssetupwizardstate.cpp" line="75"/>
         <source>Login failed: %1</source>
-        <translation type="unfinished"/>
+        <translation>Falha na autenticação: %1</translation>
     </message>
 </context>
 <context>
@@ -4043,7 +4060,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/checkbasicauthjobfactory.cpp" line="51"/>
         <source>Invalid reply received from server</source>
-        <translation type="unfinished"/>
+        <translation>Resposta inválida recebida do servidor</translation>
     </message>
 </context>
 <context>
@@ -4051,17 +4068,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="57"/>
         <source>Could not detect compatible server at %1</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível detectar o servidor compatível em %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="86"/>
         <source>User rejected redirect from %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>O usuário rejeitou o redirecionamento de %1 para %2</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/jobs/resolveurljobfactory.cpp" line="114"/>
         <source>User rejected invalid SSL certificate</source>
-        <translation type="unfinished"/>
+        <translation>O usuário rejeitou o certificado SSL inválido</translation>
     </message>
 </context>
 <context>
@@ -4069,17 +4086,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="31"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Conectando a &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="40"/>
         <source>Reopen Browser</source>
-        <translation type="unfinished"/>
+        <translation>Reabrir Navegador</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/oauthcredentialssetupwizardpage.cpp" line="50"/>
         <source>Please use your browser to log in to %1.</source>
-        <translation type="unfinished"/>
+        <translation>Por favor, use seu navegador para fazer login %1.</translation>
     </message>
 </context>
 <context>
@@ -4087,12 +4104,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="50"/>
         <source>Error while trying to log in to OAuth2-enabled server.</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao tentar fazer login no servidor habilitado para OAuth2.</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/oauthcredentialssetupwizardstate.cpp" line="55"/>
         <source>Server reports that OAuth2 is not supported.</source>
-        <translation type="unfinished"/>
+        <translation>O servidor relata que o OAuth2 não é compatível.</translation>
     </message>
 </context>
 <context>
@@ -4108,18 +4125,19 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="83"/>
         <source>Invalid server URL</source>
-        <translation type="unfinished"/>
+        <translation>URL do servidor inválido</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="89"/>
         <source>Insecure connection</source>
-        <translation type="unfinished"/>
+        <translation>Conexão insegura</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="90"/>
         <source>The connection to %1 is insecure.
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>A conexão com %1 é insegura.
+Tem certeza de que deseja continuar?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="97"/>
@@ -4129,7 +4147,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/serverurlsetupwizardstate.cpp" line="100"/>
         <source>Insecure server rejected by user</source>
-        <translation type="unfinished"/>
+        <translation>Servidor inseguro rejeitado pelo usuário</translation>
     </message>
 </context>
 <context>
@@ -4137,22 +4155,22 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="111"/>
         <source>Finish</source>
-        <translation type="unfinished"/>
+        <translation>Terminar</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="113"/>
         <source>Next &gt;</source>
-        <translation type="unfinished"/>
+        <translation>Próximo &gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Cancel Setup</source>
-        <translation type="unfinished"/>
+        <translation>Cancelar Configuração</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.cpp" line="158"/>
         <source>Do you really want to cancel the account setup?</source>
-        <translation type="unfinished"/>
+        <translation>Você realmente deseja cancelar a configuração da conta?</translation>
     </message>
 </context>
 <context>
@@ -4160,7 +4178,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="27"/>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Conectando a &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
 </context>
 <context>
@@ -4168,12 +4186,12 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="39"/>
         <source>Failed to parse WebFinger response: %1</source>
-        <translation type="unfinished"/>
+        <translation>Falha ao analisar a resposta do WebFinger: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/states/webfingersetupwizardstate.cpp" line="44"/>
         <source>WebFinger endpoint did not send href attribute</source>
-        <translation type="unfinished"/>
+        <translation>O endpoint WebFinger não enviou o atributo href</translation>
     </message>
 </context>
 <context>
@@ -4365,7 +4383,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="825"/>
         <source>Show %1</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar %1</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="826"/>
@@ -4472,7 +4490,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/serverurlsetupwizardpage.ui" line="88"/>
         <source>What is your server&apos;s address?</source>
-        <translation type="unfinished"/>
+        <translation>Qual é o endereço do seu servidor?</translation>
     </message>
 </context>
 <context>
@@ -4490,7 +4508,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
         <source>WebFinger</source>
-        <translation type="unfinished"/>
+        <translation>WebFinger</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
@@ -4500,7 +4518,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
         <source>Sync Options</source>
-        <translation type="unfinished"/>
+        <translation>Opções de Sincronização</translation>
     </message>
 </context>
 <context>
@@ -4508,7 +4526,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="14"/>
         <source>Add New Account</source>
-        <translation type="unfinished"/>
+        <translation>Adicionar Nova Conta</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="90"/>
@@ -4523,7 +4541,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/setupwizardwindow.ui" line="141"/>
         <source>&lt; Back</source>
-        <translation type="unfinished"/>
+        <translation>&lt; Voltar</translation>
     </message>
 </context>
 <context>
@@ -4539,7 +4557,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/folderwizard/spacespage.ui" line="17"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Add a Space&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Select a Space to sync it to your computer.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:700;&quot;&gt;Adicionar um Espaço&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Selecione um Space para sincronizá-lo com seu computador.6&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
 </context>
 <context>
@@ -4611,7 +4629,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="691"/>
         <source>E-mail address</source>
-        <translation type="unfinished"/>
+        <translation>Endereço de e-mail</translation>
     </message>
 </context>
 <context>
@@ -4687,7 +4705,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
         <source>Please enter your username:</source>
-        <translation type="unfinished"/>
+        <translation>Por favor insira seu nome de usuário:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>
@@ -4714,7 +4732,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="417"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Bibliotecas Qt %3, %4%7Usando o plug-in de arquivos virtuais: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4722,7 +4740,7 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/libsync/theme.cpp" line="407"/>
         <source>%1 (Built against Qt %2)</source>
-        <translation type="unfinished"/>
+        <translation>%1 (Construído contra Qt %2)</translation>
     </message>
 </context>
 <context>
