@@ -1,4 +1,4 @@
-set(LibreGraphAPIVersion v0.13.2)
+set(LibreGraphAPIVersion v1.0.1)
 # TODO: pass version to find_package once LibreGraphAPI provides versioned releases
 find_package(LibreGraphAPI QUIET)
 if (NOT TARGET OpenAPI::LibreGraphAPI)
