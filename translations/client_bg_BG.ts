@@ -2125,6 +2125,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Регистрационен изход</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Активиране на записването във временна папка</translation>
@@ -2133,13 +2139,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Регистрационните файлове съдържат чувствителна информация, която не трябва да правите публично достояние&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Клиентът може да записва дневници за отстраняване на грешки във временна папка. Тези дневници са много полезни за диагностициране на проблеми.
-Тъй като регистрационните файлове могат да станат големи, клиентът ще стартира нов за всяко изпълнение на синхронизация и ще компресира по-старите. Препоръчва се също така да активирате изтриването на регистрационните файлове след няколко часа, за да не се консумира твърде много дисково пространство.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

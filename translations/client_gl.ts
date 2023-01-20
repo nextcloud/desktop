@@ -2115,6 +2115,12 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
         <translation>Rexistro da saída</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Activar o rexistro no cartafol temporal</translation>
@@ -2123,13 +2129,6 @@ Os elementos onde se permite a eliminación eliminaranse se impiden que se elimi
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Os rexistros conteñen información confidencial que non debería facer pública&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>O cliente pode escribir rexistros de depuración nun cartafol temporal. Estes rexistros son moi útiles para diagnosticar problemas.
-Como os ficheiros de rexistro poden aumentar de tamaño, o cliente iniciará un novo para cada execución de sincronización e comprimirá os máis antigos. Recomendase tamén activar a eliminación de ficheiros de rexistro após un par de horas para evitar ocupar espazo de máis no disco.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

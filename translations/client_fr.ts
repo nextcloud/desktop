@@ -2114,6 +2114,12 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
         <translation>Consigner la sortie dans des fichiers de log</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Activer la journalisation dans le dossier temporaire</translation>
@@ -2122,13 +2128,6 @@ Les éléments dont la suppression est autorisée seront supprimés s&apos;ils e
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Les journaux contiennent des informations sensibles que vous ne devez pas rendre publiques&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Le client peut écrire des journaux de déboguage dans un dossier temporaire. Ces journaux sont utiles pour diagnostiquer des problèmes.
-Depuis que le journal peut être plus grand, le client démarrera un nouveau journal pour chaque synchronisation lancée et compresse les anciens journaux. Il est recommandé d&apos;activer la suppression des fichiers journaux après plusieurs heures afin d&apos;éviter qu&apos;ils n&apos;occupent trop d&apos;espace mémoire.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

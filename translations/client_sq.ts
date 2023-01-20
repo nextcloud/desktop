@@ -2126,6 +2126,12 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <translation>Përgjigje Regjistri</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Aktivizo regjistrim për dosje të përkohshme</translation>
@@ -2134,13 +2140,6 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Regjistrat përmbajnë të dhëna rezervat të cilat s’duhet t’i bëni të passhme publikisht&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Klienti mund të shkruajë regjistra diagnostikimi te një dosje e përkohshme. Këta regjistra janë shumë të dobishëm për diagnostikim problemesh.
-Ngaqë kartelat regjistër mund të bëhen të mëdha, klienti do të fillojë një të re për çdo xhirim njëkohësimi dhe të vjetrat do t’i ngjeshë. Rekomandohet gjithashtu të aktivizohet fshirja e kartelave regjistër pas ca orësh, për të shmangur konsum të lartë hapësire në disk.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

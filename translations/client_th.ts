@@ -2114,6 +2114,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>ผลลัพธ์ของไฟล์ log</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>เปิดใช้งานการเก็บบันทึกไปยังโฟลเดอร์ชั่วคราว</translation>
@@ -2122,13 +2128,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;บันทึกมีข้อมูลที่ละเอียดอ่อนซึ่งคุณไม่ควรเปิดเผยต่อสาธารณะ&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>ไคลเอนต์สามารถเขียนบันทึกการแก้ไขข้อบกพร่องไปยังโฟลเดอร์ชั่วคราว บันทึกเหล่านี้มีประโยชน์มากสำหรับการวินิจฉัยปัญหา
-เนื่องจากไฟล์บันทึกมีขนาดใหญ่ไคลเอ็นต์จะเริ่มต้นไฟล์ใหม่สำหรับการซิงค์แต่ละครั้งและบีบอัดไฟล์เก่า ขอแนะนำให้เปิดใช้งานการลบไฟล์บันทึกหลังจากผ่านไปสองสามชั่วโมงเพื่อหลีกเลี่ยงการใช้พื้นที่ดิสก์มากเกินไป</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

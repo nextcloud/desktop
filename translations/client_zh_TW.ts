@@ -2113,6 +2113,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>記錄輸出</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>啟用記錄到臨時目錄</translation>
@@ -2121,13 +2127,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;&lt;html&gt;記錄包含敏感信息，您不應將這些信息公開可用的&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>客戶端可以將除錯記錄寫入臨時目錄。 這些記錄對於診斷問題非常有用。
-由於記錄文件會變大，因此客戶端將為每次同步運行啟動一個新文件，並壓縮較舊的文件。 還建議啟用幾個小時後刪除記錄文件，以避免佔用過多的磁盤空間。</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
