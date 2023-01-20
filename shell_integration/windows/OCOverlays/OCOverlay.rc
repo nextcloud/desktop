@@ -1,0 +1,7 @@
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_STATE_ERROR         ICON                    "ico\\Error.ico"
+IDI_STATE_OK            ICON                    "ico\\OK.ico"
+IDI_STATE_OK_SWM        ICON                    "ico\\OK_Shared.ico"
+IDI_STATE_SYNC          ICON                    "ico\\Sync.ico"
+IDI_STATE_WARNING       ICON                    "ico\\Warning.ico"
