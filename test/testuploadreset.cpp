@@ -65,6 +65,7 @@ private slots:
         uploadInfo._valid = true;
         uploadInfo._modtime = Utility::qDateTimeToTime_t(modTime);
         uploadInfo._size = size;
+        uploadInfo._contentChecksum = "DUMMY_FOR_TESTS:0x1";
         fakeFolder.syncEngine().journal()->setUploadInfo(QStringLiteral("A/a0"), uploadInfo);
 
         fakeFolder.uploadState().mkdir(QStringLiteral("1"));

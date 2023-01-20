@@ -12,20 +12,18 @@
  * for more details.
  */
 
-#include "config.h"
-#include "propagateupload.h"
-#include "owncloudpropagator_p.h"
-#include "networkjobs.h"
 #include "account.h"
+#include "common/asserts.h"
 #include "common/syncjournaldb.h"
-#include "common/syncjournalfilerecord.h"
 #include "common/utility.h"
 #include "filesystem.h"
+#include "networkjobs.h"
+#include "owncloudpropagator_p.h"
+#include "propagateremotedelete.h"
+#include "propagateremotemove.h"
+#include "propagateupload.h"
 #include "propagatorjobs.h"
 #include "syncengine.h"
-#include "propagateremotemove.h"
-#include "propagateremotedelete.h"
-#include "common/asserts.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -110,8 +108,7 @@ void PropagateUploadFileNG::doStartUpload()
 void PropagateUploadFileNG::doStartUploadNext()
 {
     const SyncJournalDb::UploadInfo progressInfo = propagator()->_journal->getUploadInfo(_item->_file);
-    if (progressInfo._valid && progressInfo.isChunked() && progressInfo._modtime == _item->_modtime
-            && progressInfo._size == _item->_size) {
+    if (progressInfo.isChunked() && progressInfo.validate(_item->_size, _item->_modtime, _item->_checksumHeader)) {
         _transferId = progressInfo._transferid;
         auto job = new PropfindJob(propagator()->account(), propagator()->account()->url(), chunkPath(), PropfindJob::Depth::One, this);
         addChildJob(job);
@@ -291,12 +288,8 @@ void PropagateUploadFileNG::startNewUpload()
 
     propagator()->reportProgress(*_item, 0);
 
-    SyncJournalDb::UploadInfo pi;
-    pi._valid = true;
+    auto pi = _item->toUploadInfo();
     pi._transferid = _transferId;
-    pi._modtime = _item->_modtime;
-    pi._contentChecksum = _item->_checksumHeader;
-    pi._size = _item->_size;
     propagator()->_journal->setUploadInfo(_item->_file, pi);
     propagator()->_journal->commit(QStringLiteral("Upload info"));
     QMap<QByteArray, QByteArray> headers;

@@ -117,12 +117,20 @@ public:
         bool _valid = false;
         QByteArray _contentChecksum;
         QString _path; // stored as utf16
+        QUrl _url; // upload url (tus)
         /**
          * Returns true if this entry refers to a chunked upload that can be continued.
          * (As opposed to a small file transfer which is stored in the db so we can detect the case
          * when the upload succeeded, but the connection was dropped before we got the answer)
          */
         bool isChunked() const { return _transferid != 0; }
+
+        bool validate(qint64 size, qint64 modtime, const QByteArray &checksum) const
+        {
+            Q_ASSERT(!checksum.isEmpty());
+            Q_ASSERT(!_contentChecksum.isEmpty());
+            return _valid && _size == size && _modtime == modtime && _contentChecksum == checksum;
+        }
     };
 
     DownloadInfo getDownloadInfo(const QString &file);
@@ -379,6 +387,8 @@ private:
     void commitTransaction();
     QVector<QByteArray> tableColumns(const QByteArray &table);
     bool checkConnect();
+
+    bool createUploadInfo();
 
     // Same as forceRemoteDiscoveryNextSync but without acquiring the lock
     void forceRemoteDiscoveryNextSyncLocked();

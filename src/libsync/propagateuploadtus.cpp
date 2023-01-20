@@ -34,7 +34,6 @@
 #include <QDir>
 
 #include <cmath>
-#include <cstring>
 #include <memory>
 
 namespace {
@@ -117,14 +116,25 @@ void PropagateUploadFileTUS::doStartUpload()
         return;
     }
     propagator()->reportProgress(*_item, 0);
-    startNextChunk();
     propagator()->_activeJobList.append(this);
+
+    const auto info = propagator()->_journal->getUploadInfo(_item->_file);
+    if (info.validate(_item->_size, _item->_modtime, _item->_checksumHeader)) {
+        _location = info._url;
+        Q_ASSERT(_location.isValid());
+        auto job = new SimpleNetworkJob(propagator()->account(), _location, {}, "HEAD", nullptr, {}, this);
+        connect(job, &SimpleNetworkJob::finishedSignal, this, &PropagateUploadFileTUS::slotChunkFinished);
+        job->start();
+    } else {
+        startNextChunk();
+    }
 }
 
 void PropagateUploadFileTUS::startNextChunk()
 {
     if (propagator()->_abortRequested)
         return;
+
     const quint64 chunkSize = [&] {
         auto chunkSize = _item->_size - _currentOffset;
         if (propagator()->account()->capabilities().tusSupport().max_chunk_size) {
@@ -144,7 +154,7 @@ void PropagateUploadFileTUS::startNextChunk()
         qCDebug(lcPropagateUploadTUS) << "Starting to patch upload:" << propagator()->fullRemotePath(_item->_file);
         job = new SimpleNetworkJob(propagator()->account(), _location, {}, "PATCH", device, req, this);
     } else {
-        OC_ASSERT(_location.isEmpty());
+        Q_ASSERT(_location.isEmpty());
         qCDebug(lcPropagateUploadTUS) << "Starting creation with upload:" << propagator()->fullRemotePath(_item->_file);
         job = makeCreationWithUploadJob(&req, device);
     }
@@ -167,7 +177,7 @@ void PropagateUploadFileTUS::startNextChunk()
 void PropagateUploadFileTUS::slotChunkFinished()
 {
     SimpleNetworkJob *job = qobject_cast<SimpleNetworkJob *>(sender());
-    OC_ASSERT(job);
+    Q_ASSERT(job);
     qCDebug(lcPropagateUploadTUS) << propagator()->fullRemotePath(_item->_file) << HttpLogger::requestVerb(*job->reply());
 
     _item->_httpErrorCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
@@ -226,6 +236,13 @@ void PropagateUploadFileTUS::slotChunkFinished()
         }
     }
     if (!_finished) {
+        // we just started the upload
+        if (HttpLogger::requestVerb(*job->reply()) == QByteArrayLiteral("POST")) {
+            // add the new location
+            auto info = _item->toUploadInfo();
+            info._url = _location;
+            propagator()->_journal->setUploadInfo(_item->_file, info);
+        }
         startNextChunk();
         return;
     }

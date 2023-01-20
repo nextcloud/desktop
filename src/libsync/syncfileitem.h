@@ -23,8 +23,9 @@
 
 #include <set>
 
-#include <common/utility.h>
-#include <csync.h>
+#include "common/syncjournaldb.h"
+#include "common/utility.h"
+#include "csync.h"
 
 #include "owncloudlib.h"
 
@@ -287,6 +288,16 @@ public:
 
     bool _relevantDirectoyInstruction = false;
     bool _finished = false;
+
+    auto toUploadInfo() const
+    {
+        SyncJournalDb::UploadInfo out;
+        out._valid = true;
+        out._modtime = _modtime;
+        out._contentChecksum = _checksumHeader;
+        out._size = _size;
+        return out;
+    }
 };
 
 
