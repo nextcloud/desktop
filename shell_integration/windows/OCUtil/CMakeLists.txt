@@ -2,7 +2,6 @@ add_library(OCUtil STATIC
     CommunicationSocket.cpp
     RemotePathChecker.cpp
     StringUtil.cpp
-    OCUtil.rc
  )
 
 target_include_directories(OCUtil

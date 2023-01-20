@@ -10,6 +10,8 @@ add_library(OCOverlays MODULE
 target_link_libraries(OCOverlays
     OCUtil)
 
+add_windows_version_info(OCOverlays)
+
 install(TARGETS OCOverlays
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}
