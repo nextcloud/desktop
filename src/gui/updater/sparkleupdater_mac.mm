@@ -19,6 +19,7 @@
 #include <AppKit/NSApplication.h>
 
 #include "common/utility.h"
+#include "configfile.h"
 #include "updater/sparkleupdater.h"
 
 @interface DelegateObject : NSObject <SUUpdaterDelegate>
@@ -119,17 +120,23 @@ void SparkleUpdater::setUpdateUrl(const QUrl &url)
     [d->updater setFeedURL: nsurl];
 }
 
-// FIXME: Should be changed to not instanicate the SparkleUpdater at all in this case
+// FIXME: Should be changed to not instantiate the SparkleUpdater at all in this case
 bool autoUpdaterAllowed()
 {
     // See https://github.com/owncloud/client/issues/2931
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];
     NSString *expectedPath = [NSString stringWithFormat:@"/Applications/%@", [bundlePath lastPathComponent]];
-    if ([expectedPath isEqualTo:bundlePath]) {
-        return true;
+    if (![expectedPath isEqualTo:bundlePath]) {
+        qCWarning(lcUpdater) << "We are not in /Applications, won't check for update!";
+        return false;
     }
-    qCWarning(lcUpdater) << "We are not in /Applications, won't check for update!";
-    return false;
+
+    if(ConfigFile().skipUpdateCheck()) {
+        qCWarning(lcUpdater) << "Auto-updating has been set to skip in nextcloud.cfg, won't check for update.";
+        return false;
+    }
+
+    return true;
 }
 
 

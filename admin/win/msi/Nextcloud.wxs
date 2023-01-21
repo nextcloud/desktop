@@ -81,7 +81,7 @@
 		<Custom Action="RegistryCleanupCustomAction" After="RemoveFiles">(NOT UPGRADINGPRODUCTCODE) AND (REMOVE="ALL")</Custom>
 
         <!-- Schedule Reboot for the Shell Extensions (in silent installation mode only, or if SCHEDULE_REBOOT argument is set-->
-        <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR (NOT (UILevel=2) AND NOT (DO_NOT_REBOOT_IN_SILENT=1))</ScheduleReboot>
+        <ScheduleReboot After="InstallFinalize">(SCHEDULE_REBOOT=1) OR NOT (UILevel=2)</ScheduleReboot>
     </InstallExecuteSequence>
 
     <!-- "Add or Remove" Programs Entries -->
@@ -148,7 +148,7 @@
         <Directory Id="$(var.PlatformProgramFilesFolder)" Name="PFiles">
             <Directory Id="INSTALLDIR" Name="$(var.AppName)">
                 <!-- Shell Extensions -->
-                <Directory Id="ShellExtDir" Name="shellext" />
+                <Directory Id="ShellExtDir" />
             </Directory>
         </Directory>
 
@@ -191,6 +191,19 @@
                 <RegistryValue Type="integer" Name="skipUpdateCheck" Value="[SKIPAUTOUPDATE]" />
             </RegistryKey>
         </Component>
+		<!-- Register URI handler -->
+        <Component Id="RegistryUriHandler" Guid="*" Win64="$(var.PlatformWin64)">
+            <RegistryKey Root="HKCU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+                <RegistryValue Type="string" Value="URL:$(var.AppName) Protocol" />
+				<RegistryValue Type="string" Name="URL Protocol" Value="" />
+            </RegistryKey>
+            <RegistryKey Root="HKCU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\DefaultIcon" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+                <RegistryValue Type="string" Value="[INSTALLDIR]$(var.AppExe)" />
+            </RegistryKey>
+            <RegistryKey Root="HKCU" Key="Software\Classes\$(var.AppCommandOpenUrlScheme)\shell\open\command" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+                <RegistryValue Type="string" Value="&quot;[INSTALLDIR]$(var.AppExe)&quot; &quot;%1&quot;" />
+            </RegistryKey>
+        </Component>
     </DirectoryRef>
 
     <!-- Features -->
@@ -200,6 +213,7 @@
 
         <ComponentRef Id="RegistryVersionInfo" />
         <ComponentRef Id="RegistryDefaultSettings" />
+		<ComponentRef Id="RegistryUriHandler" />
 
         <Feature Id="ShellExtensions" Title="Integration for Windows Explorer"
             Description="This feature requires a reboot." >

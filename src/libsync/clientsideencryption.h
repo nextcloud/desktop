@@ -99,8 +99,8 @@ public:
 
     QByteArray chunkDecryption(const char *input, quint64 chunkSize);
 
-    bool isInitialized() const;
-    bool isFinished() const;
+    [[nodiscard]] bool isInitialized() const;
+    [[nodiscard]] bool isFinished() const;
 
 private:
     Q_DISABLE_COPY(StreamingDecryptor)
@@ -116,21 +116,19 @@ private:
 class OWNCLOUDSYNC_EXPORT ClientSideEncryption : public QObject {
     Q_OBJECT
 public:
+    class PKey;
+
     ClientSideEncryption();
     void initialize(const AccountPtr &account);
 
 private:
     void generateKeyPair(const AccountPtr &account);
-    void generateCSR(const AccountPtr &account, EVP_PKEY *keyPair);
+    void generateCSR(const AccountPtr &account, PKey keyPair);
+    void sendSignRequestCSR(const AccountPtr &account, PKey keyPair, const QByteArray &csrContent);
     void encryptPrivateKey(const AccountPtr &account);
 
 public:
     void forgetSensitiveData(const AccountPtr &account);
-
-    bool newMnemonicGenerated() const;
-
-public slots:
-    void slotRequestMnemonic();
 
 private slots:
     void publicKeyFetched(QKeychain::Job *incoming);
@@ -138,9 +136,7 @@ private slots:
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
 signals:
-    void initializationFinished();
-    void mnemonicGenerated(const QString& mnemonic);
-    void showMnemonic(const QString& mnemonic);
+    void initializationFinished(bool isNewMnemonicGenerated = false);
 
 private:
     void getPrivateKeyFromServer(const AccountPtr &account);
@@ -150,8 +146,8 @@ private:
 
     void fetchFromKeyChain(const AccountPtr &account);
 
-    bool checkPublicKeyValidity(const AccountPtr &account) const;
-    bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
+    [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
+    [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
     void writePrivateKey(const AccountPtr &account);
     void writeCertificate(const AccountPtr &account);
     void writeMnemonic(const AccountPtr &account);
@@ -186,7 +182,8 @@ public:
     void addEncryptedFile(const EncryptedFile& f);
     void removeEncryptedFile(const EncryptedFile& f);
     void removeAllEncryptedFiles();
-    QVector<EncryptedFile> files() const;
+    [[nodiscard]] QVector<EncryptedFile> files() const;
+    [[nodiscard]] bool isMetadataSetup() const;
 
 
 private:
@@ -196,11 +193,11 @@ private:
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
 
-    QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
-    QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
+    [[nodiscard]] QByteArray encryptMetadataKey(const QByteArray& metadataKey) const;
+    [[nodiscard]] QByteArray decryptMetadataKey(const QByteArray& encryptedKey) const;
 
-    QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
-    QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
+    [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
+    [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
     QVector<EncryptedFile> _files;
     QMap<int, QByteArray> _metadataKeys;

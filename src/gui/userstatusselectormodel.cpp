@@ -15,9 +15,7 @@
 #include "userstatusselectormodel.h"
 #include "tray/usermodel.h"
 
-#include <ocsuserstatusconnector.h>
 #include <qnamespace.h>
-#include <userstatusconnector.h>
 #include <theme.h>
 
 #include <QDateTime>
@@ -76,10 +74,26 @@ UserStatusSelectorModel::UserStatusSelectorModel(const UserStatus &userStatus,
     _userStatus.setIcon("😀");
 }
 
-void UserStatusSelectorModel::load(int id)
+int UserStatusSelectorModel::userIndex() const
 {
+    return _userIndex;
+}
+
+void UserStatusSelectorModel::setUserIndex(const int userIndex)
+{
+    if(userIndex < 0) {
+        qCWarning(lcUserStatusDialogModel) << "Invalid user index: " << _userIndex;
+        return;
+    }
+
     reset();
-    _userStatusConnector = UserModel::instance()->userStatusConnector(id);
+
+    _userIndex = userIndex;
+    emit userIndexChanged();
+
+    qCDebug(lcUserStatusDialogModel) << "Loading user status connector for user with index: " << _userIndex;
+    _userStatusConnector = UserModel::instance()->userStatusConnector(_userIndex);
+
     init();
 }
 
@@ -103,6 +117,7 @@ void UserStatusSelectorModel::reset()
 void UserStatusSelectorModel::init()
 {
     if (!_userStatusConnector) {
+        qCWarning(lcUserStatusDialogModel) << "No user status connector set";
         return;
     }
 
@@ -141,23 +156,23 @@ void UserStatusSelectorModel::onError(UserStatusConnector::Error error)
         return;
 
     case UserStatusConnector::Error::CouldNotFetchUserStatus:
-        setError(tr("Could not fetch user status. Make sure you are connected to the server."));
+        setError(tr("Could not fetch status. Make sure you are connected to the server."));
         return;
 
     case UserStatusConnector::Error::UserStatusNotSupported:
-        setError(tr("User status feature is not supported. You will not be able to set your user status."));
+        setError(tr("Status feature is not supported. You will not be able to set your status."));
         return;
 
     case UserStatusConnector::Error::EmojisNotSupported:
-        setError(tr("Emojis feature is not supported. Some user status functionality may not work."));
+        setError(tr("Emojis are not supported. Some status functionality may not work."));
         return;
 
     case UserStatusConnector::Error::CouldNotSetUserStatus:
-        setError(tr("Could not set user status. Make sure you are connected to the server."));
+        setError(tr("Could not set status. Make sure you are connected to the server."));
         return;
 
     case UserStatusConnector::Error::CouldNotClearMessage:
-        setError(tr("Could not clear user status message. Make sure you are connected to the server."));
+        setError(tr("Could not clear status message. Make sure you are connected to the server."));
         return;
     }
 
@@ -177,13 +192,13 @@ void UserStatusSelectorModel::clearError()
 
 void UserStatusSelectorModel::setOnlineStatus(UserStatus::OnlineStatus status)
 {
-    if (status == _userStatus.state()) {
+    if (!_userStatusConnector || status == _userStatus.state()) {
         return;
     }
 
     _userStatus.setState(status);
     _userStatusConnector->setUserStatus(_userStatus);
-    emit onlineStatusChanged();
+    emit userStatusChanged();
 }
 
 QUrl UserStatusSelectorModel::onlineIcon() const
@@ -235,9 +250,7 @@ QString UserStatusSelectorModel::userStatusEmoji() const
 
 void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
 {
-    if (userStatus.state() != UserStatus::OnlineStatus::Offline) {
-        _userStatus.setState(userStatus.state());
-    }
+    _userStatus.setState(userStatus.state());
     _userStatus.setMessage(userStatus.message());
     _userStatus.setMessagePredefined(userStatus.messagePredefined());
     _userStatus.setId(userStatus.id());
@@ -248,8 +261,7 @@ void UserStatusSelectorModel::onUserStatusFetched(const UserStatus &userStatus)
     }
 
     emit userStatusChanged();
-    emit onlineStatusChanged();
-    emit clearAtChanged();
+    emit clearAtDisplayStringChanged();
 }
 
 Optional<ClearAt> UserStatusSelectorModel::clearStageTypeToDateTime(ClearStageType type) const
@@ -300,7 +312,6 @@ Optional<ClearAt> UserStatusSelectorModel::clearStageTypeToDateTime(ClearStageTy
 
 void UserStatusSelectorModel::setUserStatus()
 {
-    Q_ASSERT(_userStatusConnector);
     if (!_userStatusConnector) {
         return;
     }
@@ -311,7 +322,6 @@ void UserStatusSelectorModel::setUserStatus()
 
 void UserStatusSelectorModel::clearUserStatus()
 {
-    Q_ASSERT(_userStatusConnector);
     if (!_userStatusConnector) {
         return;
     }
@@ -320,36 +330,27 @@ void UserStatusSelectorModel::clearUserStatus()
     _userStatusConnector->clearMessage();
 }
 
-void UserStatusSelectorModel::onPredefinedStatusesFetched(const std::vector<UserStatus> &statuses)
+void UserStatusSelectorModel::onPredefinedStatusesFetched(const QVector<UserStatus> &statuses)
 {
     _predefinedStatuses = statuses;
     emit predefinedStatusesChanged();
 }
 
-UserStatus UserStatusSelectorModel::predefinedStatus(int index) const
+QVector<UserStatus> UserStatusSelectorModel::predefinedStatuses() const
 {
-    Q_ASSERT(0 <= index && index < static_cast<int>(_predefinedStatuses.size()));
-    return _predefinedStatuses[index];
+    return _predefinedStatuses;
 }
 
-int UserStatusSelectorModel::predefinedStatusesCount() const
+void UserStatusSelectorModel::setPredefinedStatus(const UserStatus &predefinedStatus)
 {
-    return static_cast<int>(_predefinedStatuses.size());
-}
-
-void UserStatusSelectorModel::setPredefinedStatus(int index)
-{
-    Q_ASSERT(0 <= index && index < static_cast<int>(_predefinedStatuses.size()));
-
     _userStatus.setMessagePredefined(true);
-    const auto predefinedStatus = _predefinedStatuses[index];
     _userStatus.setId(predefinedStatus.id());
     _userStatus.setMessage(predefinedStatus.message());
     _userStatus.setIcon(predefinedStatus.icon());
     _userStatus.setClearAt(predefinedStatus.clearAt());
 
     emit userStatusChanged();
-    emit clearAtChanged();
+    emit clearAtDisplayStringChanged();
 }
 
 QString UserStatusSelectorModel::clearAtStageToString(ClearStageType stage) const
@@ -378,21 +379,24 @@ QString UserStatusSelectorModel::clearAtStageToString(ClearStageType stage) cons
     }
 }
 
-QStringList UserStatusSelectorModel::clearAtValues() const
+QVariantList UserStatusSelectorModel::clearStageTypes() const
 {
-    QStringList clearAtStages;
-    std::transform(_clearStages.begin(), _clearStages.end(),
-        std::back_inserter(clearAtStages),
-        [this](const ClearStageType &stage) { return clearAtStageToString(stage); });
+    QVariantList clearStageTypes;
 
-    return clearAtStages;
+    for(const auto clearStageType : _clearStages) {
+        QVariantMap clearStageToAdd;
+        clearStageToAdd.insert(QStringLiteral("display"), clearAtStageToString(clearStageType));
+        clearStageToAdd.insert(QStringLiteral("clearStageType"), QVariant::fromValue(clearStageType));
+        clearStageTypes.append(clearStageToAdd);
+    }
+
+    return clearStageTypes;
 }
 
-void UserStatusSelectorModel::setClearAt(int index)
+void UserStatusSelectorModel::setClearAt(const ClearStageType clearStageType)
 {
-    Q_ASSERT(0 <= index && index < static_cast<int>(_clearStages.size()));
-    _userStatus.setClearAt(clearStageTypeToDateTime(_clearStages[index]));
-    emit clearAtChanged();
+    _userStatus.setClearAt(clearStageTypeToDateTime(clearStageType));
+    emit clearAtDisplayStringChanged();
 }
 
 QString UserStatusSelectorModel::errorMessage() const
@@ -428,6 +432,12 @@ QString UserStatusSelectorModel::timeDifferenceToString(int differenceSecs) cons
     }
 }
 
+QString UserStatusSelectorModel::clearAtReadable(const UserStatus &status) const
+{
+    const auto clearAt = status.clearAt();
+    return clearAtReadable(clearAt);
+}
+
 QString UserStatusSelectorModel::clearAtReadable(const Optional<ClearAt> &clearAt) const
 {
     if (clearAt) {
@@ -457,13 +467,9 @@ QString UserStatusSelectorModel::clearAtReadable(const Optional<ClearAt> &clearA
     return tr("Don't clear");
 }
 
-QString UserStatusSelectorModel::predefinedStatusClearAt(int index) const
-{
-    return clearAtReadable(predefinedStatus(index).clearAt());
-}
-
-QString UserStatusSelectorModel::clearAt() const
+QString UserStatusSelectorModel::clearAtDisplayString() const
 {
     return clearAtReadable(_userStatus.clearAt());
 }
+
 }

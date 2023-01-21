@@ -6,7 +6,6 @@
 #include "theme.h"
 #include "application.h"
 #include "owncloudgui.h"
-#include "headerbanner.h"
 #include "wizard/owncloudwizardcommon.h"
 #ifdef WITH_WEBENGINE
 #include "wizard/webview.h"
@@ -36,6 +35,7 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
     _containerLayout->setMargin(margin);
 
     _infoLabel = new QLabel();
+    _infoLabel->setTextFormat(Qt::PlainText);
     _infoLabel->setAlignment(Qt::AlignCenter);
     _containerLayout->addWidget(_infoLabel);
 
@@ -61,10 +61,11 @@ WebFlowCredentialsDialog::WebFlowCredentialsDialog(Account *account, bool useFlo
 #endif // WITH_WEBENGINE
     }
 
-    auto app = static_cast<Application *>(qApp);
+    auto app = dynamic_cast<Application *>(qApp);
     connect(app, &Application::isShowingSettingsDialog, this, &WebFlowCredentialsDialog::slotShowSettingsDialog);
 
     _errorLabel = new QLabel();
+    _errorLabel->setTextFormat(Qt::PlainText);
     _errorLabel->hide();
     _containerLayout->addWidget(_errorLabel);
 

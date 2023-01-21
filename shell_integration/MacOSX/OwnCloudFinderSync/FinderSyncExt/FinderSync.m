@@ -21,57 +21,59 @@
 - (instancetype)init
 {
 	self = [super init];
-	
-	FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
-	NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
-	// This was added to the bundle's Info.plist to get it from the build system
-	NSString *socketApiPrefix = [extBundle objectForInfoDictionaryKey:@"SocketApiPrefix"];
 
-	NSImage *ok = [extBundle imageForResource:@"ok.icns"];
-	NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
-	NSImage *sync = [extBundle imageForResource:@"sync.icns"];
-	NSImage *warning = [extBundle imageForResource:@"warning.icns"];
-	NSImage *error = [extBundle imageForResource:@"error.icns"];
-
-	[syncController setBadgeImage:ok label:@"Up to date" forBadgeIdentifier:@"OK"];
-	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC"];
-	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW"];
-	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE"];
-	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR"];
-	[syncController setBadgeImage:ok_swm label:@"Shared" forBadgeIdentifier:@"OK+SWM"];
-	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC+SWM"];
-	[syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW+SWM"];
-	[syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
-	[syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
-
-	// The Mach port name needs to:
-	// - Be prefixed with the code signing Team ID
-	// - Then infixed with the sandbox App Group
-	// - The App Group itself must be a prefix of (or equal to) the application bundle identifier
-	// We end up in the official signed client with: 9B5WD74GWJ.com.owncloud.desktopclient.socket
-	// With ad-hoc signing (the '-' signing identity) we must drop the Team ID.
-	// When the code isn't sandboxed (e.g. the OC client or the legacy overlay icon extension)
-	// the OS doesn't seem to put any restriction on the port name, so we just follow what
-	// the sandboxed App Extension needs.
-	// https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
-    
-    NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
-    NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:NO];
-    
-    NSLog(@"Socket path: %@", socketPath.path);
-
-    if (socketPath.path) {
-        self.lineProcessor = [[LineProcessor alloc] initWithDelegate:self];
-        self.localSocketClient = [[LocalSocketClient alloc] init:socketPath.path
-                                                                 lineProcessor:self.lineProcessor];
-        [self.localSocketClient start];
-    } else {
-        NSLog(@"No socket path. Not initiating local socket client.");
-        self.localSocketClient = nil;
+    if (self) {
+        FIFinderSyncController *syncController = [FIFinderSyncController defaultController];
+        NSBundle *extBundle = [NSBundle bundleForClass:[self class]];
+        // This was added to the bundle's Info.plist to get it from the build system
+        NSString *socketApiPrefix = [extBundle objectForInfoDictionaryKey:@"SocketApiPrefix"];
+        
+        NSImage *ok = [extBundle imageForResource:@"ok.icns"];
+        NSImage *ok_swm = [extBundle imageForResource:@"ok_swm.icns"];
+        NSImage *sync = [extBundle imageForResource:@"sync.icns"];
+        NSImage *warning = [extBundle imageForResource:@"warning.icns"];
+        NSImage *error = [extBundle imageForResource:@"error.icns"];
+        
+        [syncController setBadgeImage:ok label:@"Up to date" forBadgeIdentifier:@"OK"];
+        [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC"];
+        [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW"];
+        [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE"];
+        [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR"];
+        [syncController setBadgeImage:ok_swm label:@"Shared" forBadgeIdentifier:@"OK+SWM"];
+        [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"SYNC+SWM"];
+        [syncController setBadgeImage:sync label:@"Synchronizing" forBadgeIdentifier:@"NEW+SWM"];
+        [syncController setBadgeImage:warning label:@"Ignored" forBadgeIdentifier:@"IGNORE+SWM"];
+        [syncController setBadgeImage:error label:@"Error" forBadgeIdentifier:@"ERROR+SWM"];
+        
+        // The Mach port name needs to:
+        // - Be prefixed with the code signing Team ID
+        // - Then infixed with the sandbox App Group
+        // - The App Group itself must be a prefix of (or equal to) the application bundle identifier
+        // We end up in the official signed client with: 9B5WD74GWJ.com.owncloud.desktopclient.socket
+        // With ad-hoc signing (the '-' signing identity) we must drop the Team ID.
+        // When the code isn't sandboxed (e.g. the OC client or the legacy overlay icon extension)
+        // the OS doesn't seem to put any restriction on the port name, so we just follow what
+        // the sandboxed App Extension needs.
+        // https://developer.apple.com/library/mac/documentation/Security/Conceptual/AppSandboxDesignGuide/AppSandboxInDepth/AppSandboxInDepth.html#//apple_ref/doc/uid/TP40011183-CH3-SW24
+        
+        NSURL *container = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:socketApiPrefix];
+        NSURL *socketPath = [container URLByAppendingPathComponent:@".socket" isDirectory:NO];
+        
+        NSLog(@"Socket path: %@", socketPath.path);
+        
+        if (socketPath.path) {
+            self.lineProcessor = [[LineProcessor alloc] initWithDelegate:self];
+            self.localSocketClient = [[LocalSocketClient alloc] init:socketPath.path
+                                                       lineProcessor:self.lineProcessor];
+            [self.localSocketClient start];
+        } else {
+            NSLog(@"No socket path. Not initiating local socket client.");
+            self.localSocketClient = nil;
+        }
+        _registeredDirectories = [[NSMutableSet alloc] init];
+        _strings = [[NSMutableDictionary alloc] init];
+        _menuIsComplete = [[NSCondition alloc] init];
     }
-    _registeredDirectories = [[NSMutableSet alloc] init];
-    _strings = [[NSMutableDictionary alloc] init];
-    _menuIsComplete = [[NSCondition alloc] init];
 
     return self;
 }

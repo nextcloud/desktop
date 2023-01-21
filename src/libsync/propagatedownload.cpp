@@ -219,7 +219,7 @@ void GETFileJob::slotMetaDataChanged()
     qint64 start = 0;
     QByteArray ranges = reply()->rawHeader("Content-Range");
     if (!ranges.isEmpty()) {
-        const QRegularExpression rx("bytes (\\d+)-");
+        static const QRegularExpression rx("bytes (\\d+)-");
         const auto rxMatch = rx.match(ranges);
         if (rxMatch.hasMatch()) {
             start = rxMatch.captured(1).toLongLong();
@@ -459,7 +459,11 @@ void PropagateDownloadFile::start()
     const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
 
     SyncJournalFileRecord parentRec;
-    propagator()->_journal->getFileRecord(parentPath, &parentRec);
+    if (!propagator()->_journal->getFileRecord(parentPath, &parentRec)) {
+        qCWarning(lcPropagateDownload) << "could not get file from local DB" << parentPath;
+        done(SyncFileItem::NormalError, tr("could not get file %1 from local DB").arg(parentPath));
+        return;
+    }
 
     const auto account = propagator()->account();
     if (!account->capabilities().clientSideEncryptionAvailable() ||
@@ -502,7 +506,13 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
             done(SyncFileItem::NormalError, r.error());
             return;
         }
-        propagator()->_journal->deleteFileRecord(_item->_originalFile);
+
+        if (!propagator()->_journal->deleteFileRecord(_item->_originalFile)) {
+            qCWarning(lcPropagateDownload) << "could not delete file from local DB" << _item->_originalFile;
+            done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(_item->_originalFile));
+            return;
+        }
+
         updateMetadata(false);
 
         if (!_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite)) {
@@ -518,14 +528,14 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
     }
     if (_item->_type == ItemTypeVirtualFile) {
         if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::NormalError, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            done(SyncFileItem::FileNameClash, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
             return;
         }
 
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
         // do a klaas' case clash check.
         if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::NormalError, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            done(SyncFileItem::FileNameClash, tr("File %1 can not be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
             return;
         }
         auto r = vfs->createPlaceholder(*_item);
@@ -623,7 +633,7 @@ void PropagateDownloadFile::startDownload()
 
     // do a klaas' case clash check.
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::FileNameClash, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
@@ -855,7 +865,7 @@ void PropagateDownloadFile::slotGetFinished()
     // of the compressed data. See QTBUG-73364.
     const auto contentEncoding = job->reply()->rawHeader("content-encoding").toLower();
     if ((contentEncoding == "gzip" || contentEncoding == "deflate")
-        && (job->reply()->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool()
+        && (job->reply()->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool()
          || job->reply()->attribute(QNetworkRequest::SpdyWasUsedAttribute).toBool())) {
         bodySize = 0;
         hasSizeHeader = false;
@@ -1096,13 +1106,39 @@ void PropagateDownloadFile::contentChecksumComputed(const QByteArray &checksumTy
 {
     _item->_checksumHeader = makeChecksumHeader(checksumType, checksum);
 
+    const auto localFilePath = propagator()->fullLocalPath(_item->_file);
+    SyncJournalFileRecord record;
+    if (_item->_instruction != CSYNC_INSTRUCTION_CONFLICT && FileSystem::fileExists(localFilePath)
+        && (propagator()->_journal->getFileRecord(_item->_file, &record) && record.isValid())
+        && (record._modtime == _item->_modtime && record._etag != _item->_etag)) {
+        const auto computeChecksum = new ComputeChecksum(this);
+        computeChecksum->setChecksumType(checksumType);
+        connect(computeChecksum, &ComputeChecksum::done, this, &PropagateDownloadFile::localFileContentChecksumComputed);
+        computeChecksum->start(localFilePath);
+        return;
+    }
+
+    finalizeDownload();
+}
+
+void PropagateDownloadFile::localFileContentChecksumComputed(const QByteArray &checksumType, const QByteArray &checksum)
+{
+    if (_item->_checksumHeader == makeChecksumHeader(checksumType, checksum)) {
+        FileSystem::remove(_tmpFile.fileName());
+        updateMetadata(false);
+        return;
+    }
+    finalizeDownload();
+}
+
+void PropagateDownloadFile::finalizeDownload()
+{
     if (_isEncrypted) {
         if (_downloadEncryptedHelper->decryptFile(_tmpFile)) {
-          downloadFinished();
+            downloadFinished();
         } else {
-          done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString());
+            done(SyncFileItem::NormalError, _downloadEncryptedHelper->errorString());
         }
-
     } else {
         downloadFinished();
     }
@@ -1116,7 +1152,7 @@ void PropagateDownloadFile::downloadFinished()
     // In case of file name clash, report an error
     // This can happen if another parallel download saved a clashing file.
     if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::NormalError, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+        done(SyncFileItem::FileNameClash, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
         return;
     }
 
@@ -1236,7 +1272,12 @@ void PropagateDownloadFile::downloadFinished()
             auto fn = propagator()->fullLocalPath(virtualFile);
             qCDebug(lcPropagateDownload) << "Download of previous virtual file finished" << fn;
             QFile::remove(fn);
-            propagator()->_journal->deleteFileRecord(virtualFile);
+
+            if (!propagator()->_journal->deleteFileRecord(virtualFile)) {
+                qCWarning(lcPropagateDownload) << "could not delete file from local DB" << virtualFile;
+                done(SyncFileItem::NormalError, tr("Could not delete file record %1 from local DB").arg(virtualFile));
+                return;
+            }
 
             // Move the pin state to the new location
             auto pin = propagator()->_journal->internalPinStates().rawForPath(virtualFile.toUtf8());

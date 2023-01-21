@@ -46,8 +46,12 @@
 #include <QPushButton>
 #include <QApplication>
 
-static const char versionC[] = "version";
-
+namespace {
+#ifndef VERSION_C
+#define VERSION_C
+constexpr auto versionC = "version";
+#endif
+}
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolder, "nextcloud.gui.folder", QtInfoMsg)
@@ -79,7 +83,7 @@ Folder::Folder(const FolderDefinition &definition,
 
     _syncResult.setFolder(_definition.alias);
 
-    _engine.reset(new SyncEngine(_accountState->account(), path(), remotePath(), &_journal));
+    _engine.reset(new SyncEngine(_accountState->account(), path(), initializeSyncOptions(), remotePath(), &_journal));
     // pass the setting if hidden files are to be ignored, will be read in csync_update
     _engine->setIgnoreHiddenFiles(_definition.ignoreHiddenFiles);
 
@@ -302,16 +306,12 @@ void Folder::setSyncPaused(bool paused)
     emit canSyncChanged();
 }
 
-void Folder::onAssociatedAccountRemoved()
-{
-    if (_vfs) {
-        _vfs->stop();
-        _vfs->unregisterFolder();
-    }
-}
-
 void Folder::setSyncState(SyncResult::Status state)
 {
+    if (_silenceErrorsUntilNextSync && state == SyncResult::Error) {
+        _syncResult.setStatus(SyncResult::Status::Success);
+        return;
+    }
     _syncResult.setStatus(state);
 }
 
@@ -498,6 +498,7 @@ void Folder::startVfs()
     vfsParams.filesystemPath = path();
     vfsParams.displayName = shortGuiRemotePathOrAppName();
     vfsParams.alias = alias();
+    vfsParams.navigationPaneClsid = navigationPaneClsid().toString();
     vfsParams.remotePath = remotePathTrailingSlash();
     vfsParams.account = _accountState->account();
     vfsParams.journal = &_journal;
@@ -584,7 +585,9 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 
 
     SyncJournalFileRecord record;
-    _journal.getFileRecord(relativePathBytes, &record);
+    if (!_journal.getFileRecord(relativePathBytes, &record)) {
+        qCWarning(lcFolder) << "could not get file from local DB" << relativePathBytes;
+    }
     if (reason != ChangeReason::UnLock) {
         // Check that the mtime/size actually changed or there was
         // an attribute change (pin state) that caused the notification
@@ -620,7 +623,11 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
 
     // Set in the database that we should download the file
     SyncJournalFileRecord record;
-    _journal.getFileRecord(relativepath.toUtf8(), &record);
+    ;
+    if (!_journal.getFileRecord(relativepath.toUtf8(), &record)) {
+        qCWarning(lcFolder) << "could not get file from local DB" << relativepath;
+        return;
+    }
     if (!record.isValid()) {
         qCInfo(lcFolder) << "Did not find file in db";
         return;
@@ -629,8 +636,14 @@ void Folder::implicitlyHydrateFile(const QString &relativepath)
         qCInfo(lcFolder) << "The file is not virtual";
         return;
     }
+
     record._type = ItemTypeVirtualFileDownload;
-    _journal.setFileRecord(record);
+
+    const auto result = _journal.setFileRecord(record);
+    if (!result) {
+        qCWarning(lcFolder) << "Error when setting the file record to the database" << record._path << result.error();
+        return;
+    }
 
     // Change the file's pin state if it's contradictory to being hydrated
     // (suffix-virtual file's pin state is stored at the hydrated path)
@@ -822,8 +835,13 @@ bool Folder::reloadExcludes()
 
 void Folder::startSync(const QStringList &pathList)
 {
-    Q_UNUSED(pathList)
-
+    Q_UNUSED(pathList);
+    setSilenceErrorsUntilNextSync(false);
+    const auto singleItemDiscoveryOptions = _engine->singleItemDiscoveryOptions();
+    Q_ASSERT(!singleItemDiscoveryOptions.discoveryDirItem || singleItemDiscoveryOptions.discoveryDirItem->isDirectory());
+    if (singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isDirectory()) {
+        qCCritical(lcFolder) << "startSync only accepts directory SyncFileItem, not a file.";
+    }
     if (isBusy()) {
         qCCritical(lcFolder) << "ERROR csync is still running and new sync requested.";
         return;
@@ -845,7 +863,7 @@ void Folder::startSync(const QStringList &pathList)
     }
 
     setDirtyNetworkLimits();
-    setSyncOptions();
+    syncEngine().setSyncOptions(initializeSyncOptions());
 
     static std::chrono::milliseconds fullLocalDiscoveryInterval = []() {
         auto interval = ConfigFile().fullLocalDiscoveryInterval();
@@ -859,7 +877,13 @@ void Folder::startSync(const QStringList &pathList)
     bool periodicFullLocalDiscoveryNow =
         fullLocalDiscoveryInterval.count() >= 0 // negative means we don't require periodic full runs
         && _timeSinceLastFullLocalDiscovery.hasExpired(fullLocalDiscoveryInterval.count());
-    if (_folderWatcher && _folderWatcher->isReliable()
+
+    if (!singleItemDiscoveryOptions.filePathRelative.isEmpty()
+        && singleItemDiscoveryOptions.discoveryDirItem && !singleItemDiscoveryOptions.discoveryDirItem->isEmpty()) {
+        qCInfo(lcFolder) << "Going to sync just one file";
+        _engine->setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {singleItemDiscoveryOptions.discoveryPath});
+        _localDiscoveryTracker->startSyncPartialDiscovery();
+    } else if (_folderWatcher && _folderWatcher->isReliable()
         && hasDoneFullLocalDiscovery
         && !periodicFullLocalDiscoveryNow) {
         qCInfo(lcFolder) << "Allowing local discovery to read from the database";
@@ -896,7 +920,7 @@ void Folder::correctPlaceholderFiles()
     }
 }
 
-void Folder::setSyncOptions()
+SyncOptions Folder::initializeSyncOptions() const
 {
     SyncOptions opt;
     ConfigFile cfgFile;
@@ -916,7 +940,7 @@ void Folder::setSyncOptions()
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
 
-    _engine->setSyncOptions(opt);
+    return opt;
 }
 
 void Folder::setDirtyNetworkLimits()
@@ -943,8 +967,10 @@ void Folder::setDirtyNetworkLimits()
 
 void Folder::slotSyncError(const QString &message, ErrorCategory category)
 {
-    _syncResult.appendErrorString(message);
-    emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+    if (!_silenceErrorsUntilNextSync) {
+        _syncResult.appendErrorString(message);
+        emit ProgressDispatcher::instance()->syncError(alias(), message, category);
+    }
 }
 
 void Folder::slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject)
@@ -979,6 +1005,9 @@ void Folder::slotSyncFinished(bool success)
 
     if (syncError) {
         _syncResult.setStatus(SyncResult::Error);
+        if (_silenceErrorsUntilNextSync) {
+            _syncResult.setStatus(SyncResult::Status::Success);
+        }
     } else if (_syncResult.foundFilesNotSynced()) {
         _syncResult.setStatus(SyncResult::Problem);
     } else if (_definition.paused) {
@@ -1132,6 +1161,11 @@ void Folder::slotNextSyncFullLocalDiscovery()
     _timeSinceLastFullLocalDiscovery.invalidate();
 }
 
+void Folder::setSilenceErrorsUntilNextSync(bool silenceErrors)
+{
+    _silenceErrorsUntilNextSync = silenceErrors;
+}
+
 void Folder::schedulePathForLocalDiscovery(const QString &relativePath)
 {
     _localDiscoveryTracker->addTouchedPath(relativePath.toUtf8());
@@ -1250,7 +1284,7 @@ void Folder::registerFolderWatcher()
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,
         this, &Folder::slotWatcherUnreliable);
     _folderWatcher->init(path());
-    _folderWatcher->startNotificatonTest(path() + QLatin1String(".owncloudsync.log"));
+    _folderWatcher->startNotificatonTest(path() + QLatin1String(".nextcloudsync.log"));
 }
 
 bool Folder::virtualFilesEnabled() const

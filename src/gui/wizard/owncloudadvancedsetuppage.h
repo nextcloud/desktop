@@ -20,6 +20,7 @@
 
 #include "wizard/owncloudwizardcommon.h"
 #include "ui_owncloudadvancedsetuppage.h"
+#include "elidedlabel.h"
 
 class QProgressIndicator;
 
@@ -37,14 +38,14 @@ class OwncloudAdvancedSetupPage : public QWizardPage
 public:
     OwncloudAdvancedSetupPage(OwncloudWizard *wizard);
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
     void initializePage() override;
-    int nextId() const override;
+    [[nodiscard]] int nextId() const override;
     bool validatePage() override;
-    QString localFolder() const;
-    QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
-    bool isConfirmBigFolderChecked() const;
+    [[nodiscard]] QString localFolder() const;
+    [[nodiscard]] QStringList selectiveSyncBlacklist() const;
+    [[nodiscard]] bool useVirtualFileSync() const;
+    [[nodiscard]] bool isConfirmBigFolderChecked() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
     void directoriesCreated();
@@ -71,12 +72,11 @@ private:
     bool dataChanged();
     void startSpinner();
     void stopSpinner();
-    QUrl serverUrl() const;
-    qint64 availableLocalSpace() const;
-    QString checkLocalSpace(qint64 remoteSize) const;
+    [[nodiscard]] QUrl serverUrl() const;
+    [[nodiscard]] qint64 availableLocalSpace() const;
+    [[nodiscard]] QString checkLocalSpace(qint64 remoteSize) const;
     void customizeStyle();
     void setServerAddressLabelUrl(const QUrl &url);
-    void setLocalFolderPushButtonPath(const QString &path);
     void styleSyncLogo();
     void styleLocalFolderLabel();
     void setResolutionGuiVisible(bool value);
@@ -93,10 +93,12 @@ private:
     bool _localFolderValid = false;
     QProgressIndicator *_progressIndi;
     QString _remoteFolder;
+    QString _localPath;
     QStringList _selectiveSyncBlacklist;
     qint64 _rSize = -1;
     qint64 _rSelectedSize = -1;
     OwncloudWizard *_ocWizard;
+    QScopedPointer<ElidedLabel> _filePathLabel;
 };
 
 } // namespace OCC

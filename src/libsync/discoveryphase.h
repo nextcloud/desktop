@@ -32,11 +32,20 @@ class ExcludedFiles;
 
 namespace OCC {
 
+namespace LocalDiscoveryEnums {
+
+OCSYNC_EXPORT Q_NAMESPACE
+
 enum class LocalDiscoveryStyle {
     FilesystemOnly, //< read all local data from the filesystem
     DatabaseAndFilesystem, //< read from the db, except for listed paths
 };
 
+Q_ENUM_NS(LocalDiscoveryStyle)
+
+}
+
+using OCC::LocalDiscoveryEnums::LocalDiscoveryStyle;
 
 class Account;
 class SyncJournalDb;
@@ -49,7 +58,6 @@ struct RemoteInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
-    QString renameName;
     QByteArray etag;
     QByteArray fileId;
     QByteArray checksumHeader;
@@ -60,8 +68,9 @@ struct RemoteInfo
     bool isDirectory = false;
     bool isE2eEncrypted = false;
     QString e2eMangledName;
+    bool sharedByMe = false;
 
-    bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isValid() const { return !name.isNull(); }
 
     QString directDownloadUrl;
     QString directDownloadCookies;
@@ -79,7 +88,6 @@ struct LocalInfo
 {
     /** FileName of the entry (this does not contains any directory or path, just the plain name */
     QString name;
-    QString renameName;
     time_t modtime = 0;
     int64_t size = 0;
     uint64_t inode = 0;
@@ -88,7 +96,7 @@ struct LocalInfo
     bool isHidden = false;
     bool isVirtualFile = false;
     bool isSymLink = false;
-    bool isValid() const { return !name.isNull(); }
+    [[nodiscard]] bool isValid() const { return !name.isNull(); }
 };
 
 /**
@@ -104,11 +112,11 @@ public:
 
     void run() override;
 signals:
-    void finished(QVector<LocalInfo> result);
+    void finished(QVector<OCC::LocalInfo> result);
     void finishedFatalError(QString errorString);
     void finishedNonFatalError(QString errorString);
 
-    void itemDiscovered(SyncFileItemPtr item);
+    void itemDiscovered(OCC::SyncFileItemPtr item);
     void childIgnored(bool b);
 private slots:
 private:
@@ -136,9 +144,9 @@ public:
 
     // This is not actually a network job, it is just a job
 signals:
-    void firstDirectoryPermissions(RemotePermissions);
+    void firstDirectoryPermissions(OCC::RemotePermissions);
     void etag(const QByteArray &, const QDateTime &time);
-    void finished(const HttpResult<QVector<RemoteInfo>> &result);
+    void finished(const OCC::HttpResult<QVector<OCC::RemoteInfo>> &result);
 
 private slots:
     void directoryListingIteratedSlot(const QString &, const QMap<QString, QString> &);
@@ -222,7 +230,7 @@ class DiscoveryPhase : public QObject
      * Useful for avoiding processing of items that have already been claimed in
      * a rename (would otherwise be discovered as deletions).
      */
-    bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
+    [[nodiscard]] bool isRenamed(const QString &p) const { return _renamedItemsLocal.contains(p) || _renamedItemsRemote.contains(p); }
 
     int _currentlyActiveJobs = 0;
 
@@ -232,7 +240,7 @@ class DiscoveryPhase : public QObject
 
     void scheduleMoreJobs();
 
-    bool isInSelectiveSyncBlackList(const QString &path) const;
+    [[nodiscard]] bool isInSelectiveSyncBlackList(const QString &path) const;
 
     // Check if the new folder should be deselected or not.
     // May be async. "Return" via the callback, true if the item is blacklisted
@@ -244,7 +252,7 @@ class DiscoveryPhase : public QObject
      * Note that it only considers parent directory renames. So if A/B got renamed to C/D,
      * checking A/B/file would yield C/D/file, but checking A/B would yield A/B.
      */
-    QString adjustRenamedPath(const QString &original, SyncFileItem::Direction) const;
+    [[nodiscard]] QString adjustRenamedPath(const QString &original, SyncFileItem::Direction) const;
 
     /** If the db-path is scheduled for deletion, abort it.
      *
@@ -283,10 +291,14 @@ public:
     // output
     QByteArray _dataFingerprint;
     bool _anotherSyncNeeded = false;
+    QHash<QString, long long> _filesNeedingScheduledSync;
+    QVector<QString> _filesUnscheduleSync;
+
+    QStringList _listExclusiveFiles;
 
 signals:
     void fatalError(const QString &errorString);
-    void itemDiscovered(const SyncFileItemPtr &item);
+    void itemDiscovered(const OCC::SyncFileItemPtr &item);
     void finished();
 
     // A new folder was discovered and was not synced because of the confirmation feature

@@ -46,14 +46,13 @@ public:
     };
     Q_ENUM(Direction)
 
+    // Note: the order of these statuses is used for ordering in the SortedActivityListModel
     enum Status { // stored in 4 bits
         NoStatus,
 
         FatalError, ///< Error that causes the sync to stop
         NormalError, ///< Error attached to a particular file
         SoftError, ///< More like an information
-
-        Success, ///< The file was properly synced
 
         /** Marks a conflict, old or new.
          *
@@ -70,6 +69,12 @@ public:
          * The filename is invalid on this platform and could not created.
          */
         FileNameInvalid,
+
+        /**
+         * There is a file name clash (e.g. attempting to download test.txt when TEST.TXT already exists
+         * on a platform where the filesystem is case-insensitive
+         */
+        FileNameClash,
 
         /** For errors that should only appear in the error view.
          *
@@ -89,7 +94,9 @@ public:
          *
          * A SoftError caused by blacklisting.
          */
-        BlacklistedError
+        BlacklistedError,
+
+        Success, ///< The file was properly synced
     };
     Q_ENUM(Status)
 
@@ -108,7 +115,7 @@ public:
 
     Q_ENUM(LockOwnerType)
 
-    SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
+    [[nodiscard]] SyncJournalFileRecord toSyncJournalFileRecordWithInode(const QString &localFileName) const;
 
     /** Creates a basic SyncFileItem from a DB record
      *
@@ -116,6 +123,10 @@ public:
      * to go through a a SyncFileItem, like PollJob.
      */
     static SyncFileItemPtr fromSyncJournalFileRecord(const SyncJournalFileRecord &rec);
+
+    /** Creates a basic SyncFileItem from remote properties
+     */
+    [[nodiscard]] static SyncFileItemPtr fromProperties(const QString &filePath, const QMap<QString, QString> &properties);
 
 
     SyncFileItem()
@@ -170,7 +181,7 @@ public:
         return data1[prefixL] < data2[prefixL];
     }
 
-    QString destination() const
+    [[nodiscard]] QString destination() const
     {
         if (!_renameTarget.isEmpty()) {
             return _renameTarget;
@@ -178,12 +189,12 @@ public:
         return _file;
     }
 
-    bool isEmpty() const
+    [[nodiscard]] bool isEmpty() const
     {
         return _file.isEmpty();
     }
 
-    bool isDirectory() const
+    [[nodiscard]] bool isDirectory() const
     {
         return _type == ItemTypeDirectory;
     }
@@ -191,7 +202,7 @@ public:
     /**
      * True if the item had any kind of error.
      */
-    bool hasErrorStatus() const
+    [[nodiscard]] bool hasErrorStatus() const
     {
         return _status == SyncFileItem::SoftError
             || _status == SyncFileItem::NormalError
@@ -202,7 +213,7 @@ public:
     /**
      * Whether this item should appear on the issues tab.
      */
-    bool showInIssuesTab() const
+    [[nodiscard]] bool showInIssuesTab() const
     {
         return hasErrorStatus() || _status == SyncFileItem::Conflict;
     }
@@ -210,7 +221,7 @@ public:
     /**
      * Whether this item should appear on the protocol tab.
      */
-    bool showInProtocolTab() const
+    [[nodiscard]] bool showInProtocolTab() const
     {
         return (!showInIssuesTab() || _status == SyncFileItem::Restoration)
             // Don't show conflicts that were resolved as "not a conflict after all"
@@ -301,6 +312,11 @@ public:
     QString _lockEditorApp;
     qint64 _lockTime = 0;
     qint64 _lockTimeout = 0;
+
+    bool _isShared = false;
+    time_t _lastShareStateFetchedTimestamp = 0;
+
+    bool _sharedByMe = false;
 };
 
 inline bool operator<(const SyncFileItemPtr &item1, const SyncFileItemPtr &item2)

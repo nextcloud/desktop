@@ -14,6 +14,7 @@
 
 #include "discoveryphase.h"
 #include "discovery.h"
+#include "helpers.h"
 
 #include "account.h"
 #include "clientsideencryptionjobs.h"
@@ -186,7 +187,7 @@ QPair<bool, QByteArray> DiscoveryPhase::findAndCancelDeletedJob(const QString &o
                 qCWarning(lcDiscovery) << "(*it)->_type" << (*it)->_type;
                 qCWarning(lcDiscovery) << "(*it)->_isRestoration " << (*it)->_isRestoration;
                 Q_ASSERT(false);
-                addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath);
+                emit addErrorToGui(SyncFileItem::Status::FatalError, tr("Error while canceling deletion of a file"), originalPath);
                 emit fatalError(tr("Error while canceling deletion of %1").arg(originalPath));
             }
             (*it)->_instruction = CSYNC_INSTRUCTION_NONE;
@@ -260,7 +261,7 @@ void DiscoveryPhase::scheduleMoreJobs()
 DiscoverySingleLocalDirectoryJob::DiscoverySingleLocalDirectoryJob(const AccountPtr &account, const QString &localPath, OCC::Vfs *vfs, QObject *parent)
  : QObject(parent), QRunnable(), _localPath(localPath), _account(account), _vfs(vfs)
 {
-    qRegisterMetaType<QVector<LocalInfo> >("QVector<LocalInfo>");
+    qRegisterMetaType<QVector<OCC::LocalInfo> >("QVector<OCC::LocalInfo>");
 }
 
 // Use as QRunnable
@@ -451,6 +452,7 @@ static void propertyMapToRemoteInfo(const QMap<QString, QString> &map, RemoteInf
                 // if we are the owner or not.
                 // Piggy back on the persmission field
                 result.remotePerm.setPermission(RemotePermissions::IsShared);
+                result.sharedByMe = true;
             }
         } else if (property == "is-encrypted" && value == QStringLiteral("1")) {
             result.isE2eEncrypted = true;
@@ -583,14 +585,20 @@ void DiscoverySingleDirectoryJob::lsJobFinishedWithoutErrorSlot()
 
 void DiscoverySingleDirectoryJob::lsJobFinishedWithErrorSlot(QNetworkReply *r)
 {
-    QString contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
-    int httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    QString msg = r->errorString();
+    const auto contentType = r->header(QNetworkRequest::ContentTypeHeader).toString();
+    const auto invalidContentType = !contentType.contains("application/xml; charset=utf-8") &&
+                                    !contentType.contains("application/xml; charset=\"utf-8\"") &&
+                                    !contentType.contains("text/xml; charset=utf-8") &&
+                                    !contentType.contains("text/xml; charset=\"utf-8\"");
+    const auto httpCode = r->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    auto msg = r->errorString();
+
     qCWarning(lcDiscovery) << "LSCOL job error" << r->errorString() << httpCode << r->error();
-    if (r->error() == QNetworkReply::NoError
-        && !contentType.contains("application/xml; charset=utf-8")) {
+
+    if (r->error() == QNetworkReply::NoError && invalidContentType) {
         msg = tr("Server error: PROPFIND reply is not XML formatted!");
     }
+
     emit finished(HttpError{ httpCode, msg });
     deleteLater();
 }

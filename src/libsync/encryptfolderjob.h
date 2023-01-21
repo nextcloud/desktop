@@ -33,20 +33,20 @@ public:
     explicit EncryptFolderJob(const AccountPtr &account, SyncJournalDb *journal, const QString &path, const QByteArray &fileId, QObject *parent = nullptr);
     void start();
 
-    QString errorString() const;
+    [[nodiscard]] QString errorString() const;
 
 signals:
     void finished(int status);
 
 private slots:
     void slotEncryptionFlagSuccess(const QByteArray &folderId);
-    void slotEncryptionFlagError(const QByteArray &folderId, int httpReturnCode);
+    void slotEncryptionFlagError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
     void slotLockForEncryptionSuccess(const QByteArray &folderId, const QByteArray &token);
-    void slotLockForEncryptionError(const QByteArray &folderId, int httpReturnCode);
+    void slotLockForEncryptionError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
     void slotUnlockFolderSuccess(const QByteArray &folderId);
-    void slotUnlockFolderError(const QByteArray &folderId, int httpReturnCode);
+    void slotUnlockFolderError(const QByteArray &folderId, const int httpReturnCode, const QString &errorMessage);
     void slotUploadMetadataSuccess(const QByteArray &folderId);
-    void slotUpdateMetadataError(const QByteArray &folderId, int httpReturnCode);
+    void slotUpdateMetadataError(const QByteArray &folderId, const int httpReturnCode);
 
 private:
     AccountPtr _account;

@@ -1,19 +1,19 @@
-import QtQml 2.12
-import QtQml.Models 2.1
 import QtQuick 2.15
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.2
 import QtGraphicalEffects 1.0
 import Qt.labs.platform 1.1 as NativeDialogs
+
 import "../"
+import "../filedetails/"
 
 // Custom qml modules are in /theme (and included by resources.qrc)
 import Style 1.0
 
 import com.nextcloud.desktopclient 1.0
 
-Window {
+ApplicationWindow {
     id:         trayWindow
 
     title:      Systray.windowTitle
@@ -23,15 +23,7 @@ Window {
     color:      "transparent"
     flags:      Systray.useNormalWindow ? Qt.Window : Qt.Dialog | Qt.FramelessWindowHint
 
-    property int fileActivityDialogObjectId: -1
-
     readonly property int maxMenuHeight: Style.trayWindowHeight - Style.trayWindowHeaderHeight - 2 * Style.trayWindowBorderWidth
-
-    function openFileActivityDialog(objectName, objectId) {
-        fileActivityDialogLoader.objectName = objectName;
-        fileActivityDialogLoader.objectId = objectId;
-        fileActivityDialogLoader.refresh();
-    }
 
     Component.onCompleted: Systray.forceWindowInit(trayWindow)
 
@@ -39,13 +31,11 @@ Window {
     onActiveChanged: {
         if (!Systray.useNormalWindow && !active) {
             hide();
-            Systray.setClosed();
+            Systray.isOpen = false;
         }
-   }
-
-    onClosing: {
-        Systray.setClosed()
     }
+
+    onClosing: Systray.isOpen = false
 
     onVisibleChanged: {
         // HACK: reload account Instantiator immediately by restting it - could be done better I guess
@@ -55,9 +45,16 @@ Window {
         syncStatus.model.load();
     }
 
+    background: Rectangle {
+        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+        border.width: Style.trayWindowBorderWidth
+        border.color: Style.menuBorder
+        color: Style.backgroundColor
+    }
+
     Connections {
         target: UserModel
-        function onNewUserSelected() {
+        function onCurrentUserChanged() {
             accountMenu.close();
             syncStatus.model.load();
         }
@@ -78,25 +75,15 @@ Window {
 
     Connections {
         target: Systray
-        function onShowWindow() {
-            accountMenu.close();
-            appsMenu.close();
-            Systray.positionWindow(trayWindow);
 
-            trayWindow.show();
-            trayWindow.raise();
-            trayWindow.requestActivate();
+        function onIsOpenChanged() {
+            userStatusDrawer.close()
+            fileDetailsDrawer.close();
 
-            Systray.setOpened();
-            UserModel.fetchCurrentActivityModel();
-        }
-        function onHideWindow() {
-            trayWindow.hide();
-            Systray.setClosed();
-        }
-
-        function onShowFileActivityDialog(objectName, objectId) {
-            openFileActivityDialog(objectName, objectId)
+            if(Systray.isOpen) {
+                accountMenu.close();
+                appsMenu.close();
+            }
         }
 
         function onShowErrorMessageDialog(error) {
@@ -104,34 +91,131 @@ Window {
             newErrorDialog.text = error
             newErrorDialog.open()
         }
+
+        function onShowFileDetails(accountState, localPath, fileDetailsPage) {
+            fileDetailsDrawer.openFileDetails(accountState, localPath, fileDetailsPage);
+        }
     }
 
     OpacityMask {
         anchors.fill: parent
+        anchors.margins: Style.trayWindowBorderWidth
         source: ShaderEffectSource {
-            sourceItem: trayWindowBackground
+            sourceItem: trayWindowMainItem
             hideSource: true
         }
         maskSource: Rectangle {
-            width: trayWindowBackground.width
-            height: trayWindowBackground.height
+            width: trayWindow.width
+            height: trayWindow.height
             radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
         }
     }
 
-    Rectangle {
-        id: trayWindowBackground
+    Drawer {
+        id: userStatusDrawer
+        width: parent.width
+        height: parent.height - Style.trayDrawerMargin
+        padding: 0
+        edge: Qt.BottomEdge
+        modal: true
+        visible: false
 
-        property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeleton.visible
+        background: Rectangle {
+            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+            border.width: Style.trayWindowBorderWidth
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
+
+        property int userIndex: 0
+
+        function openUserStatusDrawer(index) {
+            console.log(`About to show dialog for user with index ${index}`);
+            userIndex = index;
+            open();
+        }
+
+        Loader {
+            id: userStatusContents
+            anchors.fill: parent
+            active: userStatusDrawer.visible
+            sourceComponent: UserStatusSelectorPage {
+                anchors.fill: parent
+                userIndex: userStatusDrawer.userIndex
+                onFinished: userStatusDrawer.close()
+            }
+        }
+    }
+
+    Drawer {
+        id: fileDetailsDrawer
+        width: parent.width - Style.trayDrawerMargin
+        height: parent.height
+        padding: 0
+        edge: Qt.RightEdge
+        modal: true
+        visible: false
+        clip: true
+
+        background: Rectangle {
+            radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
+            border.width: Style.trayWindowBorderWidth
+            border.color: Style.menuBorder
+            color: Style.backgroundColor
+        }
+
+        property var folderAccountState: ({})
+        property string fileLocalPath: ""
+        property var pageToShow: Systray.FileDetailsPage.Activity
+
+        function openFileDetails(accountState, localPath, fileDetailsPage) {
+            console.log(`About to show file details view in tray for ${localPath}`);
+            folderAccountState = accountState;
+            fileLocalPath = localPath;
+            pageToShow = fileDetailsPage;
+
+            if(!opened) {
+                open();
+            }
+        }
+
+        Loader {
+            id: fileDetailsContents
+            anchors.fill: parent
+            active: fileDetailsDrawer.visible
+            onActiveChanged: {
+                if (active) {
+                    Systray.showFileDetailsPage(fileDetailsDrawer.fileLocalPath,
+                                                fileDetailsDrawer.pageToShow);
+                }
+            }
+            sourceComponent: FileDetailsView {
+                id: fileDetails
+
+                width: parent.width
+                height: parent.height
+
+                backgroundsVisible: false
+                accountState: fileDetailsDrawer.folderAccountState
+                localPath: fileDetailsDrawer.fileLocalPath
+                showCloseButton: true
+
+                onCloseButtonClicked: fileDetailsDrawer.close()
+            }
+        }
+    }
+
+    Item {
+        id: trayWindowMainItem
+
+        property bool isUnifiedSearchActive: unifiedSearchResultsListViewSkeletonLoader.active
                                              || unifiedSearchResultNothingFound.visible
                                              || unifiedSearchResultsErrorLabel.visible
                                              || unifiedSearchResultsListView.visible
 
-        anchors.fill:   parent
-        radius: Systray.useNormalWindow ? 0.0 : Style.trayWindowRadius
-        border.width:   Style.trayWindowBorderWidth
-        border.color:   Style.menuBorder
-        color: Style.backgroundColor
+        anchors.fill: parent
+        anchors.margins: Style.trayWindowBorderWidth
+        clip: true
 
         Accessible.role: Accessible.Grouping
         Accessible.name: qsTr("Nextcloud desktop main dialog")
@@ -139,11 +223,11 @@ Window {
         Rectangle {
             id: trayWindowHeaderBackground
 
-            anchors.left:   trayWindowBackground.left
-            anchors.right:  trayWindowBackground.right
-            anchors.top:    trayWindowBackground.top
+            anchors.left:   trayWindowMainItem.left
+            anchors.right:  trayWindowMainItem.right
+            anchors.top:    trayWindowMainItem.top
             height:         Style.trayWindowHeaderHeight
-            color:          UserModel.currentUser.headerColor
+            color:          Style.currentUserHeaderColor
 
             RowLayout {
                 id: trayWindowHeaderLayout
@@ -167,16 +251,12 @@ Window {
                     // We call open() instead of popup() because we want to position it
                     // exactly below the dropdown button, not the mouse
                     onClicked: {
-                        syncPauseButton.text = Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                        syncPauseButton.text = Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                         if (accountMenu.visible) {
                             accountMenu.close()
                         } else {
                             accountMenu.open()
                         }
-                    }
-
-                    Loader {
-                        id: userStatusSelectorDialogLoader
                     }
 
                     Menu {
@@ -225,12 +305,11 @@ Window {
                             id: userLineInstantiator
                             model: UserModel
                             delegate: UserLine {
-                                onShowUserStatusSelectorDialog: {
-                                    userStatusSelectorDialogLoader.source = "qrc:/qml/src/gui/UserStatusSelectorDialog.qml"
-                                    userStatusSelectorDialogLoader.item.title = qsTr("Set user status")
-                                    userStatusSelectorDialogLoader.item.model.load(index)
-                                    userStatusSelectorDialogLoader.item.show()
+                                onShowUserStatusSelector: {
+                                    userStatusDrawer.openUserStatusDrawer(model.index);
+                                    accountMenu.close();
                                 }
+                                onClicked: UserModel.currentUserId = model.index;
                             }
                             onObjectAdded: accountMenu.insertItem(index, object)
                             onObjectRemoved: accountMenu.removeItem(object)
@@ -263,7 +342,7 @@ Window {
                                     sourceSize.width: Style.headerButtonIconSize
                                     sourceSize.height: Style.headerButtonIconSize
                                 }
-                                Label {
+                                EnforcedPlainTextLabel {
                                     Layout.leftMargin: 14
                                     text: qsTr("Add account")
                                     color: Style.ncTextColor
@@ -282,11 +361,11 @@ Window {
                             Accessible.onPressAction: addAccountButton.clicked()
                         }
 
-                        MenuSeparator {
-                            contentItem: Rectangle {
-                                implicitHeight: 1
-                                color: Style.menuBorder
-                            }
+                        Rectangle {
+                            anchors.left: parent.left
+                            anchors.right: parent.right
+                            implicitHeight: 1
+                            color: Style.menuBorder
                         }
 
                         MenuItem {
@@ -294,7 +373,7 @@ Window {
                             font.pixelSize: Style.topLinePixelSize
                             palette.windowText: Style.ncTextColor
                             hoverEnabled: true
-                            onClicked: Systray.pauseResumeSync()
+                            onClicked: Systray.syncIsPaused = !Systray.syncIsPaused
 
                             background: Item {
                                 height: parent.height
@@ -307,7 +386,7 @@ Window {
                             }
 
                             Accessible.role: Accessible.MenuItem
-                            Accessible.name: Systray.syncIsPaused() ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
+                            Accessible.name: Systray.syncIsPaused ? qsTr("Resume sync for all") : qsTr("Pause sync for all")
                             Accessible.onPressAction: syncPauseButton.clicked()
                         }
 
@@ -359,7 +438,7 @@ Window {
                     }
 
                     background: Rectangle {
-                        color: parent.hovered || parent.visualFocus ? UserModel.currentUser.headerTextColor : "transparent"
+                        color: parent.hovered || parent.visualFocus ? Style.currentUserHeaderTextColor : "transparent"
                         opacity: 0.2
                     }
 
@@ -381,7 +460,7 @@ Window {
                             Layout.preferredWidth: Style.accountAvatarSize
 
                             Accessible.role: Accessible.Graphic
-                            Accessible.name: qsTr("Current user avatar")
+                            Accessible.name: qsTr("Current account avatar")
 
                             Rectangle {
                                 id: currentAccountStatusIndicatorBackground
@@ -391,7 +470,7 @@ Window {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: UserModel.currentUser.headerColor
+                                color: Style.currentUserHeaderColor
                                 radius: width*0.5
                             }
 
@@ -403,7 +482,7 @@ Window {
                                 height: width
                                 anchors.bottom: currentAccountAvatar.bottom
                                 anchors.right: currentAccountAvatar.right
-                                color: currentAccountButton.hovered ? UserModel.currentUser.headerTextColor : "transparent"
+                                color: currentAccountButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                             }
@@ -420,7 +499,7 @@ Window {
                                 sourceSize.height: Style.accountAvatarStateIndicatorSize
 
                                 Accessible.role: Accessible.Indicator
-                                Accessible.name: UserModel.desktopNotificationsAllowed ? qsTr("Current user status is online") : qsTr("Current user status is do not disturb")
+                                Accessible.name: UserModel.desktopNotificationsAllowed ? qsTr("Current account status is online") : qsTr("Current account status is do not disturb")
                             }
                         }
 
@@ -432,13 +511,13 @@ Window {
                             Layout.fillWidth: true
                             Layout.maximumWidth: parent.width
 
-                            Label {
+                            EnforcedPlainTextLabel {
                                 id: currentAccountUser
                                 Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                 width: Style.currentAccountLabelWidth
                                 text: UserModel.currentUser.name
                                 elide: Text.ElideRight
-                                color: UserModel.currentUser.headerTextColor
+                                color: Style.currentUserHeaderTextColor
 
                                 font.pixelSize: Style.topLinePixelSize
                                 font.bold: true
@@ -451,13 +530,13 @@ Window {
                                 spacing: Style.accountLabelsSpacing
                                 width: parent.width
 
-                                Label {
+                                EnforcedPlainTextLabel {
                                     id: emoji
                                     visible: UserModel.currentUser.statusEmoji !== ""
                                     width: Style.userStatusEmojiSize
                                     text: UserModel.currentUser.statusEmoji
                                 }
-                                Label {
+                                EnforcedPlainTextLabel {
                                     id: message
                                     Layout.alignment: Qt.AlignLeft | Qt.AlignBottom
                                     Layout.fillWidth: true
@@ -467,7 +546,7 @@ Window {
                                           ? UserModel.currentUser.statusMessage
                                           : UserModel.currentUser.server
                                     elide: Text.ElideRight
-                                    color: UserModel.currentUser.headerTextColor
+                                    color: Style.currentUserHeaderTextColor
                                     font.pixelSize: Style.subLinePixelSize
                                 }
                             }
@@ -475,7 +554,7 @@ Window {
 
                         ColorOverlay {
                             cached: true
-                            color: UserModel.currentUser.headerTextColor
+                            color: Style.currentUserHeaderTextColor
                             width: source.width
                             height: source.height
                             source: Image {
@@ -511,7 +590,7 @@ Window {
                         id: openLocalFolderButton
                         visible: UserModel.currentUser.hasLocalFolder
                         icon.source: "qrc:///client/theme/white/folder.svg"
-                        icon.color: UserModel.currentUser.headerTextColor
+                        icon.color: Style.currentUserHeaderTextColor
                         onClicked: UserModel.openCurrentAccountLocalFolder()
 
                         Image {
@@ -536,7 +615,7 @@ Window {
                                 width: Style.folderStateIndicatorSize + 2
                                 height: width
                                 anchors.centerIn: parent
-                                color: UserModel.currentUser.headerColor
+                                color: Style.currentUserHeaderColor
                                 radius: width*0.5
                                 z: -2
                             }
@@ -546,7 +625,7 @@ Window {
                                 width: Style.folderStateIndicatorSize + 2
                                 height: width
                                 anchors.centerIn: parent
-                                color: openLocalFolderButton.hovered ? UserModel.currentUser.headerTextColor : "transparent"
+                                color: openLocalFolderButton.hovered ? Style.currentUserHeaderTextColor : "transparent"
                                 opacity: 0.2
                                 radius: width*0.5
                                 z: -1
@@ -560,7 +639,7 @@ Window {
 
                     visible: UserModel.currentUser.serverHasTalk
                     icon.source: "qrc:///client/theme/white/talk-app.svg"
-                    icon.color: UserModel.currentUser.headerTextColor
+                    icon.color: Style.currentUserHeaderTextColor
                     onClicked: UserModel.openCurrentAccountTalk()
 
                     Accessible.role: Accessible.Button
@@ -571,10 +650,10 @@ Window {
                 HeaderButton {
                     id: trayWindowAppsButton
                     icon.source: "qrc:///client/theme/white/more-apps.svg"
-                    icon.color: UserModel.currentUser.headerTextColor
+                    icon.color: Style.currentUserHeaderTextColor
 
                     onClicked: {
-                        if(appsMenu.count <= 0) {
+                        if(appsMenuListView.count <= 0) {
                             UserModel.openCurrentAccountServer()
                         } else if (appsMenu.visible) {
                             appsMenu.close()
@@ -587,10 +666,12 @@ Window {
                     Accessible.name: qsTr("More apps")
                     Accessible.onPressAction: trayWindowAppsButton.clicked()
 
-                    AutoSizingMenu {
+                    Menu {
                         id: appsMenu
+                        x: -2
                         y: (trayWindowAppsButton.y + trayWindowAppsButton.height + 2)
-                        readonly property Item listContentItem: contentItem.contentItem
+                        width: Style.trayWindowWidth * 0.35
+                        height: implicitHeight + y > Style.trayWindowHeight ? Style.trayWindowHeight - y : implicitHeight
                         closePolicy: Menu.CloseOnPressOutsideParent | Menu.CloseOnEscape
 
                         background: Rectangle {
@@ -599,34 +680,47 @@ Window {
                             radius: 2
                         }
 
-                        Instantiator {
-                            id: appsMenuInstantiator
-                            model: UserAppsModel
-                            onObjectAdded: appsMenu.insertItem(index, object)
-                            onObjectRemoved: appsMenu.removeItem(object)
-                            delegate: MenuItem {
-                                id: appEntry
-                                text: appName
-                                font.pixelSize: Style.topLinePixelSize
-                                palette.windowText: Style.ncTextColor
-                                icon.source: appIconUrl
-                                icon.color: Style.ncTextColor
-                                onTriggered: UserAppsModel.openAppUrl(appUrl)
-                                hoverEnabled: true
+                        contentItem: ScrollView {
+                            id: appsMenuScrollView
+                            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
-                                background: Item {
-                                    height: parent.height
-                                    width: parent.width
-                                    Rectangle {
-                                        anchors.fill: parent
-                                        anchors.margins: 1
-                                        color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                            data: WheelHandler {
+                                target: appsMenuScrollView.contentItem
+                            }
+                            ListView {
+                                id: appsMenuListView
+                                implicitHeight: contentHeight
+                                model: UserAppsModel
+                                interactive: true
+                                clip: true
+                                currentIndex: appsMenu.currentIndex
+                                delegate: MenuItem {
+                                    id: appEntry
+                                    anchors.left: parent.left
+                                    anchors.right: parent.right
+
+                                    text: model.appName
+                                    font.pixelSize: Style.topLinePixelSize
+                                    palette.windowText: Style.ncTextColor
+                                    icon.source: model.appIconUrl
+                                    icon.color: Style.ncTextColor
+                                    onTriggered: UserAppsModel.openAppUrl(appUrl)
+                                    hoverEnabled: true
+
+                                    background: Item {
+                                        height: parent.height
+                                        width: parent.width
+                                        Rectangle {
+                                            anchors.fill: parent
+                                            anchors.margins: 1
+                                            color: parent.parent.hovered || parent.parent.visualFocus ? Style.lightHover : "transparent"
+                                        }
                                     }
-                                }
 
-                                Accessible.role: Accessible.MenuItem
-                                Accessible.name: qsTr("Open %1 in browser").arg(appName)
-                                Accessible.onPressAction: appEntry.triggered()
+                                    Accessible.role: Accessible.MenuItem
+                                    Accessible.name: qsTr("Open %1 in browser").arg(model.appName)
+                                    Accessible.onPressAction: appEntry.triggered()
+                                }
                             }
                         }
                     }
@@ -640,8 +734,8 @@ Window {
 
             anchors {
                 top: trayWindowHeaderBackground.bottom
-                left: trayWindowBackground.left
-                right: trayWindowBackground.right
+                left: trayWindowMainItem.left
+                right: trayWindowMainItem.right
 
                 topMargin: Style.trayHorizontalMargin + controlRoot.padding
                 leftMargin: Style.trayHorizontalMargin + controlRoot.padding
@@ -659,72 +753,53 @@ Window {
             id: unifiedSearchResultsErrorLabel
             visible:  UserModel.currentUser.unifiedSearchResultsListModel.errorString && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress && ! UserModel.currentUser.unifiedSearchResultsListModel.currentFetchMoreInProgressProviderId
             text:  UserModel.currentUser.unifiedSearchResultsListModel.errorString
-            color: Style.errorBoxBackgroundColor
-            backgroundColor: Style.errorBoxTextColor
-            borderColor: "transparent"
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
             anchors.margins: Style.trayHorizontalMargin
         }
 
         UnifiedSearchResultNothingFound {
             id: unifiedSearchResultNothingFound
-            visible: false
+
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
             anchors.topMargin: Style.trayHorizontalMargin
 
             text: UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
 
             property bool isSearchRunning: UserModel.currentUser.unifiedSearchResultsListModel.isSearchInProgress
+            property bool waitingForSearchTermEditEnd: UserModel.currentUser.unifiedSearchResultsListModel.waitingForSearchTermEditEnd
             property bool isSearchResultsEmpty: unifiedSearchResultsListView.count === 0
             property bool nothingFound: text && isSearchResultsEmpty && !UserModel.currentUser.unifiedSearchResultsListModel.errorString
 
-            onIsSearchRunningChanged: {
-                if (unifiedSearchResultNothingFound.isSearchRunning) {
-                    visible = false;
-                } else {
-                    if (nothingFound) {
-                        visible = true;
-                    }
-                }
-            }
-
-            onTextChanged: {
-                visible = false;
-            }
-
-            onIsSearchResultsEmptyChanged: {
-                if (!unifiedSearchResultNothingFound.isSearchResultsEmpty) {
-                    visible = false;
-                }
-            }
+            visible: !isSearchRunning && !waitingForSearchTermEditEnd && nothingFound
         }
 
-        UnifiedSearchResultItemSkeletonContainer {
-            id: unifiedSearchResultsListViewSkeleton
-            visible: !unifiedSearchResultNothingFound.visible && !unifiedSearchResultsListView.visible && ! UserModel.currentUser.unifiedSearchResultsListModel.errorString &&  UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+        Loader {
+            id: unifiedSearchResultsListViewSkeletonLoader
+
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
-            textLeftMargin: trayWindowBackground.Style.unifiedSearchResultTextLeftMargin
-            textRightMargin: trayWindowBackground.Style.unifiedSearchResultTextRightMargin
-            iconWidth: trayWindowBackground.Style.unifiedSearchResulIconWidth
-            iconLeftMargin: trayWindowBackground.Style.unifiedSearchResulIconLeftMargin
-            itemHeight: trayWindowBackground.Style.unifiedSearchItemHeight
-            titleFontSize: trayWindowBackground.Style.unifiedSearchResulTitleFontSize
-            sublineFontSize: trayWindowBackground.Style.unifiedSearchResulSublineFontSize
-            titleColor: Style.ncTextColor
-            sublineColor: Style.ncSecondaryTextColor
-            iconColor: "#afafaf"
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
+            anchors.margins: controlRoot.padding
+
+            active: !unifiedSearchResultNothingFound.visible &&
+                    !unifiedSearchResultsListView.visible &&
+                    !UserModel.currentUser.unifiedSearchResultsListModel.errorString &&
+                    UserModel.currentUser.unifiedSearchResultsListModel.searchTerm
+
+            sourceComponent: UnifiedSearchResultItemSkeletonContainer {
+                anchors.fill: parent
+                spacing: unifiedSearchResultsListView.spacing
+                animationRectangleWidth: trayWindow.width
+            }
         }
 
         ScrollView {
             id: controlRoot
-            padding: 1
             contentWidth: availableWidth
 
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
@@ -735,9 +810,9 @@ Window {
             visible: unifiedSearchResultsListView.count > 0
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
 
             ListView {
                 id: unifiedSearchResultsListView
@@ -755,16 +830,7 @@ Window {
 
                 delegate: UnifiedSearchResultListItem {
                     width: unifiedSearchResultsListView.width
-                    height: Style.unifiedSearchItemHeight
                     isSearchInProgress:  unifiedSearchResultsListView.model.isSearchInProgress
-                    textLeftMargin: Style.unifiedSearchResultTextLeftMargin
-                    textRightMargin: Style.unifiedSearchResultTextRightMargin
-                    iconWidth: Style.unifiedSearchResulIconWidth
-                    iconLeftMargin: Style.unifiedSearchResulIconLeftMargin
-                    titleFontSize: Style.unifiedSearchResulTitleFontSize
-                    sublineFontSize: Style.unifiedSearchResulSublineFontSize
-                    titleColor: Style.ncTextColor
-                    sublineColor: Style.ncSecondaryTextColor
                     currentFetchMoreInProgressProviderId: unifiedSearchResultsListView.model.currentFetchMoreInProgressProviderId
                     fetchMoreTriggerClicked: unifiedSearchResultsListView.model.fetchMoreTriggerClicked
                     resultClicked: unifiedSearchResultsListView.model.resultClicked
@@ -783,49 +849,26 @@ Window {
         SyncStatus {
             id: syncStatus
 
-            visible: !trayWindowBackground.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive
 
             anchors.top: trayWindowUnifiedSearchInputContainer.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
         }
 
         ActivityList {
-            visible: !trayWindowBackground.isUnifiedSearchActive
+            visible: !trayWindowMainItem.isUnifiedSearchActive
             anchors.top: syncStatus.bottom
-            anchors.left: trayWindowBackground.left
-            anchors.right: trayWindowBackground.right
-            anchors.bottom: trayWindowBackground.bottom
+            anchors.left: trayWindowMainItem.left
+            anchors.right: trayWindowMainItem.right
+            anchors.bottom: trayWindowMainItem.bottom
 
             activeFocusOnTab: true
             model: activityModel
-            onShowFileActivity: {
-                openFileActivityDialog(objectName, objectId)
-            }
+            onOpenFile: Qt.openUrlExternally(filePath);
             onActivityItemClicked: {
                 model.slotTriggerDefaultAction(index)
             }
         }
-
-        Loader {
-            id: fileActivityDialogLoader
-
-            property string objectName: ""
-            property int objectId: -1
-
-            function refresh() {
-                active = true
-                item.model.load(activityModel.accountState, objectId)
-                item.show()
-            }
-
-            active: false
-            sourceComponent: FileActivityDialog {
-                title: qsTr("%1 - File activity").arg(fileActivityDialogLoader.objectName)
-                onClosing: fileActivityDialogLoader.active = false
-            }
-
-            onLoaded: refresh()
-        }
-    } // Rectangle trayWindowBackground
+    } // Item trayWindowMainItem
 }

@@ -69,6 +69,12 @@ static QPointer<OwncloudSetupWizard> wiz = nullptr;
 
 void OwncloudSetupWizard::runWizard(QObject *obj, const char *amember, QWidget *parent)
 {
+    ConfigFile cfg;
+    if (!cfg.overrideServerUrl().isEmpty()) {
+        Theme::instance()->setOverrideServerUrl(cfg.overrideServerUrl());
+        Theme::instance()->setForceOverrideServerUrl(true);
+        Theme::instance()->setStartLoginFlowAutomatically(true);
+    }
     if (!wiz.isNull()) {
         bringWizardToFrontIfVisible();
         return;
@@ -109,6 +115,12 @@ void OwncloudSetupWizard::startWizard()
     }
 
     _ocWizard->setProperty("localFolder", localFolder);
+    {
+        ConfigFile cfg;
+        if (!cfg.overrideLocalDir().isEmpty()) {
+            _ocWizard->setProperty("localFolder", cfg.overrideLocalDir());
+        }
+    }
 
     // remember the local folder to compare later if it changed, but clean first
     QString lf = QDir::fromNativeSeparators(localFolder);
@@ -120,15 +132,17 @@ void OwncloudSetupWizard::startWizard()
 
     _ocWizard->setRemoteFolder(_remoteFolder);
 
+    const auto isEnforcedServerSetup =
+        Theme::instance()->startLoginFlowAutomatically() && Theme::instance()->forceOverrideServerUrl() && !account->url().isEmpty();
+
 #ifdef WITH_PROVIDERS
-    const auto startPage = WizardCommon::Page_Welcome;
+    const auto startPage = isEnforcedServerSetup ? WizardCommon::Page_ServerSetup : WizardCommon::Page_Welcome;
 #else // WITH_PROVIDERS
     const auto startPage = WizardCommon::Page_ServerSetup;
 #endif // WITH_PROVIDERS
     _ocWizard->setStartId(startPage);
-
     _ocWizard->restart();
-
+    _ocWizard->adjustWizardSize();
     _ocWizard->open();
     _ocWizard->raise();
 }

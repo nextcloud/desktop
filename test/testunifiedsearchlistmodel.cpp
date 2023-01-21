@@ -265,7 +265,7 @@ public:
         return QJsonDocument::fromVariant(QVariantMap{{QStringLiteral("ocs"), ocsMap}}).toJson(QJsonDocument::Compact);
     }
 
-    const QByteArray &fakeProvidersResponseJson() const { return _providersResponse; }
+    [[nodiscard]] const QByteArray &fakeProvidersResponseJson() const { return _providersResponse; }
 
 private:
     static FakeSearchResultsStorage *_instance;

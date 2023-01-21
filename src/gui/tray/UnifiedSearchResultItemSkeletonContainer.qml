@@ -1,49 +1,71 @@
 import QtQml 2.15
 import QtQuick 2.15
-import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.15
+import QtGraphicalEffects 1.15
+
 import Style 1.0
 
-Column {
+ColumnLayout {
     id: unifiedSearchResultsListViewSkeletonColumn
 
-    property int textLeftMargin: 18
-    property int textRightMargin: 16
-    property int iconWidth: 24
-    property int iconLeftMargin: 12
-    property int itemHeight: Style.trayWindowHeaderHeight
-    property int titleFontSize: Style.topLinePixelSize
-    property int sublineFontSize: Style.subLinePixelSize
-    property color titleColor: Style.ncTextColor
-    property color sublineColor: Style.ncSecondaryTextColor
-    property color iconColor: "#afafaf"
+    property int animationRectangleWidth: Style.trayWindowWidth
 
-    Repeater {
-        model: 10
-        UnifiedSearchResultItemSkeleton {
-            textLeftMargin: unifiedSearchResultsListViewSkeletonColumn.textLeftMargin
-            textRightMargin: unifiedSearchResultsListViewSkeletonColumn.textRightMargin
-            iconWidth: unifiedSearchResultsListViewSkeletonColumn.iconWidth
-            iconLeftMargin: unifiedSearchResultsListViewSkeletonColumn.iconLeftMargin
-            width: unifiedSearchResultsListViewSkeletonColumn.width
-            height: unifiedSearchResultsListViewSkeletonColumn.itemHeight
-            index: model.index
-            titleFontSize: unifiedSearchResultsListViewSkeletonColumn.titleFontSize
-            sublineFontSize: unifiedSearchResultsListViewSkeletonColumn.sublineFontSize
-            titleColor: unifiedSearchResultsListViewSkeletonColumn.titleColor
-            sublineColor: unifiedSearchResultsListViewSkeletonColumn.sublineColor
-            iconColor: unifiedSearchResultsListViewSkeletonColumn.iconColor
+    Item {
+        id: placeholderSectionHeader
+
+        property rect textRect: fontMetrics.boundingRect("Dummy text")
+
+        Layout.topMargin: Style.unifiedSearchResultSectionItemVerticalPadding / 2
+        Layout.bottomMargin: Style.unifiedSearchResultSectionItemVerticalPadding / 2
+        Layout.leftMargin: Style.unifiedSearchResultSectionItemLeftPadding
+
+        width: textRect.width
+        height: textRect.height
+
+        FontMetrics {
+            id: fontMetrics
+            font.pixelSize: Style.unifiedSearchResultTitleFontSize
+        }
+
+        Rectangle {
+            id: placeholderSectionHeaderRectangle
+            anchors.fill: parent
+            radius: Style.veryRoundedButtonRadius
+            color: Style.lightHover
+            clip: true
+            visible: false
+
+            Loader {
+                x: mapFromItem(placeholderSectionHeader, 0, 0).x
+                height: parent.height
+                sourceComponent: UnifiedSearchResultItemSkeletonGradientRectangle {
+                    width: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
+                    height: parent.height
+                }
+            }
+        }
+
+        Rectangle {
+            id: placeholderSectionHeaderMask
+            anchors.fill: placeholderSectionHeaderRectangle
+            color: "white"
+            radius: Style.veryRoundedButtonRadius
+            visible: false
+        }
+
+        OpacityMask {
+            anchors.fill: placeholderSectionHeaderRectangle
+            source: placeholderSectionHeaderRectangle
+            maskSource: placeholderSectionHeaderMask
         }
     }
 
-    OpacityAnimator {
-        target: unifiedSearchResultsListViewSkeletonColumn;
-        from: 0.5;
-        to: 1;
-        duration: 800
-        running: unifiedSearchResultsListViewSkeletonColumn.visible
-        loops: Animation.Infinite;
-        easing {
-            type: Easing.InOutBounce;
+    Repeater {
+        model: Math.ceil(unifiedSearchResultsListViewSkeletonColumn.height / Style.trayWindowHeaderHeight)
+        UnifiedSearchResultItemSkeleton {
+            width: unifiedSearchResultsListViewSkeletonColumn.width
+            height: Style.trayWindowHeaderHeight
+            animationRectangleWidth: unifiedSearchResultsListViewSkeletonColumn.animationRectangleWidth
         }
     }
 }

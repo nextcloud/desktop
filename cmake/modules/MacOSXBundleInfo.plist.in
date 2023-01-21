@@ -4,6 +4,8 @@
 <dict>
         <key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>LSMinimumSystemVersion</key>
+	<string>10.14.0</string>
 	<key>LSUIElement</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -27,7 +29,7 @@
         <key>CFBundleShortVersionString</key>
         <string>@MIRALL_VERSION_STRING@</string>
         <key>NSHumanReadableCopyright</key>
-        <string>(C) 2014-2020 @APPLICATION_VENDOR@</string>
+        <string>(C) 2014-2022 @APPLICATION_VENDOR@</string>
         <key>NSSupportsAutomaticGraphicsSwitching</key>
         <true/>
         <key>NSRequiresAquaSystemAppearance</key>
@@ -74,6 +76,17 @@
     </dict>
 </array>
 
+<key>CFBundleURLTypes</key>
+<array>
+    <dict>
+        <key>CFBundleURLName</key>
+        <string>@APPLICATION_NAME@ Edit Locally</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+            <string>@APPLICATION_URI_HANDLER_SCHEME@</string>
+        </array>
+    </dict>
+</array>
 
 </dict>
 </plist>

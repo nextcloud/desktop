@@ -53,6 +53,11 @@ void PropagateRemoteDeleteEncrypted::slotFolderEncryptedMetadataReceived(const Q
 
     FolderMetadata metadata(_propagator->account(), json.toJson(QJsonDocument::Compact), statusCode);
 
+    if (!metadata.isMetadataSetup()) {
+        taskFailed();
+        return;
+    }
+
     qCDebug(PROPAGATE_REMOVE_ENCRYPTED) << "Metadata Received, preparing it for removal of the file";
 
     const QFileInfo info(_propagator->fullLocalPath(_item->_file));

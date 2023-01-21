@@ -357,7 +357,7 @@ bool HttpCredentials::stillValid(QNetworkReply *reply)
 
 void HttpCredentials::slotReadJobDone(QKeychain::Job *incoming)
 {
-    auto *job = static_cast<QKeychain::ReadPasswordJob *>(incoming);
+    auto *job = dynamic_cast<QKeychain::ReadPasswordJob *>(incoming);
     QKeychain::Error error = job->error();
 
     // If we can't find the credentials at the keys that include the account id,
@@ -448,7 +448,7 @@ bool HttpCredentials::refreshAccessToken()
             persist();
         }
         _isRenewingOAuthToken = false;
-        for (const auto &job : _retryQueue) {
+        for (const auto &job : qAsConst(_retryQueue)) {
             if (job)
                 job->retry();
         }
@@ -523,7 +523,7 @@ void HttpCredentials::persist()
         // it's just written if it gets passed into the constructor.
         _account->setCredentialSetting(QLatin1String(clientCertBundleC), _clientCertBundle);
     }
-    _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account);
 
     // write secrets to the keychain
     if (!_clientCertBundle.isEmpty()) {

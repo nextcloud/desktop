@@ -10,6 +10,8 @@ add_library(testutils
   pushnotificationstestutils.cpp
   themeutils.cpp
   testhelper.cpp
+  sharetestutils.cpp
+  endtoendtestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
@@ -64,6 +66,17 @@ nextcloud_add_test(ActivityListModel)
 nextcloud_add_test(ActivityData)
 nextcloud_add_test(TalkReply)
 nextcloud_add_test(LockFile)
+nextcloud_add_test(ShareModel)
+nextcloud_add_test(ShareeModel)
+nextcloud_add_test(SortedShareModel)
+
+if(ADD_E2E_TESTS)
+    nextcloud_add_test(E2eServerSetup)
+    nextcloud_add_test(E2eFileTransfer)
+else()
+    nextcloud_build_test(E2eServerSetup)
+    nextcloud_build_test(E2eFileTransfer)
+endif()
 
 if( UNIX AND NOT APPLE )
     nextcloud_add_test(InotifyWatcher)
@@ -75,6 +88,8 @@ if (WIN32)
     )
 
     nextcloud_add_test(SyncCfApi)
+	nextcloud_add_test(CfApiShellExtensionsIPC)
+    target_sources(CfApiShellExtensionsIPCTest PRIVATE "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/thumbnailprovideripc.cpp" "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/customstateprovideripc.cpp" "${CMAKE_SOURCE_DIR}/src/libsync/vfs/cfapi/shellext/ipccommon.cpp")
 elseif(LINUX) # elseif(LINUX OR APPLE)
     nextcloud_add_test(SyncXAttr)
 endif()

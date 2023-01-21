@@ -45,14 +45,14 @@ public:
     OwncloudSetupPage(QWidget *parent = nullptr);
     ~OwncloudSetupPage() override;
 
-    bool isComplete() const override;
+    [[nodiscard]] bool isComplete() const override;
     void initializePage() override;
-    int nextId() const override;
+    [[nodiscard]] int nextId() const override;
     void setServerUrl(const QString &);
     void setAllowPasswordStorage(bool);
     bool validatePage() override;
-    QString url() const;
-    QString localFolder() const;
+    [[nodiscard]] QString url() const;
+    [[nodiscard]] QString localFolder() const;
     void setRemoteFolder(const QString &remoteFolder);
     void setMultipleFoldersExist(bool exist);
     void setAuthType(DetermineAuthTypeJob::AuthType type);

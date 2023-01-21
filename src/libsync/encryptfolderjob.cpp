@@ -48,10 +48,18 @@ QString EncryptFolderJob::errorString() const
 void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
 {
     SyncJournalFileRecord rec;
-    _journal->getFileRecord(_path, &rec);
-    if (rec.isValid()) {
-        rec._isE2eEncrypted = true;
-        _journal->setFileRecord(rec);
+    if (!_journal->getFileRecord(_path, &rec)) {
+        qCWarning(lcEncryptFolderJob) << "could not get file from local DB" << _path;
+    }
+
+    if (!rec.isValid()) {
+        qCWarning(lcEncryptFolderJob) << "No valid record found in local DB for fileId" << fileId;
+    }
+
+    rec._isE2eEncrypted = true;
+    const auto result = _journal->setFileRecord(rec);
+    if (!result) {
+        qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
     }
 
     auto lockJob = new LockEncryptFolderApiJob(_account, fileId, this);
@@ -62,9 +70,12 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
     lockJob->start();
 }
 
-void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId, int httpErrorCode)
+void EncryptFolderJob::slotEncryptionFlagError(const QByteArray &fileId,
+                                               const int httpErrorCode,
+                                               const QString &errorMessage)
 {
     qDebug() << "Error on the encryption flag of" << fileId << "HTTP code:" << httpErrorCode;
+    _errorString = errorMessage;
     emit finished(Error);
 }
 
@@ -100,7 +111,7 @@ void EncryptFolderJob::slotUploadMetadataSuccess(const QByteArray &folderId)
     unlockJob->start();
 }
 
-void EncryptFolderJob::slotUpdateMetadataError(const QByteArray &folderId, int httpReturnCode)
+void EncryptFolderJob::slotUpdateMetadataError(const QByteArray &folderId, const int httpReturnCode)
 {
     Q_UNUSED(httpReturnCode);
 
@@ -112,15 +123,21 @@ void EncryptFolderJob::slotUpdateMetadataError(const QByteArray &folderId, int h
     unlockJob->start();
 }
 
-void EncryptFolderJob::slotLockForEncryptionError(const QByteArray &fileId, int httpErrorCode)
+void EncryptFolderJob::slotLockForEncryptionError(const QByteArray &fileId,
+                                                  const int httpErrorCode,
+                                                  const QString &errorMessage)
 {
     qCInfo(lcEncryptFolderJob()) << "Locking error for" << fileId << "HTTP code:" << httpErrorCode;
+    _errorString = errorMessage;
     emit finished(Error);
 }
 
-void EncryptFolderJob::slotUnlockFolderError(const QByteArray &fileId, int httpErrorCode)
+void EncryptFolderJob::slotUnlockFolderError(const QByteArray &fileId,
+                                             const int httpErrorCode,
+                                             const QString &errorMessage)
 {
     qCInfo(lcEncryptFolderJob()) << "Unlocking error for" << fileId << "HTTP code:" << httpErrorCode;
+    _errorString = errorMessage;
     emit finished(Error);
 }
 void EncryptFolderJob::slotUnlockFolderSuccess(const QByteArray &fileId)

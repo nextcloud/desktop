@@ -150,6 +150,7 @@ void WebFlowCredentials::askFromUser() {
 #ifdef WITH_WEBENGINE
         bool useFlow2 = (type != DetermineAuthTypeJob::WebViewFlow);
 #else // WITH_WEBENGINE
+        Q_UNUSED(type)
         bool useFlow2 = true;
 #endif // WITH_WEBENGINE
 
@@ -162,8 +163,8 @@ void WebFlowCredentials::askFromUser() {
             _askDialog->setUrl(url);
         }
 
-        QString msg = tr("You have been logged out of %1 as user %2. Please login again.")
-                          .arg(_account->displayName(), _user);
+        QString msg = tr("You have been logged out of your account %1 at %2. Please login again.")
+                          .arg(_account->prettyName(), _account->url().toDisplayString());
         _askDialog->setInfo(msg);
 
         _askDialog->show();
@@ -186,8 +187,8 @@ void WebFlowCredentials::slotAskFromUserCredentialsProvided(const QString &user,
     } else {
         qCInfo(lcWebFlowCredentials()) << "Authed with the wrong user!";
 
-        QString msg = tr("Please login with the user: %1")
-                .arg(_user);
+        QString msg = tr("Please login with the account: %1")
+                .arg(_account->prettyName());
         _askDialog->setError(msg);
 
         if (!_askDialog->isUsingFlow2()) {
@@ -237,7 +238,7 @@ void WebFlowCredentials::persist() {
     }
 
     _account->setCredentialSetting(userC, _user);
-    _account->wantsAccountSaved(_account);
+    emit _account->wantsAccountSaved(_account);
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {

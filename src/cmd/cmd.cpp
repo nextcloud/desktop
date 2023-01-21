@@ -125,7 +125,7 @@ private:
 QString queryPassword(const QString &user)
 {
     EchoDisabler disabler;
-    std::cout << "Password for user " << qPrintable(user) << ": ";
+    std::cout << "Password for account with username " << qPrintable(user) << ": ";
     std::string s;
     std::getline(std::cin, s);
     return QString::fromStdString(s);
@@ -383,7 +383,7 @@ int main(int argc, char **argv)
 
     if (options.interactive) {
         if (user.isEmpty()) {
-            std::cout << "Please enter user name: ";
+            std::cout << "Please enter username: ";
             std::string s;
             std::getline(std::cin, s);
             user = QString::fromStdString(s);
@@ -440,6 +440,7 @@ int main(int argc, char **argv)
 
     account->setUrl(hostUrl);
     account->setSslErrorHandler(sslErrorHandler);
+    account->setTrustCertificates(options.trustSSL);
 
     QEventLoop loop;
     auto *job = new JsonApiJob(account, QLatin1String("ocs/v1.php/cloud/capabilities"));
@@ -504,7 +505,7 @@ restart_sync:
     SyncOptions opt;
     opt.fillFromEnvironmentVariables();
     opt.verifyChunkSizes();
-    SyncEngine engine(account, options.source_dir, folder, &db);
+    SyncEngine engine(account, options.source_dir, opt, folder, &db);
     engine.setIgnoreHiddenFiles(options.ignoreHiddenFiles);
     engine.setNetworkLimits(options.uplimit, options.downlimit);
     QObject::connect(&engine, &SyncEngine::finished,

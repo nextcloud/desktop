@@ -13,184 +13,332 @@
  */
 
 import QtQuick 2.6
-import QtQuick.Dialogs 1.3
 import QtQuick.Layouts 1.15
 import QtQuick.Controls 2.15
 import QtQuick.Window 2.15
+
 import com.nextcloud.desktopclient 1.0 as NC
+import Style 1.0
+import "./tray"
 
 ColumnLayout {
     id: rootLayout
-    spacing: 0
+    spacing: Style.standardSpacing * 2
     property NC.UserStatusSelectorModel userStatusSelectorModel
 
-    Label {
-        Layout.topMargin: 16
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
-        Layout.bottomMargin: 8
-        Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-        font.bold: true
-        text: qsTr("Online status")
-    }
-        
-    GridLayout {
-        Layout.margins: 8
-        Layout.alignment: Qt.AlignTop
-        columns: 2
-        rows: 2
-        columnSpacing: 8
-        rowSpacing: 8
+    ColumnLayout {
+        id: statusButtonsLayout
 
-        Button {
-            Layout.fillWidth: true
-            checked: NC.UserStatus.Online == userStatusSelectorModel.onlineStatus
-            checkable: true
-            icon.source: userStatusSelectorModel.onlineIcon
-            icon.color: "transparent"
-            text: qsTr("Online")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.Online)
-            implicitWidth: 100
-        }
-        Button {
-            Layout.fillWidth: true
-            checked: NC.UserStatus.Away == userStatusSelectorModel.onlineStatus
-            checkable: true
-            icon.source: userStatusSelectorModel.awayIcon
-            icon.color: "transparent"
-            text: qsTr("Away")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.Away)
-            implicitWidth: 100
-            
-        }
-        Button {
-            Layout.fillWidth: true
-            checked: NC.UserStatus.DoNotDisturb == userStatusSelectorModel.onlineStatus
-            checkable: true
-            icon.source: userStatusSelectorModel.dndIcon
-            icon.color: "transparent"
-            text: qsTr("Do not disturb")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.DoNotDisturb)
-            implicitWidth: 100
-        }
-        Button {
-            Layout.fillWidth: true
-            checked: NC.UserStatus.Invisible == userStatusSelectorModel.onlineStatus
-            checkable: true
-            icon.source: userStatusSelectorModel.invisibleIcon
-            icon.color: "transparent"
-            text: qsTr("Invisible")
-            onClicked: userStatusSelectorModel.setOnlineStatus(NC.UserStatus.Invisible)
-            implicitWidth: 100
-        }
-    }
-
-    Label {
-        Layout.topMargin: 16
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
-        Layout.bottomMargin: 8
-        Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
-        font.bold: true
-        text: qsTr("Status message")
-    }
-
-    RowLayout {
-        Layout.topMargin: 8
-        Layout.leftMargin: 8
-        Layout.rightMargin: 8
-        Layout.bottomMargin: 16
-        Layout.alignment: Qt.AlignTop
         Layout.fillWidth: true
+        spacing: Style.smallSpacing
 
-        Button {
-            Layout.preferredWidth: userStatusMessageTextField.height 
-            Layout.preferredHeight: userStatusMessageTextField.height
-            text: userStatusSelectorModel.userStatusEmoji
-            onClicked: emojiDialog.open()
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+            Layout.bottomMargin: Style.smallSpacing
+            horizontalAlignment: Text.AlignHCenter
+            font.bold: true
+            text: qsTr("Online status")
+            color: Style.ncTextColor
         }
 
-        Popup {
-            id: emojiDialog
-            padding: 0
-            margins: 0
+        GridLayout {
+            id: topButtonsLayout
+            columns: 2
+            rows: 2
+            columnSpacing: statusButtonsLayout.spacing
+            rowSpacing: statusButtonsLayout.spacing
 
-            anchors.centerIn: Overlay.overlay
-            
-            EmojiPicker {
-                id: emojiPicker
+            property int maxButtonHeight: 0
+            function updateMaxButtonHeight(newHeight) {
+                maxButtonHeight = Math.max(maxButtonHeight, newHeight)
+            }
 
-                onChosen: {
-                    userStatusSelectorModel.userStatusEmoji = emoji
-                    emojiDialog.close()
+            UserStatusSelectorButton {
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Online
+                checkable: true
+                icon.source: userStatusSelectorModel.onlineIcon
+                icon.color: "transparent"
+                text: qsTr("Online")
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Online
+
+                Layout.fillWidth: true
+                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
+            }
+            UserStatusSelectorButton {
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Away
+                checkable: true
+                icon.source: userStatusSelectorModel.awayIcon
+                icon.color: "transparent"
+                text: qsTr("Away")
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Away
+
+                Layout.fillWidth: true
+                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
+
+            }
+            UserStatusSelectorButton {
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.DoNotDisturb
+                checkable: true
+                icon.source: userStatusSelectorModel.dndIcon
+                icon.color: "transparent"
+                text: qsTr("Do not disturb")
+                secondaryText: qsTr("Mute all notifications")
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.DoNotDisturb
+
+                Layout.fillWidth: true
+                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
+                Layout.preferredHeight: topButtonsLayout.maxButtonHeight
+                onImplicitHeightChanged: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+                Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+            }
+            UserStatusSelectorButton {
+                checked: userStatusSelectorModel.onlineStatus === NC.UserStatus.Invisible ||
+                         userStatusSelectorModel.onlineStatus === NC.UserStatus.Offline
+                checkable: true
+                icon.source: userStatusSelectorModel.invisibleIcon
+                icon.color: "transparent"
+                text: qsTr("Invisible")
+                secondaryText: qsTr("Appear offline")
+                onClicked: userStatusSelectorModel.onlineStatus = NC.UserStatus.Invisible
+
+                Layout.fillWidth: true
+                implicitWidth: 200 // Pretty much a hack to ensure all the buttons are equal in width
+                Layout.preferredHeight: topButtonsLayout.maxButtonHeight
+                onImplicitHeightChanged: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+                Component.onCompleted: topButtonsLayout.updateMaxButtonHeight(implicitHeight)
+            }
+        }
+    }
+
+    ColumnLayout {
+        id: userStatusMessageLayout
+
+        Layout.fillWidth: true
+        Layout.fillHeight: true
+        spacing: Style.smallSpacing
+
+        EnforcedPlainTextLabel {
+            Layout.fillWidth: true
+            Layout.bottomMargin: Style.smallSpacing
+            horizontalAlignment: Text.AlignHCenter
+            font.bold: true
+            text: qsTr("Status message")
+            color: Style.ncTextColor
+        }
+
+        RowLayout {
+            id: statusFieldLayout
+            Layout.fillWidth: true
+            spacing: 0
+
+            UserStatusSelectorButton {
+                id: fieldButton
+
+                Layout.preferredWidth: userStatusMessageTextField.height
+                Layout.preferredHeight: userStatusMessageTextField.height
+
+                text: userStatusSelectorModel.userStatusEmoji
+
+                onClicked: emojiDialog.open()
+                onHeightChanged: topButtonsLayout.maxButtonHeight = Math.max(topButtonsLayout.maxButtonHeight, height)
+
+                primary: true
+                padding: 0
+                z: hovered ? 2 : 0 // Make sure highlight is seen on top of text field
+
+                property color borderColor: showBorder ? Style.ncBlue : Style.menuBorder
+
+                // We create the square with only the top-left and bottom-left rounded corners
+                // by overlaying different rectangles on top of each other
+                background: Rectangle {
+                    radius: Style.slightlyRoundedButtonRadius
+                    color: Style.buttonBackgroundColor
+                    border.color: fieldButton.borderColor
+                    border.width: Style.normalBorderWidth
+
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.leftMargin: parent.width / 2
+                        anchors.rightMargin: -1
+                        z: 1
+                        color: Style.buttonBackgroundColor
+                        border.color: fieldButton.borderColor
+                        border.width: Style.normalBorderWidth
+                    }
+
+                    Rectangle { // We need to cover the blue border of the non-radiused rectangle
+                        anchors.fill: parent
+                        anchors.leftMargin: parent.width / 4
+                        anchors.rightMargin: parent.width / 4
+                        anchors.topMargin: Style.normalBorderWidth
+                        anchors.bottomMargin: Style.normalBorderWidth
+                        z: 2
+                        color: Style.buttonBackgroundColor
+                    }
+                }
+            }
+
+            Popup {
+                id: emojiDialog
+                padding: 0
+                margins: 0
+                clip: true
+
+                anchors.centerIn: Overlay.overlay
+
+                background: Rectangle {
+                    color: Style.backgroundColor
+                    border.width: Style.normalBorderWidth
+                    border.color: Style.menuBorder
+                    radius: Style.slightlyRoundedButtonRadius
+                }
+
+                EmojiPicker {
+                    id: emojiPicker
+
+                    onChosen: {
+                        userStatusSelectorModel.userStatusEmoji = emoji
+                        emojiDialog.close()
+                    }
+                }
+            }
+
+            TextField {
+                id: userStatusMessageTextField
+
+                property color borderColor: activeFocus ? Style.ncBlue : Style.menuBorder
+
+                Layout.fillWidth: true
+                Layout.preferredHeight: contentHeight + (Style.smallSpacing * 2)
+
+                placeholderText: qsTr("What is your status?")
+                placeholderTextColor: Style.ncSecondaryTextColor
+                text: userStatusSelectorModel.userStatusMessage
+                color: Style.ncTextColor
+                verticalAlignment: TextInput.AlignVCenter
+                selectByMouse: true
+                onEditingFinished: userStatusSelectorModel.userStatusMessage = text
+
+                background: Rectangle {
+                    radius: Style.slightlyRoundedButtonRadius
+                    color: Style.backgroundColor
+                    border.color: userStatusMessageTextField.borderColor
+                    border.width: Style.normalBorderWidth
+
+                    Rectangle {
+                        anchors.fill: parent
+                        anchors.rightMargin: parent.width / 2
+                        z: 1
+                        color: Style.backgroundColor
+                        border.color: userStatusMessageTextField.borderColor
+                        border.width: Style.normalBorderWidth
+                    }
+
+                    Rectangle { // We need to cover the blue border of the non-radiused rectangle
+                        anchors.fill: parent
+                        anchors.leftMargin: parent.width / 4
+                        anchors.rightMargin: parent.width / 4
+                        anchors.topMargin: Style.normalBorderWidth
+                        anchors.bottomMargin: Style.normalBorderWidth
+                        z: 2
+                        color: Style.backgroundColor
+                    }
                 }
             }
         }
 
-        TextField {
-            id: userStatusMessageTextField
+        ScrollView {
+            id: predefinedStatusesScrollView
             Layout.fillWidth: true
-            placeholderText: qsTr("What is your status?")
-            text: userStatusSelectorModel.userStatusMessage
-            selectByMouse: true
-            onEditingFinished: userStatusSelectorModel.setUserStatusMessage(text)
+            Layout.fillHeight: true
+            clip: true
+	    
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+
+            ListView {
+                spacing: 0
+                model: userStatusSelectorModel.predefinedStatuses
+                delegate: PredefinedStatusButton {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    leftPadding: 0
+                    emojiWidth: fieldButton.width
+                    internalSpacing: statusFieldLayout.spacing + userStatusMessageTextField.leftPadding
+
+                    emoji: modelData.icon
+                    statusText: modelData.message
+                    clearAtText: userStatusSelectorModel.clearAtReadable(modelData)
+                    onClicked: userStatusSelectorModel.setPredefinedStatus(modelData)
+                }
+            }
         }
-    }
 
-    Repeater {
-        model: userStatusSelectorModel.predefinedStatusesCount
-
-        Button {
-            id: control
+        RowLayout {
             Layout.fillWidth: true
-            flat: !hovered
-            hoverEnabled: true
-            text: userStatusSelectorModel.predefinedStatus(index).icon + " <b>" + userStatusSelectorModel.predefinedStatus(index).message + "</b> - " + userStatusSelectorModel.predefinedStatusClearAt(index)
-            onClicked: userStatusSelectorModel.setPredefinedStatus(index)
-        }
-    }
+            spacing: Style.smallSpacing
 
-   RowLayout {
-       Layout.topMargin: 16
-       Layout.leftMargin: 8
-       Layout.rightMargin: 8
-       Layout.bottomMargin: 8
-       Layout.alignment: Qt.AlignTop
+            EnforcedPlainTextLabel {
+                id: clearComboLabel
 
-       Label {
-           text: qsTr("Clear status message after")
-       }
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                verticalAlignment: Text.AlignVCenter
 
-       ComboBox {
-           Layout.fillWidth: true
-           model: userStatusSelectorModel.clearAtValues
-           displayText: userStatusSelectorModel.clearAt
-           onActivated: userStatusSelectorModel.setClearAt(index)
-       }
-   }
+                text: qsTr("Clear status message after")
+                color: Style.ncTextColor
+                wrapMode: Text.Wrap
+            }
 
-    RowLayout {
-        Layout.margins: 8
-        Layout.alignment: Qt.AlignTop
-        
-        Button {
-            Layout.fillWidth: true
-            text: qsTr("Clear status message")
-            onClicked: userStatusSelectorModel.clearUserStatus()
-        }
-        Button {
-            highlighted: true
-            Layout.fillWidth: true
-            text: qsTr("Set status message")
-            onClicked: userStatusSelectorModel.setUserStatus()
+            BasicComboBox {
+                id: clearComboBox
+
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Layout.minimumWidth: implicitWidth
+
+                model: userStatusSelectorModel.clearStageTypes
+                textRole: "display"
+                valueRole: "clearStageType"
+                displayText: userStatusSelectorModel.clearAtDisplayString
+                onActivated: userStatusSelectorModel.setClearAt(currentValue)
+            }
         }
     }
 
     ErrorBox {
-        Layout.margins: 8
-        Layout.fillWidth: true
-        
+        width: parent.width
+
         visible: userStatusSelectorModel.errorMessage != ""
-        text: "<b>Error:</b> " + userStatusSelectorModel.errorMessage
+        text: "Error: " + userStatusSelectorModel.errorMessage
+    }
+
+    RowLayout {
+        id: bottomButtonBox
+        Layout.fillWidth: true
+        Layout.alignment: Qt.AlignBottom
+
+        UserStatusSelectorButton {
+            // Prevent being squashed by the other buttons with larger text
+            Layout.minimumWidth: implicitWidth
+            Layout.fillHeight: true
+            primary: true
+            text: qsTr("Cancel")
+            onClicked: finished()
+        }
+        UserStatusSelectorButton {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            primary: true
+            text: qsTr("Clear status message")
+            onClicked: userStatusSelectorModel.clearUserStatus()
+        }
+        UserStatusSelectorButton {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            primary: true
+            colored: true
+            text: qsTr("Set status message")
+            onClicked: userStatusSelectorModel.setUserStatus()
+        }
     }
 }

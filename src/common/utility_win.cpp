@@ -28,8 +28,11 @@
 #include <winbase.h>
 #include <windows.h>
 #include <winerror.h>
-
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
 #include <QLibrary>
+#include <QSettings>
 
 extern Q_CORE_EXPORT int qt_ntfs_permission_lookup;
 
@@ -354,6 +357,50 @@ bool Utility::registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const st
     return retCode != ERROR_NO_MORE_ITEMS;
 }
 
+bool Utility::registryWalkValues(HKEY hRootKey, const QString &subKey, const std::function<void(const QString &, bool *)> &callback)
+{
+    HKEY hKey;
+    REGSAM sam = KEY_QUERY_VALUE;
+    LONG result = RegOpenKeyEx(hRootKey, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, sam, &hKey);
+    ASSERT(result == ERROR_SUCCESS);
+    if (result != ERROR_SUCCESS) {
+        return false;
+    }
+
+    DWORD maxValueNameSize = 0;
+    result = RegQueryInfoKey(hKey, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, &maxValueNameSize, nullptr, nullptr, nullptr);
+    ASSERT(result == ERROR_SUCCESS);
+    if (result != ERROR_SUCCESS) {
+        RegCloseKey(hKey);
+        return false;
+    }
+
+    QString valueName;
+    valueName.reserve(maxValueNameSize + 1);
+
+    DWORD retCode = ERROR_SUCCESS;
+    bool done = false;
+    for (DWORD i = 0; retCode == ERROR_SUCCESS; ++i) {
+        Q_ASSERT(unsigned(valueName.capacity()) > maxValueNameSize);
+        valueName.resize(valueName.capacity());
+        DWORD valueNameSize = valueName.size();
+        retCode = RegEnumValue(hKey, i, reinterpret_cast<LPWSTR>(valueName.data()), &valueNameSize, nullptr, nullptr, nullptr, nullptr);
+
+        ASSERT(result == ERROR_SUCCESS || retCode == ERROR_NO_MORE_ITEMS);
+        if (retCode == ERROR_SUCCESS) {
+            valueName.resize(valueNameSize);
+            callback(valueName, &done);
+
+            if (done) {
+                break;
+            }
+        }
+    }
+
+    RegCloseKey(hKey);
+    return retCode != ERROR_NO_MORE_ITEMS;
+}
+
 DWORD Utility::convertSizeToDWORD(size_t &convertVar)
 {
     if( convertVar > UINT_MAX ) {
@@ -400,6 +447,8 @@ QString Utility::getCurrentUserName()
 
     return QString::fromWCharArray(username);
 }
+
+void Utility::registerUriHandlerForLocalEditing() { /* URI handler is registered via Nextcloud.wxs */ }
 
 Utility::NtfsPermissionLookupRAII::NtfsPermissionLookupRAII()
 {

@@ -32,26 +32,22 @@ RowLayout {
         ActivityActionButton {
             id: activityActionButton
 
-            readonly property string verb: model.modelData.verb
-            readonly property bool primary: model.index === 0 && verb !== "DELETE"
-            readonly property bool isTalkReplyButton: verb === "REPLY"
+            Layout.minimumWidth: primaryButton ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
+            Layout.preferredHeight: parent.height
+            Layout.preferredWidth: primaryButton ? -1 : parent.height
 
-            Layout.minimumWidth: primary ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
-            Layout.preferredHeight: primary ? parent.height : parent.height * 0.3
-            Layout.preferredWidth: primary ? -1 : parent.height
+            verb: model.modelData.verb
+            primaryButton: (model.index === 0 && verb !== "DELETE") || model.modelData.primary
+            isTalkReplyButton: verb === "REPLY"
 
             text: model.modelData.label
-            toolTipText: model.modelData.label
 
-            imageSource: model.modelData.imageSource ? model.modelData.imageSource + UserModel.currentUser.headerColor : ""
-            imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + UserModel.currentUser.headerTextColor : ""
+            adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
 
-            textColor: imageSource !== "" ? UserModel.currentUser.headerColor : Style.ncTextColor
-            textColorHovered: imageSource !== "" ? UserModel.currentUser.headerTextColor : Style.ncTextColor
+            imageSource: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
+            imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + Style.currentUserHeaderTextColor : ""
 
-            bold: primary
-
-            onClicked: !isTalkReplyButton ? root.triggerAction(model.index) : root.showReplyField()
+            onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)
         }
     }
 
@@ -77,19 +73,9 @@ RowLayout {
                 radius: width / 2
             }
 
-            ToolTip {
-                id: moreActionsButtonTooltip
+            NCToolTip {
                 visible: parent.hovered
-                delay: Qt.styleHints.mousePressAndHoldInterval
                 text: qsTr("Show more actions")
-                contentItem: Label {
-                    text: moreActionsButtonTooltip.text
-                    color: Style.ncTextColor
-                }
-                background: Rectangle {
-                    border.color: Style.menuBorder
-                    color: Style.backgroundColor
-                }
             }
 
             Accessible.name: qsTr("Show more actions")
@@ -101,17 +87,6 @@ RowLayout {
 
                 function onMovementStarted() {
                     moreActionsButtonContextMenu.close();
-                }
-            }
-
-            ActivityItemContextMenu {
-                id: moreActionsButtonContextMenu
-
-                maxActionButtons: root.maxActionButtons
-                linksContextMenu: root.linksContextMenu
-
-                onMenuEntryTriggered: function(entryIndex) {
-                    root.triggerAction(entryIndex)
                 }
             }
         }

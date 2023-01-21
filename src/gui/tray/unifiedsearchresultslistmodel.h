@@ -38,6 +38,7 @@ class UnifiedSearchResultsListModel : public QAbstractListModel
             currentFetchMoreInProgressProviderIdChanged)
     Q_PROPERTY(QString errorString READ errorString NOTIFY errorStringChanged)
     Q_PROPERTY(QString searchTerm READ searchTerm WRITE setSearchTerm NOTIFY searchTermChanged)
+    Q_PROPERTY(bool waitingForSearchTermEditEnd READ waitingForSearchTermEditEnd NOTIFY waitingForSearchTermEditEndChanged)
 
     struct UnifiedSearchProvider
     {
@@ -57,6 +58,8 @@ public:
         LightImagePlaceholderRole,
         DarkIconsRole,
         LightIconsRole,
+        DarkIconsIsThumbnailRole,
+        LightIconsIsThumbnailRole,
         TitleRole,
         SublineRole,
         ResourceUrlRole,
@@ -67,19 +70,20 @@ public:
 
     explicit UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    bool isSearchInProgress() const;
+    [[nodiscard]] bool isSearchInProgress() const;
 
-    QString currentFetchMoreInProgressProviderId() const;
-    QString searchTerm() const;
-    QString errorString() const;
+    [[nodiscard]] QString currentFetchMoreInProgressProviderId() const;
+    [[nodiscard]] QString searchTerm() const;
+    [[nodiscard]] QString errorString() const;
+    [[nodiscard]] bool waitingForSearchTermEditEnd() const;
 
     Q_INVOKABLE void resultClicked(const QString &providerId, const QUrl &resourceUrl) const;
     Q_INVOKABLE void fetchMoreTriggerClicked(const QString &providerId);
 
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
 private:
     void startSearch();
@@ -104,6 +108,7 @@ signals:
     void isSearchInProgressChanged();
     void errorStringChanged();
     void searchTermChanged();
+    void waitingForSearchTermEditEndChanged();
 
 public slots:
     void setSearchTerm(const QString &term);
@@ -114,11 +119,14 @@ private slots:
     void slotSearchForProviderFinished(const QJsonDocument &json, int statusCode);
 
 private:
+    static QUrl openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl);
+
     QMap<QString, UnifiedSearchProvider> _providers;
     QVector<UnifiedSearchResult> _results;
 
     QString _searchTerm;
     QString _errorString;
+    bool _waitingForSearchTermEditEnd;
 
     QString _currentFetchMoreInProgressProviderId;
 

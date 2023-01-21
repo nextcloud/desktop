@@ -55,8 +55,9 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString version READ version CONSTANT)
     Q_PROPERTY(QString helpUrl READ helpUrl CONSTANT)
     Q_PROPERTY(QString conflictHelpUrl READ conflictHelpUrl CONSTANT)
-    Q_PROPERTY(QString overrideServerUrl READ overrideServerUrl)
-    Q_PROPERTY(bool forceOverrideServerUrl READ forceOverrideServerUrl)
+    Q_PROPERTY(QString overrideServerUrl READ overrideServerUrl WRITE setOverrideServerUrl NOTIFY overrideServerUrlChanged)
+    Q_PROPERTY(bool forceOverrideServerUrl READ forceOverrideServerUrl WRITE setForceOverrideServerUrl NOTIFY forceOverrideServerUrlChanged)
+    Q_PROPERTY(bool startLoginFlowAutomatically READ startLoginFlowAutomatically WRITE setStartLoginFlowAutomatically NOTIFY startLoginFlowAutomaticallyChanged)
 #ifndef TOKEN_AUTH_ONLY
     Q_PROPERTY(QColor wizardHeaderTitleColor READ wizardHeaderTitleColor CONSTANT)
     Q_PROPERTY(QColor wizardHeaderBackgroundColor READ wizardHeaderBackgroundColor CONSTANT)
@@ -64,9 +65,6 @@ class OWNCLOUDSYNC_EXPORT Theme : public QObject
     Q_PROPERTY(QString updateCheckUrl READ updateCheckUrl CONSTANT)
 
     Q_PROPERTY(QColor defaultColor READ defaultColor CONSTANT)
-    Q_PROPERTY(QColor errorBoxTextColor READ errorBoxTextColor CONSTANT)
-    Q_PROPERTY(QColor errorBoxBackgroundColor READ errorBoxBackgroundColor CONSTANT)
-    Q_PROPERTY(QColor errorBoxBorderColor READ errorBoxBorderColor CONSTANT)
 
     Q_PROPERTY(QPalette systemPalette READ systemPalette NOTIFY systemPaletteChanged)
     Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
@@ -244,6 +242,13 @@ public:
      * When true, the respective UI controls will be disabled
      */
     virtual bool forceOverrideServerUrl() const;
+
+    /**
+     * Automatically start login flow
+     *
+     * When true, the browser will get opened automatically
+     */
+    virtual bool startLoginFlowAutomatically() const;
     
     /**
      * Enable OCSP stapling for SSL handshakes
@@ -397,7 +402,7 @@ public:
     /**
      * @brief How to handle the userID
      *
-     * @value UserIDUserName Wizard asks for user name as ID
+     * @value UserIDUserName Wizard asks for username as ID
      * @value UserIDEmail Wizard asks for an email as ID
      * @value UserIDCustom Specify string in \ref customUserID
      */
@@ -570,7 +575,6 @@ public:
      */
     static QPixmap createColorAwarePixmap(const QString &name);
 
-
     /**
      * @brief Whether to show the option to create folders using "virtual files".
      *
@@ -583,19 +587,15 @@ public:
 
     static QColor defaultColor();
 
-    /** @return color for the ErrorBox text. */
-    virtual QColor errorBoxTextColor() const;
-
-    /** @return color for the ErrorBox background. */
-    virtual QColor errorBoxBackgroundColor() const;
-
-    /** @return color for the ErrorBox border. */
-    virtual QColor errorBoxBorderColor() const;
-
     static constexpr const char *themePrefix = ":/client/theme/";
 
     QPalette systemPalette();
     bool darkMode();
+
+public slots:
+    virtual void setOverrideServerUrl(const QString &overrideServerUrl);
+    virtual void setForceOverrideServerUrl(bool forceOverride);
+    virtual void setStartLoginFlowAutomatically(bool startLoginFlowAuto);
 
 protected:
 #ifndef TOKEN_AUTH_ONLY
@@ -615,6 +615,9 @@ signals:
     void systrayUseMonoIconsChanged(bool);
     void systemPaletteChanged(const QPalette &palette);
     void darkModeChanged();
+    void overrideServerUrlChanged();
+    void forceOverrideServerUrlChanged();
+    void startLoginFlowAutomaticallyChanged();
 
 private:
     Theme(Theme const &);
@@ -628,6 +631,10 @@ private:
     static Theme *_instance;
     bool _mono = false;
     bool _paletteSignalsConnected = false;
+
+    QString _overrideServerUrl;
+    bool _forceOverrideServerUrl = false;
+    bool _startLoginFlowAutomatically = false;
 
 #ifndef TOKEN_AUTH_ONLY
     mutable QHash<QString, QIcon> _iconCache;

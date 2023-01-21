@@ -64,7 +64,6 @@ constexpr int checksumRecalculateRequestServerVersionMinSupportedMajor = 24;
 }
 
 namespace OCC {
-
 Q_LOGGING_CATEGORY(lcAccount, "nextcloud.sync.account", QtInfoMsg)
 const char app_password[] = "_app-password";
 
@@ -96,7 +95,12 @@ Account::~Account() = default;
 
 QString Account::davPath() const
 {
-    return davPathBase() + QLatin1Char('/') + davUser() + QLatin1Char('/');
+    return davPathRoot() + QLatin1Char('/');
+}
+
+QString Account::davPathRoot() const
+{
+    return davPathBase() + QLatin1Char('/') + davUser();
 }
 
 void Account::setSharedThis(AccountPtr sharedThis)
@@ -131,6 +135,7 @@ void Account::setDavUser(const QString &newDavUser)
         return;
     _davUser = newDavUser;
     emit wantsAccountSaved(this);
+    emit prettyNameChanged();
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -156,6 +161,25 @@ QString Account::displayName() const
     return dn;
 }
 
+QString Account::userIdAtHostWithPort() const
+{
+    const auto credentialsUserSplit = credentials() ? credentials()->user().split(QLatin1Char('@')) : QStringList{};
+
+    if (credentialsUserSplit.isEmpty()) {
+        return {};
+    }
+
+    const auto userName = credentialsUserSplit.first();
+
+    QString dn = QStringLiteral("%1@%2").arg(userName, _url.host());
+    const auto port = url().port();
+    if (port > 0 && port != 80 && port != 443) {
+        dn.append(QLatin1Char(':'));
+        dn.append(QString::number(port));
+    }
+    return dn;
+}
+
 QString Account::davDisplayName() const
 {
     return _displayName;
@@ -165,6 +189,19 @@ void Account::setDavDisplayName(const QString &newDisplayName)
 {
     _displayName = newDisplayName;
     emit accountChangedDisplayName();
+    emit prettyNameChanged();
+}
+
+QString Account::prettyName() const
+{
+    // If davDisplayName is empty (can be several reasons, simplest is missing login at startup), fall back to username
+    auto name = davDisplayName();
+
+    if (name.isEmpty()) {
+        name = davUser();
+    }
+
+    return name;
 }
 
 QColor Account::headerColor() const
@@ -657,11 +694,6 @@ int Account::serverVersionInt() const
         components.value(2).toInt());
 }
 
-int Account::makeServerVersion(int majorVersion, int minorVersion, int patchVersion)
-{
-    return (majorVersion << 16) + (minorVersion << 8) + patchVersion;
-}
-
 bool Account::serverVersionUnsupported() const
 {
     if (serverVersionInt() == 0) {
@@ -721,7 +753,7 @@ void Account::writeAppPasswordOnce(QString appPassword){
     job->setKey(kck);
     job->setBinaryData(appPassword.toLatin1());
     connect(job, &WritePasswordJob::finished, [this](Job *incoming) {
-        auto *writeJob = static_cast<WritePasswordJob *>(incoming);
+        auto *writeJob = dynamic_cast<WritePasswordJob *>(incoming);
         if (writeJob->error() == NoError)
             qCInfo(lcAccount) << "appPassword stored in keychain";
         else
@@ -744,7 +776,7 @@ void Account::retrieveAppPassword(){
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &ReadPasswordJob::finished, [this](Job *incoming) {
-        auto *readJob = static_cast<ReadPasswordJob *>(incoming);
+        auto *readJob = dynamic_cast<ReadPasswordJob *>(incoming);
         QString pwd("");
         // Error or no valid public key error out
         if (readJob->error() == NoError &&
@@ -774,7 +806,7 @@ void Account::deleteAppPassword()
     job->setInsecureFallback(false);
     job->setKey(kck);
     connect(job, &DeletePasswordJob::finished, [this](Job *incoming) {
-        auto *deleteJob = static_cast<DeletePasswordJob *>(incoming);
+        auto *deleteJob = dynamic_cast<DeletePasswordJob *>(incoming);
         if (deleteJob->error() == NoError)
             qCInfo(lcAccount) << "appPassword deleted from keychain";
         else
@@ -912,6 +944,37 @@ bool Account::fileCanBeUnlocked(SyncJournalDb * const journal,
         return true;
     }
     return false;
+}
+
+void Account::setTrustCertificates(bool trustCertificates)
+{
+    _trustCertificates = trustCertificates;
+}
+
+bool Account::trustCertificates() const
+{
+    return _trustCertificates;
+}
+
+void Account::setE2eEncryptionKeysGenerationAllowed(bool allowed)
+{
+    _e2eEncryptionKeysGenerationAllowed = allowed;
+}
+
+[[nodiscard]] bool Account::e2eEncryptionKeysGenerationAllowed() const
+{
+    return _e2eEncryptionKeysGenerationAllowed;
+}
+
+bool Account::askUserForMnemonic() const
+{
+    return _e2eAskUserForMnemonic;
+}
+
+void Account::setAskUserForMnemonic(const bool ask)
+{
+    _e2eAskUserForMnemonic = ask;
+    emit askUserForMnemonicChanged();
 }
 
 } // namespace OCC

@@ -129,7 +129,9 @@ protected:
 
 signals:
     void success(const QByteArray &fileId);
-    void error(const QByteArray &fileId, int httpReturnCode);
+    void error(const QByteArray &fileId,
+               const int httpReturnCode,
+               const QString &errorMessage);
 
 private:
     QByteArray _fileId;
@@ -150,7 +152,9 @@ protected:
 
 signals:
     void success(const QByteArray& fileId, const QByteArray& token);
-    void error(const QByteArray& fileId, int httpdErrorCode);
+    void error(const QByteArray& fileId,
+               const int httpErrorCode,
+               const QString &errorMessage);
 
 private:
     QByteArray _fileId;
@@ -175,7 +179,9 @@ protected:
 
 signals:
     void success(const QByteArray& fileId);
-    void error(const QByteArray& fileId, int httpReturnCode);
+    void error(const QByteArray& fileId,
+               const int httpReturnCode,
+               const QString &errorMessage);
 
 private:
     QByteArray _fileId;

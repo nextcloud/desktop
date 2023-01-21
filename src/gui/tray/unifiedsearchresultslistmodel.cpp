@@ -155,7 +155,8 @@ QString generateUrlForIcon(const QString &fallbackIcon, const QUrl &serverUrl, c
     return fallbackIconCopy;
 }
 
-QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallbackIcon, const QUrl &serverUrl, const bool darkMode)
+// Return image URL and whether it is a thumbnail or not
+std::pair<QString, bool> iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QString &fallbackIcon, const QUrl &serverUrl, const bool darkMode)
 {
     if (thumbnailUrl.isEmpty() && fallbackIcon.isEmpty()) {
         return {};
@@ -163,7 +164,7 @@ QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QSt
 
     if (serverUrl.isEmpty()) {
         const QStringList listImages = {thumbnailUrl, fallbackIcon};
-        return listImages.join(QLatin1Char(';'));
+        return {listImages.join(QLatin1Char(';')), false};
     }
 
     const auto urlForThumbnail = generateUrlForThumbnail(thumbnailUrl, serverUrl);
@@ -172,15 +173,15 @@ QString iconsFromThumbnailAndFallbackIcon(const QString &thumbnailUrl, const QSt
     qDebug() << "SEARCH" << urlForThumbnail << urlForFallbackIcon;
 
     if (urlForThumbnail.isEmpty() && !urlForFallbackIcon.isEmpty()) {
-        return urlForFallbackIcon;
+        return {urlForFallbackIcon, false};
     }
 
     if (!urlForThumbnail.isEmpty() && urlForFallbackIcon.isEmpty()) {
-        return urlForThumbnail;
+        return {urlForThumbnail, true};
     }
 
     const QStringList listImages{urlForThumbnail, urlForFallbackIcon};
-    return listImages.join(QLatin1Char(';'));
+    return {listImages.join(QLatin1Char(';')), true};
 }
 
 constexpr int searchTermEditingFinishedSearchStartDelay = 800;
@@ -193,6 +194,7 @@ Q_LOGGING_CATEGORY(lcUnifiedSearch, "nextcloud.gui.unifiedsearch", QtInfoMsg)
 
 UnifiedSearchResultsListModel::UnifiedSearchResultsListModel(AccountState *accountState, QObject *parent)
     : QAbstractListModel(parent)
+    , _waitingForSearchTermEditEnd(false)
     , _accountState(accountState)
 {
 }
@@ -214,6 +216,10 @@ QVariant UnifiedSearchResultsListModel::data(const QModelIndex &index, int role)
         return _results.at(index.row())._darkIcons;
     case LightIconsRole:
         return _results.at(index.row())._lightIcons;
+    case DarkIconsIsThumbnailRole:
+        return _results.at(index.row())._darkIconsIsThumbnail;
+    case LightIconsIsThumbnailRole:
+        return _results.at(index.row())._lightIconsIsThumbnail;
     case TitleRole:
         return _results.at(index.row())._title;
     case SublineRole:
@@ -247,6 +253,8 @@ QHash<int, QByteArray> UnifiedSearchResultsListModel::roleNames() const
     roles[ProviderIdRole] = "providerId";
     roles[DarkIconsRole] = "darkIcons";
     roles[LightIconsRole] = "lightIcons";
+    roles[DarkIconsIsThumbnailRole] = "darkIconsIsThumbnail";
+    roles[LightIconsIsThumbnailRole] = "lightIconsIsThumbnail";
     roles[DarkImagePlaceholderRole] = "darkImagePlaceholder";
     roles[LightImagePlaceholderRole] = "lightImagePlaceholder";
     roles[TitleRole] = "resultTitle";
@@ -273,6 +281,11 @@ QString UnifiedSearchResultsListModel::currentFetchMoreInProgressProviderId() co
     return _currentFetchMoreInProgressProviderId;
 }
 
+bool UnifiedSearchResultsListModel::waitingForSearchTermEditEnd() const
+{
+    return _waitingForSearchTermEditEnd;
+}
+
 void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 {
     if (term == _searchTerm) {
@@ -296,6 +309,8 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
 
     if (_unifiedSearchTextEditingFinishedTimer.isActive()) {
         _unifiedSearchTextEditingFinishedTimer.stop();
+        _waitingForSearchTermEditEnd = false;
+        emit waitingForSearchTermEditEndChanged();
     }
 
     if (!_searchTerm.isEmpty()) {
@@ -303,6 +318,8 @@ void UnifiedSearchResultsListModel::setSearchTerm(const QString &term)
         connect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
             &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
         _unifiedSearchTextEditingFinishedTimer.start();
+        _waitingForSearchTermEditEnd = true;
+        emit waitingForSearchTermEditEndChanged();
     }
 
     if (!_results.isEmpty()) {
@@ -360,6 +377,9 @@ void UnifiedSearchResultsListModel::fetchMoreTriggerClicked(const QString &provi
 
 void UnifiedSearchResultsListModel::slotSearchTermEditingFinished()
 {
+    _waitingForSearchTermEditEnd = false;
+    emit waitingForSearchTermEditEndChanged();
+
     disconnect(&_unifiedSearchTextEditingFinishedTimer, &QTimer::timeout, this,
         &UnifiedSearchResultsListModel::slotSearchTermEditingFinished);
 
@@ -484,7 +504,7 @@ void UnifiedSearchResultsListModel::startSearch()
         endResetModel();
     }
 
-    for (const auto &provider : _providers) {
+    for (const auto &provider : qAsConst(_providers)) {
         startSearchForProvider(provider._id);
     }
 }
@@ -559,15 +579,6 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
 
     QVector<UnifiedSearchResult> newEntries;
 
-    const auto makeResourceUrl = [](const QString &resourceUrl, const QUrl &accountUrl) {
-        QUrl finalResurceUrl(resourceUrl);
-        if (finalResurceUrl.scheme().isEmpty() && accountUrl.scheme().isEmpty()) {
-            finalResurceUrl = accountUrl;
-            finalResurceUrl.setPath(resourceUrl);
-        }
-        return finalResurceUrl;
-    };
-
     for (const auto &entry : entries) {
         const auto entryMap = entry.toMap();
         if (entryMap.isEmpty()) {
@@ -581,14 +592,18 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
         result._title = entryMap.value(QStringLiteral("title")).toString();
         result._subline = entryMap.value(QStringLiteral("subline")).toString();
 
-        const auto resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toString();
+        const auto resourceUrl = entryMap.value(QStringLiteral("resourceUrl")).toUrl();
         const auto accountUrl = (_accountState && _accountState->account()) ? _accountState->account()->url() : QUrl();
 
-        result._resourceUrl = makeResourceUrl(resourceUrl, accountUrl);
-        result._darkIcons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
-            entryMap.value(QStringLiteral("icon")).toString(), accountUrl, true);
-        result._lightIcons = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
-            entryMap.value(QStringLiteral("icon")).toString(), accountUrl, false);
+        result._resourceUrl = openableResourceUrl(resourceUrl, accountUrl);
+        const auto darkIconsData = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
+                                                                     entryMap.value(QStringLiteral("icon")).toString(), accountUrl, true);
+        const auto lightIconsData = iconsFromThumbnailAndFallbackIcon(entryMap.value(QStringLiteral("thumbnailUrl")).toString(),
+                                                                      entryMap.value(QStringLiteral("icon")).toString(), accountUrl, false);
+        result._darkIcons = darkIconsData.first;
+        result._lightIcons = lightIconsData.first;
+        result._darkIconsIsThumbnail = darkIconsData.second;
+        result._lightIconsIsThumbnail = lightIconsData.second;
 
         newEntries.push_back(result);
     }
@@ -598,6 +613,17 @@ void UnifiedSearchResultsListModel::parseResultsForProvider(const QJsonObject &d
     } else {
         appendResults(newEntries, provider);
     }
+}
+
+QUrl UnifiedSearchResultsListModel::openableResourceUrl(const QUrl &resourceUrl, const QUrl &accountUrl)
+{
+    if (!resourceUrl.isRelative()) {
+        return resourceUrl;
+    }
+
+    QUrl finalResourceUrl(accountUrl);
+    finalResourceUrl.setPath(resourceUrl.toString());
+    return finalResourceUrl;
 }
 
 void UnifiedSearchResultsListModel::appendResults(QVector<UnifiedSearchResult> results, const UnifiedSearchProvider &provider)
@@ -700,7 +726,7 @@ void UnifiedSearchResultsListModel::removeFetchMoreTrigger(const QString &provid
 
 void UnifiedSearchResultsListModel::disconnectAndClearSearchJobs()
 {
-    for (const auto &connection : _searchJobConnections) {
+    for (const auto &connection : qAsConst(_searchJobConnections)) {
         if (connection) {
             QObject::disconnect(connection);
         }

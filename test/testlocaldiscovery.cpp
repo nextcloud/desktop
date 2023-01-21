@@ -153,7 +153,7 @@ private slots:
         QVERIFY(!trackerContains("A/spurious")); // removed due to full discovery
 
         fakeFolder.serverErrorPaths().clear();
-        fakeFolder.syncJournal().wipeErrorBlacklist();
+        QVERIFY(fakeFolder.syncJournal().wipeErrorBlacklist() != -1);
         tracker.addTouchedPath("A/newspurious"); // will be removed due to successful sync
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, tracker.localDiscoveryPaths());
@@ -620,14 +620,8 @@ private slots:
         const QString barFileAaaSubFolder("aaa/subfolder/bar");
 
         fakeFolder.remoteModifier().insert(fooFileRootFolder);
-
         fakeFolder.remoteModifier().insert(barFileRootFolder);
-        fakeFolder.remoteModifier().find("bar")->extraDavProperties = "<nc:lock>1</nc:lock>"
-                                                                      "<nc:lock-owner-type>0</nc:lock-owner-type>"
-                                                                      "<nc:lock-owner>user1</nc:lock-owner>"
-                                                                      "<nc:lock-owner-displayname>user1</nc:lock-owner-displayname>"
-                                                                      "<nc:lock-owner-editor>user1</nc:lock-owner-editor>"
-                                                                      "<nc:lock-time>1648046707</nc:lock-time>";
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("bar"), FileInfo::LockState::FileLocked, 0, QStringLiteral("user1"), {}, QStringLiteral("user1"), 1648046707, 0);
 
         fakeFolder.remoteModifier().mkdir(QStringLiteral("subfolder"));
         fakeFolder.remoteModifier().insert(fooFileSubFolder);
@@ -637,12 +631,25 @@ private slots:
         fakeFolder.remoteModifier().insert(fooFileAaaSubFolder);
         fakeFolder.remoteModifier().insert(barFileAaaSubFolder);
 
-        QVERIFY(fakeFolder.syncOnce());
+        ItemCompletedSpy completeSpy(fakeFolder);
 
-        fakeFolder.remoteModifier().find("bar")->extraDavProperties = "<nc:lock>0</nc:lock>";
+        completeSpy.clear();
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.findItem("bar")->_locked, OCC::SyncFileItem::LockStatus::LockedItem);
+        SyncJournalFileRecord fileRecordBefore;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("bar"), &fileRecordBefore));
+        QVERIFY(fileRecordBefore._lockstate._locked);
+
+        fakeFolder.remoteModifier().modifyLockState(QStringLiteral("bar"), FileInfo::LockState::FileUnlocked, {}, {}, {}, {}, {}, {});
 
         fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem);
+
+        completeSpy.clear();
         QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(completeSpy.findItem("bar")->_locked, OCC::SyncFileItem::LockStatus::UnlockedItem);
+        SyncJournalFileRecord fileRecordAfter;
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QStringLiteral("bar"), &fileRecordAfter));
+        QVERIFY(!fileRecordAfter._lockstate._locked);
     }
 };
 

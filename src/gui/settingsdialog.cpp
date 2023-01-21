@@ -57,10 +57,7 @@ const float buttonSizeRatio = 1.618f; // golden ratio
  */
 QString shortDisplayNameForSettings(OCC::Account *account, int width)
 {
-    QString user = account->davDisplayName();
-    if (user.isEmpty()) {
-        user = account->credentials()->user();
-    }
+    QString user = account->prettyName();
     QString host = account->url().host();
     int port = account->url().port();
     if (port > 0 && port != 80 && port != 443) {
@@ -134,6 +131,8 @@ SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
     _toolBar->addAction(networkAction);
     auto *networkSettings = new NetworkSettings;
     _ui->stack->addWidget(networkSettings);
+
+    connect(_ui->stack, &QStackedWidget::currentChanged, this, &SettingsDialog::currentPageChanged);
 
     _actionGroupWidgets.insert(generalAction, generalSettings);
     _actionGroupWidgets.insert(networkAction, networkSettings);
@@ -226,8 +225,8 @@ void SettingsDialog::showIssuesList(AccountState *account)
 {
     const auto userModel = UserModel::instance();
     const auto id = userModel->findUserIdForAccount(account);
-    UserModel::instance()->switchCurrentUser(id);
-    emit Systray::instance()->showWindow();
+    UserModel::instance()->setCurrentUserId(id);
+    Systray::instance()->showWindow();
 }
 
 void SettingsDialog::accountAdded(AccountState *s)
@@ -276,7 +275,7 @@ void SettingsDialog::accountAdded(AccountState *s)
 
 void SettingsDialog::slotAccountAvatarChanged()
 {
-    auto *account = static_cast<Account *>(sender());
+    auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {
@@ -290,7 +289,7 @@ void SettingsDialog::slotAccountAvatarChanged()
 
 void SettingsDialog::slotAccountDisplayNameChanged()
 {
-    auto *account = static_cast<Account *>(sender());
+    auto *account = dynamic_cast<Account *>(sender());
     if (account && _actionForAccount.contains(account)) {
         QAction *action = _actionForAccount[account];
         if (action) {

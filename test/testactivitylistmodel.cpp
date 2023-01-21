@@ -109,17 +109,6 @@ public:
             activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
             activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/calendar.svg"));
 
-            QJsonArray actionsArray;
-
-            QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
-            secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
-            secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
-            secondaryAction.insert(QStringLiteral("primary"), false);
-            actionsArray.push_back(secondaryAction);
-
             _activityData.push_back(activity);
 
             _startingId++;
@@ -152,15 +141,6 @@ public:
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
             primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
-
-            QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
-            secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
-            secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
-            secondaryAction.insert(QStringLiteral("primary"), false);
-            actionsArray.push_back(secondaryAction);
 
             QJsonObject additionalAction;
             additionalAction.insert(QStringLiteral("label"), QStringLiteral("Additional 1"));
@@ -206,15 +186,6 @@ public:
             primaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(primaryAction);
 
-            QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
-            secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
-            secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
-            secondaryAction.insert(QStringLiteral("primary"), false);
-            actionsArray.push_back(secondaryAction);
-
             activity.insert(QStringLiteral("actions"), actionsArray);
 
             _activityData.push_back(activity);
@@ -236,25 +207,51 @@ public:
 
             QJsonArray actionsArray;
 
-            QJsonObject replyAction;
-            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
-            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
-            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
-            replyAction.insert(QStringLiteral("primary"), true);
-            actionsArray.push_back(replyAction);
-
             QJsonObject primaryAction;
             primaryAction.insert(QStringLiteral("label"), QStringLiteral("Call back"));
             primaryAction.insert(QStringLiteral("link"), QStringLiteral("http://cloud.example.de/call/9p4vjdzd"));
             primaryAction.insert(QStringLiteral("type"), QStringLiteral("WEB"));
-            primaryAction.insert(QStringLiteral("primary"), false);
+            primaryAction.insert(QStringLiteral("primary"), true);
+            actionsArray.push_back(primaryAction);
+
+            QJsonObject replyAction;
+            replyAction.insert(QStringLiteral("label"), QStringLiteral("Reply"));
+            replyAction.insert(QStringLiteral("link"), QStringLiteral(""));
+            replyAction.insert(QStringLiteral("type"), QStringLiteral("REPLY"));
+            replyAction.insert(QStringLiteral("primary"), false);
+            actionsArray.push_back(replyAction);
+
+            activity.insert(QStringLiteral("actions"), actionsArray);
+
+            _activityData.push_back(activity);
+
+            _startingId++;
+        }
+
+        // Insert notification data
+        for (quint32 i = 0; i < _numItemsToInsert; i++) {
+            QJsonObject activity;
+            activity.insert(QStringLiteral("activity_id"), _startingId);
+            activity.insert(QStringLiteral("object_type"), "2fa_id");
+            activity.insert(QStringLiteral("subject"), QStringLiteral("Login attempt from 127.0.0.1"));
+            activity.insert(QStringLiteral("message"), QStringLiteral("Please apporve or deny the login attempt."));
+            activity.insert(QStringLiteral("object_name"), QStringLiteral(""));
+            activity.insert(QStringLiteral("datetime"), QDateTime::currentDateTime().toString(Qt::ISODate));
+            activity.insert(QStringLiteral("icon"), QStringLiteral("http://example.de/core/img/places/password.svg"));
+
+            QJsonArray actionsArray;
+
+            QJsonObject primaryAction;
+            primaryAction.insert(QStringLiteral("label"), QStringLiteral("Approve"));
+            primaryAction.insert(QStringLiteral("link"), QStringLiteral("/ocs/v2.php/apps/twofactor_nextcloud_notification/api/v1/attempt/39"));
+            primaryAction.insert(QStringLiteral("type"), QStringLiteral("POST"));
+            primaryAction.insert(QStringLiteral("primary"), true);
             actionsArray.push_back(primaryAction);
 
             QJsonObject secondaryAction;
-            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Dismiss"));
+            secondaryAction.insert(QStringLiteral("label"), QStringLiteral("Cancel"));
             secondaryAction.insert(QStringLiteral("link"),
-                QString(QStringLiteral("http://cloud.example.de/remote.php/dav")
-                    + QStringLiteral("ocs/v2.php/apps/notifications/api/v2/notifications") + QString::number(i)));
+                QString(QStringLiteral("/ocs/v2.php/apps/twofactor_nextcloud_notification/api/v1/attempt/39")));
             secondaryAction.insert(QStringLiteral("type"), QStringLiteral("DELETE"));
             secondaryAction.insert(QStringLiteral("primary"), false);
             actionsArray.push_back(secondaryAction);
@@ -318,7 +315,7 @@ public:
         return {};
     }
 
-    int startingIdLast() const { return _startingId; }
+    [[nodiscard]] int startingIdLast() const { return _startingId; }
 
 private:
     static FakeRemoteActivityStorage *_instance;
@@ -349,6 +346,7 @@ public:
         params.addQueryItem(QLatin1String("limit"), QString::number(50));
         job->addQueryParams(params);
 
+        setAndRefreshCurrentlyFetching(true);
         job->start();
     }
 
@@ -379,6 +377,7 @@ public slots:
             setFinalList(finalListCopy);
         }
         _numRowsPrev = rowCount();
+        setAndRefreshCurrentlyFetching(false);
         emit activitiesProcessed();
     }
 signals:
@@ -394,7 +393,8 @@ class TestActivityListModel : public QObject
 
 public:
     TestActivityListModel() = default;
-    ~TestActivityListModel() override {
+    ~TestActivityListModel() override
+    {
         OCC::AccountManager::instance()->deleteAccount(accountState.data());
     }
 
@@ -403,8 +403,30 @@ public:
     QScopedPointer<OCC::AccountState> accountState;
 
     OCC::Activity testNotificationActivity;
+    OCC::Activity testSyncResultErrorActivity;
+    OCC::Activity testSyncFileItemActivity;
+    OCC::Activity testFileIgnoredActivity;
 
     static constexpr int searchResultsReplyDelay = 100;
+
+    QSharedPointer<TestingALM> testingALM() {
+        QSharedPointer<TestingALM> model(new TestingALM);
+        model->setAccountState(accountState.data());
+        QAbstractItemModelTester modelTester(model.data());
+
+        return model;
+    }
+
+    void testActivityAdd(void(OCC::ActivityListModel::*addingMethod)(const OCC::Activity&), OCC::Activity &activity) {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        (model.data()->*addingMethod)(activity);
+        QCOMPARE(model->rowCount(), 1);
+
+        const auto index = model->index(0, 0);
+        QVERIFY(index.isValid());
+    }
 
 private slots:
     void initTestCase()
@@ -452,170 +474,137 @@ private slots:
         testNotificationActivity._id = 1;
         testNotificationActivity._type = OCC::Activity::NotificationType;
         testNotificationActivity._dateTime = QDateTime::currentDateTime();
+        testNotificationActivity._subject = QStringLiteral("Sample notification text");
+
+        testSyncResultErrorActivity._id = 2;
+        testSyncResultErrorActivity._type = OCC::Activity::SyncResultType;
+        testSyncResultErrorActivity._syncResultStatus = OCC::SyncResult::Error;
+        testSyncResultErrorActivity._dateTime = QDateTime::currentDateTime();
+        testSyncResultErrorActivity._subject = QStringLiteral("Sample failed sync text");
+        testSyncResultErrorActivity._message = QStringLiteral("/path/to/thingy");
+        testSyncResultErrorActivity._link = QStringLiteral("/path/to/thingy");
+        testSyncResultErrorActivity._accName = accountState->account()->displayName();
+
+        testSyncFileItemActivity._id = 3;
+        testSyncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
+        testSyncFileItemActivity._syncFileItemStatus = OCC::SyncFileItem::Success;
+        testSyncFileItemActivity._dateTime = QDateTime::currentDateTime();
+        testSyncFileItemActivity._message = QStringLiteral("Sample file successfully synced text");
+        testSyncFileItemActivity._link = accountState->account()->url();
+        testSyncFileItemActivity._accName = accountState->account()->displayName();
+        testSyncFileItemActivity._file = QStringLiteral("xyz.pdf");
+
+        testFileIgnoredActivity._id = 4;
+        testFileIgnoredActivity._type = OCC::Activity::SyncFileItemType;
+        testFileIgnoredActivity._syncFileItemStatus = OCC::SyncFileItem::FileIgnored;
+        testFileIgnoredActivity._dateTime = QDateTime::currentDateTime();
+        testFileIgnoredActivity._subject = QStringLiteral("Sample ignored file sync text");
+        testFileIgnoredActivity._link = accountState->account()->url();
+        testFileIgnoredActivity._accName = accountState->account()->displayName();
+        testFileIgnoredActivity._folder = QStringLiteral("thingy");
+        testFileIgnoredActivity._file = QStringLiteral("test.txt");
     };
 
     // Test receiving activity from server
     void testFetchingRemoteActivity() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
-
-        model.setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
-        model.startFetchJob();
-        QSignalSpy activitiesJob(&model, &TestingALM::activitiesProcessed);
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        model->startFetchJob();
+        QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
         QVERIFY(activitiesJob.wait(3000));
-        QCOMPARE(model.rowCount(), 50);
+        QCOMPARE(model->rowCount(), 50);
     };
 
     // Test receiving activity from local user action
     void testLocalSyncFileAction() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        OCC::Activity activity;
-
-        model.addSyncFileItemToActivityList(activity);
-        QCOMPARE(model.rowCount(), 1);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addSyncFileItemToActivityList, testSyncFileItemActivity);
     };
 
     void testAddNotification() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 1);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addNotificationToActivityList, testNotificationActivity);
     };
 
     void testAddError() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        OCC::Activity activity;
-
-        model.addErrorToActivityList(activity);
-        QCOMPARE(model.rowCount(), 1);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addErrorToActivityList, testSyncResultErrorActivity);
     };
 
     void testAddIgnoredFile() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
-
-        QCOMPARE(model.rowCount(), 0);
-
-        OCC::Activity activity;
-        activity._folder = QStringLiteral("thingy");
-        activity._file = QStringLiteral("test.txt");
-
-        model.addIgnoredFileToList(activity);
-        // We need to add another activity to the model for the combineActivityLists method to be called
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 2);
-
-        const auto index = model.index(0, 0);
-        QVERIFY(index.isValid());
+        testActivityAdd(&TestingALM::addIgnoredFileToList, testFileIgnoredActivity);
     };
 
     // Test removing activity from list
     void testRemoveActivityWithRow() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 1);
 
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 1);
-
-        model.removeActivityFromActivityList(0);
-        QCOMPARE(model.rowCount(), 0);
+        model->removeActivityFromActivityList(0);
+        QCOMPARE(model->rowCount(), 0);
     }
 
     void testRemoveActivityWithActivity() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 1);
 
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 1);
+        model->removeActivityFromActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 0);
+    }
 
-        model.removeActivityFromActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 0);
+    void testDummyFetchingActivitiesActivity() {
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        model->startFetchJob();
+
+        // Check for the dummy before activities have arrived
+        QCOMPARE(model->rowCount(), 1);
+
+        QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
+        QVERIFY(activitiesJob.wait(3000));
+        // Test the dummy was removed
+        QCOMPARE(model->rowCount(), 50);
     }
 
     // Test getting the data from the model
     void testData() {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
 
-        QCOMPARE(model.rowCount(), 0);
-
-        model.setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
-        model.startFetchJob();
-        QSignalSpy activitiesJob(&model, &TestingALM::activitiesProcessed);
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
+        model->startFetchJob();
+        QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
         QVERIFY(activitiesJob.wait(3000));
-        QCOMPARE(model.rowCount(), 50);
+        QCOMPARE(model->rowCount(), 50);
 
-        model.addNotificationToActivityList(testNotificationActivity);
-        QCOMPARE(model.rowCount(), 51);
+        model->addSyncFileItemToActivityList(testSyncFileItemActivity);
+        QCOMPARE(model->rowCount(), 51);
 
-        OCC::Activity syncResultActivity;
-        syncResultActivity._id = 2;
-        syncResultActivity._type = OCC::Activity::SyncResultType;
-        syncResultActivity._status = OCC::SyncResult::Error;
-        syncResultActivity._dateTime = QDateTime::currentDateTime();
-        syncResultActivity._subject = QStringLiteral("Sample failed sync text");
-        syncResultActivity._message = QStringLiteral("/path/to/thingy");
-        syncResultActivity._link = QStringLiteral("/path/to/thingy");
-        syncResultActivity._accName = accountState->account()->displayName();
-        model.addSyncFileItemToActivityList(syncResultActivity);
-        QCOMPARE(model.rowCount(), 52);
+        model->addErrorToActivityList(testSyncResultErrorActivity);
+        QCOMPARE(model->rowCount(), 52);
 
-        OCC::Activity syncFileItemActivity;
-        syncFileItemActivity._id = 3;
-        syncFileItemActivity._type = OCC::Activity::SyncFileItemType; //client activity
-        syncFileItemActivity._status = OCC::SyncFileItem::Success;
-        syncFileItemActivity._dateTime = QDateTime::currentDateTime();
-        syncFileItemActivity._message = QStringLiteral("You created xyz.pdf");
-        syncFileItemActivity._link = accountState->account()->url();
-        syncFileItemActivity._accName = accountState->account()->displayName();
-        syncFileItemActivity._file = QStringLiteral("xyz.pdf");
-        syncFileItemActivity._fileAction = "";
-        model.addSyncFileItemToActivityList(syncFileItemActivity);
-        QCOMPARE(model.rowCount(), 53);
+        model->addIgnoredFileToList(testFileIgnoredActivity);
+        QCOMPARE(model->rowCount(), 53);
+
+        model->addNotificationToActivityList(testNotificationActivity);
+        QCOMPARE(model->rowCount(), 54);
 
         // Test all rows for things in common
-        for (int i = 0; i < model.rowCount(); i++) {
-            const auto index = model.index(i, 0);
+        for (int i = 0; i < model->rowCount(); i++) {
+            const auto index = model->index(i, 0);
 
             auto text = index.data(OCC::ActivityListModel::ActionTextRole).toString();
 
             QVERIFY(index.data(OCC::ActivityListModel::ActionRole).canConvert<int>());
             const auto type = index.data(OCC::ActivityListModel::ActionRole).toInt();
-            QVERIFY(type >= OCC::Activity::ActivityType);
+            QVERIFY(type >= OCC::Activity::DummyFetchingActivityType);
 
             QVERIFY(!index.data(OCC::ActivityListModel::AccountRole).toString().isEmpty());
             QVERIFY(!index.data(OCC::ActivityListModel::ActionTextColorRole).toString().isEmpty());
@@ -637,31 +626,30 @@ private slots:
             QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationMessageIdRole).canConvert<QString>());
             QVERIFY(index.data(OCC::ActivityListModel::TalkNotificationMessageSentRole).canConvert<QString>());
 
+            QVERIFY(index.data(OCC::ActivityListModel::ActivityRole).canConvert<OCC::Activity>());
+
             // Unfortunately, trying to check anything relating to filepaths causes a crash
             // when the folder manager is invoked by the model to look for the relevant file
         }
     };
 
-    void tesActivityActionstData()
+    void testActivityActionsData()
     {
-        TestingALM model;
-        model.setAccountState(accountState.data());
-        QAbstractItemModelTester modelTester(&model);
+        const auto model = testingALM();
+        QCOMPARE(model->rowCount(), 0);
+        model->setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
 
-        QCOMPARE(model.rowCount(), 0);
-        model.setCurrentItem(FakeRemoteActivityStorage::instance()->startingIdLast());
-
-        int prevModelRowCount = model.rowCount();
+        int prevModelRowCount = model->rowCount();
 
         do {
-            prevModelRowCount = model.rowCount();
-            model.startFetchJob();
-            QSignalSpy activitiesJob(&model, &TestingALM::activitiesProcessed);
+            prevModelRowCount = model->rowCount();
+            model->startFetchJob();
+            QSignalSpy activitiesJob(model.data(), &TestingALM::activitiesProcessed);
             QVERIFY(activitiesJob.wait(3000));
 
 
-            for (int i = prevModelRowCount; i < model.rowCount(); i++) {
-                const auto index = model.index(i, 0);
+            for (int i = prevModelRowCount; i < model->rowCount(); i++) {
+                const auto index = model->index(i, 0);
 
                 const auto actionsLinks = index.data(OCC::ActivityListModel::ActionsLinksRole).toList();
                 if (!actionsLinks.isEmpty()) {
@@ -669,7 +657,7 @@ private slots:
                         index.data(OCC::ActivityListModel::ActionsLinksContextMenuRole).toList();
 
                     // context menu must be shorter than total action links
-                    QVERIFY(actionsLinks.isEmpty() || actionsLinksContextMenu.size() < actionsLinks.size());
+                    QVERIFY(actionsLinksContextMenu.isEmpty() || actionsLinksContextMenu.size() < actionsLinks.size());
 
                     // context menu must not contain the primary action
                     QVERIFY(std::find_if(std::begin(actionsLinksContextMenu), std::end(actionsLinksContextMenu),
@@ -678,18 +666,32 @@ private slots:
 
                     const auto objectType = index.data(OCC::ActivityListModel::ObjectTypeRole).toString();
 
+                    const auto actionButtonsLinks =
+                        index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
+
+                    // Login attempt notification
+                    if (objectType == QStringLiteral("2fa_id")) {
+                        QVERIFY(actionsLinks.size() == 2);
+                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._primary);
+                        QVERIFY(!actionsLinks[1].value<OCC::ActivityLink>()._primary);
+                        QVERIFY(actionsLinksContextMenu.isEmpty());
+                    }
+
                     if ((objectType == QStringLiteral("chat") || objectType == QStringLiteral("call")
                             || objectType == QStringLiteral("room"))) {
-                        const auto actionButtonsLinks =
-                            index.data(OCC::ActivityListModel::ActionsLinksForActionButtonsRole).toList();
 
-                        // both action links and buttons must contain a "REPLY" verb element at the beginning
-                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
-                        QVERIFY(actionButtonsLinks[0].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+                        auto replyActionPos = 0;
+                        if (objectType == QStringLiteral("call")) {
+                            replyActionPos = 1;
+                        }
+
+                        // both action links and buttons must contain a "REPLY" verb element as secondary action
+                        QVERIFY(actionsLinks[replyActionPos].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
+                        QVERIFY(actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._verb == QStringLiteral("REPLY"));
 
                         // the first action button for chat must have image set
-                        QVERIFY(!actionButtonsLinks[0].value<OCC::ActivityLink>()._imageSource.isEmpty());
-                        QVERIFY(!actionButtonsLinks[0].value<OCC::ActivityLink>()._imageSourceHovered.isEmpty());
+                        QVERIFY(!actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._imageSource.isEmpty());
+                        QVERIFY(!actionButtonsLinks[replyActionPos].value<OCC::ActivityLink>()._imageSourceHovered.isEmpty());
 
                         // logic for "chat" and other types of activities with multiple actions
                         if ((objectType == QStringLiteral("chat")
@@ -704,25 +706,17 @@ private slots:
                                 const auto actionButtonsAndContextMenuEntries = actionButtonsLinks + actionsLinksContextMenu;
                                 // in case total actions is longer than ActivityListModel::maxActionButtons, then a sum of action buttons and action menu entries must be equal to a total of action links
                                 QVERIFY(actionButtonsLinks.size() + actionsLinksContextMenu.size() == actionsLinks.size());
-                            } else {
-                                // in case a total of actions is less or equal to than ActivityListModel::maxActionButtons, then the length of action buttons must be greater than 1 and should contain "Dismiss" button at the end
-                                QVERIFY(actionButtonsLinks.size() > 1);
-                                QVERIFY(actionButtonsLinks[1].value<OCC::ActivityLink>()._label
-                                    == QObject::tr("Dismiss"));
                             }
                         } else if ((objectType == QStringLiteral("call"))) {
                             QVERIFY(
-                                actionButtonsLinks[1].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
+                                actionButtonsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Call back"));
                         }
-                    } else {
-                        QVERIFY(actionsLinks[0].value<OCC::ActivityLink>()._label == QStringLiteral("Dismiss"));
                     }
                 }
             }
 
-        } while (prevModelRowCount < model.rowCount());
+        } while (prevModelRowCount < model->rowCount());
     };
-
 };
 
 QTEST_MAIN(TestActivityListModel)

@@ -92,16 +92,20 @@ class Activity
 public:
     using Identifier = QPair<qlonglong, QString>;
 
+    // Note that these are in the order we want to present them in the model!
     enum Type {
-        ActivityType,
+        DummyFetchingActivityType,
         NotificationType,
         SyncResultType,
-        SyncFileItemType
+        SyncFileItemType,
+        ActivityType,
+        DummyMoreActivitiesAvailableType,
     };
 
     static Activity fromActivityJson(const QJsonObject &json, const AccountPtr account);
 
     static QString relativeServerFileTypeIconPath(const QMimeType &mimeType);
+    static QString localFilePathForActivity(const Activity &activity, const AccountPtr account);
 
     struct RichSubjectParameter {
         QString type;    // Required
@@ -133,6 +137,7 @@ public:
     QString _folder;
     QString _file;
     QString _renamedFile;
+    bool _isMultiObjectActivity;
     QUrl _link;
     QDateTime _dateTime;
     qint64 _expireAtMsecs = -1;
@@ -142,7 +147,8 @@ public:
     QVector<PreviewData> _previews;
 
     // Stores information about the error
-    int _status;
+    SyncFileItem::Status _syncFileItemStatus;
+    SyncResult::Status _syncResultStatus;
 
     QVector<ActivityLink> _links;
     /**
@@ -152,11 +158,13 @@ public:
      */
 
 
-    Identifier ident() const;
+    [[nodiscard]] Identifier ident() const;
 };
 
 bool operator==(const Activity &rhs, const Activity &lhs);
+bool operator!=(const Activity &rhs, const Activity &lhs);
 bool operator<(const Activity &rhs, const Activity &lhs);
+bool operator>(const Activity &rhs, const Activity &lhs);
 
 /* ==================================================================== */
 /**
@@ -168,6 +176,7 @@ bool operator<(const Activity &rhs, const Activity &lhs);
 using ActivityList = QList<Activity>;
 }
 
+Q_DECLARE_METATYPE(OCC::Activity)
 Q_DECLARE_METATYPE(OCC::Activity::Type)
 Q_DECLARE_METATYPE(OCC::ActivityLink)
 Q_DECLARE_METATYPE(OCC::PreviewData)

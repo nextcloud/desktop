@@ -22,14 +22,86 @@
 #include "syncfileitem.h"
 #include "filesystem.h"
 #include "common/syncjournaldb.h"
+#include "config.h"
 
 #include <cfapi.h>
 #include <comdef.h>
+
+#include <QCoreApplication>
 
 Q_LOGGING_CATEGORY(lcCfApi, "nextcloud.sync.vfs.cfapi", QtInfoMsg)
 
 namespace cfapi {
 using namespace OCC::CfApiWrapper;
+
+constexpr auto appIdRegKey = R"(Software\Classes\AppID\)";
+constexpr auto clsIdRegKey = R"(Software\Classes\CLSID\)";
+const auto rootKey = HKEY_CURRENT_USER;
+
+bool registerShellExtension()
+{
+    const QList<QPair<QString, QString>> listExtensions = {
+        {CFAPI_SHELLEXT_THUMBNAIL_HANDLER_DISPLAY_NAME, CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG},
+        {CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_DISPLAY_NAME, CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID_REG}
+    };
+    // assume CFAPI_SHELL_EXTENSIONS_LIB_NAME is always in the same folder as the main executable
+    // assume CFAPI_SHELL_EXTENSIONS_LIB_NAME is always in the same folder as the main executable
+    const auto shellExtensionDllPath = QDir::toNativeSeparators(QString(QCoreApplication::applicationDirPath() + QStringLiteral("/") + CFAPI_SHELL_EXTENSIONS_LIB_NAME + QStringLiteral(".dll")));
+    if (!QFileInfo::exists(shellExtensionDllPath)) {
+        Q_ASSERT(false);
+        qCWarning(lcCfApi) << "Register CfAPI shell extensions failed. Dll does not exist in " << QCoreApplication::applicationDirPath();
+        return false;
+    }
+
+    const QString appIdPath = QString() % appIdRegKey % CFAPI_SHELLEXT_APPID_REG;
+    if (!OCC::Utility::registrySetKeyValue(rootKey, appIdPath, {}, REG_SZ, CFAPI_SHELLEXT_APPID_DISPLAY_NAME)) {
+        return false;
+    }
+    if (!OCC::Utility::registrySetKeyValue(rootKey, appIdPath, QStringLiteral("DllSurrogate"), REG_SZ, {})) {
+        return false;
+    }
+
+    for (const auto extension : listExtensions) {
+        const QString clsidPath = QString() % clsIdRegKey % extension.second;
+        const QString clsidServerPath = clsidPath % R"(\InprocServer32)";
+
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, QStringLiteral("AppID"), REG_SZ, CFAPI_SHELLEXT_APPID_REG)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidPath, {}, REG_SZ, extension.first)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, {}, REG_SZ, shellExtensionDllPath)) {
+            return false;
+        }
+        if (!OCC::Utility::registrySetKeyValue(rootKey, clsidServerPath, QStringLiteral("ThreadingModel"), REG_SZ, QStringLiteral("Apartment"))) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+void unregisterShellExtensions()
+{
+    const QString appIdPath = QString() % appIdRegKey % CFAPI_SHELLEXT_APPID_REG;
+    if (OCC::Utility::registryKeyExists(rootKey, appIdPath)) {
+        OCC::Utility::registryDeleteKeyTree(rootKey, appIdPath);
+    }
+
+    const QStringList listExtensions = {
+        CFAPI_SHELLEXT_CUSTOM_STATE_HANDLER_CLASS_ID_REG,
+        CFAPI_SHELLEXT_THUMBNAIL_HANDLER_CLASS_ID_REG
+    };
+
+    for (const auto extension : listExtensions) {
+        const QString clsidPath = QString() % clsIdRegKey % extension;
+        if (OCC::Utility::registryKeyExists(rootKey, clsidPath)) {
+            OCC::Utility::registryDeleteKeyTree(rootKey, clsidPath);
+        }
+    }
+}
+
 }
 
 namespace OCC {
@@ -61,9 +133,10 @@ QString VfsCfApi::fileSuffix() const
 
 void VfsCfApi::startImpl(const VfsSetupParams &params)
 {
+    cfapi::registerShellExtension();
     const auto localPath = QDir::toNativeSeparators(params.filesystemPath);
 
-    const auto registerResult = cfapi::registerSyncRoot(localPath, params.providerName, params.providerVersion, params.alias, params.displayName, params.account->displayName());
+    const auto registerResult = cfapi::registerSyncRoot(localPath, params.providerName, params.providerVersion, params.alias, params.navigationPaneClsid, params.displayName, params.account->displayName());
     if (!registerResult) {
         qCCritical(lcCfApi) << "Initialization failed, couldn't register sync root:" << registerResult.error();
         return;
@@ -93,6 +166,10 @@ void VfsCfApi::unregisterFolder()
     if (!result) {
         qCCritical(lcCfApi) << "Unregistration failed for" << localPath << ":" << result.error();
     }
+
+    if (!cfapi::isAnySyncRoot(params().providerName, params().account->displayName())) {
+        cfapi::unregisterShellExtensions();
+    }
 }
 
 bool VfsCfApi::socketApiPinStateActionsShown() const
@@ -108,9 +185,8 @@ bool VfsCfApi::isHydrating() const
 Result<void, QString> VfsCfApi::updateMetadata(const QString &filePath, time_t modtime, qint64 size, const QByteArray &fileId)
 {
     const auto localPath = QDir::toNativeSeparators(filePath);
-    const auto handle = cfapi::handleForPath(localPath);
-    if (handle) {
-        auto result = cfapi::updatePlaceholderInfo(handle, modtime, size, fileId);
+    if (cfapi::handleForPath(localPath)) {
+        auto result = cfapi::updatePlaceholderInfo(localPath, modtime, size, fileId);
         if (result) {
             return {};
         } else {
@@ -133,9 +209,8 @@ Result<void, QString> VfsCfApi::createPlaceholder(const SyncFileItem &item)
 Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 {
     const auto localPath = QDir::toNativeSeparators(_setupParams.filesystemPath + item._file);
-    const auto handle = cfapi::handleForPath(localPath);
-    if (handle) {
-        auto result = cfapi::dehydratePlaceholder(handle, item._modtime, item._size, item._fileId);
+    if (cfapi::handleForPath(localPath)) {
+        auto result = cfapi::dehydratePlaceholder(localPath, item._modtime, item._size, item._fileId);
         if (result) {
             return {};
         } else {
@@ -149,17 +224,18 @@ Result<void, QString> VfsCfApi::dehydratePlaceholder(const SyncFileItem &item)
 
 Result<Vfs::ConvertToPlaceholderResult, QString> VfsCfApi::convertToPlaceholder(const QString &filename, const SyncFileItem &item, const QString &replacesFile)
 {
+    if (item._type != ItemTypeDirectory && OCC::FileSystem::isLnkFile(filename)) {
+        qCInfo(lcCfApi) << "File \"" << filename << "\" is a Windows shortcut. Not converting it to a placeholder.";
+        return Vfs::ConvertToPlaceholderResult::Ok;
+    }
+
     const auto localPath = QDir::toNativeSeparators(filename);
     const auto replacesPath = QDir::toNativeSeparators(replacesFile);
 
-    const auto handle = cfapi::handleForPath(localPath);
-    if (!handle) {
-        return { "Invalid handle for path " + localPath };
-    }
-    if (cfapi::findPlaceholderInfo(handle)) {
-        return cfapi::updatePlaceholderInfo(handle, item._modtime, item._size, item._fileId, replacesPath);
+    if (cfapi::findPlaceholderInfo(localPath)) {
+        return cfapi::updatePlaceholderInfo(localPath, item._modtime, item._size, item._fileId, replacesPath);
     } else {
-        return cfapi::convertToPlaceholder(handle, item._modtime, item._size, item._fileId, replacesPath);
+        return cfapi::convertToPlaceholder(localPath, item._modtime, item._size, item._fileId, replacesPath);
     }
 }
 
@@ -213,16 +289,13 @@ bool VfsCfApi::statTypeVirtualFile(csync_file_stat_t *stat, void *statData)
 
 bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
 {
+    qCDebug(lcCfApi) << "setPinState" << folderPath << state;
+
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
-    const auto handle = cfapi::handleForPath(localPath);
-    if (handle) {
-        if (cfapi::setPinState(handle, state, cfapi::Recurse)) {
-            return true;
-        } else {
-            return false;
-        }
+
+    if (cfapi::setPinState(localPath, state, cfapi::Recurse)) {
+        return true;
     } else {
-        qCWarning(lcCfApi) << "Couldn't update pin state for non existing file" << localPath;
         return false;
     }
 }
@@ -230,13 +303,8 @@ bool VfsCfApi::setPinState(const QString &folderPath, PinState state)
 Optional<PinState> VfsCfApi::pinState(const QString &folderPath)
 {
     const auto localPath = QDir::toNativeSeparators(params().filesystemPath + folderPath);
-    const auto handle = cfapi::handleForPath(localPath);
-    if (!handle) {
-        qCWarning(lcCfApi) << "Couldn't find pin state for non existing file" << localPath;
-        return {};
-    }
 
-    const auto info = cfapi::findPlaceholderInfo(handle);
+    const auto info = cfapi::findPlaceholderInfo(localPath);
     if (!info) {
         qCWarning(lcCfApi) << "Couldn't find pin state for regular non-placeholder file" << localPath;
         return {};
@@ -305,8 +373,7 @@ void VfsCfApi::requestHydration(const QString &requestId, const QString &path)
 
     // Set in the database that we should download the file
     SyncJournalFileRecord record;
-    journal->getFileRecord(relativePath, &record);
-    if (!record.isValid()) {
+    if (!journal->getFileRecord(relativePath, &record) || !record.isValid()) {
         qCInfo(lcCfApi) << "Couldn't hydrate, did not find file in db";
         emit hydrationRequestFailed(requestId);
         return;

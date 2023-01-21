@@ -92,7 +92,7 @@ public:
     static QString prepareTargetPath(const QString &path);
 
     /// journalPath relative to localPath.
-    QString absoluteJournalPath() const;
+    [[nodiscard]] QString absoluteJournalPath() const;
 
     /// Returns the relative journal path that's appropriate for this folder and account.
     QString defaultJournalPath(AccountPtr account);
@@ -206,8 +206,6 @@ public:
       */
     virtual void wipeForRemoval();
 
-    void onAssociatedAccountRemoved();
-
     void setSyncState(SyncResult::Status state);
 
     void setDirtyNetworkLimits();
@@ -301,10 +299,10 @@ public:
 signals:
     void syncStateChange();
     void syncStarted();
-    void syncFinished(const SyncResult &result);
-    void progressInfo(const ProgressInfo &progress);
+    void syncFinished(const OCC::SyncResult &result);
+    void progressInfo(const OCC::ProgressInfo &progress);
     void newBigFolderDiscovered(const QString &); // A new folder bigger than the threshold was discovered
-    void syncPausedChanged(Folder *, bool paused);
+    void syncPausedChanged(OCC::Folder *, bool paused);
     void canSyncChanged();
 
     /**
@@ -321,7 +319,7 @@ public slots:
     void slotTerminateSync();
 
     // connected to the corresponding signals in the SyncEngine
-    void slotAboutToRemoveAllFiles(SyncFileItem::Direction, std::function<void(bool)> callback);
+    void slotAboutToRemoveAllFiles(OCC::SyncFileItem::Direction, std::function<void(bool)> callback);
 
     /**
       * Starts a sync operation
@@ -340,7 +338,7 @@ public slots:
        * changes. Needs to check whether this change should trigger a new
        * sync run to be scheduled.
        */
-    void slotWatchedPathChanged(const QString &path, ChangeReason reason);
+    void slotWatchedPathChanged(const QString &path, OCC::Folder::ChangeReason reason);
 
     /**
      * Mark a virtual file as being requested for download, and start a sync.
@@ -370,18 +368,20 @@ public slots:
     /** Ensures that the next sync performs a full local discovery. */
     void slotNextSyncFullLocalDiscovery();
 
+    void setSilenceErrorsUntilNextSync(bool silenceErrors);
+
 private slots:
     void slotSyncStarted();
     void slotSyncFinished(bool);
 
     /** Adds a error message that's not tied to a specific item.
      */
-    void slotSyncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
+    void slotSyncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
 
-    void slotAddErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
+    void slotAddErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject = {});
 
-    void slotTransmissionProgress(const ProgressInfo &pi);
-    void slotItemCompleted(const SyncFileItemPtr &);
+    void slotTransmissionProgress(const OCC::ProgressInfo &pi);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &);
 
     void slotRunEtagJob();
     void etagRetrieved(const QByteArray &, const QDateTime &tp);
@@ -406,7 +406,7 @@ private slots:
     void slotFolderConflicts(const QString &folder, const QStringList &conflictPaths);
 
     /** Warn users if they create a file or folder that is selective-sync excluded */
-    void warnOnNewExcludedItem(const SyncJournalFileRecord &record, const QStringRef &path);
+    void warnOnNewExcludedItem(const OCC::SyncJournalFileRecord &record, const QStringRef &path);
 
     /** Warn users about an unreliable folder watcher */
     void slotWatcherUnreliable(const QString &message);
@@ -430,7 +430,7 @@ private:
 
     void checkLocalPath();
 
-    void setSyncOptions();
+    SyncOptions initializeSyncOptions() const;
 
     enum LogStatus {
         LogStatusRemove,
@@ -507,6 +507,8 @@ private:
     /** Whether this folder has just switched to VFS or not
      */
     bool _hasSwitchedToVfs = false;
+
+    bool _silenceErrorsUntilNextSync = false;
 
     /**
      * Watches this folder's local directory for changes.

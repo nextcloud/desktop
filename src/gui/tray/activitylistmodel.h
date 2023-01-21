@@ -39,10 +39,9 @@ class InvalidFilenameDialog;
 class ActivityListModel : public QAbstractListModel
 {
     Q_OBJECT
-
     Q_PROPERTY(quint32 maxActionButtons READ maxActionButtons CONSTANT)
+    Q_PROPERTY(AccountState *accountState READ accountState WRITE setAccountState NOTIFY accountStateChanged)
 
-    Q_PROPERTY(AccountState *accountState READ accountState CONSTANT)
 public:
     enum DataRole {
         DarkIconRole = Qt::UserRole + 1,
@@ -60,18 +59,21 @@ public:
         MessageRole,
         DisplayPathRole,
         PathRole,
+        OpenablePathRole,
         DisplayLocationRole, // Provides the display path to a file's parent folder, relative to Nextcloud root
         LinkRole,
         PointInTimeRole,
         AccountConnectedRole,
         DisplayActions,
-        ShareableRole,
+        ShowFileDetailsRole,
         IsCurrentUserFileActivityRole,
         ThumbnailRole,
         TalkNotificationConversationTokenRole,
         TalkNotificationMessageIdRole,
         TalkNotificationMessageSentRole,
         TalkNotificationUserAvatarRole,
+        ActivityIndexRole,
+        ActivityRole,
     };
     Q_ENUM(DataRole)
 
@@ -80,34 +82,25 @@ public:
     explicit ActivityListModel(AccountState *accountState,
         QObject *parent = nullptr);
 
-    QVariant data(const QModelIndex &index, int role) const override;
-    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
-    bool canFetchMore(const QModelIndex &) const override;
+    [[nodiscard]] bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
     ActivityList activityList() { return _finalList; }
     ActivityList errorsList() { return _notificationErrorsLists; }
-    void addNotificationToActivityList(Activity activity);
-    void clearNotifications();
-    void addErrorToActivityList(Activity activity);
-    void addIgnoredFileToList(Activity newActivity);
-    void addSyncFileItemToActivityList(Activity activity);
-    void removeActivityFromActivityList(int row);
-    void removeActivityFromActivityList(Activity activity);
 
-    AccountState *accountState() const;
-    void setAccountState(AccountState *state);
+    [[nodiscard]] AccountState *accountState() const;
+
+    [[nodiscard]] int currentItem() const;
 
     static constexpr quint32 maxActionButtons()
     {
         return MaxActionButtons;
     }
 
-    void setCurrentItem(const int currentItem);
-
-    void setReplyMessageSent(const int activityIndex, const QString &message);
-    QString replyMessageSent(const Activity &activity) const;
+    [[nodiscard]] QString replyMessageSent(const Activity &activity) const;
 
 public slots:
     void slotRefreshActivity();
@@ -117,55 +110,69 @@ public slots:
     void slotTriggerAction(const int activityIndex, const int actionIndex);
     void slotTriggerDismiss(const int activityIndex);
 
+    void addNotificationToActivityList(const OCC::Activity &activity);
+    void addErrorToActivityList(const OCC::Activity &activity);
+    void addIgnoredFileToList(const OCC::Activity &newActivity);
+    void addSyncFileItemToActivityList(const OCC::Activity &activity);
+    void removeActivityFromActivityList(int row);
+    void removeActivityFromActivityList(const OCC::Activity &activity);
+
+    void setAccountState(OCC::AccountState *state);
+    void setReplyMessageSent(const int activityIndex, const QString &message);
+    void setCurrentItem(const int currentItem);
+
 signals:
+    void accountStateChanged();
+
     void activityJobStatusCode(int statusCode);
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 protected:
-    void setup();
-    void activitiesReceived(const QJsonDocument &json, int statusCode);
-    QHash<int, QByteArray> roleNames() const override;
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
 
+    [[nodiscard]] bool currentlyFetching() const;
+
+    [[nodiscard]] const ActivityList &finalList() const; // added for unit tests
+
+protected slots:
+    void activitiesReceived(const QJsonDocument &json, int statusCode);
     void setAndRefreshCurrentlyFetching(bool value);
-    bool currentlyFetching() const;
     void setDoneFetching(bool value);
     void setHideOldActivities(bool value);
     void setDisplayActions(bool value);
+    void setFinalList(const OCC::ActivityList &finalList); // added for unit tests
 
     virtual void startFetchJob();
 
-    // added these for unit tests
-    void setFinalList(const ActivityList &finalList);
-    const ActivityList &finalList() const;
-    int currentItem() const;
-    //
+private slots:
+    void addEntriesToActivityList(const OCC::ActivityList &activityList);
 
 private:
     static QVariantList convertLinksToMenuEntries(const Activity &activity);
     static QVariantList convertLinksToActionButtons(const Activity &activity);
     static QVariant convertLinkToActionButton(const ActivityLink &activityLink);
-    void combineActivityLists();
-    bool canFetchActivities() const;
+
+    [[nodiscard]] bool canFetchActivities() const;
 
     void ingestActivities(const QJsonArray &activities);
     void appendMoreActivitiesAvailableEntry();
-
     void insertOrRemoveDummyFetchingActivity();
 
-    void clearActivities();
+    Activity _notificationIgnoredFiles;
+    Activity _dummyFetchingActivities;
 
     ActivityList _activityLists;
     ActivityList _syncFileItemLists;
     ActivityList _notificationLists;
     ActivityList _listOfIgnoredFiles;
-    Activity _notificationIgnoredFiles;
     ActivityList _notificationErrorsLists;
     ActivityList _finalList;
-    int _currentItem = 0;
+
+    QSet<qint64> _presentedActivities;
 
     bool _displayActions = true;
 
-    int _totalActivitiesFetched = 0;
+    int _currentItem = 0;
     int _maxActivities = 100;
     int _maxActivitiesDays = 30;
     bool _showMoreActivitiesAvailableEntry = false;

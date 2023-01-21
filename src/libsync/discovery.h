@@ -49,8 +49,45 @@ class ProcessDirectoryJob : public QObject
 {
     Q_OBJECT
 
-    struct PathTuple;
 public:
+
+    /** Structure representing a path during discovery. A same path may have different value locally
+     * or on the server in case of renames.
+     *
+     * These strings never start or ends with slashes. They are all relative to the folder's root.
+     * Usually they are all the same and are even shared instance of the same QString.
+     *
+     * _server and _local paths will differ if there are renames, example:
+     *   remote renamed A/ to B/ and local renamed A/X to A/Y then
+     *     target:   B/Y/file
+     *     original: A/X/file
+     *     local:    A/Y/file
+     *     server:   B/X/file
+     */
+    struct PathTuple {
+        QString _original; // Path as in the DB (before the sync)
+        QString _target; // Path that will be the result after the sync (and will be in the DB)
+        QString _server; // Path on the server (before the sync)
+        QString _local; // Path locally (before the sync)
+        static QString pathAppend(const QString &base, const QString &name)
+        {
+            return base.isEmpty() ? name : base + QLatin1Char('/') + name;
+        }
+        [[nodiscard]] PathTuple addName(const QString &name) const
+        {
+            PathTuple result;
+            result._original = pathAppend(_original, name);
+            auto buildString = [&](const QString &other) {
+                // Optimize by trying to keep all string implicitly shared if they are the same (common case)
+                return other == _original ? result._original : pathAppend(other, name);
+            };
+            result._target = buildString(_target);
+            result._server = buildString(_server);
+            result._local = buildString(_local);
+            return result;
+        }
+    };
+
     enum QueryMode {
         NormalQuery,
         ParentDontExist, // Do not query this folder because it does not exist
@@ -64,28 +101,15 @@ public:
      * The base pin state is used if the root dir's pin state can't be retrieved.
      */
     explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState,
-        qint64 lastSyncTimestamp, QObject *parent)
-        : QObject(parent)
-        , _lastSyncTimestamp(lastSyncTimestamp)
-        , _discoveryData(data)
-    {
-        computePinState(basePinState);
-    }
+        qint64 lastSyncTimestamp, QObject *parent);
 
     /// For creating subjobs
     explicit ProcessDirectoryJob(const PathTuple &path, const SyncFileItemPtr &dirItem,
         QueryMode queryLocal, QueryMode queryServer, qint64 lastSyncTimestamp,
-        ProcessDirectoryJob *parent)
-        : QObject(parent)
-        , _dirItem(dirItem)
-        , _lastSyncTimestamp(lastSyncTimestamp)
-        , _queryServer(queryServer)
-        , _queryLocal(queryLocal)
-        , _discoveryData(parent->_discoveryData)
-        , _currentFolder(path)
-    {
-        computePinState(parent->_pinState);
-    }
+        ProcessDirectoryJob *parent);
+
+    explicit ProcessDirectoryJob(DiscoveryPhase *data, PinState basePinState, const PathTuple &path, const SyncFileItemPtr &dirItem,
+        QueryMode queryLocal, qint64 lastSyncTimestamp, QObject *parent);
 
     void start();
     /** Start up to nbJobs, return the number of job started; emit finished() when done */
@@ -96,7 +120,7 @@ public:
         _isInsideEncryptedTree = isInsideEncryptedTree;
     }
 
-    bool isInsideEncryptedTree() const
+    [[nodiscard]] bool isInsideEncryptedTree() const
     {
         return _isInsideEncryptedTree;
     }
@@ -112,44 +136,6 @@ private:
         LocalInfo localEntry;
     };
 
-    /** Structure representing a path during discovery. A same path may have different value locally
-     * or on the server in case of renames.
-     *
-     * These strings never start or ends with slashes. They are all relative to the folder's root.
-     * Usually they are all the same and are even shared instance of the same QString.
-     *
-     * _server and _local paths will differ if there are renames, example:
-     *   remote renamed A/ to B/ and local renamed A/X to A/Y then
-     *     target:   B/Y/file
-     *     original: A/X/file
-     *     local:    A/Y/file
-     *     server:   B/X/file
-     */
-    struct PathTuple
-    {
-        QString _original; // Path as in the DB (before the sync)
-        QString _target; // Path that will be the result after the sync (and will be in the DB)
-        QString _server; // Path on the server (before the sync)
-        QString _local; // Path locally (before the sync)
-        static QString pathAppend(const QString &base, const QString &name)
-        {
-            return base.isEmpty() ? name : base + QLatin1Char('/') + name;
-        }
-        PathTuple addName(const QString &name) const
-        {
-            PathTuple result;
-            result._original = pathAppend(_original, name);
-            auto buildString = [&](const QString &other) {
-                // Optimize by trying to keep all string implicitly shared if they are the same (common case)
-                return other == _original ? result._original : pathAppend(other, name);
-            };
-            result._target = buildString(_target);
-            result._server = buildString(_server);
-            result._local = buildString(_local);
-            return result;
-        }
-    };
-
     /** Iterate over entries inside the directory (non-recursively).
      *
      * Called once _serverEntries and _localEntries are filled
@@ -161,6 +147,9 @@ private:
     // return true if the file is excluded.
     // path is the full relative path of the file. localName is the base name of the local entry.
     bool handleExcluded(const QString &path, const Entries &entries, bool isHidden);
+
+    // check if the path is an e2e encrypted and the e2ee is not set up, and insert it into a corresponding list in the sync journal
+    void checkAndUpdateSelectiveSyncListsForE2eeFolders(const QString &path);
 
     /** Reconcile local/remote/db information for a single item.
      *
@@ -190,9 +179,9 @@ private:
      */
     bool checkPermissions(const SyncFileItemPtr &item);
 
-    bool isAnyParentBeingRestored(const QString &file) const;
+    [[nodiscard]] bool isAnyParentBeingRestored(const QString &file) const;
 
-    bool isRename(const QString &originalPath) const;
+    [[nodiscard]] bool isRename(const QString &originalPath) const;
 
     struct MovePermissionResult
     {
@@ -217,11 +206,11 @@ private:
     void dbError();
 
     void addVirtualFileSuffix(QString &str) const;
-    bool hasVirtualFileSuffix(const QString &str) const;
+    [[nodiscard]] bool hasVirtualFileSuffix(const QString &str) const;
     void chopVirtualFileSuffix(QString &str) const;
 
     /** Convenience to detect suffix-vfs modes */
-    bool isVfsWithSuffix() const;
+    [[nodiscard]] bool isVfsWithSuffix() const;
 
     /** Start a remote discovery network job
      *

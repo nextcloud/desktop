@@ -51,8 +51,9 @@ void registerNotificationCategories(const QString &localizedDownloadString);
 bool canOsXSendUserNotification();
 void sendOsXUserNotification(const QString &title, const QString &message);
 void sendOsXUpdateNotification(const QString &title, const QString &message, const QUrl &webUrl);
+void sendOsXTalkNotification(const QString &title, const QString &message, const QString &token, const QString &replyTo, const AccountStatePtr accountState);
 void setTrayWindowLevelAndVisibleOnAllSpaces(QWindow *window);
-double statusBarThickness();
+double menuBarThickness();
 #endif
 
 /**
@@ -66,6 +67,8 @@ class Systray
 
     Q_PROPERTY(QString windowTitle READ windowTitle CONSTANT)
     Q_PROPERTY(bool useNormalWindow READ useNormalWindow CONSTANT)
+    Q_PROPERTY(bool syncIsPaused READ syncIsPaused WRITE setSyncIsPaused NOTIFY syncIsPausedChanged)
+    Q_PROPERTY(bool isOpen READ isOpen WRITE setIsOpen NOTIFY isOpenChanged)
 
 public:
     static Systray *instance();
@@ -73,77 +76,111 @@ public:
 
     enum class TaskBarPosition { Bottom, Left, Top, Right };
     Q_ENUM(TaskBarPosition);
-    
+
     enum class NotificationPosition { Default, TopLeft, TopRight, BottomLeft, BottomRight };
     Q_ENUM(NotificationPosition);
 
-    void setTrayEngine(QQmlApplicationEngine *trayEngine);
-    void create();
-    void showMessage(const QString &title, const QString &message, MessageIcon icon = Information);
-    void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
-    void setToolTip(const QString &tip);
-    bool isOpen();
-    QString windowTitle() const;
-    bool useNormalWindow() const;
-    void createCallDialog(const Activity &callNotification);
+    enum class WindowPosition { Default, Center };
+    Q_ENUM(WindowPosition);
 
-    Q_INVOKABLE void pauseResumeSync();
-    Q_INVOKABLE bool syncIsPaused();
-    Q_INVOKABLE void setOpened();
-    Q_INVOKABLE void setClosed();
-    Q_INVOKABLE void positionWindow(QQuickWindow *window) const;
-    Q_INVOKABLE void forceWindowInit(QQuickWindow *window) const;
-    Q_INVOKABLE void positionNotificationWindow(QQuickWindow *window) const;
+    enum class FileDetailsPage { Activity, Sharing };
+    Q_ENUM(FileDetailsPage);
+
+    Q_REQUIRED_RESULT QString windowTitle() const;
+    Q_REQUIRED_RESULT bool useNormalWindow() const;
+
+    Q_REQUIRED_RESULT bool syncIsPaused() const;
+    Q_REQUIRED_RESULT bool isOpen() const;
+
+    bool raiseDialogs();
 
 signals:
     void currentUserChanged();
     void openAccountWizard();
-    void openMainDialog();
     void openSettings();
     void openHelp();
     void shutdown();
 
-    void hideWindow();
-    void showWindow();
-    void openShareDialog(const QString &sharePath, const QString &localPath);
-    void showFileActivityDialog(const QString &objectName, const int objectId);
+    void showFileDetailsPage(const QString &fileLocalPath, const OCC::Systray::FileDetailsPage page);
+    void showFileDetails(AccountState *accountState, const QString &localPath, const OCC::Systray::FileDetailsPage fileDetailsPage);
     void sendChatMessage(const QString &token, const QString &message, const QString &replyTo);
     void showErrorMessageDialog(const QString &error);
 
+    void syncIsPausedChanged();
+    void isOpenChanged();
+
 public slots:
-    void slotNewUserSelected();
+    void setTrayEngine(QQmlApplicationEngine *trayEngine);
+    void create();
+
+    void showMessage(const QString &title, const QString &message, QSystemTrayIcon::MessageIcon icon = Information);
+    void showUpdateMessage(const QString &title, const QString &message, const QUrl &webUrl);
+    void showTalkMessage(const QString &title, const QString &message, const QString &replyTo, const QString &token, const AccountStatePtr &accountState);
+    void setToolTip(const QString &tip);
+
+    void createCallDialog(const OCC::Activity &callNotification, const OCC::AccountStatePtr accountState);
+    void createEditFileLocallyLoadingDialog(const QString &fileName);
+    void destroyEditFileLocallyLoadingDialog();
+
+    void slotCurrentUserChanged();
+
+    void forceWindowInit(QQuickWindow *window) const;
+    void positionWindowAtTray(QQuickWindow *window) const;
+    void positionWindowAtScreenCenter(QQuickWindow *window) const;
+    void positionNotificationWindow(QQuickWindow *window) const;
+
+    // Do not use this for QQuickWindow components managed by the QML engine,
+    // only for those managed by the C++ engine
+    void destroyDialog(QQuickWindow *window) const;
+
+    void showWindow(OCC::Systray::WindowPosition position = OCC::Systray::WindowPosition::Default);
+    void hideWindow();
+
+    void setSyncIsPaused(const bool syncIsPaused);
+    void setIsOpen(const bool isOpen);
+
+    void createShareDialog(const QString &localPath);
+    void createFileActivityDialog(const QString &localPath);
+
+    void presentShareViewInTray(const QString &localPath);
 
 private slots:
     void slotUnpauseAllFolders();
     void slotPauseAllFolders();
 
 private:
+    // Argument allows user to specify a specific dialog to be raised
+    bool raiseFileDetailDialogs(const QString &localPath = {});
     void setPauseOnAllFoldersHelper(bool pause);
 
     static Systray *_instance;
     Systray();
 
     void setupContextMenu();
+    void createFileDetailsDialog(const QString &localPath);
 
-    QScreen *currentScreen() const;
-    QRect currentScreenRect() const;
-    QPoint computeWindowReferencePoint() const;
-    QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
-    QPoint calcTrayIconCenter() const;
-    TaskBarPosition taskbarOrientation() const;
-    QRect taskbarGeometry() const;
-    QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
-    QPoint computeWindowPosition(int width, int height) const;
-    QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
+    [[nodiscard]] QScreen *currentScreen() const;
+    [[nodiscard]] QRect currentScreenRect() const;
+    [[nodiscard]] QPoint computeWindowReferencePoint() const;
+    [[nodiscard]] QPoint computeNotificationReferencePoint(int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
+    [[nodiscard]] QPoint calcTrayIconCenter() const;
+    [[nodiscard]] TaskBarPosition taskbarOrientation() const;
+    [[nodiscard]] QRect taskbarGeometry() const;
+    [[nodiscard]] QRect computeWindowRect(int spacing, const QPoint &topLeft, const QPoint &bottomRight) const;
+    [[nodiscard]] QPoint computeWindowPosition(int width, int height) const;
+    [[nodiscard]] QPoint computeNotificationPosition(int width, int height, int spacing = 20, NotificationPosition position = NotificationPosition::Default) const;
 
     bool _isOpen = false;
     bool _syncIsPaused = true;
     QPointer<QQmlApplicationEngine> _trayEngine;
     QPointer<QMenu> _contextMenu;
+    QSharedPointer<QQuickWindow> _trayWindow;
 
     AccessManagerFactory _accessManagerFactory;
 
     QSet<qlonglong> _callsAlreadyNotified;
+    QPointer<QObject> _editFileLocallyLoadingDialog;
+    QVector<QQuickWindow*> _fileDetailDialogs;
 };
 
 } // namespace OCC

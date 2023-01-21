@@ -273,6 +273,7 @@ void PropagateItemJob::done(SyncFileItem::Status statusArg, const QString &error
     case SyncFileItem::BlacklistedError:
     case SyncFileItem::FileLocked:
     case SyncFileItem::FileNameInvalid:
+    case SyncFileItem::FileNameClash:
         // nothing
         break;
     }
@@ -319,7 +320,11 @@ bool PropagateItemJob::hasEncryptedAncestor() const
     auto pathComponents = parentPath.split('/');
     while (!pathComponents.isEmpty()) {
         SyncJournalFileRecord rec;
-        propagator()->_journal->getFileRecord(pathComponents.join('/'), &rec);
+        const auto pathCompontentsJointed = pathComponents.join('/');
+        if (!propagator()->_journal->getFileRecord(pathCompontentsJointed, &rec)) {
+            qCWarning(lcPropagator) << "could not get file from local DB" << pathCompontentsJointed;
+        }
+
         if (rec.isValid() && rec._isE2eEncrypted) {
             return true;
         }
@@ -482,6 +487,8 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
 {
     Q_ASSERT(std::is_sorted(items.begin(), items.end()));
 
+    _abortRequested = false;
+
     /* This builds all the jobs needed for the propagation.
      * Each directory is a PropagateDirectory job, which contains the files in it.
      * In order to do that we loop over the items. (which are sorted by destination)
@@ -587,7 +594,7 @@ void OwncloudPropagator::start(SyncFileItemVector &&items)
     }
 
     foreach (PropagatorJob *it, directoriesToRemove) {
-        _rootJob->_dirDeletionJobs.appendJob(it);
+        _rootJob->appendDirDeletionJob(it);
     }
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
@@ -682,7 +689,6 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
     Q_ASSERT(!file.isEmpty());
 
     if (!file.isEmpty() && Utility::fsCasePreserving()) {
-        qCDebug(lcPropagator) << "CaseClashCheck for " << file;
 #ifdef Q_OS_MAC
         const QFileInfo fileInfo(file);
         if (!fileInfo.exists()) {
@@ -718,6 +724,7 @@ bool OwncloudPropagator::localFileNameClash(const QString &relFile)
         const QString fn = fileInfo.fileName();
         const QStringList list = fileInfo.dir().entryList({ fn });
         if (list.count() > 1 || (list.count() == 1 && list[0] != fn)) {
+            qCWarning(lcPropagator) << "Detected case clash between" << file << "and" << list.constFirst();
             return true;
         }
 #endif
@@ -936,7 +943,29 @@ Result<Vfs::ConvertToPlaceholderResult, QString> OwncloudPropagator::staticUpdat
 
 bool OwncloudPropagator::isDelayedUploadItem(const SyncFileItemPtr &item) const
 {
-    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file);
+    const auto checkFileShouldBeEncrypted = [this] (const SyncFileItemPtr &item) -> bool {
+        const auto path = item->_file;
+        const auto slashPosition = path.lastIndexOf('/');
+        const auto parentPath = slashPosition >= 0 ? path.left(slashPosition) : QString();
+
+        SyncJournalFileRecord parentRec;
+        bool ok = _journal->getFileRecord(parentPath, &parentRec);
+        if (!ok) {
+            return false;
+        }
+
+        const auto accountPtr = account();
+
+        if (!accountPtr->capabilities().clientSideEncryptionAvailable() ||
+            !parentRec.isValid() ||
+            !parentRec._isE2eEncrypted) {
+            return false;
+        }
+
+        return true;
+    };
+
+    return account()->capabilities().bulkUpload() && !_scheduleDelayedTasks && !item->_isEncrypted && _syncOptions._minChunkSize > item->_size && !isInBulkUploadBlackList(item->_file) && !checkFileShouldBeEncrypted(item);
 }
 
 void OwncloudPropagator::setScheduleDelayedTasks(bool active)
@@ -1069,7 +1098,7 @@ bool PropagatorCompositeJob::scheduleSelfOrChild()
 
 void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 {
-    auto *subJob = static_cast<PropagatorJob *>(sender());
+    auto *subJob = dynamic_cast<PropagatorJob *>(sender());
     ASSERT(subJob);
 
     // Delete the job and remove it from our list of jobs.
@@ -1190,9 +1219,17 @@ void PropagateDirectory::slotSubJobsFinished(SyncFileItem::Status status)
     if (!_item->isEmpty() && status == SyncFileItem::Success) {
         // If a directory is renamed, recursively delete any stale items
         // that may still exist below the old path.
-        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME
-            && _item->_originalFile != _item->_renameTarget) {
-            propagator()->_journal->deleteFileRecord(_item->_originalFile, true);
+        if (_item->_instruction == CSYNC_INSTRUCTION_RENAME && _item->_originalFile != _item->_renameTarget) {
+            if (!propagator()->_journal->deleteFileRecord(_item->_originalFile, true)) {
+                qCWarning(lcDirectory) << "could not delete file from local DB" << _item->_originalFile;
+                _state = Finished;
+                status = _item->_status = SyncFileItem::FatalError;
+                _item->_errorString = tr("could not delete file %1 from local DB").arg(_item->_originalFile);
+                qCInfo(lcPropagator) << "PropagateDirectory::slotSubJobsFinished"
+                                     << "emit finished" << status;
+                emit finished(status);
+                return;
+            }
         }
 
         if (_item->_instruction == CSYNC_INSTRUCTION_NEW && _item->_direction == SyncFileItem::Down) {
@@ -1277,6 +1314,11 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
     return _subJobs.committedDiskSpace() + _dirDeletionJobs.committedDiskSpace();
 }
 
+void PropagateRootDirectory::appendDirDeletionJob(PropagatorJob *job)
+{
+    _dirDeletionJobs.appendJob(job);
+}
+
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
     qCInfo(lcRootDirectory()) << "scheduleSelfOrChild" << _state << "pending uploads" << propagator()->delayedTasks().size() << "subjobs state" << _subJobs._state;
@@ -1312,6 +1354,8 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 
     if (status != SyncFileItem::Success
         && status != SyncFileItem::Restoration
+        && status != SyncFileItem::BlacklistedError
+        && status != SyncFileItem::FileNameClash
         && status != SyncFileItem::Conflict) {
         if (_state != Finished) {
             // Synchronously abort
@@ -1323,11 +1367,37 @@ void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
         return;
     }
 
+    if (_errorStatus == SyncFileItem::NoStatus) {
+        switch (status) {
+        case SyncFileItem::NoStatus:
+        case SyncFileItem::FatalError:
+        case SyncFileItem::NormalError:
+        case SyncFileItem::SoftError:
+        case SyncFileItem::Conflict:
+        case SyncFileItem::FileIgnored:
+        case SyncFileItem::FileLocked:
+        case SyncFileItem::Restoration:
+        case SyncFileItem::FileNameInvalid:
+        case SyncFileItem::DetailError:
+        case SyncFileItem::Success:
+            break;
+        case SyncFileItem::FileNameClash:
+        case SyncFileItem::BlacklistedError:
+            _errorStatus = status;
+            break;
+        }
+    }
+
     propagator()->scheduleNextJob();
 }
 
 void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status status)
 {
+    if (_errorStatus != SyncFileItem::NoStatus && status == SyncFileItem::Success) {
+        qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "reporting previous error" << _errorStatus;
+        status = _errorStatus;
+    }
+
     _state = Finished;
     qCInfo(lcPropagator) << "PropagateRootDirectory::slotDirDeletionJobsFinished" << "emit finished" << status;
     emit finished(status);

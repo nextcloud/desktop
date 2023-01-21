@@ -1,34 +1,55 @@
 <RCC>
     <qresource prefix="/qml">
         <file>src/gui/UserStatusSelector.qml</file>
-        <file>src/gui/UserStatusSelectorDialog.qml</file>
+        <file>src/gui/UserStatusSelectorPage.qml</file>
         <file>src/gui/EmojiPicker.qml</file>
+        <file>src/gui/UserStatusSelectorButton.qml</file>
+        <file>src/gui/PredefinedStatusButton.qml</file>
+        <file>src/gui/BasicComboBox.qml</file>
         <file>src/gui/ErrorBox.qml</file>
+        <file>src/gui/filedetails/FileActivityView.qml</file>
+        <file>src/gui/filedetails/FileDetailsPage.qml</file>
+        <file>src/gui/filedetails/FileDetailsView.qml</file>
+        <file>src/gui/filedetails/FileDetailsWindow.qml</file>
+        <file>src/gui/filedetails/NCInputTextEdit.qml</file>
+        <file>src/gui/filedetails/NCInputTextField.qml</file>
+        <file>src/gui/filedetails/NCTabButton.qml</file>
+        <file>src/gui/filedetails/ShareeDelegate.qml</file>
+        <file>src/gui/filedetails/ShareDelegate.qml</file>
+        <file>src/gui/filedetails/ShareDetailsPage.qml</file>
+        <file>src/gui/filedetails/ShareeSearchField.qml</file>
+        <file>src/gui/filedetails/ShareView.qml</file>
         <file>src/gui/tray/Window.qml</file>
         <file>src/gui/tray/UserLine.qml</file>
         <file>src/gui/tray/HeaderButton.qml</file>
         <file>src/gui/tray/SyncStatus.qml</file>
-        <file>theme/Style/Style.qml</file>
-        <file>theme/Style/qmldir</file>
         <file>src/gui/tray/ActivityActionButton.qml</file>
         <file>src/gui/tray/ActivityItem.qml</file>
         <file>src/gui/tray/AutoSizingMenu.qml</file>
         <file>src/gui/tray/ActivityList.qml</file>
-        <file>src/gui/tray/FileActivityDialog.qml</file>
         <file>src/gui/tray/UnifiedSearchInputContainer.qml</file>
         <file>src/gui/tray/UnifiedSearchResultFetchMoreTrigger.qml</file>
         <file>src/gui/tray/UnifiedSearchResultItem.qml</file>
         <file>src/gui/tray/UnifiedSearchResultItemSkeleton.qml</file>
         <file>src/gui/tray/UnifiedSearchResultItemSkeletonContainer.qml</file>
+        <file>src/gui/tray/UnifiedSearchResultItemSkeletonGradientRectangle.qml</file>
         <file>src/gui/tray/UnifiedSearchResultListItem.qml</file>
         <file>src/gui/tray/UnifiedSearchResultNothingFound.qml</file>
         <file>src/gui/tray/UnifiedSearchResultSectionItem.qml</file>
         <file>src/gui/tray/CustomButton.qml</file>
-        <file>src/gui/tray/CustomTextButton.qml</file>
+        <file>src/gui/tray/NCButtonContents.qml</file>
+        <file>src/gui/tray/NCButtonBackground.qml</file>
+        <file>src/gui/tray/TextButtonContents.qml</file>
         <file>src/gui/tray/ActivityItemContextMenu.qml</file>
         <file>src/gui/tray/ActivityItemActions.qml</file>
         <file>src/gui/tray/ActivityItemContent.qml</file>
         <file>src/gui/tray/TalkReplyTextField.qml</file>
         <file>src/gui/tray/CallNotificationDialog.qml</file>
+        <file>src/gui/tray/EditFileLocallyLoadingDialog.qml</file>
+        <file>src/gui/tray/NCBusyIndicator.qml</file>
+        <file>src/gui/tray/NCToolTip.qml</file>
+        <file>src/gui/tray/EnforcedPlainTextLabel.qml</file>
+        <file>theme/Style/Style.qml</file>
+        <file>theme/Style/qmldir</file>
     </qresource>
 </RCC>

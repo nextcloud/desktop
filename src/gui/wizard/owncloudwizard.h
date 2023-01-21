@@ -56,20 +56,20 @@ public:
     OwncloudWizard(QWidget *parent = nullptr);
 
     void setAccount(AccountPtr account);
-    AccountPtr account() const;
+    [[nodiscard]] AccountPtr account() const;
     void setOCUrl(const QString &);
     bool registration();
     void setRegistration(bool registration);
 
     void setupCustomMedia(QVariant, QLabel *);
-    QString ocUrl() const;
-    QString localFolder() const;
-    QStringList selectiveSyncBlacklist() const;
-    bool useVirtualFileSync() const;
-    bool isConfirmBigFolderChecked() const;
+    [[nodiscard]] QString ocUrl() const;
+    [[nodiscard]] QString localFolder() const;
+    [[nodiscard]] QStringList selectiveSyncBlacklist() const;
+    [[nodiscard]] bool useVirtualFileSync() const;
+    [[nodiscard]] bool isConfirmBigFolderChecked() const;
 
     void displayError(const QString &, bool retryHTTPonly);
-    AbstractCredentials *getCredentials() const;
+    [[nodiscard]] AbstractCredentials *getCredentials() const;
 
     void bringToTop();
     void centerWindow();
@@ -90,11 +90,13 @@ public:
     QList<QSslCertificate> _clientSslCaCertificates;
 
 public slots:
-    void setAuthType(DetermineAuthTypeJob::AuthType type);
+    void setAuthType(OCC::DetermineAuthTypeJob::AuthType type);
     void setRemoteFolder(const QString &);
-    void appendToConfigurationLog(const QString &msg, LogType type = LogParagraph);
+    void appendToConfigurationLog(const QString &msg, OCC::OwncloudWizard::LogType type = LogParagraph);
     void slotCurrentPageChanged(int);
     void successfulStep();
+    void slotCustomButtonClicked(const int which);
+    void adjustWizardSize();
 
 signals:
     void clearPendingRequests();
@@ -113,9 +115,8 @@ protected:
 
 private:
     void customizeStyle();
-    void adjustWizardSize();
-    int calculateLongestSideOfWizardPages(const QList<QSize> &pageSizes) const;
-    QList<QSize> calculateWizardPageSizes() const;
+    [[nodiscard]] QSize calculateLargestSizeOfWizardPages(const QList<QSize> &pageSizes) const;
+    [[nodiscard]] QList<QSize> calculateWizardPageSizes() const;
 
     AccountPtr _account;
     WelcomePage *_welcomePage;

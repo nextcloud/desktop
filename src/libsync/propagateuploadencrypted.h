@@ -7,6 +7,7 @@
 #include <QByteArray>
 #include <QJsonDocument>
 #include <QNetworkReply>
+#include <QScopedPointer>
 #include <QFile>
 #include <QTemporaryFile>
 
@@ -39,9 +40,9 @@ public:
 
     void unlockFolder();
 
-    bool isUnlockRunning() const { return _isUnlockRunning; }
-    bool isFolderLocked() const { return _isFolderLocked; }
-    const QByteArray folderToken() const { return _folderToken; }
+    [[nodiscard]] bool isUnlockRunning() const { return _isUnlockRunning; }
+    [[nodiscard]] bool isFolderLocked() const { return _isFolderLocked; }
+    [[nodiscard]] const QByteArray folderToken() const { return _folderToken; }
 
 private slots:
     void slotFolderEncryptedIdReceived(const QStringList &list);
@@ -76,7 +77,7 @@ private:
 
   QByteArray _generatedKey;
   QByteArray _generatedIv;
-  FolderMetadata *_metadata;
+  QScopedPointer<FolderMetadata> _metadata;
   EncryptedFile _encryptedFile;
   QString _completeFileName;
 };

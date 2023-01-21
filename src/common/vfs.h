@@ -49,6 +49,9 @@ struct OCSYNC_EXPORT VfsSetupParams
     // Folder alias
     QString alias;
 
+    // Folder registry navigation Pane CLSID
+    QString navigationPaneClsid;
+
     /** The path to the synced folder on the account
      *
      * Always ends with /.
@@ -128,13 +131,13 @@ public:
     explicit Vfs(QObject* parent = nullptr);
     ~Vfs() override;
 
-    virtual Mode mode() const = 0;
+    [[nodiscard]] virtual Mode mode() const = 0;
 
     /// For WithSuffix modes: the suffix (including the dot)
-    virtual QString fileSuffix() const = 0;
+    [[nodiscard]] virtual QString fileSuffix() const = 0;
 
     /// Access to the parameters the instance was start()ed with.
-    const VfsSetupParams &params() const { return _setupParams; }
+    [[nodiscard]] const VfsSetupParams &params() const { return _setupParams; }
 
 
     /** Initializes interaction with the VFS provider.
@@ -155,13 +158,13 @@ public:
      * Some plugins might provide alternate shell integration, making the normal
      * context menu actions redundant.
      */
-    virtual bool socketApiPinStateActionsShown() const = 0;
+    [[nodiscard]] virtual bool socketApiPinStateActionsShown() const = 0;
 
     /** Return true when download of a file's data is currently ongoing.
      *
      * See also the beginHydrating() and doneHydrating() signals.
      */
-    virtual bool isHydrating() const = 0;
+    [[nodiscard]] virtual bool isHydrating() const = 0;
 
     /** Update placeholder metadata during discovery.
      *
@@ -255,7 +258,7 @@ public slots:
      * via the vfs plugin. The connection to SyncFileStatusTracker allows both to be based
      * on the same data.
      */
-    virtual void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) = 0;
+    virtual void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) = 0;
 
 signals:
     /// Emitted when a user-initiated hydration starts
@@ -293,15 +296,15 @@ public:
     VfsOff(QObject* parent = nullptr);
     ~VfsOff() override;
 
-    Mode mode() const override { return Vfs::Off; }
+    [[nodiscard]] Mode mode() const override { return Vfs::Off; }
 
-    QString fileSuffix() const override { return QString(); }
+    [[nodiscard]] QString fileSuffix() const override { return QString(); }
 
     void stop() override {}
     void unregisterFolder() override {}
 
-    bool socketApiPinStateActionsShown() const override { return false; }
-    bool isHydrating() const override { return false; }
+    [[nodiscard]] bool socketApiPinStateActionsShown() const override { return false; }
+    [[nodiscard]] bool isHydrating() const override { return false; }
 
     Result<void, QString> updateMetadata(const QString &, time_t, qint64, const QByteArray &) override { return {}; }
     Result<void, QString> createPlaceholder(const SyncFileItem &) override { return {}; }
@@ -317,7 +320,7 @@ public:
     AvailabilityResult availability(const QString &) override { return VfsItemAvailability::AlwaysLocal; }
 
 public slots:
-    void fileStatusChanged(const QString &, SyncFileStatus) override {}
+    void fileStatusChanged(const QString &, OCC::SyncFileStatus) override {}
 
 protected:
     void startImpl(const VfsSetupParams &) override {}

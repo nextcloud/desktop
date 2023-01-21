@@ -46,7 +46,7 @@ private slots:
     void testFileRecord()
     {
         SyncJournalFileRecord record;
-        QVERIFY(_db.getFileRecord(QByteArrayLiteral("nonexistant"), &record));
+        QVERIFY(_db.getFileRecord(QByteArrayLiteral("nonexistent"), &record));
         QVERIFY(!record.isValid());
 
         record._path = "foo";
@@ -68,7 +68,7 @@ private slots:
 
         // Update checksum
         record._checksumHeader = "Adler32:newchecksum";
-        _db.updateFileRecordChecksum("foo", "newchecksum", "Adler32");
+        QVERIFY(_db.updateFileRecordChecksum("foo", "newchecksum", "Adler32"));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -81,7 +81,7 @@ private slots:
         record._fileId = "efg";
         record._remotePerm = RemotePermissions::fromDbValue("NV");
         record._fileSize = 289055;
-        _db.setFileRecord(record);
+        QVERIFY(_db.setFileRecord(record));
         QVERIFY(_db.getFileRecord(QByteArrayLiteral("foo"), &storedRecord));
         QVERIFY(storedRecord == record);
 
@@ -129,7 +129,7 @@ private slots:
     void testDownloadInfo()
     {
         using Info = SyncJournalDb::DownloadInfo;
-        Info record = _db.getDownloadInfo("nonexistant");
+        Info record = _db.getDownloadInfo("nonexistent");
         QVERIFY(!record._valid);
 
         record._errorCount = 5;
@@ -149,7 +149,7 @@ private slots:
     void testUploadInfo()
     {
         using Info = SyncJournalDb::UploadInfo;
-        Info record = _db.getUploadInfo("nonexistant");
+        Info record = _db.getUploadInfo("nonexistent");
         QVERIFY(!record._valid);
 
         record._errorCount = 5;
@@ -213,11 +213,11 @@ private slots:
             record._type = type;
             record._etag = initialEtag;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
-            _db.setFileRecord(record);
+            QVERIFY(_db.setFileRecord(record));
         };
         auto getEtag = [&](const QByteArray &path) {
             SyncJournalFileRecord record;
-            _db.getFileRecord(path, &record);
+            [[maybe_unused]] const auto result = _db.getFileRecord(path, &record);
             return record._etag;
         };
 
@@ -275,7 +275,7 @@ private slots:
             SyncJournalFileRecord record;
             record._path = path;
             record._remotePerm = RemotePermissions::fromDbValue("RW");
-            _db.setFileRecord(record);
+            QVERIFY(_db.setFileRecord(record));
         };
 
         QByteArrayList elements;
@@ -289,15 +289,15 @@ private slots:
             << "foo bla bar/file"
             << "fo_"
             << "fo_/file";
-        for (const auto& elem : elements)
+        for (const auto& elem : qAsConst(elements)) {
             makeEntry(elem);
+        }
 
         auto checkElements = [&]() {
             bool ok = true;
-            for (const auto& elem : elements) {
+            for (const auto& elem : qAsConst(elements)) {
                 SyncJournalFileRecord record;
-                _db.getFileRecord(elem, &record);
-                if (!record.isValid()) {
+                if (!_db.getFileRecord(elem, &record) || !record.isValid()) {
                     qWarning() << "Missing record: " << elem;
                     ok = false;
                 }
@@ -305,17 +305,17 @@ private slots:
             return ok;
         };
 
-        _db.deleteFileRecord("moo", true);
+        QVERIFY(_db.deleteFileRecord("moo", true));
         elements.removeAll("moo");
         elements.removeAll("moo/file");
         QVERIFY(checkElements());
 
-        _db.deleteFileRecord("fo_", true);
+        QVERIFY(_db.deleteFileRecord("fo_", true));
         elements.removeAll("fo_");
         elements.removeAll("fo_/file");
         QVERIFY(checkElements());
 
-        _db.deleteFileRecord("foo%bar", true);
+        QVERIFY(_db.deleteFileRecord("foo%bar", true));
         elements.removeAll("foo%bar");
         QVERIFY(checkElements());
     }
@@ -382,31 +382,31 @@ private slots:
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistent"), PinState::AlwaysLocal);
         QCOMPARE(get("online/local"), PinState::AlwaysLocal);
         QCOMPARE(get("local/online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit/local"), PinState::AlwaysLocal);
         QCOMPARE(get("inherit/online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("inherit/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("inherit/nonexistent"), PinState::AlwaysLocal);
 
         // Inheriting checks, level 1
         QCOMPARE(get("local/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/nonexistent"), PinState::AlwaysLocal);
         QCOMPARE(get("online/inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("online/nonexistant"), PinState::OnlineOnly);
+        QCOMPARE(get("online/nonexistent"), PinState::OnlineOnly);
 
         // Inheriting checks, level 2
         QCOMPARE(get("local/inherit/inherit"), PinState::AlwaysLocal);
         QCOMPARE(get("local/local/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("local/local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("local/local/nonexistent"), PinState::AlwaysLocal);
         QCOMPARE(get("local/online/inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("local/online/nonexistant"), PinState::OnlineOnly);
+        QCOMPARE(get("local/online/nonexistent"), PinState::OnlineOnly);
         QCOMPARE(get("online/inherit/inherit"), PinState::OnlineOnly);
         QCOMPARE(get("online/local/inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("online/local/nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("online/local/nonexistent"), PinState::AlwaysLocal);
         QCOMPARE(get("online/online/inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("online/online/nonexistant"), PinState::OnlineOnly);
+        QCOMPARE(get("online/online/nonexistent"), PinState::OnlineOnly);
 
         // Spot check the recursive variant
         QCOMPARE(getRecursive(""), PinState::Inherited);
@@ -427,12 +427,12 @@ private slots:
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::OnlineOnly);
-        QCOMPARE(get("nonexistant"), PinState::OnlineOnly);
+        QCOMPARE(get("nonexistent"), PinState::OnlineOnly);
         make("", PinState::AlwaysLocal);
         QCOMPARE(get("local"), PinState::AlwaysLocal);
         QCOMPARE(get("online"), PinState::OnlineOnly);
         QCOMPARE(get("inherit"), PinState::AlwaysLocal);
-        QCOMPARE(get("nonexistant"), PinState::AlwaysLocal);
+        QCOMPARE(get("nonexistent"), PinState::AlwaysLocal);
 
         // Wiping
         QCOMPARE(getRaw("local/local"), PinState::AlwaysLocal);

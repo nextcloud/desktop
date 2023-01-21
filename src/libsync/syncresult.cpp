@@ -39,10 +39,10 @@ QString SyncResult::statusString() const
         re = QLatin1String("Undefined");
         break;
     case NotYetStarted:
-        re = QLatin1String("Not yet Started");
+        re = QLatin1String("Not yet started");
         break;
     case SyncRunning:
-        re = QLatin1String("Sync Running");
+        re = QLatin1String("Sync running");
         break;
     case Success:
         re = QLatin1String("Success");
@@ -51,19 +51,19 @@ QString SyncResult::statusString() const
         re = QLatin1String("Error");
         break;
     case SetupError:
-        re = QLatin1String("SetupError");
+        re = QLatin1String("Setup error");
         break;
     case SyncPrepare:
-        re = QLatin1String("SyncPrepare");
+        re = QLatin1String("Preparing to sync");
         break;
     case Problem:
         re = QLatin1String("Success, some files were ignored.");
         break;
     case SyncAbortRequested:
-        re = QLatin1String("Sync Request aborted by user");
+        re = QLatin1String("Sync request cancelled");
         break;
     case Paused:
-        re = QLatin1String("Sync Paused");
+        re = QLatin1String("Sync paused");
         break;
     }
     return re;
@@ -141,7 +141,7 @@ void SyncResult::processCompletedItem(const SyncFileItemPtr &item)
         if (!_firstItemError) {
             _firstItemError = item;
         }
-    } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameInvalid) {
+    } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameInvalid || item->_status == SyncFileItem::FileNameClash) {
         if (item->_instruction == CSYNC_INSTRUCTION_CONFLICT) {
             _numNewConflictItems++;
             if (!_firstNewConflictItem) {

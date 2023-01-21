@@ -41,7 +41,7 @@ public:
      * Returns false if there was an error reading the settings,
      * but note that settings not existing is not an error.
      */
-    bool restore();
+    bool restore(bool alsoRestoreLegacySettings = true);
 
     /**
      * Add this account in the list of saved accounts.
@@ -58,12 +58,18 @@ public:
      * Return a list of all accounts.
      * (this is a list of QSharedPointer for internal reasons, one should normally not keep a copy of them)
      */
-    QList<AccountStatePtr> accounts() const;
+    [[nodiscard]] QList<AccountStatePtr> accounts() const;
 
     /**
      * Return the account state pointer for an account identified by its display name
      */
     AccountStatePtr account(const QString &name);
+
+    /**
+     * Return the account state pointer for an account from its id
+     */
+
+    [[nodiscard]] AccountStatePtr accountFromUserId(const QString &id) const;
 
     /**
      * Delete the AccountState
@@ -89,8 +95,8 @@ private:
 
     bool restoreFromLegacySettings();
 
-    bool isAccountIdAvailable(const QString &id) const;
-    QString generateFreeAccountId() const;
+    [[nodiscard]] bool isAccountIdAvailable(const QString &id) const;
+    [[nodiscard]] QString generateFreeAccountId() const;
 
     // Adds an account to the tracked list, emitting accountAdded()
     void addAccountState(AccountState *accountState);
@@ -102,19 +108,16 @@ private:
 
 public slots:
     /// Saves account data, not including the credentials
-    void saveAccount(Account *a);
+    void saveAccount(OCC::Account *a);
 
     /// Saves account state data, not including the account
-    void saveAccountState(AccountState *a);
-
-    /// Display a Box with the mnemonic so the user can copy it to a safe place.
-    static void displayMnemonic(const QString& mnemonic);
+    void saveAccountState(OCC::AccountState *a);
 
 
 Q_SIGNALS:
-    void accountAdded(AccountState *account);
-    void accountRemoved(AccountState *account);
-    void accountSyncConnectionRemoved(AccountState *account);
-    void removeAccountFolders(AccountState *account);
+    void accountAdded(OCC::AccountState *account);
+    void accountRemoved(OCC::AccountState *account);
+    void accountSyncConnectionRemoved(OCC::AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
 };
 }

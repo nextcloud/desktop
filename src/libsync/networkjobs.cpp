@@ -38,6 +38,7 @@
 
 #include "networkjobs.h"
 #include "account.h"
+#include "helpers.h"
 #include "owncloudpropagator.h"
 #include "clientsideencryption.h"
 
@@ -54,28 +55,10 @@ Q_LOGGING_CATEGORY(lcAvatarJob, "nextcloud.sync.networkjob.avatar", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcMkColJob, "nextcloud.sync.networkjob.mkcol", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcProppatchJob, "nextcloud.sync.networkjob.proppatch", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcJsonApiJob, "nextcloud.sync.networkjob.jsonapi", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcSimpleApiJob, "nextcloud.sync.networkjob.simpleapi", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "nextcloud.sync.networkjob.determineauthtype", QtInfoMsg)
 Q_LOGGING_CATEGORY(lcSimpleFileJob, "nextcloud.sync.networkjob.simplefilejob", QtInfoMsg)
 const int notModifiedStatusCode = 304;
-
-QByteArray parseEtag(const char *header)
-{
-    if (!header)
-        return QByteArray();
-    QByteArray arr = header;
-
-    // Weak E-Tags can appear when gzip compression is on, see #3946
-    if (arr.startsWith("W/"))
-        arr = arr.mid(2);
-
-    // https://github.com/owncloud/client/issues/1195
-    arr.replace("-gzip", "");
-
-    if (arr.length() >= 2 && arr.startsWith('"') && arr.endsWith('"')) {
-        arr = arr.mid(1, arr.length() - 2);
-    }
-    return arr;
-}
 
 RequestEtagJob::RequestEtagJob(AccountPtr account, const QString &path, QObject *parent)
     : AbstractNetworkJob(account, path, parent)
@@ -395,9 +378,14 @@ bool LsColJob::finished()
     qCInfo(lcLsColJob) << "LSCOL of" << reply()->request().url() << "FINISHED WITH STATUS"
                        << replyStatusString();
 
-    QString contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
-    int httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
-    if (httpCode == 207 && contentType.contains("application/xml; charset=utf-8")) {
+    const auto contentType = reply()->header(QNetworkRequest::ContentTypeHeader).toString();
+    const auto httpCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    const auto validContentType = contentType.contains("application/xml; charset=utf-8") ||
+                                  contentType.contains("application/xml; charset=\"utf-8\"") ||
+                                  contentType.contains("text/xml; charset=utf-8") ||
+                                  contentType.contains("text/xml; charset=\"utf-8\"");
+
+    if (httpCode == 207 && validContentType) {
         LsColXMLParser parser;
         connect(&parser, &LsColXMLParser::directoryListingSubfolders,
             this, &LsColJob::directoryListingSubfolders);
@@ -817,64 +805,23 @@ bool EntityExistsJob::finished()
 /*********************************************************************************************/
 
 JsonApiJob::JsonApiJob(const AccountPtr &account, const QString &path, QObject *parent)
-    : AbstractNetworkJob(account, path, parent)
+    : SimpleApiJob(account, path, parent)
 {
-}
-
-void JsonApiJob::addQueryParams(const QUrlQuery &params)
-{
-    _additionalParams = params;
-}
-
-void JsonApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
-{
-   _request.setRawHeader(headerName, value);
 }
 
 void JsonApiJob::setBody(const QJsonDocument &body)
 {
-    _body = body.toJson();
-    qCDebug(lcJsonApiJob) << "Set body for request:" << _body;
-    if (!_body.isEmpty()) {
-        _request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    SimpleApiJob::setBody(body.toJson());
+    qCDebug(lcJsonApiJob) << "Set body for request:" << SimpleApiJob::body();
+    if (!SimpleApiJob::body().isEmpty()) {
+        request().setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
     }
-}
-
-
-void JsonApiJob::setVerb(Verb value)
-{
-    _verb = value;
-}
-
-
-QByteArray JsonApiJob::verbToString() const
-{
-    switch (_verb) {
-    case Verb::Get:
-        return "GET";
-    case Verb::Post:
-        return "POST";
-    case Verb::Put:
-        return "PUT";
-    case Verb::Delete:
-        return "DELETE";
-    }
-    return "GET";
 }
 
 void JsonApiJob::start()
 {
-    addRawHeader("OCS-APIREQUEST", "true");
-    auto query = _additionalParams;
-    query.addQueryItem(QLatin1String("format"), QLatin1String("json"));
-    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
-    const auto httpVerb = verbToString();
-    if (!_body.isEmpty()) {
-        sendRequest(httpVerb, url, _request, _body);
-    } else {
-        sendRequest(httpVerb, url, _request);
-    }
-    AbstractNetworkJob::start();
+    additionalParams().addQueryItem(QLatin1String("format"), QLatin1String("json"));
+    SimpleApiJob::start();
 }
 
 bool JsonApiJob::finished()
@@ -893,7 +840,7 @@ bool JsonApiJob::finished()
 
     QString jsonStr = QString::fromUtf8(reply()->readAll());
     if (jsonStr.contains("<?xml version=\"1.0\"?>")) {
-        const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
+        static const QRegularExpression rex("<statuscode>(\\d+)</statuscode>");
         const auto rexMatch = rex.match(jsonStr);
         if (rexMatch.hasMatch()) {
             // this is a error message coming back from ocs.
@@ -903,7 +850,7 @@ bool JsonApiJob::finished()
         qCWarning(lcJsonApiJob) << "Nothing changed so nothing to retrieve - status code: " << httpStatusCode;
         statusCode = httpStatusCode;
     } else {
-        const QRegularExpression rex(R"("statuscode":(\d+))");
+        static const QRegularExpression rex(R"("statuscode":(\d+))");
         // example: "{"ocs":{"meta":{"status":"ok","statuscode":100,"message":null},"data":{"version":{"major":8,"minor":"... (504)
         const auto rxMatch = rex.match(jsonStr);
         if (rxMatch.hasMatch()) {
@@ -1176,6 +1123,86 @@ void fetchPrivateLinkUrl(AccountPtr account, const QString &remotePath,
         targetFun(oldUrl);
     });
     job->start();
+}
+
+SimpleApiJob::SimpleApiJob(const AccountPtr &account, const QString &path, QObject *parent)
+    : AbstractNetworkJob(account, path, parent)
+{
+}
+
+void SimpleApiJob::setBody(const QByteArray &body)
+{
+    _body = body;
+    qCDebug(lcSimpleApiJob) << "Set body for request:" << _body;
+}
+
+
+void SimpleApiJob::setVerb(Verb value)
+{
+    _verb = value;
+}
+
+
+QByteArray SimpleApiJob::verbToString() const
+{
+    switch (_verb) {
+    case Verb::Get:
+        return "GET";
+    case Verb::Post:
+        return "POST";
+    case Verb::Put:
+        return "PUT";
+    case Verb::Delete:
+        return "DELETE";
+    }
+    return "GET";
+}
+
+void SimpleApiJob::start()
+{
+    addRawHeader("OCS-APIREQUEST", "true");
+    auto query = _additionalParams;
+    QUrl url = Utility::concatUrlPath(account()->url(), path(), query);
+    const auto httpVerb = verbToString();
+    if (!SimpleApiJob::body().isEmpty()) {
+        sendRequest(httpVerb, url, request(), SimpleApiJob::body());
+    } else {
+        sendRequest(httpVerb, url, request());
+    }
+    AbstractNetworkJob::start();
+}
+
+bool SimpleApiJob::finished()
+{
+    const auto httpStatusCode = reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+    qCDebug(lcSimpleApiJob) << "result: " << path() << errorString() << httpStatusCode;
+    emit resultReceived(httpStatusCode);
+    return true;
+}
+
+QNetworkRequest& SimpleApiJob::request()
+{
+    return _request;
+}
+
+QByteArray& SimpleApiJob::body()
+{
+    return _body;
+}
+
+QUrlQuery &SimpleApiJob::additionalParams()
+{
+    return _additionalParams;
+}
+
+void SimpleApiJob::addQueryParams(const QUrlQuery &params)
+{
+    _additionalParams = params;
+}
+
+void SimpleApiJob::addRawHeader(const QByteArray &headerName, const QByteArray &value)
+{
+    request().setRawHeader(headerName, value);
 }
 
 } // namespace OCC

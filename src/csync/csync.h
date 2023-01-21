@@ -165,7 +165,7 @@ Q_ENUM_NS(ItemType)
 
 using namespace CSyncEnums;
 using CSYNC_STATUS = CSyncEnums::csync_status_codes_e;
-typedef struct csync_file_stat_s csync_file_stat_t;
+using csync_file_stat_t = struct csync_file_stat_s;
 
 struct OCSYNC_EXPORT csync_file_stat_s {
   time_t modtime = 0;

@@ -56,15 +56,15 @@ class AccountSettings : public QWidget
 public:
     explicit AccountSettings(AccountState *accountState, QWidget *parent = nullptr);
     ~AccountSettings() override;
-    QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
+    [[nodiscard]] QSize sizeHint() const override { return ownCloudGui::settingsDialogSize(); }
     bool canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* folderInfo);
 
 signals:
     void folderChanged();
     void openFolderAlias(const QString &);
-    void showIssuesList(AccountState *account);
+    void showIssuesList(OCC::AccountState *account);
     void requestMnemonic();
-    void removeAccountFolders(AccountState *account);
+    void removeAccountFolders(OCC::AccountState *account);
     void styleChanged();
 
 public slots:
@@ -72,7 +72,7 @@ public slots:
     void slotUpdateQuota(qint64 total, qint64 used);
     void slotAccountStateChanged();
     void slotStyleChanged();
-    AccountState *accountsState() { return _accountState; }
+    OCC::AccountState *accountsState() { return _accountState; }
     void slotHideSelectiveSyncWidget();
 
 protected slots:
@@ -89,14 +89,14 @@ protected slots:
     void slotEditCurrentLocalIgnoredFiles();
     void slotEnableVfsCurrentFolder();
     void slotDisableVfsCurrentFolder();
-    void slotSetCurrentFolderAvailability(PinState state);
-    void slotSetSubFolderAvailability(Folder *folder, const QString &path, PinState state);
+    void slotSetCurrentFolderAvailability(OCC::PinState state);
+    void slotSetSubFolderAvailability(OCC::Folder *folder, const QString &path, OCC::PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
     void slotDeleteAccount();
     void slotToggleSignInState();
     void refreshSelectiveSyncStatus();
-    void slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInfo *folderInfo);
+    void slotMarkSubfolderEncrypted(OCC::FolderStatusModel::SubFolderInfo *folderInfo);
     void slotSubfolderContextMenuRequested(const QModelIndex& idx, const QPoint& point);
     void slotCustomContextMenuRequested(const QPoint &);
     void slotFolderListClicked(const QModelIndex &indx);
@@ -104,14 +104,21 @@ protected slots:
     void slotLinkActivated(const QString &link);
 
     // Encryption Related Stuff.
-    void slotShowMnemonic(const QString &mnemonic);
-    void slotNewMnemonicGenerated();
+    void slotE2eEncryptionMnemonicReady();
+    void slotE2eEncryptionGenerateKeys();
+    void slotE2eEncryptionInitializationFinished(bool isNewMnemonicGenerated);
     void slotEncryptFolderFinished(int status);
 
     void slotSelectiveSyncChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight,
                                   const QVector<int> &roles);
+    void slotPossiblyUnblacklistE2EeFoldersAndRestartSync();
+
+private slots:
+    void updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const;
+    void folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist);
 
 private:
+    void displayMnemonic(const QString &mnemonic);
     void showConnectionLabel(const QString &message,
         QStringList errors = QStringList());
     bool event(QEvent *) override;
@@ -119,8 +126,12 @@ private:
     void openIgnoredFilesDialog(const QString & absFolderPath);
     void customizeStyle();
 
+    void initializeE2eEncryption();
+    void removeActionFromEncryptionMessage(const QString &actionId);
+    QAction *addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId);
+
     /// Returns the alias of the selected folder, empty string if none
-    QString selectedFolderAlias() const;
+    [[nodiscard]] QString selectedFolderAlias() const;
 
     Ui::AccountSettings *_ui;
 
@@ -133,6 +144,8 @@ private:
     QAction *_addAccountAction;
 
     bool _menuShown;
+
+    QHash<QString, QMetaObject::Connection> _folderConnections;
 };
 
 } // namespace OCC

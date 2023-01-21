@@ -7,69 +7,43 @@ Button {
     id: root
 
     property string imageSource: ""
-    property string imageSourceHover: ""
-    property Image iconItem: icon
+    property string imageSourceHover: imageSource
+    property var iconItem: icon
 
     property string toolTipText: ""
 
     property color textColor: Style.ncTextColor
     property color textColorHovered: textColor
 
-    property color bgColor: "transparent"
+    property alias contentsFont: contents.font
 
-    property bool bold: false
+    property alias bgColor: bgRectangle.color
+    property alias bgNormalColor: bgRectangle.normalColor
+    property alias bgHoverColor: bgRectangle.hoverColor
+    property alias bgNormalOpacity: bgRectangle.normalOpacity
+    property alias bgHoverOpacity: bgRectangle.hoverOpacity
 
-    property real bgOpacity: 0.3
-
-    background: Rectangle {
-        color: root.bgColor
-        opacity: parent.hovered ? 1.0 : bgOpacity
-        radius: width / 2
+    background: NCButtonBackground {
+        id: bgRectangle
+        hovered: root.hovered
     }
 
-    leftPadding: root.text === "" ? 5 : 10
-    rightPadding: root.text === "" ? 5 : 10
+    leftPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
+    rightPadding: root.text === "" ? Style.smallSpacing : Style.standardSpacing
+    implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
 
-    ToolTip {
-        id: customButtonTooltip
+    NCToolTip {
         text: root.toolTipText
-        delay: Qt.styleHints.mousePressAndHoldInterval
         visible: root.toolTipText !== "" && root.hovered
-        contentItem: Label {
-            text: customButtonTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
     }
 
-    contentItem: RowLayout {
-        Image {
-            id: icon
-
-            Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-
-            source: root.hovered ? root.imageSourceHover : root.imageSource
-            fillMode: Image.PreserveAspectFit
-        }
-
-        Label {
-            Layout.maximumWidth: icon.width > 0 ? parent.width - icon.width - parent.spacing : parent.width
-            Layout.fillWidth: icon.status !== Image.Ready
-
-            text: root.text
-            font.bold: root.bold
-
-            visible: root.text !== ""
-
-            color: root.hovered ? root.textColorHovered : root.textColor
-
-            horizontalAlignment: Text.AlignHCenter
-            verticalAlignment: Text.AlignVCenter
-
-            elide: Text.ElideRight
-        }
+    contentItem: NCButtonContents {
+        id: contents
+        hovered: root.hovered
+        imageSourceHover: root.imageSourceHover
+        imageSource: root.imageSource
+        text: root.text
+        textColor: root.textColor
+        textColorHovered: root.textColorHovered
     }
 }

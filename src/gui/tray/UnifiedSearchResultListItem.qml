@@ -7,17 +7,6 @@ import com.nextcloud.desktopclient 1.0
 MouseArea {
     id: unifiedSearchResultMouseArea
 
-    property int textLeftMargin: 18
-    property int textRightMargin: 16
-    property int iconWidth: 24
-    property int iconLeftMargin: 12
-
-    property int titleFontSize: Style.topLinePixelSize
-    property int sublineFontSize: Style.subLinePixelSize
-
-    property color titleColor: Style.ncTextColor
-    property color sublineColor: Style.ncSecondaryTextColor
-
     property string currentFetchMoreInProgressProviderId: ""
 
     readonly property bool isFetchMoreTrigger: model.typeAsString === "FetchMoreTrigger"
@@ -33,19 +22,11 @@ MouseArea {
     enabled: !isFetchMoreTrigger || !isSearchInProgress
     hoverEnabled: enabled
 
-    ToolTip {
-        id: unifiedSearchResultMouseAreaTooltip
+    height: Style.unifiedSearchItemHeight
+
+    NCToolTip {
         visible: unifiedSearchResultMouseArea.containsMouse
         text: isFetchMoreTrigger ? qsTr("Load more results") : model.resultTitle + "\n\n" + model.subline
-        delay: Qt.styleHints.mousePressAndHoldInterval
-        contentItem: Label {
-            text: unifiedSearchResultMouseAreaTooltip.text
-            color: Style.ncTextColor
-        }
-        background: Rectangle {
-            border.color: Style.menuBorder
-            color: Style.backgroundColor
-        }
     }
 
     Rectangle {
@@ -55,35 +36,26 @@ MouseArea {
     }
 
     Loader {
+        anchors.fill: parent
         active: !isFetchMoreTrigger
         sourceComponent: UnifiedSearchResultItem {
-            width: unifiedSearchResultMouseArea.width
-            height: unifiedSearchResultMouseArea.height
+            anchors.fill: parent
             title: model.resultTitle
             subline: model.subline
             icons: Theme.darkMode ? model.darkIcons : model.lightIcons
+            iconsIsThumbnail: Theme.darkMode ? model.darkIconsIsThumbnail : model.lightIconsIsThumbnail
             iconPlaceholder: Theme.darkMode ? model.darkImagePlaceholder : model.lightImagePlaceholder
-            isRounded: model.isRounded
-            textLeftMargin: unifiedSearchResultMouseArea.textLeftMargin
-            textRightMargin: unifiedSearchResultMouseArea.textRightMargin
-            iconWidth: unifiedSearchResultMouseArea.iconWidth
-            iconLeftMargin: unifiedSearchResultMouseArea.iconLeftMargin
-            titleFontSize: unifiedSearchResultMouseArea.titleFontSize
-            sublineFontSize: unifiedSearchResultMouseArea.sublineFontSize
-            titleColor: unifiedSearchResultMouseArea.titleColor
-            sublineColor: unifiedSearchResultMouseArea.sublineColor
+            isRounded: model.isRounded && iconsIsThumbnail
         }
     }
 
     Loader {
+        anchors.fill: parent
         active: isFetchMoreTrigger
         sourceComponent: UnifiedSearchResultFetchMoreTrigger {
+            anchors.fill: parent
             isFetchMoreInProgress: unifiedSearchResultMouseArea.isFetchMoreInProgress
-            width: unifiedSearchResultMouseArea.width
-            height: unifiedSearchResultMouseArea.height
-            isWihinViewPort: !unifiedSearchResultMouseArea.isPooled
-            fontSize: unifiedSearchResultMouseArea.titleFontSize
-            textColor: unifiedSearchResultMouseArea.sublineColor
+            isWithinViewPort: !unifiedSearchResultMouseArea.isPooled
         }
     }
 

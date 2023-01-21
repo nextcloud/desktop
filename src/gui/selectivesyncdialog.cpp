@@ -163,7 +163,7 @@ void SelectiveSyncWidget::recursiveInsert(QTreeWidgetItem *parent, QStringList p
         parent->setToolTip(0, path);
         parent->setData(0, Qt::UserRole, path);
     } else {
-        auto *item = static_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
+        auto *item = dynamic_cast<SelectiveSyncTreeViewItem *>(findFirstChild(parent, pathTrail.first()));
         if (!item) {
             item = new SelectiveSyncTreeViewItem(parent);
             if (parent->checkState(0) == Qt::Checked
@@ -201,7 +201,7 @@ void SelectiveSyncWidget::slotUpdateDirectories(QStringList list)
     QScopedValueRollback<bool> isInserting(_inserting);
     _inserting = true;
 
-    auto *root = static_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
+    auto *root = dynamic_cast<SelectiveSyncTreeViewItem *>(_folderTree->topLevelItem(0));
 
     QUrl url = _account->davUrl();
     QString pathToRemove = url.path();
@@ -544,7 +544,7 @@ void SelectiveSyncDialog::accept()
             _folder->schedulePathForLocalDiscovery(it);
         }
 
-        folderMan->scheduleFolder(_folder);
+        folderMan->scheduleFolderForImmediateSync(_folder);
     }
     QDialog::accept();
 }

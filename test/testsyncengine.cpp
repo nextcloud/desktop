@@ -211,7 +211,7 @@ private slots:
 
         auto getDbChecksum = [&](QString path) {
             SyncJournalFileRecord record;
-            fakeFolder.syncJournal().getFileRecord(path, &record);
+            [[maybe_unused]] const auto result = fakeFolder.syncJournal().getFileRecord(path, &record);
             return record._checksumHeader;
         };
 
@@ -275,7 +275,7 @@ private slots:
         fakeFolder.syncEngine().journal()->schedulePathForRemoteDiscovery(QByteArrayLiteral("parentFolder/subFolderA/"));
         auto getEtag = [&](const QByteArray &file) {
             SyncJournalFileRecord rec;
-            fakeFolder.syncJournal().getFileRecord(file, &rec);
+            [[maybe_unused]] const auto result = fakeFolder.syncJournal().getFileRecord(file, &rec);
             return rec._etag;
         };
         QVERIFY(getEtag("parentFolder") == "_invalid_");
@@ -336,8 +336,7 @@ private slots:
         QVERIFY(!fakeFolder.syncOnce());
 
         SyncJournalFileRecord rec;
-        fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec);
-        QVERIFY(rec.isValid());
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArrayLiteral("NewFolder"), &rec) && rec.isValid());
         QCOMPARE(rec._etag, QByteArrayLiteral("_invalid_"));
         QVERIFY(!rec._fileId.isEmpty());
     }
@@ -454,7 +453,7 @@ private slots:
         // check that mtime in journal and filesystem agree
         QString a1path = fakeFolder.localPath() + "A/a1";
         SyncJournalFileRecord a1record;
-        fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record);
+        QVERIFY(fakeFolder.syncJournal().getFileRecord(QByteArray("A/a1"), &a1record));
         QCOMPARE(a1record._modtime, (qint64)FileSystem::getModTime(a1path));
 
         // Extra sync reads from db, no difference
@@ -1243,6 +1242,70 @@ private slots:
 
         auto expectedState = fakeFolder.currentLocalState();
         QCOMPARE(fakeFolder.currentRemoteState(), expectedState);
+    }
+
+    void testServerUpdatingMTimeShouldNotCreateConflicts()
+    {
+        constexpr auto testFile = "test.txt";
+        constexpr auto CURRENT_MTIME = 1646057277;
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert(testFile);
+        fakeFolder.remoteModifier().setModTimeKeepEtag(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME - 2));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+        auto localState = fakeFolder.currentLocalState();
+        QCOMPARE(localState, fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileFirstSync = localState.find(testFile);
+
+        QVERIFY(fileFirstSync);
+        QCOMPARE(fileFirstSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 2);
+
+        fakeFolder.remoteModifier().setModTimeKeepEtag(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME - 1));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        localState = fakeFolder.currentLocalState();
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileSecondSync = localState.find(testFile);
+        QVERIFY(fileSecondSync);
+        QCOMPARE(fileSecondSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME - 1);
+
+        fakeFolder.remoteModifier().setModTime(testFile, QDateTime::fromSecsSinceEpoch(CURRENT_MTIME));
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::FilesystemOnly);
+        QVERIFY(fakeFolder.syncOnce());
+        localState = fakeFolder.currentLocalState();
+        QCOMPARE(localState, fakeFolder.currentRemoteState());
+        QCOMPARE(printDbData(fakeFolder.dbState()), printDbData(fakeFolder.currentRemoteState()));
+        const auto fileThirdSync = localState.find(testFile);
+        QVERIFY(fileThirdSync);
+        QCOMPARE(fileThirdSync->lastModified.toSecsSinceEpoch(), CURRENT_MTIME);
+    }
+
+    void testFolderRemovalWithCaseClash()
+    {
+        FakeFolder fakeFolder{ FileInfo{} };
+        fakeFolder.remoteModifier().mkdir("A");
+        fakeFolder.remoteModifier().mkdir("toDelete");
+        fakeFolder.remoteModifier().insert("A/file");
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        fakeFolder.remoteModifier().insert("A/FILE");
+        QVERIFY(fakeFolder.syncOnce());
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().remove("toDelete");
+
+        QVERIFY(fakeFolder.syncOnce());
+        auto folderA = fakeFolder.currentLocalState().find("toDelete");
+        QCOMPARE(folderA, nullptr);
     }
 };
 

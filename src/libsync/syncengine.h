@@ -57,37 +57,36 @@ class OWNCLOUDSYNC_EXPORT SyncEngine : public QObject
 {
     Q_OBJECT
 public:
-    SyncEngine(AccountPtr account, const QString &localPath,
-        const QString &remotePath, SyncJournalDb *journal);
+    struct SingleItemDiscoveryOptions {
+        QString discoveryPath;
+        QString filePathRelative;
+        SyncFileItemPtr discoveryDirItem;
+    };
+
+    SyncEngine(AccountPtr account,
+               const QString &localPath,
+               const SyncOptions &syncOptions,
+               const QString &remotePath,
+               SyncJournalDb *journal);
+
     ~SyncEngine() override;
 
-    Q_INVOKABLE void startSync();
-    void setNetworkLimits(int upload, int download);
+    [[nodiscard]] bool isSyncRunning() const { return _syncRunning; }
 
-    /* Abort the sync.  Called from the main thread */
-    void abort();
+    [[nodiscard]] SyncOptions syncOptions() const { return _syncOptions; }
+    [[nodiscard]] bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
 
-    bool isSyncRunning() const { return _syncRunning; }
-
-    SyncOptions syncOptions() const { return _syncOptions; }
-    void setSyncOptions(const SyncOptions &options) { _syncOptions = options; }
-    bool ignoreHiddenFiles() const { return _ignore_hidden_files; }
-    void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
-
-    void addAcceptedInvalidFileName(const QString& filePath);
-
-    ExcludedFiles &excludedFiles() { return *_excludedFiles; }
-    Utility::StopWatch &stopWatch() { return _stopWatch; }
-    SyncFileStatusTracker &syncFileStatusTracker() { return *_syncFileStatusTracker; }
+    [[nodiscard]] ExcludedFiles &excludedFiles() const { return *_excludedFiles; }
+    [[nodiscard]] SyncFileStatusTracker &syncFileStatusTracker() const { return *_syncFileStatusTracker; }
 
     /* Returns whether another sync is needed to complete the sync */
-    AnotherSyncNeeded isAnotherSyncNeeded() { return _anotherSyncNeeded; }
+    [[nodiscard]] AnotherSyncNeeded isAnotherSyncNeeded() const { return _anotherSyncNeeded; }
 
-    bool wasFileTouched(const QString &fn) const;
+    [[nodiscard]] bool wasFileTouched(const QString &fn) const;
 
-    AccountPtr account() const;
-    SyncJournalDb *journal() const { return _journal; }
-    QString localPath() const { return _localPath; }
+    [[nodiscard]] AccountPtr account() const { return _account; };
+    [[nodiscard]] SyncJournalDb *journal() const { return _journal; }
+    [[nodiscard]] QString localPath() const { return _localPath; }
 
     /** Duration in ms that uploads should be delayed after a file change
      *
@@ -102,29 +101,16 @@ public:
     static std::chrono::milliseconds minimumFileAgeForUpload;
 
     /**
-     * Control whether local discovery should read from filesystem or db.
-     *
-     * If style is DatabaseAndFilesystem, paths a set of file paths relative to
-     * the synced folder. All the parent directories of these paths will not
-     * be read from the db and scanned on the filesystem.
-     *
-     * Note, the style and paths are only retained for the next sync and
-     * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
-     * sync's style.
-     */
-    void setLocalDiscoveryOptions(LocalDiscoveryStyle style, std::set<QString> paths = {});
-
-    /**
      * Returns whether the given folder-relative path should be locally discovered
      * given the local discovery options.
      *
      * Example: If path is 'foo/bar' and style is DatabaseAndFilesystem and dirs contains
      *     'foo/bar/touched_file', then the result will be true.
      */
-    bool shouldDiscoverLocally(const QString &path) const;
+    [[nodiscard]] bool shouldDiscoverLocally(const QString &path) const;
 
     /** Access the last sync run's local discovery style */
-    LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
+    [[nodiscard]] LocalDiscoveryStyle lastLocalDiscoveryStyle() const { return _lastLocalDiscoveryStyle; }
 
     /** Removes all virtual file db entries and dehydrated local placeholders.
      *
@@ -138,24 +124,53 @@ public:
 
     static void switchToVirtualFiles(const QString &localPath, SyncJournalDb &journal, Vfs &vfs);
 
-    auto getPropagator() { return _propagator; } // for the test
+    [[nodiscard]] QSharedPointer<OwncloudPropagator> getPropagator() const { return _propagator; } // for the test
+    [[nodiscard]] const SyncEngine::SingleItemDiscoveryOptions &singleItemDiscoveryOptions() const;
+
+public slots:
+    void setSingleItemDiscoveryOptions(const SingleItemDiscoveryOptions &singleItemDiscoveryOptions);
+
+    void startSync();
+
+    /* Abort the sync.  Called from the main thread */
+    void abort();
+
+    void setNetworkLimits(int upload, int download);
+    void setSyncOptions(const OCC::SyncOptions &options) { _syncOptions = options; }
+    void setIgnoreHiddenFiles(bool ignore) { _ignore_hidden_files = ignore; }
+
+    /**
+     * Control whether local discovery should read from filesystem or db.
+     *
+     * If style is DatabaseAndFilesystem, paths a set of file paths relative to
+     * the synced folder. All the parent directories of these paths will not
+     * be read from the db and scanned on the filesystem.
+     *
+     * Note, the style and paths are only retained for the next sync and
+     * revert afterwards. Use _lastLocalDiscoveryStyle to discover the last
+     * sync's style.
+     */
+    void setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle style, std::set<QString> paths = {});
+    void addAcceptedInvalidFileName(const QString& filePath);
 
 signals:
     // During update, before reconcile
     void rootEtag(const QByteArray &, const QDateTime &);
 
     // after the above signals. with the items that actually need propagating
-    void aboutToPropagate(SyncFileItemVector &);
+    void aboutToPropagate(OCC::SyncFileItemVector &);
 
     // after each item completed by a job (successful or not)
-    void itemCompleted(const SyncFileItemPtr &);
+    void itemCompleted(const OCC::SyncFileItemPtr &);
 
-    void transmissionProgress(const ProgressInfo &progress);
+    void transmissionProgress(const OCC::ProgressInfo &progress);
+
+    void itemDiscovered(const SyncFileItemPtr &);
 
     /// We've produced a new sync error of a type.
-    void syncError(const QString &message, ErrorCategory category = ErrorCategory::Normal);
+    void syncError(const QString &message, OCC::ErrorCategory category = OCC::ErrorCategory::Normal);
 
-    void addErrorToGui(SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
+    void addErrorToGui(OCC::SyncFileItem::Status status, const QString &errorMessage, const QString &subject);
 
     void finished(bool success);
     void started();
@@ -165,7 +180,7 @@ signals:
      * This usually happen when the server was reset or something.
      * Set *cancel to true in a slot connected from this signal to abort the sync.
      */
-    void aboutToRemoveAllFiles(SyncFileItem::Direction direction, std::function<void(bool)> f);
+    void aboutToRemoveAllFiles(OCC::SyncFileItem::Direction direction, std::function<void(bool)> f);
 
     // A new folder was discovered and was not synced because of the confirmation feature
     void newBigFolder(const QString &folder, bool isExternal);
@@ -181,7 +196,7 @@ private slots:
     void slotRootEtagReceived(const QByteArray &, const QDateTime &time);
 
     /** When the discovery phase discovers an item */
-    void slotItemDiscovered(const SyncFileItemPtr &item);
+    void slotItemDiscovered(const OCC::SyncFileItemPtr &item);
 
     /** Called when a SyncFileItem gets accepted for a sync.
      *
@@ -189,12 +204,12 @@ private slots:
      * can also be called via the propagator for items that are
      * created during propagation.
      */
-    void slotNewItem(const SyncFileItemPtr &item);
+    void slotNewItem(const OCC::SyncFileItemPtr &item);
 
-    void slotItemCompleted(const SyncFileItemPtr &item);
+    void slotItemCompleted(const OCC::SyncFileItemPtr &item);
     void slotDiscoveryFinished();
     void slotPropagationFinished(bool success);
-    void slotProgress(const SyncFileItem &item, qint64 curent);
+    void slotProgress(const OCC::SyncFileItem &item, qint64 curent);
     void slotCleanPollsJobAborted(const QString &error);
 
     /** Records that a file was touched by a job. */
@@ -209,7 +224,50 @@ private slots:
     void slotInsufficientLocalStorage();
     void slotInsufficientRemoteStorage();
 
+    void slotScheduleFilesDelayedSync();
+    void slotUnscheduleFilesDelayedSync();
+    void slotCleanupScheduledSyncTimers();
+
 private:
+    // Some files need a sync run to be executed at a specified time after
+    // their status is scheduled to change (e.g. lock status will expire in
+    // 20 minutes.)
+    //
+    // Rather than execute a sync run for each file that needs one, we want
+    // to schedule as few sync runs as possible, trying to have the state of
+    // these files updated in a timely manner without scheduling runs too
+    // frequently. We can therefore group files into a bucket.
+    //
+    // A bucket contains a group of files requiring a sync run in close
+    // proximity to each other, with an assigned sync timer interval that can
+    // be used to schedule a sync run which will update all the files in the
+    // bucket at the time their state is scheduled to change.
+    //
+    // In the pair, first is the actual time at which the bucket is going to
+    // have its sync scheduled. Second is the vector of all the (paths of)
+    // files that fall into this bucket.
+    //
+    // See SyncEngine::groupNeededScheduledSyncRuns and
+    // SyncEngine::slotScheduleFilesDelayedSync for usage.
+    struct ScheduledSyncBucket {
+        qint64 scheduledSyncTimerSecs;
+        QVector<QString> files;
+    };
+
+    // Sometimes we schedule a timer for, say, 10 files. But we receive updated
+    // data from an earlier sync run and we no longer need a scheduled sync.
+    //
+    // E.g. we had a scheduled sync timer going for a file with a lock state
+    // scheduled to expire, but someone already unlocked the file on the web UI
+    //
+    // By keeping a counter of the files depending on this timer we can
+    // perform "garbage collection", by killing the timer if there are no
+    // longer any files depending on the scheduled sync run.
+    class ScheduledSyncTimer : public QTimer {
+    public:
+        QSet<QString> files;
+    };
+
     bool checkErrorBlacklisting(SyncFileItem &item);
 
     // Cleans up unnecessary downloadinfo entries in the journal as well
@@ -227,6 +285,24 @@ private:
 
     // cleanup and emit the finished signal
     void finalize(bool success);
+
+    // Aggregate scheduled sync runs into interval buckets. Can be used to
+    // schedule a sync run per bucket instead of per file, reducing load.
+    //
+    // Bucket classification is done by simply dividing the seconds until
+    // scheduled sync time by the interval (note -- integer division!)
+    QHash<qint64, ScheduledSyncBucket> groupNeededScheduledSyncRuns(const qint64 interval) const;
+
+    // Checks if there is already a scheduled sync run timer active near the
+    // time provided as the parameter.
+    //
+    // If this timer will expire within the interval provided, the return is
+    // true.
+    //
+    // If this expiration occurs before the scheduled sync run provided as the
+    // parameter, it is rescheduled to expire at the time of the parameter.
+    QSharedPointer<SyncEngine::ScheduledSyncTimer> nearbyScheduledSyncTimer(const qint64 scheduledSyncTimerSecs,
+                                                                            const qint64 intervalSecs) const;
 
     static bool s_anySyncRunning; //true when one sync is running somewhere (for debugging)
 
@@ -259,7 +335,7 @@ private:
      * to recover
      */
     void checkForPermission(SyncFileItemVector &syncItems);
-    RemotePermissions getPermissions(const QString &file) const;
+    [[nodiscard]] RemotePermissions getPermissions(const QString &file) const;
 
     /**
      * Instead of downloading files from the server, upload the files to the server
@@ -299,6 +375,18 @@ private:
     std::set<QString> _localDiscoveryPaths;
 
     QStringList _leadingAndTrailingSpacesFilesAllowed;
+
+    // Hash of files we have scheduled for later sync runs, along with a
+    // pointer to the timer which will trigger the sync run for it.
+    //
+    // NOTE: these sync timers are not unique and will likely be shared
+    // between several files
+    QHash<QString, QSharedPointer<ScheduledSyncTimer>> _filesScheduledForLaterSync;
+
+    // A vector of all the (unique) scheduled sync timers
+    QVector<QSharedPointer<ScheduledSyncTimer>> _scheduledSyncTimers;
+
+    SingleItemDiscoveryOptions _singleItemDiscoveryOptions;
 };
 }
 

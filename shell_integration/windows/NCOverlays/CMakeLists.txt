@@ -10,6 +10,14 @@ add_library(NCOverlays MODULE
 target_link_libraries(NCOverlays
     NCUtil)
 
+set_target_properties(NCOverlays
+    PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY
+            ${BIN_OUTPUT_DIRECTORY}
+        RUNTIME_OUTPUT_DIRECTORY
+            ${BIN_OUTPUT_DIRECTORY}
+)
+
 install(TARGETS NCOverlays
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     LIBRARY DESTINATION ${CMAKE_INSTALL_BINDIR}

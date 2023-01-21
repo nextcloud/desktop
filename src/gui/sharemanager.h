@@ -36,6 +36,15 @@ class OcsShareJob;
 class Share : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(AccountPtr account READ account CONSTANT)
+    Q_PROPERTY(QString path READ path CONSTANT)
+    Q_PROPERTY(QString id READ getId CONSTANT)
+    Q_PROPERTY(QString uidOwner READ getUidOwner CONSTANT)
+    Q_PROPERTY(QString ownerDisplayName READ getOwnerDisplayName CONSTANT)
+    Q_PROPERTY(ShareType shareType READ getShareType CONSTANT)
+    Q_PROPERTY(ShareePtr shareWith READ getShareWith CONSTANT)
+    Q_PROPERTY(Permissions permissions READ getPermissions WRITE setPermissions NOTIFY permissionsSet)
+    Q_PROPERTY(bool isPasswordSet READ isPasswordSet NOTIFY passwordSet)
 
 public:
     /**
@@ -43,14 +52,17 @@ public:
      * Need to be in sync with Sharee::Type
      */
     enum ShareType {
+        TypeInternalLink = -2,
+        TypePlaceholderLink = -1,
         TypeUser = Sharee::User,
         TypeGroup = Sharee::Group,
         TypeLink = 3,
         TypeEmail = Sharee::Email,
         TypeRemote = Sharee::Federated,
         TypeCircle = Sharee::Circle,
-        TypeRoom = Sharee::Room
+        TypeRoom = Sharee::Room,
     };
+    Q_ENUM(ShareType);
 
     using Permissions = SharePermissions;
 
@@ -65,63 +77,63 @@ public:
         const ShareType shareType,
         bool isPasswordSet = false,
         const Permissions permissions = SharePermissionDefault,
-        const QSharedPointer<Sharee> shareWith = QSharedPointer<Sharee>(nullptr));
+        const ShareePtr shareWith = ShareePtr(nullptr));
 
     /**
      * The account the share is defined on.
      */
-    AccountPtr account() const;
+    [[nodiscard]] AccountPtr account() const;
 
-    QString path() const;
+    [[nodiscard]] QString path() const;
 
     /*
      * Get the id
      */
-    QString getId() const;
+    [[nodiscard]] QString getId() const;
 
     /*
      * Get the uid_owner
      */
-    QString getUidOwner() const;
+    [[nodiscard]] QString getUidOwner() const;
 
     /*
      * Get the owner display name
      */
-    QString getOwnerDisplayName() const;
+    [[nodiscard]] QString getOwnerDisplayName() const;
 
     /*
      * Get the shareType
      */
-    ShareType getShareType() const;
+    [[nodiscard]] ShareType getShareType() const;
 
     /*
      * Get the shareWith
      */
-    QSharedPointer<Sharee> getShareWith() const;
+    [[nodiscard]] ShareePtr getShareWith() const;
 
     /*
      * Get permissions
      */
-    Permissions getPermissions() const;
+    [[nodiscard]] Permissions getPermissions() const;
 
     /*
-     * Set the permissions of a share
-     *
-     * On success the permissionsSet signal is emitted
-     * In case of a server error the serverError signal is emitted.
+     * Get whether the share has a password set
      */
-    void setPermissions(Permissions permissions);
+    [[nodiscard]] Q_REQUIRED_RESULT bool isPasswordSet() const;
 
-    /*
-     * Set the password for remote share
-     *
-     * On success the passwordSet signal is emitted
-     * In case of a server error the passwordSetError signal is emitted.
+     /*
+     * Is it a share with a user or group (local or remote)
      */
-    void setPassword(const QString &password);
+    [[nodiscard]] static bool isShareTypeUserGroupEmailRoomOrRemote(const ShareType type);
 
-    bool isPasswordSet() const;
+signals:
+    void permissionsSet();
+    void shareDeleted();
+    void serverError(int code, const QString &message);
+    void passwordSet();
+    void passwordSetError(int statusCode, const QString &message);    
 
+public slots:
     /*
      * Deletes a share
      *
@@ -130,17 +142,21 @@ public:
      */
     void deleteShare();
 
-     /*
-     * Is it a share with a user or group (local or remote)
+    /*
+     * Set the permissions of a share
+     *
+     * On success the permissionsSet signal is emitted
+     * In case of a server error the serverError signal is emitted.
      */
-    static bool isShareTypeUserGroupEmailRoomOrRemote(const ShareType type);
+    void setPermissions(OCC::Share::Permissions permissions);
 
-signals:
-    void permissionsSet();
-    void shareDeleted();
-    void serverError(int code, const QString &message);
-    void passwordSet();
-    void passwordSetError(int statusCode, const QString &message);
+    /*
+     * Set the password for remote share
+     *
+     * On success the passwordSet signal is emitted
+     * In case of a server error the passwordSetError signal is emitted.
+     */
+    void setPassword(const QString &password);
 
 protected:
     AccountPtr _account;
@@ -151,7 +167,7 @@ protected:
     ShareType _shareType;
     bool _isPasswordSet;
     Permissions _permissions;
-    QSharedPointer<Sharee> _shareWith;
+    ShareePtr _shareWith;
 
 protected slots:
     void slotOcsError(int statusCode, const QString &message);
@@ -163,6 +179,8 @@ private slots:
     void slotPermissionsSet(const QJsonDocument &, const QVariant &value);
 };
 
+using SharePtr = QSharedPointer<Share>;
+
 /**
  * A Link share is just like a regular share but then slightly different.
  * There are several methods in the API that either work differently for
@@ -171,6 +189,16 @@ private slots:
 class LinkShare : public Share
 {
     Q_OBJECT
+    Q_PROPERTY(QUrl link READ getLink CONSTANT)
+    Q_PROPERTY(QUrl directDownloadLink READ getDirectDownloadLink CONSTANT)
+    Q_PROPERTY(bool publicCanUpload READ getPublicUpload CONSTANT)
+    Q_PROPERTY(bool publicCanReadDirectory READ getShowFileListing CONSTANT)
+    Q_PROPERTY(QString name READ getName WRITE setName NOTIFY nameSet)
+    Q_PROPERTY(QString note READ getNote WRITE setNote NOTIFY noteSet)
+    Q_PROPERTY(QString label READ getLabel WRITE setLabel NOTIFY labelSet)
+    Q_PROPERTY(QDate expireDate READ getExpireDate WRITE setExpireDate NOTIFY expireDateSet)
+    Q_PROPERTY(QString token READ getToken CONSTANT)
+
 public:
     explicit LinkShare(AccountPtr account,
         const QString &id,
@@ -189,38 +217,55 @@ public:
     /*
      * Get the share link
      */
-    QUrl getLink() const;
+    [[nodiscard]] QUrl getLink() const;
 
     /*
      * The share's link for direct downloading.
      */
-    QUrl getDirectDownloadLink() const;
+    [[nodiscard]] QUrl getDirectDownloadLink() const;
 
     /*
      * Get the publicUpload status of this share
      */
-    bool getPublicUpload() const;
+    [[nodiscard]] bool getPublicUpload() const;
 
     /*
      * Whether directory listings are available (READ permission)
      */
-    bool getShowFileListing() const;
+    [[nodiscard]] bool getShowFileListing() const;
 
     /*
      * Returns the name of the link share. Can be empty.
      */
-    QString getName() const;
+    [[nodiscard]] QString getName() const;
 
     /*
      * Returns the note of the link share.
      */
-    QString getNote() const;
+    [[nodiscard]] QString getNote() const;
     
     /*
      * Returns the label of the link share.
      */
-    QString getLabel() const;
+    [[nodiscard]] QString getLabel() const;
 
+    /*
+     * Returns the token of the link share.
+     */
+    [[nodiscard]] QString getToken() const;
+
+    /*
+     * Get the expiration date
+     */
+    [[nodiscard]] QDate getExpireDate() const;
+    
+    /*
+     * Create OcsShareJob and connect to signal/slots
+     */
+    template <typename LinkShareSlot>
+    OcsShareJob *createShareJob(const LinkShareSlot slotFunction);
+    
+public slots:
     /*
      * Set the name of the link share.
      *
@@ -234,34 +279,17 @@ public:
     void setNote(const QString &note);
 
     /*
-     * Returns the token of the link share.
-     */
-    QString getToken() const;
-
-    /*
-     * Get the expiration date
-     */
-    QDate getExpireDate() const;
-
-    /*
      * Set the expiration date
      *
      * On success the expireDateSet signal is emitted
      * In case of a server error the serverError signal is emitted.
      */
     void setExpireDate(const QDate &expireDate);
-    
+
     /*
      * Set the label of the share link.
      */
     void setLabel(const QString &label);
-    
-    /*
-     * Create OcsShareJob and connect to signal/slots
-     */
-    template <typename LinkShareSlot>
-    OcsShareJob *createShareJob(const LinkShareSlot slotFunction);
-    
     
 signals:
     void expireDateSet();
@@ -287,6 +315,8 @@ private:
 class UserGroupShare : public Share
 {
     Q_OBJECT
+    Q_PROPERTY(QString note READ getNote WRITE setNote NOTIFY noteSet)
+    Q_PROPERTY(QDate expireDate READ getExpireDate WRITE setExpireDate NOTIFY expireDateSet)
 public:
     UserGroupShare(AccountPtr account,
         const QString &id,
@@ -296,26 +326,25 @@ public:
         const ShareType shareType,
         bool isPasswordSet,
         const Permissions permissions,
-        const QSharedPointer<Sharee> shareWith,
+        const ShareePtr shareWith,
         const QDate &expireDate,
         const QString &note);
 
+    [[nodiscard]] QString getNote() const;
+    [[nodiscard]] QDate getExpireDate() const;
+
+public slots:
     void setNote(const QString &note);
-
-    QString getNote() const;
-
-    void slotNoteSet(const QJsonDocument &, const QVariant &note);
-
     void setExpireDate(const QDate &date);
-
-    QDate getExpireDate() const;
-
-    void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
 
 signals:
     void noteSet();
     void noteSetError();
     void expireDateSet();
+
+private slots:
+     void slotNoteSet(const QJsonDocument &json, const QVariant &note);
+     void slotExpireDateSet(const QJsonDocument &reply, const QVariant &value);
 
 private:
     QString _note;
@@ -375,9 +404,9 @@ public:
     void fetchShares(const QString &path);
 
 signals:
-    void shareCreated(const QSharedPointer<Share> &share);
-    void linkShareCreated(const QSharedPointer<LinkShare> &share);
-    void sharesFetched(const QList<QSharedPointer<Share>> &shares);
+    void shareCreated(const OCC::SharePtr &share);
+    void linkShareCreated(const QSharedPointer<OCC::LinkShare> &share);
+    void sharesFetched(const QList<OCC::SharePtr> &shares);
     void serverError(int code, const QString &message);
 
     /** Emitted when creating a link share with password fails.
@@ -396,10 +425,12 @@ private slots:
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
     QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data);
-    QSharedPointer<Share> parseShare(const QJsonObject &data);
+    SharePtr parseShare(const QJsonObject &data) const;
 
     AccountPtr _account;
 };
 }
+
+Q_DECLARE_METATYPE(OCC::SharePtr);
 
 #endif // SHAREMANAGER_H

@@ -46,6 +46,7 @@ Q_DECLARE_LOGGING_CATEGORY(lcApplication)
 
 class Theme;
 class Folder;
+class ShellExtensionsServer;
 class SslErrorDialog;
 
 /**
@@ -63,13 +64,15 @@ public:
     void showHelp();
     void showHint(std::string errorHint);
     bool debugMode();
-    bool backgroundMode() const;
+    [[nodiscard]] bool backgroundMode() const;
     bool versionOnly(); // only display the version?
     void showVersion();
 
     void showMainDialog();
 
-    ownCloudGui *gui() const;
+    [[nodiscard]] ownCloudGui *gui() const;
+
+    bool event(QEvent *event) override;
 
 public slots:
     // TODO: this should not be public
@@ -88,11 +91,10 @@ protected:
     void parseOptions(const QStringList &);
     void setupTranslations();
     void setupLogging();
-    bool event(QEvent *event) override;
 
 signals:
     void folderRemoved();
-    void folderStateChanged(Folder *);
+    void folderStateChanged(OCC::Folder *);
     void isShowingSettingsDialog();
 
 protected slots:
@@ -100,13 +102,15 @@ protected slots:
     void slotCheckConnection();
     void slotUseMonoIconsChanged(bool);
     void slotCleanup();
-    void slotAccountStateAdded(AccountState *accountState);
-    void slotAccountStateRemoved(AccountState *accountState);
+    void slotAccountStateAdded(OCC::AccountState *accountState);
+    void slotAccountStateRemoved(OCC::AccountState *accountState);
     void slotSystemOnlineConfigurationChanged(QNetworkConfiguration);
     void slotGuiIsShowingSettings();
 
 private:
     void setHelp();
+
+    void handleEditLocallyFromOptions();
 
     /**
      * Maybe a newer version of the client was used with this config file:
@@ -134,6 +138,7 @@ private:
     bool _userTriggeredConnect;
     bool _debugMode;
     bool _backgroundMode;
+    QUrl _editFileLocallyUrl;
 
     ClientProxy _proxy;
 
@@ -144,6 +149,9 @@ private:
     QScopedPointer<CrashReporter::Handler> _crashHandler;
 #endif
     QScopedPointer<FolderMan> _folderManager;
+#ifdef Q_OS_WIN
+    QScopedPointer<ShellExtensionsServer> _shellExtensionsServer;
+#endif
 };
 
 } // namespace OCC

@@ -11,8 +11,8 @@ class OWNCLOUDSYNC_EXPORT DateTimeProvider
 public:
     virtual ~DateTimeProvider();
 
-    virtual QDateTime currentDateTime() const;
+    [[nodiscard]] virtual QDateTime currentDateTime() const;
 
-    virtual QDate currentDate() const;
+    [[nodiscard]] virtual QDate currentDate() const;
 };
 }

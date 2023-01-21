@@ -46,10 +46,10 @@ public:
 
     qint64 writeData(const char *, qint64) override;
     qint64 readData(char *data, qint64 maxlen) override;
-    bool atEnd() const override;
-    qint64 size() const override;
-    qint64 bytesAvailable() const override;
-    bool isSequential() const override;
+    [[nodiscard]] bool atEnd() const override;
+    [[nodiscard]] qint64 size() const override;
+    [[nodiscard]] qint64 bytesAvailable() const override;
+    [[nodiscard]] bool isSequential() const override;
     bool seek(qint64 pos) override;
 
     void setBandwidthLimited(bool);
@@ -131,12 +131,12 @@ public:
         return _device;
     }
 
-    QString errorString() const override
+    [[nodiscard]] QString errorString() const override
     {
         return _errorString.isEmpty() ? AbstractNetworkJob::errorString() : _errorString;
     }
 
-    std::chrono::milliseconds msSinceStart() const
+    [[nodiscard]] std::chrono::milliseconds msSinceStart() const
     {
         return std::chrono::milliseconds(_requestTimer.elapsed());
     }
@@ -348,7 +348,7 @@ private:
     int _chunkCount = 0; /// Total number of chunks for this file
     uint _transferId = 0; /// transfer id (part of the url)
 
-    qint64 chunkSize() const {
+    [[nodiscard]] qint64 chunkSize() const {
         // Old chunking does not use dynamic chunking algorithm, and does not adjusts the chunk size respectively,
         // thus this value should be used as the one classifing item to be chunked
         return propagator()->syncOptions()._initialChunkSize;
@@ -362,7 +362,7 @@ public:
 
     void doStartUpload() override;
 public slots:
-    void abort(PropagatorJob::AbortType abortType) override;
+    void abort(OCC::PropagatorJob::AbortType abortType) override;
 private slots:
     void startNextChunk();
     void slotPutFinished();
@@ -412,7 +412,7 @@ private:
     void startNewUpload();
     void startNextChunk();
 public slots:
-    void abort(AbortType abortType) override;
+    void abort(OCC::PropagateUploadFileNG::AbortType abortType) override;
 private slots:
     void slotPropfindFinished();
     void slotPropfindFinishedWithError();

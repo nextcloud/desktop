@@ -21,7 +21,7 @@
 #define UTILITY_H
 
 
-#include "ocsynclib.h"
+#include "csync/ocsynclib.h"
 #include <QString>
 #include <QByteArray>
 #include <QDateTime>
@@ -185,9 +185,9 @@ namespace Utility {
         void reset();
 
         // out helpers, return the measured times.
-        QDateTime startTime() const;
-        QDateTime timeOfLap(const QString &lapName) const;
-        quint64 durationOfLap(const QString &lapName) const;
+        [[nodiscard]] QDateTime startTime() const;
+        [[nodiscard]] QDateTime timeOfLap(const QString &lapName) const;
+        [[nodiscard]] quint64 durationOfLap(const QString &lapName) const;
     };
 
     /**
@@ -247,6 +247,11 @@ namespace Utility {
      */
     OCSYNC_EXPORT QString getCurrentUserName();
 
+    /**
+     * @brief Registers the desktop app as a handler for a custom URI to enable local editing
+     */
+    OCSYNC_EXPORT void registerUriHandlerForLocalEditing();
+
 #ifdef Q_OS_WIN
     OCSYNC_EXPORT bool registryKeyExists(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT QVariant registryGetKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
@@ -254,6 +259,7 @@ namespace Utility {
     OCSYNC_EXPORT bool registryDeleteKeyTree(HKEY hRootKey, const QString &subKey);
     OCSYNC_EXPORT bool registryDeleteKeyValue(HKEY hRootKey, const QString &subKey, const QString &valueName);
     OCSYNC_EXPORT bool registryWalkSubKeys(HKEY hRootKey, const QString &subKey, const std::function<void(HKEY, const QString &)> &callback);
+    OCSYNC_EXPORT bool registryWalkValues(HKEY hRootKey, const QString &subKey, const std::function<void(const QString &, bool *)> &callback);
     OCSYNC_EXPORT QRect getTaskbarDimensions();
 
     // Possibly refactor to share code with UnixTimevalToFileTime in c_time.c

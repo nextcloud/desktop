@@ -61,7 +61,7 @@ public:
 
 public slots:
     void requestHydration(const QString &requestId, const QString &path);
-    void fileStatusChanged(const QString &systemFileName, SyncFileStatus fileStatus) override;
+    void fileStatusChanged(const QString &systemFileName, OCC::SyncFileStatus fileStatus) override;
 
 signals:
     void hydrationRequestReady(const QString &requestId);

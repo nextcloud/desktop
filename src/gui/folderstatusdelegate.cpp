@@ -58,7 +58,7 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     QFontMetrics fm(font);
     QFontMetrics aliasFm(aliasFont);
 
-    auto classif = static_cast<const FolderStatusModel *>(index.model())->classify(index);
+    auto classif = dynamic_cast<const FolderStatusModel *>(index.model())->classify(index);
     if (classif == FolderStatusModel::AddButton) {
         const int margins = aliasFm.height(); // same as 2*aliasMargin of paint
         QFontMetrics fm(qApp->font("QPushButton"));
@@ -126,7 +126,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
 
     QFontMetrics subFm(subFont);
     QFontMetrics aliasFm(aliasFont);
-    QFontMetrics progressFm(progressFont);
 
     int aliasMargin = aliasFm.height() / 2;
     int margin = subFm.height() / 4;
@@ -148,7 +147,7 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         return;
     }
 
-    if (static_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
+    if (dynamic_cast<const FolderStatusModel *>(index.model())->classify(index) != FolderStatusModel::RootFolder) {
         return;
     }
     painter->save();
@@ -156,7 +155,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     auto statusIcon = qvariant_cast<QIcon>(index.data(FolderStatusIconRole));
     auto aliasText = qvariant_cast<QString>(index.data(HeaderRole));
     auto pathText = qvariant_cast<QString>(index.data(FolderPathRole));
-    auto remotePath = qvariant_cast<QString>(index.data(FolderSecondPathRole));
     auto conflictTexts = qvariant_cast<QStringList>(index.data(FolderConflictMsg));
     auto errorTexts = qvariant_cast<QStringList>(index.data(FolderErrorMsg));
     auto infoTexts = qvariant_cast<QStringList>(index.data(FolderInfoMsg));
@@ -222,15 +220,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     }
 
     auto palette = option.palette;
-
-    if (qApp->style()->inherits("QWindowsVistaStyle")) {
-        // Hack: Windows Vista's light blue is not contrasting enough for white
-
-        // (code from QWindowsVistaStyle::drawControl for CE_ItemViewItem)
-        palette.setColor(QPalette::All, QPalette::HighlightedText, palette.color(QPalette::Active, QPalette::Text));
-        palette.setColor(QPalette::All, QPalette::Highlight, palette.base().color().darker(108));
-    }
-
 
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled
         ? QPalette::Normal
@@ -367,7 +356,7 @@ bool FolderStatusDelegate::editorEvent(QEvent *event, QAbstractItemModel *model,
     case QEvent::MouseButtonPress:
     case QEvent::MouseMove:
         if (const auto *view = qobject_cast<const QAbstractItemView *>(option.widget)) {
-            auto *me = static_cast<QMouseEvent *>(event);
+            auto *me = dynamic_cast<QMouseEvent *>(event);
             QModelIndex index;
             if (me->buttons()) {
                 index = view->indexAt(me->pos());
@@ -400,7 +389,7 @@ QRect FolderStatusDelegate::optionsButtonRect(QRect within, Qt::LayoutDirection 
     opt.rect.setSize(QSize(e,e));
     QSize size = QApplication::style()->sizeFromContents(QStyle::CT_ToolButton, &opt, opt.rect.size()).expandedTo(QApplication::globalStrut());
 
-    int margin = QApplication::style()->pixelMetric(QStyle::PM_DefaultLayoutSpacing);
+    int margin = QApplication::style()->pixelMetric(QStyle::PM_LayoutHorizontalSpacing);
     QRect r(QPoint(within.right() - size.width() - margin,
                 within.top() + within.height() / 2 - size.height() / 2),
         size);

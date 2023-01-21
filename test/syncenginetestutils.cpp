@@ -8,6 +8,7 @@
 #include "syncenginetestutils.h"
 #include "httplogger.h"
 #include "accessmanager.h"
+#include "gui/sharepermissions.h"
 
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -103,6 +104,10 @@ void DiskFileModifier::setModTime(const QString &relativePath, const QDateTime &
     OCC::FileSystem::setModTime(_rootDir.filePath(relativePath), OCC::Utility::qDateTimeToTime_t(modTime));
 }
 
+void DiskFileModifier::modifyLockState([[maybe_unused]] const QString &relativePath, [[maybe_unused]] LockState lockState, [[maybe_unused]] int lockType, [[maybe_unused]] const QString &lockOwner, [[maybe_unused]] const QString &lockOwnerId, [[maybe_unused]] const QString &lockEditorId, [[maybe_unused]] quint64 lockTime, [[maybe_unused]] quint64 lockTimeout)
+{
+}
+
 FileInfo FileInfo::A12_B12_C12_S12()
 {
     FileInfo fi { QString {}, {
@@ -193,6 +198,19 @@ void FileInfo::setModTimeKeepEtag(const QString &relativePath, const QDateTime &
     FileInfo *file = find(relativePath);
     Q_ASSERT(file);
     file->lastModified = modTime;
+}
+
+void FileInfo::modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout)
+{
+    FileInfo *file = findInvalidatingEtags(relativePath);
+    Q_ASSERT(file);
+    file->lockState = lockState;
+    file->lockType = lockType;
+    file->lockOwner = lockOwner;
+    file->lockOwnerId = lockOwnerId;
+    file->lockEditorId = lockEditorId;
+    file->lockTime = lockTime;
+    file->lockTimeout = lockTimeout;
 }
 
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
@@ -332,8 +350,22 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(davUri, QStringLiteral("getcontentlength"), QString::number(fileInfo.size));
         xml.writeTextElement(davUri, QStringLiteral("getetag"), QStringLiteral("\"%1\"").arg(QString::fromLatin1(fileInfo.etag)));
         xml.writeTextElement(ocUri, QStringLiteral("permissions"), !fileInfo.permissions.isNull() ? QString(fileInfo.permissions.toString()) : fileInfo.isShared ? QStringLiteral("SRDNVCKW") : QStringLiteral("RDNVCKW"));
+        xml.writeTextElement(ocUri, QStringLiteral("share-permissions"), QString::number(static_cast<int>(OCC::SharePermissions(OCC::SharePermissionRead |
+                                                                                                                                OCC::SharePermissionUpdate |
+                                                                                                                                OCC::SharePermissionCreate |
+                                                                                                                                OCC::SharePermissionDelete |
+                                                                                                                                OCC::SharePermissionShare))));
         xml.writeTextElement(ocUri, QStringLiteral("id"), QString::fromUtf8(fileInfo.fileId));
+        xml.writeTextElement(ocUri, QStringLiteral("fileid"), QString::fromUtf8(fileInfo.fileId));
         xml.writeTextElement(ocUri, QStringLiteral("checksums"), QString::fromUtf8(fileInfo.checksums));
+        xml.writeTextElement(ocUri, QStringLiteral("privatelink"), href);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock"), fileInfo.lockState == FileInfo::LockState::FileLocked ? QStringLiteral("1") : QStringLiteral("0"));
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner-type"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner-displayname"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
+        xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
+        xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
         buffer.write(fileInfo.extraDavProperties);
         xml.writeEndElement(); // prop
         xml.writeTextElement(davUri, QStringLiteral("status"), QStringLiteral("HTTP/1.1 200 OK"));
@@ -759,7 +791,8 @@ FileInfo *FakeChunkMoveReply::perform(FileInfo &uploadsFileInfo, FileInfo &remot
     Q_ASSERT(!fileName.isEmpty());
 
     // Compute the size and content from the chunks if possible
-    for (auto chunkName : sourceFolder->children.keys()) {
+    const auto childrenKeys = sourceFolder->children.keys();
+    for (auto chunkName : childrenKeys) {
         auto &x = sourceFolder->children[chunkName];
         Q_ASSERT(!x.isDir);
         Q_ASSERT(x.size > 0); // There should not be empty chunks
@@ -841,6 +874,9 @@ void FakePayloadReply::respond()
 {
     setAttribute(QNetworkRequest::HttpStatusCodeAttribute, 200);
     setHeader(QNetworkRequest::ContentLengthHeader, _body.size());
+    for (auto it = _additionalHeaders.constKeyValueBegin(); it != _additionalHeaders.constKeyValueEnd(); ++it) {
+        setHeader(it->first, it->second);
+    }
     emit metaDataChanged();
     emit readyRead();
     setFinished(true);
@@ -1047,7 +1083,7 @@ FakeFolder::FakeFolder(const FileInfo &fileTemplate, const OCC::Optional<FileInf
     _account->setServerVersion(QStringLiteral("10.0.0"));
 
     _journalDb = std::make_unique<OCC::SyncJournalDb>(localPath() + QStringLiteral(".sync_test.db"));
-    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), remotePath, _journalDb.get());
+    _syncEngine = std::make_unique<OCC::SyncEngine>(_account, localPath(), OCC::SyncOptions{}, remotePath, _journalDb.get());
     // Ignore temporary files from the download. (This is in the default exclude list, but we don't load it)
     _syncEngine->excludedFiles().addManualExclude(QStringLiteral("]*.~*"));
 
@@ -1117,13 +1153,13 @@ void FakeFolder::scheduleSync()
 
 void FakeFolder::execUntilBeforePropagation()
 {
-    QSignalSpy spy(_syncEngine.get(), SIGNAL(aboutToPropagate(SyncFileItemVector &)));
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::aboutToPropagate);
     QVERIFY(spy.wait());
 }
 
 void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 {
-    QSignalSpy spy(_syncEngine.get(), SIGNAL(itemCompleted(const SyncFileItemPtr &)));
+    QSignalSpy spy(_syncEngine.get(), &OCC::SyncEngine::itemCompleted);
     QElapsedTimer t;
     t.start();
     while (t.elapsed() < 5000) {
@@ -1173,7 +1209,7 @@ void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
                 continue;
             }
             char contentChar = content.at(0);
-            templateFi.children.insert(diskChild.fileName(), FileInfo { diskChild.fileName(), diskChild.size(), contentChar });
+            templateFi.children.insert(diskChild.fileName(), FileInfo{diskChild.fileName(), diskChild.size(), contentChar, diskChild.lastModified()});
         }
     }
 }
@@ -1195,7 +1231,7 @@ static FileInfo &findOrCreateDirs(FileInfo &base, PathComponents components)
 FileInfo FakeFolder::dbState() const
 {
     FileInfo result;
-    _journalDb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
+    [[maybe_unused]] const auto journalDbResult =_journalDb->getFilesBelowPath("", [&](const OCC::SyncJournalFileRecord &record) {
         auto components = PathComponents(record.path());
         auto &parentDir = findOrCreateDirs(result, components.parentDirComponents());
         auto name = components.fileName();

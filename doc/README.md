@@ -2,7 +2,7 @@
 
 The main nextcloud Documentation is found at https://github.com/nextcloud/documentation
 
-The rst files from the current stable branch will be parsed with sphinx to be used at https://docs.nextcloud.com/desktop/3.0/
+The rst files from the current stable branch will be parsed with sphinx to be used at https://docs.nextcloud.com/desktop/latest/
 
 ## Dependencies
 

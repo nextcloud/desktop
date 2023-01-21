@@ -48,27 +48,27 @@ public:
         \return The number of milliseconds between animation steps. By default, the animation delay is set to 40 milliseconds.
         \sa setAnimationDelay
      */
-    int animationDelay() const { return m_delay; }
+    [[nodiscard]] int animationDelay() const { return m_delay; }
 
     /*! Returns a Boolean value indicating whether the component is currently animated.
         \return Animation state.
         \sa startAnimation stopAnimation
      */
-    bool isAnimated () const;
+    [[nodiscard]] bool isAnimated () const;
 
     /*! Returns a Boolean value indicating whether the receiver shows itself even when it is not animating.
         \return Return true if the progress indicator shows itself even when it is not animating. By default, it returns false.
         \sa setDisplayedWhenStopped
      */
-    bool isDisplayedWhenStopped() const;
+    [[nodiscard]] bool isDisplayedWhenStopped() const;
 
     /*! Returns the color of the component.
         \sa setColor
       */
-    const QColor & color() const { return m_color; }
+    [[nodiscard]] const QColor & color() const { return m_color; }
 
-    QSize sizeHint() const override;
-    int heightForWidth(int w) const override;
+    [[nodiscard]] QSize sizeHint() const override;
+    [[nodiscard]] int heightForWidth(int w) const override;
 public slots:
     /*! Starts the spin animation.
         \sa stopAnimation isAnimated

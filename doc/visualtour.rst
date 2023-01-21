@@ -30,6 +30,8 @@ A right click on the icon provides the following menu:
 .. NOTE::
     This menu is not available on macOS.
 
+A double-click on the icon will open the currently-selected user's locally synced folder.
+
 
 Settings
 ~~~~~~~~

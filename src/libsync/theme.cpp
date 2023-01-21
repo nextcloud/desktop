@@ -196,7 +196,7 @@ QString Theme::version() const
 
 QString Theme::configFileName() const
 {
-    return QStringLiteral(APPLICATION_EXECUTABLE ".cfg");
+    return QStringLiteral(APPLICATION_CONFIG_NAME ".cfg");
 }
 
 #ifndef TOKEN_AUTH_ONLY
@@ -344,7 +344,39 @@ Theme::Theme()
     : QObject(nullptr)
 {
 #if defined(Q_OS_WIN)
-    reserveDarkPalette = QPalette(QColor(49,49,49,255), QColor(35,35,35,255)); // Windows 11 button and window dark colours
+    // Windows does not provide a dark theme for Win32 apps so let's come up with a palette
+    // Credit to https://github.com/Jorgen-VikingGod/Qt-Frameless-Window-DarkStyle
+
+    reserveDarkPalette.setColor(QPalette::Window, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::WindowText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::WindowText,
+                                QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Base, QColor(42, 42, 42));
+    reserveDarkPalette.setColor(QPalette::AlternateBase, QColor(66, 66, 66));
+    reserveDarkPalette.setColor(QPalette::ToolTipBase, Qt::white);
+    reserveDarkPalette.setColor(QPalette::ToolTipText, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::Text, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::Text, QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::Dark, QColor(35, 35, 35));
+    reserveDarkPalette.setColor(QPalette::Shadow, QColor(20, 20, 20));
+    reserveDarkPalette.setColor(QPalette::Button, QColor(53, 53, 53));
+    reserveDarkPalette.setColor(QPalette::ButtonText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::ButtonText,
+                                QColor(127, 127, 127));
+    reserveDarkPalette.setColor(QPalette::BrightText, Qt::red);
+    reserveDarkPalette.setColor(QPalette::Link, QColor(42, 130, 218));
+    reserveDarkPalette.setColor(QPalette::Highlight, QColor(42, 130, 218));
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::Highlight, QColor(80, 80, 80));
+    reserveDarkPalette.setColor(QPalette::HighlightedText, Qt::white);
+    reserveDarkPalette.setColor(QPalette::Disabled, QPalette::HighlightedText,
+                                QColor(127, 127, 127));
+#endif
+
+#ifdef APPLICATION_SERVER_URL_ENFORCE
+    _forceOverrideServerUrl = true;
+#endif
+#ifdef APPLICATION_SERVER_URL
+    _overrideServerUrl = QString::fromLatin1(APPLICATION_SERVER_URL);
 #endif
 }
 
@@ -386,20 +418,17 @@ QString Theme::conflictHelpUrl() const
 
 QString Theme::overrideServerUrl() const
 {
-#ifdef APPLICATION_SERVER_URL
-    return QString::fromLatin1(APPLICATION_SERVER_URL);
-#else
-    return QString();
-#endif
+    return _overrideServerUrl;
 }
 
 bool Theme::forceOverrideServerUrl() const
 {
-#ifdef APPLICATION_SERVER_URL_ENFORCE
-    return true;
-#else
-    return false;
-#endif
+    return _forceOverrideServerUrl;
+}
+
+bool Theme::startLoginFlowAutomatically() const
+{
+    return _startLoginFlowAutomatically;
 }
 
 bool Theme::enableStaplingOCSP() const
@@ -813,7 +842,8 @@ void Theme::replaceLinkColorStringBackgroundAware(QString &linkString)
 
 void Theme::replaceLinkColorString(QString &linkString, const QColor &newColor)
 {
-    linkString.replace(QRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)"), QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
+    static const QRegularExpression linkRegularExpression("(<a href|<a style='color:#([a-zA-Z0-9]{6});' href)");
+    linkString.replace(linkRegularExpression, QString::fromLatin1("<a style='color:%1;' href").arg(newColor.name()));
 }
 
 QIcon Theme::createColorAwareIcon(const QString &name, const QPalette &palette)
@@ -887,21 +917,6 @@ QColor Theme::defaultColor()
     return QColor{NEXTCLOUD_BACKGROUND_COLOR};
 }
 
-QColor Theme::errorBoxTextColor() const
-{
-    return QColor{"white"};
-}
-
-QColor Theme::errorBoxBackgroundColor() const
-{
-    return QColor{"red"};
-}
-
-QColor Theme::errorBoxBorderColor() const
-{ 
-    return QColor{"black"};
-}
-
 void Theme::connectToPaletteSignal()
 {
     if (!_paletteSignalsConnected) {
@@ -939,6 +954,29 @@ bool Theme::darkMode()
 #else
     return Theme::isDarkColor(QGuiApplication::palette().window().color());
 #endif
+}
+
+void Theme::setOverrideServerUrl(const QString &overrideServerUrl)
+{
+    if (_overrideServerUrl != overrideServerUrl) {
+        _overrideServerUrl = overrideServerUrl;
+        emit overrideServerUrlChanged();
+    }
+}
+void Theme::setForceOverrideServerUrl(bool forceOverride)
+{
+    if (_forceOverrideServerUrl != forceOverride) {
+        _forceOverrideServerUrl = forceOverride;
+        emit forceOverrideServerUrlChanged();
+    }
+}
+
+void Theme::setStartLoginFlowAutomatically(bool startLoginFlowAuto)
+{
+    if (_startLoginFlowAutomatically != startLoginFlowAuto) {
+        _startLoginFlowAutomatically = startLoginFlowAuto;
+        emit startLoginFlowAutomaticallyChanged();
+    }
 }
 
 } // end namespace client

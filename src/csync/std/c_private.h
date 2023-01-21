@@ -67,7 +67,7 @@
 #define getuid() 0
 #define geteuid() 0
 #elif defined(_WIN32)
-#define mode_t int
+typedef int mode_t;
 #else
 #include <fcntl.h>
 #endif

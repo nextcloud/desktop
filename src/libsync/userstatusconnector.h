@@ -76,6 +76,8 @@ public:
     Q_REQUIRED_RESULT OnlineStatus state() const;
     Q_REQUIRED_RESULT Optional<ClearAt> clearAt() const;
 
+    [[nodiscard]] QString clearAtDisplayString() const;
+
     void setId(const QString &id);
     void setMessage(const QString &message);
     void setState(OnlineStatus state);
@@ -123,15 +125,15 @@ public:
 
     virtual void clearMessage() = 0;
 
-    virtual UserStatus userStatus() const = 0;
+    [[nodiscard]] virtual UserStatus userStatus() const = 0;
 
 signals:
-    void userStatusFetched(const UserStatus &userStatus);
-    void predefinedStatusesFetched(const std::vector<UserStatus> &statuses);
+    void userStatusFetched(const OCC::UserStatus &userStatus);
+    void predefinedStatusesFetched(const QVector<OCC::UserStatus> &statuses);
     void userStatusSet();
     void serverUserStatusChanged();
     void messageCleared();
-    void error(Error error);
+    void error(OCC::UserStatusConnector::Error error);
 };
 }
 

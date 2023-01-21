@@ -41,6 +41,7 @@
 #include "syncresult.h"
 #include "ignorelisttablewidget.h"
 #include "wizard/owncloudwizard.h"
+#include "ui_mnemonicdialog.h"
 
 #include <cmath>
 
@@ -63,6 +64,9 @@
 namespace {
 constexpr auto propertyFolder = "folder";
 constexpr auto propertyPath = "path";
+constexpr auto e2eUiActionIdKey = "id";
+constexpr auto e2EeUiActionEnableEncryptionId = "enable_encryption";
+constexpr auto e2EeUiActionDisplayMnemonicId = "display_mnemonic";
 }
 
 namespace OCC {
@@ -85,16 +89,16 @@ void showEnableE2eeWithVirtualFilesWarningDialog(std::function<void(void)> onAcc
 {
     const auto messageBox = new QMessageBox;
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    messageBox->setText(AccountSettings::tr("End-to-End Encryption with Virtual Files"));
+    messageBox->setText(AccountSettings::tr("End-to-end Encryption with Virtual Files"));
     messageBox->setInformativeText(AccountSettings::tr("You seem to have the Virtual Files feature enabled on this folder. "
                                                        "At the moment, it is not possible to implicitly download virtual files that are "
-                                                       "End-to-End encrypted. To get the best experience with Virtual Files and "
-                                                       "End-to-End Encryption, make sure the encrypted folder is marked with "
+                                                       "end-to-end encrypted. To get the best experience with virtual files and "
+                                                       "end-to-end encryption, make sure the encrypted folder is marked with "
                                                        "\"Make always available locally\"."));
     messageBox->setIcon(QMessageBox::Warning);
     const auto dontEncryptButton = messageBox->addButton(QMessageBox::StandardButton::Cancel);
     Q_ASSERT(dontEncryptButton);
-    dontEncryptButton->setText(AccountSettings::tr("Don't encrypt folder"));
+    dontEncryptButton->setText(AccountSettings::tr("Do not encrypt folder"));
     const auto encryptButton = messageBox->addButton(QMessageBox::StandardButton::Ok);
     Q_ASSERT(encryptButton);
     encryptButton->setText(AccountSettings::tr("Encrypt folder"));
@@ -126,11 +130,11 @@ protected:
     {
         if (event->type() == QEvent::HoverMove) {
             Qt::CursorShape shape = Qt::ArrowCursor;
-            auto pos = folderList->mapFromGlobal(QCursor::pos());
-            auto index = folderList->indexAt(pos);
-            if (model->classify(index) == FolderStatusModel::RootFolder
-                && (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos)
-                    || FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
+            const auto pos = folderList->mapFromGlobal(QCursor::pos());
+            const auto index = folderList->indexAt(pos);
+            if (model->classify(index) == FolderStatusModel::RootFolder &&
+                (FolderStatusDelegate::errorsListRect(folderList->visualRect(index)).contains(pos) ||
+                    FolderStatusDelegate::optionsButtonRect(folderList->visualRect(index),folderList->layoutDirection()).contains(pos))) {
                 shape = Qt::PointingHandCursor;
             }
             folderList->setCursor(shape);
@@ -152,7 +156,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     _model = new FolderStatusModel;
     _model->setAccountState(_accountState);
     _model->setParent(this);
-    auto *delegate = new FolderStatusDelegate;
+    const auto delegate = new FolderStatusDelegate;
     delegate->setParent(this);
 
     // Connect styleChanged events to our widgets, so they can adapt (Dark-/Light-Mode switching)
@@ -168,7 +172,7 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
 #endif
     new ToolTipUpdater(_ui->_folderList);
 
-    auto mouseCursorChanger = new MouseCursorChanger(this);
+    const auto mouseCursorChanger = new MouseCursorChanger(this);
     mouseCursorChanger->folderList = _ui->_folderList;
     mouseCursorChanger->model = _model;
     _ui->_folderList->setMouseTracking(true);
@@ -223,20 +227,8 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
      _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));*/
 
     // Connect E2E stuff
-    connect(this, &AccountSettings::requestMnemonic, _accountState->account()->e2e(), &ClientSideEncryption::slotRequestMnemonic);
-    connect(_accountState->account()->e2e(), &ClientSideEncryption::showMnemonic, this, &AccountSettings::slotShowMnemonic);
-
-    connect(_accountState->account()->e2e(), &ClientSideEncryption::mnemonicGenerated, this, &AccountSettings::slotNewMnemonicGenerated);
-    if (_accountState->account()->e2e()->newMnemonicGenerated()) {
-        slotNewMnemonicGenerated();
-    } else {
-        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
-
-        auto *mnemonic = new QAction(tr("Display mnemonic"), this);
-        connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
-        _ui->encryptionMessage->addAction(mnemonic);
-        _ui->encryptionMessage->hide();
-    }
+    initializeE2eEncryption();
+    _ui->encryptionMessage->setCloseButtonVisible(false);
 
     _ui->connectLabel->setText(tr("No account configured."));
 
@@ -249,16 +241,38 @@ AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     customizeStyle();
 }
 
-void AccountSettings::slotNewMnemonicGenerated()
+void AccountSettings::slotE2eEncryptionMnemonicReady()
 {
-    _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+    auto *const actionDisplayMnemonic = addActionToEncryptionMessage(tr("Display mnemonic"), e2EeUiActionDisplayMnemonicId);
+    connect(actionDisplayMnemonic, &QAction::triggered, this, [this]() {
+        displayMnemonic(_accountState->account()->e2e()->_mnemonic);
+    });
 
-    auto *mnemonic = new QAction(tr("Enable encryption"), this);
-    connect(mnemonic, &QAction::triggered, this, &AccountSettings::requestMnemonic);
-    connect(mnemonic, &QAction::triggered, _ui->encryptionMessage, &KMessageWidget::hide);
-
-    _ui->encryptionMessage->addAction(mnemonic);
+    _ui->encryptionMessage->setMessageType(KMessageWidget::Positive);
+    _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled for this account"));
+    _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/lock.svg")));
     _ui->encryptionMessage->show();
+}
+
+void AccountSettings::slotE2eEncryptionGenerateKeys()
+{
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotE2eEncryptionInitializationFinished);
+    _accountState->account()->setE2eEncryptionKeysGenerationAllowed(true);
+    _accountState->account()->setAskUserForMnemonic(true);
+    _accountState->account()->e2e()->initialize(_accountState->account());
+}
+
+void AccountSettings::slotE2eEncryptionInitializationFinished(bool isNewMnemonicGenerated)
+{
+    disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotE2eEncryptionInitializationFinished);
+    if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+        removeActionFromEncryptionMessage(e2EeUiActionEnableEncryptionId);
+        slotE2eEncryptionMnemonicReady();
+        if (isNewMnemonicGenerated) {
+            displayMnemonic(_accountState->account()->e2e()->_mnemonic);
+        }
+    }
+    _accountState->account()->setAskUserForMnemonic(false);
 }
 
 void AccountSettings::slotEncryptFolderFinished(int status)
@@ -272,7 +286,7 @@ void AccountSettings::slotEncryptFolderFinished(int status)
 
     const auto folder = job->property(propertyFolder).value<Folder *>();
     Q_ASSERT(folder);
-    const auto path = job->property(propertyPath).value<QString>();
+    const auto path = job->property(propertyPath).toString();
     const auto index = _model->indexForPath(folder, path);
     Q_ASSERT(index.isValid());
     _model->resetAndFetch(index.parent());
@@ -282,9 +296,10 @@ void AccountSettings::slotEncryptFolderFinished(int status)
 
 QString AccountSettings::selectedFolderAlias() const
 {
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid())
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid()) {
         return "";
+    }
     return _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
 }
 
@@ -302,22 +317,39 @@ void AccountSettings::doExpand()
 {
     // Make sure at least the root items are expanded
     for (int i = 0; i < _model->rowCount(); ++i) {
-        auto idx = _model->index(i);
-        if (!_ui->_folderList->isExpanded(idx))
+        const auto idx = _model->index(i);
+        if (!_ui->_folderList->isExpanded(idx)) {
             _ui->_folderList->setExpanded(idx, true);
+        }
     }
 }
 
-void AccountSettings::slotShowMnemonic(const QString &mnemonic)
-{
-    AccountManager::instance()->displayMnemonic(mnemonic);
-}
-
-bool AccountSettings::canEncryptOrDecrypt (const FolderStatusModel::SubFolderInfo* info) {
+bool AccountSettings::canEncryptOrDecrypt(const FolderStatusModel::SubFolderInfo* info) {
     if (info->_folder->syncResult().status() != SyncResult::Status::Success) {
         QMessageBox msgBox;
         msgBox.setText("Please wait for the folder to sync before trying to encrypt it.");
         msgBox.exec();
+        return false;
+    }
+
+    if (!_accountState->account()->e2e() || _accountState->account()->e2e()->_mnemonic.isEmpty()) {
+        QMessageBox msgBox;
+        msgBox.setText(tr("End-to-end encryption is not configured on this device. "
+                          "Once it is configured, you will be able to encrypt this folder.\n"
+                          "Would you like to set up end-to-end encryption?"));
+        msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msgBox.setDefaultButton(QMessageBox::Ok);
+        const auto ret = msgBox.exec();
+
+        switch (ret) {
+        case QMessageBox::Ok:
+            slotE2eEncryptionGenerateKeys();
+            break;
+        case QMessageBox::Cancel:
+        default:
+            break;
+        }
+
         return false;
     }
 
@@ -366,8 +398,7 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
         job->start();
     };
 
-    if (folder->virtualFilesEnabled()
-        && folder->vfs().mode() == Vfs::WindowsCfApi) {
+    if (folder->virtualFilesEnabled() && folder->vfs().mode() == Vfs::WindowsCfApi) {
         showEnableE2eeWithVirtualFilesWarningDialog(encryptFolder);
         return;
     }
@@ -376,10 +407,11 @@ void AccountSettings::slotMarkSubfolderEncrypted(FolderStatusModel::SubFolderInf
 
 void AccountSettings::slotEditCurrentIgnoredFiles()
 {
-    Folder *f = FolderMan::instance()->folder(selectedFolderAlias());
-    if (!f)
+    const auto folder = FolderMan::instance()->folder(selectedFolderAlias());
+    if (!folder) {
         return;
-    openIgnoredFilesDialog(f->path());
+    }
+    openIgnoredFilesDialog(folder->path());
 }
 
 void AccountSettings::slotOpenMakeFolderDialog()
@@ -397,7 +429,7 @@ void AccountSettings::slotOpenMakeFolderDialog()
         return;
     }
 
-    const QString fileName = [this, &selected, &classification] {
+    const auto fileName = [this, &selected, &classification] {
         QString result;
         if (classification == FolderStatusModel::RootFolder) {
             const auto alias = _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
@@ -416,7 +448,7 @@ void AccountSettings::slotOpenMakeFolderDialog()
     }();
 
     if (!fileName.isEmpty()) {
-        const auto folderCreationDialog = new FolderCreationDialog(fileName, this); 
+        const auto folderCreationDialog = new FolderCreationDialog(fileName, this);
         folderCreationDialog->setAttribute(Qt::WA_DeleteOnClose);
         folderCreationDialog->open();
     }
@@ -424,10 +456,11 @@ void AccountSettings::slotOpenMakeFolderDialog()
 
 void AccountSettings::slotEditCurrentLocalIgnoredFiles()
 {
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder) {
         return;
-    QString fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
+    }
+    const auto fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
     openIgnoredFilesDialog(fileName);
 }
 
@@ -435,25 +468,25 @@ void AccountSettings::openIgnoredFilesDialog(const QString & absFolderPath)
 {
     Q_ASSERT(QFileInfo(absFolderPath).isAbsolute());
 
-    const QString ignoreFile = absFolderPath + ".sync-exclude.lst";
-    auto layout = new QVBoxLayout();
-    auto ignoreListWidget = new IgnoreListTableWidget(this);
+    const QString ignoreFile{absFolderPath + ".sync-exclude.lst"};
+    const auto layout = new QVBoxLayout();
+    const auto ignoreListWidget = new IgnoreListTableWidget(this);
     ignoreListWidget->readIgnoreFile(ignoreFile);
     layout->addWidget(ignoreListWidget);
 
-    auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    const auto buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
     layout->addWidget(buttonBox);
 
-    auto dialog = new QDialog();
+    const auto dialog = new QDialog();
     dialog->setLayout(layout);
 
     connect(buttonBox, &QDialogButtonBox::clicked, [=](QAbstractButton * button) {
-        if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole)
+        if (buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
             ignoreListWidget->slotWriteIgnoreFile(ignoreFile);
+        }
         dialog->close();
     });
-    connect(buttonBox, &QDialogButtonBox::rejected,
-            dialog,    &QDialog::close);
+    connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::close);
 
     dialog->open();
 }
@@ -466,18 +499,18 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
     auto ac = menu.addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentLocalSubFolder);
 
-    auto fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
+    const auto fileName = _model->data(index, FolderStatusDelegate::FolderPathRole).toString();
     if (!QFile::exists(fileName)) {
         ac->setEnabled(false);
     }
-    auto info   = _model->infoForIndex(index);
-    auto acc = _accountState->account();
+    const auto info = _model->infoForIndex(index);
+    const auto acc = _accountState->account();
 
     if (acc->capabilities().clientSideEncryptionAvailable()) {
         // Verify if the folder is empty before attempting to encrypt.
 
-        bool isEncrypted = info->_isEncrypted;
-        bool isParentEncrypted = _model->isAnyAncestorEncrypted(index);
+        const auto isEncrypted = info->_isEncrypted;
+        const auto isParentEncrypted = _model->isAnyAncestorEncrypted(index);
 
         if (!isEncrypted && !isParentEncrypted) {
             ac = menu.addAction(tr("Encrypt"));
@@ -507,7 +540,9 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
         // It might be an E2EE mangled path, so let's try to demangle it
         const auto journal = folder->journalDb();
         SyncJournalFileRecord rec;
-        journal->getFileRecordByE2eMangledName(remotePath, &rec);
+        if (!journal->getFileRecordByE2eMangledName(remotePath, &rec)) {
+            qCWarning(lcFolderStatus) << "Could not get file record by E2E Mangled Name from local DB" << remotePath;
+        }
 
         const auto path = rec.isValid() ? rec._path : remotePath;
 
@@ -523,8 +558,8 @@ void AccountSettings::slotSubfolderContextMenuRequested(const QModelIndex& index
 
 void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 {
-    QTreeView *tv = _ui->_folderList;
-    QModelIndex index = tv->indexAt(pos);
+    const auto treeView = _ui->_folderList;
+    const auto index = treeView->indexAt(pos);
     if (!index.isValid()) {
         return;
     }
@@ -538,20 +573,22 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         return;
     }
 
-    tv->setCurrentIndex(index);
-    QString alias = _model->data(index, FolderStatusDelegate::FolderAliasRole).toString();
-    bool folderPaused = _model->data(index, FolderStatusDelegate::FolderSyncPaused).toBool();
-    bool folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
-    auto folderMan = FolderMan::instance();
-    QPointer<Folder> folder = folderMan->folder(alias);
-    if (!folder)
-        return;
+    treeView->setCurrentIndex(index);
+    const auto alias = _model->data(index, FolderStatusDelegate::FolderAliasRole).toString();
+    const auto folderPaused = _model->data(index, FolderStatusDelegate::FolderSyncPaused).toBool();
+    const auto folderConnected = _model->data(index, FolderStatusDelegate::FolderAccountConnected).toBool();
+    const auto folderMan = FolderMan::instance();
+    const auto folder = folderMan->folder(alias);
 
-    auto *menu = new QMenu(tv);
+    if (!folder) {
+        return;
+    }
+
+    const auto menu = new QMenu(treeView);
 
     menu->setAttribute(Qt::WA_DeleteOnClose);
 
-    QAction *ac = menu->addAction(tr("Open folder"));
+    auto ac = menu->addAction(tr("Open folder"));
     connect(ac, &QAction::triggered, this, &AccountSettings::slotOpenCurrentFolder);
 
     ac = menu->addAction(tr("Edit Ignored Files"));
@@ -597,8 +634,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         ac->setDisabled(Theme::instance()->enforceVirtualFilesSyncFolder());
     }
 
-    if (Theme::instance()->showVirtualFilesOption()
-        && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
+    if (Theme::instance()->showVirtualFilesOption() && !folder->virtualFilesEnabled() && Vfs::checkAvailability(folder->path())) {
         const auto mode = bestAvailableVfsMode();
         if (mode == Vfs::WindowsCfApi || ConfigFile().showExperimentalOptions()) {
             ac = menu->addAction(tr("Enable virtual file support %1 …").arg(mode == Vfs::WindowsCfApi ? QString() : tr("(experimental)")));
@@ -610,22 +646,23 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
 
-    menu->popup(tv->mapToGlobal(pos));
+    menu->popup(treeView->mapToGlobal(pos));
 }
 
 void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
     if (indx.data(FolderStatusDelegate::AddButton).toBool()) {
         // "Add Folder Sync Connection"
-        QTreeView *tv = _ui->_folderList;
-        auto pos = tv->mapFromGlobal(QCursor::pos());
+        const auto treeView = _ui->_folderList;
+        const auto pos = treeView->mapFromGlobal(QCursor::pos());
         QStyleOptionViewItem opt;
-        opt.initFrom(tv);
-        auto btnRect = tv->visualRect(indx);
-        auto btnSize = tv->itemDelegate(indx)->sizeHint(opt, indx);
-        auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
-        if (!actual.contains(pos))
+        opt.initFrom(treeView);
+        const auto btnRect = treeView->visualRect(indx);
+        const auto btnSize = treeView->itemDelegate(indx)->sizeHint(opt, indx);
+        const auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
+        if (!actual.contains(pos)) {
             return;
+        }
 
         if (indx.flags() & Qt::ItemIsEnabled) {
             slotAddFolder();
@@ -639,20 +676,20 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
     }
     if (_model->classify(indx) == FolderStatusModel::RootFolder) {
         // tries to find if we clicked on the '...' button.
-        QTreeView *tv = _ui->_folderList;
-        auto pos = tv->mapFromGlobal(QCursor::pos());
-        if (FolderStatusDelegate::optionsButtonRect(tv->visualRect(indx), layoutDirection()).contains(pos)) {
+        const auto treeView = _ui->_folderList;
+        const auto pos = treeView->mapFromGlobal(QCursor::pos());
+        if (FolderStatusDelegate::optionsButtonRect(treeView->visualRect(indx), layoutDirection()).contains(pos)) {
             slotCustomContextMenuRequested(pos);
             return;
         }
-        if (FolderStatusDelegate::errorsListRect(tv->visualRect(indx)).contains(pos)) {
+        if (FolderStatusDelegate::errorsListRect(treeView->visualRect(indx)).contains(pos)) {
             emit showIssuesList(_accountState);
             return;
         }
 
         // Expand root items on single click
         if (_accountState && _accountState->state() == AccountState::Connected) {
-            bool expanded = !(_ui->_folderList->isExpanded(indx));
+            const auto expanded = !(_ui->_folderList->isExpanded(indx));
             _ui->_folderList->setExpanded(indx, expanded);
         }
     }
@@ -660,10 +697,10 @@ void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 
 void AccountSettings::slotAddFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
+    const auto folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(false); // do not start more syncs.
 
-    auto *folderWizard = new FolderWizard(_accountState->account(), this);
+    const auto folderWizard = new FolderWizard(_accountState->account(), this);
     folderWizard->setAttribute(Qt::WA_DeleteOnClose);
 
     connect(folderWizard, &QDialog::accepted, this, &AccountSettings::slotFolderWizardAccepted);
@@ -674,8 +711,8 @@ void AccountSettings::slotAddFolder()
 
 void AccountSettings::slotFolderWizardAccepted()
 {
-    auto *folderWizard = qobject_cast<FolderWizard *>(sender());
-    FolderMan *folderMan = FolderMan::instance();
+    const auto folderWizard = qobject_cast<FolderWizard *>(sender());
+    const auto folderMan = FolderMan::instance();
 
     qCInfo(lcAccountSettings) << "Folder wizard completed";
 
@@ -710,22 +747,24 @@ void AccountSettings::slotFolderWizardAccepted()
      */
     definition.ignoreHiddenFiles = folderMan->ignoreHiddenFiles();
 
-    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane())
+    if (folderMan->navigationPaneHelper().showInExplorerNavigationPane()) {
         definition.navigationPaneClsid = QUuid::createUuid();
+    }
 
-    auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
+    const auto selectiveSyncBlackList = folderWizard->property("selectiveSyncBlackList").toStringList();
 
     folderMan->setSyncEnabled(true);
 
-    Folder *f = folderMan->addFolder(_accountState, definition);
-    if (f) {
-        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool())
-            f->setRootPinState(PinState::OnlineOnly);
+    const auto folder = folderMan->addFolder(_accountState, definition);
+    if (folder) {
+        if (definition.virtualFilesMode != Vfs::Off && folderWizard->property("useVirtualFiles").toBool()) {
+            folder->setRootPinState(PinState::OnlineOnly);
+        }
 
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, selectiveSyncBlackList);
 
         // The user already accepted the selective sync dialog. everything is in the white list
-        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
+        folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList,
             QStringList() << QLatin1String("/"));
         folderMan->scheduleAllFolders();
         emit folderChanged();
@@ -735,19 +774,19 @@ void AccountSettings::slotFolderWizardAccepted()
 void AccountSettings::slotFolderWizardRejected()
 {
     qCInfo(lcAccountSettings) << "Folder wizard cancelled";
-    FolderMan *folderMan = FolderMan::instance();
+    const auto folderMan = FolderMan::instance();
     folderMan->setSyncEnabled(true);
 }
 
 void AccountSettings::slotRemoveCurrentFolder()
 {
-    auto folder = FolderMan::instance()->folder(selectedFolderAlias());
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
+    const auto folder = FolderMan::instance()->folder(selectedFolderAlias());
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
     if (selected.isValid() && folder) {
-        int row = selected.row();
+        const auto row = selected.row();
 
         qCInfo(lcAccountSettings) << "Remove Folder alias " << folder->alias();
-        QString shortGuiLocalPath = folder->shortGuiLocalPath();
+        const auto shortGuiLocalPath = folder->shortGuiLocalPath();
 
         auto messageBox = new QMessageBox(QMessageBox::Question,
             tr("Confirm Folder Sync Connection Removal"),
@@ -757,8 +796,7 @@ void AccountSettings::slotRemoveCurrentFolder()
             QMessageBox::NoButton,
             this);
         messageBox->setAttribute(Qt::WA_DeleteOnClose);
-        QPushButton *yesButton =
-            messageBox->addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
+        const auto yesButton = messageBox->addButton(tr("Remove Folder Sync Connection"), QMessageBox::YesRole);
         messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
         connect(messageBox, &QMessageBox::finished, this, [messageBox, yesButton, folder, row, this]{
             if (messageBox->clickedButton() == yesButton) {
@@ -776,7 +814,7 @@ void AccountSettings::slotRemoveCurrentFolder()
 
 void AccountSettings::slotOpenCurrentFolder()
 {
-    auto alias = selectedFolderAlias();
+    const auto alias = selectedFolderAlias();
     if (!alias.isEmpty()) {
         emit openFolderAlias(alias);
     }
@@ -784,39 +822,44 @@ void AccountSettings::slotOpenCurrentFolder()
 
 void AccountSettings::slotOpenCurrentLocalSubFolder()
 {
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder)
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
+    if (!selected.isValid() || _model->classify(selected) != FolderStatusModel::SubFolder) {
         return;
-    QString fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
-    QUrl url = QUrl::fromLocalFile(fileName);
+    }
+    const auto fileName = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
+    const auto url = QUrl::fromLocalFile(fileName);
     QDesktopServices::openUrl(url);
 }
 
 void AccountSettings::slotEnableVfsCurrentFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
-    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || !folder)
+    const auto folderMan = FolderMan::instance();
+    const auto folder = folderMan->folder(selectedFolderAlias());
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
+
+    if (!selected.isValid() || !folder) {
         return;
+    }
 
     OwncloudWizard::askExperimentalVirtualFilesFeature(this, [folder, this](bool enable) {
-        if (!enable || !folder)
+        if (!enable || !folder) {
             return;
+        }
 
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
         FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
 
         // It is unsafe to switch on vfs while a sync is running - wait if necessary.
-        auto connection = std::make_shared<QMetaObject::Connection>();
-        auto switchVfsOn = [folder, connection, this]() {
-            if (*connection)
+        const auto connection = std::make_shared<QMetaObject::Connection>();
+        const auto switchVfsOn = [folder, connection, this]() {
+            if (*connection) {
                 QObject::disconnect(*connection);
+            }
 
             qCInfo(lcAccountSettings) << "Enabling vfs support for folder" << folder->path();
 
             // Wipe selective sync blacklist
-            bool ok = false;
+            auto ok = false;
             const auto oldBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
             folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {});
 
@@ -854,13 +897,15 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 
 void AccountSettings::slotDisableVfsCurrentFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
-    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || !folder)
-        return;
+    const auto folderMan = FolderMan::instance();
+    const auto folder = folderMan->folder(selectedFolderAlias());
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
 
-    auto msgBox = new QMessageBox(
+    if (!selected.isValid() || !folder) {
+        return;
+    }
+
+    const auto msgBox = new QMessageBox(
         QMessageBox::Question,
         tr("Disable virtual file support?"),
         tr("This action will disable virtual file support. As a consequence contents of folders that "
@@ -870,21 +915,23 @@ void AccountSettings::slotDisableVfsCurrentFolder()
            "will become available again."
            "\n\n"
            "This action will abort any currently running synchronization."));
-    auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
+    const auto acceptButton = msgBox->addButton(tr("Disable support"), QMessageBox::AcceptRole);
     msgBox->addButton(tr("Cancel"), QMessageBox::RejectRole);
     connect(msgBox, &QMessageBox::finished, msgBox, [this, msgBox, folder, acceptButton] {
         msgBox->deleteLater();
-        if (msgBox->clickedButton() != acceptButton|| !folder)
+        if (msgBox->clickedButton() != acceptButton|| !folder) {
             return;
+        }
 
         // we might need to add or remove the panel entry as cfapi brings this feature out of the box
         FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
 
         // It is unsafe to switch off vfs while a sync is running - wait if necessary.
-        auto connection = std::make_shared<QMetaObject::Connection>();
-        auto switchVfsOff = [folder, connection, this]() {
-            if (*connection)
+        const auto connection = std::make_shared<QMetaObject::Connection>();
+        const auto switchVfsOff = [folder, connection, this]() {
+            if (*connection) {
                 QObject::disconnect(*connection);
+            }
 
             qCInfo(lcAccountSettings) << "Disabling vfs support for folder" << folder->path();
 
@@ -920,11 +967,13 @@ void AccountSettings::slotSetCurrentFolderAvailability(PinState state)
 {
     ASSERT(state == PinState::OnlineOnly || state == PinState::AlwaysLocal);
 
-    FolderMan *folderMan = FolderMan::instance();
-    QPointer<Folder> folder = folderMan->folder(selectedFolderAlias());
-    QModelIndex selected = _ui->_folderList->selectionModel()->currentIndex();
-    if (!selected.isValid() || !folder)
+    const auto folderMan = FolderMan::instance();
+    const auto folder = folderMan->folder(selectedFolderAlias());
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
+
+    if (!selected.isValid() || !folder) {
         return;
+    }
 
     // similar to socket api: sets pin state recursively and sync
     folder->setRootPinState(state);
@@ -946,24 +995,53 @@ void AccountSettings::slotSetSubFolderAvailability(Folder *folder, const QString
     folder->scheduleThisFolderSoon();
 }
 
+void AccountSettings::displayMnemonic(const QString &mnemonic)
+{
+    QDialog widget;
+    Ui_Dialog ui;
+    ui.setupUi(&widget);
+    widget.setWindowTitle(tr("End-to-end encryption mnemonic"));
+    ui.label->setText(
+        tr("To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. "
+           "Please note these down and keep them safe. "
+           "They will be needed to add other devices to your account (like your mobile phone or laptop)."));
+    QFont monoFont(QStringLiteral("Monospace"));
+    monoFont.setStyleHint(QFont::TypeWriter);
+    ui.lineEdit->setFont(monoFont);
+    ui.lineEdit->setText(mnemonic);
+    ui.lineEdit->setReadOnly(true);
+
+    ui.lineEdit->setStyleSheet(QStringLiteral("QLineEdit{ color: black; background: lightgrey; border-style: inset;}"));
+
+    ui.lineEdit->focusWidget();
+    ui.lineEdit->selectAll();
+    ui.lineEdit->setAlignment(Qt::AlignCenter);
+
+    const QFont font(QStringLiteral(""), 0);
+    QFontMetrics fm(font);
+    ui.lineEdit->setFixedWidth(fm.horizontalAdvance(mnemonic));
+    widget.resize(widget.sizeHint());
+    widget.exec();
+}
+
 void AccountSettings::showConnectionLabel(const QString &message, QStringList errors)
 {
-    const QString errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
-                                           "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
-                                           "border-radius:5px;");
+    const auto errStyle = QLatin1String("color:#ffffff; background-color:#bb4d4d;padding:5px;"
+                                        "border-width: 1px; border-style: solid; border-color: #aaaaaa;"
+                                        "border-radius:5px;");
     if (errors.isEmpty()) {
-        QString msg = message;
+        auto msg = message;
         Theme::replaceLinkColorStringBackgroundAware(msg);
         _ui->connectLabel->setText(msg);
-        _ui->connectLabel->setToolTip(QString());
-        _ui->connectLabel->setStyleSheet(QString());
+        _ui->connectLabel->setToolTip({});
+        _ui->connectLabel->setStyleSheet({});
     } else {
         errors.prepend(message);
-        QString msg = errors.join(QLatin1String("\n"));
+        auto msg = errors.join(QLatin1String("\n"));
         qCDebug(lcAccountSettings) << msg;
         Theme::replaceLinkColorString(msg, QColor("#c1c8e6"));
         _ui->connectLabel->setText(msg);
-        _ui->connectLabel->setToolTip(QString());
+        _ui->connectLabel->setToolTip({});
         _ui->connectLabel->setStyleSheet(errStyle);
     }
     _ui->accountStatus->setVisible(!message.isEmpty());
@@ -971,24 +1049,24 @@ void AccountSettings::showConnectionLabel(const QString &message, QStringList er
 
 void AccountSettings::slotEnableCurrentFolder(bool terminate)
 {
-    auto alias = selectedFolderAlias();
+    const auto alias = selectedFolderAlias();
 
     if (!alias.isEmpty()) {
-        FolderMan *folderMan = FolderMan::instance();
+        const auto folderMan = FolderMan::instance();
 
         qCInfo(lcAccountSettings) << "Application: enable folder with alias " << alias;
-        bool currentlyPaused = false;
+        auto currentlyPaused = false;
 
         // this sets the folder status to disabled but does not interrupt it.
-        Folder *f = folderMan->folder(alias);
-        if (!f) {
+        const auto folder = folderMan->folder(alias);
+        if (!folder) {
             return;
         }
-        currentlyPaused = f->syncPaused();
+        currentlyPaused = folder->syncPaused();
         if (!currentlyPaused && !terminate) {
             // check if a sync is still running and if so, ask if we should terminate.
-            if (f->isBusy()) { // its still running
-                auto msgbox = new QMessageBox(QMessageBox::Question, tr("Sync Running"),
+            if (folder->isBusy()) { // its still running
+                const auto msgbox = new QMessageBox(QMessageBox::Question, tr("Sync Running"),
                     tr("The syncing operation is running.<br/>Do you want to terminate it?"),
                     QMessageBox::Yes | QMessageBox::No, this);
                 msgbox->setAttribute(Qt::WA_DeleteOnClose);
@@ -1003,22 +1081,23 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
 
         // message box can return at any time while the thread keeps running,
         // so better check again after the user has responded.
-        if (f->isBusy() && terminate) {
-            f->slotTerminateSync();
+        if (folder->isBusy() && terminate) {
+            folder->slotTerminateSync();
         }
-        f->setSyncPaused(!currentlyPaused);
+        folder->setSyncPaused(!currentlyPaused);
 
         // keep state for the icon setting.
-        if (currentlyPaused)
+        if (currentlyPaused) {
             _wasDisabledBefore = true;
+        }
 
-        _model->slotUpdateFolderState(f);
+        _model->slotUpdateFolderState(folder);
     }
 }
 
 void AccountSettings::slotScheduleCurrentFolder()
 {
-    FolderMan *folderMan = FolderMan::instance();
+    const auto folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
         folderMan->scheduleFolder(folder);
     }
@@ -1026,7 +1105,7 @@ void AccountSettings::slotScheduleCurrentFolder()
 
 void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
 {
-    FolderMan *folderMan = FolderMan::instance();
+    const auto folderMan = FolderMan::instance();
     if (auto folder = folderMan->folder(selectedFolderAlias())) {
         folder->slotWipeErrorBlacklist();
         folder->journalDb()->forceRemoteDiscoveryNextSync();
@@ -1037,20 +1116,8 @@ void AccountSettings::slotScheduleCurrentFolderForceRemoteDiscovery()
 void AccountSettings::slotForceSyncCurrentFolder()
 {
     FolderMan *folderMan = FolderMan::instance();
-    if (auto selectedFolder = folderMan->folder(selectedFolderAlias())) {
-        // Terminate and reschedule any running sync
-        for (auto f : folderMan->map()) {
-            if (f->isSyncRunning()) {
-                f->slotTerminateSync();
-                folderMan->scheduleFolder(f);
-            }
-        }
-
-        selectedFolder->slotWipeErrorBlacklist(); // issue #6757
-
-        // Insert the selected folder at the front of the queue
-        folderMan->scheduleFolderNext(selectedFolder);
-    }
+    auto selectedFolder = folderMan->folder(selectedFolderAlias());
+    folderMan->forceSyncForFolder(selectedFolder);
 }
 
 void AccountSettings::slotOpenOC()
@@ -1066,25 +1133,25 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
         _ui->quotaProgressBar->setVisible(true);
         _ui->quotaProgressBar->setEnabled(true);
         // workaround the label only accepting ints (which may be only 32 bit wide)
-        const double percent = used / (double)total * 100;
-        const int percentInt = qMin(qRound(percent), 100);
+        const auto percent = used / (double)total * 100;
+        const auto percentInt = qMin(qRound(percent), 100);
         _ui->quotaProgressBar->setValue(percentInt);
-        QString usedStr = Utility::octetsToString(used);
-        QString totalStr = Utility::octetsToString(total);
-        QString percentStr = Utility::compactFormatDouble(percent, 1);
-        QString toolTip = tr("%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.").arg(usedStr, totalStr, percentStr);
+        const auto usedStr = Utility::octetsToString(used);
+        const auto totalStr = Utility::octetsToString(total);
+        const auto percentStr = Utility::compactFormatDouble(percent, 1);
+        const auto toolTip = tr("%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.").arg(usedStr, totalStr, percentStr);
         _ui->quotaInfoLabel->setText(tr("%1 of %2 in use").arg(usedStr, totalStr));
         _ui->quotaInfoLabel->setToolTip(toolTip);
         _ui->quotaProgressBar->setToolTip(toolTip);
     } else {
         _ui->quotaProgressBar->setVisible(false);
-        _ui->quotaInfoLabel->setToolTip(QString());
+        _ui->quotaInfoLabel->setToolTip({});
 
         /* -1 means not computed; -2 means unknown; -3 means unlimited  (#owncloud/client/issues/3940)*/
         if (total == 0 || total == -1) {
             _ui->quotaInfoLabel->setText(tr("Currently there is no storage usage information available."));
         } else {
-            QString usedStr = Utility::octetsToString(used);
+            const auto usedStr = Utility::octetsToString(used);
             _ui->quotaInfoLabel->setText(tr("%1 in use").arg(usedStr));
         }
     }
@@ -1092,23 +1159,23 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 
 void AccountSettings::slotAccountStateChanged()
 {
-    const AccountState::State state = _accountState ? _accountState->state() : AccountState::Disconnected;
+    const auto state = _accountState ? _accountState->state() : AccountState::Disconnected;
     if (state != AccountState::Disconnected) {
         _ui->sslButton->updateAccountState(_accountState);
-        AccountPtr account = _accountState->account();
-        QUrl safeUrl(account->url());
-        safeUrl.setPassword(QString()); // Remove the password from the URL to avoid showing it in the UI
+        const auto account = _accountState->account();
+        auto safeUrl = account->url();
+        safeUrl.setPassword({}); // Remove the password from the URL to avoid showing it in the UI
         const auto folders = FolderMan::instance()->map().values();
-        for (Folder *folder : folders) {
+        for (const auto folder : folders) {
             _model->slotUpdateFolderState(folder);
         }
 
-        const QString server = QString::fromLatin1("<a href=\"%1\">%2</a>")
-                                   .arg(Utility::escape(account->url().toString()),
-                                       Utility::escape(safeUrl.toString()));
-        QString serverWithUser = server;
-        if (AbstractCredentials *cred = account->credentials()) {
-            QString user = account->davDisplayName();
+        const auto server = QString::fromLatin1("<a href=\"%1\">%2</a>")
+                                .arg(Utility::escape(account->url().toString()),
+                                    Utility::escape(safeUrl.toString()));
+        auto serverWithUser = server;
+        if (const auto cred = account->credentials()) {
+            auto user = account->davDisplayName();
             if (user.isEmpty()) {
                 user = cred->user();
             }
@@ -1135,7 +1202,7 @@ void AccountSettings::slotAccountStateChanged()
             break;
         case AccountState::AskingCredentials: {
             QUrl url;
-            if (auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
+            if (const auto cred = qobject_cast<HttpCredentialsGui *>(account->credentials())) {
                 connect(cred, &HttpCredentialsGui::authorisationLinkChanged,
                     this, &AccountSettings::slotAccountStateChanged, Qt::UniqueConnection);
                 url = cred->authorisationLink();
@@ -1175,10 +1242,10 @@ void AccountSettings::slotAccountStateChanged()
 
     if (state != AccountState::Connected) {
         /* check if there are expanded root items, if so, close them */
-        int i = 0;
-        for (i = 0; i < _model->rowCount(); ++i) {
-            if (_ui->_folderList->isExpanded(_model->index(i)))
+        for (auto i = 0; i < _model->rowCount(); ++i) {
+            if (_ui->_folderList->isExpanded(_model->index(i))) {
                 _ui->_folderList->setExpanded(_model->index(i), false);
+            }
         }
     } else if (_model->isDirty()) {
         // If we connect and have pending changes, show the list.
@@ -1207,21 +1274,22 @@ void AccountSettings::slotLinkActivated(const QString &link)
 {
     // Parse folder alias and filename from the link, calculate the index
     // and select it if it exists.
-    const QStringList li = link.split(QLatin1String("?folder="));
+    const auto li = link.split(QLatin1String("?folder="));
     if (li.count() > 1) {
-        QString myFolder = li[0];
-        const QString alias = li[1];
-        if (myFolder.endsWith(QLatin1Char('/')))
+        auto myFolder = li[0];
+        const auto alias = li[1];
+        if (myFolder.endsWith(QLatin1Char('/'))) {
             myFolder.chop(1);
+        }
 
         // Make sure the folder itself is expanded
-        Folder *f = FolderMan::instance()->folder(alias);
-        QModelIndex folderIndx = _model->indexForPath(f, QString());
+        const auto folder = FolderMan::instance()->folder(alias);
+        const auto folderIndx = _model->indexForPath(folder, {});
         if (!_ui->_folderList->isExpanded(folderIndx)) {
             _ui->_folderList->setExpanded(folderIndx, true);
         }
 
-        QModelIndex indx = _model->indexForPath(f, myFolder);
+        const auto indx = _model->indexForPath(folder, myFolder);
         if (indx.isValid()) {
             // make sure all the parents are expanded
             for (auto i = indx.parent(); i.isValid(); i = i.parent()) {
@@ -1265,7 +1333,7 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
         return;
     }
 
-    const bool showWarning = _model->isDirty() && _accountState->isConnected() && info->_checked == Qt::Unchecked;
+    const auto showWarning = _model->isDirty() && _accountState->isConnected() && info->_checked == Qt::Unchecked;
 
     // FIXME: the model is not precise enough to handle extra cases
     // e.g. the user clicked on the same checkbox 2x without applying the change in between.
@@ -1274,8 +1342,8 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
         _ui->selectiveSyncLabel->show();
     }
 
-    const bool shouldBeVisible = _model->isDirty();
-    const bool wasVisible = _ui->selectiveSyncStatus->isVisible();
+    const auto shouldBeVisible = _model->isDirty();
+    const auto wasVisible = _ui->selectiveSyncStatus->isVisible();
     if (shouldBeVisible) {
         _ui->selectiveSyncStatus->setVisible(true);
     }
@@ -1302,18 +1370,82 @@ void AccountSettings::slotSelectiveSyncChanged(const QModelIndex &topLeft,
     }
 }
 
+void AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync()
+{
+    if (_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+        return;
+    }
+
+    disconnect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
+
+    for (const auto folder : FolderMan::instance()->map()) {
+        if (folder->accountState() != _accountState) {
+            continue;
+        }
+        bool ok = false;
+        const auto foldersToRemoveFromBlacklist = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, &ok);
+        if (foldersToRemoveFromBlacklist.isEmpty()) {
+            continue;
+        }
+        auto blackList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, &ok);
+        const auto blackListSize = blackList.size();
+        if (blackListSize == 0) {
+            continue;
+        }
+        for (const auto &pathToRemoveFromBlackList : foldersToRemoveFromBlacklist) {
+            blackList.removeAll(pathToRemoveFromBlackList);
+        }
+        if (blackList.size() != blackListSize) {
+            if (folder->isSyncRunning()) {
+                folderTerminateSyncAndUpdateBlackList(blackList, folder, foldersToRemoveFromBlacklist);
+                return;
+            }
+            updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
+        }
+    }
+}
+
+void AccountSettings::updateBlackListAndScheduleFolderSync(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist) const
+{
+    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, blackList);
+    folder->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncE2eFoldersToRemoveFromBlacklist, {});
+    for (const auto &pathToRemoteDiscover : foldersToRemoveFromBlacklist) {
+        folder->journalDb()->schedulePathForRemoteDiscovery(pathToRemoteDiscover);
+    }
+    FolderMan::instance()->scheduleFolder(folder);
+}
+
+void AccountSettings::folderTerminateSyncAndUpdateBlackList(const QStringList &blackList, OCC::Folder *folder, const QStringList &foldersToRemoveFromBlacklist)
+{
+    if (_folderConnections.contains(folder->alias())) {
+        qCWarning(lcAccountSettings) << "Folder " << folder->alias() << "is already terminating the sync.";
+        return;
+    }
+    // in case sync is already running - terminate it and start a new one
+    const QMetaObject::Connection syncTerminatedConnection = connect(folder, &Folder::syncFinished, this, [this, blackList, folder, foldersToRemoveFromBlacklist]() {
+        const auto foundConnectionIt = _folderConnections.find(folder->alias());
+        if (foundConnectionIt != _folderConnections.end()) {
+            disconnect(*foundConnectionIt);
+            _folderConnections.erase(foundConnectionIt);
+        }
+        updateBlackListAndScheduleFolderSync(blackList, folder, foldersToRemoveFromBlacklist);
+    });
+    _folderConnections.insert(folder->alias(), syncTerminatedConnection);
+    folder->slotTerminateSync();
+}
+
 void AccountSettings::refreshSelectiveSyncStatus()
 {
     QString msg;
-    int cnt = 0;
+    auto cnt = 0;
     const auto folders = FolderMan::instance()->map().values();
     _ui->bigFolderUi->setVisible(false);
-    for (Folder *folder : folders) {
+    for (const auto folder : folders) {
         if (folder->accountState() != _accountState) {
             continue;
         }
 
-        bool ok = false;
+        auto ok = false;
         const auto undecidedList = folder->journalDb()->getSelectiveSyncList(SyncJournalDb::SelectiveSyncUndecidedList, &ok);
         for (const auto &it : undecidedList) {
             // FIXME: add the folder alias in a hoover hint.
@@ -1321,11 +1453,11 @@ void AccountSettings::refreshSelectiveSyncStatus()
             if (cnt++) {
                 msg += QLatin1String(", ");
             }
-            QString myFolder = (it);
+            auto myFolder = (it);
             if (myFolder.endsWith('/')) {
                 myFolder.chop(1);
             }
-            QModelIndex theIndx = _model->indexForPath(folder, myFolder);
+            const auto theIndx = _model->indexForPath(folder, myFolder);
             if (theIndx.isValid()) {
                 msg += QString::fromLatin1("<a href=\"%1?folder=%2\">%1</a>")
                            .arg(Utility::escape(myFolder), Utility::escape(folder->alias()));
@@ -1337,11 +1469,11 @@ void AccountSettings::refreshSelectiveSyncStatus()
 
     if (!msg.isEmpty()) {
         ConfigFile cfg;
-        QString info = !cfg.confirmExternalStorage()
-                ? tr("There are folders that were not synchronized because they are too big: ")
-                : !cfg.newBigFolderSizeLimit().first
-                  ? tr("There are folders that were not synchronized because they are external storages: ")
-                  : tr("There are folders that were not synchronized because they are too big or external storages: ");
+        const auto info = !cfg.confirmExternalStorage() ?
+                    tr("There are folders that were not synchronized because they are too big: ") :
+                    !cfg.newBigFolderSizeLimit().first ?
+                        tr("There are folders that were not synchronized because they are external storages: ") :
+                        tr("There are folders that were not synchronized because they are too big or external storages: ");
 
         _ui->selectiveSyncNotification->setText(info + msg);
         _ui->bigFolderUi->setVisible(true);
@@ -1352,14 +1484,14 @@ void AccountSettings::slotDeleteAccount()
 {
     // Deleting the account potentially deletes 'this', so
     // the QMessageBox should be destroyed before that happens.
-    auto messageBox = new QMessageBox(QMessageBox::Question,
-        tr("Confirm Account Removal"),
-        tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
-           "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-            .arg(_accountState->account()->displayName()),
-        QMessageBox::NoButton,
-        this);
-    auto yesButton = messageBox->addButton(tr("Remove connection"), QMessageBox::YesRole);
+    const auto messageBox = new QMessageBox(QMessageBox::Question,
+                                            tr("Confirm Account Removal"),
+                                            tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
+                                               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
+                                            .arg(_accountState->account()->displayName()),
+                                            QMessageBox::NoButton,
+                                            this);
+    const auto yesButton = messageBox->addButton(tr("Remove connection"), QMessageBox::YesRole);
     messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
     messageBox->setAttribute(Qt::WA_DeleteOnClose);
     connect(messageBox, &QMessageBox::finished, this, [this, messageBox, yesButton]{
@@ -1367,7 +1499,7 @@ void AccountSettings::slotDeleteAccount()
             // Else it might access during destruction. This should be better handled by it having a QSharedPointer
             _model->setAccountState(nullptr);
 
-            auto manager = AccountManager::instance();
+            const auto manager = AccountManager::instance();
             manager->deleteAccount(_accountState);
             manager->save();
         }
@@ -1400,12 +1532,69 @@ void AccountSettings::slotStyleChanged()
 
 void AccountSettings::customizeStyle()
 {
-    QString msg = _ui->connectLabel->text();
+    auto msg = _ui->connectLabel->text();
     Theme::replaceLinkColorStringBackgroundAware(msg);
     _ui->connectLabel->setText(msg);
 
-    QColor color = palette().highlight().color();
+    const auto color = palette().highlight().color();
     _ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
+}
+
+void AccountSettings::initializeE2eEncryption()
+{
+    connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, &AccountSettings::slotPossiblyUnblacklistE2EeFoldersAndRestartSync);
+
+    if (!_accountState->account()->e2e()->_mnemonic.isEmpty()) {
+        slotE2eEncryptionMnemonicReady();
+    } else {
+        _ui->encryptionMessage->setMessageType(KMessageWidget::Information);
+        _ui->encryptionMessage->setText(tr("This account supports end-to-end encryption"));
+        _ui->encryptionMessage->setIcon(Theme::createColorAwareIcon(QStringLiteral(":/client/theme/black/state-info.svg")));
+        _ui->encryptionMessage->hide();
+
+        auto *const actionEnableE2e = addActionToEncryptionMessage(tr("Set up encryption"), e2EeUiActionEnableEncryptionId);
+        connect(actionEnableE2e, &QAction::triggered, this, &AccountSettings::slotE2eEncryptionGenerateKeys);
+
+        connect(_accountState->account()->e2e(), &ClientSideEncryption::initializationFinished, this, [this] {
+            if (!_accountState->account()->e2e()->_publicKey.isNull()) {
+                _ui->encryptionMessage->setText(tr("End-to-end encryption has been enabled on this account with another device."
+                                                   "<br>"
+                                                   "It can be enabled on this device by entering your mnemonic."
+                                                   "<br>"
+                                                   "This will enable synchronisation of existing encrypted folders."));
+            }
+        });
+        _accountState->account()->setE2eEncryptionKeysGenerationAllowed(false);
+        _accountState->account()->e2e()->initialize(_accountState->account());
+    }
+}
+
+void AccountSettings::removeActionFromEncryptionMessage(const QString &actionId)
+{
+    const auto foundEnableEncryptionActionIt = std::find_if(std::cbegin(_ui->encryptionMessage->actions()), std::cend(_ui->encryptionMessage->actions()), [&actionId](const QAction *action) {
+        return action->property(e2eUiActionIdKey).toString() == actionId;
+    });
+    if (foundEnableEncryptionActionIt != std::cend(_ui->encryptionMessage->actions())) {
+        _ui->encryptionMessage->removeAction(*foundEnableEncryptionActionIt);
+        (*foundEnableEncryptionActionIt)->deleteLater();
+    }
+}
+
+QAction *AccountSettings::addActionToEncryptionMessage(const QString &actionTitle, const QString &actionId)
+{
+    const auto encryptionActions = _ui->encryptionMessage->actions();
+    for (const auto &action : encryptionActions) {
+        if (action->property(e2eUiActionIdKey) == actionId) {
+            return action;
+        }
+    }
+
+    auto *const action = new QAction(actionTitle, this);
+    if (!actionId.isEmpty()) {
+        action->setProperty(e2eUiActionIdKey, actionId);
+    }
+    _ui->encryptionMessage->addAction(action);
+    return action;
 }
 
 } // namespace OCC

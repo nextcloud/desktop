@@ -45,7 +45,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
     auto base = state.find(pathComponents.parentDirComponents());
     if (!base)
         return false;
-    for (const auto &item : base->children) {
+    for (const auto &item : qAsConst(base->children)) {
         if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(conflicted copy")) {
             local.remove(item.path());
             return true;
@@ -57,7 +57,7 @@ bool expectAndWipeConflict(FileModifier &local, FileInfo state, const QString pa
 SyncJournalFileRecord dbRecord(FakeFolder &folder, const QString &path)
 {
     SyncJournalFileRecord record;
-    folder.syncJournal().getFileRecord(path, &record);
+    [[maybe_unused]] const auto result = folder.syncJournal().getFileRecord(path, &record);
     return record;
 }
 
@@ -79,8 +79,9 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
 
         // Verify that the conflict names don't have the user name
-        for (const auto &name : findConflicts(fakeFolder.currentLocalState().children["A"])) {
-            QVERIFY(!name.contains(fakeFolder.syncEngine().account()->davDisplayName()));
+        const auto conflicts = findConflicts(fakeFolder.currentLocalState().children["A"]);
+        for (const auto &conflict : conflicts) {
+            QVERIFY(!conflict.contains(fakeFolder.syncEngine().account()->davDisplayName()));
         }
 
         QVERIFY(expectAndWipeConflict(fakeFolder.localModifier(), fakeFolder.currentLocalState(), "A/a1"));
@@ -596,6 +597,42 @@ private slots:
         QVERIFY(fakeFolder.syncEngine().isAnotherSyncNeeded() == ImmediateFollowUp);
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+    }
+
+    void testEtagChangeFileNotChangedGeneratesNoConflicts()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("A/fake_conflict", 'W');
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!itemConflict(completeSpy, "A/fake_conflict"));
+
+        completeSpy.clear();
+
+        fakeFolder.remoteModifier().setContents("A/fake_conflict", 'W');
+        fakeFolder.localModifier().setContents("A/fake_conflict", 'W');
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!itemConflict(completeSpy, "A/fake_conflict"));
+    }
+
+    void testEtagChangeFileChangedGeneratesConflicts()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        ItemCompletedSpy completeSpy(fakeFolder);
+
+        fakeFolder.remoteModifier().insert("A/real_conflict", 'W');
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(!itemConflict(completeSpy, "A/real_conflict"));
+
+        completeSpy.clear();
+
+        fakeFolder.remoteModifier().setContents("A/real_conflict", 'W');
+        fakeFolder.localModifier().setContents("A/real_conflict", 'L');
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(itemConflict(completeSpy, "A/real_conflict"));
     }
 
     // Test what happens if we remove entries both on the server, and locally

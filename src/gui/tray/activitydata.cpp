@@ -25,9 +25,19 @@ bool operator<(const Activity &rhs, const Activity &lhs)
     return rhs._dateTime > lhs._dateTime;
 }
 
+bool operator>(const Activity &rhs, const Activity &lhs)
+{
+    return rhs._dateTime < lhs._dateTime;
+}
+
 bool operator==(const Activity &rhs, const Activity &lhs)
 {
     return (rhs._type == lhs._type && rhs._id == lhs._id && rhs._accName == lhs._accName);
+}
+
+bool operator!=(const Activity &rhs, const Activity &lhs)
+{
+    return !(rhs == lhs);
 }
 
 Activity::Identifier Activity::ident() const
@@ -65,6 +75,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
     activity._dateTime = QDateTime::fromString(json.value(QStringLiteral("datetime")).toString(), Qt::ISODate);
     activity._icon = json.value(QStringLiteral("icon")).toString();
     activity._isCurrentUserFileActivity = activity._objectType == QStringLiteral("files") && activityUser == account->davUser();
+    activity._isMultiObjectActivity = json.value("objects").toObject().count() > 1;
 
     auto richSubjectData = json.value(QStringLiteral("subject_rich")).toArray();
 

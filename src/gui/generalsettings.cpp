@@ -45,7 +45,7 @@
 #include <QScopedValueRollback>
 #include <QMessageBox>
 
-#include <private/qzipwriter_p.h>
+#include <KZip>
 
 #define QTLEGACY (QT_VERSION < QT_VERSION_CHECK(5,9,0))
 
@@ -81,7 +81,7 @@ ZipEntry syncFolderToZipEntry(OCC::Folder *f)
     return fileInfoToZipEntry(journalInfo);
 }
 
-QVector<ZipEntry> createFileList()
+QVector<ZipEntry> createDebugArchiveFileList()
 {
     auto list = QVector<ZipEntry>();
     OCC::ConfigFile cfg;
@@ -91,8 +91,6 @@ QVector<ZipEntry> createFileList()
     const auto logger = OCC::Logger::instance();
 
     if (!logger->logDir().isEmpty()) {
-        list.append({QString(), QStringLiteral("logs")});
-
         QDir dir(logger->logDir());
         const auto infoList = dir.entryInfoList(QDir::Files);
         std::transform(std::cbegin(infoList), std::cend(infoList),
@@ -112,25 +110,24 @@ QVector<ZipEntry> createFileList()
 
 void createDebugArchive(const QString &filename)
 {
-    const auto entries = createFileList();
+    const auto entries = createDebugArchiveFileList();
 
-    QZipWriter zip(filename);
+    KZip zip(filename);
+    zip.open(QIODevice::WriteOnly);
+
     for (const auto &entry : entries) {
-        if (entry.localFilename.isEmpty()) {
-            zip.addDirectory(entry.zipFilename);
-        } else {
-            QFile file(entry.localFilename);
-            if (!file.open(QFile::ReadOnly)) {
-                continue;
-            }
-            zip.addFile(entry.zipFilename, &file);
-        }
+        zip.addLocalFile(entry.localFilename, entry.zipFilename);
     }
 
-    zip.addFile("__nextcloud_client_parameters.txt", QCoreApplication::arguments().join(' ').toUtf8());
+    const auto clientParameters = QCoreApplication::arguments().join(' ').toUtf8();
+    zip.prepareWriting("__nextcloud_client_parameters.txt", {}, {}, clientParameters.size());
+    zip.writeData(clientParameters, clientParameters.size());
+    zip.finishWriting(clientParameters.size());
 
-    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails());
-    zip.addFile("__nextcloud_client_buildinfo.txt", buildInfo.toUtf8());
+    const auto buildInfo = QString(OCC::Theme::instance()->about() + "\n\n" + OCC::Theme::instance()->aboutDetails()).toUtf8();
+    zip.prepareWriting("__nextcloud_client_buildinfo.txt", {}, {}, buildInfo.size());
+    zip.writeData(buildInfo, buildInfo.size());
+    zip.finishWriting(buildInfo.size());
 }
 }
 
@@ -265,20 +262,27 @@ void GeneralSettings::loadMiscSettings()
 #if defined(BUILD_UPDATER)
 void GeneralSettings::slotUpdateInfo()
 {
-    if (ConfigFile().skipUpdateCheck() || !Updater::instance()) {
+    const auto updater = Updater::instance();
+    if (ConfigFile().skipUpdateCheck() || !updater) {
         // updater disabled on compile
         _ui->updatesGroupBox->setVisible(false);
         return;
     }
 
+    if (updater) {
+        connect(_ui->updateButton, &QAbstractButton::clicked, this,
+                &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
+        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this,
+                &GeneralSettings::slotToggleAutoUpdateCheck, Qt::UniqueConnection);
+        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
+    }
+
     // Note: the sparkle-updater is not an OCUpdater
-    auto *ocupdater = qobject_cast<OCUpdater *>(Updater::instance());
+    auto *ocupdater = qobject_cast<OCUpdater *>(updater);
     if (ocupdater) {
         connect(ocupdater, &OCUpdater::downloadStateChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, ocupdater, &OCUpdater::slotStartInstaller, Qt::UniqueConnection);
         connect(_ui->restartButton, &QAbstractButton::clicked, qApp, &QApplication::quit, Qt::UniqueConnection);
-        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
-        connect(_ui->autoCheckForUpdatesCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::slotToggleAutoUpdateCheck);
 
         QString status = ocupdater->statusString(OCUpdater::UpdateStatusStringFormat::Html);
         Theme::replaceLinkColorStringBackgroundAware(status);
@@ -294,14 +298,11 @@ void GeneralSettings::slotUpdateInfo()
         _ui->updateButton->setEnabled(ocupdater->downloadState() != OCUpdater::CheckingServer &&
                                       ocupdater->downloadState() != OCUpdater::Downloading &&
                                       ocupdater->downloadState() != OCUpdater::DownloadComplete);
-
-        _ui->autoCheckForUpdatesCheckBox->setChecked(ConfigFile().autoUpdateCheck());
     }
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(Updater::instance())) {
+    else if (auto sparkleUpdater = qobject_cast<SparkleUpdater *>(updater)) {
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
-        connect(_ui->updateButton, &QAbstractButton::clicked, this, &GeneralSettings::slotUpdateCheckNow, Qt::UniqueConnection);
     }
 #endif
 

@@ -114,7 +114,7 @@ void ConnectionValidator::slotStatusFound(const QUrl &url, const QJsonObject &in
     if (_account->url() != url) {
         qCInfo(lcConnectionValidator()) << "status.php was redirected to" << url.toString();
         _account->setUrl(url);
-        _account->wantsAccountSaved(_account.data());
+        emit _account->wantsAccountSaved(_account.data());
     }
 
     if (!serverVersion.isEmpty() && !setAndCheckServerVersion(serverVersion)) {
@@ -278,7 +278,7 @@ bool ConnectionValidator::setAndCheckServerVersion(const QString &version)
     if (auto job = qobject_cast<AbstractNetworkJob *>(sender())) {
         if (auto reply = job->reply()) {
             _account->setHttp2Supported(
-                reply->attribute(QNetworkRequest::HTTP2WasUsedAttribute).toBool());
+                reply->attribute(QNetworkRequest::Http2WasUsedAttribute).toBool());
         }
     }
 #endif

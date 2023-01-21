@@ -256,10 +256,6 @@ void BulkPropagatorJob::checkPropagationIsDone()
 void BulkPropagatorJob::slotComputeTransmissionChecksum(SyncFileItemPtr item,
                                                         UploadFileInfo fileToUpload)
 {
-    // Reuse the content checksum as the transmission checksum if possible
-    const auto supportedTransmissionChecksums =
-        propagator()->account()->capabilities().supportedChecksumTypes();
-
     // Compute the transmission checksum.
     auto computeChecksum = std::make_unique<ComputeChecksum>(this);
     if (uploadChecksumEnabled()) {
@@ -391,6 +387,10 @@ void BulkPropagatorJob::slotPutFinishedOneFile(const BulkUploadItem &singleFile,
     computeFileId(singleFile._item, fileReply);
 
     singleFile._item->_etag = etag;
+    singleFile._item->_fileId = getHeaderFromJsonReply(fileReply, "fileid");
+    singleFile._item->_remotePerm = RemotePermissions::fromServerString(getHeaderFromJsonReply(fileReply, "permissions"));
+    singleFile._item->_isShared = singleFile._item->_remotePerm.hasPermission(RemotePermissions::IsShared) || singleFile._item->_sharedByMe;
+    singleFile._item->_lastShareStateFetchedTimestamp = QDateTime::currentMSecsSinceEpoch();
 
     if (getHeaderFromJsonReply(fileReply, "X-OC-MTime") != "accepted") {
         // X-OC-MTime is supported since owncloud 5.0.   But not when chunking.
@@ -709,6 +709,7 @@ void BulkPropagatorJob::handleJobDoneErrors(SyncFileItemPtr item,
     case SyncFileItem::FileIgnored:
     case SyncFileItem::FileLocked:
     case SyncFileItem::FileNameInvalid:
+    case SyncFileItem::FileNameClash:
     case SyncFileItem::NoStatus:
     case SyncFileItem::NormalError:
     case SyncFileItem::Restoration:

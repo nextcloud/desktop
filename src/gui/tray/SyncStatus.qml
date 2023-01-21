@@ -7,7 +7,7 @@ import Style 1.0
 import com.nextcloud.desktopclient 1.0 as NC
 
 RowLayout {
-    id: layout
+    id: root
 
     property alias model: syncStatus
 
@@ -17,7 +17,7 @@ RowLayout {
         id: syncStatus
     }
 
-    Image {
+    NCBusyIndicator {
         id: syncIcon
         property int size: Style.trayListItemIconSize * 0.6
         property int whiteSpace: (Style.trayListItemIconSize - size)
@@ -31,19 +31,10 @@ RowLayout {
         Layout.bottomMargin: 16
         Layout.leftMargin: Style.trayHorizontalMargin + (whiteSpace * (0.5 - Style.thumbnailImageSizeReduction))
 
-        source: syncStatus.syncIcon
-        sourceSize.width: 64
-        sourceSize.height: 64
-        rotation: syncStatus.syncing ? 0 : 0
-    }
- 
-    RotationAnimator {
-        target: syncIcon
-        running:  syncStatus.syncing
-        from: 0
-        to: 360
-        loops: Animation.Infinite
-        duration: 3000
+        padding: 0
+
+        imageSource: syncStatus.syncIcon
+        running: syncStatus.syncing
     }
 
     ColumnLayout {
@@ -56,9 +47,9 @@ RowLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
 
-        Text {
+        EnforcedPlainTextLabel {
             id: syncProgressText
-            
+
             Layout.fillWidth: true
 
             text: syncStatus.syncStatusString
@@ -73,15 +64,30 @@ RowLayout {
 
             active: syncStatus.syncing
             visible: syncStatus.syncing
-            
+
             sourceComponent: ProgressBar {
                 id: syncProgressBar
+
+                // TODO: Rather than setting all these palette colours manually,
+                // create a custom style and do it for all components globally
+                palette {
+                    text: Style.ncTextColor
+                    windowText: Style.ncTextColor
+                    buttonText: Style.ncTextColor
+                    light: Style.lightHover
+                    midlight: Style.lightHover
+                    mid: Style.ncSecondaryTextColor
+                    dark: Style.menuBorder
+                    button: Style.menuBorder
+                    window: Style.backgroundColor
+                    base: Style.backgroundColor
+                }
 
                 value: syncStatus.syncProgress
             }
         }
 
-        Text {
+        EnforcedPlainTextLabel {
             id: syncProgressDetailText
 
             Layout.fillWidth: true
@@ -90,6 +96,35 @@ RowLayout {
             visible: syncStatus.syncStatusDetailString !== ""
             color: Style.ncSecondaryTextColor
             font.pixelSize: Style.subLinePixelSize
+        }
+    }
+
+    CustomButton {
+        FontMetrics {
+            id: syncNowFm
+            font: parent.contentsFont
+        }
+
+        Layout.preferredWidth: syncNowFm.boundingRect(text).width +
+                               leftPadding +
+                               rightPadding +
+                               Style.standardSpacing * 2
+        Layout.rightMargin: Style.trayHorizontalMargin
+
+        text: qsTr("Sync now")
+        textColor: Style.adjustedCurrentUserHeaderColor
+        textColorHovered: Style.currentUserHeaderTextColor
+        contentsFont.bold: true
+        bgColor: Style.currentUserHeaderColor
+
+        visible: !syncStatus.syncing &&
+                 NC.UserModel.currentUser.hasLocalFolder &&
+                 NC.UserModel.currentUser.isConnected
+        enabled: visible
+        onClicked: {
+            if(!syncStatus.syncing) {
+                NC.UserModel.currentUser.forceSyncNow();
+            }
         }
     }
 }
