@@ -2129,7 +2129,8 @@ Objektet mbi të cilët lejohet fshirja do të fshihen, nëse pengojnë heqjen e
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>Klienti mund të shkruajë regjistra diagnostikimi te një dosje e përkohshme. Këta regjistra janë shumë të dobishëm për diagnostikim problemesh.
+Ngaqë kartelat regjistër mund të bëhen shumë të mëdha, klienti do të fillojë një të re, për çdo xhirim të njëkohësimit dhe të vjetrat do t’i ngjeshë.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
