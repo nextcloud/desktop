@@ -56,6 +56,7 @@ private slots:
 
         const auto fakeFileInfo = fakeFolder.remoteModifier().find("encrypted");
         QVERIFY(fakeFileInfo);
+        QVERIFY(fakeFileInfo->isEncrypted);
         QCOMPARE(fakeFolder.currentLocalState().children.count(), 5);
 
         const auto fakeFileId = fakeFileInfo->fileId;
@@ -84,6 +85,7 @@ private slots:
             } else {
                 reply = new FakeErrorReply(op, req, this, 400, fake400Response);
             }
+
             return reply;
         };
         fakeFolder.setServerOverride(fakeQnamOverride);
@@ -105,8 +107,12 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
 
-        const auto folder = FolderMan::instance()->addFolder(accountState, folderDefinition(fakeFolder.localPath()));
+        auto folderDef = folderDefinition(fakeFolder.localPath());
+        folderDef.targetPath = "";
+        const auto folder = FolderMan::instance()->addFolder(accountState, folderDef);
         QVERIFY(folder);
+
+        qRegisterMetaType<OCC::SyncResult>("SyncResult");
         QSignalSpy folderSyncDone(folder, &Folder::syncFinished);
 
         QDir dir(folder->path() + QStringLiteral("encrypted"));
@@ -121,10 +127,19 @@ private slots:
         QVERIFY(folder->journalDb()->getFileRecord(QStringLiteral("encrypted"), &rec));
         rec._isE2eEncrypted = true;
         rec._path = QStringLiteral("encrypted").toUtf8();
+        rec._type = CSyncEnums::ItemTypeDirectory;
         QVERIFY(folder->journalDb()->setFileRecord(rec));
+
+        SyncJournalFileRecord updatedRec;
+        QVERIFY(folder->journalDb()->getFileRecord(QStringLiteral("encrypted"), &updatedRec));
+        QVERIFY(updatedRec._isE2eEncrypted);
+        QVERIFY(updatedRec.isDirectory());
+
         FolderMan::instance()->removeE2eFiles(account);
 
-        QVERIFY(folderSyncDone.wait());
+        if (folderSyncDone.isEmpty()) {
+            QVERIFY(folderSyncDone.wait());
+        }
 
         QVERIFY(fakeFolder.currentRemoteState().find("encrypted"));
         QVERIFY(!fakeFolder.currentLocalState().find("encrypted"));
