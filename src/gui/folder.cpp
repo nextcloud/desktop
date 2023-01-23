@@ -1341,7 +1341,7 @@ void Folder::removeLocalE2eFiles()
     const auto couldGetFiles = _journal.getFilesBelowPath("", [this, &e2eFoldersToBlacklist, &folderRootDir](const SyncJournalFileRecord &rec) {
         // We only want to add the root-most encrypted folder to the blacklist
         if (rec.isValid() && rec._isE2eEncrypted && rec.isDirectory()) {
-            QDir pathDir(rec._path);
+            QDir pathDir(_canonicalLocalPath + rec.path());
             bool parentPathEncrypted = false;
 
             while (pathDir.cdUp() && pathDir != folderRootDir) {
