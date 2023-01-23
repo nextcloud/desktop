@@ -7,7 +7,7 @@ import shutil
 
 from pageObjects.AccountSetting import AccountSetting
 
-from helpers.SetupClientHelper import getUserSyncPath, getResourcePath
+from helpers.SetupClientHelper import getResourcePath
 from helpers.FilesHelper import buildConflictedRegex, sanitizePath
 from helpers.SyncHelper import waitForClientToBeReady
 
@@ -29,29 +29,24 @@ def fileExists(filePath, timeout=1000):
 # To create folders in a temporary directory, we set isTempFolder True
 # And if isTempFolder is True, the createFolder function create folders in tempFolderPath
 def createFolder(context, foldername, username=None, isTempFolder=False):
-    syncPath = None
-    if username and not isTempFolder:
-        syncPath = getUserSyncPath(context, username)
-    elif isTempFolder:
-        syncPath = context.userData['tempFolderPath']
+    if isTempFolder:
+        folder_path = join(context.userData['tempFolderPath'], foldername)
     else:
-        syncPath = context.userData['currentUserSyncPath']
-    path = join(syncPath, foldername)
-    os.makedirs(path)
+        folder_path = getResourcePath(context, foldername, username)
+    os.makedirs(folder_path)
 
 
 def renameFileFolder(context, source, destination):
-    source = join(context.userData['currentUserSyncPath'], source)
-    destination = join(context.userData['currentUserSyncPath'], destination)
+    source = getResourcePath(context, source)
+    destination = getResourcePath(context, destination)
     os.rename(source, destination)
 
 
 def createFileWithSize(context, filename, filesize, isTempFolder=False):
     if isTempFolder:
-        path = context.userData['tempFolderPath']
+        file = join(context.userData['tempFolderPath'], filename)
     else:
-        path = context.userData['currentUserSyncPath']
-    file = join(path, filename)
+        file = getResourcePath(context, filename)
     cmd = "truncate -s {filesize} {file}".format(filesize=filesize, file=file)
     os.system(cmd)
 
@@ -80,8 +75,8 @@ def waitAndTryToWriteFile(context, resource, content):
 )
 def step(context, username, filename):
     fileContent = "\n".join(context.multiLineText)
-    syncPath = getUserSyncPath(context, username)
-    waitAndWriteFile(context, join(syncPath, filename), fileContent)
+    file = getResourcePath(context, filename, username)
+    waitAndWriteFile(context, file, fileContent)
 
 
 @When('user "|any|" creates a folder "|any|" inside the sync folder')
@@ -101,8 +96,8 @@ def step(context, username, filename, filesize):
 
 @When('the user copies the folder "|any|" to "|any|"')
 def step(context, sourceFolder, destinationFolder):
-    source_dir = join(context.userData['currentUserSyncPath'], sourceFolder)
-    destination_dir = join(context.userData['currentUserSyncPath'], destinationFolder)
+    source_dir = getResourcePath(context, sourceFolder)
+    destination_dir = getResourcePath(context, destinationFolder)
     shutil.copytree(source_dir, destination_dir)
 
 
@@ -114,7 +109,7 @@ def step(context, type, source, destination):
 @Then('the file "|any|" should exist on the file system with the following content')
 def step(context, filePath):
     expected = "\n".join(context.multiLineText)
-    filePath = context.userData['currentUserSyncPath'] + filePath
+    filePath = getResourcePath(context, filePath)
     f = open(filePath, 'r')
     contents = f.read()
     test.compare(
@@ -128,7 +123,7 @@ def step(context, filePath):
 
 @Then(r'^the (file|folder) "([^"]*)" should exist on the file system$', regexp=True)
 def step(context, resourceType, resource):
-    resourcePath = join(context.userData['currentUserSyncPath'], resource)
+    resourcePath = getResourcePath(context, resource)
     resourceExists = False
     if resourceType == 'file':
         resourceExists = fileExists(
@@ -150,7 +145,7 @@ def step(context, resourceType, resource):
 
 @Then(r'^the (file|folder) "([^"]*)" should not exist on the file system$', regexp=True)
 def step(context, resourceType, resource):
-    resourcePath = join(context.userData['currentUserSyncPath'], resource)
+    resourcePath = getResourcePath(context, resource)
     resourceExists = False
     if resourceType == 'file':
         resourceExists = fileExists(resourcePath, 1000)
@@ -169,9 +164,7 @@ def step(context, resourceType, resource):
 @Given('the user has changed the content of local file "|any|" to:')
 def step(context, filename):
     fileContent = "\n".join(context.multiLineText)
-    waitAndWriteFile(
-        context, join(context.userData['currentUserSyncPath'], filename), fileContent
-    )
+    waitAndWriteFile(context, getResourcePath(context, filename), fileContent)
 
 
 @Then(
@@ -182,14 +175,14 @@ def step(context, filename):
 
     onlyfiles = [
         f
-        for f in os.listdir(context.userData['currentUserSyncPath'])
-        if isfile(join(context.userData['currentUserSyncPath'], f))
+        for f in os.listdir(getResourcePath(context))
+        if isfile(getResourcePath(context, f))
     ]
     found = False
     pattern = re.compile(buildConflictedRegex(filename))
     for file in onlyfiles:
         if pattern.match(file):
-            f = open(context.userData['currentUserSyncPath'] + file, 'r')
+            f = open(getResourcePath(context, file), 'r')
             contents = f.read()
             if contents == expected:
                 found = True
@@ -202,14 +195,14 @@ def step(context, filename):
 @When('the user overwrites the file "|any|" with content "|any|"')
 def step(context, resource, content):
     print("starting file overwrite")
-    resource = join(context.userData['currentUserSyncPath'], resource)
+    resource = getResourcePath(context, resource)
     waitAndWriteFile(context, resource, content)
     print("file has been overwritten")
 
 
 @When('the user tries to overwrite the file "|any|" with content "|any|"')
 def step(context, resource, content):
-    resource = context.userData['currentUserSyncPath'] + resource
+    resource = getResourcePath(context, resource)
     waitAndTryToWriteFile(context, resource, content)
 
 
@@ -223,7 +216,7 @@ def step(context, user, resource, content):
 def step(context, itemType, resource):
     waitForClientToBeReady(context)
 
-    resourcePath = sanitizePath(context.userData['currentUserSyncPath'] + resource)
+    resourcePath = sanitizePath(getResourcePath(context, resource))
     if itemType == 'file':
         os.remove(resourcePath)
     elif itemType == 'folder':
@@ -232,7 +225,7 @@ def step(context, itemType, resource):
         raise Exception("No such item type for resource")
 
     isSyncFolderEmpty = True
-    for item in os.listdir(context.userData['currentUserSyncPath']):
+    for item in os.listdir(getResourcePath(context)):
         # do not count the hidden files as they are ignored by the client
         if not item.startswith("."):
             isSyncFolderEmpty = False
@@ -249,13 +242,11 @@ def step(context, itemType, resource):
 
 @When('user "|any|" creates the following files inside the sync folder:')
 def step(context, username):
-    syncPath = getUserSyncPath(context, username)
-
     waitForClientToBeReady(context)
 
     for row in context.table[1:]:
-        filename = syncPath + row[0]
-        writeFile(join(syncPath, filename), '')
+        file = getResourcePath(context, row[0], username)
+        writeFile(file, '')
 
 
 @Given(
@@ -272,5 +263,5 @@ def step(context, foldername, filenumber, filesize):
 @When('user "|any|" moves folder "|any|" from the temp folder into the sync folder')
 def step(context, username, foldername):
     source_dir = join(context.userData['tempFolderPath'], foldername)
-    destination_dir = getUserSyncPath(context, username)
+    destination_dir = getResourcePath(context, '/', username)
     shutil.move(source_dir, destination_dir)

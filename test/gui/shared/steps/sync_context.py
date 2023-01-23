@@ -1,11 +1,9 @@
-from os.path import join
-
 from pageObjects.SyncConnectionWizard import SyncConnectionWizard
 from pageObjects.SyncConnection import SyncConnection
 from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
 
-from helpers.SetupClientHelper import getUserSyncPath
+from helpers.SetupClientHelper import getResourcePath
 from helpers.SyncHelper import (
     waitForFileOrFolderToSync,
     waitForFileOrFolderToHaveSyncError,
@@ -34,6 +32,7 @@ def step(context, type, resource):
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
 def step(context, type, resource):
+    resource = getResourcePath(context, resource)
     waitForFileOrFolderToHaveSyncError(context, resource, type)
 
 
@@ -41,7 +40,7 @@ def step(context, type, resource):
     r'user "([^"]*)" waits for (file|folder) "([^"]*)" to have sync error', regexp=True
 )
 def step(context, username, type, resource):
-    resource = join(getUserSyncPath(context, username), resource)
+    resource = getResourcePath(context, resource, username)
     waitForFileOrFolderToHaveSyncError(context, resource, type)
 
 

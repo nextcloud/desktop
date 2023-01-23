@@ -1,6 +1,8 @@
 import names
 import squish
 from helpers.WebUIHelper import authorize_via_webui
+from pageObjects.AccountConnectionWizard import AccountConnectionWizard
+from pageObjects.AccountSetting import AccountSetting
 
 
 class EnterPassword:
@@ -38,3 +40,21 @@ class EnterPassword:
             squish.waitForObject(EnterPassword.COPY_URL_TO_CLIPBOARD_BUTTON)
         )
         authorize_via_webui(username, password)
+
+    @staticmethod
+    def reLogin(context, username, password):
+        if context.userData['ocis']:
+            EnterPassword.oidcReLogin(username, password)
+        else:
+            EnterPassword.enterPassword(password)
+
+    @staticmethod
+    def loginAfterSetup(context, username, password):
+        if context.userData['ocis']:
+            AccountConnectionWizard.acceptCertificate()
+            EnterPassword.oidcReLogin(username, password)
+        else:
+            AccountSetting.waitUntilConnectionIsConfigured(
+                context.userData['maxSyncTimeout'] * 1000
+            )
+            EnterPassword.enterPassword(password)

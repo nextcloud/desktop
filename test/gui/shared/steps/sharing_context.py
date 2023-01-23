@@ -38,7 +38,6 @@ def openSharingDialog(context, resource):
 def createPublicLinkShare(
     context, resource, password='', permissions='', expireDate='', name=''
 ):
-    resource = getResourcePath(context, resource)
     openSharingDialog(context, resource)
     PublicLinkDialog.openPublicLinkTab()
     PublicLinkDialog.createPublicLink(password, permissions, expireDate, name)

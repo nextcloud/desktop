@@ -37,12 +37,7 @@ def getClientDetails(context):
 
 def createUserSyncPath(context, username):
     # '' at the end adds '/' to the path
-    if context.userData['ocis']:
-        userSyncPath = join(
-            context.userData['clientRootSyncPath'], username, 'Personal', ''
-        )
-    else:
-        userSyncPath = join(context.userData['clientRootSyncPath'], username, '')
+    userSyncPath = join(context.userData['clientRootSyncPath'], username, '')
 
     if not exists(userSyncPath):
         makedirs(userSyncPath)
@@ -51,20 +46,35 @@ def createUserSyncPath(context, username):
     return userSyncPath
 
 
-def getUserSyncPath(context, username):
-    return createUserSyncPath(context, username)
+def createSpacePath(context, space='Personal'):
+    spacePath = join(context.userData['currentUserSyncPath'], space, '')
+    if not exists(spacePath):
+        makedirs(spacePath)
+    return spacePath
 
 
 def setCurrentUserSyncPath(context, syncPath):
     context.userData['currentUserSyncPath'] = syncPath
 
 
-def getResourcePath(context, resource, user=None):
-    resource == resource.strip('/')
-    if not user == None:
-        return join(context.userData['clientRootSyncPath'], user, resource)
-    else:
-        return join(context.userData['currentUserSyncPath'], resource)
+def getResourcePath(context, resource='', user='', space=''):
+    sync_path = context.userData['currentUserSyncPath']
+    if user:
+        sync_path = user
+    if context.userData['ocis']:
+        # default space for oCIS is "Personal"
+        space = space or "Personal"
+        sync_path = join(sync_path, space)
+    sync_path = join(context.userData['clientRootSyncPath'], sync_path)
+    resource = resource.replace(sync_path, '').strip('/')
+    return join(
+        sync_path,
+        resource,
+    )
+
+
+def getCurrentUserSyncPath(context):
+    return context.userData['currentUserSyncPath']
 
 
 def startClient(context):
@@ -111,9 +121,11 @@ def setUpClient(context, username, displayName, confFilePath):
     userSetting = userSetting + getPollingInterval()
 
     syncPath = createUserSyncPath(context, username)
+    if context.userData['ocis']:
+        syncPath = createSpacePath(context)
 
     args = {
-        'displayString': 'Personal' if context.userData['ocis'] else 'ownCloud',
+        'displayString': context.userData['syncConnectionName'],
         'displayUserName': displayName,
         'davUserName': username if context.userData['ocis'] else username.lower(),
         'displayUserFirstName': displayName.split()[0],
