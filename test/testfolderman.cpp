@@ -82,8 +82,6 @@ private slots:
                 } else {
                     reply = new FakeErrorReply(op, req, this, 400, fake400Response);
                 }
-            } else {
-                reply = new FakeErrorReply(op, req, this, 400, fake400Response);
             }
 
             return reply;
