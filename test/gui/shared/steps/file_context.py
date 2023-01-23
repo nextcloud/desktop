@@ -265,3 +265,15 @@ def step(context, username, foldername):
     source_dir = join(context.userData['tempFolderPath'], foldername)
     destination_dir = getResourcePath(context, '/', username)
     shutil.move(source_dir, destination_dir)
+
+
+@When(
+    r'user "([^"]*)" moves (file|folder) "([^"]*)" to "([^"]*)" in the sync folder',
+    regexp=True,
+)
+def step(context, username, resourceType, source, destination):
+    source_dir = getResourcePath(context, source, username)
+    if destination == None or destination == "/":
+        destination = ""
+    destination_dir = getResourcePath(context, destination, username)
+    shutil.move(source_dir, destination_dir)
