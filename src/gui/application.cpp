@@ -159,8 +159,10 @@ bool Application::configVersionMigration()
         const auto fileName = file.fileName();
         backupFilesList.append(configFile.backup(fileName));
         if (file.baseName() != APPLICATION_CONFIG_NAME) {
-            if (!QFile::rename(fileName, configFile.configFile())) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << file.baseName() << "to" << configFile.configFile();
+            const auto newConfig = configFile.configFile();
+            const auto oldConfig = file.filePath();
+            if (!QFile::rename(oldConfig, newConfig)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfig << "to" << newConfig;
             }
         }
     }
