@@ -145,29 +145,28 @@ bool Application::configVersionMigration()
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
-    auto warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+    const auto showWarning = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
 
-    if (!versionChanged && !warningMessage) {
+    if (!versionChanged && !showWarning) {
         return true;
     }
 
     // back up all old config file
     QStringList backupFilesList;
-    QDir directory(configFile.configPath());
-    const auto anyConfigFileList = directory.entryInfoList({"*.cfg"}, QDir::Files);
-    for (const auto &file : anyConfigFileList) {
-        const auto fileName = file.fileName();
-        backupFilesList.append(configFile.backup(fileName));
-        if (file.baseName() != APPLICATION_CONFIG_NAME) {
-            const auto newConfig = configFile.configFile();
-            const auto oldConfig = file.filePath();
-            if (!QFile::rename(oldConfig, newConfig)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfig << "to" << newConfig;
+    QDir configDir(configFile.configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto newConfigFileName = configFile.configFile();
+        backupFilesList.append(configFile.backup(oldConfigFileName));
+        if (oldConfigFileName != newConfigFileName) {
+            if (!QFile::rename(oldConfig.filePath(), newConfigFileName)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFileName << "to" << newConfigFileName;
             }
         }
     }
 
-    if (warningMessage || backupFilesList.count() > 0) {
+    if (showWarning || backupFilesList.count() > 0) {
         QString boldMessage;
         if (!deleteKeys.isEmpty()) {
             boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");

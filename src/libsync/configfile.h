@@ -53,7 +53,7 @@ public:
      *
      * Returns the path of the new backup.
      */
-    [[nodiscard]] QString backup(const QString fileName) const;
+    [[nodiscard]] QString backup(const QString &fileName) const;
 
     bool exists();
 
