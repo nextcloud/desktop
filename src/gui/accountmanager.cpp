@@ -179,27 +179,40 @@ bool AccountManager::restoreFromLegacySettings()
                 auto oCSettings = std::make_unique<QSettings>(configFile, QSettings::IniFormat);
                 if (oCSettings->status() != QSettings::Status::NoError) {
                     qCInfo(lcAccountManager) << "Error reading legacy configuration file" << oCSettings->status();
+                    break;
                 }
 
                 // Check the theme url to see if it is the same url that the oC config was for
-                auto overrideUrl = Theme::instance()->overrideServerUrl();
-                qCInfo(lcAccountManager) << "Migrate: overrideUrl" << overrideUrl;
-                if (!overrideUrl.isEmpty()) {
-                    if (overrideUrl.endsWith('/')) {
-                        overrideUrl.chop(1);
-                    }
-                    auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
-                    if (oCUrl.endsWith('/')) {
-                        oCUrl.chop(1);
+                const auto overrideUrl = Theme::instance()->overrideServerUrl();
+                const auto cleanOverrideUrl = overrideUrl.endsWith('/') ? overrideUrl.chopped(1) : overrideUrl;
+                qCInfo(lcAccountManager) << "Migrate: overrideUrl" << cleanOverrideUrl;
+
+                if (!cleanOverrideUrl.isEmpty()) {
+                    oCSettings->beginGroup(QLatin1String(accountsC));
+                    const auto accountsChildGroups = oCSettings->childGroups();
+
+                    for (const auto &accountId : accountsChildGroups) {
+                        oCSettings->beginGroup(accountId);
+                        const auto oCUrl = oCSettings->value(QLatin1String(urlC)).toString();
+                        const auto cleanOCUrl = oCUrl.endsWith('/') ? oCUrl.chopped(1) : oCUrl;
+
+                        // in case the urls are equal reset the settings object to read from
+                        // the ownCloud settings object
+                        qCInfo(lcAccountManager) << "Migrate oC config if " << cleanOCUrl << " == " << cleanOverrideUrl << ":"
+                                                 << (cleanOCUrl == cleanOverrideUrl ? "Yes" : "No");
+                        if (cleanOCUrl == cleanOverrideUrl) {
+                            qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
+                            oCSettings->endGroup(); // current accountID group
+                            oCSettings->endGroup(); // accounts group
+                            settings = std::move(oCSettings);
+                            break;
+                        }
+
+                        oCSettings->endGroup();
                     }
 
-                    // in case the urls are equal reset the settings object to read from
-                    // the ownCloud settings object
-                    qCInfo(lcAccountManager) << "Migrate oC config if " << oCUrl << " == " << overrideUrl << ":"
-                                             << (oCUrl == overrideUrl ? "Yes" : "No");
-                    if (oCUrl == overrideUrl) {
-                        qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
-                        settings = std::move(oCSettings);
+                    if (oCSettings) {
+                        oCSettings->endGroup();
                     }
                 } else {
                     qCInfo(lcAccountManager) << "Copy settings" << oCSettings->allKeys().join(", ");
