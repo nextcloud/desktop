@@ -163,7 +163,7 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             //: Example text: "File.txt (23KB)"
             const auto &xParent = static_cast<SubFolderInfo *>(index.internalPointer());
             const auto suffix = (subfolderInfo._isNonDecryptable && subfolderInfo._checked && (!xParent || !xParent->_isEncrypted))
-                ? tr(" - %1").arg("Could not decrypt!")
+                ? QStringLiteral(" - ") + tr("Could not decrypt!")
                 : QString{};
             return subfolderInfo._size < 0 ? QString(subfolderInfo._name + suffix) : QString(tr("%1 (%2)").arg(subfolderInfo._name, Utility::octetsToString(subfolderInfo._size)) + suffix);
         }
