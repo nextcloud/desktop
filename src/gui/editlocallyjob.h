@@ -71,6 +71,7 @@ private slots:
     void slotLsColJobFinishedWithError(QNetworkReply *reply);
     void slotDirectoryListingIterated(const QString &name, const QMap<QString, QString> &properties);
 
+    void processLocalItem();
     void openFile();
     void lockFile();
 
