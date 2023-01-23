@@ -1,5 +1,6 @@
 import names
 import squish
+from helpers.SetupClientHelper import getCurrentUserSyncPath
 
 
 class SyncConnectionWizard:
@@ -57,7 +58,7 @@ class SyncConnectionWizard:
         squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
         squish.type(
             SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
-            context.userData['currentUserSyncPath'],
+            getCurrentUserSyncPath(context),
         )
         SyncConnectionWizard.nextStep()
 

@@ -47,15 +47,7 @@ def step(context, username):
     password = getPasswordForUser(context, username)
     displayName = getDisplaynameForUser(context, username)
     setUpClient(context, username, displayName, context.userData['clientConfigFile'])
-
-    if context.userData['ocis']:
-        AccountConnectionWizard.acceptCertificate()
-        EnterPassword.oidcReLogin(username, password)
-    else:
-        AccountSetting.waitUntilConnectionIsConfigured(
-            context.userData['maxSyncTimeout'] * 1000
-        )
-        EnterPassword.enterPassword(password)
+    EnterPassword.loginAfterSetup(context, username, password)
 
     # wait for files to sync
     waitForInitialSyncToComplete(context)
@@ -107,11 +99,7 @@ def step(context, username):
 def step(context, username):
     AccountSetting.login()
     password = getPasswordForUser(context, username)
-
-    if context.userData['ocis']:
-        EnterPassword.oidcReLogin(username, password)
-    else:
-        EnterPassword.enterPassword(password)
+    EnterPassword.reLogin(context, username, password)
 
     # wait for files to sync
     waitForInitialSyncToComplete(context)

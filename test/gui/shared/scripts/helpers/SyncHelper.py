@@ -1,7 +1,7 @@
 import re
 import sys
 import test
-from os.path import join, realpath
+from os.path import realpath
 from squish import waitFor, snooze
 
 # the script needs to use the system wide python
@@ -11,6 +11,7 @@ sys.path.append(realpath('../../../shell_integration/nautilus/'))
 from syncstate import SocketConnect
 
 from helpers.FilesHelper import sanitizePath
+from helpers.SetupClientHelper import getResourcePath
 
 # socket messages
 socket_messages = []
@@ -156,7 +157,7 @@ def getCurrentSyncStatus(resource, resourceType):
 def waitForFileOrFolderToSync(
     context, resource='', resourceType='FOLDER', patterns=None
 ):
-    resource = join(context.userData['currentUserSyncPath'], resource).rstrip('/')
+    resource = getResourcePath(context, resource).rstrip('/')
     listenSyncStatusForItem(resource, resourceType)
 
     timeout = context.userData['maxSyncTimeout'] * 1000
@@ -195,7 +196,7 @@ def waitForFileOrFolderToSync(
 def waitForInitialSyncToComplete(context):
     waitForFileOrFolderToSync(
         context,
-        context.userData['currentUserSyncPath'],
+        '/',
         'FOLDER',
         getInitialSyncPatterns(),
     )
@@ -237,7 +238,7 @@ def hasSyncStatus(itemName, status):
 def waitForFileOrFolderToHaveSyncStatus(
     context, resource, resourceType, status=SYNC_STATUS['OK'], timeout=None
 ):
-    resource = sanitizePath(join(context.userData['currentUserSyncPath'], resource))
+    resource = sanitizePath(resource)
 
     listenSyncStatusForItem(resource, resourceType)
 

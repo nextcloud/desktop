@@ -127,10 +127,9 @@ def hook(context):
         )
         f.close()
 
-    # initially set user sync path to root
     # this path will be changed according to the user added to the client
     # e.g.: /tmp/client-bdd/Alice
-    context.userData['currentUserSyncPath'] = context.userData['clientRootSyncPath']
+    context.userData['currentUserSyncPath'] = ''
 
     if not os.path.exists(context.userData['clientRootSyncPath']):
         os.makedirs(context.userData['clientRootSyncPath'])
@@ -149,6 +148,11 @@ def hook(context):
         raise Exception(
             "Step execution through test middleware failed. Error: " + e.read().decode()
         )
+
+    # sync connection folder display name
+    context.userData['syncConnectionName'] = (
+        "Personal" if context.userData['ocis'] else "ownCloud"
+    )
 
 
 # determines if the test scenario failed or not

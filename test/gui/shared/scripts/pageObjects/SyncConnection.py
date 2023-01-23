@@ -29,9 +29,11 @@ class SyncConnection:
 
     @staticmethod
     def openMenu(context):
-        item_text = "Personal" if context.userData['ocis'] else "ownCloud"
         squish.openContextMenu(
-            squish.waitForObjectItem(SyncConnection.FOLDER_SYNC_CONNECTION, item_text),
+            squish.waitForObjectItem(
+                SyncConnection.FOLDER_SYNC_CONNECTION,
+                context.userData['syncConnectionName'],
+            ),
             0,
             0,
             squish.Qt.NoModifier,
