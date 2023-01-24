@@ -13,8 +13,7 @@
  * for more details.
  */
 
-#ifndef CASECLASHCONFLICTSOLVER_H
-#define CASECLASHCONFLICTSOLVER_H
+#pragma once
 
 #include <QObject>
 
@@ -106,5 +105,3 @@ private:
 };
 
 }
-
-#endif // CASECLASHCONFLICTSOLVER_H
