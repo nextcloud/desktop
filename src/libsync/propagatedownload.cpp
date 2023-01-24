@@ -1181,7 +1181,7 @@ void PropagateDownloadFile::downloadFinished()
         qCInfo(lcPropagateDownload) << "setting instruction to" << _item->_instruction << _item->_file;
     }
 
-    bool previousFileExists = FileSystem::fileExists(filename) && _item->_instruction != CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
+    auto previousFileExists = FileSystem::fileExists(filename) && _item->_instruction != CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
     if (previousFileExists) {
         // Preserve the existing file permissions.
         const auto existingFile = QFileInfo{filename};
