@@ -184,8 +184,7 @@ void CaseClashConflictSolver::processLeadingOrTrailingSpacesError(const QString 
         if (hasLeadingSpaces && hasTrailingSpaces) {
             _errorString = tr("Filename contains leading and trailing spaces.");
             emit errorStringChanged();
-        }
-        else if (hasLeadingSpaces) {
+        } else if (hasLeadingSpaces) {
             _errorString = tr("Filename contains leading spaces.");
             emit errorStringChanged();
         } else if (hasTrailingSpaces) {
