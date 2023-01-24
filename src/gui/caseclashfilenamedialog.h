@@ -1,5 +1,7 @@
 /*
- * Copyright (C) by Felix Weilbach <felix.weilbach@nextcloud.com>
+ * Copyright 2021 (c) Felix Weilbach <felix.weilbach@nextcloud.com>
+ * Copyright 2022 (c) Matthieu Gallien <matthieu.gallien@nextcloud.com>
+ * Copyright 2022 (c) Claudio Cambra <claudio.cambra@nextcloud.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
