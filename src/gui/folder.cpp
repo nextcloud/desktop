@@ -1345,14 +1345,14 @@ void Folder::removeLocalE2eFiles()
             bool parentPathEncrypted = false;
 
             while (pathDir.cdUp() && pathDir != folderRootDir) {
-                SyncJournalFileRecord rec;
+                SyncJournalFileRecord dirRec;
                 const auto currentCanonicalPath = pathDir.canonicalPath();
-                const auto ok = _journal.getFileRecord(currentCanonicalPath, &rec);
-                if (!ok) {
+
+                if (!_journal.getFileRecord(currentCanonicalPath, &dirRec)) {
                     qCWarning(lcFolder) << "Failed to get file record for" << currentCanonicalPath;
                 }
 
-                if (rec._isE2eEncrypted) {
+                if (dirRec._isE2eEncrypted) {
                     parentPathEncrypted = true;
                     break;
                 }
