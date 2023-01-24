@@ -727,13 +727,9 @@ QString Utility::makeCaseClashConflictFileName(const QString &filename, const QD
 
 bool Utility::isCaseClashConflictFile(const QString &name)
 {
-    auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
+    const auto bname = name.midRef(name.lastIndexOf(QLatin1Char('/')) + 1);
 
-    if (bname.contains(QStringLiteral("(case clash from"))) {
-        return true;
-    }
-
-    return false;
+    return bname.contains(QStringLiteral("(case clash from"));
 }
 
 } // namespace OCC
