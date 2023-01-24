@@ -90,6 +90,7 @@ public:
     virtual void rename(const QString &relativePath, const QString &relativeDestinationDirectory) = 0;
     virtual void setModTime(const QString &relativePath, const QDateTime &modTime) = 0;
     virtual void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) = 0;
+    virtual void setE2EE(const QString &relativepath, const bool enabled) = 0;
 };
 
 class DiskFileModifier : public FileModifier
@@ -106,6 +107,7 @@ public:
     void rename(const QString &from, const QString &to) override;
     void setModTime(const QString &relativePath, const QDateTime &modTime) override;
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
+    void setE2EE(const QString &relativepath, const bool enabled) override;
 };
 
 class FileInfo : public FileModifier
@@ -139,6 +141,8 @@ public:
     void setModTimeKeepEtag(const QString &relativePath, const QDateTime &modTime);
 
     void modifyLockState(const QString &relativePath, LockState lockState, int lockType, const QString &lockOwner, const QString &lockOwnerId, const QString &lockEditorId, quint64 lockTime, quint64 lockTimeout) override;
+
+    void setE2EE(const QString &relativepath, const bool enabled) override;
 
     FileInfo *find(PathComponents pathComponents, const bool invalidateEtags = false);
 
@@ -180,6 +184,7 @@ public:
     QString lockEditorId;
     quint64 lockTime = 0;
     quint64 lockTimeout = 0;
+    bool isEncrypted = false;
 
     // Sorted by name to be able to compare trees
     QMap<QString, FileInfo> children;

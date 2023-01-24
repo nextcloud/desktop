@@ -9,6 +9,7 @@
 #include <QTemporaryDir>
 #include <QtTest>
 
+#include "QtTest/qtestcase.h"
 #include "common/utility.h"
 #include "folderman.h"
 #include "account.h"
@@ -20,6 +21,18 @@
 
 using namespace OCC;
 
+static QByteArray fake400Response = R"(
+{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"Parameter is incorrect.\n"},"data":[]}}
+)";
+
+bool itemDidCompleteSuccessfully(const ItemCompletedSpy &spy, const QString &path)
+{
+    if (auto item = spy.findItem(path)) {
+        return item->_status == SyncFileItem::Success;
+    }
+    return false;
+}
+
 class TestFolderMan: public QObject
 {
     Q_OBJECT
@@ -30,6 +43,107 @@ signals:
     void incomingShareDeleted();
 
 private slots:
+    void testDeleteEncryptedFiles()
+    {
+        FakeFolder fakeFolder{FileInfo::A12_B12_C12_S12()};
+        QCOMPARE(fakeFolder.currentLocalState().children.count(), 4);
+
+        ItemCompletedSpy completeSpy(fakeFolder);
+        fakeFolder.localModifier().mkdir("encrypted");
+        fakeFolder.localModifier().setE2EE("encrypted", true);
+        fakeFolder.remoteModifier().mkdir("encrypted");
+        fakeFolder.remoteModifier().setE2EE("encrypted", true);
+
+        const auto fakeFileInfo = fakeFolder.remoteModifier().find("encrypted");
+        QVERIFY(fakeFileInfo);
+        QVERIFY(fakeFileInfo->isEncrypted);
+        QCOMPARE(fakeFolder.currentLocalState().children.count(), 5);
+
+        const auto fakeFileId = fakeFileInfo->fileId;
+        const auto fakeQnam = new FakeQNAM({});
+        // Let's avoid the null filename assert in the default FakeQNAM request creation
+        const auto fakeQnamOverride = [this, fakeFileId](const QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
+            Q_UNUSED(device)
+            QNetworkReply *reply = nullptr;
+
+            const auto reqUrl = req.url();
+            const auto reqRawPath = reqUrl.path();
+            const auto reqPath = reqRawPath.startsWith("/owncloud/") ? reqRawPath.mid(10) : reqRawPath;
+
+            if (reqPath.startsWith(QStringLiteral("ocs/v2.php/apps/end_to_end_encryption/api/v1/meta-data/"))) {
+                const auto splitUrlPath = reqPath.split('/');
+                const auto fileId = splitUrlPath.last();
+
+                const QUrlQuery urlQuery(req.url());
+                const auto formatParam = urlQuery.queryItemValue(QStringLiteral("format"));
+
+                if(fileId == fakeFileId && formatParam == QStringLiteral("json")) {
+                    reply = new FakePayloadReply(op, req, QJsonDocument().toJson(), this);
+                } else {
+                    reply = new FakeErrorReply(op, req, this, 400, fake400Response);
+                }
+            }
+
+            return reply;
+        };
+        fakeFolder.setServerOverride(fakeQnamOverride);
+        fakeQnam->setOverride(fakeQnamOverride);
+
+        const auto account = Account::create();
+        const auto capabilities = QVariantMap {
+            {QStringLiteral("end-to-end-encryption"), QVariantMap {
+                {QStringLiteral("enabled"), true},
+                {QStringLiteral("api-version"), QString::number(2.0)},
+            }},
+        };
+        account->setCapabilities(capabilities);
+        account->setCredentials(new FakeCredentials{fakeQnam});
+        account->setUrl(QUrl(("owncloud://somehost/owncloud")));
+        const auto accountState = new FakeAccountState(account);
+        QVERIFY(accountState->isConnected());
+
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        auto folderDef = folderDefinition(fakeFolder.localPath());
+        folderDef.targetPath = "";
+        const auto folder = FolderMan::instance()->addFolder(accountState, folderDef);
+        QVERIFY(folder);
+
+        qRegisterMetaType<OCC::SyncResult>("SyncResult");
+        QSignalSpy folderSyncDone(folder, &Folder::syncFinished);
+
+        QDir dir(folder->path() + QStringLiteral("encrypted"));
+        QVERIFY(dir.exists());
+        QVERIFY(fakeFolder.remoteModifier().find("encrypted"));
+        QVERIFY(fakeFolder.currentLocalState().find("encrypted"));
+        QCOMPARE(fakeFolder.currentLocalState().children.count(), 5);
+
+        // Rather than go through the pain of trying to replicate the E2EE response from
+        // the server, let's just manually set the encryption bool in the folder journal
+        SyncJournalFileRecord rec;
+        QVERIFY(folder->journalDb()->getFileRecord(QStringLiteral("encrypted"), &rec));
+        rec._isE2eEncrypted = true;
+        rec._path = QStringLiteral("encrypted").toUtf8();
+        rec._type = CSyncEnums::ItemTypeDirectory;
+        QVERIFY(folder->journalDb()->setFileRecord(rec));
+
+        SyncJournalFileRecord updatedRec;
+        QVERIFY(folder->journalDb()->getFileRecord(QStringLiteral("encrypted"), &updatedRec));
+        QVERIFY(updatedRec._isE2eEncrypted);
+        QVERIFY(updatedRec.isDirectory());
+
+        FolderMan::instance()->removeE2eFiles(account);
+
+        if (folderSyncDone.isEmpty()) {
+            QVERIFY(folderSyncDone.wait());
+        }
+
+        QVERIFY(fakeFolder.currentRemoteState().find("encrypted"));
+        QVERIFY(!fakeFolder.currentLocalState().find("encrypted"));
+        QCOMPARE(fakeFolder.currentLocalState().children.count(), 4);
+    }
+
     void testLeaveShare()
     {
         QTemporaryDir dir;

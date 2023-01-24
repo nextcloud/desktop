@@ -108,6 +108,10 @@ void DiskFileModifier::modifyLockState([[maybe_unused]] const QString &relativeP
 {
 }
 
+void DiskFileModifier::setE2EE([[maybe_unused]] const QString &relativePath, [[maybe_unused]] const bool enable)
+{
+}
+
 FileInfo FileInfo::A12_B12_C12_S12()
 {
     FileInfo fi { QString {}, {
@@ -211,6 +215,13 @@ void FileInfo::modifyLockState(const QString &relativePath, LockState lockState,
     file->lockEditorId = lockEditorId;
     file->lockTime = lockTime;
     file->lockTimeout = lockTimeout;
+}
+
+void FileInfo::setE2EE(const QString &relativePath, const bool enable)
+{
+    FileInfo *file = findInvalidatingEtags(relativePath);
+    Q_ASSERT(file);
+    file->isEncrypted = enable;
 }
 
 FileInfo *FileInfo::find(PathComponents pathComponents, const bool invalidateEtags)
@@ -366,6 +377,7 @@ FakePropfindReply::FakePropfindReply(FileInfo &remoteRootFileInfo, QNetworkAcces
         xml.writeTextElement(ncUri, QStringLiteral("lock-owner-editor"), fileInfo.lockOwnerId);
         xml.writeTextElement(ncUri, QStringLiteral("lock-time"), QString::number(fileInfo.lockTime));
         xml.writeTextElement(ncUri, QStringLiteral("lock-timeout"), QString::number(fileInfo.lockTimeout));
+        xml.writeTextElement(ncUri, QStringLiteral("is-encrypted"), fileInfo.isEncrypted ? QString::number(1) : QString::number(0));
         buffer.write(fileInfo.extraDavProperties);
         xml.writeEndElement(); // prop
         xml.writeTextElement(davUri, QStringLiteral("status"), QStringLiteral("HTTP/1.1 200 OK"));
@@ -1000,11 +1012,13 @@ QNetworkReply *FakeQNAM::createRequest(QNetworkAccessManager::Operation op, cons
     newRequest.setRawHeader("X-Request-ID", OCC::AccessManager::generateRequestId());
     auto contentType = request.header(QNetworkRequest::ContentTypeHeader).toString();
     if (_override) {
+        qDebug() << "Using override!";
         if (auto _reply = _override(op, newRequest, outgoingData)) {
             reply = _reply;
         }
     }
     if (!reply) {
+        qDebug() << newRequest.url();
         reply = overrideReplyWithError(getFilePathFromUrl(newRequest.url()), op, newRequest);
     }
     if (!reply) {
