@@ -158,15 +158,13 @@ void CaseClashConflictSolver::onCheckIfAllowedToRenameComplete(const QVariantMap
         emit errorStringChanged();
 
         return;
-    } else if (reply) {
-        if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != CONTENT_NOT_FOUND_ERROR) {
-            _allowedToRename = false;
-            emit allowedToRenameChanged();
-            _errorString = tr("Failed to fetch permissions with error %1").arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
-            emit errorStringChanged();
+    } else if (reply && reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() != CONTENT_NOT_FOUND_ERROR) {
+        _allowedToRename = false;
+        emit allowedToRenameChanged();
+        _errorString = tr("Failed to fetch permissions with error %1").arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
+        emit errorStringChanged();
 
-            return;
-        }
+        return;
     }
 
     _allowedToRename = true;
