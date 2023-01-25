@@ -96,25 +96,36 @@ class NextcloudFilesDatabaseManager : NSObject {
         return itemMetadataFromOcId(ocId)
     }
 
+    private func processItemMetadatasToDelete(databaseToWriteTo: Realm,
+                                              existingMetadatas: [NextcloudItemMetadataTable],
+                                              updatedMetadatas: [NextcloudItemMetadataTable]) {
+
+        assert(databaseToWriteTo.isInWriteTransaction)
+
+        for existingMetadata in existingMetadatas {
+            guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
+                    let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId) else { continue }
+
+            print("""
+                    Deleting metadata.
+                    ocID: %@,
+                    fileName: %@,
+                    etag: %@
+                  """
+                  , metadataToDelete.ocId, metadataToDelete.fileName, metadataToDelete.etag)
+            databaseToWriteTo.delete(metadataToDelete)
+        }
+    }
+
     func updateItemMetadatas(existingMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
         let database = ncDatabase()
 
         do {
             try database.write {
-                // Delete metadatas
-                for existingMetadata in existingMetadatas {
-                    guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
-                            let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId) else { continue }
+                processItemMetadatasToDelete(databaseToWriteTo: database,
+                                             existingMetadatas: existingMetadatas,
+                                             updatedMetadatas: updatedMetadatas)
 
-                    print("""
-                            Deleting metadata.
-                            ocID: %@,
-                            fileName: %@,
-                            etag: %@
-                          """
-                          , metadataToDelete.ocId, metadataToDelete.fileName, metadataToDelete.etag)
-                    database.delete(metadataToDelete)
-                }
 
                 // Update existing or create new metadatas
                 for updatedMetadata in updatedMetadatas {
