@@ -2108,6 +2108,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Zaznamenat výstup</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Povolit logování do dočasné složky</translation>
@@ -2116,13 +2122,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Log obsahuje citlivé údaje, které by neměly být zveřejňovány&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Aplikace může ukládat ukecané logy do dočasné složky. Tyto logy jsou velmi užitečné k hledání problému.
-Jelikož mohou být tyto soubory velmi velké, aplikace vytvoří nový pro každou synchronizaci a komprimuje všechny předchozí. Je doporučeno povolit mazání logů po několika hodinách z důvodu konzumace velkého místa na disku.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

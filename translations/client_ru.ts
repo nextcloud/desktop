@@ -2116,6 +2116,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>Вывод журнала</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Включить протоколирование во временный каталог</translation>
@@ -2124,13 +2130,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Журналы содержат чувствительную информацию и не должны быть доступны посторонним&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Клиент может записывать отладочные журналы во временный каталог. Эти журналы очень полезны для разбирательства с проблемами.
-Поскольку журнальные файлы могут стать очень большими, клиент будет начинать новый журнал при каждом запуске, и сжимать предыдущие. Также рекомендуется включить удаление журнальных файлов через пару часов, чтобы не тратить слишком много места.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

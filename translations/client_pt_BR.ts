@@ -2124,6 +2124,12 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
         <translation>Saída de Log</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Ativar o log para a pasta temporária</translation>
@@ -2132,13 +2138,6 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Os logs contêm informações confidenciais que você não deve disponibilizar publicamente&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>O cliente pode gravar logs de depuração em uma pasta temporária. Esses logs são muito úteis para diagnosticar problemas.
-Como os arquivos de log podem ficar grandes, o cliente iniciará um novo para cada execução de sincronização e compactará os mais antigos. Também é recomendável habilitar a exclusão de arquivos de log após algumas horas para evitar o consumo de muito espaço em disco.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

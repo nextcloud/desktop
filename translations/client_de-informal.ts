@@ -2121,6 +2121,12 @@ Objekte bei denen das Löschen erlaubt ist werden gelöscht, wenn sie die Lösch
         <translation>Log-Ausgabe</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Einschalten von Logging in einen temporären Ordner</translation>
@@ -2129,13 +2135,6 @@ Objekte bei denen das Löschen erlaubt ist werden gelöscht, wenn sie die Lösch
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;Die Logs enthalten sensible Informationen und sollten nicht veröffentlicht werden&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>Der Client kann Debug-Logs in einen temporären Ordner schreiben. Die darin enthaltenen Informationen sind hilfreich zur Diagnose von Problemen.
-Da diese Logs sehr groß werden können, erstellt der Client für jede Synchronisierung ein neues Log und komprimiert Ältere. Es empfiehlt sich, die automatische Löschung von Log-Dateien nach ein paar Stunden einzuschalten. Damit wird verhindert, dass zu viel Speicherplatz belegt wird. </translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

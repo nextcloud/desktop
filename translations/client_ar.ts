@@ -2113,6 +2113,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>إخراج السجل</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>تمكين كتابة السجلات إلى مجلد مؤقت</translation>
@@ -2121,13 +2127,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;تحتوي السجلات على معلومات حساسة لا ينبغي لك إتاحتها للجمهور&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>يمكن للعميل كتابة سجلات التصحيح إلى مجلد مؤقت. هذه السجلات مفيدة جدًا في تشخيص المشكلات.
-نظرًا لأن ملفات السجل يمكن أن تكبر ، سيبدأ العميل ملفًا جديدًا لكل عملية مزامنة وضغط الملفات القديمة. يوصى أيضًا بتمكين حذف ملفات السجل بعد بضع ساعات لتجنب استهلاك مساحة كبيرة على القرص.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

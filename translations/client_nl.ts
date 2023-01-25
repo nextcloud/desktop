@@ -2126,6 +2126,12 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
         <translation>Log output</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>Loggen naar tijdelijke map inschakelen</translation>
@@ -2134,14 +2140,6 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;De logs bevatten gevoelige informatie die je niet openbaar mag maken&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt; </translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>De client kan debug logs wegschrijven naar een tijdelijke map. Deze logs zijn erg nuttig voor het diagnosticeren van problemen.
-
-Omdat logbestanden groot kunnen worden, zal de client voor elke synchronisatie een nieuwe starten en oudere logbestanden comprimeren. Het wordt ook aangeraden om het verwijderen van logbestanden na een paar uur aan te zetten om te voorkomen dat er te veel schijfruimte wordt gebruikt.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>

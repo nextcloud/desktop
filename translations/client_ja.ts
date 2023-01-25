@@ -2111,6 +2111,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <translation>ログ出力</translation>
     </message>
     <message>
+        <location filename="../src/gui/logbrowser.ui" line="71"/>
+        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
+Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
         <source>Enable logging to temporary folder</source>
         <translation>テンポラリーフォルダへのログ保存を有効にする</translation>
@@ -2119,13 +2125,6 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="53"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;The logs contain sensitive information which you should not make publicly available&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; color:#ff0000;&quot;&gt;ログには一般に公開すべきではない機密情報が含まれています&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/logbrowser.ui" line="71"/>
-        <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
-Since log files can get large, the client will start a new one for each sync run and compress older ones. It is also recommended to enable deleting log files after a couple of hours to avoid consuming too much disk space.</source>
-        <translation>クライアントはデバッグログを一時フォルダに書き込むことができます。これらのログは問題の診断に非常に役立ちます。
-ログファイルは大きくなる可能性があるため、クライアントは同期を実行するたびに新しいログファイルを作成し、古いログファイルは圧縮されます。また、ディスクスペースの過剰な消費を避けるため、数時間経過したログファイルの自動削除を有効にすることをお勧めします。</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="84"/>
