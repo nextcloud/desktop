@@ -117,6 +117,42 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    private func processItemMetadatasToUpdate(databaseToWriteTo: Realm,
+                                              existingMetadatas: [NextcloudItemMetadataTable],
+                                              updatedMetadatas: [NextcloudItemMetadataTable]) {
+
+        assert(databaseToWriteTo.isInWriteTransaction)
+
+        for updatedMetadata in updatedMetadatas {
+            if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
+
+                if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
+                    !existingMetadata.isInSameRemoteState(updatedMetadata) {
+
+                    databaseToWriteTo.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
+                    print("""
+                            Updated existing metadata.
+                            ocID: %@,
+                            fileName: %@,
+                            etag: %@
+                          """
+                          , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+                }
+                // Don't update under other circumstances in which the metadata already exists
+
+            } else { // This is a new metadata
+                databaseToWriteTo.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
+                print("""
+                        Created new metadata.
+                        ocID: %@,
+                        fileName: %@,
+                        etag: %@
+                      """
+                      , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+            }
+        }
+    }
+
     func updateItemMetadatas(existingMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
         let database = ncDatabase()
 
@@ -127,37 +163,9 @@ class NextcloudFilesDatabaseManager : NSObject {
                                              updatedMetadatas: updatedMetadatas)
 
 
-                // Update existing or create new metadatas
-                for updatedMetadata in updatedMetadatas {
-                    if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
-
-                        if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
-                            !existingMetadata.isInSameRemoteState(updatedMetadata) {
-
-                            database.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
-                            print("""
-                                    Updated existing metadata.
-                                    ocID: %@,
-                                    fileName: %@,
-                                    etag: %@
-                                  """
-                                  , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
-                        }
-                        // Don't update under other circumstances in which the metadata already exists
-
-                    } else { // This is a new metadata
-                        database.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
-                        print("""
-                                Created new metadata.
-                                ocID: %@,
-                                fileName: %@,
-                                etag: %@
-                              """
-                              , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
-                    }
-
-
-                }
+                processItemMetadatasToUpdate(databaseToWriteTo: database,
+                                             existingMetadatas: existingMetadatas,
+                                             updatedMetadatas: updatedMetadatas)
             }
         } catch let error {
             print("Could not update any metadatas, received error: %@", error)
