@@ -62,7 +62,7 @@ void EncryptFolderJob::slotEncryptionFlagSuccess(const QByteArray &fileId)
         qCWarning(lcEncryptFolderJob) << "Error when setting the file record to the database" << rec._path << result.error();
     }
 
-    auto lockJob = new LockEncryptFolderApiJob(_account, fileId, this);
+    const auto lockJob = new LockEncryptFolderApiJob(_account, fileId, _journal, _account->e2e()->_publicKey, this);
     connect(lockJob, &LockEncryptFolderApiJob::success,
             this, &EncryptFolderJob::slotLockForEncryptionSuccess);
     connect(lockJob, &LockEncryptFolderApiJob::error,
@@ -103,7 +103,7 @@ void EncryptFolderJob::slotLockForEncryptionSuccess(const QByteArray &fileId, co
 
 void EncryptFolderJob::slotUploadMetadataSuccess(const QByteArray &folderId)
 {
-    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, this);
+    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, _journal, this);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
                     this, &EncryptFolderJob::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,
@@ -115,7 +115,7 @@ void EncryptFolderJob::slotUpdateMetadataError(const QByteArray &folderId, const
 {
     Q_UNUSED(httpReturnCode);
 
-    auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, this);
+    const auto unlockJob = new UnlockEncryptFolderApiJob(_account, folderId, _folderToken, _journal, this);
     connect(unlockJob, &UnlockEncryptFolderApiJob::success,
                     this, &EncryptFolderJob::slotUnlockFolderSuccess);
     connect(unlockJob, &UnlockEncryptFolderApiJob::error,

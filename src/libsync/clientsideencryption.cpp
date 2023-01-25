@@ -632,6 +632,42 @@ QByteArray privateKeyToPem(const QByteArray key) {
     return pem;
 }
 
+QByteArray encryptStringAsymmetric(const QSslKey key, const QByteArray &data)
+{
+    Q_ASSERT(!key.isNull());
+    if (key.isNull()) {
+        qCDebug(lcCse) << "Public key is null. Could not encrypt.";
+        return {};
+    }
+    Bio publicKeyBio;
+    const auto publicKeyPem = key.toPem();
+    BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
+    const auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
+    return EncryptionHelper::encryptStringAsymmetric(publicKey, data.toBase64());
+}
+
+QByteArray decryptStringAsymmetric(const QByteArray &privateKeyPem, const QByteArray &data)
+{
+    Q_ASSERT(!privateKeyPem.isEmpty());
+    if (privateKeyPem.isEmpty()) {
+        qCDebug(lcCse) << "Private key is empty. Could not encrypt.";
+        return {};
+    }
+
+    Bio privateKeyBio;
+    BIO_write(privateKeyBio, privateKeyPem.constData(), privateKeyPem.size());
+    const auto key = ClientSideEncryption::PKey::readPrivateKey(privateKeyBio);
+
+    // Also base64 decode the result
+    const auto decryptResult = EncryptionHelper::decryptStringAsymmetric(key, QByteArray::fromBase64(data));
+
+    if (decryptResult.isEmpty()) {
+        qCDebug(lcCse()) << "ERROR. Could not decrypt data";
+        return {};
+    }
+    return QByteArray::fromBase64(decryptResult);
+}
+
 QByteArray encryptStringSymmetric(const QByteArray& key, const QByteArray& data) {
     QByteArray iv = generateRandom(16);
 

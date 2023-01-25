@@ -287,6 +287,11 @@ public:
      */
     void markVirtualFileForDownloadRecursively(const QByteArray &path);
 
+    void setE2EeLockedFolder(const QByteArray &folderId, const QByteArray &folderToken);
+    QByteArray e2EeLockedFolder(const QByteArray &folderId);
+    QList<QPair<QByteArray, QByteArray>> e2EeLockedFolders();
+    void deleteE2EeLockedFolder(const QByteArray &folderId);
+
     /** Grouping for all functions relating to pin states,
      *
      * Use internalPinStates() to get at them.

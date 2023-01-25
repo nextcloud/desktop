@@ -30,6 +30,8 @@
 #include "configfile.h"
 #include "discovery.h"
 #include "common/vfs.h"
+#include "clientsideencryption.h"
+#include "clientsideencryptionjobs.h"
 
 #ifdef Q_OS_WIN
 #include <windows.h>
@@ -482,6 +484,18 @@ void SyncEngine::startSync()
             connect(job, &CleanupPollsJob::aborted, this, &SyncEngine::slotCleanPollsJobAborted);
             job->start();
             return;
+        }
+
+        const auto e2EeLockedFolders = _journal->e2EeLockedFolders();
+
+        if (!e2EeLockedFolders.isEmpty()) {
+            for (const auto &e2EeLockedFolder : e2EeLockedFolders) {
+                const auto folderId = e2EeLockedFolder.first;
+                qCInfo(lcEngine()) << "start unlock job for folderId:" << folderId;
+                const auto folderToken = EncryptionHelper::decryptStringAsymmetric(_account->e2e()->_privateKey, e2EeLockedFolder.second);
+                const auto unlockJob = new OCC::UnlockEncryptFolderApiJob(_account, folderId, folderToken, _journal, this);
+                unlockJob->start();
+            }
         }
     }
 

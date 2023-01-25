@@ -47,6 +47,8 @@ namespace EncryptionHelper {
             const QByteArray& key,
             const QByteArray& data
     );
+    OWNCLOUDSYNC_EXPORT QByteArray encryptStringAsymmetric(const QSslKey key, const QByteArray &data);
+    OWNCLOUDSYNC_EXPORT QByteArray decryptStringAsymmetric(const QByteArray &privateKeyPem, const QByteArray &data);
 
     QByteArray privateKeyToPem(const QByteArray key);
 
