@@ -41,6 +41,20 @@ class NextcloudItemMetadataTable: Object {
         return false
     }
 
+    func isInSameRemoteState(_ comparingMetadata: NextcloudItemMetadataTable) -> Bool {
+        return comparingMetadata.etag == self.etag &&
+            comparingMetadata.fileNameView == self.fileNameView &&
+            comparingMetadata.date == self.date &&
+            comparingMetadata.permissions == self.permissions &&
+            comparingMetadata.hasPreview == self.hasPreview &&
+            comparingMetadata.note == self.note &&
+            comparingMetadata.lock == self.lock &&
+            comparingMetadata.shareType == self.shareType &&
+            comparingMetadata.sharePermissionsCloudMesh == self.sharePermissionsCloudMesh &&
+            comparingMetadata.sharePermissionsCollaborationServices == self.sharePermissionsCollaborationServices &&
+            comparingMetadata.favorite == self.favorite
+    }
+
     @objc dynamic var account = ""
     @objc dynamic var assetLocalIdentifier = ""
     @objc dynamic var checksums = ""
