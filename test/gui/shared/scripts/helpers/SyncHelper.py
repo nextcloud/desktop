@@ -154,10 +154,7 @@ def getCurrentSyncStatus(resource, resourceType):
     return messages[-1]
 
 
-def waitForFileOrFolderToSync(
-    context, resource='', resourceType='FOLDER', patterns=None
-):
-    resource = getResourcePath(context, resource).rstrip('/')
+def waitForFileOrFolderToSync(context, resource, resourceType='FOLDER', patterns=None):
     listenSyncStatusForItem(resource, resourceType)
 
     timeout = context.userData['maxSyncTimeout'] * 1000
@@ -193,10 +190,10 @@ def waitForFileOrFolderToSync(
             )
 
 
-def waitForInitialSyncToComplete(context):
+def waitForInitialSyncToComplete(context, path):
     waitForFileOrFolderToSync(
         context,
-        '/',
+        path,
         'FOLDER',
         getInitialSyncPatterns(),
     )
