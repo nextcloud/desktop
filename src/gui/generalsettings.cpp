@@ -182,7 +182,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     //slotUpdateInfo();
 
     // misc
-    connect(_ui->monoIconsCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->crashreporterCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitCheckBox, &QAbstractButton::toggled, this, &GeneralSettings::saveMiscSettings);
     connect(_ui->newFolderLimitSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &GeneralSettings::saveMiscSettings);
@@ -216,10 +215,6 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     _ui->horizontalLayout_3->getContentsMargins(&m0, &m1, &m2, &m3);
     _ui->horizontalLayout_3->setContentsMargins(0, m1, m2, m3);
 
-    // OEM themes are not obliged to ship mono icons, so there
-    // is no point in offering an option
-    _ui->monoIconsCheckBox->setVisible(Theme::instance()->monoIconsAvailable());
-
     connect(_ui->ignoredFilesButton, &QAbstractButton::clicked, this, &GeneralSettings::slotIgnoreFilesEditor);
     connect(_ui->debugArchiveButton, &QAbstractButton::clicked, this, &GeneralSettings::slotCreateDebugArchive);
 
@@ -246,7 +241,6 @@ void GeneralSettings::loadMiscSettings()
 {
     QScopedValueRollback<bool> scope(_currentlyLoading, true);
     ConfigFile cfgFile;
-    _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
     _ui->serverNotificationsCheckBox->setChecked(cfgFile.optionalServerNotifications());
     _ui->callNotificationsCheckBox->setEnabled(_ui->serverNotificationsCheckBox->isEnabled());
     _ui->callNotificationsCheckBox->setChecked(cfgFile.showCallNotifications());
@@ -256,7 +250,6 @@ void GeneralSettings::loadMiscSettings()
     _ui->newFolderLimitCheckBox->setChecked(newFolderLimit.first);
     _ui->newFolderLimitSpinBox->setValue(newFolderLimit.second);
     _ui->newExternalStorage->setChecked(cfgFile.confirmExternalStorage());
-    _ui->monoIconsCheckBox->setChecked(cfgFile.monoIcons());
 }
 
 #if defined(BUILD_UPDATER)
@@ -420,9 +413,6 @@ void GeneralSettings::saveMiscSettings()
     if (_currentlyLoading)
         return;
     ConfigFile cfgFile;
-    bool isChecked = _ui->monoIconsCheckBox->isChecked();
-    cfgFile.setMonoIcons(isChecked);
-    Theme::instance()->setSystrayUseMonoIcons(isChecked);
     cfgFile.setCrashReporter(_ui->crashreporterCheckBox->isChecked());
 
     cfgFile.setNewBigFolderSizeLimit(_ui->newFolderLimitCheckBox->isChecked(),
