@@ -48,11 +48,19 @@ dir = {
 oc10_server_version = "latest"  # stable release
 ocis_server_version = "2.0.0"
 
+notify_channels = {
+    "desktop-internal": {
+        "type": "channel",
+    },
+    "hgemela": {
+        "type": "user",
+    },
+}
+
 def main(ctx):
     build_trigger = {
         "ref": [
             "refs/heads/master",
-            "refs/heads/2.**",
             "refs/tags/**",
             "refs/pull/**",
         ],
@@ -199,7 +207,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
                  False,
              ) + \
              gui_tests(squish_parameters, server_type) + \
-             uploadGuiTestLogs(server_type) + \
+             uploadGuiTestLogs(server_type, ctx.build.event == "cron") + \
              buildGithubComment(pipeline_name, server_type) + \
              githubComment(pipeline_name, server_type)
 
@@ -397,6 +405,40 @@ def notification(name, trigger = {}):
     trigger["status"].append("success")
     trigger["status"].append("failure")
 
+    steps = [{
+        "name": "create-template",
+        "image": OC_CI_ALPINE,
+        "environment": {
+            "CACHE_ENDPOINT": {
+                "from_secret": "cache_public_s3_server",
+            },
+            "CACHE_BUCKET": {
+                "from_secret": "cache_public_s3_bucket",
+            },
+        },
+        "commands": [
+            "bash %s/drone/notification_template.sh %s" % (dir["guiTest"], dir["base"]),
+        ],
+    }]
+
+    for channel, params in notify_channels.items():
+        settings = {
+            "webhook": from_secret("private_rocketchat"),
+            "template": "file:%s/template.md" % dir["base"],
+        }
+        if params["type"] == "user":
+            settings["recipient"] = channel
+        else:
+            settings["channel"] = channel
+
+        steps.append(
+            {
+                "name": "notification-%s" % channel,
+                "image": PLUGINS_SLACK,
+                "settings": settings,
+            },
+        )
+
     return [{
         "kind": "pipeline",
         "name": "notifications-" + name,
@@ -404,32 +446,7 @@ def notification(name, trigger = {}):
             "os": "linux",
             "arch": "amd64",
         },
-        "steps": [
-            {
-                "name": "create-template",
-                "image": OC_CI_ALPINE,
-                "environment": {
-                    "CACHE_ENDPOINT": {
-                        "from_secret": "cache_public_s3_server",
-                    },
-                    "CACHE_BUCKET": {
-                        "from_secret": "cache_public_s3_bucket",
-                    },
-                },
-                "commands": [
-                    "bash %s/drone/notification_template.sh %s" % (dir["guiTest"], dir["base"]),
-                ],
-            },
-            {
-                "name": "notification",
-                "image": PLUGINS_SLACK,
-                "settings": {
-                    "webhook": from_secret("private_rocketchat"),
-                    "channel": "desktop-internal",
-                    "template": "file:%s/template.md" % dir["base"],
-                },
-            },
-        ],
+        "steps": steps,
         "trigger": trigger,
     }]
 
@@ -619,7 +636,11 @@ def showGuiTestResult():
         },
     }]
 
-def uploadGuiTestLogs(server_type = "oc10"):
+def uploadGuiTestLogs(server_type = "oc10", is_cron_event = False):
+    status = ["failure"]
+    if is_cron_event:
+        status.append("success")
+
     return [{
         "name": "upload-gui-test-result",
         "image": PLUGINS_S3,
@@ -644,9 +665,7 @@ def uploadGuiTestLogs(server_type = "oc10"):
             },
         },
         "when": {
-            "status": [
-                "failure",
-            ],
+            "status": status,
         },
     }]
 
