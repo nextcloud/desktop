@@ -1,0 +1,7 @@
+Bugfix: Undefined client state after fetching credentials failed
+
+We fixed a bug where the client got stuck in a "No connection configured" state if an
+error occurred during the retrieval of the credentials from the system's keychain.
+The client then required a manual log out and log in.
+
+https://github.com/owncloud/client/issues/10408

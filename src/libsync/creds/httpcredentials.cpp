@@ -227,6 +227,9 @@ void HttpCredentials::fetchFromKeychainHelper()
                 _ready = true;
                 emit fetched();
             }
+        } else {
+            Q_EMIT authenticationFailed();
+            Q_EMIT _account->invalidCredentials();
         }
     });
 }
