@@ -55,7 +55,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
         <translation>Rensa statusmeddelandemenyn</translation>
     </message>
@@ -410,12 +410,12 @@
         <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att uteslutande ladda ner virtuella filer med end-to-end-kryptering. För bästa upplevelse med virtuella filer och end-to-end-kryptering, säkerställ att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation>Ändpunkt-till-ändpunkt-kryptering med virtuella filer</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Det verkar som att funktionen &quot;Virtuella filer&quot; är aktiverad för denna mapp. För närvarande är det inte möjligt att ladda ner virtuella filer med ändpunkt-till-ändpunkt-kryptering. För virtuella filer och ändpunkt-till-ändpunkt-kryptering, verifiera att &quot;Gör alltid tillgänglig lokalt&quot; är aktiverat på den krypterade mappen.</translation>
     </message>
@@ -440,19 +440,24 @@
         <translation>Inget konto är konfigurerat.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="247"/>
+        <source>Disable encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Display mnemonic</source>
         <translation>Visa mnemonic</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="252"/>
-        <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats för detta konto</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>Enable encryption</source>
         <translation>Aktivera kryptering</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="258"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats för detta konto</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -617,7 +622,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <translation>End to end krypteringsord</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Ändpunkt-till-ändpunkt krypteringsord</translation>
     </message>
@@ -625,6 +630,21 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>För att skydda din krypteringsidentitet, krypterar vi den med en mnemoteknisk av 12 ord. Notera dessa krypteringsord och håll dem säkra. De kommer behövas för att lägga till andra enheter till ditt konto (t.ex. mobiltelefon eller laptop).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
+        <source>Disable end-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
+        <source>Disable end-to-end encryption for %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1045"/>
@@ -748,12 +768,12 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <translation>Detta konto stödjer ändpunkt-till-ändpunkt-kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1591"/>
         <source>Set up encryption</source>
         <translation>Aktivera kryptering</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1596"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>Ändpunkt-till-ändpunkt-kryptering har aktiverats på det här kontot med en annan enhet.&lt;br&gt;Det kan aktiveras på den här enheten genom att ange ditt krypteringsord.&lt;br&gt;Detta kommer att möjliggöra synkronisering av befintliga krypterade mappar.</translation>
     </message>
@@ -1046,7 +1066,7 @@ Den här åtgärden avbryter alla synkroniseringar som körs.</translation>
         <translation>Vänligen ange ditt lösenord för end-to-end-kryptering:&lt;br&gt;&lt;br&gt;Användare: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1313"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Ange din lösenordsfras för ändpunkt-till-ändpunkt-kryptering:&lt;br&gt;&lt;br&gt;Användarnamn: %2&lt;br&gt;Konto: %3&lt;br&gt;</translation>
     </message>
@@ -1847,7 +1867,7 @@ Om detta var ett misstag och du vill behålla dina filer, kommer de att synkroni
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
-        <source> - %1</source>
+        <source>Could not decrypt!</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2590,6 +2610,11 @@ Objekt där radering är tillåtet raderas om de förhindrar att en mapp tas bor
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
@@ -2923,60 +2948,60 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Använd &amp;virtuella filer istället för att ladda ner innehåll direkt %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>(experimental)</source>
         <translation>(experimentell)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="239"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="249"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Windows stödjer inte virtuella filer direkt i rotkataloger. Välj en underkatalog.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 mappen &quot;%2&quot; är synkroniserad mot den lokala mappen &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Synkronisera mappen &apos;%1&apos;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Varning: Den lokala mappen är inte tom. Välj en lösning!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 ledigt utrymme</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="379"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="389"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Virtuella filer är inte tillgängliga för den valda mappen</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="439"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="449"/>
         <source>Local Sync Folder</source>
         <translation>Lokal mapp för synkronisering</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="523"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="492"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="540"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="550"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Det finns inte tillräckligt med ledigt utrymme i den lokala mappen!</translation>
     </message>
@@ -3080,144 +3105,144 @@ Observera att om du använder kommandoradsalternativ för loggning kommer den h�
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="262"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Lyckades ansluta till %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="288"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="303"/>
         <source>Invalid URL</source>
         <translation>Ogiltig webbadress</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Misslyckades att ansluta till %1 vid %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Försök att ansluta till %1 på %2 tog för lång tid.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="342"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>Trying to connect to %1 at %2 …</source>
         <translation>Försöker ansluta till %1 på %2 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Den autentiserade begäran till servern omdirigerades till &quot;%1&quot;. URL:n är felaktig, servern är felkonfigurerad.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Åtkomst förbjuden av servern. För att bekräfta att du har korrekta rättigheter, &lt;a href=&quot;%1&quot;&gt;klicka här&lt;/a&gt; för att ansluta till tjänsten med din webb-läsare.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Det var ett ogiltigt svar på en verifierad WebDAV-begäran</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="478"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Den lokala synkroniseringsmappen % 1 finns redan, aktiverar den för synkronisering.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
         <source>Creating local sync folder %1 …</source>
         <translation>Skapar lokal synkroniseringsmapp %1 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="485"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="487"/>
         <source>failed.</source>
         <translation>misslyckades.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="474"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>Could not create local folder %1</source>
         <translation>Kunde inte skapa lokal mapp %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>No remote folder specified!</source>
         <translation>Ingen fjärrmapp specificerad! </translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="540"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="555"/>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation>skapar mapp på Nextcloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="573"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Fjärrmapp %1 har skapats.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="573"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Fjärrmappen %1 finns redan. Ansluter den för synkronisering.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="575"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="590"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="592"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Skapande av mapp resulterade i HTTP felkod %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="579"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="594"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Det gick inte att skapa mappen efter som du inte har tillräckliga rättigheter!&lt;br/&gt;Vänligen återvänd och kontrollera dina rättigheter.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="583"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="598"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Misslyckades skapa fjärrmappen, troligen p.g.a felaktiga inloggningsuppgifter.&lt;/font&gt;&lt;br/&gt;Kontrollera dina inloggningsuppgifter.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="589"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Misslyckades skapa fjärrmapp %1 med fel &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="618"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>En synkroniseringsanslutning från %1 till fjärrmappen %2 har skapats.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="608"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="623"/>
         <source>Successfully connected to %1!</source>
         <translation>Ansluten till %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="615"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="630"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Anslutningen till %1 kunde inte etableras. Vänligen kontrollera och försök igen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="628"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="643"/>
         <source>Folder rename failed</source>
         <translation>Omdöpning av mapp misslyckades</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Kan inte ta bort och göra en säkerhetskopia av mappen på grund av att mappen eller en fil i den används av ett annat program. Stäng mappen eller filen och försök igen eller avbryt installationen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="682"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="697"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokal synkroniseringsmapp %1 skapad!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -3401,7 +3426,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
         <translation>Det går inte att synkronisera på grund av ogiltig ändringstid</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="958"/>
+        <location filename="../src/libsync/discovery.cpp" line="953"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Fel vid borttagning av filpost %1 från databasen</translation>
     </message>
@@ -3618,46 +3643,46 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
         <translation>Filen %1 kan inte döpas om till %2 på grund av namnkonflikt med en lokal fil</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="302"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="345"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="310"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>could not get file %1 from local DB</source>
         <translation>kunde inte hämta filen %1 från lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="331"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error setting pin state</source>
         <translation>Kunde inte sätta pin-status</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="290"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Error updating metadata: %1</source>
         <translation>Fel vid uppdatering av metadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="293"/>
         <source>The file %1 is currently in use</source>
         <translation>Filen %1 används för tillfället</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="353"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Kunde inte ta bort filposten %1 från lokal DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation>Kunde inte propagera namnbyte på katalogen i hierarkin</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to rename file</source>
         <translation>Kunde inte döpa om filen</translation>
     </message>
@@ -3678,7 +3703,7 @@ Detta är ett nytt experimentellt läge. Om du bestämmer dig för att använda 
 <context>
     <name>OCC::PropagateRemoteDeleteEncryptedRootFolder</name>
     <message>
-        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
+        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="148"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Felaktig HTTP-kod i svaret från servern. 204 förväntades, men &quot;%1 %2&quot; mottogs.</translation>
     </message>
@@ -4468,7 +4493,7 @@ Servern svarade med fel: %2</translation>
         <translation>Kunde inte uppdatera virtuell filmetadata: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="385"/>
+        <location filename="../src/libsync/syncengine.cpp" line="383"/>
         <source>Could not update file metadata: %1</source>
         <translation>Kunde inte uppdatera filens metadata: %1</translation>
     </message>
@@ -4478,38 +4503,38 @@ Servern svarade med fel: %2</translation>
         <translation>Kunde inte ställa in filposten till lokal DB: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="399"/>
+        <location filename="../src/libsync/syncengine.cpp" line="406"/>
         <source>Unresolved conflict.</source>
         <translation>Olöst konflikt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="480"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Endast %1 tillgängligt, behöver minst %2 för att starta</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="513"/>
+        <location filename="../src/libsync/syncengine.cpp" line="520"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Kunde inte öppna eller återskapa den lokala synkroniseringsdatabasen. Säkerställ att du har skrivrättigheter till synkroniseringsmappen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="529"/>
+        <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Använder virtuella filer med suffix, men suffix är inte inställt</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="548"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Kunde inte läsa svartlistan från den lokala databasen</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="582"/>
+        <location filename="../src/libsync/syncengine.cpp" line="589"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Det går inte att läsa från synkroniseringsjournalen.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="711"/>
+        <location filename="../src/libsync/syncengine.cpp" line="718"/>
         <source>Cannot open the sync journal</source>
         <translation>Det går inte att öppna synkroniseringsjournalen</translation>
     </message>
@@ -4519,12 +4544,12 @@ Servern svarade med fel: %2</translation>
         <translation>Synkroniseringen kommer att återupptas inom kort.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1149"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1156"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Diskutrymmet är lågt: Hämtningar som skulle reducera det fria utrymmet under %1 hoppas över.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1163"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Det finns inte tillräckligt med utrymme på servern för vissa uppladdningar.</translation>
     </message>
@@ -4653,24 +4678,24 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="520"/>
+        <location filename="../src/libsync/theme.cpp" line="524"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Skrivbordsklient&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="523"/>
-        <location filename="../src/libsync/theme.cpp" line="538"/>
+        <location filename="../src/libsync/theme.cpp" line="527"/>
+        <location filename="../src/libsync/theme.cpp" line="542"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Version %1. För mer information klicka &lt;a href=&apos;%2&apos;&gt;här&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="527"/>
+        <location filename="../src/libsync/theme.cpp" line="531"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Använder plugin för virtuella filer: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="542"/>
+        <location filename="../src/libsync/theme.cpp" line="546"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Denna release levererades av %1&lt;/p&gt;</translation>
     </message>
@@ -4862,8 +4887,8 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::VfsSuffix</name>
     <message>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Fel vid uppdatering av metadata på grund av ogiltig ändringstid</translation>
     </message>
@@ -4871,8 +4896,8 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>OCC::VfsXAttr</name>
     <message>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Fel vid uppdatering av metadata på grund av ogiltig ändringstid</translation>
     </message>
@@ -5329,17 +5354,17 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Skapa en ny delad länk</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera delningslänkens plats</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Delningsalternativ</translation>
     </message>
 </context>
 <context>
@@ -5347,57 +5372,57 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Ett fel uppstod vid inställning av delningslösenordet.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Redigera delning</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Avfärda</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation>Delningsetikett</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Tillåt redigering</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Lösenordsskydda</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Välj utgångsdatum</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Notering till mottagare</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Sluta dela</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till en annan länk</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera delningslänk</translation>
     </message>
 </context>
 <context>
@@ -5502,7 +5527,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Inga resultat för</translation>
     </message>
 </context>
 <context>
@@ -5510,7 +5535,7 @@ Servern svarade med fel: %2</translation>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Sökresultat %1</translation>
     </message>
 </context>
 <context>
@@ -5576,67 +5601,67 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>UserStatusSelector</name>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="41"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="62"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
         <translation>Online</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="73"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Away</source>
         <translation>Borta</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Do not disturb</source>
         <translation>Stör ej</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>Stäng av alla aviseringar</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Osynlig</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation>Visa som frånkopplad</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="126"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Statusmeddelande</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="210"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Vad är din status?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>Rensa status efter</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="322"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="329"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>Rensa status</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="337"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>Välj status</translation>
     </message>
@@ -5858,7 +5883,7 @@ Servern svarade med fel: %2</translation>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="499"/>
+        <location filename="../src/libsync/theme.cpp" line="503"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Byggd från Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; den %3, %4 med Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

@@ -55,7 +55,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
         <translation>Изчистване на менюто за съобщения на състояние</translation>
     </message>
@@ -410,12 +410,12 @@
         <translation>Изглежда, че функцията за виртуални файлове е активирана в тази папка. В момента не е възможно имплицитно изтегляне на виртуални файлове, които са криптирани цялостно. За да получите най-доброто изживяване с виртуални файлове и цялостно криптиране, уверете се, че криптираната папка е маркирана с „Нека винаги е достъпна локално“.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation>Цялостно Криптиране с виртуални файлове</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation>Изглежда, че функцията за виртуални файлове е активирана в тази папка. В момента не е възможно имплицитно изтегляне на виртуални файлове, които са криптирани цялостно. За да получите най-доброто изживяване с виртуални файлове и цялостно криптиране, уверете се, че криптираната папка е маркирана с „Нека винаги е достъпна локално“.</translation>
     </message>
@@ -440,19 +440,24 @@
         <translation>Няма настроен профил.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="247"/>
+        <source>Disable encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Display mnemonic</source>
         <translation>Показване на мнемоника</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="252"/>
-        <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Цялостното криптиране беше активирано за този профил</translation>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>Enable encryption</source>
         <translation>Активиране на криптирането</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="258"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation>Цялостното криптиране беше активирано за този профил</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -617,7 +622,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Цялостно мнемонично криптиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>End-to-end encryption mnemonic</source>
         <translation>Мнемонично криптиране от край до край</translation>
     </message>
@@ -625,6 +630,21 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>За да защитим вашата Криптографска идентичност, ние я криптираме мнемонично  с 12 думи от речника. Моля, запишете ги и ги пазете на сигурно място. Те ще са необходими, за да добавите други устройства към вашия профил (като вашия мобилен телефон или лаптоп).</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
+        <source>Disable end-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
+        <source>Disable end-to-end encryption for %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1045"/>
@@ -748,12 +768,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Този профил поддържа цялостно криптиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1591"/>
         <source>Set up encryption</source>
         <translation>Настройки за криптиране</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1596"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation>Цялостното криптиране е активирано в този профил с друго устройство.&lt;br&gt;То може да бъде активирано на това устройство, като въведете мнемониката си. &lt;br&gt;Това ще позволи синхронизиране на съществуващите криптирани папки.</translation>
     </message>
@@ -763,17 +783,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation type="unfinished"/>
+        <translation>Удостоверената заявка към сървъра беше пренасочена към  „%1“. URL адресът е лош, сървърът е неправилно конфигуриран.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation type="unfinished"/>
+        <translation>Забранен е достъп от сървъра. За да се провери дали имате правилен достъп&lt;a href=&quot;%1&quot;&gt; щракнете тук&lt;/a&gt; за да получите достъп до услугата с вашия браузър.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation type="unfinished"/>
+        <translation> Получен е невалиден отговор на удостоверена заявка за WebDAV</translation>
     </message>
 </context>
 <context>
@@ -910,7 +930,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="165"/>
         <source>Quit</source>
-        <translation>Напусни</translation>
+        <translation>Напускане</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="166"/>
@@ -1046,7 +1066,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Моля, въведете паролата си за цялостно шифроване:&lt;br&gt;&lt;br&gt; Потребител:% 2Профил:% 3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1313"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation>Моля, въведете паролата си за шифроване от край до край:&lt;br&gt;&lt;br&gt; Потребител:% 2&lt;br&gt;Профил:% 3&lt;br&gt;</translation>
     </message>
@@ -1847,8 +1867,8 @@ If this was an accident and you decide to keep your files, they will be re-synce
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
-        <source> - %1</source>
-        <translation> - %1</translation>
+        <source>Could not decrypt!</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="162"/>
@@ -2592,6 +2612,11 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Авторски права 2017-2021 Nextcloud GmbH&lt;br /&gt; Авторски права 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
@@ -2925,60 +2950,60 @@ Note that using any logging command line options will override this setting.</so
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Използване &amp; на виртуални файлове, вместо да се изтегля съдържание веднага % 1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>(experimental)</source>
         <translation>(експериментално)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="239"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="249"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Виртуалните файлове не се поддържат за основни дялове на Windows като локална папка. Моля, изберете валидна подпапка под буквата на устройството.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 папка „%2“ е синхронизирана с локалната папка „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Синхронизиране на папка „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Предупреждение: Локалната папка не е празна. Изберете резолюция!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 свободно място</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="379"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="389"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation> Не са налични виртуални файлове за избраната папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="439"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="449"/>
         <source>Local Sync Folder</source>
         <translation> Няма достатъчно място в Папка за Локално</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="523"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="492"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="540"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="550"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>Няма достатъчно място в локалната папка</translation>
     </message>
@@ -3082,144 +3107,144 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="262"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Успешно свързване с %1: %2 версия %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="288"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="303"/>
         <source>Invalid URL</source>
         <translation>Невалиден URL адрес</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Неуспешно свързване с % 1 пр и% 2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Време за изчакване при опит за свързване с % 1 при % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="342"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>Trying to connect to %1 at %2 …</source>
         <translation>Опит се да се свърже с % 1 при % 2 ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Удостоверената заявка към сървъра беше пренасочена към  „%1“. URL адресът е лош, сървърът е неправилно конфигуриран.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Достъпът е забранен от сървъра. За да се провери дали имате правилен достъп&lt;a href=&quot;%1&quot;&gt; щракнете тук&lt;/a&gt; и ще получите достъп до услугата с вашия браузър.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation> Получен е невалиден отговор на удостоверена заявка за WebDAV</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="478"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Местната папка за синхронизиране % 1 вече съществува, настройка за синхронизиране. &lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
         <source>Creating local sync folder %1 …</source>
         <translation>Създаване на местна папка за синхронизиране % 1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="485"/>
         <source>OK</source>
         <translation>Добре</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="487"/>
         <source>failed.</source>
         <translation>неуспешен</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="474"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>Could not create local folder %1</source>
         <translation>Локалната папка %1 не може да бъде създадена</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>No remote folder specified!</source>
         <translation>Не сте посочили отдалечена папка!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="540"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="555"/>
         <source>Error: %1</source>
         <translation>Грешка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation>Създаване на папка на Nextcloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="573"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Одалечената папка %1 е създадена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="573"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Отдалечената папка % 1 вече съществува. Свързване за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="575"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="590"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="592"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Създаването на папката предизвика HTTP грешка %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="579"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="594"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Създаването на отдалечена папка беше неуспешно, защото предоставените идентификационни данни са грешни! &lt;br/&gt;Моля, върнете се и проверете вашите идентификационни данни.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="583"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="598"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Създаването на отдалечена папка беше неуспешно, вероятно защото предоставените идентификационни данни са грешни!&lt;/font&gt;&lt;br/&gt; Моля, върнете се и проверете вашите идентификационни данни.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="589"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Създаването на отдалечената папка %1 се провали: &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="618"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Установена е връзка за синхронизиране от % 1 към отдалечена директория % 2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="608"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="623"/>
         <source>Successfully connected to %1!</source>
         <translation>Успешно свързване с %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="615"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="630"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Връзката с % 1 не можа да бъде установена. Моля проверете отново.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="628"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="643"/>
         <source>Folder rename failed</source>
         <translation>Преименуването на папка се провали</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Не може да се премахне и архивира папката, защото папката или файлът в нея е отворен в друга програма. Моля, затворете папката или файла и натиснете бутон повторен опит или отменете настройката.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="682"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="697"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Локалната папка %1 е създадена успешно!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -3403,7 +3428,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <translation>Не може да се синхронизира поради невалиден час на модификация</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="958"/>
+        <location filename="../src/libsync/discovery.cpp" line="953"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Грешка при изтриване на запис на файл %1 от базата данни</translation>
     </message>
@@ -3620,46 +3645,46 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
         <translation> Файл % 1 не може да бъде преименуван на %2 поради сблъсък с името на локален файл!</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="302"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="345"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="310"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>could not get file %1 from local DB</source>
         <translation>не можа да се получи файл %1 от локалната БД</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="331"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error setting pin state</source>
         <translation>Грешка при настройване на състоянието на закачване</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="290"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Error updating metadata: %1</source>
         <translation>Грешка при актуализиране на метаданни: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="293"/>
         <source>The file %1 is currently in use</source>
         <translation>Файлът %1 в момента се използва</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="353"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Не можа да се изтрие запис на файл %1 от локалната БД</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation> Неуспешно разпространение на преименуването на директория в йерархията</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to rename file</source>
         <translation>Неуспешно преименуване на файл</translation>
     </message>
@@ -3680,7 +3705,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteDeleteEncryptedRootFolder</name>
     <message>
-        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
+        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="148"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Грешен HTTP код, върнат от сървъра. Очаквани 204, но са получени „% 1% 2“.</translation>
     </message>
@@ -4092,7 +4117,9 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation type="unfinished"/>
+        <translation>Не можа да криптира следната папка: „%1“. 
+
+Сървърът отговори с грешка: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
@@ -4468,7 +4495,7 @@ Server replied with error: %2</source>
         <translation>Невъзможност да се актуализират метаданните на виртуалния файл: % 1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="385"/>
+        <location filename="../src/libsync/syncengine.cpp" line="383"/>
         <source>Could not update file metadata: %1</source>
         <translation>Невъзможност да се актуализират метаданните на файла: % 1</translation>
     </message>
@@ -4478,38 +4505,38 @@ Server replied with error: %2</source>
         <translation>Не може да се зададе запис на файл в локалната БД: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="399"/>
+        <location filename="../src/libsync/syncengine.cpp" line="406"/>
         <source>Unresolved conflict.</source>
         <translation>Неразрешени конфликт.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="480"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Наличен е само % 1, за започване трябват поне % 2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="513"/>
+        <location filename="../src/libsync/syncengine.cpp" line="520"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Не може да се отвори или създаде локална база данни за синхронизиране. Уверете се, че имате достъп за запис в папката за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="529"/>
+        <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Използване на виртуални файлове със суфикс, но суфиксът не е зададен</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="548"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Не може да се прочете черният списък от локалната база данни</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="582"/>
+        <location filename="../src/libsync/syncengine.cpp" line="589"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Не може да се чете от дневника за синхронизиране.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="711"/>
+        <location filename="../src/libsync/syncengine.cpp" line="718"/>
         <source>Cannot open the sync journal</source>
         <translation>Не може да се отвори дневника за синхронизиране.</translation>
     </message>
@@ -4519,12 +4546,12 @@ Server replied with error: %2</source>
         <translation>Синхронизацията ще се възобнови скоро.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1149"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1156"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Дисковото пространство е малко: Пропуснати са изтегляния, които биха намалили свободното място под% 1.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1163"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сървъра няма достатъчно място за някои качвания.</translation>
     </message>
@@ -4653,24 +4680,24 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="520"/>
+        <location filename="../src/libsync/theme.cpp" line="524"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;%1 Клиент за настолен компютър&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="523"/>
-        <location filename="../src/libsync/theme.cpp" line="538"/>
+        <location filename="../src/libsync/theme.cpp" line="527"/>
+        <location filename="../src/libsync/theme.cpp" line="542"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Версия %1. За допълнителна информация, моля щракнете &lt;a href=&apos;%2&apos;&gt;тук&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="527"/>
+        <location filename="../src/libsync/theme.cpp" line="531"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Използване на добавка за виртуални файлове: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="542"/>
+        <location filename="../src/libsync/theme.cpp" line="546"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Това издание е предоставено от % 1&lt;/p&gt;</translation>
     </message>
@@ -4862,8 +4889,8 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::VfsSuffix</name>
     <message>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Грешка при актуализиране на метаданните поради невалиден час на модификация</translation>
     </message>
@@ -4871,8 +4898,8 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::VfsXAttr</name>
     <message>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Грешка при актуализиране на метаданните поради невалиден час на модификация</translation>
     </message>
@@ -5329,17 +5356,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
         <source>Create a new share link</source>
-        <translation type="unfinished"/>
+        <translation>Създаване на нова връзка за споделяне</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
         <source>Copy share link location</source>
-        <translation type="unfinished"/>
+        <translation>Копиране на местоположението на връзка за споделяне</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
         <source>Share options</source>
-        <translation type="unfinished"/>
+        <translation>Опции за споделяне</translation>
     </message>
 </context>
 <context>
@@ -5347,57 +5374,57 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
         <source>An error occurred setting the share password.</source>
-        <translation type="unfinished"/>
+        <translation>Възникна грешка при задаване на парола за споделянето.</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Edit share</source>
-        <translation type="unfinished"/>
+        <translation>Редактиране на споделяне</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Отхвърляне</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
         <source>Share label</source>
-        <translation type="unfinished"/>
+        <translation> Споделяне на етикет</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation type="unfinished"/>
+        <translation>Разрешаване на редактиране</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Защита с парола</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation type="unfinished"/>
+        <translation>Задаване на срок на валидност</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Бележка за получателя</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation type="unfinished"/>
+        <translation>Прекратяване на споделянето</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation type="unfinished"/>
+        <translation>Добавяне на още една връзка</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation type="unfinished"/>
+        <translation>Копиране на връзка за споделяне</translation>
     </message>
 </context>
 <context>
@@ -5502,7 +5529,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation type="unfinished"/>
+        <translation>Няма резултати за</translation>
     </message>
 </context>
 <context>
@@ -5510,7 +5537,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation type="unfinished"/>
+        <translation>Секция с резултати от търсенето %1</translation>
     </message>
 </context>
 <context>
@@ -5576,67 +5603,67 @@ Server replied with error: %2</source>
 <context>
     <name>UserStatusSelector</name>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="41"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
         <translation>Състояние на линия</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="62"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
         <translation>На линия</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="73"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Away</source>
         <translation>Отсъстващ</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Do not disturb</source>
         <translation>Не безпокой</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>Заглушаване на всички известия</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Невидим</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation>Показване като офлайн</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="126"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Съобщение за състояние</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="210"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Какъв е вашият статус?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>Изчистване на съобщение за състоянието след това</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="322"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation>Отказ</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="329"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>Изчистване на съобщението за състоянието</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="337"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>Задаване на съобщение за състоянието</translation>
     </message>
@@ -5858,7 +5885,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="499"/>
+        <location filename="../src/libsync/theme.cpp" line="503"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Изграден от Git редакция &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; на %3, %4 използвайки Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>

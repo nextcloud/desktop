@@ -55,7 +55,7 @@
 <context>
     <name>BasicComboBox</name>
     <message>
-        <location filename="../src/gui/BasicComboBox.qml" line="59"/>
+        <location filename="../src/gui/BasicComboBox.qml" line="58"/>
         <source>Clear status message menu</source>
         <translation>Vymazať menu správ o stave</translation>
     </message>
@@ -410,12 +410,12 @@
         <translation>Vyzerá, že podpora Virtuálnych Súborov je na tomto priečinku zapnutá. V súčasnosti nie je možné stiahnuť virtuálne súbory ktoré sú šifrované End-to-End. Pre získanie najlepšieho výsledku s Virtuálnymi súbormi a End-to-End šifrovaním, ubezpečte sa že šifrovaný priečinok je označený ako &quot;Vždy dostupné lokálne&quot;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="92"/>
+        <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="93"/>
+        <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
         <translation type="unfinished"/>
     </message>
@@ -440,19 +440,24 @@
         <translation>Nie je nastavený žiadny učet.</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="247"/>
+        <source>Disable encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Display mnemonic</source>
         <translation>Zobraziť mnemotechnické</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="252"/>
-        <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
         <source>Enable encryption</source>
         <translation>Zapnúť šifrovanie</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="258"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="279"/>
@@ -616,13 +621,28 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1003"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>End-to-end encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="981"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
+        <source>Disable end-to-end encryption</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
+        <source>Disable end-to-end encryption for %1?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -747,12 +767,12 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Tento účet podporuje šifrovanie end-to-end</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1555"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1591"/>
         <source>Set up encryption</source>
         <translation>Nastaviť šifrovanie</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1560"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1596"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation type="unfinished"/>
     </message>
@@ -1045,7 +1065,7 @@ Táto akcia zruší všetky prebiehajúce synchronizácie.</translation>
         <translation>Zadajte svoju prístupovú frázu pre šifrovanie medzi koncovými bodmi: &lt;br&gt;&lt;br&gt;Používateľ: %2&lt;br&gt;Účet: %3&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/clientsideencryption.cpp" line="1257"/>
+        <location filename="../src/libsync/clientsideencryption.cpp" line="1313"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
         <translation type="unfinished"/>
     </message>
@@ -1846,7 +1866,7 @@ Ak to bol omyl a rozhodnete sa tieto súbory ponechať, budú opäť synchronizo
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
-        <source> - %1</source>
+        <source>Could not decrypt!</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -2591,6 +2611,11 @@ Položky, pri ktorých je povolené odstraňovanie sa vymažú, ak bránia odstr
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
+        <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</source>
         <translation>&lt;p&gt;Copyright 2017-2021 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2021 ownCloud GmbH&lt;/p&gt;</translation>
     </message>
@@ -2924,60 +2949,60 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Použiť virtuálne súbory namiesto okamžitého sťahovania obsahu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="243"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
         <source>(experimental)</source>
         <translation>(experimentálne)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="239"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="249"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Virtuálne súbory nie sú podporované na koreňovej partícii Windows ako lokálny priečinok. Prosím vyberte validný priečinok pod písmenom disku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="276"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 priečinok &quot;%2&quot; je zosynchronizovaný do lokálneho priečinka &quot;%3&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="279"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Sychronizovať priečinok &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="284"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Varovanie: Lokálny priečinok nie je prázdny. Vyberte riešenie!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 voľného miesta</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="379"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="389"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Virtuálne súbory sú nedostupné pre vybraný priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="439"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="449"/>
         <source>Local Sync Folder</source>
         <translation>Lokálny synchronizačný priečinok</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="482"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="523"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="492"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="540"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="550"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>V lokálnom priečinku nie je dostatok voľného miesta!</translation>
     </message>
@@ -3081,144 +3106,144 @@ Upozorňujeme, že použitie akýchkoľvek príkazov pre logovanie z príkazové
 <context>
     <name>OCC::OwncloudSetupWizard</name>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="262"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="277"/>
         <source>&lt;font color=&quot;green&quot;&gt;Successfully connected to %1: %2 version %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;Úspešne pripojené k %1: %2 verzie %3 (%4)&lt;/font&gt;&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="288"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="303"/>
         <source>Invalid URL</source>
         <translation>Neplatná URL</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="290"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="305"/>
         <source>Failed to connect to %1 at %2:&lt;br/&gt;%3</source>
         <translation>Zlyhalo spojenie s %1 o %2:&lt;br/&gt;%3</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="308"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="323"/>
         <source>Timeout while trying to connect to %1 at %2.</source>
         <translation>Časový limit vypršal pri pokuse o pripojenie k %1 na %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="342"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="357"/>
         <source>Trying to connect to %1 at %2 …</source>
         <translation>Pokus o pripojenie k %1 na %2...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="395"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="410"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
         <translation>Overená požiadavka na server bola presmerovaná na &quot;%1&quot;. URL je zlá, server nie je správne nakonfigurovaný.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="408"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="423"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
         <translation>Prístup zamietnutý serverom. Po overení správnych prístupových práv, &lt;a href=&quot;%1&quot;&gt;kliknite sem&lt;/a&gt; a otvorte službu v svojom prezerači.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="417"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="432"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
         <translation>Neplatná odpoveď na overenú WebDAV požiadavku</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="463"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="478"/>
         <source>Local sync folder %1 already exists, setting it up for sync.&lt;br/&gt;&lt;br/&gt;</source>
         <translation>Lokálny synchronizačný priečinok %1 už existuje, prebieha jeho nastavovanie pre synchronizáciu.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="466"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="481"/>
         <source>Creating local sync folder %1 …</source>
         <translation>Vytváranie lokálneho priečinka pre synchronizáciu %1...</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="470"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="485"/>
         <source>OK</source>
         <translation>OK</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="472"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="487"/>
         <source>failed.</source>
         <translation>neúspešné.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="474"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="489"/>
         <source>Could not create local folder %1</source>
         <translation>Nemožno vytvoriť lokálny priečinok %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="534"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="549"/>
         <source>No remote folder specified!</source>
         <translation>Vzdialený priečinok nie je nastavený!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="540"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="555"/>
         <source>Error: %1</source>
         <translation>Chyba: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="553"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="568"/>
         <source>creating folder on Nextcloud: %1</source>
         <translation>Vytvára sa priečinok v Nextcloud: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="558"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="573"/>
         <source>Remote folder %1 created successfully.</source>
         <translation>Vzdialený priečinok %1 bol úspešne vytvorený.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="573"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
         <source>The remote folder %1 already exists. Connecting it for syncing.</source>
         <translation>Vzdialený priečinok %1 už existuje. Prebieha jeho pripájanie pre synchronizáciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="575"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="577"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="590"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="592"/>
         <source>The folder creation resulted in HTTP error code %1</source>
         <translation>Vytváranie priečinka skončilo s HTTP chybovým kódom %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="579"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="594"/>
         <source>The remote folder creation failed because the provided credentials are wrong!&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>Proces vytvárania vzdialeného priečinka zlyhal, lebo použité prihlasovacie údaje nie sú správne!&lt;br/&gt;Prosím skontrolujte si vaše údaje a skúste to znovu.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="583"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="598"/>
         <source>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Remote folder creation failed probably because the provided credentials are wrong.&lt;/font&gt;&lt;br/&gt;Please go back and check your credentials.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;font color=&quot;red&quot;&gt;Vytvorenie vzdialeného priečinka pravdepodobne zlyhalo kvôli nesprávnym prihlasovacím údajom.&lt;/font&gt;&lt;br/&gt;Prosím choďte späť a skontrolujte ich.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="588"/>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="589"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="604"/>
         <source>Remote folder %1 creation failed with error &lt;tt&gt;%2&lt;/tt&gt;.</source>
         <translation>Vytvorenie vzdialeného priečinka %1 zlyhalo s chybou &lt;tt&gt;%2&lt;/tt&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="603"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="618"/>
         <source>A sync connection from %1 to remote directory %2 was set up.</source>
         <translation>Synchronizačné spojenie z %1 do vzdialeného priečinka %2 bolo práve nastavené.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="608"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="623"/>
         <source>Successfully connected to %1!</source>
         <translation>Úspešne pripojené s %1!</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="615"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="630"/>
         <source>Connection to %1 could not be established. Please check again.</source>
         <translation>Pripojenie k %1 nemohlo byť iniciované. Prosím skontrolujte to znovu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="628"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="643"/>
         <source>Folder rename failed</source>
         <translation>Premenovanie priečinka zlyhalo</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="629"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="644"/>
         <source>Cannot remove and back up the folder because the folder or a file in it is open in another program. Please close the folder or file and hit retry or cancel the setup.</source>
         <translation>Nemožno odstrániť a zazálohovať priečinok, pretože priečinok alebo súbor je otvorený v inom programe. Prosím zatvorte priečinok alebo súbor a skúste to znovu alebo zrušte akciu.</translation>
     </message>
     <message>
-        <location filename="../src/gui/owncloudsetupwizard.cpp" line="682"/>
+        <location filename="../src/gui/owncloudsetupwizard.cpp" line="697"/>
         <source>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Local sync folder %1 successfully created!&lt;/b&gt;&lt;/font&gt;</source>
         <translation>&lt;font color=&quot;green&quot;&gt;&lt;b&gt;Lokálny synchronizačný priečinok %1 bol úspešne vytvorený!&lt;/b&gt;&lt;/font&gt;</translation>
     </message>
@@ -3402,7 +3427,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
         <translation>Chyba pri synchronizácii z dôvodu neplatného času poslednej zmeny</translation>
     </message>
     <message>
-        <location filename="../src/libsync/discovery.cpp" line="958"/>
+        <location filename="../src/libsync/discovery.cpp" line="953"/>
         <source>Error while deleting file record %1 from the database</source>
         <translation>Chyba pri mazaní záznamu o súbore %1 z databázy</translation>
     </message>
@@ -3619,46 +3644,46 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::PropagateLocalRename</name>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="240"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="248"/>
         <source>File %1 cannot be renamed to %2 because of a local file name clash</source>
         <translation>Súbor %1 nemôže byť premenovaný na %2 z dôvodu, že tento názov je už použitý</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="257"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="302"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="345"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="265"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="310"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="348"/>
         <source>could not get file %1 from local DB</source>
         <translation>nie je možné získať súbor %1 z lokálnej DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="331"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="277"/>
         <source>Error setting pin state</source>
         <translation>Chyba pri nastavovaní stavu pin-u</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="282"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="290"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="323"/>
         <source>Error updating metadata: %1</source>
         <translation>Chyba pri aktualizácii metadát: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="285"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="293"/>
         <source>The file %1 is currently in use</source>
         <translation>Súbor %1 sa v súčasnosti používa</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="307"/>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="350"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="315"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="353"/>
         <source>Could not delete file record %1 from local DB</source>
         <translation>Nie je možné vymazať záznam o súbore %1 z lokálnej DB</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="320"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="328"/>
         <source>Failed to propagate directory rename in hierarchy</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/propagatorjobs.cpp" line="325"/>
+        <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to rename file</source>
         <translation>Nepodarilo sa premenovať súbor</translation>
     </message>
@@ -3679,7 +3704,7 @@ Toto je nový experimentálny režim. Ak sa ho rozhodnete použiť, nahláste v�
 <context>
     <name>OCC::PropagateRemoteDeleteEncryptedRootFolder</name>
     <message>
-        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="143"/>
+        <location filename="../src/libsync/propagateremotedeleteencryptedrootfolder.cpp" line="148"/>
         <source>Wrong HTTP code returned by server. Expected 204, but received &quot;%1 %2&quot;.</source>
         <translation>Server vrátil neplatný HTTP kód. Očakávaný bol 204, ale vrátený bol &quot;%1 %2&quot;.</translation>
     </message>
@@ -4467,7 +4492,7 @@ Server replied with error: %2</source>
         <translation>Nemôžem aktualizovať metadáta virtuálneho súboru: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="385"/>
+        <location filename="../src/libsync/syncengine.cpp" line="383"/>
         <source>Could not update file metadata: %1</source>
         <translation>Nemôžem aktualizovať metadáta súboru: %1</translation>
     </message>
@@ -4477,38 +4502,38 @@ Server replied with error: %2</source>
         <translation>Nie je možné vytvoriť záznam o súbore v lokálnej DB: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="399"/>
+        <location filename="../src/libsync/syncengine.cpp" line="406"/>
         <source>Unresolved conflict.</source>
         <translation>Nevyriešený konflikt.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="480"/>
+        <location filename="../src/libsync/syncengine.cpp" line="487"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Je dostupných len %1, pre spustenie je potrebných aspoň %2</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="513"/>
+        <location filename="../src/libsync/syncengine.cpp" line="520"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Nie je možné otvoriť alebo vytvoriť miestnu synchronizačnú databázu. Skontrolujte či máte právo na zápis do synchronizačného priečinku.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="529"/>
+        <location filename="../src/libsync/syncengine.cpp" line="536"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Používate virtuálne súbory s príponou, ale prípona nie je nastavená</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="541"/>
+        <location filename="../src/libsync/syncengine.cpp" line="548"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Nepodarilo sa načítať čiernu listinu z miestnej databázy</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="582"/>
+        <location filename="../src/libsync/syncengine.cpp" line="589"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Nemožno čítať zo synchronizačného žurnálu</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="711"/>
+        <location filename="../src/libsync/syncengine.cpp" line="718"/>
         <source>Cannot open the sync journal</source>
         <translation>Nemožno otvoriť sync žurnál</translation>
     </message>
@@ -4518,12 +4543,12 @@ Server replied with error: %2</source>
         <translation>Synchronizácia bude čoskoro pokračovať.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1149"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1156"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Na disku dochádza voľné miesto. Sťahovanie, ktoré by zmenšilo voľné miesto pod %1 bude vynechané.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1156"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1163"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>Na serveri nie je pre niektoré z nahrávaných súborov dostatok voľného miesta.</translation>
     </message>
@@ -4652,24 +4677,24 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::Theme</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="520"/>
+        <location filename="../src/libsync/theme.cpp" line="524"/>
         <source>&lt;p&gt;%1 Desktop Client&lt;/p&gt;</source>
         <extracomment>Example text: &quot;&lt;p&gt;Nextcloud Desktop Client&lt;/p&gt;&quot; (%1 is the application name)</extracomment>
         <translation>&lt;p&gt;Klient %1 pre počítač&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="523"/>
-        <location filename="../src/libsync/theme.cpp" line="538"/>
+        <location filename="../src/libsync/theme.cpp" line="527"/>
+        <location filename="../src/libsync/theme.cpp" line="542"/>
         <source>&lt;p&gt;Version %1. For more information please click &lt;a href=&apos;%2&apos;&gt;here&lt;/a&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Verzia %1. Viac informácií získate &lt;a href=&apos;%2&apos;&gt;kliknutím sem&lt;/a&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="527"/>
+        <location filename="../src/libsync/theme.cpp" line="531"/>
         <source>&lt;p&gt;&lt;small&gt;Using virtual files plugin: %1&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Používa zásuvný modul virtuálnych súborov: %1&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="542"/>
+        <location filename="../src/libsync/theme.cpp" line="546"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
         <translation>&lt;p&gt;Toto vydanie bolo poskytnuté %1&lt;/p&gt;</translation>
     </message>
@@ -4861,8 +4886,8 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::VfsSuffix</name>
     <message>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="72"/>
-        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="82"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Chyba pri aktualizácii metadát z dôvodu neplatného času poslednej zmeny</translation>
     </message>
@@ -4870,8 +4895,8 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::VfsXAttr</name>
     <message>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="73"/>
-        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="83"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
+        <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Chyba pri aktualizácii metadát z dôvodu neplatného času poslednej zmeny</translation>
     </message>
@@ -5575,67 +5600,67 @@ Server replied with error: %2</source>
 <context>
     <name>UserStatusSelector</name>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="41"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="40"/>
         <source>Online status</source>
         <translation>Stav pripojenia</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="62"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="61"/>
         <source>Online</source>
         <translation>Pripojené</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="73"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="72"/>
         <source>Away</source>
         <translation>Preč</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="84"/>
         <source>Do not disturb</source>
         <translation>Nerušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="86"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="85"/>
         <source>Mute all notifications</source>
         <translation>Stíšiť všetky upozornenia</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="100"/>
         <source>Invisible</source>
         <translation>Neviditeľný</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="102"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="101"/>
         <source>Appear offline</source>
         <translation>V odpojenom režime</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="126"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="125"/>
         <source>Status message</source>
         <translation>Správa o stave</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="210"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="209"/>
         <source>What is your status?</source>
         <translation>Aký je váš stav?</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="284"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="283"/>
         <source>Clear status message after</source>
         <translation>Vyčistiť správu o stave po</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="322"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="321"/>
         <source>Cancel</source>
         <translation>Zrušiť</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="329"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="328"/>
         <source>Clear status message</source>
         <translation>Vyčistiť správu o stave</translation>
     </message>
     <message>
-        <location filename="../src/gui/UserStatusSelector.qml" line="337"/>
+        <location filename="../src/gui/UserStatusSelector.qml" line="336"/>
         <source>Set status message</source>
         <translation>Nastaviť správu o stave</translation>
     </message>
@@ -5857,7 +5882,7 @@ Server replied with error: %2</source>
 <context>
     <name>nextcloudTheme::about()</name>
     <message>
-        <location filename="../src/libsync/theme.cpp" line="499"/>
+        <location filename="../src/libsync/theme.cpp" line="503"/>
         <source>&lt;p&gt;&lt;small&gt;Built from Git revision &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; on %3, %4 using Qt %5, %6&lt;/small&gt;&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;small&gt;Zostavené z Git revízie &lt;a href=&quot;%1&quot;&gt;%2&lt;/a&gt; na %3, %4 s použitím Qt %5, %6&lt;/small&gt;&lt;/p&gt;</translation>
     </message>
