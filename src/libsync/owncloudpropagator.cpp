@@ -503,7 +503,7 @@ void OwncloudPropagator::start(SyncFileItemSet &&items)
     }
 
     for (auto *it : qAsConst(directoriesToRemove)) {
-        _rootJob->_dirDeletionJobs.appendJob(it);
+        _rootJob->addDeleteJob(it);
     }
 
     connect(_rootJob.data(), &PropagatorJob::finished, this, &OwncloudPropagator::emitFinished);
@@ -920,12 +920,20 @@ void PropagatorCompositeJob::slotSubJobFinished(SyncFileItem::Status status)
 
     // Any sub job error will cause the whole composite to fail. This is important
     // for knowing whether to update the etag in PropagateDirectory, for example.
-    if (status == SyncFileItem::FatalError
-        || status == SyncFileItem::NormalError
-        || status == SyncFileItem::SoftError
-        || status == SyncFileItem::DetailError
-        || status == SyncFileItem::BlacklistedError) {
+    switch (status) {
+    case SyncFileItem::FatalError:
+        [[fallthrough]];
+    case SyncFileItem::NormalError:
+        [[fallthrough]];
+    case SyncFileItem::SoftError:
+        [[fallthrough]];
+    case SyncFileItem::DetailError:
+        [[fallthrough]];
+    case SyncFileItem::BlacklistedError:
         _hasError = status;
+        break;
+    default:
+        break;
     }
 
     if (_jobsToDo.isEmpty() && _tasksToDo.empty() && _runningJobs.isEmpty()) {
@@ -1008,9 +1016,16 @@ void PropagateDirectory::slotFirstJobFinished(SyncFileItem::Status status)
 {
     _firstJob.take()->deleteLater();
 
-    if (status != SyncFileItem::Success
-        && status != SyncFileItem::Restoration
-        && status != SyncFileItem::Conflict) {
+    switch (status) {
+    // non critical states
+    case SyncFileItem::Success:
+        [[fallthrough]];
+    case SyncFileItem::Restoration:
+        [[fallthrough]];
+    case SyncFileItem::Conflict:
+        break;
+    // handle all other cases as errors
+    default:
         if (_state != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);
@@ -1097,10 +1112,11 @@ PropagatorJob::JobParallelism PropagateRootDirectory::parallelism()
 
 void PropagateRootDirectory::abort(PropagatorJob::AbortType abortType)
 {
-    if (_firstJob)
+    if (_firstJob) {
         // Force first job to abort synchronously
         // even if caller allows async abort (asyncAbort)
         _firstJob->abort(AbortType::Synchronous);
+    }
 
     if (abortType == AbortType::Asynchronous) {
         struct AbortsFinished {
@@ -1131,24 +1147,34 @@ qint64 PropagateRootDirectory::committedDiskSpace() const
 
 bool PropagateRootDirectory::scheduleSelfOrChild()
 {
-    if (_state == Finished)
+    if (_state == Finished) {
         return false;
+    }
 
-    if (PropagateDirectory::scheduleSelfOrChild())
+    if (PropagateDirectory::scheduleSelfOrChild()) {
         return true;
+    }
 
     // Important: Finish _subJobs before scheduling any deletes.
-    if (_subJobs._state != Finished)
+    if (_subJobs._state != Finished) {
         return false;
+    }
 
     return _dirDeletionJobs.scheduleSelfOrChild();
 }
 
 void PropagateRootDirectory::slotSubJobsFinished(SyncFileItem::Status status)
 {
-    if (status != SyncFileItem::Success
-        && status != SyncFileItem::Restoration
-        && status != SyncFileItem::Conflict) {
+    switch (status) {
+    // non critical states
+    case SyncFileItem::Success:
+        [[fallthrough]];
+    case SyncFileItem::Restoration:
+        [[fallthrough]];
+    case SyncFileItem::Conflict:
+        break;
+    // handle all other cases as errors
+    default:
         if (_state != Finished) {
             // Synchronously abort
             abort(AbortType::Synchronous);
@@ -1165,6 +1191,11 @@ void PropagateRootDirectory::slotDirDeletionJobsFinished(SyncFileItem::Status st
 {
     _state = Finished;
     emit finished(status);
+}
+
+void PropagateRootDirectory::addDeleteJob(PropagatorJob *job)
+{
+    _dirDeletionJobs.appendJob(job);
 }
 
 // ================================================================================

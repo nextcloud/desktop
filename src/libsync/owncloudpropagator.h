@@ -321,8 +321,6 @@ class OWNCLOUDSYNC_EXPORT PropagateRootDirectory : public PropagateDirectory
 {
     Q_OBJECT
 public:
-    PropagatorCompositeJob _dirDeletionJobs;
-
     explicit PropagateRootDirectory(OwncloudPropagator *propagator);
 
     bool scheduleSelfOrChild() override;
@@ -331,9 +329,14 @@ public:
 
     qint64 committedDiskSpace() const override;
 
+    void addDeleteJob(PropagatorJob *job);
+
 private slots:
     void slotSubJobsFinished(SyncFileItem::Status status) override;
     void slotDirDeletionJobsFinished(SyncFileItem::Status status);
+
+private:
+    PropagatorCompositeJob _dirDeletionJobs;
 };
 
 /**
