@@ -293,9 +293,6 @@ public:
      */
     virtual QString enforcedLocale() const { return QString(); }
 
-    /** colored, white or black */
-    QString systrayIconFlavor(bool mono) const;
-
 #ifndef TOKEN_AUTH_ONLY
     /**
      * Override to use a string or a custom image name.
@@ -608,6 +605,10 @@ private:
     Theme &operator=(Theme const &);
 
     void connectToPaletteSignal();
+
+    /** colored, white or black */
+    QString systrayIconFlavor(bool mono) const;
+
 #if defined(Q_OS_WIN)
     QPalette reserveDarkPalette; // Windows 11 button and window dark colours
 #endif
