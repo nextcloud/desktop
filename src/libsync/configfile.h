@@ -83,9 +83,6 @@ public:
      */
     [[nodiscard]] std::chrono::milliseconds fullLocalDiscoveryInterval() const;
 
-    [[nodiscard]] bool monoIcons() const;
-    void setMonoIcons(bool);
-
     [[nodiscard]] bool promptDeleteFiles() const;
     void setPromptDeleteFiles(bool promptDeleteFiles);
 

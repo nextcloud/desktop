@@ -56,7 +56,6 @@ static constexpr char remotePollIntervalC[] = "remotePollInterval";
 static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
 static constexpr char fullLocalDiscoveryIntervalC[] = "fullLocalDiscoveryInterval";
 static constexpr char notificationRefreshIntervalC[] = "notificationRefreshInterval";
-static constexpr char monoIconsC[] = "monoIcons";
 static constexpr char promptDeleteC[] = "promptDeleteAllFiles";
 static constexpr char crashReporterC[] = "crashReporter";
 static constexpr char optionalServerNotificationsC[] = "optionalServerNotifications";
@@ -945,23 +944,6 @@ void ConfigFile::setPromptDeleteFiles(bool promptDeleteFiles)
 {
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(promptDeleteC), promptDeleteFiles);
-}
-
-bool ConfigFile::monoIcons() const
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    bool monoDefault = false; // On Mac we want bw by default
-#ifdef Q_OS_MAC
-    // OEM themes are not obliged to ship mono icons
-    monoDefault = QByteArrayLiteral("Nextcloud") == QByteArrayLiteral(APPLICATION_NAME);
-#endif
-    return settings.value(QLatin1String(monoIconsC), monoDefault).toBool();
-}
-
-void ConfigFile::setMonoIcons(bool useMonoIcons)
-{
-    QSettings settings(configFile(), QSettings::IniFormat);
-    settings.setValue(QLatin1String(monoIconsC), useMonoIcons);
 }
 
 bool ConfigFile::crashReporter() const
