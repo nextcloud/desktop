@@ -360,9 +360,6 @@ Application::Application(int &argc, char **argv)
 
     setQuitOnLastWindowClosed(false);
 
-    _theme->setSystrayUseMonoIcons(cfg.monoIcons());
-    connect(_theme, &Theme::systrayUseMonoIconsChanged, this, &Application::slotUseMonoIconsChanged);
-
     // Setting up the gui class will allow tray notifications for the
     // setup that follows, like folder setup
     _gui = new ownCloudGui(this);
@@ -569,11 +566,6 @@ void Application::setupLogging()
                           << "version:" << _theme->version()
                           << "os:" << Utility::platformName();
     qCInfo(lcApplication) << "Arguments:" << qApp->arguments();
-}
-
-void Application::slotUseMonoIconsChanged(bool)
-{
-    _gui->slotComputeOverallSyncStatus();
 }
 
 void Application::slotParseMessage(const QString &msg, QObject *)
