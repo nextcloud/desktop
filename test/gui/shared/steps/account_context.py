@@ -7,6 +7,7 @@ from helpers.SetupClientHelper import substituteInLineCodes
 from helpers.UserHelper import getDisplaynameForUser, getPasswordForUser
 from helpers.SetupClientHelper import setUpClient, startClient
 from helpers.SyncHelper import waitForInitialSyncToComplete
+from helpers.SetupClientHelper import getResourcePath
 
 
 @Given(r'the user has added (the first|another) account with', regexp=True)
@@ -50,7 +51,7 @@ def step(context, username):
     EnterPassword.loginAfterSetup(context, username, password)
 
     # wait for files to sync
-    waitForInitialSyncToComplete(context)
+    waitForInitialSyncToComplete(context, getResourcePath(context, '/', username))
 
 
 @Given('the user has started the client')
@@ -102,7 +103,7 @@ def step(context, username):
     EnterPassword.reLogin(context, username, password)
 
     # wait for files to sync
-    waitForInitialSyncToComplete(context)
+    waitForInitialSyncToComplete(context, getResourcePath(context, '/', username))
 
 
 @Then('user "|any|" should be connect to the client-UI')

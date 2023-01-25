@@ -22,6 +22,7 @@ import os
 import builtins
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
+from helpers.SpaceHelper import delete_project_spaces
 from datetime import datetime
 
 # this will reset in every test suite
@@ -186,6 +187,13 @@ def waitUntilAppIsKilled(context, pid=0):
         test.log(
             "Application was not terminated within {} milliseconds".format(timeout)
         )
+
+
+# cleanup spaces
+@OnScenarioEnd
+def hook(context):
+    if context.userData['ocis']:
+        delete_project_spaces(context)
 
 
 @OnScenarioEnd

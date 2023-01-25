@@ -22,11 +22,12 @@ def step(context):
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitForFileOrFolderToSync(context)
+    waitForFileOrFolderToSync(context, getResourcePath(context, '/'))
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
+    resource = getResourcePath(context, resource)
     waitForFileOrFolderToSync(context, resource, type)
 
 

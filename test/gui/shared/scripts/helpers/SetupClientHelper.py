@@ -2,6 +2,7 @@ from urllib.parse import urlparse
 import squish
 from os import makedirs
 from os.path import exists, join
+from helpers.SpaceHelper import get_space_id
 
 
 def substituteInLineCodes(context, value):
@@ -62,8 +63,7 @@ def getResourcePath(context, resource='', user='', space=''):
     if user:
         sync_path = user
     if context.userData['ocis']:
-        # default space for oCIS is "Personal"
-        space = space or "Personal"
+        space = space or context.userData['syncConnectionName']
         sync_path = join(sync_path, space)
     sync_path = join(context.userData['clientRootSyncPath'], sync_path)
     resource = resource.replace(sync_path, '').strip('/')
@@ -98,9 +98,10 @@ def getPollingInterval():
     return pollingInterval
 
 
-def setUpClient(context, username, displayName, confFilePath):
+def setUpClient(context, username, displayName, confFilePath, space="Personal"):
     userSetting = '''
     [Accounts]
+    0/Folders/1/davUrl={url}
     0/Folders/1/ignoreHiddenFiles=true
     0/Folders/1/localPath={client_sync_path}
     0/Folders/1/displayString={displayString}
@@ -121,10 +122,17 @@ def setUpClient(context, username, displayName, confFilePath):
     userSetting = userSetting + getPollingInterval()
 
     syncPath = createUserSyncPath(context, username)
+    dav_endpoint = join("remote.php/dav/files", username)
+
     if context.userData['ocis']:
-        syncPath = createSpacePath(context)
+        context.userData['syncConnectionName'] = space
+        syncPath = createSpacePath(context, space)
+        if space == "Personal":
+            space = displayName
+        dav_endpoint = join("dav/spaces", get_space_id(context, space, username))
 
     args = {
+        'url': join(context.userData['localBackendUrl'], dav_endpoint, ''),
         'displayString': context.userData['syncConnectionName'],
         'displayUserName': displayName,
         'davUserName': username if context.userData['ocis'] else username.lower(),
