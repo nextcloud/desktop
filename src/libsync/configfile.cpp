@@ -270,7 +270,7 @@ void ConfigFile::saveGeometry(QWidget *w)
 {
 #ifndef TOKEN_AUTH_ONLY
     ASSERT(!w->objectName().isNull());
-    QSettings settings(configFile(), QSettings::IniFormat);
+    QSettings settings(localConfigFile(), QSettings::IniFormat);
     settings.beginGroup(w->objectName());
     settings.setValue(QLatin1String(geometryC), w->saveGeometry());
     settings.sync();
@@ -291,7 +291,7 @@ void ConfigFile::saveGeometryHeader(QHeaderView *header)
         return;
     ASSERT(!header->objectName().isEmpty());
 
-    QSettings settings(configFile(), QSettings::IniFormat);
+    QSettings settings(localConfigFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
     settings.setValue(QLatin1String(geometryC), header->saveState());
     settings.sync();
@@ -305,7 +305,7 @@ void ConfigFile::restoreGeometryHeader(QHeaderView *header)
         return;
     ASSERT(!header->objectName().isNull());
 
-    QSettings settings(configFile(), QSettings::IniFormat);
+    QSettings settings(localConfigFile(), QSettings::IniFormat);
     settings.beginGroup(header->objectName());
     header->restoreState(settings.value(geometryC).toByteArray());
 #endif
@@ -361,6 +361,17 @@ QString ConfigFile::configPath() const
     if (!dir.endsWith(QLatin1Char('/')))
         dir.append(QLatin1Char('/'));
     return dir;
+}
+
+QString ConfigFile::localConfigFile() const
+{
+    const QString settingspath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    if(!QDir(settingspath).exists()) {
+        QDir().mkdir(settingspath);
+    }
+    QString filename = settingspath + QLatin1String("/") + QLatin1String("settings.cfg");
+
+return filename;
 }
 
 static const QLatin1String exclFile("sync-exclude.lst");
@@ -775,7 +786,7 @@ QVariant ConfigFile::getValue(const QString &param, const QString &group,
         systemSetting = systemSettings.value(param, defaultValue);
     }
 
-    QSettings settings(configFile(), QSettings::IniFormat);
+    QSettings settings((param != QLatin1String(geometryC)) ? configFile() : localConfigFile(), QSettings::IniFormat);
     if (!group.isEmpty())
         settings.beginGroup(group);
 
@@ -1091,6 +1102,13 @@ std::unique_ptr<QSettings> ConfigFile::settingsWithGroup(const QString &group, Q
     }
     std::unique_ptr<QSettings> settings(new QSettings(*g_configFileName(), QSettings::IniFormat, parent));
     settings->beginGroup(group);
+    return settings;
+}
+
+std::unique_ptr<QSettings> ConfigFile::localSettings(QObject *parent)
+{
+    ConfigFile cfg;
+    std::unique_ptr<QSettings> settings(std::make_unique<QSettings>(cfg.localConfigFile(), QSettings::IniFormat, parent));
     return settings;
 }
 
