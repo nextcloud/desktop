@@ -480,23 +480,6 @@ QString Theme::systrayIconFlavor(bool mono) const
     return flavor;
 }
 
-void Theme::setSystrayUseMonoIcons(bool mono)
-{
-    _mono = mono;
-    emit systrayUseMonoIconsChanged(mono);
-}
-
-bool Theme::systrayUseMonoIcons() const
-{
-    return _mono;
-}
-
-bool Theme::monoIconsAvailable() const
-{
-    QString themeDir = QString(Theme::themePrefix) + QString::fromLatin1("%1/").arg(Theme::instance()->systrayIconFlavor(true));
-    return QDir(themeDir).exists();
-}
-
 QString Theme::updateCheckUrl() const
 {
     return APPLICATION_UPDATE_URL;
