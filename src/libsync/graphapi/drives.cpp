@@ -29,8 +29,9 @@ namespace {
 
 const auto mountpointC = QLatin1String("mountpoint");
 const auto personalC = QLatin1String("personal");
-const auto shareC = QLatin1String("virtual");
 
+// https://github.com/cs3org/reva/blob/0cde0a3735beaa14ebdfd8988c3eb77b3c2ab0e6/pkg/utils/utils.go#L56-L59
+const auto sharesIdC = QLatin1String("a0ca6a90-a365-4782-871e-d44447bbc668$a0ca6a90-a365-4782-871e-d44447bbc668");
 }
 
 Drives::Drives(const AccountPtr &account, QObject *parent)
@@ -61,7 +62,7 @@ QString Drives::getDriveDisplayName(const OpenAPI::OAIDrive &drive)
 {
     if (drive.getDriveType() == personalC) {
         return tr("Personal");
-    } else if (drive.getDriveType() == shareC) {
+    } else if (drive.getId() == sharesIdC) {
         // don't call it ShareJail
         return tr("Shares");
     }
@@ -72,7 +73,7 @@ uint32_t Drives::getDrivePriority(const OpenAPI::OAIDrive &drive)
 {
     if (drive.getDriveType() == personalC) {
         return 100;
-    } else if (drive.getDriveType() == shareC) {
+    } else if (drive.getDriveType() == sharesIdC) {
         return 50;
     }
     return 0;
