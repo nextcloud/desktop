@@ -96,6 +96,63 @@ class NextcloudFilesDatabaseManager : NSObject {
         return itemMetadataFromOcId(ocId)
     }
 
+    func updateItemMetadatas(existingMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                // Delete metadatas
+                for existingMetadata in existingMetadatas {
+                    guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
+                            let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId) else { continue }
+
+                    print("""
+                            Deleting metadata.
+                            ocID: %@,
+                            fileName: %@,
+                            etag: %@
+                          """
+                          , metadataToDelete.ocId, metadataToDelete.fileName, metadataToDelete.etag)
+                    database.delete(metadataToDelete)
+                }
+
+                // Update existing or create new metadatas
+                for updatedMetadata in updatedMetadatas {
+                    if let existingMetadata = existingMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
+
+                        if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
+                            !existingMetadata.isInSameRemoteState(updatedMetadata) {
+
+                            database.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
+                            print("""
+                                    Updated existing metadata.
+                                    ocID: %@,
+                                    fileName: %@,
+                                    etag: %@
+                                  """
+                                  , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+                        }
+                        // Don't update under other circumstances in which the metadata already exists
+
+                    } else { // This is a new metadata
+                        database.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
+                        print("""
+                                Created new metadata.
+                                ocID: %@,
+                                fileName: %@,
+                                etag: %@
+                              """
+                              , updatedMetadata.ocId, updatedMetadata.fileName, updatedMetadata.etag)
+                    }
+
+
+                }
+            }
+        } catch let error {
+            print("Could not update any metadatas, received error: %@", error)
+        }
+    }
+
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
         return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first
     }
