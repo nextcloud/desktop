@@ -3,7 +3,30 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v3.0.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v3.1.0...master
+
+Summary
+-------
+
+* Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
+
+Details
+-------
+
+* Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
+
+   We fixed a bug where the client got stuck in a "No connection configured" state if an error
+   occurred during the retrieval of the credentials from the system's keychain. The client then
+   required a manual log out and log in.
+
+   https://github.com/owncloud/client/issues/10408
+
+Changelog for ownCloud Desktop Client [3.1.0] (2023-01-25)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 3.1.0 relevant to
+ownCloud admins and users.
+
+[3.1.0]: https://github.com/owncloud/client/compare/v3.0.0...v3.1.0
 
 Summary
 -------
@@ -15,7 +38,6 @@ Summary
 * Bugfix - Correctly detect timeouts during token refrshs: [#10373](https://github.com/owncloud/client/pull/10373)
 * Bugfix - Open in web if debug logs are turned off: [#10387](https://github.com/owncloud/client/pull/10387)
 * Bugfix - We fixed building the client on non linux unix systems: [#10398](https://github.com/owncloud/client/issues/10398)
-* Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
 * Enhancement - (Re)introduce "sync hidden files" parameter in owncloudcmd: [#10390](https://github.com/owncloud/client/issues/10390)
 
@@ -58,14 +80,6 @@ Details
 * Bugfix - We fixed building the client on non linux unix systems: [#10398](https://github.com/owncloud/client/issues/10398)
 
    https://github.com/owncloud/client/issues/10398
-
-* Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
-
-   We fixed a bug where the client got stuck in a "No connection configured" state if an error
-   occurred during the retrieval of the credentials from the system's keychain. The client then
-   required a manual log out and log in.
-
-   https://github.com/owncloud/client/issues/10408
 
 * Enhancement - Add a `Reconnect` option to the account menu, when dissconnected: [#10294](https://github.com/owncloud/client/issues/10294)
 
