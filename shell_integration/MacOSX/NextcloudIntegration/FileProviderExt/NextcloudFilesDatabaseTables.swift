@@ -55,74 +55,70 @@ class NextcloudItemMetadataTable: Object {
             comparingMetadata.favorite == self.favorite
     }
 
-    @objc dynamic var account = ""
-    @objc dynamic var assetLocalIdentifier = ""
-    @objc dynamic var checksums = ""
-    @objc dynamic var chunk: Bool = false
-    @objc dynamic var classFile = ""
-    @objc dynamic var commentsUnread: Bool = false
-    @objc dynamic var contentType = ""
-    @objc dynamic var creationDate = NSDate()
-    @objc dynamic var dataFingerprint = ""
-    @objc dynamic var date = NSDate()
-    @objc dynamic var directory: Bool = false
-    @objc dynamic var deleteAssetLocalIdentifier: Bool = false
-    @objc dynamic var downloadURL = ""
-    @objc dynamic var e2eEncrypted: Bool = false
-    @objc dynamic var edited: Bool = false
-    @objc dynamic var etag = ""
-    @objc dynamic var etagResource = ""
-    @objc dynamic var favorite: Bool = false
-    @objc dynamic var fileId = ""
-    @objc dynamic var fileName = ""
-    @objc dynamic var fileNameView = ""
-    @objc dynamic var hasPreview: Bool = false
-    @objc dynamic var iconName = ""
-    @objc dynamic var iconUrl = ""
-    @objc dynamic var isExtractFile: Bool = false
-    @objc dynamic var livePhoto: Bool = false
-    @objc dynamic var mountType = ""
-    @objc dynamic var name = "" // for unifiedSearch is the provider.id
-    @objc dynamic var note = ""
-    @objc dynamic var ocId = ""
-    @objc dynamic var ownerId = ""
-    @objc dynamic var ownerDisplayName = ""
-    @objc public var lock = false
-    @objc public var lockOwner = ""
-    @objc public var lockOwnerEditor = ""
-    @objc public var lockOwnerType = 0
-    @objc public var lockOwnerDisplayName = ""
-    @objc public var lockTime: Date?
-    @objc public var lockTimeOut: Date?
-    @objc dynamic var path = ""
-    @objc dynamic var permissions = ""
-    @objc dynamic var quotaUsedBytes: Int64 = 0
-    @objc dynamic var quotaAvailableBytes: Int64 = 0
-    @objc dynamic var resourceType = ""
-    @objc dynamic var richWorkspace: String?
-    @objc dynamic var serverUrl = "" // For parent directory!!
-    @objc dynamic var session = ""
-    @objc dynamic var sessionError = ""
-    @objc dynamic var sessionSelector = ""
-    @objc dynamic var sessionTaskIdentifier: Int = 0
-    @objc dynamic var sharePermissionsCollaborationServices: Int = 0
+    @Persisted(primaryKey: true) var ocId: String
+    @Persisted var account = ""
+    @Persisted var assetLocalIdentifier = ""
+    @Persisted var checksums = ""
+    @Persisted var chunk: Bool = false
+    @Persisted var classFile = ""
+    @Persisted var commentsUnread: Bool = false
+    @Persisted var contentType = ""
+    @Persisted var creationDate = Date()
+    @Persisted var dataFingerprint = ""
+    @Persisted var date = Date()
+    @Persisted var directory: Bool = false
+    @Persisted var deleteAssetLocalIdentifier: Bool = false
+    @Persisted var downloadURL = ""
+    @Persisted var e2eEncrypted: Bool = false
+    @Persisted var edited: Bool = false
+    @Persisted var etag = ""
+    @Persisted var etagResource = ""
+    @Persisted var favorite: Bool = false
+    @Persisted var fileId = ""
+    @Persisted var fileName = ""
+    @Persisted var fileNameView = ""
+    @Persisted var hasPreview: Bool = false
+    @Persisted var iconName = ""
+    @Persisted var iconUrl = ""
+    @Persisted var isExtractFile: Bool = false
+    @Persisted var livePhoto: Bool = false
+    @Persisted var mountType = ""
+    @Persisted var name = "" // for unifiedSearch is the provider.id
+    @Persisted var note = ""
+    @Persisted var ownerId = ""
+    @Persisted var ownerDisplayName = ""
+    @Persisted var lock = false
+    @Persisted var lockOwner = ""
+    @Persisted var lockOwnerEditor = ""
+    @Persisted var lockOwnerType = 0
+    @Persisted var lockOwnerDisplayName = ""
+    @Persisted var lockTime: Date?
+    @Persisted var lockTimeOut: Date?
+    @Persisted var path = ""
+    @Persisted var permissions = ""
+    @Persisted var quotaUsedBytes: Int64 = 0
+    @Persisted var quotaAvailableBytes: Int64 = 0
+    @Persisted var resourceType = ""
+    @Persisted var richWorkspace: String?
+    @Persisted var serverUrl = "" // For parent directory!!
+    @Persisted var session = ""
+    @Persisted var sessionError = ""
+    @Persisted var sessionSelector = ""
+    @Persisted var sessionTaskIdentifier: Int = 0
+    @Persisted var sharePermissionsCollaborationServices: Int = 0
     let sharePermissionsCloudMesh = List<String>()
     let shareType = List<Int>()
-    @objc dynamic var size: Int64 = 0
-    @objc dynamic var status: Int = 0
-    @objc dynamic var subline: String?
-    @objc dynamic var trashbinFileName = ""
-    @objc dynamic var trashbinOriginalLocation = ""
-    @objc dynamic var trashbinDeletionTime = NSDate()
-    @objc dynamic var uploadDate = NSDate()
-    @objc dynamic var url = ""
-    @objc dynamic var urlBase = ""
-    @objc dynamic var user = ""
-    @objc dynamic var userId = ""
-
-    override static func primaryKey() -> String {
-        return "ocId"
-    }
+    @Persisted var size: Int64 = 0
+    @Persisted var status: Int = 0
+    @Persisted var subline: String?
+    @Persisted var trashbinFileName = ""
+    @Persisted var trashbinOriginalLocation = ""
+    @Persisted var trashbinDeletionTime = Date()
+    @Persisted var uploadDate = Date()
+    @Persisted var url = ""
+    @Persisted var urlBase = ""
+    @Persisted var user = ""
+    @Persisted var userId = ""
 }
 
 class NextcloudDirectoryMetadataTable: Object {
@@ -133,37 +129,29 @@ class NextcloudDirectoryMetadataTable: Object {
             comparingMetadata.permissions == self.permissions
     }
 
-    @objc dynamic var account = ""
-    @objc dynamic var colorFolder: String?
-    @objc dynamic var e2eEncrypted: Bool = false
-    @objc dynamic var etag = ""
-    @objc dynamic var favorite: Bool = false
-    @objc dynamic var fileId = ""
-    @objc dynamic var ocId = ""
-    @objc dynamic var offline: Bool = false
-    @objc dynamic var permissions = ""
-    @objc dynamic var richWorkspace: String?
-    @objc dynamic var serverUrl = ""
-    @objc dynamic var parentDirectoryServerUrl = ""
-
-    override static func primaryKey() -> String {
-        return "ocId"
-    }
+    @Persisted(primaryKey: true) var ocId: String
+    @Persisted var account = ""
+    @Persisted var colorFolder: String?
+    @Persisted var e2eEncrypted: Bool = false
+    @Persisted var etag = ""
+    @Persisted var favorite: Bool = false
+    @Persisted var fileId = ""
+    @Persisted var offline: Bool = false
+    @Persisted var permissions = ""
+    @Persisted var richWorkspace: String?
+    @Persisted var serverUrl = ""
+    @Persisted var parentDirectoryServerUrl = ""
 }
 
 class NextcloudLocalFileMetadataTable: Object {
-    @objc dynamic var account = ""
-    @objc dynamic var etag = ""
-    @objc dynamic var exifDate: NSDate?
-    @objc dynamic var exifLatitude = ""
-    @objc dynamic var exifLongitude = ""
-    @objc dynamic var exifLensModel: String?
-    @objc dynamic var favorite: Bool = false
-    @objc dynamic var fileName = ""
-    @objc dynamic var ocId = ""
-    @objc dynamic var offline: Bool = false
-
-    override static func primaryKey() -> String {
-        return "ocId"
-    }
+    @Persisted(primaryKey: true) var ocId: String
+    @Persisted var account = ""
+    @Persisted var etag = ""
+    @Persisted var exifDate: Date?
+    @Persisted var exifLatitude = ""
+    @Persisted var exifLongitude = ""
+    @Persisted var exifLensModel: String?
+    @Persisted var favorite: Bool = false
+    @Persisted var fileName = ""
+    @Persisted var offline: Bool = false
 }

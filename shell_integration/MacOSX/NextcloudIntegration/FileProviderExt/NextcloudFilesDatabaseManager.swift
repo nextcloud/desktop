@@ -325,12 +325,12 @@ class NextcloudFilesDatabaseManager : NSObject {
         metadata.commentsUnread = file.commentsUnread
         metadata.contentType = file.contentType
         if let date = file.creationDate {
-            metadata.creationDate = date
+            metadata.creationDate = date as Date
         } else {
-            metadata.creationDate = file.date
+            metadata.creationDate = file.date as Date
         }
         metadata.dataFingerprint = file.dataFingerprint
-        metadata.date = file.date
+        metadata.date = file.date as Date
         metadata.directory = file.directory
         metadata.downloadURL = file.downloadURL
         metadata.e2eEncrypted = file.e2eEncrypted
@@ -375,9 +375,9 @@ class NextcloudFilesDatabaseManager : NSObject {
             metadata.classFile = NKCommon.typeClassFile.document.rawValue
         }
         if let date = file.uploadDate {
-            metadata.uploadDate = date
+            metadata.uploadDate = date as Date
         } else {
-            metadata.uploadDate = file.date
+            metadata.uploadDate = file.date as Date
         }
         metadata.urlBase = file.urlBase
         metadata.user = file.user
