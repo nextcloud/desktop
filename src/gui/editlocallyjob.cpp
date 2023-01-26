@@ -565,7 +565,8 @@ void EditLocallyJob::processLocalItem()
     const auto ok = _folderForFile->journalDb()->getFileRecord(_relativePathToRemoteRoot, &rec);
     Q_ASSERT(ok);
 
-    if (rec.isDirectory()) { // Directories not lock-able
+    // Do not lock if it is a directory or lock is not available on the server
+    if (rec.isDirectory() || !_accountState->account()->capabilities().filesLockAvailable()) {
         openFile();
     } else {
         lockFile();
