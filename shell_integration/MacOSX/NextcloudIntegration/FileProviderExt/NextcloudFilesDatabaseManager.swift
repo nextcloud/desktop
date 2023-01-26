@@ -73,12 +73,18 @@ class NextcloudFilesDatabaseManager : NSObject {
     }
 
     func itemMetadataFromOcId(_ ocId: String) -> NextcloudItemMetadataTable? {
-        return ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first
+        // Realm objects are live-fire, i.e. they will be changed and invalidated according to changes in the db
+        // Let's therefore create a copy
+        if let itemMetadata = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first {
+            return NextcloudItemMetadataTable(value: itemMetadata)
+        }
+
+        return nil
     }
 
     private func sortedItemMetadatas(_ metadatas: Results<NextcloudItemMetadataTable>) -> [NextcloudItemMetadataTable] {
         let sortedMetadatas = metadatas.sorted(byKeyPath: "fileName", ascending: true)
-        return Array(sortedMetadatas.map { $0 })
+        return Array(sortedMetadatas.map { NextcloudItemMetadataTable(value: $0) })
     }
 
     func itemMetadatas(account: String, serverUrl: String) -> [NextcloudItemMetadataTable] {
@@ -129,7 +135,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 if existingMetadata.status == NextcloudItemMetadataTable.Status.normal.rawValue &&
                     !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
-                    databaseToWriteTo.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
+                    databaseToWriteTo.add(NextcloudItemMetadataTable(value: updatedMetadata), update: .all)
                     print("""
                             Updated existing metadata.
                             ocID: %@,
@@ -141,7 +147,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 // Don't update under other circumstances in which the metadata already exists
 
             } else { // This is a new metadata
-                databaseToWriteTo.add(NextcloudItemMetadataTable.init(value: updatedMetadata), update: .all)
+                databaseToWriteTo.add(NextcloudItemMetadataTable(value: updatedMetadata), update: .all)
                 print("""
                         Created new metadata.
                         ocID: %@,
@@ -173,11 +179,19 @@ class NextcloudFilesDatabaseManager : NSObject {
     }
 
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
-        return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first
+        if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
+            return NextcloudDirectoryMetadataTable(value: metadata)
+        }
+
+        return nil
     }
 
     func directoryMetadata(ocId: String) -> NextcloudDirectoryMetadataTable? {
-        return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first
+        if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first {
+            return NextcloudDirectoryMetadataTable(value: metadata)
+        }
+
+        return nil
     }
 
     func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
@@ -216,7 +230,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
                 if !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
-                    databaseToWriteTo.add(NextcloudDirectoryMetadataTable.init(value: updatedMetadata), update: .all)
+                    databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
                     print("""
                             Updated existing directory metadata.
                             ocID: %@,
@@ -228,7 +242,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 // Don't update under other circumstances in which the metadata already exists
 
             } else { // This is a new metadata
-                databaseToWriteTo.add(NextcloudDirectoryMetadataTable.init(value: updatedMetadata), update: .all)
+                databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
                 print("""
                         Created new metadata.
                         ocID: %@,
@@ -287,7 +301,11 @@ class NextcloudFilesDatabaseManager : NSObject {
     }
 
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
-        return ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId).first
+        if let metadata = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId).first {
+            return NextcloudLocalFileMetadataTable(value: metadata)
+        }
+
+        return nil
     }
 
     @objc func convertNKFileToItemMetadata(_ file: NKFile, account: String) -> NextcloudItemMetadataTable {
