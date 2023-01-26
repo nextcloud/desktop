@@ -126,6 +126,13 @@ class NextcloudItemMetadataTable: Object {
 }
 
 class NextcloudDirectoryMetadataTable: Object {
+    func isInSameRemoteState(_ comparingMetadata: NextcloudDirectoryMetadataTable) -> Bool {
+        return comparingMetadata.etag == self.etag &&
+            comparingMetadata.e2eEncrypted == self.e2eEncrypted &&
+            comparingMetadata.favorite == self.favorite &&
+            comparingMetadata.permissions == self.permissions
+    }
+
     @objc dynamic var account = ""
     @objc dynamic var colorFolder: String?
     @objc dynamic var e2eEncrypted: Bool = false
