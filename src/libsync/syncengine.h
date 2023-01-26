@@ -283,6 +283,9 @@ private:
     // Removes stale and adds missing conflict records after sync
     void conflictRecordMaintenance();
 
+    // Removes stale and adds missing conflict records after sync
+    void caseClashConflictRecordMaintenance();
+
     // cleanup and emit the finished signal
     void finalize(bool success);
 

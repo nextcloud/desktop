@@ -12,6 +12,20 @@
  * for more details.
  */
 
+#include "activitylistmodel.h"
+
+#include "account.h"
+#include "accountstate.h"
+#include "accountmanager.h"
+#include "conflictdialog.h"
+#include "folderman.h"
+#include "owncloudgui.h"
+#include "guiutility.h"
+#include "invalidfilenamedialog.h"
+#include "caseclashfilenamedialog.h"
+#include "activitydata.h"
+#include "systray.h"
+
 #include <QtCore>
 #include <QAbstractListModel>
 #include <QDesktopServices>
@@ -19,24 +33,6 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <qloggingcategory.h>
-
-#include "account.h"
-#include "accountstate.h"
-#include "accountmanager.h"
-#include "conflictdialog.h"
-#include "folderman.h"
-#include "iconjob.h"
-#include "accessmanager.h"
-#include "owncloudgui.h"
-#include "guiutility.h"
-#include "invalidfilenamedialog.h"
-
-#include "activitydata.h"
-#include "activitylistmodel.h"
-#include "systray.h"
-#include "tray/usermodel.h"
-
-#include "theme.h"
 
 namespace OCC {
 
@@ -77,6 +73,8 @@ QHash<int, QByteArray> ActivityListModel::roleNames() const
     roles[PointInTimeRole] = "dateTime";
     roles[DisplayActions] = "displayActions";
     roles[ShowFileDetailsRole] = "showFileDetails";
+    roles[ShareableRole] = "isShareable";
+    roles[DismissableRole] = "isDismissable";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[IsCurrentUserFileActivityRole] = "isCurrentUserFileActivity";
     roles[ThumbnailRole] = "thumbnail";
@@ -348,6 +346,12 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
                 _displayActions &&
                 a._fileAction != "file_deleted" &&
                 a._syncFileItemStatus != SyncFileItem::FileIgnored;
+    case DismissableRole:
+        // Do not allow dismissal of things requiring user input regarding syncing
+        return !a._links.isEmpty() &&
+                a._syncFileItemStatus != SyncFileItem::FileNameClash &&
+                a._syncFileItemStatus != SyncFileItem::Conflict &&
+                a._syncFileItemStatus != SyncFileItem::FileNameInvalid;
     case IsCurrentUserFileActivityRole:
         return a._isCurrentUserFileActivity;
     case ThumbnailRole: {
@@ -548,7 +552,7 @@ void ActivityListModel::addEntriesToActivityList(const ActivityList &activityLis
 
 void ActivityListModel::addErrorToActivityList(const Activity &activity)
 {
-    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._message << activity._subject;
+    qCInfo(lcActivity) << "Error successfully added to the notification list: " << activity._message << activity._subject << activity._syncResultStatus << activity._syncFileItemStatus;
     addEntriesToActivityList({activity});
     _notificationErrorsLists.prepend(activity);
 }
@@ -665,6 +669,9 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         _currentConflictDialog->open();
         ownCloudGui::raiseDialog(_currentConflictDialog);
         return;
+    } else if (activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
+        triggerCaseClashAction(activity);
+        return;
     } else if (activity._syncFileItemStatus == SyncFileItem::FileNameInvalid) {
         if (!_currentInvalidFilenameDialog.isNull()) {
             _currentInvalidFilenameDialog->close();
@@ -684,22 +691,6 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         _currentInvalidFilenameDialog->open();
         ownCloudGui::raiseDialog(_currentInvalidFilenameDialog);
         return;
-    } else if (activity._syncFileItemStatus == SyncFileItem::FileNameClash) {
-        const auto folder = FolderMan::instance()->folder(activity._folder);
-        const auto relPath = activity._fileAction == QStringLiteral("file_renamed") ? activity._renamedFile : activity._file;
-        SyncJournalFileRecord record;
-
-        if (!folder || !folder->journalDb()->getFileRecord(relPath, &record)) {
-            return;
-        }
-
-        fetchPrivateLinkUrl(folder->accountState()->account(),
-                            relPath,
-                            record.numericFileId(),
-                            this,
-                            [](const QString &link) { Utility::openBrowser(link); }
-        );
-        return;
     }
 
     if (!path.isEmpty()) {
@@ -708,6 +699,35 @@ void ActivityListModel::slotTriggerDefaultAction(const int activityIndex)
         const auto link = data(modelIndex, LinkRole).toUrl();
         Utility::openBrowser(link);
     }
+}
+
+void ActivityListModel::triggerCaseClashAction(Activity activity)
+{
+    qCInfo(lcActivity) << "case clash conflict" << activity._file << activity._syncFileItemStatus;
+
+    if (!_currentCaseClashFilenameDialog.isNull()) {
+        _currentCaseClashFilenameDialog->close();
+    }
+
+    auto folder = FolderMan::instance()->folder(activity._folder);
+    const auto conflictedRelativePath = activity._file;
+    const auto conflictRecord = folder->journalDb()->caseConflictRecordByBasePath(conflictedRelativePath);
+
+    const auto dir = QDir(folder->path());
+    const auto conflictedPath = dir.filePath(conflictedRelativePath);
+    const auto conflictTaggedPath = dir.filePath(conflictRecord.path);
+
+    _currentCaseClashFilenameDialog = new CaseClashFilenameDialog(_accountState->account(),
+                                                                  folder,
+                                                                  conflictedPath,
+                                                                  conflictTaggedPath);
+    connect(_currentCaseClashFilenameDialog, &CaseClashFilenameDialog::successfulRename, folder, [folder, activity](const QString& filePath) {
+        qCInfo(lcActivity) << "successfulRename" << filePath << activity._message;
+        folder->acceptCaseClashConflictFileName(activity._message);
+        folder->scheduleThisFolderSoon();
+    });
+    _currentCaseClashFilenameDialog->open();
+    ownCloudGui::raiseDialog(_currentCaseClashFilenameDialog);
 }
 
 void ActivityListModel::slotTriggerAction(const int activityIndex, const int actionIndex)
@@ -728,6 +748,11 @@ void ActivityListModel::slotTriggerAction(const int activityIndex, const int act
 
     if (action._verb == "WEB") {
         Utility::openBrowser(QUrl(action._link));
+        return;
+    } else if (action._verb == "FIX_CONFLICT_LOCALLY" &&
+               activity._type == Activity::SyncFileItemType &&
+               (activity._syncFileItemStatus == SyncFileItem::Conflict || activity._syncFileItemStatus == SyncFileItem::FileNameClash)) {
+        slotTriggerDefaultAction(activityIndex);
         return;
     }
 
@@ -755,10 +780,6 @@ AccountState *ActivityListModel::accountState() const
 QVariantList ActivityListModel::convertLinksToActionButtons(const Activity &activity)
 {
     QVariantList customList;
-
-    if (activity._links.size() == 1) {
-        return customList;
-    }
 
     if (static_cast<quint32>(activity._links.size()) > maxActionButtons()) {
         customList << ActivityListModel::convertLinkToActionButton(activity._links.first());

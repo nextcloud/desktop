@@ -595,6 +595,16 @@ void User::slotAddErrorToGui(const QString &folderAlias, SyncFileItem::Status st
         activity._accName = folderInstance->accountState()->account()->displayName();
         activity._folder = folderAlias;
 
+        if (status == SyncFileItem::Conflict || status == SyncFileItem::FileNameClash) {
+            ActivityLink buttonActivityLink;
+            buttonActivityLink._label = tr("Resolve conflict");
+            buttonActivityLink._link = activity._link.toString();
+            buttonActivityLink._verb = "FIX_CONFLICT_LOCALLY";
+            buttonActivityLink._primary = true;
+
+            activity._links = {buttonActivityLink};
+        }
+
         // Error notifications don't have ids by themselves so we will create one for it
         activity._id = -static_cast<int>(qHash(activity._subject + activity._message));
 
@@ -708,6 +718,14 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
             // add 'protocol error' to activity list
             if (item->_status == SyncFileItem::Status::FileNameInvalid) {
                 showDesktopNotification(item->_file, activity._subject, activity._id);
+            } else if (item->_status == SyncFileItem::Conflict || item->_status == SyncFileItem::FileNameClash) {
+                ActivityLink buttonActivityLink;
+                buttonActivityLink._label = tr("Resolve conflict");
+                buttonActivityLink._link = activity._link.toString();
+                buttonActivityLink._verb = "FIX_CONFLICT_LOCALLY";
+                buttonActivityLink._primary = true;
+
+                activity._links = {buttonActivityLink};
             }
             _activityModel->addErrorToActivityList(activity);
         }

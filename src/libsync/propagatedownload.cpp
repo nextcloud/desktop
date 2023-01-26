@@ -526,12 +526,7 @@ void PropagateDownloadFile::startAfterIsEncryptedIsChecked()
         qCWarning(lcPropagateDownload) << "ignored virtual file type of" << _item->_file;
         _item->_type = ItemTypeFile;
     }
-    if (_item->_type == ItemTypeVirtualFile) {
-        if (propagator()->localFileNameClash(_item->_file)) {
-            done(SyncFileItem::FileNameClash, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
-            return;
-        }
-
+    if (_item->_type == ItemTypeVirtualFile && !propagator()->localFileNameClash(_item->_file)) {
         qCDebug(lcPropagateDownload) << "creating virtual file" << _item->_file;
         // do a klaas' case clash check.
         if (propagator()->localFileNameClash(_item->_file)) {
@@ -632,9 +627,18 @@ void PropagateDownloadFile::startDownload()
         return;
 
     // do a klaas' case clash check.
-    if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::FileNameClash, tr("File %1 cannot be downloaded because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
-        return;
+    if (propagator()->localFileNameClash(_item->_file) && _item->_type != ItemTypeVirtualFile) {
+        _item->_instruction = CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
+        qCInfo(lcPropagateDownload) << "setting instruction to" << _item->_instruction << _item->_file;
+    } else if (propagator()->localFileNameClash(_item->_file)) {
+        _item->_instruction = CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
+        _item->_type = CSyncEnums::ItemTypeVirtualFileDownload;
+        qCInfo(lcPropagateDownload) << "setting instruction to" << _item->_instruction << _item->_file << "setting type to" << _item->_type;
+        auto fileName = _item->_file;
+        if (propagator()->syncOptions()._vfs->mode() == Vfs::WithSuffix) {
+            fileName.chop(propagator()->syncOptions()._vfs->fileSuffix().size());
+            _item->_file = fileName;
+        }
     }
 
     propagator()->reportProgress(*_item, 0);
@@ -1147,14 +1151,7 @@ void PropagateDownloadFile::finalizeDownload()
 void PropagateDownloadFile::downloadFinished()
 {
     ASSERT(!_tmpFile.isOpen());
-    QString fn = propagator()->fullLocalPath(_item->_file);
-
-    // In case of file name clash, report an error
-    // This can happen if another parallel download saved a clashing file.
-    if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::FileNameClash, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
-        return;
-    }
+    const auto filename = propagator()->fullLocalPath(_item->_file);
 
     if (_item->_modtime <= 0) {
         FileSystem::remove(_tmpFile.fileName());
@@ -1179,17 +1176,22 @@ void PropagateDownloadFile::downloadFinished()
         qCWarning(lcPropagateDownload()) << "invalid modified time" << _item->_file << _item->_modtime;
     }
 
-    bool previousFileExists = FileSystem::fileExists(fn);
+    if (propagator()->localFileNameClash(_item->_file)) {
+        _item->_instruction = CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
+        qCInfo(lcPropagateDownload) << "setting instruction to" << _item->_instruction << _item->_file;
+    }
+
+    auto previousFileExists = FileSystem::fileExists(filename) && _item->_instruction != CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
     if (previousFileExists) {
         // Preserve the existing file permissions.
-        QFileInfo existingFile(fn);
+        const auto existingFile = QFileInfo{filename};
         if (existingFile.permissions() != _tmpFile.permissions()) {
             _tmpFile.setPermissions(existingFile.permissions());
         }
         preserveGroupOwnership(_tmpFile.fileName(), existingFile);
 
         // Make the file a hydrated placeholder if possible
-        const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, fn);
+        const auto result = propagator()->syncOptions()._vfs->convertToPlaceholder(_tmpFile.fileName(), *_item, filename);
         if (!result) {
             done(SyncFileItem::NormalError, result.error());
             return;
@@ -1199,15 +1201,28 @@ void PropagateDownloadFile::downloadFinished()
     // Apply the remote permissions
     FileSystem::setFileReadOnlyWeak(_tmpFile.fileName(), !_item->_remotePerm.isNull() && !_item->_remotePerm.hasPermission(RemotePermissions::CanWrite));
 
-    bool isConflict = _item->_instruction == CSYNC_INSTRUCTION_CONFLICT
-        && (QFileInfo(fn).isDir() || !FileSystem::fileEquals(fn, _tmpFile.fileName()));
+    const auto isConflict = (_item->_instruction == CSYNC_INSTRUCTION_CONFLICT
+                             && (QFileInfo(filename).isDir() || !FileSystem::fileEquals(filename, _tmpFile.fileName()))) ||
+        _item->_instruction == CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT;
+
     if (isConflict) {
-        QString error;
-        if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
-            done(SyncFileItem::SoftError, error);
+        if (_item->_instruction == CSYNC_INSTRUCTION_CASE_CLASH_CONFLICT) {
+            qCInfo(lcPropagateDownload) << "downloading case clashed file" << _item->_file;
+            const auto caseClashConflictResult = propagator()->createCaseClashConflict(_item, _tmpFile.fileName());
+            if (caseClashConflictResult) {
+                done(SyncFileItem::SoftError, *caseClashConflictResult);
+            } else {
+                done(SyncFileItem::FileNameClash, tr("File %1 downloaded but it resulted in a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)));
+            }
             return;
+        } else {
+            QString error;
+            if (!propagator()->createConflict(_item, _associatedComposite, &error)) {
+                done(SyncFileItem::SoftError, error);
+            } else {
+                previousFileExists = false;
+            }
         }
-        previousFileExists = false;
     }
 
     const auto vfs = propagator()->syncOptions()._vfs;
@@ -1223,7 +1238,7 @@ void PropagateDownloadFile::downloadFinished()
         // the discovery phase and now.
         const qint64 expectedSize = _item->_previousSize;
         const time_t expectedMtime = _item->_previousModtime;
-        if (!FileSystem::verifyFileUnchanged(fn, expectedSize, expectedMtime)) {
+        if (!FileSystem::verifyFileUnchanged(filename, expectedSize, expectedMtime)) {
             propagator()->_anotherSyncNeeded = true;
             done(SyncFileItem::SoftError, tr("File has changed since discovery"));
             return;
@@ -1231,14 +1246,14 @@ void PropagateDownloadFile::downloadFinished()
     }
 
     QString error;
-    emit propagator()->touchedFile(fn);
+    emit propagator()->touchedFile(filename);
     // The fileChanged() check is done above to generate better error messages.
-    if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), fn, &error)) {
-        qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(fn);
+    if (!FileSystem::uncheckedRenameReplace(_tmpFile.fileName(), filename, &error)) {
+        qCWarning(lcPropagateDownload) << QString("Rename failed: %1 => %2").arg(_tmpFile.fileName()).arg(filename);
         // If the file is locked, we want to retry this sync when it
         // becomes available again, otherwise try again directly
-        if (FileSystem::isFileLocked(fn)) {
-            emit propagator()->seenLockedFile(fn);
+        if (FileSystem::isFileLocked(filename)) {
+            emit propagator()->seenLockedFile(filename);
         } else {
             propagator()->_anotherSyncNeeded = true;
         }
@@ -1250,14 +1265,14 @@ void PropagateDownloadFile::downloadFinished()
     qCInfo(lcPropagateDownload()) << propagator()->account()->davUser() << propagator()->account()->davDisplayName() << propagator()->account()->displayName();
     if (_item->_locked == SyncFileItem::LockStatus::LockedItem && (_item->_lockOwnerType != SyncFileItem::LockOwnerType::UserLock || _item->_lockOwnerId != propagator()->account()->davUser())) {
         qCInfo(lcPropagateDownload()) << "file is locked: making it read only";
-        FileSystem::setFileReadOnly(fn, true);
+        FileSystem::setFileReadOnly(filename, true);
     }
 
-    FileSystem::setFileHidden(fn, false);
+    FileSystem::setFileHidden(filename, false);
 
     // Maybe we downloaded a newer version of the file than we thought we would...
     // Get up to date information for the journal.
-    _item->_size = FileSystem::getSize(fn);
+    _item->_size = FileSystem::getSize(filename);
 
     // Maybe what we downloaded was a conflict file? If so, set a conflict record.
     // (the data was prepared in slotGetFinished above)

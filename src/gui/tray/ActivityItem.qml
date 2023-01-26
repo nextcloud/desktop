@@ -45,7 +45,7 @@ ItemDelegate {
             Layout.fillWidth: true
             Layout.minimumHeight: Style.minActivityHeight
 
-            showDismissButton: model.links.length > 0
+            showDismissButton: model.isDismissable
 
             iconSize: root.iconSize
 

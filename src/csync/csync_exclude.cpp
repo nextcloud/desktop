@@ -205,10 +205,14 @@ static CSYNC_EXCLUDE_TYPE _csync_excluded_common(const QString &path, bool exclu
         return CSYNC_FILE_SILENTLY_EXCLUDED;
     }
 
-
-    if (excludeConflictFiles && OCC::Utility::isConflictFile(path)) {
-        return CSYNC_FILE_EXCLUDE_CONFLICT;
+    if (excludeConflictFiles) {
+        if (OCC::Utility::isCaseClashConflictFile(path)) {
+            return CSYNC_FILE_EXCLUDE_CASE_CLASH_CONFLICT;
+        } else if (OCC::Utility::isConflictFile(path)) {
+            return CSYNC_FILE_EXCLUDE_CONFLICT;
+        }
     }
+
     return CSYNC_NOT_EXCLUDED;
 }
 

@@ -317,6 +317,20 @@ void SyncEngine::conflictRecordMaintenance()
     }
 }
 
+void SyncEngine::caseClashConflictRecordMaintenance()
+{
+    // Remove stale conflict entries from the database
+    // by checking which files still exist and removing the
+    // missing ones.
+    const auto conflictRecordPaths = _journal->caseClashConflictRecordPaths();
+    for (const auto &path : conflictRecordPaths) {
+        const auto fsPath = _propagator->fullLocalPath(QString::fromUtf8(path));
+        if (!QFileInfo::exists(fsPath)) {
+            _journal->deleteCaseClashConflictByPathRecord(path);
+        }
+    }
+}
+
 
 void OCC::SyncEngine::slotItemDiscovered(const OCC::SyncFileItemPtr &item)
 {
@@ -906,6 +920,7 @@ void SyncEngine::slotPropagationFinished(bool success)
     }
 
     conflictRecordMaintenance();
+    caseClashConflictRecordMaintenance();
 
     _journal->deleteStaleFlagsEntries();
     _journal->commit("All Finished.", false);

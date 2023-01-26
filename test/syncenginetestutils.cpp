@@ -655,7 +655,8 @@ FakeGetReply::FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::
     Q_ASSERT(!fileName.isEmpty());
     fileInfo = remoteRootFileInfo.find(fileName);
     if (!fileInfo) {
-        qDebug() << "meh;";
+        qDebug() << "url: " << request.url() << " fileName: " << fileName
+                 << " meh;";
     }
     Q_ASSERT_X(fileInfo, Q_FUNC_INFO, "Could not find file on the remote");
     QMetaObject::invokeMethod(this, &FakeGetReply::respond, Qt::QueuedConnection);
@@ -665,6 +666,12 @@ void FakeGetReply::respond()
 {
     if (aborted) {
         setError(OperationCanceledError, QStringLiteral("Operation Canceled"));
+        emit metaDataChanged();
+        emit finished();
+        return;
+    }
+    if (!fileInfo) {
+        setError(ContentNotFoundError, QStringLiteral("File Not Found"));
         emit metaDataChanged();
         emit finished();
         return;
@@ -1190,7 +1197,7 @@ void FakeFolder::execUntilItemCompleted(const QString &relativePath)
 
 void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 {
-    foreach (const FileInfo &child, templateFi.children) {
+    for(const auto &child : templateFi.children) {
         if (child.isDir) {
             QDir subDir(dir);
             dir.mkdir(child.name);
@@ -1208,7 +1215,7 @@ void FakeFolder::toDisk(QDir &dir, const FileInfo &templateFi)
 
 void FakeFolder::fromDisk(QDir &dir, FileInfo &templateFi)
 {
-    foreach (const QFileInfo &diskChild, dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
+    for(const auto &diskChild : dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot)) {
         if (diskChild.isDir()) {
             QDir subDir = dir;
             subDir.cd(diskChild.fileName());

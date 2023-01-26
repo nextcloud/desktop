@@ -30,79 +30,86 @@ public:
     E2eFileTransferTest() = default;
 
 private:
-    EndToEndTestHelper _helper;
-    OCC::Folder *_testFolder;
 
 private slots:
     void initTestCase()
     {
-        QSignalSpy accountReady(&_helper, &EndToEndTestHelper::accountReady);
-        _helper.startAccountConfig();
-        QVERIFY(accountReady.wait(3000));
-
-        const auto accountState = _helper.accountState();
-        QSignalSpy accountConnected(accountState.data(), &OCC::AccountState::isConnectedChanged);
-        QVERIFY(accountConnected.wait(30000));
-
-        _testFolder = _helper.configureSyncFolder();
-        QVERIFY(_testFolder);
+        qRegisterMetaType<OCC::SyncResult>("OCC::SyncResult");
     }
 
     void testSyncFolder()
     {
-        // Try the down-sync first
-        QSignalSpy folderSyncFinished(_testFolder, &OCC::Folder::syncFinished);
-        OCC::FolderMan::instance()->forceSyncForFolder(_testFolder);
-        QVERIFY(folderSyncFinished.wait(3000));
+        {
+            EndToEndTestHelper _helper;
+            OCC::Folder *_testFolder;
 
-        const auto testFolderPath = _testFolder->path();
-        const QString expectedFilePath(testFolderPath + QStringLiteral("welcome.txt"));
-        const QFile expectedFile(expectedFilePath);
-        qDebug() << "Checking if expected file exists at:" << expectedFilePath;
-        QVERIFY(expectedFile.exists());
+            QSignalSpy accountReady(&_helper, &EndToEndTestHelper::accountReady);
+            _helper.startAccountConfig();
+            QVERIFY(accountReady.wait(3000));
 
-        // Now write a file to test the upload
-        const auto fileName = QStringLiteral("test_file.txt");
-        const QString localFilePath(_testFolder->path() + fileName);
-        QVERIFY(OCC::Utility::writeRandomFile(localFilePath));
+            const auto accountState = _helper.accountState();
+            QSignalSpy accountConnected(accountState.data(), &OCC::AccountState::isConnectedChanged);
+            QVERIFY(accountConnected.wait(30000));
 
-        OCC::FolderMan::instance()->forceSyncForFolder(_testFolder);
-        QVERIFY(folderSyncFinished.wait(3000));
-        qDebug() << "First folder sync complete";
+            _testFolder = _helper.configureSyncFolder();
+            QVERIFY(_testFolder);
 
-        const auto waitForServerToProcessTime = QTime::currentTime().addSecs(3);
-        while (QTime::currentTime() < waitForServerToProcessTime) {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            // Try the down-sync first
+            QSignalSpy folderSyncFinished(_testFolder, &OCC::Folder::syncFinished);
+            OCC::FolderMan::instance()->forceSyncForFolder(_testFolder);
+            QVERIFY(folderSyncFinished.wait(3000));
+
+            const auto testFolderPath = _testFolder->path();
+            const QString expectedFilePath(testFolderPath + QStringLiteral("welcome.txt"));
+            const QFile expectedFile(expectedFilePath);
+            qDebug() << "Checking if expected file exists at:" << expectedFilePath;
+            QVERIFY(expectedFile.exists());
+
+            // Now write a file to test the upload
+            const auto fileName = QStringLiteral("test_file.txt");
+            const QString localFilePath(_testFolder->path() + fileName);
+            QVERIFY(OCC::Utility::writeRandomFile(localFilePath));
+
+            OCC::FolderMan::instance()->forceSyncForFolder(_testFolder);
+            QVERIFY(folderSyncFinished.wait(3000));
+            qDebug() << "First folder sync complete";
+
+            const auto waitForServerToProcessTime = QTime::currentTime().addSecs(3);
+            while (QTime::currentTime() < waitForServerToProcessTime) {
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            }
+
+            // Do a propfind to check for this file
+            const QString remoteFilePath(_testFolder->remotePathTrailingSlash() + fileName);
+            auto checkFileExistsJob = new OCC::PropfindJob(_helper.account(), remoteFilePath, this);
+            QSignalSpy result(checkFileExistsJob, &OCC::PropfindJob::result);
+
+            checkFileExistsJob->setProperties(QList<QByteArray>() << "getlastmodified");
+            checkFileExistsJob->start();
+            QVERIFY(result.wait(10000));
+
+            // Now try to delete the file and check change is reflected
+            QFile createdFile(localFilePath);
+            QVERIFY(createdFile.exists());
+            createdFile.remove();
+
+            OCC::FolderMan::instance()->forceSyncForFolder(_testFolder);
+            QVERIFY(folderSyncFinished.wait(3000));
+
+            while (QTime::currentTime() < waitForServerToProcessTime) {
+                QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+            }
+
+            auto checkFileDeletedJob = new OCC::PropfindJob(_helper.account(), remoteFilePath, this);
+            QSignalSpy error(checkFileDeletedJob, &OCC::PropfindJob::finishedWithError);
+
+            checkFileDeletedJob->setProperties(QList<QByteArray>() << "getlastmodified");
+            checkFileDeletedJob->start();
+
+            QVERIFY(error.wait(10000));
         }
 
-        // Do a propfind to check for this file
-        const QString remoteFilePath(_testFolder->remotePathTrailingSlash() + fileName);
-        auto checkFileExistsJob = new OCC::PropfindJob(_helper.account(), remoteFilePath, this);
-        QSignalSpy result(checkFileExistsJob, &OCC::PropfindJob::result);
-
-        checkFileExistsJob->setProperties(QList<QByteArray>() << "getlastmodified");
-        checkFileExistsJob->start();
-        QVERIFY(result.wait(10000));
-
-        // Now try to delete the file and check change is reflected
-        QFile createdFile(localFilePath);
-        QVERIFY(createdFile.exists());
-        createdFile.remove();
-
-        OCC::FolderMan::instance()->forceSyncForFolder(_testFolder);
-        QVERIFY(folderSyncFinished.wait(3000));
-
-        while (QTime::currentTime() < waitForServerToProcessTime) {
-            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-        }
-
-        auto checkFileDeletedJob = new OCC::PropfindJob(_helper.account(), remoteFilePath, this);
-        QSignalSpy error(checkFileDeletedJob, &OCC::PropfindJob::finishedWithError);
-
-        checkFileDeletedJob->setProperties(QList<QByteArray>() << "getlastmodified");
-        checkFileDeletedJob->start();
-
-        QVERIFY(error.wait(10000));
+        QTest::qWait(10000);
     }
 };
 

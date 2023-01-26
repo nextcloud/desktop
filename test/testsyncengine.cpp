@@ -5,12 +5,42 @@
  *
  */
 
-#include <QtTest>
 #include "syncenginetestutils.h"
-#include <syncengine.h>
-#include <propagatorjobs.h>
+
+#include "syncengine.h"
+#include "propagatorjobs.h"
+#include "caseclashconflictsolver.h"
+
+#include <QtTest>
 
 using namespace OCC;
+
+namespace {
+
+QStringList findCaseClashConflicts(const FileInfo &dir)
+{
+    QStringList conflicts;
+    for (const auto &item : dir.children) {
+        if (item.name.contains("(case clash from")) {
+            conflicts.append(item.path());
+        }
+    }
+    return conflicts;
+}
+
+bool expectConflict(FileInfo state, const QString path)
+{
+    PathComponents pathComponents(path);
+    auto base = state.find(pathComponents.parentDirComponents());
+    if (!base)
+        return false;
+    for (const auto &item : qAsConst(base->children)) {
+        if (item.name.startsWith(pathComponents.fileName()) && item.name.contains("(case clash from")) {
+            return true;
+        }
+    }
+    return false;
+}
 
 bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
 {
@@ -18,12 +48,6 @@ bool itemDidComplete(const ItemCompletedSpy &spy, const QString &path)
         return item->_instruction != CSYNC_INSTRUCTION_NONE && item->_instruction != CSYNC_INSTRUCTION_UPDATE_METADATA;
     }
     return false;
-}
-
-bool itemInstruction(const ItemCompletedSpy &spy, const QString &path, const SyncInstructions instr)
-{
-    auto item = spy.findItem(path);
-    return item->_instruction == instr;
 }
 
 bool itemDidCompleteSuccessfully(const ItemCompletedSpy &spy, const QString &path)
@@ -52,6 +76,8 @@ int itemSuccessfullyCompletedGetRank(const ItemCompletedSpy &spy, const QString 
         return itItem - spy.begin();
     }
     return -1;
+}
+
 }
 
 class TestSyncEngine : public QObject
@@ -1306,6 +1332,270 @@ private slots:
         QVERIFY(fakeFolder.syncOnce());
         auto folderA = fakeFolder.currentLocalState().find("toDelete");
         QCOMPARE(folderA, nullptr);
+    }
+
+    void testServer_caseClash_createConflict()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_subFolderCaseClash_createConflict()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_caseClash_createConflictOnMove()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST2";
+        constexpr auto testUpperCaseFileAfterMove = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, false);
+
+        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
+        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_subFolderCaseClash_createConflictOnMove()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST2";
+        constexpr auto testUpperCaseFileAfterMove = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, false);
+
+        fakeFolder.remoteModifier().rename(testUpperCaseFile, testUpperCaseFileAfterMove);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflictAfterMove = expectConflict(fakeFolder.currentLocalState(), testUpperCaseFileAfterMove);
+        QCOMPARE(hasConflictAfterMove, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+    }
+
+    void testServer_caseClash_createConflictAndSolveIt()
+    {
+        constexpr auto testLowerCaseFile = "test";
+        constexpr auto testUpperCaseFile = "TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().insert("otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        if (shouldHaveCaseClashConflict) {
+            const auto conflictFileName = QString{conflicts.constFirst()};
+            qDebug() << conflictFileName;
+            CaseClashConflictSolver conflictSolver(fakeFolder.localPath() + testLowerCaseFile,
+                                                   fakeFolder.localPath() + conflictFileName,
+                                                   QStringLiteral("/"),
+                                                   fakeFolder.localPath(),
+                                                   fakeFolder.account(),
+                                                   &fakeFolder.syncJournal());
+
+            QSignalSpy conflictSolverDone(&conflictSolver, &CaseClashConflictSolver::done);
+            QSignalSpy conflictSolverFailed(&conflictSolver, &CaseClashConflictSolver::failed);
+
+            conflictSolver.solveConflict("test2");
+
+            QVERIFY(conflictSolverDone.wait());
+
+            QVERIFY(fakeFolder.syncOnce());
+
+            conflicts = findCaseClashConflicts(fakeFolder.currentLocalState());
+            QCOMPARE(conflicts.size(), 0);
+        }
+    }
+
+    void testServer_subFolderCaseClash_createConflictAndSolveIt()
+    {
+        constexpr auto testLowerCaseFile = "a/b/test";
+        constexpr auto testUpperCaseFile = "a/b/TEST";
+
+#if defined Q_OS_LINUX
+        constexpr auto shouldHaveCaseClashConflict = false;
+#else
+        constexpr auto shouldHaveCaseClashConflict = true;
+#endif
+
+        FakeFolder fakeFolder{ FileInfo{} };
+
+        fakeFolder.remoteModifier().mkdir("a");
+        fakeFolder.remoteModifier().mkdir("a/b");
+        fakeFolder.remoteModifier().insert("a/b/otherFile.txt");
+        fakeFolder.remoteModifier().insert(testLowerCaseFile);
+        fakeFolder.remoteModifier().insert(testUpperCaseFile);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        auto conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+        const auto hasConflict = expectConflict(fakeFolder.currentLocalState(), testLowerCaseFile);
+        QCOMPARE(hasConflict, shouldHaveCaseClashConflict ? true : false);
+
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(OCC::LocalDiscoveryStyle::DatabaseAndFilesystem);
+        QVERIFY(fakeFolder.syncOnce());
+
+        conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+        QCOMPARE(conflicts.size(), shouldHaveCaseClashConflict ? 1 : 0);
+
+        if (shouldHaveCaseClashConflict) {
+            CaseClashConflictSolver conflictSolver(fakeFolder.localPath() + testLowerCaseFile,
+                                                   fakeFolder.localPath() + conflicts.constFirst(),
+                                                   QStringLiteral("/"),
+                                                   fakeFolder.localPath(),
+                                                   fakeFolder.account(),
+                                                   &fakeFolder.syncJournal());
+
+            QSignalSpy conflictSolverDone(&conflictSolver, &CaseClashConflictSolver::done);
+            QSignalSpy conflictSolverFailed(&conflictSolver, &CaseClashConflictSolver::failed);
+
+            conflictSolver.solveConflict("a/b/test2");
+
+            QVERIFY(conflictSolverDone.wait());
+
+            QVERIFY(fakeFolder.syncOnce());
+
+            conflicts = findCaseClashConflicts(*fakeFolder.currentLocalState().find("a/b"));
+            QCOMPARE(conflicts.size(), 0);
+        }
     }
 };
 
