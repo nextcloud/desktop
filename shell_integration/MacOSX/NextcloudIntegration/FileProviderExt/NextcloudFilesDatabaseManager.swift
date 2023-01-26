@@ -51,7 +51,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         let config = Realm.Configuration(
             fileURL: self.databasePath,
             schemaVersion: self.schemaVersion,
-            objectTypes: [NextcloudItemMetadataTable.self]
+            objectTypes: [NextcloudItemMetadataTable.self, NextcloudDirectoryMetadataTable.self, NextcloudLocalFileMetadataTable.self]
         )
 
         Realm.Configuration.defaultConfiguration = config
