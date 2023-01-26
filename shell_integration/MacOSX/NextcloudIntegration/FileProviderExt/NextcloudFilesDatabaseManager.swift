@@ -198,6 +198,12 @@ class NextcloudFilesDatabaseManager : NSObject {
         return directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
     }
 
+    func directoryMetadatas(account: String, parentDirectoryServerUrl: String) -> [NextcloudDirectoryMetadataTable] {
+        let metadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND parentDirectoryServerUrl == %@", account, parentDirectoryServerUrl)
+        let sortedMetadatas = metadatas.sorted(byKeyPath: "serverUrl", ascending: true)
+        return Array(sortedMetadatas.map { NextcloudDirectoryMetadataTable(value: $0) })
+    }
+
     private func processDirectoryMetadatasToDelete(databaseToWriteTo: Realm,
                                            existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable],
                                            updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
