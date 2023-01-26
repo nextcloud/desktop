@@ -35,10 +35,15 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
         NSLog("Received command: %@", command)
         if (command == "SEND_FILE_PROVIDER_DOMAIN_IDENTIFIER") {
             delegate.sendFileProviderDomainIdentifier()
-        } else if (command == "ACCOUNT_KEYCHAIN_NAME") {
-            guard let keychainAccountSubsequence = splitLine.last else { return }
-            let keychainAccountString = String(keychainAccountSubsequence)
-            delegate.setupDomainAccount(keychainAccount:keychainAccountString)
+        } else if (command == "ACCOUNT_DETAILS") {
+            guard let accountDetailsSubsequence = splitLine.last else { return }
+            let splitAccountDetails = accountDetailsSubsequence.split(separator: ":", maxSplits: 2)
+
+            let user = String(splitAccountDetails[0])
+            let serverUrl = String(splitAccountDetails[1])
+            let password = String(splitAccountDetails[2])
+
+            delegate.setupDomainAccount(user: user, serverUrl: serverUrl, password: password)
         }
     }
 }

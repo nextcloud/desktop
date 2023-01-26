@@ -45,7 +45,7 @@ private slots:
 
     void parseReceivedLine(const QString &receivedLine);
     void requestFileProviderDomainInfo() const;
-    void sendAccountKeychainEntryKey() const;
+    void sendAccountDetails() const;
 
 private:
     static AccountStatePtr accountStateFromFileProviderDomainIdentifier(const QString &domainIdentifier);

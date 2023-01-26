@@ -21,7 +21,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
     var ncAccount: NextcloudAccount?
-    var serverUrl: URL?
+    var serverUrl: String?
     
     init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount?) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
@@ -34,7 +34,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             if let itemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier),
                let itemDirectoryMetadata = dbManager.parentDirectoryMetadataForItem(itemMetadata) {
 
-                self.serverUrl = URL(string: itemDirectoryMetadata.serverUrl + "/" + itemMetadata.fileName)
+                self.serverUrl = itemDirectoryMetadata.serverUrl + "/" + itemMetadata.fileName
             }
 
         }
@@ -133,33 +133,32 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         completionHandler(metadatas)
     }
 
-    private static func readServerUrl(_ serverUrl: URL, ncAccount: NextcloudAccount, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?) -> Void) {
+    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?) -> Void) {
         let dbManager = NextcloudFilesDatabaseManager.shared
-        let serverUrlPath = serverUrl.path
-        let ncKitAccount = ncAccount.ncKitAccount!
+        let ncKitAccount = ncAccount.ncKitAccount
         var directoryEtag: String?
 
-        if let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl.path) {
+        if let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl) {
             directoryEtag = directoryMetadata.etag
         }
 
-        NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlPath, depth: "0", showHiddenFiles: true) { account, files, _, error in
+        NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
             guard directoryEtag != files.first?.etag else {
-                finishReadServerUrl(serverUrlPath, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
+                finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
                 return
             }
 
-            NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlPath, depth: "1", showHiddenFiles: true) { account, files, _, error in
+            NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
-                    finishReadServerUrl(serverUrlPath, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
+                    finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
                     return
                 }
 
                 DispatchQueue.global().async {
                     dbManager.convertNKFilesToItemMetadatas(files, account: ncKitAccount) { _, childDirectoriesMetadata, metadatas in
-                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrlPath, updatedMetadatas: metadatas)
-                        dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrlPath, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
-                        finishReadServerUrl(serverUrlPath, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
+                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas)
+                        dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
+                        finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
                     }
                 }
             }

@@ -66,19 +66,19 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
         // resolve the given identifier to a record in the model
         
         if identifier == .rootContainer {
-            guard let ncAccount = ncAccount, let ncKitAccount = ncAccount.ncKitAccount, let serverUrl = ncAccount.serverUrl else {
+            guard let ncAccount = ncAccount else {
                 completionHandler(nil, NSFileProviderError(.notAuthenticated))
                 return Progress()
             }
 
             let metadata = NextcloudItemMetadataTable()
 
-            metadata.account = ncKitAccount
+            metadata.account = ncAccount.ncKitAccount
             metadata.directory = true
             metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
             metadata.fileName = "root"
             metadata.fileNameView = "root"
-            metadata.serverUrl = serverUrl.path
+            metadata.serverUrl = ncAccount.serverUrl
             metadata.classFile = NKCommon.typeClassFile.directory.rawValue
 
             completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer), nil)
@@ -136,7 +136,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
         socketClient?.sendMessage(message)
     }
 
-    func setupDomainAccount(keychainAccount:String) {
-        ncAccount = NextcloudAccount(withKeychainAccount:keychainAccount)
+    func setupDomainAccount(user: String, serverUrl: String, password: String) {
+        ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
     }
 }

@@ -17,63 +17,16 @@ import FileProvider
 
 class NextcloudAccount: NSObject {
     let webDavFilesUrlSuffix: String = "/remote.php/dav/files/"
-    let username, password, ncKitAccount: String?
-    let serverUrl, davFilesUrl: URL?
+    let username, password, ncKitAccount, serverUrl, davFilesUrl: String
 
-    var isNull: Bool {
-        return username?.isEmpty ?? false || serverUrl?.absoluteString.isEmpty ?? false
-    }
-
-    init?(withKeychainAccount account:String) {
-        // The client sets the account field in the keychain entry as a colon-separated string consisting of
-        // an account's username, its homeserver url, and the id of the account
-        guard let passwordData = NextcloudAccount.getUserPasswordFromKeychain(accountString: account),
-              let passwordString = String(data: passwordData, encoding: .utf8) else {
-
-            return nil
-        }
-
-        let keychainAccountSplit = account.split(separator: ":")
-        let usernameSubstring = keychainAccountSplit[0]
-        let serverUrlSubstring = keychainAccountSplit[1]
-        let clientAccountIdSubstring = keychainAccountSplit[2]
-
-        let usernameString = String(usernameSubstring)
-        let serverUrlString = String(serverUrlSubstring)
-        let clientAccountIdString = String(clientAccountIdSubstring)
-
-        guard let serverUrlUrl = URL(string: String(serverUrlString)) else {
-            return nil
-        }
-
-        let davFilesUrlUrl = serverUrlUrl.appendingPathComponent(webDavFilesUrlSuffix + usernameString)
-
-        username = usernameString
-        password = passwordString
-        ncKitAccount = usernameString + " " + serverUrlString
-        serverUrl = serverUrlUrl
-        davFilesUrl = davFilesUrlUrl
+    init(user: String, serverUrl: String, password: String) {
+        self.username = user
+        self.password = password
+        self.ncKitAccount = user + " " + serverUrl
+        self.serverUrl = serverUrl
+        self.davFilesUrl = serverUrl + webDavFilesUrlSuffix
 
         super.init()
-    }
-
-    private static func getUserPasswordFromKeychain(accountString:String) -> Data? {
-        let query = [
-            kSecClass as String       : kSecClassGenericPassword,
-            kSecAttrAccount as String : accountString,
-            kSecReturnData as String  : kCFBooleanTrue!,
-            kSecMatchLimit as String  : kSecMatchLimitOne
-        ] as [String : Any]
-
-        var dataTypeRef: AnyObject? = nil
-
-        let status: OSStatus = SecItemCopyMatching(query as CFDictionary, &dataTypeRef)
-
-        if status == noErr {
-            return dataTypeRef as! Data?
-        } else {
-            return nil
-        }
     }
 }
 
