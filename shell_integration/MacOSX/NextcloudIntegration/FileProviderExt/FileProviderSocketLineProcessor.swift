@@ -37,7 +37,7 @@ class FileProviderSocketLineProcessor: NSObject, LineProcessor {
             delegate.sendFileProviderDomainIdentifier()
         } else if (command == "ACCOUNT_DETAILS") {
             guard let accountDetailsSubsequence = splitLine.last else { return }
-            let splitAccountDetails = accountDetailsSubsequence.split(separator: ":", maxSplits: 2)
+            let splitAccountDetails = accountDetailsSubsequence.split(separator: "~", maxSplits: 2)
 
             let user = String(splitAccountDetails[0])
             let serverUrl = String(splitAccountDetails[1])

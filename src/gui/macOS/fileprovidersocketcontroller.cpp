@@ -146,9 +146,10 @@ void FileProviderSocketController::sendAccountDetails() const
     const auto accountUrl = account->url().toString();
     const auto accountPassword = credentials->password();
 
+    // We cannot use colons as separators here due to "https://" in the url
     const auto message = QString(QStringLiteral("ACCOUNT_DETAILS:") +
-                                 accountUser + ":" +
-                                 accountUrl + ":" +
+                                 accountUser + "~" +
+                                 accountUrl + "~" +
                                  accountPassword);
     sendMessage(message);
 }
