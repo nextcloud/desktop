@@ -176,8 +176,41 @@ class NextcloudFilesDatabaseManager : NSObject {
         return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first
     }
 
+    func directoryMetadata(ocId: String) -> NextcloudDirectoryMetadataTable? {
+        return ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first
+    }
+
     func parentDirectoryMetadataForItem(_ itemMetadata: NextcloudItemMetadataTable) -> NextcloudDirectoryMetadataTable? {
         return directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
+    }
+
+    func updateDirectoryMetadatasFromItemMetadatas(_ directoryItemMetadatas: [NextcloudItemMetadataTable]) {
+        let database = ncDatabase()
+        do {
+            try database.write {
+                for directoryItemMetadata in directoryItemMetadatas {
+                    var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
+                    let directoryOcId = directoryItemMetadata.ocId
+
+                    if let existingDirectoryMetadata = directoryMetadata(ocId: directoryOcId) {
+                        newDirectoryMetadata = existingDirectoryMetadata
+                    }
+
+                    newDirectoryMetadata.ocId = directoryOcId
+                    newDirectoryMetadata.fileId = directoryItemMetadata.fileId
+                    newDirectoryMetadata.etag = directoryItemMetadata.etag
+                    newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
+                    newDirectoryMetadata.account = directoryItemMetadata.account
+                    newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted
+                    newDirectoryMetadata.favorite = directoryItemMetadata.favorite
+                    newDirectoryMetadata.permissions = directoryItemMetadata.permissions
+
+                    database.add(newDirectoryMetadata, update: .all)
+                }
+            }
+        } catch let error {
+            print("Could not update directory metadatas in database, received error: %@", error)
+        }
     }
 
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
