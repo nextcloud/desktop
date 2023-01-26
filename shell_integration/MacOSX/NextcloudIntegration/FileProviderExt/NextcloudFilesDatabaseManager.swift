@@ -159,11 +159,12 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func updateItemMetadatas(existingMetadatas: [NextcloudItemMetadataTable], updatedMetadatas: [NextcloudItemMetadataTable]) {
+    func updateItemMetadatas(account: String, serverUrl: String, updatedMetadatas: [NextcloudItemMetadataTable]) {
         let database = ncDatabase()
 
         do {
             try database.write {
+                let existingMetadatas = itemMetadatas(account: account, serverUrl: serverUrl, status: .normal)
                 processItemMetadatasToDelete(databaseToWriteTo: database,
                                              existingMetadatas: existingMetadatas,
                                              updatedMetadatas: updatedMetadatas)
@@ -260,11 +261,12 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func updateDirectoryMetadatas(existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable], updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
+    func updateDirectoryMetadatas(account: String, parentDirectoryServerUrl: String, updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
         let database = ncDatabase()
 
         do {
             try database.write {
+                let existingDirectoryMetadatas = directoryMetadatas(account: account, parentDirectoryServerUrl: parentDirectoryServerUrl)
                 processDirectoryMetadatasToDelete(databaseToWriteTo: database,
                                                   existingDirectoryMetadatas: existingDirectoryMetadatas,
                                                   updatedDirectoryMetadatas: updatedDirectoryMetadatas)
@@ -278,7 +280,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func updateDirectoryMetadatasFromItemMetadatas(existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable], updatedDirectoryItemMetadatas: [NextcloudItemMetadataTable]) {
+    func updateDirectoryMetadatasFromItemMetadatas(account: String, parentDirectoryServerUrl: String, updatedDirectoryItemMetadatas: [NextcloudItemMetadataTable]) {
 
         var updatedDirMetadatas: [NextcloudDirectoryMetadataTable] = []
 
@@ -303,7 +305,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             updatedDirMetadatas.append(newDirectoryMetadata)
         }
 
-        updateDirectoryMetadatas(existingDirectoryMetadatas: existingDirectoryMetadatas, updatedDirectoryMetadatas: updatedDirMetadatas)
+        updateDirectoryMetadatas(account: account, parentDirectoryServerUrl: parentDirectoryServerUrl, updatedDirectoryMetadatas: updatedDirMetadatas)
     }
 
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
