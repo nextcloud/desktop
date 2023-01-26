@@ -17,7 +17,7 @@ import FileProvider
 
 func pathForAppGroupContainer() -> URL? {
     guard let appGroupIdentifier = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String else {
-        print("Could not get container url as missing SocketApiPrefix info in app Info.plist")
+        NSLog("Could not get container url as missing SocketApiPrefix info in app Info.plist")
         return nil
     }
 
@@ -85,7 +85,7 @@ func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
             try localPathForNCFile(itemMetadata: metadata)
         }
     } catch let error {
-        print("Could not create NC file or directory locally, received error: %@", error)
+        NSLog("Could not create NC file or directory locally, received error: %@", error.localizedDescription)
     }
 }
 
@@ -112,7 +112,7 @@ func isFileSynced(metadata: NextcloudItemMetadataTable) -> Bool {
 
         return localFileSize == metadata.size
     } catch let error {
-        print("Could not check if file %@ is synced, received error: %@", metadata.fileNameView, error)
+        NSLog("Could not check if file %@ is synced, received error: %@", metadata.fileNameView, error.localizedDescription)
     }
 
     return false

@@ -45,7 +45,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         do {
             try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: folderPath)
         } catch {
-            print("Could not set permission level for File Provider database folder")
+            NSLog("Could not set permission level for File Provider database folder")
         }
 
         let config = Realm.Configuration(
@@ -58,9 +58,9 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             let realm = try Realm()
-            print("Successfully started Realm db for FileProviderExt")
+            NSLog("Successfully started Realm db for FileProviderExt")
         } catch let error as NSError {
-            print("Error opening Realm db: %@", error.localizedDescription)
+            NSLog("Error opening Realm db: %@", error.localizedDescription)
         }
 
         super.init()
@@ -112,7 +112,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             guard !updatedMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
                     let metadataToDelete = itemMetadataFromOcId(existingMetadata.ocId) else { continue }
 
-            print("""
+            NSLog("""
                     Deleting metadata.
                     ocID: %@,
                     fileName: %@,
@@ -136,7 +136,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                     !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
                     databaseToWriteTo.add(NextcloudItemMetadataTable(value: updatedMetadata), update: .all)
-                    print("""
+                    NSLog("""
                             Updated existing metadata.
                             ocID: %@,
                             fileName: %@,
@@ -148,7 +148,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
             } else { // This is a new metadata
                 databaseToWriteTo.add(NextcloudItemMetadataTable(value: updatedMetadata), update: .all)
-                print("""
+                NSLog("""
                         Created new metadata.
                         ocID: %@,
                         fileName: %@,
@@ -175,7 +175,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                                              updatedMetadatas: updatedMetadatas)
             }
         } catch let error {
-            print("Could not update any metadatas, received error: %@", error)
+            NSLog("Could not update any metadatas, received error: %@", error.localizedDescription)
         }
     }
 
@@ -215,7 +215,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             guard !updatedDirectoryMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
                   let metadataToDelete = directoryMetadata(ocId: existingMetadata.ocId) else { continue }
 
-            print("""
+            NSLog("""
                     Deleting directory metadata.
                     ocID: %@,
                     serverUrl: %@,
@@ -238,7 +238,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                 if !existingMetadata.isInSameRemoteState(updatedMetadata) {
 
                     databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
-                    print("""
+                    NSLog("""
                             Updated existing directory metadata.
                             ocID: %@,
                             serverUrl: %@,
@@ -250,7 +250,7 @@ class NextcloudFilesDatabaseManager : NSObject {
 
             } else { // This is a new metadata
                 databaseToWriteTo.add(NextcloudDirectoryMetadataTable(value: updatedMetadata), update: .all)
-                print("""
+                NSLog("""
                         Created new metadata.
                         ocID: %@,
                         serverUrl: %@,
@@ -276,7 +276,7 @@ class NextcloudFilesDatabaseManager : NSObject {
                                                   updatedDirectoryMetadatas: updatedDirectoryMetadatas)
             }
         } catch let error {
-            print("Could not update directory metadatas, received error: %@", error)
+            NSLog("Could not update directory metadatas, received error: %@", error.localizedDescription)
         }
     }
 
