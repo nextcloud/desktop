@@ -22,8 +22,8 @@ class NextcloudFilesDatabaseManager : NSObject {
         return NextcloudFilesDatabaseManager();
     }()
 
-    let relativeDatabaseFolderPath: String = "Database/"
-    let databaseFilename: String = "fileproviderextdatabase.realm"
+    let relativeDatabaseFolderPath = "Database/"
+    let databaseFilename = "fileproviderextdatabase.realm"
     let relativeDatabaseFilePath: String
     var databasePath: URL?
 
@@ -37,16 +37,18 @@ class NextcloudFilesDatabaseManager : NSObject {
             return
         }
 
-        self.databasePath = fileProviderDataDirUrl.appendingPathExtension(self.relativeDatabaseFilePath)
+        self.databasePath = fileProviderDataDirUrl.appendingPathComponent(self.relativeDatabaseFilePath)
 
         // Disable file protection for directory DB
         // https://docs.mongodb.com/realm/sdk/ios/examples/configure-and-open-a-realm/#std-label-ios-open-a-local-realm
-        let folderPath = fileProviderDataDirUrl.appendingPathComponent(self.relativeDatabaseFolderPath).path
+        let dbFolder = fileProviderDataDirUrl.appendingPathComponent(self.relativeDatabaseFolderPath)
+        let dbFolderPath = dbFolder.path
         do {
-            try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: folderPath)
-        } catch {
-            NSLog("Could not set permission level for File Provider database folder")
-        }
+            try FileManager.default.createDirectory(at: dbFolder, withIntermediateDirectories: true)
+                try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: dbFolderPath)
+            } catch let error {
+                NSLog("Could not set permission level for File Provider database folder, received error: %@", error.localizedDescription)
+            }
 
         let config = Realm.Configuration(
             fileURL: self.databasePath,
