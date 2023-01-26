@@ -184,33 +184,105 @@ class NextcloudFilesDatabaseManager : NSObject {
         return directoryMetadata(account: itemMetadata.account, serverUrl: itemMetadata.serverUrl)
     }
 
-    func updateDirectoryMetadatasFromItemMetadatas(_ directoryItemMetadatas: [NextcloudItemMetadataTable]) {
+    private func processDirectoryMetadatasToDelete(databaseToWriteTo: Realm,
+                                           existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable],
+                                           updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
+
+        assert(databaseToWriteTo.isInWriteTransaction)
+
+        for existingMetadata in existingDirectoryMetadatas {
+            guard !updatedDirectoryMetadatas.contains(where: { $0.ocId == existingMetadata.ocId }),
+                  let metadataToDelete = directoryMetadata(ocId: existingMetadata.ocId) else { continue }
+
+            print("""
+                    Deleting directory metadata.
+                    ocID: %@,
+                    serverUrl: %@,
+                    etag: %@
+                  """
+                  , metadataToDelete.ocId, metadataToDelete.serverUrl, metadataToDelete.etag)
+            databaseToWriteTo.delete(metadataToDelete)
+        }
+    }
+
+    private func processDirectoryMetadatasToUpdate(databaseToWriteTo: Realm,
+                                           existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable],
+                                           updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
+
+        assert(databaseToWriteTo.isInWriteTransaction)
+
+        for updatedMetadata in updatedDirectoryMetadatas {
+            if let existingMetadata = existingDirectoryMetadatas.first(where: { $0.ocId == updatedMetadata.ocId }) {
+
+                if !existingMetadata.isInSameRemoteState(updatedMetadata) {
+
+                    databaseToWriteTo.add(NextcloudDirectoryMetadataTable.init(value: updatedMetadata), update: .all)
+                    print("""
+                            Updated existing directory metadata.
+                            ocID: %@,
+                            serverUrl: %@,
+                            etag: %@
+                          """
+                          , updatedMetadata.ocId, updatedMetadata.serverUrl, updatedMetadata.etag)
+                }
+                // Don't update under other circumstances in which the metadata already exists
+
+            } else { // This is a new metadata
+                databaseToWriteTo.add(NextcloudDirectoryMetadataTable.init(value: updatedMetadata), update: .all)
+                print("""
+                        Created new metadata.
+                        ocID: %@,
+                        serverUrl: %@,
+                        etag: %@
+                      """
+                      , updatedMetadata.ocId, updatedMetadata.serverUrl, updatedMetadata.etag)
+            }
+        }
+    }
+
+    func updateDirectoryMetadatas(existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable], updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
         let database = ncDatabase()
+
         do {
             try database.write {
-                for directoryItemMetadata in directoryItemMetadatas {
-                    var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
-                    let directoryOcId = directoryItemMetadata.ocId
+                processDirectoryMetadatasToDelete(databaseToWriteTo: database,
+                                                  existingDirectoryMetadatas: existingDirectoryMetadatas,
+                                                  updatedDirectoryMetadatas: updatedDirectoryMetadatas)
 
-                    if let existingDirectoryMetadata = directoryMetadata(ocId: directoryOcId) {
-                        newDirectoryMetadata = existingDirectoryMetadata
-                    }
-
-                    newDirectoryMetadata.ocId = directoryOcId
-                    newDirectoryMetadata.fileId = directoryItemMetadata.fileId
-                    newDirectoryMetadata.etag = directoryItemMetadata.etag
-                    newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
-                    newDirectoryMetadata.account = directoryItemMetadata.account
-                    newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted
-                    newDirectoryMetadata.favorite = directoryItemMetadata.favorite
-                    newDirectoryMetadata.permissions = directoryItemMetadata.permissions
-
-                    database.add(newDirectoryMetadata, update: .all)
-                }
+                processDirectoryMetadatasToUpdate(databaseToWriteTo: database,
+                                                  existingDirectoryMetadatas: existingDirectoryMetadatas,
+                                                  updatedDirectoryMetadatas: updatedDirectoryMetadatas)
             }
         } catch let error {
-            print("Could not update directory metadatas in database, received error: %@", error)
+            print("Could not update directory metadatas, received error: %@", error)
         }
+    }
+
+    func updateDirectoryMetadatasFromItemMetadatas(existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable], updatedDirectoryItemMetadatas: [NextcloudItemMetadataTable]) {
+
+        var updatedDirMetadatas: [NextcloudDirectoryMetadataTable] = []
+
+        for directoryItemMetadata in updatedDirectoryItemMetadatas {
+            var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
+            let directoryOcId = directoryItemMetadata.ocId
+
+            if let existingDirectoryMetadata = directoryMetadata(ocId: directoryOcId) {
+                newDirectoryMetadata = existingDirectoryMetadata
+            }
+
+            newDirectoryMetadata.ocId = directoryOcId
+            newDirectoryMetadata.fileId = directoryItemMetadata.fileId
+            newDirectoryMetadata.etag = directoryItemMetadata.etag
+            newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
+            newDirectoryMetadata.account = directoryItemMetadata.account
+            newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted
+            newDirectoryMetadata.favorite = directoryItemMetadata.favorite
+            newDirectoryMetadata.permissions = directoryItemMetadata.permissions
+
+            updatedDirMetadatas.append(newDirectoryMetadata)
+        }
+
+        updateDirectoryMetadatas(existingDirectoryMetadatas: existingDirectoryMetadatas, updatedDirectoryMetadatas: updatedDirMetadatas)
     }
 
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
