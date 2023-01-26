@@ -273,6 +273,7 @@ class NextcloudFilesDatabaseManager : NSObject {
             newDirectoryMetadata.ocId = directoryOcId
             newDirectoryMetadata.fileId = directoryItemMetadata.fileId
             newDirectoryMetadata.etag = directoryItemMetadata.etag
+            newDirectoryMetadata.parentDirectoryServerUrl = directoryItemMetadata.serverUrl
             newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
             newDirectoryMetadata.account = directoryItemMetadata.account
             newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted

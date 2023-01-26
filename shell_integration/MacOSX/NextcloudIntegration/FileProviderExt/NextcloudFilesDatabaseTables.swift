@@ -137,6 +137,7 @@ class NextcloudDirectoryMetadataTable: Object {
     @objc dynamic var permissions = ""
     @objc dynamic var richWorkspace: String?
     @objc dynamic var serverUrl = ""
+    @objc dynamic var parentDirectoryServerUrl = ""
 
     override static func primaryKey() -> String {
         return "ocId"
