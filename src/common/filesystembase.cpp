@@ -485,16 +485,30 @@ bool FileSystem::moveToTrash(const QString &fileName, QString *errorString)
 Utility::Handle FileSystem::lockFile(const QString &fileName, LockMode mode)
 {
     const QString fName = longWinPath(fileName);
-    auto accessMode = mode == LockMode::Exclusive ? 0 : FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+    int shareMode = 0;
+    int accessMode = GENERIC_READ | GENERIC_WRITE;
+    switch (mode) {
+    case LockMode::Exclusive:
+        shareMode = 0;
+        break;
+    case LockMode::Shared:
+        shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+        break;
+    case LockMode::SharedRead:
+        shareMode = FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE;
+        accessMode = GENERIC_READ;
+        break;
+    }
     // Check if file exists
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
         return Utility::Handle { CreateFileW(
             reinterpret_cast<const wchar_t *>(fName.utf16()),
-            GENERIC_READ | GENERIC_WRITE,
             accessMode,
-            nullptr, OPEN_EXISTING,
+            shareMode,
+            nullptr,
+            OPEN_EXISTING,
             FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
             nullptr) };
     }

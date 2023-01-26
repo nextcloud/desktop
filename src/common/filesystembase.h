@@ -146,7 +146,8 @@ namespace FileSystem {
 
     enum class LockMode {
         Shared,
-        Exclusive
+        Exclusive,
+        SharedRead
     };
     Q_ENUM_NS(LockMode);
     /**
