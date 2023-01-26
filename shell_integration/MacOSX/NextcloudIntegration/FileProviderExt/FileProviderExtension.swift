@@ -65,9 +65,34 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
         // resolve the given identifier to a record in the model
         
-        // TODO: implement the actual lookup
+        if identifier == .rootContainer {
+            guard let ncAccount = ncAccount, let ncKitAccount = ncAccount.ncKitAccount, let serverUrl = ncAccount.serverUrl else {
+                completionHandler(nil, NSFileProviderError(.notAuthenticated))
+                return Progress()
+            }
 
-        completionHandler(FileProviderItem(identifier: identifier), nil)
+            let metadata = NextcloudItemMetadataTable()
+
+            metadata.account = ncKitAccount
+            metadata.directory = true
+            metadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
+            metadata.fileName = "root"
+            metadata.fileNameView = "root"
+            metadata.serverUrl = serverUrl.path
+            metadata.classFile = NKCommon.typeClassFile.directory.rawValue
+
+            completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer), nil)
+            return Progress()
+        }
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        guard let metadata = dbManager.itemMetadataFromFileProviderItemIdentifier(identifier),
+              let parentItemIdentifier = parentItemIdentifierFromMetadata(metadata) else {
+            completionHandler(nil, NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
+        completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: parentItemIdentifier), nil)
         return Progress()
     }
     
