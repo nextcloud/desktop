@@ -1081,13 +1081,13 @@ void ConfigFile::setCertificatePasswd(const QString &cPasswd)
 
 QString ConfigFile::clientVersionString() const
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
+    QSettings settings(localConfigFile(), QSettings::IniFormat);
     return settings.value(QLatin1String(clientVersionC), QString()).toString();
 }
 
 void ConfigFile::setClientVersionString(const QString &version)
 {
-    QSettings settings(configFile(), QSettings::IniFormat);
+    QSettings settings(localConfigFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(clientVersionC), version);
 }
 
