@@ -13,16 +13,19 @@
  */
 
 import FileProvider
+import NextcloudKit
 
 class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
-    private let maxItemsPerFileProviderPage = 100
+    private static let maxItemsPerFileProviderPage = 100
+    var ncAccount: NextcloudAccount?
     var serverUrl: URL?
     
     init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount?) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
+        self.ncAccount = ncAccount
 
         if enumeratedItemIdentifier == .rootContainer {
             self.serverUrl = ncAccount?.davFilesUrl
@@ -58,8 +61,25 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
          - inform the observer about the items returned by the server (possibly multiple times)
          - inform the observer that you are finished with this page
          */
-        //observer.didEnumerate([FileProviderItem(identifier: NSFileProviderItemIdentifier("a file"))])
-        observer.finishEnumerating(upTo: nil)
+
+        if enumeratedItemIdentifier == .workingSet {
+            // TODO
+            observer.finishEnumerating(upTo: nil)
+            return
+        }
+
+        guard let serverUrl = serverUrl, let ncAccount = ncAccount else { observer.finishEnumerating(upTo: nil); return }
+
+        if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
+            page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
+
+            FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount) { metadatas in
+                FileProviderEnumerator.completeObserver(observer, numPage: 1, itemMetadatas: metadatas)
+            }
+        } else {
+            let numPage = Int(String(data: page.rawValue, encoding: .utf8)!)!
+            FileProviderEnumerator.completeObserver(observer, numPage: numPage, itemMetadatas: nil)
+        }
     }
     
     func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
@@ -81,8 +101,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    func completeObserver(observer: NSFileProviderEnumerationObserver, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?) {
+    private static func completeObserver(_ observer: NSFileProviderEnumerationObserver, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?) {
         guard itemMetadatas != nil else { observer.finishEnumerating(upTo: nil); return }
+
         var items: [NSFileProviderItem] = []
 
         for itemMetadata in itemMetadatas! {
@@ -104,6 +125,44 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             observer.finishEnumerating(upTo: providerPage)
         } else {
             observer.finishEnumerating(upTo: nil)
+        }
+    }
+
+    private static func finishReadServerUrl(_ serverUrlPath: String, ncKitAccount: String, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?) -> Void) {
+        let metadatas = NextcloudFilesDatabaseManager.shared.itemMetadatas(account: ncKitAccount, serverUrl: serverUrlPath)
+        completionHandler(metadatas)
+    }
+
+    private static func readServerUrl(_ serverUrl: URL, ncAccount: NextcloudAccount, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?) -> Void) {
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        let serverUrlPath = serverUrl.path
+        let ncKitAccount = ncAccount.ncKitAccount!
+        var directoryEtag: String?
+
+        if let directoryMetadata = dbManager.directoryMetadata(account: ncKitAccount, serverUrl: serverUrl.path) {
+            directoryEtag = directoryMetadata.etag
+        }
+
+        NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlPath, depth: "0", showHiddenFiles: true) { account, files, _, error in
+            guard directoryEtag != files.first?.etag else {
+                finishReadServerUrl(serverUrlPath, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
+                return
+            }
+
+            NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrlPath, depth: "1", showHiddenFiles: true) { account, files, _, error in
+                guard error == .success else {
+                    finishReadServerUrl(serverUrlPath, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
+                    return
+                }
+
+                DispatchQueue.global().async {
+                    dbManager.convertNKFilesToItemMetadatas(files, account: ncKitAccount) { _, childDirectoriesMetadata, metadatas in
+                        dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrlPath, updatedMetadatas: metadatas)
+                        dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrlPath, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
+                        finishReadServerUrl(serverUrlPath, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
+                    }
+                }
+            }
         }
     }
 }
