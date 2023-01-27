@@ -37,11 +37,6 @@ include(OCConfigPluginDir)
 include(OCBundleResources)
 include(OCApplyCommonSettings)
 
-if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
-    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/branding" CACHE STRING "The directory containing a custom theme")
-else()
-    set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/src/resources/" CACHE STRING "Define directory containing a custom theme")
-endif()
 include("${CMAKE_CURRENT_LIST_DIR}/THEME.cmake")
 
 set(synclib_NAME "${APPLICATION_EXECUTABLE}sync")
