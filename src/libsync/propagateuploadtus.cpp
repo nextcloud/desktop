@@ -112,6 +112,10 @@ PropagateUploadFileTUS::PropagateUploadFileTUS(OwncloudPropagator *propagator, c
 
 void PropagateUploadFileTUS::doStartUpload()
 {
+    if (_transmissionChecksumHeader.isEmpty()) {
+        abortWithError(SyncFileItem::SoftError, tr("Checksum computation failed"));
+        return;
+    }
     propagator()->reportProgress(*_item, 0);
     startNextChunk();
     propagator()->_activeJobList.append(this);

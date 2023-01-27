@@ -173,6 +173,13 @@ void PropagateUploadFileCommon::slotComputeContentChecksum()
         return;
     }
 
+    // we must be able to read the file
+    if (FileSystem::isFileLocked(filePath, FileSystem::LockMode::SharedRead)) {
+        emit propagator()->seenLockedFile(filePath, FileSystem::LockMode::SharedRead);
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(filePath));
+        return;
+    }
+
     // Compute the content checksum.
     auto computeChecksum = new ComputeChecksum(this);
     computeChecksum->setChecksumType(checksumType);
@@ -196,6 +203,14 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(CheckSums::Algor
         return;
     }
 
+    const QString filePath = propagator()->fullLocalPath(_item->_file);
+    // we must be able to read the file
+    if (FileSystem::isFileLocked(filePath, FileSystem::LockMode::SharedRead)) {
+        emit propagator()->seenLockedFile(filePath, FileSystem::LockMode::SharedRead);
+        abortWithError(SyncFileItem::SoftError, tr("%1 the file is currently in use").arg(filePath));
+        return;
+    }
+
     // Compute the transmission checksum.
     auto computeChecksum = new ComputeChecksum(this);
     if (uploadChecksumEnabled()) {
@@ -208,7 +223,6 @@ void PropagateUploadFileCommon::slotComputeTransmissionChecksum(CheckSums::Algor
         this, &PropagateUploadFileCommon::slotStartUpload);
     connect(computeChecksum, &ComputeChecksum::done,
         computeChecksum, &QObject::deleteLater);
-    const QString filePath = propagator()->fullLocalPath(_item->_file);
     computeChecksum->start(filePath);
 }
 
