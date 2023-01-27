@@ -503,7 +503,7 @@ Utility::Handle FileSystem::lockFile(const QString &fileName, LockMode mode)
     DWORD attr = GetFileAttributesW(reinterpret_cast<const wchar_t *>(fName.utf16()));
     if (attr != INVALID_FILE_ATTRIBUTES) {
         // Try to open the file with as much access as possible..
-        return Utility::Handle { CreateFileW(
+        auto out = Utility::Handle { CreateFileW(
             reinterpret_cast<const wchar_t *>(fName.utf16()),
             accessMode,
             shareMode,
@@ -511,6 +511,20 @@ Utility::Handle FileSystem::lockFile(const QString &fileName, LockMode mode)
             OPEN_EXISTING,
             FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
             nullptr) };
+
+        if (out) {
+            LARGE_INTEGER start;
+            start.QuadPart = 0;
+            LARGE_INTEGER end;
+            end.QuadPart = -1;
+            if (LockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart)) {
+                OC_ENSURE(UnlockFile(out.handle(), start.LowPart, start.HighPart, end.LowPart, end.HighPart));
+                return out;
+            } else {
+                return {};
+            }
+        }
+        return out;
     }
     return {};
 }
@@ -523,7 +537,7 @@ bool FileSystem::isFileLocked(const QString &fileName, LockMode mode)
     const auto handle = lockFile(fileName, mode);
     if (!handle) {
         const auto error = GetLastError();
-        if (error == ERROR_SHARING_VIOLATION) {
+        if (error == ERROR_SHARING_VIOLATION || error == ERROR_LOCK_VIOLATION) {
             return true;
         } else if (error != ERROR_FILE_NOT_FOUND && error != ERROR_PATH_NOT_FOUND) {
             qCWarning(lcFileSystem()) << Q_FUNC_INFO << Utility::formatWinError(error);
