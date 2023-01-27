@@ -121,7 +121,7 @@ void DiscoveryPhase::checkSelectiveSyncNewFolder(const QString &path, RemotePerm
             return callback(true);
         } else {
             // it is not too big, put it in the white list (so we will not do more query for the children)
-            // and and do not block.
+            // and do not block.
             auto p = path;
             if (!p.endsWith(QLatin1Char('/')))
                 p += QLatin1Char('/');
