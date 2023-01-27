@@ -27,8 +27,5 @@ function(add_windows_version_info targetName)
     set(OC_RC_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/${targetName}-oc_rc_version.rc)
     configure_file(${_VERSION_SOURCE_DIR}/version.rc.in ${OC_RC_OUTPUT} @ONLY)
 
-    message(MESSAGE "TARGET_TYPE: ${TARGET_TYPE} ${OC_RC_OUTPUT}")
     target_sources(${targetName} PRIVATE ${OC_RC_OUTPUT})
-
-
 endfunction()
