@@ -48,6 +48,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
         return session
     }()
 
+    private var itemIdsForEnumeratorsNeedingSignalling: NSMutableSet = NSMutableSet()
+
     required init(domain: NSFileProviderDomain) {
         self.domain = domain
         // The containing application must create a domain using `NSFileProviderManager.add(_:, completionHandler:)`. The system will then launch the application extension process, call `FileProviderExtension.init(domain:)` to instantiate the extension for that domain, and call methods on the instance.
@@ -126,6 +128,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     }
     
     func enumerator(for containerItemIdentifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest) throws -> NSFileProviderEnumerator {
+
+        guard let ncAccount = ncAccount else {
+            NSLog("Not providing enumerator for container with identifier %@ yet as account not set up")
+            itemIdsForEnumeratorsNeedingSignalling.add(containerItemIdentifier)
+            throw NSFileProviderError(.notAuthenticated)
+        }
+
         return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount)
     }
 
@@ -139,5 +148,21 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
 
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
         ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
+        NSLog("Nextcloud account set up in File Provider extension for user: %@ at server: %@", user, serverUrl)
+
+        for itemIdObj in itemIdsForEnumeratorsNeedingSignalling {
+            guard let itemIdentifier = itemIdObj as? NSFileProviderItemIdentifier else {
+                NSLog("Skipping non-NSFileProviderItemIdentifier object in itemIdsForEnumeratorsNeedingSignalling.")
+                continue;
+            }
+
+            NSFileProviderManager(for: domain)?.signalEnumerator(for: itemIdentifier) { error in
+                if error != nil {
+                    NSLog("Error signalling enumerator: %@ for itemIdentifier", error!.localizedDescription, itemIdentifier.rawValue)
+                }
+            }
+        }
+
+        itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
     }
 }

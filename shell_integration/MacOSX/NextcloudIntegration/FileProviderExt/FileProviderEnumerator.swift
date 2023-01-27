@@ -20,16 +20,16 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
-    var ncAccount: NextcloudAccount?
-    var serverUrl: String?
+    var ncAccount: NextcloudAccount
+    var serverUrl: String = ""
     
-    init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount?) {
+    init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
 
         if enumeratedItemIdentifier == .rootContainer {
             NSLog("Providing enumerator for root container")
-            self.serverUrl = ncAccount?.davFilesUrl
+            self.serverUrl = ncAccount.davFilesUrl
         } else {
             NSLog("Providing enumerator for item with identifier: %@", enumeratedItemIdentifier.rawValue)
             let dbManager = NextcloudFilesDatabaseManager.shared
@@ -69,8 +69,6 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             observer.finishEnumerating(upTo: nil)
             return
         }
-
-        guard let serverUrl = serverUrl, let ncAccount = ncAccount else { observer.finishEnumerating(upTo: nil); return }
 
         if page == NSFileProviderPage.initialPageSortedByDate as NSFileProviderPage ||
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
