@@ -341,6 +341,21 @@ public:
     virtual QString aboutDetails() const;
 
     /**
+     * Define if the systray icons should be using mono design
+     */
+    void setSystrayUseMonoIcons(bool mono);
+
+    /**
+     * Retrieve wether to use mono icons for systray
+     */
+    bool systrayUseMonoIcons() const;
+
+    /**
+     * Check if mono icons are available
+     */
+    bool monoIconsAvailable() const;
+
+    /**
      * @brief Where to check for new Updates.
      */
     virtual QString updateCheckUrl() const;
@@ -597,6 +612,7 @@ protected:
     Theme();
 
 signals:
+    void systrayUseMonoIconsChanged(bool);
     void systemPaletteChanged(const QPalette &palette);
     void darkModeChanged();
     void overrideServerUrlChanged();

@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>556</width>
-    <height>573</height>
+    <height>563</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -66,6 +66,16 @@
       <string>General Settings</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="monoIconsCheckBox">
+        <property name="toolTip">
+         <string>For System Tray</string>
+        </property>
+        <property name="text">
+         <string>Use &amp;Monochrome Icons</string>
+        </property>
+       </widget>
+      </item>
       <item row="0" column="0">
        <widget class="QCheckBox" name="autostartCheckBox">
         <property name="text">
@@ -333,6 +343,7 @@
  <tabstops>
   <tabstop>autostartCheckBox</tabstop>
   <tabstop>serverNotificationsCheckBox</tabstop>
+  <tabstop>monoIconsCheckBox</tabstop>
   <tabstop>ignoredFilesButton</tabstop>
   <tabstop>newFolderLimitCheckBox</tabstop>
   <tabstop>newFolderLimitSpinBox</tabstop>
