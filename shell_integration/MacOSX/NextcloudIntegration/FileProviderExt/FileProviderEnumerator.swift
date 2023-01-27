@@ -28,8 +28,10 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         self.ncAccount = ncAccount
 
         if enumeratedItemIdentifier == .rootContainer {
+            NSLog("Providing enumerator for root container")
             self.serverUrl = ncAccount?.davFilesUrl
         } else {
+            NSLog("Providing enumerator for item with identifier: %@", enumeratedItemIdentifier.rawValue)
             let dbManager = NextcloudFilesDatabaseManager.shared
             if let itemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier),
                let itemDirectoryMetadata = dbManager.parentDirectoryMetadataForItem(itemMetadata) {

@@ -64,7 +64,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
     
     func item(for identifier: NSFileProviderItemIdentifier, request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, Error?) -> Void) -> Progress {
         // resolve the given identifier to a record in the model
-        
+
+        NSLog("Received item request for item with identifier: %@", identifier.rawValue)
         if identifier == .rootContainer {
             guard let ncAccount = ncAccount else {
                 completionHandler(nil, NSFileProviderError(.notAuthenticated))
