@@ -17,7 +17,7 @@ import OSLog
 import NCDesktopClientSocketKit
 import NextcloudKit
 
-class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
+class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
     let domain: NSFileProviderDomain
 
     let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
@@ -70,6 +70,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
         NSLog("Received item request for item with identifier: %@", identifier.rawValue)
         if identifier == .rootContainer {
             guard let ncAccount = ncAccount else {
+                NSLog("Not providing item: %@ as account not set up yet", identifier.rawValue)
                 completionHandler(nil, NSFileProviderError(.notAuthenticated))
                 return Progress()
             }
@@ -148,6 +149,15 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
 
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
         ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
+
+        NextcloudKit.shared.setup(user: ncAccount!.username,
+                                  userId: ncAccount!.username,
+                                  password: ncAccount!.password,
+                                  urlBase: ncAccount!.serverUrl,
+                                  userAgent: "Nextcloud-macOS/FileProviderExt",
+                                  nextcloudVersion: 25,
+                                  delegate: self)
+
         NSLog("Nextcloud account set up in File Provider extension for user: %@ at server: %@", user, serverUrl)
 
         for itemIdObj in itemIdsForEnumeratorsNeedingSignalling {
@@ -156,9 +166,10 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension {
                 continue;
             }
 
+            NSLog("Signalling enumerator for itemIdentifier %@ for user %@ at server %@", itemIdentifier.rawValue, user, serverUrl)
             NSFileProviderManager(for: domain)?.signalEnumerator(for: itemIdentifier) { error in
                 if error != nil {
-                    NSLog("Error signalling enumerator: %@ for itemIdentifier", error!.localizedDescription, itemIdentifier.rawValue)
+                    NSLog("Error signalling enumerator for itemIdentifier: %@, received error: %@", itemIdentifier.rawValue, error!.localizedDescription)
                 }
             }
         }
