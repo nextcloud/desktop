@@ -23,7 +23,7 @@ CONFIG_ENV_MAP = {
 CONFIG = {
     'localBackendUrl': 'https://localhost:9200/',
     'secureLocalBackendUrl': 'https://localhost:9200/',
-    'maxSyncTimeout': 10,
+    'maxSyncTimeout': 60,
     'minSyncTimeout': 5,
     'lowestSyncTimeout': 1,
     'middlewareUrl': 'http://localhost:3000/',

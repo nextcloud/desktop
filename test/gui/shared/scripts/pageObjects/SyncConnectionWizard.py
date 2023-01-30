@@ -54,11 +54,11 @@ class SyncConnectionWizard:
     }
 
     @staticmethod
-    def setSyncPathInSyncConnectionWizard(context):
+    def setSyncPathInSyncConnectionWizard():
         squish.waitForObject(SyncConnectionWizard.ADD_FOLDER_SYNC_CONNECTION_WIZARD)
         squish.type(
             SyncConnectionWizard.CHOOSE_LOCAL_SYNC_FOLDER,
-            getCurrentUserSyncPath(context),
+            getCurrentUserSyncPath(),
         )
         SyncConnectionWizard.nextStep()
 
@@ -78,7 +78,7 @@ class SyncConnectionWizard:
         SyncConnectionWizard.nextStep()
 
     @staticmethod
-    def selectFoldersToSync(context):
+    def selectFoldersToSync(folders):
         # first deselect all
         squish.mouseClick(
             squish.waitForObject(SyncConnectionWizard.SELECTIVE_SYNC_ROOT_FOLDER),
@@ -87,10 +87,9 @@ class SyncConnectionWizard:
             squish.Qt.NoModifier,
             squish.Qt.LeftButton,
         )
-        for row in context.table[1:]:
-            SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE['text'] = row[
-                0
-            ]  # added a new key 'text' to dictionary SYNC_DIALOG_FOLDER_TREE
+        for folder in folders:
+            # added a new key 'text' to dictionary SYNC_DIALOG_FOLDER_TREE
+            SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE['text'] = folder
             squish.mouseClick(
                 squish.waitForObject(SyncConnectionWizard.SYNC_DIALOG_FOLDER_TREE),
                 11,

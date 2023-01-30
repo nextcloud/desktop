@@ -21,8 +21,8 @@ def shareResourceCommand(resource):
             return False
 
 
-def openSharingDialog(context, resource):
-    resource = getResourcePath(context, resource)
+def openSharingDialog(resource):
+    resource = getResourcePath(resource)
     resourceExist = waitFor(
         lambda: os.path.exists(resource), get_config('maxSyncTimeout') * 1000
     )
@@ -37,24 +37,22 @@ def openSharingDialog(context, resource):
 
 
 def createPublicLinkShare(
-    context, resource, password='', permissions='', expireDate='', name=''
+    resource, password='', permissions='', expireDate='', name=''
 ):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
     PublicLinkDialog.createPublicLink(password, permissions, expireDate, name)
 
 
-def createPublicShareWithRole(context, resource, role):
-    resource = sanitizePath(substituteInLineCodes(context, resource))
-    openSharingDialog(context, resource)
+def createPublicShareWithRole(resource, role):
+    resource = sanitizePath(substituteInLineCodes(resource))
+    openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
     PublicLinkDialog.createPublicLinkWithRole(role)
 
 
-def collaboratorShouldBeListed(
-    context, receiver, resource, permissions, receiverCount=0
-):
-    resource = getResourcePath(context, resource)
+def collaboratorShouldBeListed(receiver, resource, permissions, receiverCount=0):
+    resource = getResourcePath(resource)
     socketConnect = getSocketConnection()
     socketConnect.sendCommand("SHARE:" + resource + "\n")
     permissionsList = permissions.split(',')
@@ -83,14 +81,14 @@ def collaboratorShouldBeListed(
     'the user adds "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI'
 )
 def step(context, receiver, resource, permissions):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     SharingDialog.addCollaborator(receiver, permissions)
     SharingDialog.closeSharingDialog()
 
 
 @When('the user adds following collaborators of resource "|any|" using the client-UI')
 def step(context, resource):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
 
     # In the following loop we are trying to share resource with given permission to one user at a time given from the data table in the feature file
     for count, row in enumerate(context.table[1:]):
@@ -105,7 +103,7 @@ def step(context, resource):
     'the user selects "|any|" as collaborator of resource "|any|" using the client-UI'
 )
 def step(context, receiver, resource):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     SharingDialog.selectCollaborator(receiver)
 
 
@@ -113,7 +111,7 @@ def step(context, receiver, resource):
     'the user adds group "|any|" as collaborator of resource "|any|" with permissions "|any|" using the client-UI'
 )
 def step(context, receiver, resource, permissions):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     SharingDialog.addCollaborator(receiver, permissions, True)
     SharingDialog.closeSharingDialog()
 
@@ -122,7 +120,7 @@ def step(context, receiver, resource, permissions):
     'user "|any|" should be listed in the collaborators list for file "|any|" with permissions "|any|" on the client-UI'
 )
 def step(context, receiver, resource, permissions):
-    collaboratorShouldBeListed(context, receiver, resource, permissions)
+    collaboratorShouldBeListed(receiver, resource, permissions)
 
 
 @Then(
@@ -130,12 +128,12 @@ def step(context, receiver, resource, permissions):
 )
 def step(context, receiver, resource, permissions):
     receiver += " (group)"
-    collaboratorShouldBeListed(context, receiver, resource, permissions)
+    collaboratorShouldBeListed(receiver, resource, permissions)
 
 
 @When('the user opens the public links dialog of "|any|" using the client-UI')
 def step(context, resource):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
 
 
@@ -158,7 +156,7 @@ def step(context):
 
 @When('the user opens the sharing dialog of "|any|" using the client-UI')
 def step(context, resource):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
 
 
 @Then('the text "|any|" should be displayed in the sharing dialog')
@@ -181,19 +179,19 @@ def step(context, fileShareContext):
     'the user creates a new public link for file "|any|" without password using the client-UI'
 )
 def step(context, resource):
-    createPublicLinkShare(context, resource)
+    createPublicLinkShare(resource)
 
 
 @When(
     'the user creates a new public link for file "|any|" with password "|any|" using the client-UI'
 )
 def step(context, resource, password):
-    createPublicLinkShare(context, resource, password)
+    createPublicLinkShare(resource, password)
 
 
 @Then('the expiration date of the last public link of file "|any|" should be "|any|"')
 def step(context, resource, expiryDate):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
 
     if expiryDate.strip("%") == "default":
@@ -218,14 +216,14 @@ def step(context, publicLinkName, resource):
     'the user creates a new public link with permissions "|any|" for folder "|any|" without password using the client-UI'
 )
 def step(context, permissions, resource):
-    createPublicLinkShare(context, resource, '', permissions)
+    createPublicLinkShare(resource, '', permissions)
 
 
 @When(
     'the user creates a new public link with permissions "|any|" for folder "|any|" with password "|any|" using the client-UI'
 )
 def step(context, permissions, resource, password):
-    createPublicLinkShare(context, resource, password, permissions)
+    createPublicLinkShare(resource, password, permissions)
 
 
 @When('the user creates a new public link with following settings using the client-UI:')
@@ -241,7 +239,6 @@ def step(context):
         linkSettings['expireDate'] = linkSettings['expireDate'].strip("%")
 
     createPublicLinkShare(
-        context,
         resource=linkSettings['path'],
         password=linkSettings['password'] if "password" in linkSettings else None,
         expireDate=linkSettings['expireDate'] if "expireDate" in linkSettings else None,
@@ -261,14 +258,14 @@ def step(context, resource):
     if role == '':
         raise Exception("No role has been found")
     else:
-        createPublicShareWithRole(context, resource, role)
+        createPublicShareWithRole(resource, role)
 
 
 @When(
     'the user removes permissions "|any|" for user "|any|" of resource "|any|" using the client-UI'
 )
 def step(context, permissions, receiver, resource):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     SharingDialog.removePermissions(permissions)
 
 
@@ -301,7 +298,7 @@ def step(context, errorMessage):
     'the user tires to share resource "|any|" with the group "|any|" using the client-UI'
 )
 def step(context, resource, group):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
 
     SharingDialog.selectCollaborator(group, True)
 
@@ -310,13 +307,13 @@ def step(context, resource, group):
     'the user unshares the resource "|any|" for collaborator "|any|" using the client-UI'
 )
 def step(context, resource, receiver):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     SharingDialog.unshareWith(receiver)
 
 
 @When('the user deletes the public link for file "|any|"')
 def step(context, resource):
-    openSharingDialog(context, resource)
+    openSharingDialog(resource)
     PublicLinkDialog.openPublicLinkTab()
     PublicLinkDialog.deletePublicLink()
 
@@ -339,9 +336,7 @@ def step(context, resource):
         receiver = row[0]
         permissions = row[1]
 
-        collaboratorShouldBeListed(
-            context, receiver, resource, permissions, receiverCount
-        )
+        collaboratorShouldBeListed(receiver, resource, permissions, receiverCount)
         receiverCount += 1
 
 

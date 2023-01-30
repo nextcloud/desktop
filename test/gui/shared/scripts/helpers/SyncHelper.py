@@ -154,7 +154,7 @@ def getCurrentSyncStatus(resource, resourceType):
     return messages[-1]
 
 
-def waitForFileOrFolderToSync(context, resource, resourceType='FOLDER', patterns=None):
+def waitForFileOrFolderToSync(resource, resourceType='FOLDER', patterns=None):
     listenSyncStatusForItem(resource, resourceType)
 
     timeout = get_config('maxSyncTimeout') * 1000
@@ -190,9 +190,8 @@ def waitForFileOrFolderToSync(context, resource, resourceType='FOLDER', patterns
             )
 
 
-def waitForInitialSyncToComplete(context, path):
+def waitForInitialSyncToComplete(path):
     waitForFileOrFolderToSync(
-        context,
         path,
         'FOLDER',
         getInitialSyncPatterns(),
@@ -233,7 +232,7 @@ def hasSyncStatus(itemName, status):
 # useful for checking sync status such as 'error', 'ignore'
 # but not quite so reliable for checking 'ok' sync status
 def waitForFileOrFolderToHaveSyncStatus(
-    context, resource, resourceType, status=SYNC_STATUS['OK'], timeout=None
+    resource, resourceType, status=SYNC_STATUS['OK'], timeout=None
 ):
     resource = sanitizePath(resource)
 
@@ -265,16 +264,14 @@ def waitForFileOrFolderToHaveSyncStatus(
         )
 
 
-def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
-    waitForFileOrFolderToHaveSyncStatus(
-        context, resource, resourceType, SYNC_STATUS['ERROR']
-    )
+def waitForFileOrFolderToHaveSyncError(resource, resourceType):
+    waitForFileOrFolderToHaveSyncStatus(resource, resourceType, SYNC_STATUS['ERROR'])
 
 
 # performing actions immediately after completing the sync from the server does not work
 # The test should wait for a while before performing the action
 # issue: https://github.com/owncloud/client/issues/8832
-def waitForClientToBeReady(context):
+def waitForClientToBeReady():
     global waitedAfterSync
     if not waitedAfterSync:
         snooze(get_config('minSyncTimeout'))

@@ -30,7 +30,7 @@ class SyncConnection:
     }
 
     @staticmethod
-    def openMenu(context):
+    def openMenu():
         squish.openContextMenu(
             squish.waitForObjectItem(
                 SyncConnection.FOLDER_SYNC_CONNECTION,
@@ -42,30 +42,28 @@ class SyncConnection:
         )
 
     @staticmethod
-    def performAction(context, action):
-        SyncConnection.openMenu(context)
+    def performAction(action):
+        SyncConnection.openMenu()
         squish.activateItem(squish.waitForObjectItem(SyncConnection.MENU, action))
 
     @staticmethod
-    def pauseSync(context):
-        SyncConnection.performAction(context, "Pause sync")
+    def pauseSync():
+        SyncConnection.performAction("Pause sync")
 
     @staticmethod
-    def resumeSync(context):
-        SyncConnection.performAction(context, "Resume sync")
+    def resumeSync():
+        SyncConnection.performAction("Resume sync")
 
     @staticmethod
-    def enableVFS(context):
-        SyncConnection.performAction(
-            context, "Enable virtual file support (experimental)..."
-        )
+    def enableVFS():
+        SyncConnection.performAction("Enable virtual file support (experimental)...")
         squish.clickButton(
             squish.waitForObject(SyncConnection.ENABLE_VFS_CONFIRMATION_BUTTON)
         )
 
     @staticmethod
-    def disableVFS(context):
-        SyncConnection.performAction(context, "Disable virtual file support...")
+    def disableVFS():
+        SyncConnection.performAction("Disable virtual file support...")
         squish.clickButton(
             squish.waitForObject(SyncConnection.DISABLE_VFS_CONFIRMATION_BUTTON)
         )

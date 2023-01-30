@@ -3,7 +3,7 @@ from pageObjects.EnterPassword import EnterPassword
 from pageObjects.Toolbar import Toolbar
 from pageObjects.AccountSetting import AccountSetting
 
-from helpers.SetupClientHelper import substituteInLineCodes
+from helpers.SetupClientHelper import substituteInLineCodes, getClientDetails
 from helpers.UserHelper import getDisplaynameForUser, getPasswordForUser
 from helpers.SetupClientHelper import setUpClient, startClient
 from helpers.SyncHelper import waitForInitialSyncToComplete
@@ -15,18 +15,22 @@ from helpers.ConfigHelper import get_config
 def step(context, accountType):
     if accountType == 'another':
         Toolbar.openNewAccountSetup()
-    AccountConnectionWizard.addAccount(context)
+    account_details = getClientDetails(context)
+    AccountConnectionWizard.addAccount(account_details)
 
 
 @When('the user adds the following wrong user credentials:')
 def step(context):
-    AccountConnectionWizard.addUserCreds(context)
+    account_details = getClientDetails(context)
+    AccountConnectionWizard.addUserCreds(
+        account_details['user'], account_details['password']
+    )
 
 
 @Then('the account with displayname "|any|" and host "|any|" should be displayed')
 def step(context, displayname, host):
-    displayname = substituteInLineCodes(context, displayname)
-    host = substituteInLineCodes(context, host)
+    displayname = substituteInLineCodes(displayname)
+    host = substituteInLineCodes(host)
 
     test.compare(
         Toolbar.getDisplayedAccountText(displayname, host),
@@ -36,8 +40,8 @@ def step(context, displayname, host):
 
 @Then('the account with displayname "|any|" and host "|any|" should not be displayed')
 def step(context, displayname, host):
-    displayname = substituteInLineCodes(context, displayname)
-    host = substituteInLineCodes(context, host)
+    displayname = substituteInLineCodes(displayname)
+    host = substituteInLineCodes(host)
 
     waitFor(
         lambda: (not object.exists(Toolbar.getItemSelector(displayname + "@" + host))),
@@ -46,30 +50,32 @@ def step(context, displayname, host):
 
 @Given('user "|any|" has set up a client with default settings')
 def step(context, username):
-    password = getPasswordForUser(context, username)
-    displayName = getDisplaynameForUser(context, username)
-    setUpClient(context, username, displayName)
-    EnterPassword.loginAfterSetup(context, username, password)
+    password = getPasswordForUser(username)
+    displayName = getDisplaynameForUser(username)
+    setUpClient(username, displayName)
+    EnterPassword.loginAfterSetup(username, password)
 
     # wait for files to sync
-    waitForInitialSyncToComplete(context, getResourcePath(context, '/', username))
+    waitForInitialSyncToComplete(getResourcePath('/', username))
 
 
 @Given('the user has started the client')
 def step(context):
-    startClient(context)
+    startClient()
 
 
 @When(r'^the user adds (the first|another) account with$', regexp=True)
 def step(context, accountType):
     if accountType == 'another':
         Toolbar.openNewAccountSetup()
-    AccountConnectionWizard.addAccount(context)
+    account_details = getClientDetails(context)
+    AccountConnectionWizard.addAccount(account_details)
 
 
 @Given('the user has added the following account information:')
 def step(context):
-    AccountConnectionWizard.addAccountCredential(context)
+    account_details = getClientDetails(context)
+    AccountConnectionWizard.addAccountInformation(account_details)
 
 
 @When('the user "|any|" logs out of the client-UI')
@@ -79,7 +85,7 @@ def step(context, username):
 
 @Then('user "|any|" should be signed out')
 def step(context, username):
-    displayname = getDisplaynameForUser(context, username)
+    displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
     test.compare(
         AccountSetting.isUserSignedOut(displayname, server),
@@ -91,7 +97,7 @@ def step(context, username):
 @Given('user "|any|" has logged out of the client-UI')
 def step(context, username):
     AccountSetting.logout()
-    displayname = getDisplaynameForUser(context, username)
+    displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
     if not AccountSetting.isUserSignedOut(displayname, server):
         raise Exception("Failed to logout user '%s'" % username)
@@ -100,16 +106,16 @@ def step(context, username):
 @When('user "|any|" logs in to the client-UI')
 def step(context, username):
     AccountSetting.login()
-    password = getPasswordForUser(context, username)
-    EnterPassword.reLogin(context, username, password)
+    password = getPasswordForUser(username)
+    EnterPassword.reLogin(username, password)
 
     # wait for files to sync
-    waitForInitialSyncToComplete(context, getResourcePath(context, '/', username))
+    waitForInitialSyncToComplete(getResourcePath('/', username))
 
 
 @Then('user "|any|" should be connect to the client-UI')
 def step(context, username):
-    displayname = getDisplaynameForUser(context, username)
+    displayname = getDisplaynameForUser(username)
     server = get_config('localBackendUrl')
     test.compare(
         AccountSetting.isUserSignedIn(displayname, server),
@@ -120,9 +126,9 @@ def step(context, username):
 
 @When('the user removes the connection for user "|any|" and host |any|')
 def step(context, username, host):
-    displayname = getDisplaynameForUser(context, username)
-    displayname = substituteInLineCodes(context, displayname)
-    host = substituteInLineCodes(context, host)
+    displayname = getDisplaynameForUser(username)
+    displayname = substituteInLineCodes(displayname)
+    host = substituteInLineCodes(host)
 
     AccountSetting.removeAccountConnection()
 
@@ -146,19 +152,21 @@ def step(context, errorMsg):
     test.compare(AccountConnectionWizard.getErrorMessage(), errorMsg)
 
 
-@Given('the user has added the following server address:')
-def step(context):
-    AccountConnectionWizard.addServer(context)
+@Given('the user has added the server "|any|"')
+def step(context, server):
+    server_url = substituteInLineCodes(server)
+    AccountConnectionWizard.addServer(server_url)
     test.compare(
-        AccountConnectionWizard.isCredentialWindowVisible(context),
+        AccountConnectionWizard.isCredentialWindowVisible(),
         True,
         "Assert credentials page is visible",
     )
 
 
-@When('the user adds the following server address:')
-def step(context):
-    AccountConnectionWizard.addServer(context)
+@When('the user adds the server "|any|"')
+def step(context, server):
+    server_url = substituteInLineCodes(server)
+    AccountConnectionWizard.addServer(server_url)
 
 
 @When('the user selects manual sync folder option in advanced section')
@@ -170,7 +178,7 @@ def step(context):
 @Then("credentials wizard should be visible")
 def step(context):
     test.compare(
-        AccountConnectionWizard.isCredentialWindowVisible(context),
+        AccountConnectionWizard.isCredentialWindowVisible(),
         True,
         "Credentials wizard is visible",
     )

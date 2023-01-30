@@ -43,14 +43,14 @@ class EnterPassword:
         authorize_via_webui(username, password)
 
     @staticmethod
-    def reLogin(context, username, password):
+    def reLogin(username, password):
         if get_config('ocis'):
             EnterPassword.oidcReLogin(username, password)
         else:
             EnterPassword.enterPassword(password)
 
     @staticmethod
-    def loginAfterSetup(context, username, password):
+    def loginAfterSetup(username, password):
         if get_config('ocis'):
             AccountConnectionWizard.acceptCertificate()
             EnterPassword.oidcReLogin(username, password)

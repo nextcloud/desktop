@@ -16,7 +16,6 @@
 # See the section 'Performing Actions During Test Execution Via Hooks' in the Squish
 # manual for a complete reference of the available API.
 import shutil
-from tempfile import gettempdir
 import urllib.request
 import os
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
@@ -35,19 +34,21 @@ previousFailResultCount = 0
 previousErrorResultCount = 0
 
 
+# runs before a feature
+# Order: 1
 @OnFeatureStart
 def hook(context):
     init_config()
 
 
-# this hook will be executed after every scenario
+# runs before every scenario
 # Order: 1
 @OnScenarioStart
 def hook(context):
     clear_scenario_config()
 
 
-# this hook will be executed after every scenario
+# runs before every scenario
 # Order: 2
 @OnScenarioStart
 def hook(context):
@@ -100,7 +101,7 @@ def hook(context):
         )
 
     # sync connection folder display name
-    set_config('syncConnectionName', "ownCloud")
+    set_config('syncConnectionName', "Personal" if get_config("ocis") else "ownCloud")
 
 
 # determines if the test scenario failed or not
@@ -124,7 +125,7 @@ def isAppKilled(pid):
     return True
 
 
-def waitUntilAppIsKilled(context, pid=0):
+def waitUntilAppIsKilled(pid=0):
     timeout = get_config('minSyncTimeout') * 1000
     killed = waitFor(
         lambda: isAppKilled(pid),
@@ -136,13 +137,17 @@ def waitUntilAppIsKilled(context, pid=0):
         )
 
 
+# runs after every scenario
+# Order: 1
 # cleanup spaces
 @OnScenarioEnd
 def hook(context):
     if get_config('ocis'):
-        delete_project_spaces(context)
+        delete_project_spaces()
 
 
+# runs after every scenario
+# Order: 2
 @OnScenarioEnd
 def hook(context):
     clearWaitedAfterSync()
@@ -178,7 +183,7 @@ def hook(context):
         # get pid before detaching
         pid = ctx.pid
         ctx.detach()
-        waitUntilAppIsKilled(context, pid)
+        waitUntilAppIsKilled(pid)
 
     # delete local files/folders
     for filename in os.listdir(get_config('clientRootSyncPath')):
@@ -197,7 +202,7 @@ def hook(context):
     coredumps = getCoredumps()
     if coredumps:
         try:
-            generateStacktrace(context, coredumps)
+            generateStacktrace(context._data["title"], coredumps)
             test.log("Stacktrace generated!")
         except Exception as err:
             test.log("Exception occured:" + str(err))

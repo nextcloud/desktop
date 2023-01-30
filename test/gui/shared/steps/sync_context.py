@@ -13,58 +13,58 @@ from helpers.SyncHelper import (
 
 @Given('the user has paused the file sync')
 def step(context):
-    SyncConnection.pauseSync(context)
+    SyncConnection.pauseSync()
 
 
 @When('the user resumes the file sync on the client')
 def step(context):
-    SyncConnection.resumeSync(context)
+    SyncConnection.resumeSync()
 
 
 @When('the user waits for the files to sync')
 def step(context):
-    waitForFileOrFolderToSync(context, getResourcePath(context, '/'))
+    waitForFileOrFolderToSync(getResourcePath('/'))
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to be synced', regexp=True)
 def step(context, type, resource):
-    resource = getResourcePath(context, resource)
-    waitForFileOrFolderToSync(context, resource, type)
+    resource = getResourcePath(resource)
+    waitForFileOrFolderToSync(resource, type)
 
 
 @When(r'the user waits for (file|folder) "([^"]*)" to have sync error', regexp=True)
 def step(context, type, resource):
-    resource = getResourcePath(context, resource)
-    waitForFileOrFolderToHaveSyncError(context, resource, type)
+    resource = getResourcePath(resource)
+    waitForFileOrFolderToHaveSyncError(resource, type)
 
 
 @When(
     r'user "([^"]*)" waits for (file|folder) "([^"]*)" to have sync error', regexp=True
 )
 def step(context, username, type, resource):
-    resource = getResourcePath(context, resource, username)
-    waitForFileOrFolderToHaveSyncError(context, resource, type)
+    resource = getResourcePath(resource, username)
+    waitForFileOrFolderToHaveSyncError(resource, type)
 
 
 @When("the user enables virtual file support")
 def step(context):
-    SyncConnection.enableVFS(context)
+    SyncConnection.enableVFS()
 
 
 @Then('the "|any|" button should be available')
 def step(context, item):
-    SyncConnection.openMenu(context)
+    SyncConnection.openMenu()
     SyncConnection.hasMenuItem(item)
 
 
 @Given("the user has enabled virtual file support")
 def step(context):
-    SyncConnection.enableVFS(context)
+    SyncConnection.enableVFS()
 
 
 @When("the user disables virtual file support")
 def step(context):
-    SyncConnection.disableVFS(context)
+    SyncConnection.disableVFS()
 
 
 @When('the user clicks on the activity tab')
@@ -81,7 +81,7 @@ def step(context, filename):
 def step(context, filename):
     test.compare(
         True,
-        Activity.checkBlackListedResourceExist(context, filename),
+        Activity.checkBlackListedResourceExist(filename),
         "File is blacklisted",
     )
 
@@ -99,7 +99,10 @@ def step(context):
 
 @When('the user selects the following folders to sync:')
 def step(context):
-    SyncConnectionWizard.selectFoldersToSync(context)
+    folders = []
+    for row in context.table[1:]:
+        folders.append(row[0])
+    SyncConnectionWizard.selectFoldersToSync(folders)
     SyncConnectionWizard.addSyncConnection()
 
 
@@ -148,7 +151,7 @@ def step(context):
 
 @When('the user sets the sync path in sync connection wizard')
 def step(context):
-    SyncConnectionWizard.setSyncPathInSyncConnectionWizard(context)
+    SyncConnectionWizard.setSyncPathInSyncConnectionWizard()
 
 
 @When('the user selects "|any|" as a remote destination folder')
