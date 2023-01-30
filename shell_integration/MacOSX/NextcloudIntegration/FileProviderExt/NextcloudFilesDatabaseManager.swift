@@ -45,10 +45,10 @@ class NextcloudFilesDatabaseManager : NSObject {
         let dbFolderPath = dbFolder.path
         do {
             try FileManager.default.createDirectory(at: dbFolder, withIntermediateDirectories: true)
-                try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: dbFolderPath)
-            } catch let error {
-                NSLog("Could not set permission level for File Provider database folder, received error: %@", error.localizedDescription)
-            }
+            try FileManager.default.setAttributes([FileAttributeKey.protectionKey: FileProtectionType.completeUntilFirstUserAuthentication], ofItemAtPath: dbFolderPath)
+        } catch let error {
+            NSLog("Could not set permission level for File Provider database folder, received error: %@", error.localizedDescription)
+        }
 
         let config = Realm.Configuration(
             fileURL: self.databasePath,
