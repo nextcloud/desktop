@@ -6,7 +6,6 @@ import com.nextcloud.desktopclient 1.0 as NC
 
 ScrollView {
     id: controlRoot
-
     property alias model: sortedActivityList.sourceModel
     property bool isFileActivityList: false
     property int iconSize: Style.trayListItemIconSize

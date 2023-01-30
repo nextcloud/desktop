@@ -34,7 +34,6 @@ RowLayout {
 
             Layout.minimumWidth: primaryButton ? Style.activityItemActionPrimaryButtonMinWidth : Style.activityItemActionSecondaryButtonMinWidth
             Layout.preferredHeight: parent.height
-            Layout.preferredWidth: primaryButton ? -1 : parent.height
 
             verb: model.modelData.verb
             primaryButton: (model.index === 0 && verb !== "DELETE") || model.modelData.primary
@@ -61,6 +60,7 @@ RowLayout {
         Layout.fillHeight: true
 
         active: root.displayActions && (root.linksContextMenu.length > 0)
+        visible: active
 
         sourceComponent: Button {
             id: moreActionsButton

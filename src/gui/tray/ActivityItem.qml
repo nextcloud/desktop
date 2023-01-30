@@ -32,10 +32,6 @@ ItemDelegate {
 
     contentItem: ColumnLayout {
         id: contentLayout
-        anchors.left: root.left
-        anchors.right: root.right
-        anchors.rightMargin: Style.standardSpacing
-        anchors.leftMargin: Style.standardSpacing
 
         spacing: Style.activityContentSpace
 
@@ -75,7 +71,7 @@ ItemDelegate {
         ActivityItemActions {
             id: activityActions
 
-            visible: !root.isFileActivityList && model.linksForActionButtons.length > 1 && !isTalkReplyOptionVisible
+            visible: !root.isFileActivityList && model.linksForActionButtons.length > 0 && !isTalkReplyOptionVisible
 
             Layout.fillWidth: true
             Layout.leftMargin: Style.trayListItemIconSize + activityContent.spacing

@@ -177,34 +177,42 @@ RowLayout {
         }
     }
 
-    CustomButton {
+    RoundButton {
         id: dismissActionButton
 
-        Layout.preferredWidth: Style.trayListItemIconSize
-        Layout.preferredHeight: Style.trayListItemIconSize
+        Layout.preferredWidth: Style.headerButtonIconSize
+        Layout.preferredHeight: Style.headerButtonIconSize
 
         visible: root.showDismissButton && !fileDetailsButton.visible
 
         icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
-        imageSourceHover: "image://svgimage-custom-color/clear.svg" + "/" + UserModel.currentUser.headerTextColor
+        //imageSourceHover: "image://svgimage-custom-color/clear.svg" + "/" + UserModel.currentUser.headerTextColor
 
-        toolTipText: qsTr("Dismiss")
+        flat: true
+        display: Button.IconOnly
+        hoverEnabled: true
+        padding: 0
+        //toolTipText: qsTr("Dismiss")
 
-        bgColor: Style.menuBorder
+        //bgColor: Style.menuBorder
 
         onClicked: root.dismissButtonClicked()
     }
 
-    CustomButton {
+    Button {
         id: fileDetailsButton
 
-        Layout.preferredWidth: Style.trayListItemIconSize
-        Layout.preferredHeight: Style.trayListItemIconSize
+        Layout.preferredWidth: Style.headerButtonIconSize
+        Layout.preferredHeight: Style.headerButtonIconSize
 
         icon.source: "image://svgimage-custom-color/more.svg" + "/" + Style.adjustedCurrentUserHeaderColor
-        imageSourceHover: "image://svgimage-custom-color/more.svg" + "/" + Style.currentUserHeaderTextColor
-        toolTipText: qsTr("Open file details")
-        bgColor: Style.currentUserHeaderColor
+        //imageSourceHover: "image://svgimage-custom-color/more.svg" + "/" + Style.currentUserHeaderTextColor
+        //toolTipText: qsTr("Open file details")
+        //bgColor: Style.currentUserHeaderColor
+
+        flat: true
+        display: Button.IconOnly
+        padding: 0
 
         visible: model.showFileDetails
 
