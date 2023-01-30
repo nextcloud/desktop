@@ -26,12 +26,12 @@ func pathForAppGroupContainer() -> URL? {
 
 func pathForFileProviderExtData() -> URL? {
     let containerUrl = pathForAppGroupContainer()
-    return containerUrl?.appendingPathExtension("FileProviderExt/")
+    return containerUrl?.appendingPathComponent("FileProviderExt/")
 }
 
 func pathForFileProviderExtFiles() -> URL? {
     let fileProviderDataUrl = pathForFileProviderExtData()
-    return fileProviderDataUrl?.appendingPathExtension("Files/")
+    return fileProviderDataUrl?.appendingPathComponent("Files/")
 }
 
 @discardableResult func localPathForNCDirectory(ocId: String) throws -> URL {
@@ -39,7 +39,7 @@ func pathForFileProviderExtFiles() -> URL? {
         throw URLError(.badURL)
     }
 
-    let folderPathUrl = fileProviderFilesPathUrl.appendingPathExtension(ocId)
+    let folderPathUrl = fileProviderFilesPathUrl.appendingPathComponent(ocId)
     let folderPath = folderPathUrl.path
 
     if !FileManager.default.fileExists(atPath: folderPath) {
@@ -61,7 +61,7 @@ func pathForFileProviderExtFiles() -> URL? {
 
 @discardableResult func localPathForNCFile(ocId: String, fileNameView: String) throws -> URL {
     let fileFolderPathUrl = try localPathForNCDirectory(ocId: ocId)
-    let filePathUrl = fileFolderPathUrl.appendingPathExtension(fileNameView)
+    let filePathUrl = fileFolderPathUrl.appendingPathComponent(fileNameView)
     let filePath = filePathUrl.path
 
     if !FileManager.default.fileExists(atPath: filePath) {
