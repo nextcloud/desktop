@@ -141,18 +141,32 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    bool versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+    const auto versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
-    bool warningMessage = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
+    const auto showWarning = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
 
-    if (!versionChanged && !warningMessage)
+    if (!versionChanged && !showWarning) {
         return true;
+    }
 
-    const auto backupFile = configFile.backup();
+    // back up all old config file
+    QStringList backupFilesList;
+    QDir configDir(configFile.configPath());
+    const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
+    for (const auto &oldConfig : anyConfigFileNameList) {
+        const auto oldConfigFileName = oldConfig.fileName();
+        const auto newConfigFileName = configFile.configFile();
+        backupFilesList.append(configFile.backup(oldConfigFileName));
+        if (oldConfigFileName != newConfigFileName) {
+            if (!QFile::rename(oldConfig.filePath(), newConfigFileName)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFileName << "to" << newConfigFileName;
+            }
+        }
+    }
 
-    if (warningMessage) {
+    if (showWarning || backupFilesList.count() > 0) {
         QString boldMessage;
         if (!deleteKeys.isEmpty()) {
             boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
@@ -169,7 +183,7 @@ bool Application::configVersionMigration()
                "%1<br>"
                "<br>"
                "The current configuration file was already backed up to <i>%2</i>.")
-                .arg(boldMessage, backupFile));
+                .arg(boldMessage, backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 
@@ -247,15 +261,23 @@ Application::Application(int &argc, char **argv)
 #endif
         QT_WARNING_PUSH
         QT_WARNING_DISABLE_DEPRECATED
-        // We need to use the deprecated QDesktopServices::storageLocation because of its Qt4
-        // behavior of adding "data" to the path
-        QString oldDir = QDesktopServices::storageLocation(QDesktopServices::DataLocation);
-        if (oldDir.endsWith('/')) oldDir.chop(1); // macOS 10.11.x does not like trailing slash for rename/move.
+        QString oldDir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+        // macOS 10.11.x does not like trailing slash for rename/move.
+        if (oldDir.endsWith('/')) {
+            oldDir.chop(1);
+        }
+
         QT_WARNING_POP
         setApplicationName(_theme->appName());
         if (QFileInfo(oldDir).isDir()) {
             auto confDir = ConfigFile().configPath();
-            if (confDir.endsWith('/')) confDir.chop(1);  // macOS 10.11.x does not like trailing slash for rename/move.
+
+            // macOS 10.11.x does not like trailing slash for rename/move.
+            if (confDir.endsWith('/')) {
+                confDir.chop(1);
+            }
+
             qCInfo(lcApplication) << "Migrating old config from" << oldDir << "to" << confDir;
 
             if (!QFile::rename(oldDir, confDir)) {

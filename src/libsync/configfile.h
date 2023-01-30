@@ -49,11 +49,11 @@ public:
     static QString excludeFileFromSystem(); // doesn't access config dir
 
     /**
-     * Creates a backup of the file
+     * Creates a backup of any given fileName in the config folder
      *
      * Returns the path of the new backup.
      */
-    [[nodiscard]] QString backup() const;
+    [[nodiscard]] QString backup(const QString &fileName) const;
 
     bool exists();
 
