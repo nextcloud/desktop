@@ -1,5 +1,7 @@
 import urllib.request
 import json
+from os import path
+from helpers.ConfigHelper import get_config
 
 
 def executeStepThroughMiddleware(context, step):
@@ -10,7 +12,7 @@ def executeStepThroughMiddleware(context, step):
     params = json.dumps(body).encode('utf8')
 
     req = urllib.request.Request(
-        context.userData['middlewareUrl'] + 'execute',
+        path.join(get_config('middlewareUrl'), 'execute'),
         data=params,
         headers={"Content-Type": "application/json"},
         method='POST',

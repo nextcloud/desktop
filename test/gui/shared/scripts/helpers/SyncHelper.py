@@ -11,7 +11,7 @@ sys.path.append(realpath('../../../shell_integration/nautilus/'))
 from syncstate import SocketConnect
 
 from helpers.FilesHelper import sanitizePath
-from helpers.SetupClientHelper import getResourcePath
+from helpers.ConfigHelper import get_config
 
 # socket messages
 socket_messages = []
@@ -157,7 +157,7 @@ def getCurrentSyncStatus(resource, resourceType):
 def waitForFileOrFolderToSync(context, resource, resourceType='FOLDER', patterns=None):
     listenSyncStatusForItem(resource, resourceType)
 
-    timeout = context.userData['maxSyncTimeout'] * 1000
+    timeout = get_config('maxSyncTimeout') * 1000
 
     if patterns is None:
         patterns = getSyncedPattern()
@@ -240,7 +240,7 @@ def waitForFileOrFolderToHaveSyncStatus(
     listenSyncStatusForItem(resource, resourceType)
 
     if not timeout:
-        timeout = context.userData['maxSyncTimeout'] * 1000
+        timeout = get_config('maxSyncTimeout') * 1000
 
     result = waitFor(
         lambda: hasSyncStatus(resource, status),
@@ -277,7 +277,7 @@ def waitForFileOrFolderToHaveSyncError(context, resource, resourceType):
 def waitForClientToBeReady(context):
     global waitedAfterSync
     if not waitedAfterSync:
-        snooze(context.userData['minSyncTimeout'])
+        snooze(get_config('minSyncTimeout'))
         waitedAfterSync = True
 
 

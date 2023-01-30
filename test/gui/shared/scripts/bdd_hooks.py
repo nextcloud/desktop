@@ -19,10 +19,15 @@ import shutil
 from tempfile import gettempdir
 import urllib.request
 import os
-import builtins
 from helpers.StacktraceHelper import getCoredumps, generateStacktrace
 from helpers.SyncHelper import closeSocketConnection, clearWaitedAfterSync
 from helpers.SpaceHelper import delete_project_spaces
+from helpers.ConfigHelper import (
+    init_config,
+    get_config,
+    set_config,
+    clear_scenario_config,
+)
 from datetime import datetime
 
 # this will reset in every test suite
@@ -30,96 +35,38 @@ previousFailResultCount = 0
 previousErrorResultCount = 0
 
 
+@OnFeatureStart
+def hook(context):
+    init_config()
+
+
+# this hook will be executed after every scenario
+# Order: 1
 @OnScenarioStart
 def hook(context):
-    from configparser import ConfigParser
+    clear_scenario_config()
 
-    CONFIG_ENV_MAP = {
-        'localBackendUrl': 'BACKEND_HOST',
-        'secureLocalBackendUrl': 'SECURE_BACKEND_HOST',
-        'maxSyncTimeout': 'MAX_SYNC_TIMEOUT',
-        'minSyncTimeout': 'MIN_SYNC_TIMEOUT',
-        'lowestSyncTimeout': 'LOWEST_SYNC_TIMEOUT',
-        'middlewareUrl': 'MIDDLEWARE_URL',
-        'clientLogFile': 'CLIENT_LOG_FILE',
-        'clientRootSyncPath': 'CLIENT_ROOT_SYNC_PATH',
-        'tempFolderPath': 'TEMP_FOLDER_PATH',
-        'clientConfigDir': 'CLIENT_CONFIG_DIR',
-        'guiTestReportDir': 'GUI_TEST_REPORT_DIR',
-        'ocis': 'OCIS',
-    }
 
-    context.userData = {
-        'localBackendUrl': 'https://localhost:9200/',
-        'secureLocalBackendUrl': 'https://localhost:9200/',
-        'maxSyncTimeout': 60,
-        'minSyncTimeout': 5,
-        'lowestSyncTimeout': 1,
-        'middlewareUrl': 'http://localhost:3000/',
-        'clientLogFile': '-',
-        'clientRootSyncPath': '/tmp/client-bdd/',
-        'tempFolderPath': gettempdir(),
-        'clientConfigDir': '/tmp/owncloud-client/',
-        'guiTestReportDir': os.path.abspath('../reports/'),
-        'ocis': False,
-    }
-
-    # try reading configs from config.ini
-    cfg = ConfigParser()
-    try:
-        script_path = os.path.dirname(os.path.realpath(__file__))
-        if cfg.read(os.path.join(script_path, '..', 'config.ini')):
-            for key, _ in context.userData.items():
-                if key in CONFIG_ENV_MAP:
-                    value = cfg.get('DEFAULT', CONFIG_ENV_MAP[key])
-                    if value:
-                        if key == 'ocis':
-                            context.userData[key] = value == 'true'
-                        else:
-                            context.userData[key] = value
-    except Exception as err:
-        test.log(str(err))
-
-    # read and override configs from environment variables
-    for key, value in CONFIG_ENV_MAP.items():
-        if os.environ.get(value):
-            if key == 'ocis':
-                context.userData[key] = os.environ.get(value) == 'true'
-            else:
-                context.userData[key] = os.environ.get(value)
-
-    # Set the default values if empty
-    for key, value in context.userData.items():
-        if key == 'maxSyncTimeout' or key == 'minSyncTimeout':
-            context.userData[key] = builtins.int(value)
-        elif (
-            key == 'clientRootSyncPath'
-            or key == 'tempFolderPath'
-            or key == 'clientConfigDir'
-            or key == 'guiTestReportDir'
-            or key == 'localBackendUrl'
-            or key == 'middlewareUrl'
-        ):
-            # make sure there is always one trailing slash
-            context.userData[key] = value.rstrip('/') + '/'
-
+# this hook will be executed after every scenario
+# Order: 2
+@OnScenarioStart
+def hook(context):
     # set owncloud config file path
-    context.userData['clientConfigFile'] = os.path.join(
-        context.userData['clientConfigDir'], 'owncloud.cfg'
-    )
-    if os.path.exists(context.userData['clientConfigDir']):
+    config_dir = get_config('clientConfigDir')
+    if os.path.exists(config_dir):
         # clean previous configs
-        shutil.rmtree(context.userData['clientConfigDir'])
-    os.makedirs(context.userData['clientConfigDir'], 0o0755)
+        shutil.rmtree(config_dir)
+    os.makedirs(config_dir, 0o0755)
+    set_config('clientConfigFile', os.path.join(config_dir, 'owncloud.cfg'))
 
     # create reports dir if not exists
-    if not os.path.exists(context.userData['guiTestReportDir']):
-        os.makedirs(context.userData['guiTestReportDir'])
+    test_report_dir = get_config('guiTestReportDir')
+    if not os.path.exists(test_report_dir):
+        os.makedirs(test_report_dir)
 
     # log tests scenario title on serverlog file
     if os.getenv('CI'):
-        guiTestReportDir = context.userData['guiTestReportDir']
-        f = open(guiTestReportDir + "/serverlog.log", "a")
+        f = open(test_report_dir + "/serverlog.log", "a")
         f.write(
             str((datetime.now()).strftime("%H:%M:%S:%f"))
             + "\tBDD Scenario: "
@@ -130,16 +77,18 @@ def hook(context):
 
     # this path will be changed according to the user added to the client
     # e.g.: /tmp/client-bdd/Alice
-    context.userData['currentUserSyncPath'] = ''
+    set_config('currentUserSyncPath', '')
 
-    if not os.path.exists(context.userData['clientRootSyncPath']):
-        os.makedirs(context.userData['clientRootSyncPath'])
+    root_sync_dir = get_config('clientRootSyncPath')
+    if not os.path.exists(root_sync_dir):
+        os.makedirs(root_sync_dir)
 
-    if not os.path.exists(context.userData['tempFolderPath']):
-        os.makedirs(context.userData['tempFolderPath'])
+    tmp_dir = get_config('tempFolderPath')
+    if not os.path.exists(tmp_dir):
+        os.makedirs(tmp_dir)
 
     req = urllib.request.Request(
-        os.path.join(context.userData['middlewareUrl'], 'init'),
+        os.path.join(get_config('middlewareUrl'), 'init'),
         headers={"Content-Type": "application/json"},
         method='POST',
     )
@@ -151,9 +100,7 @@ def hook(context):
         )
 
     # sync connection folder display name
-    context.userData['syncConnectionName'] = (
-        "Personal" if context.userData['ocis'] else "ownCloud"
-    )
+    set_config('syncConnectionName', "ownCloud")
 
 
 # determines if the test scenario failed or not
@@ -178,7 +125,7 @@ def isAppKilled(pid):
 
 
 def waitUntilAppIsKilled(context, pid=0):
-    timeout = context.userData['minSyncTimeout'] * 1000
+    timeout = get_config('minSyncTimeout') * 1000
     killed = waitFor(
         lambda: isAppKilled(pid),
         timeout,
@@ -192,7 +139,7 @@ def waitUntilAppIsKilled(context, pid=0):
 # cleanup spaces
 @OnScenarioEnd
 def hook(context):
-    if context.userData['ocis']:
+    if get_config('ocis'):
         delete_project_spaces(context)
 
 
@@ -219,7 +166,7 @@ def hook(context):
             context._data["title"].replace(" ", "_").replace("/", "_").strip(".")
             + ".png"
         )
-        directory = context.userData['guiTestReportDir'] + "/screenshots"
+        directory = os.path.join(get_config('guiTestReportDir'), "screenshots")
 
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -234,9 +181,9 @@ def hook(context):
         waitUntilAppIsKilled(context, pid)
 
     # delete local files/folders
-    for filename in os.listdir(context.userData['clientRootSyncPath']):
+    for filename in os.listdir(get_config('clientRootSyncPath')):
         test.log("Deleting: " + filename)
-        file_path = os.path.join(context.userData['clientRootSyncPath'], filename)
+        file_path = os.path.join(get_config('clientRootSyncPath'), filename)
         try:
             if os.path.isfile(file_path) or os.path.islink(file_path):
                 os.unlink(file_path)
@@ -259,7 +206,7 @@ def hook(context):
 
     # cleanup test server
     req = urllib.request.Request(
-        os.path.join(context.userData['middlewareUrl'], 'cleanup'),
+        os.path.join(get_config('middlewareUrl'), 'cleanup'),
         headers={"Content-Type": "application/json"},
         method='POST',
     )

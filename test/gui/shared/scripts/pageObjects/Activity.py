@@ -2,6 +2,7 @@ import names
 import squish
 from objectmaphelper import RegularExpression
 from helpers.FilesHelper import buildConflictedRegex
+from helpers.ConfigHelper import get_config
 
 
 class Activity:
@@ -87,7 +88,7 @@ class Activity:
 
         result = squish.waitFor(
             lambda: Activity.isResourceBlackListed(context, filename),
-            context.userData['maxSyncTimeout'] * 1000,
+            get_config('maxSyncTimeout') * 1000,
         )
 
         return result
@@ -98,7 +99,7 @@ class Activity:
             # The blacklisted file does not have text like (conflicted copy) appended to it in the not synced table.
             fileRow = squish.waitForObject(
                 Activity.getNotSyncedFileSelector(filename),
-                context.userData['lowestSyncTimeout'] * 1000,
+                get_config('lowestSyncTimeout') * 1000,
             )["row"]
             if Activity.getNotSyncedStatus(fileRow) == "Blacklisted":
                 return True

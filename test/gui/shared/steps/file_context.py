@@ -10,6 +10,7 @@ from pageObjects.AccountSetting import AccountSetting
 from helpers.SetupClientHelper import getResourcePath
 from helpers.FilesHelper import buildConflictedRegex, sanitizePath
 from helpers.SyncHelper import waitForClientToBeReady
+from helpers.ConfigHelper import get_config
 
 
 def folderExists(folderPath, timeout=1000):
@@ -30,7 +31,7 @@ def fileExists(filePath, timeout=1000):
 # And if isTempFolder is True, the createFolder function create folders in tempFolderPath
 def createFolder(context, foldername, username=None, isTempFolder=False):
     if isTempFolder:
-        folder_path = join(context.userData['tempFolderPath'], foldername)
+        folder_path = join(get_config('tempFolderPath'), foldername)
     else:
         folder_path = getResourcePath(context, foldername, username)
     os.makedirs(folder_path)
@@ -44,7 +45,7 @@ def renameFileFolder(context, source, destination):
 
 def createFileWithSize(context, filename, filesize, isTempFolder=False):
     if isTempFolder:
-        file = join(context.userData['tempFolderPath'], filename)
+        file = join(get_config('tempFolderPath'), filename)
     else:
         file = getResourcePath(context, filename)
     cmd = "truncate -s {filesize} {file}".format(filesize=filesize, file=file)
@@ -124,15 +125,12 @@ def step(context, filePath):
 @Then(r'^the (file|folder) "([^"]*)" should exist on the file system$', regexp=True)
 def step(context, resourceType, resource):
     resourcePath = getResourcePath(context, resource)
+    print(resourcePath)
     resourceExists = False
     if resourceType == 'file':
-        resourceExists = fileExists(
-            resourcePath, context.userData['maxSyncTimeout'] * 1000
-        )
+        resourceExists = fileExists(resourcePath, get_config('maxSyncTimeout') * 1000)
     elif resourceType == 'folder':
-        resourceExists = folderExists(
-            resourcePath, context.userData['maxSyncTimeout'] * 1000
-        )
+        resourceExists = folderExists(resourcePath, get_config('maxSyncTimeout') * 1000)
     else:
         raise Exception("Unsupported resource type '" + resourceType + "'")
 
@@ -262,7 +260,7 @@ def step(context, foldername, filenumber, filesize):
 
 @When('user "|any|" moves folder "|any|" from the temp folder into the sync folder')
 def step(context, username, foldername):
-    source_dir = join(context.userData['tempFolderPath'], foldername)
+    source_dir = join(get_config('tempFolderPath'), foldername)
     destination_dir = getResourcePath(context, '/', username)
     shutil.move(source_dir, destination_dir)
 

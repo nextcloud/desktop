@@ -2,6 +2,7 @@ import names
 import squish
 from helpers.SetupClientHelper import getClientDetails, createUserSyncPath
 from helpers.WebUIHelper import authorize_via_webui
+from helpers.ConfigHelper import get_config
 import test
 
 
@@ -141,7 +142,7 @@ class AccountConnectionWizard:
         )
         AccountConnectionWizard.nextStep()
 
-        if not context.userData['ocis']:
+        if not get_config('ocis'):
             try:
                 squish.clickButton(
                     squish.waitForObject(
@@ -165,7 +166,7 @@ class AccountConnectionWizard:
     def addUserCreds(context):
         clientDetails = getClientDetails(context)
 
-        if context.userData['ocis']:
+        if get_config('ocis'):
             AccountConnectionWizard.oidcLogin(
                 clientDetails['user'], clientDetails['password']
             )
@@ -230,7 +231,7 @@ class AccountConnectionWizard:
     @staticmethod
     def addAccountCredential(context):
         AccountConnectionWizard.addServer(context)
-        if context.userData['ocis']:
+        if get_config('ocis'):
             AccountConnectionWizard.acceptCertificate()
         AccountConnectionWizard.addUserCreds(context)
         AccountConnectionWizard.selectSyncFolder(context)
@@ -281,7 +282,7 @@ class AccountConnectionWizard:
     def isCredentialWindowVisible(context):
         visible = False
         try:
-            if context.userData['ocis']:
+            if get_config('ocis'):
                 squish.waitForObject(AccountConnectionWizard.OAUTH_CREDENTIAL_PAGE)
             else:
                 squish.waitForObject(AccountConnectionWizard.BASIC_CREDENTIAL_PAGE)

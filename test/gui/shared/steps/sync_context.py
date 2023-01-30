@@ -4,6 +4,7 @@ from pageObjects.Toolbar import Toolbar
 from pageObjects.Activity import Activity
 
 from helpers.SetupClientHelper import getResourcePath
+from helpers.ConfigHelper import get_config
 from helpers.SyncHelper import (
     waitForFileOrFolderToSync,
     waitForFileOrFolderToHaveSyncError,
@@ -131,7 +132,7 @@ def step(context):
 
 @Then('VFS enabled baseline image should match the default screenshot')
 def step(context):
-    if context.userData['ocis']:
+    if get_config('ocis'):
         test.vp("VP_VFS_enabled_oCIS")
     else:
         test.vp("VP_VFS_enabled")
@@ -139,7 +140,7 @@ def step(context):
 
 @Then('VFS enabled baseline image should not match the default screenshot')
 def step(context):
-    if context.userData['ocis']:
+    if get_config('ocis'):
         test.xvp("VP_VFS_enabled_oCIS")
     else:
         test.xvp("VP_VFS_enabled")
