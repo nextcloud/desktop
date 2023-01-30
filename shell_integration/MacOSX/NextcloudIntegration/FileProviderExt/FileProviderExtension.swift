@@ -147,6 +147,32 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         socketClient?.sendMessage(message)
     }
 
+    private func signalEnumeratorAfterAccountSetup() {
+        guard let fpManager = NSFileProviderManager(for: domain) else {
+            NSLog("Could not get file provider manager for domain %@, cannot notify after account setup", domain)
+            return
+        }
+
+        assert(ncAccount != nil)
+
+        if true { // TODO: only run this if we need to refresh root container and it is the first ever sync
+            // This refreshes the entire structure of the FileProvider and calls enumerateItems
+            // rather than enumerateChanges in the enumerator
+            NSLog("Signalling manager for user %@ at server %@ to reimport everything", ncAccount!.username, ncAccount!.serverUrl)
+            fpManager.reimportItems(below: .rootContainer, completionHandler: {_ in })
+            return
+        }
+
+        NSLog("Signalling enumerator for user %@ at server %@", ncAccount!.username, ncAccount!.serverUrl)
+        // System will only respond to workingSet when using and NSFileProviderReplicatedExtension
+        // https://developer.apple.com/documentation/fileprovider/nonreplicated_file_provider_extension/content_and_change_tracking/tracking_your_file_provider_s_changes/using_push_notifications_to_signal_changes
+        fpManager.signalEnumerator(for: .workingSet) { error in
+            if error != nil {
+                NSLog("Error signalling enumerator for workingSet, received error: %@", error!.localizedDescription)
+            }
+        }
+    }
+
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
         ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
 
@@ -156,24 +182,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
                                   urlBase: ncAccount!.serverUrl,
                                   userAgent: "Nextcloud-macOS/FileProviderExt",
                                   nextcloudVersion: 25,
-                                  delegate: self)
+                                  delegate: nil) // TODO: add delegate methods for self
 
         NSLog("Nextcloud account set up in File Provider extension for user: %@ at server: %@", user, serverUrl)
 
-        for itemIdObj in itemIdsForEnumeratorsNeedingSignalling {
-            guard let itemIdentifier = itemIdObj as? NSFileProviderItemIdentifier else {
-                NSLog("Skipping non-NSFileProviderItemIdentifier object in itemIdsForEnumeratorsNeedingSignalling.")
-                continue;
-            }
-
-            NSLog("Signalling enumerator for itemIdentifier %@ for user %@ at server %@", itemIdentifier.rawValue, user, serverUrl)
-            NSFileProviderManager(for: domain)?.signalEnumerator(for: itemIdentifier) { error in
-                if error != nil {
-                    NSLog("Error signalling enumerator for itemIdentifier: %@, received error: %@", itemIdentifier.rawValue, error!.localizedDescription)
-                }
-            }
+        if itemIdsForEnumeratorsNeedingSignalling.count > 0 {
+            signalEnumeratorAfterAccountSetup()
+            itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
         }
-
-        itemIdsForEnumeratorsNeedingSignalling = NSMutableSet()
     }
 }
