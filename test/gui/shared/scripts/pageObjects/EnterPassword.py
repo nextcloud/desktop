@@ -1,6 +1,7 @@
 import names
 import squish
 from helpers.WebUIHelper import authorize_via_webui
+from helpers.ConfigHelper import get_config
 from pageObjects.AccountConnectionWizard import AccountConnectionWizard
 from pageObjects.AccountSetting import AccountSetting
 
@@ -43,18 +44,18 @@ class EnterPassword:
 
     @staticmethod
     def reLogin(context, username, password):
-        if context.userData['ocis']:
+        if get_config('ocis'):
             EnterPassword.oidcReLogin(username, password)
         else:
             EnterPassword.enterPassword(password)
 
     @staticmethod
     def loginAfterSetup(context, username, password):
-        if context.userData['ocis']:
+        if get_config('ocis'):
             AccountConnectionWizard.acceptCertificate()
             EnterPassword.oidcReLogin(username, password)
         else:
             AccountSetting.waitUntilConnectionIsConfigured(
-                context.userData['maxSyncTimeout'] * 1000
+                get_config('maxSyncTimeout') * 1000
             )
             EnterPassword.enterPassword(password)

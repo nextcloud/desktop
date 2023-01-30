@@ -6,6 +6,7 @@ from pageObjects.SharingDialog import SharingDialog
 from helpers.SetupClientHelper import getResourcePath, substituteInLineCodes
 from helpers.FilesHelper import sanitizePath
 from helpers.SyncHelper import getSocketConnection
+from helpers.ConfigHelper import get_config
 
 
 def shareResourceCommand(resource):
@@ -23,13 +24,13 @@ def shareResourceCommand(resource):
 def openSharingDialog(context, resource):
     resource = getResourcePath(context, resource)
     resourceExist = waitFor(
-        lambda: os.path.exists(resource), context.userData['maxSyncTimeout'] * 1000
+        lambda: os.path.exists(resource), get_config('maxSyncTimeout') * 1000
     )
     if not resourceExist:
         raise Exception("{} doesn't exists".format(resource))
     shareDialog = waitFor(
         lambda: shareResourceCommand(resource),
-        context.userData['maxSyncTimeout'] * 1000,
+        get_config('maxSyncTimeout') * 1000,
     )
     if not shareDialog:
         raise Exception("Sharing dialog didn't open for {}".format(resource))

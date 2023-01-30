@@ -5,6 +5,7 @@ from base64 import b64encode
 from os import path
 
 from helpers.UserHelper import getPasswordForUser
+from helpers.ConfigHelper import get_config
 
 requests.packages.urllib3.disable_warnings()
 
@@ -29,16 +30,16 @@ def send_request(url, method, body=None, headers={}, user=None):
 
 
 def get_space_endpint(context):
-    return path.join(context.userData['localBackendUrl'], 'graph', 'v1.0', 'drives')
+    return path.join(get_config('localBackendUrl'), 'graph', 'v1.0', 'drives')
 
 
 def get_dav_endpint(context):
-    return path.join(context.userData['localBackendUrl'], 'dav', 'spaces')
+    return path.join(get_config('localBackendUrl'), 'dav', 'spaces')
 
 
 def get_share_endpint(context):
     return path.join(
-        context.userData['localBackendUrl'],
+        get_config('localBackendUrl'),
         'ocs/v2.php/apps',
         'files_sharing/api/v1/shares',
     )

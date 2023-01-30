@@ -8,6 +8,7 @@ from helpers.UserHelper import getDisplaynameForUser, getPasswordForUser
 from helpers.SetupClientHelper import setUpClient, startClient
 from helpers.SyncHelper import waitForInitialSyncToComplete
 from helpers.SetupClientHelper import getResourcePath
+from helpers.ConfigHelper import get_config
 
 
 @Given(r'the user has added (the first|another) account with', regexp=True)
@@ -47,7 +48,7 @@ def step(context, displayname, host):
 def step(context, username):
     password = getPasswordForUser(context, username)
     displayName = getDisplaynameForUser(context, username)
-    setUpClient(context, username, displayName, context.userData['clientConfigFile'])
+    setUpClient(context, username, displayName)
     EnterPassword.loginAfterSetup(context, username, password)
 
     # wait for files to sync
@@ -79,7 +80,7 @@ def step(context, username):
 @Then('user "|any|" should be signed out')
 def step(context, username):
     displayname = getDisplaynameForUser(context, username)
-    server = context.userData['localBackendUrl']
+    server = get_config('localBackendUrl')
     test.compare(
         AccountSetting.isUserSignedOut(displayname, server),
         True,
@@ -91,7 +92,7 @@ def step(context, username):
 def step(context, username):
     AccountSetting.logout()
     displayname = getDisplaynameForUser(context, username)
-    server = context.userData['localBackendUrl']
+    server = get_config('localBackendUrl')
     if not AccountSetting.isUserSignedOut(displayname, server):
         raise Exception("Failed to logout user '%s'" % username)
 
@@ -109,7 +110,7 @@ def step(context, username):
 @Then('user "|any|" should be connect to the client-UI')
 def step(context, username):
     displayname = getDisplaynameForUser(context, username)
-    server = context.userData['localBackendUrl']
+    server = get_config('localBackendUrl')
     test.compare(
         AccountSetting.isUserSignedIn(displayname, server),
         True,

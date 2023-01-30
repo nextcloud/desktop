@@ -1,6 +1,8 @@
 import names
 import squish
 
+from helpers.ConfigHelper import get_config
+
 
 class SyncConnection:
     FOLDER_SYNC_CONNECTION = {
@@ -32,7 +34,7 @@ class SyncConnection:
         squish.openContextMenu(
             squish.waitForObjectItem(
                 SyncConnection.FOLDER_SYNC_CONNECTION,
-                context.userData['syncConnectionName'],
+                get_config('syncConnectionName'),
             ),
             0,
             0,
