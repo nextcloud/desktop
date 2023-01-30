@@ -131,14 +131,13 @@ class AccountConnectionWizard:
         return folderPath.rstrip("/")
 
     @staticmethod
-    def addServer(context):
-        clientDetails = getClientDetails(context)
+    def addServer(server_url):
         squish.mouseClick(
             squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX)
         )
         squish.type(
             squish.waitForObject(AccountConnectionWizard.SERVER_ADDRESS_BOX),
-            clientDetails['server'],
+            server_url,
         )
         AccountConnectionWizard.nextStep()
 
@@ -150,10 +149,7 @@ class AccountConnectionWizard:
                     )
                 )
             except:
-                test.log(
-                    "No insecure connection warning for server "
-                    + clientDetails['server']
-                )
+                test.log("No insecure connection warning for server " + server_url)
                 pass
 
     @staticmethod
@@ -163,17 +159,11 @@ class AccountConnectionWizard:
         )
 
     @staticmethod
-    def addUserCreds(context):
-        clientDetails = getClientDetails(context)
-
+    def addUserCreds(username, password):
         if get_config('ocis'):
-            AccountConnectionWizard.oidcLogin(
-                clientDetails['user'], clientDetails['password']
-            )
+            AccountConnectionWizard.oidcLogin(username, password)
         else:
-            AccountConnectionWizard.basicLogin(
-                clientDetails['user'], clientDetails['password']
-            )
+            AccountConnectionWizard.basicLogin(username, password)
 
     @staticmethod
     def basicLogin(username, password):
@@ -206,10 +196,9 @@ class AccountConnectionWizard:
         squish.clickButton(squish.waitForObject(AccountConnectionWizard.NEXT_BUTTON))
 
     @staticmethod
-    def selectSyncFolder(context):
-        clientDetails = getClientDetails(context)
+    def selectSyncFolder(user):
         # create sync folder for user
-        syncPath = createUserSyncPath(context, clientDetails['user'])
+        syncPath = createUserSyncPath(user)
 
         squish.waitForObject(
             AccountConnectionWizard.ADVANCED_CONFIGURATION_CHECKBOX
@@ -224,17 +213,19 @@ class AccountConnectionWizard:
         squish.clickButton(squish.waitForObject(AccountConnectionWizard.CHOOSE_BUTTON))
 
     @staticmethod
-    def addAccount(context):
-        AccountConnectionWizard.addAccountCredential(context)
+    def addAccount(account_details):
+        AccountConnectionWizard.addAccountInformation(account_details)
         AccountConnectionWizard.nextStep()
 
     @staticmethod
-    def addAccountCredential(context):
-        AccountConnectionWizard.addServer(context)
+    def addAccountInformation(account_details):
+        AccountConnectionWizard.addServer(account_details['server'])
         if get_config('ocis'):
             AccountConnectionWizard.acceptCertificate()
-        AccountConnectionWizard.addUserCreds(context)
-        AccountConnectionWizard.selectSyncFolder(context)
+        AccountConnectionWizard.addUserCreds(
+            account_details['user'], account_details['password']
+        )
+        AccountConnectionWizard.selectSyncFolder(account_details['user'])
 
     @staticmethod
     def selectManualSyncFolderOption():
@@ -279,7 +270,7 @@ class AccountConnectionWizard:
         return visible
 
     @staticmethod
-    def isCredentialWindowVisible(context):
+    def isCredentialWindowVisible():
         visible = False
         try:
             if get_config('ocis'):

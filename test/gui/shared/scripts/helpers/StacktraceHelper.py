@@ -15,9 +15,9 @@ def getCoredumps():
     return glob.glob(coredumpFilePattern)
 
 
-def generateStacktrace(context, coredumps):
+def generateStacktrace(scenario_title, coredumps):
     message = ["###########################################"]
-    message.append("Scenario: " + context._data["title"])
+    message.append("Scenario: " + scenario_title)
 
     for coredumpFile in coredumps:
         message.append(parseStacktrace(coredumpFile))

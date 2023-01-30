@@ -32,8 +32,7 @@ Feature: adding accounts
     @skipOnOCIS
     Scenario: Adding account with wrong credentials
         Given the user has started the client
-        And the user has added the following server address:
-            | server | %local_server% |
+        And the user has added the server "%local_server%"
         When the user adds the following wrong user credentials:
             | user     | Alice |
             | password | 12345 |
@@ -42,8 +41,7 @@ Feature: adding accounts
 
     Scenario: Adding account with self signed certificate for the first time
         Given the user has started the client
-        When the user adds the following server address:
-            | server | %secure_local_server% |
+        When the user adds the server "%secure_local_server%"
         And the user accepts the certificate
         Then credentials wizard should be visible
 

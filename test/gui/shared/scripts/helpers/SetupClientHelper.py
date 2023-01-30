@@ -6,7 +6,7 @@ from helpers.SpaceHelper import get_space_id
 from helpers.ConfigHelper import get_config, set_config
 
 
-def substituteInLineCodes(context, value):
+def substituteInLineCodes(value):
     value = value.replace('%local_server%', get_config('localBackendUrl'))
     value = value.replace('%secure_local_server%', get_config('secureLocalBackendUrl'))
     value = value.replace('%client_root_sync_path%', get_config('clientRootSyncPath'))
@@ -21,7 +21,7 @@ def substituteInLineCodes(context, value):
 def getClientDetails(context):
     clientDetails = {'server': '', 'user': '', 'password': ''}
     for row in context.table[0:]:
-        row[1] = substituteInLineCodes(context, row[1])
+        row[1] = substituteInLineCodes(row[1])
         if row[0] == 'server':
             clientDetails.update({'server': row[1]})
         elif row[0] == 'user':
@@ -31,29 +31,29 @@ def getClientDetails(context):
     return clientDetails
 
 
-def createUserSyncPath(context, username):
+def createUserSyncPath(username):
     # '' at the end adds '/' to the path
     userSyncPath = join(get_config('clientRootSyncPath'), username, '')
 
     if not exists(userSyncPath):
         makedirs(userSyncPath)
 
-    setCurrentUserSyncPath(context, userSyncPath)
+    setCurrentUserSyncPath(userSyncPath)
     return userSyncPath
 
 
-def createSpacePath(context, space='Personal'):
+def createSpacePath(space='Personal'):
     spacePath = join(get_config('currentUserSyncPath'), space, '')
     if not exists(spacePath):
         makedirs(spacePath)
     return spacePath
 
 
-def setCurrentUserSyncPath(context, syncPath):
+def setCurrentUserSyncPath(syncPath):
     set_config('currentUserSyncPath', syncPath)
 
 
-def getResourcePath(context, resource='', user='', space=''):
+def getResourcePath(resource='', user='', space=''):
     sync_path = get_config('currentUserSyncPath')
     if user:
         sync_path = user
@@ -68,11 +68,11 @@ def getResourcePath(context, resource='', user='', space=''):
     )
 
 
-def getCurrentUserSyncPath(context):
+def getCurrentUserSyncPath():
     return get_config('currentUserSyncPath')
 
 
-def startClient(context):
+def startClient():
     squish.startApplication(
         "owncloud -s"
         + " --logfile "
@@ -93,7 +93,7 @@ def getPollingInterval():
     return pollingInterval
 
 
-def setUpClient(context, username, displayName, space="Personal"):
+def setUpClient(username, displayName, space="Personal"):
     userSetting = '''
     [Accounts]
     0/Folders/1/davUrl={url}
@@ -116,17 +116,17 @@ def setUpClient(context, username, displayName, space="Personal"):
 
     userSetting = userSetting + getPollingInterval()
 
-    syncPath = createUserSyncPath(context, username)
+    syncPath = createUserSyncPath(username)
     dav_endpoint = join("remote.php/dav/files", username)
 
     server_url = get_config('localBackendUrl')
     is_ocis = get_config('ocis')
     if is_ocis:
         set_config('syncConnectionName', space)
-        syncPath = createSpacePath(context, space)
+        syncPath = createSpacePath(space)
         if space == "Personal":
             space = displayName
-        dav_endpoint = join("dav/spaces", get_space_id(context, space, username))
+        dav_endpoint = join("dav/spaces", get_space_id(space, username))
 
     args = {
         'url': join(server_url, dav_endpoint, ''),
@@ -144,4 +144,4 @@ def setUpClient(context, username, displayName, space="Personal"):
     configFile.write(userSetting)
     configFile.close()
 
-    startClient(context)
+    startClient()
