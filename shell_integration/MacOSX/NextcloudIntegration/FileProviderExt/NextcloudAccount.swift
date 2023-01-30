@@ -24,7 +24,7 @@ class NextcloudAccount: NSObject {
         self.password = password
         self.ncKitAccount = user + " " + serverUrl
         self.serverUrl = serverUrl
-        self.davFilesUrl = serverUrl + webDavFilesUrlSuffix
+        self.davFilesUrl = serverUrl + webDavFilesUrlSuffix + user
 
         super.init()
     }
