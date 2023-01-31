@@ -157,11 +157,12 @@ bool Application::configVersionMigration()
     const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
     for (const auto &oldConfig : anyConfigFileNameList) {
         const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
         const auto newConfigFileName = configFile.configFile();
         backupFilesList.append(configFile.backup(oldConfigFileName));
-        if (oldConfigFileName != newConfigFileName) {
-            if (!QFile::rename(oldConfig.filePath(), newConfigFileName)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFileName << "to" << newConfigFileName;
+        if (oldConfigFilePath != newConfigFileName) {
+            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
             }
         }
     }
