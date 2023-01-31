@@ -57,7 +57,7 @@
        <item>
         <widget class="QLabel" name="localVersionFilename">
          <property name="text">
-          <string>fileA</string>
+          <string>file A</string>
          </property>
         </widget>
        </item>
@@ -169,7 +169,7 @@
        <item>
         <widget class="QLabel" name="remoteVersionFilename">
          <property name="text">
-          <string>fileB</string>
+          <string>file B</string>
          </property>
         </widget>
        </item>
