@@ -341,11 +341,11 @@ QVariant ActivityListModel::data(const QModelIndex &index, int role) const
     case DisplayActions:
         return _displayActions;
     case ShowFileDetailsRole:
-        return !data(index, PathRole).toString().isEmpty() &&
+        return _displayActions &&
                 a._objectType == QStringLiteral("files") &&
-                _displayActions &&
                 a._fileAction != "file_deleted" &&
-                a._syncFileItemStatus != SyncFileItem::FileIgnored;
+                a._syncFileItemStatus != SyncFileItem::FileIgnored &&
+                !data(index, OpenablePathRole).toString().isEmpty();
     case DismissableRole:
         // Do not allow dismissal of things requiring user input regarding syncing
         return !a._links.isEmpty() &&
