@@ -155,7 +155,6 @@ public:
     enum ItemType {
         RootFolder,
         SubFolder,
-        AddButton,
         FetchLabel
     };
     Q_ENUM(ItemType);

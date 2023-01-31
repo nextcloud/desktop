@@ -402,28 +402,6 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 void AccountSettings::slotFolderListClicked(const QModelIndex &indx)
 {
     const auto itemType = indx.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
-    if (itemType == FolderStatusModel::AddButton) {
-        // "Add Folder Sync Connection"
-        QTreeView *tv = ui->_folderList;
-        auto pos = tv->mapFromGlobal(QCursor::pos());
-        QStyleOptionViewItem opt;
-        opt.initFrom(tv);
-        auto btnRect = tv->visualRect(indx);
-        auto btnSize = tv->itemDelegate(indx)->sizeHint(opt, indx);
-        auto actual = QStyle::visualRect(opt.direction, btnRect, QRect(btnRect.topLeft(), btnSize));
-        if (!actual.contains(pos))
-            return;
-
-        if (indx.flags() & Qt::ItemIsEnabled) {
-            slotAddFolder();
-        } else {
-            QToolTip::showText(
-                QCursor::pos(),
-                _sortModel->data(indx, Qt::ToolTipRole).toString(),
-                this);
-        }
-        return;
-    }
     if (itemType == FolderStatusModel::RootFolder) {
         // tries to find if we clicked on the '...' button.
         QTreeView *tv = ui->_folderList;

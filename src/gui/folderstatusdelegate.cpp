@@ -58,18 +58,6 @@ QSize FolderStatusDelegate::sizeHint(const QStyleOptionViewItem &option,
     QFontMetrics aliasFm(aliasFont);
 
     const auto classif = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
-    if (classif == FolderStatusModel::AddButton) {
-        const int margins = aliasFm.height(); // same as 2*aliasMargin of paint
-        QFontMetrics fm(qApp->font("QPushButton"));
-        QStyleOptionButton opt;
-        static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
-        opt.text = addFolderText(index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsUsingSpaces)).data().toBool());
-        return QApplication::style()->sizeFromContents(
-                                        QStyle::CT_PushButton, &opt, fm.size(Qt::TextSingleLine, opt.text))
-                   .expandedTo(QApplication::globalStrut())
-            + QSize(0, margins);
-    }
-
     if (classif != FolderStatusModel::RootFolder) {
         return QStyledItemDelegate::sizeHint(option, index);
     }
@@ -112,8 +100,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         return;
     }
 
-    const bool useSpaces = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsUsingSpaces)).data().toBool();
-
     auto textAlign = Qt::AlignLeft;
 
     QFont aliasFont = makeAliasFont(option.font);
@@ -130,22 +116,6 @@ void FolderStatusDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     int margin = subFm.height() / 4;
 
     const auto itemType = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::ItemType)).data().value<FolderStatusModel::ItemType>();
-    if (itemType == FolderStatusModel::AddButton) {
-        QSize hint = sizeHint(option, index);
-        QStyleOptionButton opt;
-        static_cast<QStyleOption &>(opt) = static_cast<const QStyleOption &>(option);
-        opt.state &= ~QStyle::State_Selected;
-        opt.state |= QStyle::State_Raised;
-        opt.text = addFolderText(useSpaces);
-        opt.rect.setWidth(qMin(opt.rect.width(), hint.width()));
-        opt.rect.adjust(0, aliasMargin, 0, -aliasMargin);
-        opt.rect = QStyle::visualRect(option.direction, option.rect, opt.rect);
-        painter->save();
-        painter->setFont(qApp->font("QPushButton"));
-        QApplication::style()->drawControl(QStyle::CE_PushButton, &opt, painter, option.widget);
-        painter->restore();
-        return;
-    }
 
     if (itemType != FolderStatusModel::RootFolder) {
         return QStyledItemDelegate::paint(painter, option, index);
