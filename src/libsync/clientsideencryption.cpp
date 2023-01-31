@@ -64,6 +64,7 @@ namespace {
     constexpr char accountProperty[] = "account";
 
     const char e2e_cert[] = "_e2e-certificate";
+    const char e2e_cert_sharing[] = "_sharing";
     const char e2e_private[] = "_e2e-private";
     const char e2e_mnemonic[] = "_e2e-mnemonic";
 
@@ -893,6 +894,18 @@ void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account)
     job->start();
 }
 
+void ClientSideEncryption::fetchFromKeyChain(const AccountPtr &account, const QString &userId)
+{
+    const QString kck = AbstractCredentials::keychainKey(account->url().toString(), userId + e2e_cert + e2e_cert_sharing, userId);
+
+    auto *job = new ReadPasswordJob(Theme::instance()->appName());
+    job->setProperty(accountProperty, QVariant::fromValue(account));
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::publicKeyFetchedForUserId);
+    job->start();
+}
+
 bool ClientSideEncryption::checkPublicKeyValidity(const AccountPtr &account) const
 {
     QByteArray data = EncryptionHelper::generateRandom(64);
@@ -978,6 +991,18 @@ void ClientSideEncryption::publicKeyFetched(Job *incoming)
     job->setKey(kck);
     connect(job, &ReadPasswordJob::finished, this, &ClientSideEncryption::privateKeyFetched);
     job->start();
+}
+
+void ClientSideEncryption::publicKeyFetchedForUserId(QKeychain::Job *incoming)
+{
+    const auto readJob = dynamic_cast<ReadPasswordJob *>(incoming);
+    Q_ASSERT(readJob);
+
+    if (readJob->error() != NoError || readJob->binaryData().length() == 0) {
+        emit certificateFetchedFromKeychain(QSslCertificate{});
+        return;
+    }
+    emit certificateFetchedFromKeychain(QSslCertificate(readJob->binaryData(), QSsl::Pem));
 }
 
 void ClientSideEncryption::privateKeyFetched(Job *incoming)
@@ -1124,6 +1149,51 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
     deletePrivateKeyJob->start();
     deleteCertJob->start();
     deleteMnemonicJob->start();
+}
+
+void ClientSideEncryption::getUsersPublicKeyFromServer(const AccountPtr &account, const QStringList &userIds)
+{
+    qCInfo(lcCse()) << "Retrieving public keys from server, for users:" << userIds;
+    const auto job = new JsonApiJob(account, e2eeBaseUrl() + "public-key", this);
+    connect(job, &JsonApiJob::jsonReceived, [this, account, userIds](const QJsonDocument &doc, int retCode) {
+        if (retCode == 200) {
+            QHash<QString, QSslCertificate> results;
+            const auto publicKeys = doc.object()[QStringLiteral("ocs")].toObject()[QStringLiteral("data")].toObject()[QStringLiteral("public-keys")].toObject();
+            for (const auto &userId : publicKeys.keys()) {
+                if (userIds.contains(userId)) {
+                    results.insert(userId, QSslCertificate(publicKeys.value(userId).toString().toLocal8Bit(), QSsl::Pem));
+                }
+            }
+            emit certificatesFetchedFromServer(results);
+        } else if (retCode == 404) {
+            qCInfo(lcCse()) << "No public key on the server";
+            emit certificatesFetchedFromServer({});
+        } else {
+            qCInfo(lcCse()) << "Error while requesting public keys for users: " << retCode;
+            emit certificatesFetchedFromServer({});
+        }
+    });
+    QUrlQuery urlQuery;
+    const auto userIdsJSON = QJsonDocument::fromVariant(userIds);
+    urlQuery.addQueryItem(QStringLiteral("users"), userIdsJSON.toJson(QJsonDocument::Compact).toPercentEncoding());
+    job->addQueryParams(urlQuery);
+    job->start();
+}
+
+void ClientSideEncryption::writeCertificate(const AccountPtr &account, const QString &userId, QSslCertificate certificate)
+{
+    const QString kck = AbstractCredentials::keychainKey(account->url().toString(), userId + e2e_cert + e2e_cert_sharing, userId);
+
+    auto *job = new WritePasswordJob(Theme::instance()->appName());
+    job->setInsecureFallback(false);
+    job->setKey(kck);
+    job->setBinaryData(certificate.toPem());
+    connect(job, &WritePasswordJob::finished, [this, certificate](Job *incoming) {
+        Q_UNUSED(incoming);
+        qCInfo(lcCse()) << "Certificate stored in keychain";
+        emit certificateWriteComplete(certificate);
+    });
+    job->start();
 }
 
 void ClientSideEncryption::handlePrivateKeyDeleted(const QKeychain::Job* const incoming)

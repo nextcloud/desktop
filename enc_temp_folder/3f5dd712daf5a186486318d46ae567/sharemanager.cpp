@@ -618,4 +618,8 @@ void ShareManager::slotOcsError(int statusCode, const QString &message)
 {
     emit serverError(statusCode, message);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4056b806e (Allow sharing E2E encrypted folders to other users and fetch their public key first)
 }

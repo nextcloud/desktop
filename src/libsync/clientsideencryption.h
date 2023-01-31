@@ -135,16 +135,24 @@ signals:
     void privateKeyDeleted();
     void certificateDeleted();
     void mnemonicDeleted();
+    void certificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
+    void certificateFetchedFromKeychain(QSslCertificate certificate);
+    void certificateFetchedFromServer(QSslCertificate certificate);
+    void certificateWriteComplete(QSslCertificate certificate);
 
 public slots:
     void initialize(const AccountPtr &account);
     void forgetSensitiveData(const AccountPtr &account);
+    void getUsersPublicKeyFromServer(const AccountPtr &account, const QStringList &userIds);
+    void writeCertificate(const AccountPtr &account, const QString &userId, QSslCertificate certificate);
+    void fetchFromKeyChain(const AccountPtr &account, const QString &userId);
 
 private slots:
     void generateKeyPair(const AccountPtr &account);
     void encryptPrivateKey(const AccountPtr &account);    
 
     void publicKeyFetched(QKeychain::Job *incoming);
+    void publicKeyFetchedForUserId(QKeychain::Job *incoming);
     void privateKeyFetched(QKeychain::Job *incoming);
     void mnemonicKeyFetched(QKeychain::Job *incoming);
 
