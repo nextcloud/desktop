@@ -196,9 +196,12 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
     connect(_accountState.data(), &AccountState::stateChanged, this, &AccountSettings::slotAccountStateChanged);
     slotAccountStateChanged();
 
+    connect(ui->addButton, &QPushButton::clicked, this, &AccountSettings::slotAddFolder);
+
     if (_accountState->supportsSpaces()) {
         ui->quotaProgressBar->setVisible(false);
         ui->quotaInfoLabel->setVisible(false);
+        ui->addButton->setText(tr("Add Space"));
     } else {
         QColor color = palette().highlight().color();
         ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
@@ -206,7 +209,12 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
         _quotaInfo = new QuotaInfo(_accountState, this);
         connect(_quotaInfo, &QuotaInfo::quotaUpdated,
             this, &AccountSettings::slotUpdateQuota);
+        ui->addButton->setText(tr("Add Folder"));
     }
+
+    connect(_model, &FolderStatusModel::dataChanged, [this]() {
+        ui->addButton->setVisible(!Theme::instance()->singleSyncFolder() || _model->rowCount() == 0);
+    });
 }
 
 
@@ -773,6 +781,19 @@ void AccountSettings::slotUpdateQuota(qint64 total, qint64 used)
 void AccountSettings::slotAccountStateChanged()
 {
     const AccountState::State state = _accountState ? _accountState->state() : AccountState::Disconnected;
+
+    ui->addButton->setEnabled(state == AccountState::Connected);
+    if (state == AccountState::Connected) {
+        if (_accountState->supportsSpaces()) {
+            ui->addButton->setToolTip(tr("Click this button to add a Space."));
+        } else {
+            ui->addButton->setToolTip(tr("Click this button to add a folder to synchronize."));
+        }
+    } else {
+        ui->addButton->setToolTip(tr("You need to be connected to add a folder."));
+    }
+
+
     if (state != AccountState::Disconnected) {
         AccountPtr account = _accountState->account();
         QUrl safeUrl(account->url());
