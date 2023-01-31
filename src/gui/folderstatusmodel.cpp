@@ -172,13 +172,12 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             case Columns::IsReady:
                 return x._folder->isReady();
             case Columns::HeaderRole:
-                //: Example text: "File.txt (23KB)"
-                return x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size));
+                return x._size < 0 ? x._name : tr("%1 (%2)", "filename (size)").arg(x._name, Utility::octetsToString(x._size));
             default:
                 return {};
             }
         case Qt::ToolTipRole:
-            return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
+            return QString(QLatin1String("<qt>") + Utility::escape(x._size < 0 ? x._name : tr("%1 (%2)", "filename (size)").arg(x._name, Utility::octetsToString(x._size))) + QLatin1String("</qt>"));
         case Qt::CheckStateRole:
             return x._checked;
         case Qt::DecorationRole:
