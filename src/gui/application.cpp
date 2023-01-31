@@ -63,6 +63,7 @@
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QUrlQuery>
+#include <QVersionNumber>
 
 class QSocket;
 
@@ -141,7 +142,10 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    const auto versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
+    const auto previousVersion = QVersionNumber::fromString(configFile.clientVersionString());
+    const auto versionChanged = previousVersion != currentVersion;
+    const auto downgrading = previousVersion > currentVersion;
 
     // We want to message the user either for destructive changes,
     // or if we're ignoring something and the client version changed.
@@ -178,13 +182,13 @@ bool Application::configVersionMigration()
         QMessageBox box(
             QMessageBox::Warning,
             APPLICATION_SHORTNAME,
-            tr("Some settings were configured in newer versions of this client and "
+            tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "%1<br>"
+               "%2<br>"
                "<br>"
-               "The current configuration file was already backed up to <i>%2</i>.")
-                .arg(boldMessage, backupFilesList.join("<br>")));
+               "The current configuration file was already backed up to <i>%3</i>.")
+                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")), boldMessage, backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 
