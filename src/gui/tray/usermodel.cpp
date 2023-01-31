@@ -658,6 +658,7 @@ void User::processCompletedSyncItem(const Folder *folder, const SyncFileItemPtr 
 
     Activity activity;
     activity._type = Activity::SyncFileItemType; //client activity
+    activity._objectType = QStringLiteral("files");
     activity._syncFileItemStatus = item->_status;
     activity._dateTime = QDateTime::currentDateTime();
     activity._message = item->_originalFile;
