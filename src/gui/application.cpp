@@ -63,6 +63,7 @@
 #include <QDesktopServices>
 #include <QGuiApplication>
 #include <QUrlQuery>
+#include <QVersionNumber>
 
 class QSocket;
 
@@ -141,49 +142,46 @@ bool Application::configVersionMigration()
 
     // Did the client version change?
     // (The client version is adjusted further down)
-    const auto versionChanged = configFile.clientVersionString() != MIRALL_VERSION_STRING;
+    const auto currentVersion = QVersionNumber::fromString(MIRALL_VERSION_STRING);
+    const auto previousVersion = QVersionNumber::fromString(configFile.clientVersionString());
+    const auto versionChanged = previousVersion != currentVersion;
+    const auto downgrading = previousVersion > currentVersion;
 
-    // We want to message the user either for destructive changes,
-    // or if we're ignoring something and the client version changed.
-    const auto showWarning = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
-
-    if (!versionChanged && !showWarning) {
+    if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
         return true;
     }
 
-    // back up all old config file
+    // back up all old config files
     QStringList backupFilesList;
     QDir configDir(configFile.configPath());
     const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
     for (const auto &oldConfig : anyConfigFileNameList) {
         const auto oldConfigFileName = oldConfig.fileName();
+        const auto oldConfigFilePath = oldConfig.filePath();
         const auto newConfigFileName = configFile.configFile();
         backupFilesList.append(configFile.backup(oldConfigFileName));
-        if (oldConfigFileName != newConfigFileName) {
-            if (!QFile::rename(oldConfig.filePath(), newConfigFileName)) {
-                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFileName << "to" << newConfigFileName;
+        if (oldConfigFilePath != newConfigFileName) {
+            if (!QFile::rename(oldConfigFilePath, newConfigFileName)) {
+                qCWarning(lcApplication) << "Failed to rename configuration file from" << oldConfigFilePath << "to" << newConfigFileName;
             }
         }
     }
 
-    if (showWarning || backupFilesList.count() > 0) {
-        QString boldMessage;
-        if (!deleteKeys.isEmpty()) {
-            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
-        } else {
-            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
-        }
-
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
         QMessageBox box(
             QMessageBox::Warning,
             APPLICATION_SHORTNAME,
-            tr("Some settings were configured in newer versions of this client and "
+            tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "%1<br>"
+               "Continuing will mean <b>%2 these settings</b><br>"
                "<br>"
-               "The current configuration file was already backed up to <i>%2</i>.")
-                .arg(boldMessage, backupFilesList.join("<br>")));
+               "The current configuration file was already backed up to <i>%3</i>.")
+                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
+                     deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
+                     backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 

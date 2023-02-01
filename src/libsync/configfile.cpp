@@ -51,6 +51,7 @@
 
 namespace {
 static constexpr char showMainDialogAsNormalWindowC[] = "showMainDialogAsNormalWindow";
+static constexpr char showConfigBackupWarningC[] = "showConfigBackupWarning";
 
 static constexpr char remotePollIntervalC[] = "remotePollInterval";
 static constexpr char forceSyncIntervalC[] = "forceSyncInterval";
@@ -454,6 +455,11 @@ QString ConfigFile::backup(const QString &fileName) const
     }
 
     return backupFile;
+}
+
+bool ConfigFile::showConfigBackupWarning() const
+{
+    return getValue(showConfigBackupWarningC, QString(), false).toBool();
 }
 
 QString ConfigFile::configFile() const
