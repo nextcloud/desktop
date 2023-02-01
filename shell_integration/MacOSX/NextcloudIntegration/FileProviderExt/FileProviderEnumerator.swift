@@ -33,12 +33,11 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         } else {
             NSLog("Providing enumerator for item with identifier: %@", enumeratedItemIdentifier.rawValue)
             let dbManager = NextcloudFilesDatabaseManager.shared
-            if let itemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier),
-               let itemDirectoryMetadata = dbManager.parentDirectoryMetadataForItem(itemMetadata) {
-
-                self.serverUrl = itemDirectoryMetadata.serverUrl + "/" + itemMetadata.fileName
+            if let itemMetadata = dbManager.itemMetadataFromFileProviderItemIdentifier(enumeratedItemIdentifier) {
+                self.serverUrl = itemMetadata.serverUrl + "/" + itemMetadata.fileName
+            } else {
+                NSLog("Could not find itemMetadata for file with identifier: %@", enumeratedItemIdentifier.rawValue)
             }
-
         }
 
         NSLog("Set up enumerator for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
