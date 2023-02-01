@@ -54,6 +54,10 @@ public:
      * Returns the path of the new backup.
      */
     [[nodiscard]] QString backup(const QString &fileName) const;
+    /**
+     * Display warning with a list of the config files that were backed up
+     */
+    [[nodiscard]] bool showConfigBackupWarning() const;
 
     bool exists();
 
