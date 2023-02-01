@@ -91,15 +91,22 @@ func createFileOrDirectoryLocally(metadata: NextcloudItemMetadataTable) {
 
 func parentItemIdentifierFromMetadata(_ metadata: NextcloudItemMetadataTable) -> NSFileProviderItemIdentifier? {
     let homeServerFilesUrl = metadata.urlBase + "/remote.php/dav/files/" + metadata.userId
-    let ncDatabase = NextcloudFilesDatabaseManager.shared
 
-    guard let itemParentDirectory = ncDatabase.parentDirectoryMetadataForItem(metadata) else { return nil }
-    if itemParentDirectory.serverUrl == homeServerFilesUrl {
+    if metadata.serverUrl == homeServerFilesUrl {
         return .rootContainer
-    } else if let parentDirectoryMetadata = ncDatabase.itemMetadataFromOcId(itemParentDirectory.ocId) {
+    }
+
+    let ncDatabase = NextcloudFilesDatabaseManager.shared
+    guard let itemParentDirectory = ncDatabase.parentDirectoryMetadataForItem(metadata) else {
+        NSLog("Could not get item parent directory metadata for metadata with ocId: %@ and fileName: %@, returning nil", metadata.ocId, metadata.fileName)
+        return nil
+    }
+
+    if let parentDirectoryMetadata = ncDatabase.itemMetadataFromOcId(itemParentDirectory.ocId) {
         return NSFileProviderItemIdentifier(parentDirectoryMetadata.ocId)
     }
 
+    NSLog("Could not get item parent directory item metadata for metadata with ocId: %@ and fileName: %@, returning nil", metadata.ocId, metadata.fileName)
     return nil
 }
 
