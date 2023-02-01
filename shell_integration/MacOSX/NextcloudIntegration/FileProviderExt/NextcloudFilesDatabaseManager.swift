@@ -286,28 +286,36 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    func updateDirectoryMetadatasFromItemMetadatas(account: String, parentDirectoryServerUrl: String, updatedDirectoryItemMetadatas: [NextcloudItemMetadataTable]) {
+    private func directoryMetadataFromItemMetadata(directoryItemMetadata: NextcloudItemMetadataTable, recordEtag: Bool = false) -> NextcloudDirectoryMetadataTable {
+        var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
+        let directoryOcId = directoryItemMetadata.ocId
+
+        if let existingDirectoryMetadata = directoryMetadata(ocId: directoryOcId) {
+            newDirectoryMetadata = existingDirectoryMetadata
+        }
+
+        if recordEtag {
+            newDirectoryMetadata.etag = directoryItemMetadata.etag
+        }
+
+        newDirectoryMetadata.ocId = directoryOcId
+        newDirectoryMetadata.fileId = directoryItemMetadata.fileId
+        newDirectoryMetadata.parentDirectoryServerUrl = directoryItemMetadata.serverUrl
+        newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
+        newDirectoryMetadata.account = directoryItemMetadata.account
+        newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted
+        newDirectoryMetadata.favorite = directoryItemMetadata.favorite
+        newDirectoryMetadata.permissions = directoryItemMetadata.permissions
+
+        return newDirectoryMetadata
+    }
+
+    func updateDirectoryMetadatasFromItemMetadatas(account: String, parentDirectoryServerUrl: String, updatedDirectoryItemMetadatas: [NextcloudItemMetadataTable], recordEtag: Bool = false) {
 
         var updatedDirMetadatas: [NextcloudDirectoryMetadataTable] = []
 
         for directoryItemMetadata in updatedDirectoryItemMetadatas {
-            var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
-            let directoryOcId = directoryItemMetadata.ocId
-
-            if let existingDirectoryMetadata = directoryMetadata(ocId: directoryOcId) {
-                newDirectoryMetadata = existingDirectoryMetadata
-            }
-
-            newDirectoryMetadata.ocId = directoryOcId
-            newDirectoryMetadata.fileId = directoryItemMetadata.fileId
-            newDirectoryMetadata.etag = directoryItemMetadata.etag
-            newDirectoryMetadata.parentDirectoryServerUrl = directoryItemMetadata.serverUrl
-            newDirectoryMetadata.serverUrl = directoryItemMetadata.serverUrl + "/" + directoryItemMetadata.fileNameView
-            newDirectoryMetadata.account = directoryItemMetadata.account
-            newDirectoryMetadata.e2eEncrypted = directoryItemMetadata.e2eEncrypted
-            newDirectoryMetadata.favorite = directoryItemMetadata.favorite
-            newDirectoryMetadata.permissions = directoryItemMetadata.permissions
-
+            let newDirectoryMetadata = directoryMetadataFromItemMetadata(directoryItemMetadata: directoryItemMetadata, recordEtag: recordEtag)
             updatedDirMetadatas.append(newDirectoryMetadata)
         }
 

@@ -172,6 +172,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
                 return
             }
 
+            // If we have already done a 0 depth scan of this folder then we might get matching etag
             guard directoryEtag != files.first?.etag else {
                 NSLog("Fetched directory etag is same as that stored locally (serverUrl: %@ user: %@). Not fetching child items.", serverUrl, account)
                 finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
@@ -189,9 +190,16 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
                 NSLog("Starting async conversion of NKFiles for serverUrl: %@ for user: %@", serverUrl, ncKitAccount)
                 DispatchQueue.global().async {
-                    dbManager.convertNKFilesToItemMetadatas(files, account: ncKitAccount) { _, childDirectoriesMetadata, metadatas in
+                    dbManager.convertNKFilesToItemMetadatas(files, account: ncKitAccount) { directoryMetadata, childDirectoriesMetadata, metadatas in
+
+                        // We have now scanned this directory's contents, so update with etag in order to not check again if not needed
+                        dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: [directoryMetadata], recordEtag: true)
+
                         dbManager.updateItemMetadatas(account: ncKitAccount, serverUrl: serverUrl, updatedMetadatas: metadatas)
+
+                        // Since we haven't scanned the contents of these, don't record their itemMetadata etags in the directory tables
                         dbManager.updateDirectoryMetadatasFromItemMetadatas(account: ncKitAccount, parentDirectoryServerUrl: serverUrl, updatedDirectoryItemMetadatas: childDirectoriesMetadata)
+
                         finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, completionHandler: completionHandler)
                     }
                 }
