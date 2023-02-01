@@ -74,6 +74,10 @@ class NextcloudFilesDatabaseManager : NSObject {
         return realm
     }
 
+    func anyItemMetadatasForAccount(_ account: String) -> Bool {
+        return !ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@", account).isEmpty
+    }
+
     func itemMetadataFromOcId(_ ocId: String) -> NextcloudItemMetadataTable? {
         // Realm objects are live-fire, i.e. they will be changed and invalidated according to changes in the db
         // Let's therefore create a copy
