@@ -172,23 +172,18 @@ bool Application::configVersionMigration()
     }
 
     if (showWarning || backupFilesList.count() > 0) {
-        QString boldMessage;
-        if (!deleteKeys.isEmpty()) {
-            boldMessage = tr("Continuing will mean <b>deleting these settings</b>.");
-        } else {
-            boldMessage = tr("Continuing will mean <b>ignoring these settings</b>.");
-        }
-
         QMessageBox box(
             QMessageBox::Warning,
             APPLICATION_SHORTNAME,
             tr("Some settings were configured in %1 versions of this client and "
                "use features that are not available in this version.<br>"
                "<br>"
-               "%2<br>"
+               "Continuing will mean <b>%2 these settings</b><br>"
                "<br>"
                "The current configuration file was already backed up to <i>%3</i>.")
-                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")), boldMessage, backupFilesList.join("<br>")));
+                .arg((downgrading ? tr("newer", "newer software version") : tr("older", "older software version")),
+                     deleteKeys.isEmpty()? tr("ignoring") : tr("deleting"),
+                     backupFilesList.join("<br>")));
         box.addButton(tr("Quit"), QMessageBox::AcceptRole);
         auto continueBtn = box.addButton(tr("Continue"), QMessageBox::DestructiveRole);
 
