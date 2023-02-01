@@ -100,6 +100,32 @@ class FileProviderDomainManager::Private {
         }];
     }
 
+    void wipeAllFileProviderDomains()
+    {
+        qCDebug(lcMacFileProviderDomainManager) << "Removing and wiping all file provider domains";
+
+        [NSFileProviderManager getDomainsWithCompletionHandler:^(NSArray<NSFileProviderDomain *> *domains, NSError *error) {
+            if (error) {
+                qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domains: "
+                                                        << [error code]
+                                                        << [error localizedDescription];
+                return;
+            }
+
+            for (NSFileProviderDomain *domain in domains) {
+                [NSFileProviderManager removeDomain:domain mode:NSFileProviderDomainRemovalModeRemoveAll completionHandler:^(NSURL *preservedLocation, NSError *error) {
+                    if (error) {
+                        qCDebug(lcMacFileProviderDomainManager) << "Error removing and wiping file provider domain: "
+                                                                << [domain displayName]
+                                                                << [error code]
+                                                                << [error localizedDescription];
+                        return;
+                    }
+                }];
+            }
+        }];
+    }
+
     void setFileProviderDomainConnected(const AccountState *accountState)
     {
         const QString accountDisplayName = accountState->account()->displayName();
@@ -158,6 +184,7 @@ FileProviderDomainManager::FileProviderDomainManager(QObject *parent)
     connect(AccountManager::instance(), &AccountManager::accountRemoved,
             this, &FileProviderDomainManager::removeFileProviderDomainForAccount);
 
+    d->wipeAllFileProviderDomains(); // TODO: Remove when testing done
     setupFileProviderDomains(); // Initially fetch accounts in manager
 }
 
