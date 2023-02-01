@@ -711,9 +711,9 @@ void Application::parseOptions(const QStringList &options)
                     && QUrl::fromUserInput(overrideUrl).isValid();
                 if (!isUrlValid) {
                     showHint("Invalid URL passed to --overrideserverurl");
+                    shouldExit = true;
                 } else {
                     ConfigFile().setOverrideServerUrl(overrideUrl);
-                    shouldExit = true;
                 }
             } else {
                 showHint("Invalid URL passed to --overrideserverurl");
