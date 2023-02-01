@@ -145,6 +145,9 @@ private:
     QNetworkConfigurationManager _networkConfigurationManager;
     QTimer _checkConnectionTimer;
 
+    QString _overrideServerUrl;
+    QString _overrideLocalDir;
+
 #if defined(WITH_CRASHREPORTER)
     QScopedPointer<CrashReporter::Handler> _crashHandler;
 #endif

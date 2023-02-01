@@ -337,6 +337,19 @@ Application::Application(int &argc, char **argv)
     }
 
     ConfigFile cfg;
+
+    {
+        // these config values will always be empty after the first client run
+        if (!_overrideServerUrl.isEmpty()) {
+             cfg.setOverrideServerUrl(_overrideServerUrl);
+        }
+
+        if (!_overrideLocalDir.isEmpty()) {
+            cfg.setOverrideLocalDir(_overrideLocalDir);
+        }
+    }
+
+
     // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
@@ -713,14 +726,14 @@ void Application::parseOptions(const QStringList &options)
                     showHint("Invalid URL passed to --overrideserverurl");
                     shouldExit = true;
                 } else {
-                    ConfigFile().setOverrideServerUrl(overrideUrl);
+                    _overrideServerUrl = overrideUrl;
                 }
             } else {
                 showHint("Invalid URL passed to --overrideserverurl");
             }
         } else if (option == QStringLiteral("--overridelocaldir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                ConfigFile().setOverrideLocalDir(it.next());
+                _overrideLocalDir = it.next();
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
