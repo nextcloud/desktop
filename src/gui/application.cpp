@@ -147,15 +147,11 @@ bool Application::configVersionMigration()
     const auto versionChanged = previousVersion != currentVersion;
     const auto downgrading = previousVersion > currentVersion;
 
-    // We want to message the user either for destructive changes,
-    // or if we're ignoring something and the client version changed.
-    const auto showWarning = !deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged);
-
-    if (!versionChanged && !showWarning) {
+    if (!versionChanged && !(!deleteKeys.isEmpty() || (!ignoreKeys.isEmpty() && versionChanged))) {
         return true;
     }
 
-    // back up all old config file
+    // back up all old config files
     QStringList backupFilesList;
     QDir configDir(configFile.configPath());
     const auto anyConfigFileNameList = configDir.entryInfoList({"*.cfg"}, QDir::Files);
@@ -171,7 +167,9 @@ bool Application::configVersionMigration()
         }
     }
 
-    if (showWarning || backupFilesList.count() > 0) {
+    // We want to message the user either for destructive changes,
+    // or if we're ignoring something and the client version changed.
+    if (configFile.showConfigBackupWarning() && backupFilesList.count() > 0) {
         QMessageBox box(
             QMessageBox::Warning,
             APPLICATION_SHORTNAME,
