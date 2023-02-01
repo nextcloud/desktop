@@ -1050,37 +1050,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>無法重命名檔案，因為伺服器上已存在同名檔案。請選擇另一個名字。</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>無法重命名檔案。請確保您已連接到伺服器。</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>您無權重命名此檔案。請要求檔案的擁有者重命名它。</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>擷取權限失敗，錯誤為 %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含前導和尾隨空格。</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含前導空格。</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含尾隨空格。</translation>
     </message>
 </context>
 <context>
@@ -1088,21 +1088,26 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation type="unfinished"/>
+        <translation>大小寫衝突</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>無法同步檔案，因為其會與該系統上既有的檔案產生大小寫衝突。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
+        <translation>既有檔案</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
+        <source>file A</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1114,23 +1119,28 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>今日</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 位元組</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation type="unfinished"/>
+        <translation>開啟現有的檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
+        <translation>大小寫衝突檔案</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
+        <source>file B</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1142,57 +1152,57 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation type="unfinished"/>
+        <translation>開啟衝突檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation type="unfinished"/>
+        <translation>請輸入衝突檔案的新名稱：</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>新檔案名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>重新命名檔案</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation type="unfinished"/>
+        <translation>無法同步檔案「%1」，因為其會與該系統上既有的檔案產生大小寫衝突。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation type="unfinished"/>
+        <translation>%1 不支援僅字母大小寫不同的檔案名稱。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含前導和尾隨空格。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含前導空格。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>檔案名包含尾隨空格。</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>使用無效的名稱</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>檔案名含有非法字符：%1</translation>
     </message>
 </context>
 <context>
@@ -3538,7 +3548,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation type="unfinished"/>
+        <translation>大小寫衝突：伺服器檔案已下載並重新命名以避免衝突。</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="381"/>
@@ -3733,7 +3743,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>已下載檔案 %1，但其導致了近端檔案名稱衝突！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
@@ -3774,7 +3784,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation type="unfinished"/>
+        <translation>無法建立資料夾 %1，因為近端檔案或資料夾名稱有衝突！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
@@ -3815,7 +3825,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation type="unfinished"/>
+        <translation>已下載檔案 %1，但其導致了近端檔案名稱衝突！</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
@@ -4902,30 +4912,30 @@ Server replied with error: %2</source>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="600"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>解決抵觸</translation>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1145"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
         <source>Confirm Account Removal</source>
         <translation>請確認移除賬戶</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1147"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;您確定要移除&lt;i&gt;%1&lt;/i&gt;的連線嗎？&lt;/p&gt;&lt;p&gt;&lt;b&gt;提示：&lt;/b&gt;這項操作不會刪除任何檔案&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1150"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
         <source>Remove connection</source>
         <translation>移除連線</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1152"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -5459,7 +5469,7 @@ Server replied with error: %2</source>
         <translation>您改變了 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="679"/>
         <source>Synced %1</source>
         <translation>已同步 %1</translation>
     </message>
@@ -6094,7 +6104,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation type="unfinished"/>
+        <translation>已下載伺服器上的版本，並將本機已更改的檔案複製至大小寫衝突檔案</translation>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>

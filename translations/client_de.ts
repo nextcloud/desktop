@@ -1105,8 +1105,13 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
+        <source>file A</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>fileA</source>
-        <translation>DateiA</translation>
+        <translation>Datei A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
@@ -1133,8 +1138,13 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
+        <source>file B</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>fileB</source>
-        <translation>DateiB</translation>
+        <translation>Datei B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
@@ -4902,7 +4912,7 @@ Server antwortete mit folgendem Fehler: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="600"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>Resolve conflict</source>
         <translation>Konflikt lösen</translation>
     </message>
@@ -4910,22 +4920,22 @@ Server antwortete mit folgendem Fehler: %2</translation>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1145"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
         <source>Confirm Account Removal</source>
         <translation>Kontenentfernung bestätigen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1147"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Möchten Sie wirklich die Verbindung zum Konto &lt;i&gt;%1&lt;/i&gt; entfernen?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Hinweis:&lt;/b&gt; Es werden &lt;b&gt;keine&lt;/b&gt; Dateien gelöscht.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1150"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
         <source>Remove connection</source>
         <translation>Verbindung entfernen</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1152"/>
         <source>Cancel</source>
         <translation>Abbrechen</translation>
     </message>
@@ -5459,7 +5469,7 @@ Server antwortete mit folgendem Fehler: %2</translation>
         <translation>Sie haben %1 geändert</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="679"/>
         <source>Synced %1</source>
         <translation>%1 synchronisiert</translation>
     </message>

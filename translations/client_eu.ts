@@ -1049,37 +1049,37 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin da fitxategia berrizendatu izen berdina duen fitxategi bat existitzen delako zerbitzarian dagoeneko. Mesedez, aukeratu beste izen bat.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan da fitxategia berrizendatu. Mesedez egiaztatu zerbitzarira konektatuta zaudela.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation type="unfinished"/>
+        <translation>Ez duzu baimenik fitxategi hau berrizendatzeko. Mesedez, eskatu fitxategiaren jabeari berrizendatzeko.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation type="unfinished"/>
+        <translation>Ezin izan dira baimenak eskuratu %1 errorearekin</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izenak hasierako eta amaierako zuriuneak dauzka.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izenak hasierako zuriunea dauka.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izenak amaierako zuriunea dauka.</translation>
     </message>
 </context>
 <context>
@@ -1097,11 +1097,16 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Errorea</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
+        <source>file A</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1113,13 +1118,13 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>gaur</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 byte</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
@@ -1130,6 +1135,11 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
+        <source>file B</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -1151,12 +1161,12 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izen berria</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Berrizendatu fitxategia</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
@@ -1171,27 +1181,27 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izenak hasierako eta amaierako zuriuneak dauzka.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izenak hasierako zuriunea dauka.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategi-izenak amaierako zuriunea dauka.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Erabili izen baliogabea</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation type="unfinished"/>
+        <translation>Fitxategiak karaktere ilegalak dauzka: %1</translation>
     </message>
 </context>
 <context>
@@ -4903,30 +4913,30 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="600"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
         <source>Resolve conflict</source>
-        <translation type="unfinished"/>
+        <translation>Ebatzi gatazka</translation>
     </message>
 </context>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1145"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
         <source>Confirm Account Removal</source>
         <translation>Baieztatu kontua kentzea</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1147"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ziur zaude &lt;i&gt;%1&lt;/i&gt; kontura konexioa kendu nahi duzula?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Oharra:&lt;/b&gt; Honek &lt;b&gt;ez&lt;/b&gt; du fitxategirik ezabatuko.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1150"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
         <source>Remove connection</source>
         <translation>Kendu konexioa</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1152"/>
         <source>Cancel</source>
         <translation>Utzi</translation>
     </message>
@@ -5460,7 +5470,7 @@ Zerbitzariak errorearekin erantzun du: %2</translation>
         <translation>%1 aldatu duzu</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="679"/>
         <source>Synced %1</source>
         <translation>%1 sinkronizatuta</translation>
     </message>
