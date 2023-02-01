@@ -1153,13 +1153,6 @@ void PropagateDownloadFile::downloadFinished()
     ASSERT(!_tmpFile.isOpen());
     const auto filename = propagator()->fullLocalPath(_item->_file);
 
-    // In case of file name clash, report an error
-    // This can happen if another parallel download saved a clashing file.
-    if (propagator()->localFileNameClash(_item->_file)) {
-        done(SyncFileItem::FileNameClash, tr("File %1 cannot be saved because of a local file name clash!").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
-        return;
-    }
-
     if (_item->_modtime <= 0) {
         FileSystem::remove(_tmpFile.fileName());
         done(SyncFileItem::NormalError, tr("File %1 has invalid modified time reported by server. Do not save it.").arg(QDir::toNativeSeparators(_item->_file)), ErrorCategory::GenericError);
