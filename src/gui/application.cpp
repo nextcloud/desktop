@@ -306,16 +306,18 @@ Application::Application(int &argc, char **argv)
 
     parseOptions(arguments());
     //no need to waste time;
-    if (_helpOnly || _versionOnly)
+    if (_helpOnly || _versionOnly) {
         return;
+    }
 
     if (_quitInstance) {
         QTimer::singleShot(0, qApp, &QApplication::quit);
         return;
     }
 
-    if (isRunning())
+    if (isRunning()) {
         return;
+    }
 
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter()) {
@@ -358,10 +360,12 @@ Application::Application(int &argc, char **argv)
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
+    }
+    if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         qCInfo(lcApplication) << "VFS suffix plugin is available";
+    }
 
     _folderManager.reset(new FolderMan);
 #ifdef Q_OS_WIN
@@ -652,8 +656,9 @@ void Application::parseOptions(const QStringList &options)
 {
     QStringListIterator it(options);
     // skip file name;
-    if (it.hasNext())
+    if (it.hasNext()) {
         it.next();
+    }
 
     bool shouldExit = false;
 
@@ -846,11 +851,13 @@ QString substLang(const QString &lang)
     // transifex translation conventions.
 
     // Simplified Chinese
-    if (lang == QLatin1String("zh_Hans"))
+    if (lang == QLatin1String("zh_Hans")) {
         return QLatin1String("zh_CN");
+    }
     // Traditional Chinese
-    if (lang == QLatin1String("zh_Hant"))
+    if (lang == QLatin1String("zh_Hant")) {
         return QLatin1String("zh_TW");
+    }
     return lang;
 }
 
@@ -866,8 +873,9 @@ void Application::setupTranslations()
 #endif
 
     QString enforcedLocale = Theme::instance()->enforcedLocale();
-    if (!enforcedLocale.isEmpty())
+    if (!enforcedLocale.isEmpty()) {
         uiLanguages.prepend(enforcedLocale);
+    }
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
@@ -908,8 +916,9 @@ void Application::setupTranslations()
                 installTranslator(qtkeychainTranslator);
             break;
         }
-        if (property("ui_lang").isNull())
+        if (property("ui_lang").isNull()) {
             setProperty("ui_lang", "C");
+        }
     }
 }
 
