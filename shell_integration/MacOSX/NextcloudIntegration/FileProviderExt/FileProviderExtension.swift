@@ -155,9 +155,9 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         assert(ncAccount != nil)
 
-        if true { // TODO: only run this if we need to refresh root container and it is the first ever sync
-            // This refreshes the entire structure of the FileProvider and calls enumerateItems
-            // rather than enumerateChanges in the enumerator
+        if !NextcloudFilesDatabaseManager.shared.anyItemMetadatasForAccount(ncAccount!.ncKitAccount) {
+            // This refreshes the entire structure of the FileProvider and calls
+            // enumerateItems rather than enumerateChanges in the enumerator
             NSLog("Signalling manager for user %@ at server %@ to reimport everything", ncAccount!.username, ncAccount!.serverUrl)
             fpManager.reimportItems(below: .rootContainer, completionHandler: {_ in })
             return
