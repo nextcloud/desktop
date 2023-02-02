@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.4] - 2022-12-08
+
+### Fixed
+* Do not create GUI from a random thread and show error on real error by @mgallien in https://github.com/nextcloud/desktop/pull/5253
+
 ## [3.6.3] - 2022-12-08
 
 ### Added
@@ -339,6 +344,7 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.6.4]: https://github.com/nextcloud/desktop/compare/v3.6.3...v3.6.4
 [3.6.3]: https://github.com/nextcloud/desktop/compare/v3.6.2...v3.6.3
 [3.6.2]: https://github.com/nextcloud/desktop/compare/v3.6.1...v3.6.2
 [3.6.1]: https://github.com/nextcloud/desktop/compare/v3.6.0...v3.6.1
