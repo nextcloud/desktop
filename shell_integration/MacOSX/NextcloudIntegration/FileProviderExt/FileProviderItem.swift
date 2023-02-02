@@ -25,6 +25,7 @@ class FileProviderItem: NSObject, NSFileProviderItem {
 
     let metadata: NextcloudItemMetadataTable
     let parentItemIdentifier: NSFileProviderItemIdentifier
+    let ncKit: NextcloudKit
     
     var itemIdentifier: NSFileProviderItemIdentifier {
         return NSFileProviderItemIdentifier(metadata.ocId)
@@ -62,9 +63,9 @@ class FileProviderItem: NSObject, NSFileProviderItem {
             return .folder
         }
 
-        let internalType = NKCommon.shared.getInternalType(fileName: metadata.fileNameView,
-                                                           mimeType: "",
-                                                           directory: metadata.directory)
+        let internalType = ncKit.nkCommonInstance.getInternalType(fileName: metadata.fileNameView,
+                                                                  mimeType: "",
+                                                                  directory: metadata.directory)
         return UTType(filenameExtension: internalType.ext) ?? .content
     }
 
@@ -111,9 +112,10 @@ class FileProviderItem: NSObject, NSFileProviderItem {
         }
     }
 
-    init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier) {
+    init(metadata: NextcloudItemMetadataTable, parentItemIdentifier: NSFileProviderItemIdentifier, ncKit: NextcloudKit) {
         self.metadata = metadata
         self.parentItemIdentifier = parentItemIdentifier
+        self.ncKit = ncKit
         super.init()
     }
 }

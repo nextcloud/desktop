@@ -19,6 +19,11 @@ import NextcloudKit
 
 class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKCommonDelegate {
     let domain: NSFileProviderDomain
+    let ncKit = NextcloudKit()
+    lazy var ncKitBackground: NKBackground = {
+        let nckb = NKBackground(nkCommonInstance: ncKit.nkCommonInstance)
+        return nckb
+    }()
 
     let appGroupIdentifier: String? = Bundle.main.object(forInfoDictionaryKey: "SocketApiPrefix") as? String
     var ncAccount: NextcloudAccount?
@@ -44,7 +49,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         configuration.httpMaximumConnectionsPerHost = urlSessionMaximumConnectionsPerHost
         configuration.requestCachePolicy = NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData
         configuration.sharedContainerIdentifier = appGroupIdentifier
-        let session = URLSession(configuration: configuration, delegate: NKBackground.shared, delegateQueue: OperationQueue.main)
+
+        let session = URLSession(configuration: configuration, delegate: ncKitBackground, delegateQueue: OperationQueue.main)
         return session
     }()
 
@@ -85,7 +91,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             metadata.serverUrl = ncAccount.serverUrl
             metadata.classFile = NKCommon.typeClassFile.directory.rawValue
 
-            completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer), nil)
+            completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: NSFileProviderItemIdentifier.rootContainer, ncKit: ncKit), nil)
             return Progress()
         }
 
@@ -96,7 +102,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             return Progress()
         }
 
-        completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: parentItemIdentifier), nil)
+        completionHandler(FileProviderItem(metadata: metadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit), nil)
         return Progress()
     }
     
@@ -136,7 +142,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
             throw NSFileProviderError(.notAuthenticated)
         }
 
-        return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount)
+        return FileProviderEnumerator(enumeratedItemIdentifier: containerItemIdentifier, ncAccount: ncAccount, ncKit: ncKit)
     }
 
     // MARK: Nextcloud desktop client communication
@@ -175,14 +181,13 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
     func setupDomainAccount(user: String, serverUrl: String, password: String) {
         ncAccount = NextcloudAccount(user: user, serverUrl: serverUrl, password: password)
-
-        NextcloudKit.shared.setup(user: ncAccount!.username,
-                                  userId: ncAccount!.username,
-                                  password: ncAccount!.password,
-                                  urlBase: ncAccount!.serverUrl,
-                                  userAgent: "Nextcloud-macOS/FileProviderExt",
-                                  nextcloudVersion: 25,
-                                  delegate: nil) // TODO: add delegate methods for self
+        ncKit.setup(user: ncAccount!.username,
+                     userId: ncAccount!.username,
+                     password: ncAccount!.password,
+                     urlBase: ncAccount!.serverUrl,
+                     userAgent: "Nextcloud-macOS/FileProviderExt",
+                     nextcloudVersion: 25,
+                     delegate: nil) // TODO: add delegate methods for self
 
         NSLog("Nextcloud account set up in File Provider extension for user: %@ at server: %@", user, serverUrl)
 

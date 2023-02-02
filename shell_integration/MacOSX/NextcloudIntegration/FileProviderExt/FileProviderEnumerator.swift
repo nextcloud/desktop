@@ -20,12 +20,14 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
     private let enumeratedItemIdentifier: NSFileProviderItemIdentifier
     private let anchor = NSFileProviderSyncAnchor("an anchor".data(using: .utf8)!)
     private static let maxItemsPerFileProviderPage = 100
-    var ncAccount: NextcloudAccount
+    let ncAccount: NextcloudAccount
+    let ncKit: NextcloudKit
     var serverUrl: String = ""
     
-    init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount) {
+    init(enumeratedItemIdentifier: NSFileProviderItemIdentifier, ncAccount: NextcloudAccount, ncKit: NextcloudKit) {
         self.enumeratedItemIdentifier = enumeratedItemIdentifier
         self.ncAccount = ncAccount
+        self.ncKit = ncKit
 
         if enumeratedItemIdentifier == .rootContainer {
             NSLog("Providing enumerator for root container")
@@ -76,8 +78,8 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             page == NSFileProviderPage.initialPageSortedByName as NSFileProviderPage {
 
             NSLog("Enumerating initial page for user: %@ with serverUrl: %@", ncAccount.username, serverUrl)
-            FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount) { metadatas, readError in
-                FileProviderEnumerator.completeObserver(observer, numPage: 1, itemMetadatas: metadatas, error: readError)
+            FileProviderEnumerator.readServerUrl(serverUrl, ncAccount: ncAccount, ncKit: ncKit) { metadatas, readError in
+                FileProviderEnumerator.completeObserver(observer, ncKit: self.ncKit, numPage: 1, itemMetadatas: metadatas, error: readError)
             }
 
             return;
@@ -85,7 +87,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
         let numPage = Int(String(data: page.rawValue, encoding: .utf8)!)!
         NSLog("Enumerating page %d for user: %@ with serverUrl: %@", numPage, ncAccount.username, serverUrl)
-        FileProviderEnumerator.completeObserver(observer, numPage: numPage, itemMetadatas: nil, error: nil)
+        FileProviderEnumerator.completeObserver(observer, ncKit: ncKit, numPage: numPage, itemMetadatas: nil, error: nil)
     }
     
     func enumerateChanges(for observer: NSFileProviderChangeObserver, from anchor: NSFileProviderSyncAnchor) {
@@ -108,7 +110,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
     // MARK: - Helper methods
 
-    private static func completeObserver(_ observer: NSFileProviderEnumerationObserver, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?, error: Error?) {
+    private static func completeObserver(_ observer: NSFileProviderEnumerationObserver, ncKit: NextcloudKit, numPage: Int, itemMetadatas: [NextcloudItemMetadataTable]?, error: Error?) {
         guard error == nil else {
             NSLog("Finishing enumeration with error")
             observer.finishEnumeratingWithError(error!)
@@ -132,7 +134,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             createFileOrDirectoryLocally(metadata: itemMetadata)
 
             if let parentItemIdentifier = parentItemIdentifierFromMetadata(itemMetadata) {
-                let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier)
+                let item = FileProviderItem(metadata: itemMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: ncKit)
                 NSLog("Will enumerate item with ocId: %@ and name: %@", itemMetadata.ocId, itemMetadata.fileName)
                 items.append(item)
             } else {
@@ -159,7 +161,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
         completionHandler(metadatas, readError)
     }
 
-    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
+    private static func readServerUrl(_ serverUrl: String, ncAccount: NextcloudAccount, ncKit: NextcloudKit, completionHandler: @escaping (_ metadatas: [NextcloudItemMetadataTable]?, _ readError: Error?) -> Void) {
         let dbManager = NextcloudFilesDatabaseManager.shared
         let ncKitAccount = ncAccount.ncKitAccount
         var directoryEtag: String?
@@ -168,9 +170,9 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
             directoryEtag = directoryMetadata.etag
         }
 
-        NSLog("Starting to read serverUrl: %@ for user: %@ at depth 0", serverUrl, ncKitAccount)
+        NSLog("Starting to read serverUrl: %@ for user: %@ at depth 0. NCKit info: user: %@, userId: %@, password: %@, urlBase: %@, ncVersion: %d", serverUrl, ncKitAccount, ncKit.nkCommonInstance.user, ncKit.nkCommonInstance.userId, ncKit.nkCommonInstance.password, ncKit.nkCommonInstance.urlBase, ncKit.nkCommonInstance.nextcloudVersion)
 
-        NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
+        ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "0", showHiddenFiles: true) { account, files, _, error in
             guard error == .success else {
                 NSLog("0 depth readFileOrFolder of url: %@ did not complete successfully, received error: %@", serverUrl, error.errorDescription)
                 finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, readError: error.error, completionHandler: completionHandler)
@@ -186,7 +188,7 @@ class FileProviderEnumerator: NSObject, NSFileProviderEnumerator {
 
             NSLog("Starting to read serverUrl: %@ for user: %@ at depth 1", serverUrl, ncKitAccount)
 
-            NextcloudKit.shared.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
+            ncKit.readFileOrFolder(serverUrlFileName: serverUrl, depth: "1", showHiddenFiles: true) { account, files, _, error in
                 guard error == .success else {
                     NSLog("1 depth readFileOrFolder of url: %@ did not complete successfully, received error: %@", serverUrl, error.errorDescription)
                     finishReadServerUrl(serverUrl, ncKitAccount: ncKitAccount, readError: error.error, completionHandler: completionHandler)
