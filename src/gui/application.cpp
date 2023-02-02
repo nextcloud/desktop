@@ -306,16 +306,18 @@ Application::Application(int &argc, char **argv)
 
     parseOptions(arguments());
     //no need to waste time;
-    if (_helpOnly || _versionOnly)
+    if (_helpOnly || _versionOnly) {
         return;
+    }
 
     if (_quitInstance) {
         QTimer::singleShot(0, qApp, &QApplication::quit);
         return;
     }
 
-    if (isRunning())
+    if (isRunning()) {
         return;
+    }
 
 #if defined(WITH_CRASHREPORTER)
     if (ConfigFile().crashReporter()) {
@@ -337,6 +339,19 @@ Application::Application(int &argc, char **argv)
     }
 
     ConfigFile cfg;
+
+    {
+        // these config values will always be empty after the first client run
+        if (!_overrideServerUrl.isEmpty()) {
+             cfg.setOverrideServerUrl(_overrideServerUrl);
+        }
+
+        if (!_overrideLocalDir.isEmpty()) {
+            cfg.setOverrideLocalDir(_overrideLocalDir);
+        }
+    }
+
+
     // The timeout is initialized with an environment variable, if not, override with the value from the config
     if (!AbstractNetworkJob::httpTimeout)
         AbstractNetworkJob::httpTimeout = cfg.timeout();
@@ -345,10 +360,12 @@ Application::Application(int &argc, char **argv)
     if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+    if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
         qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
+    }
+    if (isVfsPluginAvailable(Vfs::WithSuffix)) {
         qCInfo(lcApplication) << "VFS suffix plugin is available";
+    }
 
     _folderManager.reset(new FolderMan);
 #ifdef Q_OS_WIN
@@ -639,8 +656,9 @@ void Application::parseOptions(const QStringList &options)
 {
     QStringListIterator it(options);
     // skip file name;
-    if (it.hasNext())
+    if (it.hasNext()) {
         it.next();
+    }
 
     bool shouldExit = false;
 
@@ -711,16 +729,16 @@ void Application::parseOptions(const QStringList &options)
                     && QUrl::fromUserInput(overrideUrl).isValid();
                 if (!isUrlValid) {
                     showHint("Invalid URL passed to --overrideserverurl");
-                } else {
-                    ConfigFile().setOverrideServerUrl(overrideUrl);
                     shouldExit = true;
+                } else {
+                    _overrideServerUrl = overrideUrl;
                 }
             } else {
                 showHint("Invalid URL passed to --overrideserverurl");
             }
         } else if (option == QStringLiteral("--overridelocaldir")) {
             if (it.hasNext() && !it.peekNext().startsWith(QLatin1String("--"))) {
-                ConfigFile().setOverrideLocalDir(it.next());
+                _overrideLocalDir = it.next();
             } else {
                 showHint("Invalid URL passed to --overridelocaldir");
             }
@@ -833,11 +851,13 @@ QString substLang(const QString &lang)
     // transifex translation conventions.
 
     // Simplified Chinese
-    if (lang == QLatin1String("zh_Hans"))
+    if (lang == QLatin1String("zh_Hans")) {
         return QLatin1String("zh_CN");
+    }
     // Traditional Chinese
-    if (lang == QLatin1String("zh_Hant"))
+    if (lang == QLatin1String("zh_Hant")) {
         return QLatin1String("zh_TW");
+    }
     return lang;
 }
 
@@ -853,8 +873,9 @@ void Application::setupTranslations()
 #endif
 
     QString enforcedLocale = Theme::instance()->enforcedLocale();
-    if (!enforcedLocale.isEmpty())
+    if (!enforcedLocale.isEmpty()) {
         uiLanguages.prepend(enforcedLocale);
+    }
 
     auto *translator = new QTranslator(this);
     auto *qtTranslator = new QTranslator(this);
@@ -895,8 +916,9 @@ void Application::setupTranslations()
                 installTranslator(qtkeychainTranslator);
             break;
         }
-        if (property("ui_lang").isNull())
+        if (property("ui_lang").isNull()) {
             setProperty("ui_lang", "C");
+        }
     }
 }
 
