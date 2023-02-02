@@ -35,3 +35,16 @@ Feature: Project spaces
         When the user overwrites the file "testfile.txt" with content "some content edited"
         And the user waits for file "testfile.txt" to be synced
         Then as "Alice" the file "testfile.txt" of space "Project101" should have content "some content edited" in the server
+
+
+    Scenario: User with manager role can add files and folders
+        Given the administrator has added user "Alice" to space "Project101" with role "manager"
+        And user "Alice" has set up a client with space "Project101"
+        When user "Alice" creates a file "localFile.txt" with the following content inside the sync folder
+            """
+            test content
+            """
+        And user "Alice" creates a folder "localFolder" inside the sync folder
+        And the user waits for the files to sync
+        Then as "Alice" the file "localFile.txt" of space "Project101" should have content "test content" in the server
+        And as "Alice" the space "Project101" should have folder "localFolder" in the server

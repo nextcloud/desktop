@@ -1,9 +1,8 @@
 from pageObjects.EnterPassword import EnterPassword
 
 from helpers.UserHelper import getDisplaynameForUser, getPasswordForUser
-from helpers.SetupClientHelper import setUpClient
+from helpers.SetupClientHelper import setUpClient, getResourcePath
 from helpers.SyncHelper import waitForInitialSyncToComplete
-from helpers.SetupClientHelper import getResourcePath
 from helpers.FilesHelper import can_read, can_write, read_file_content
 from helpers.SpaceHelper import (
     create_space,
@@ -11,6 +10,7 @@ from helpers.SpaceHelper import (
     create_space_file,
     add_user_to_space,
     get_file_content,
+    resource_exists,
 )
 
 
@@ -71,3 +71,13 @@ def step(context, user, file_name):
 def step(context, user, file_name, space_name, content):
     downloaded_content = get_file_content(space_name, file_name, user)
     test.compare(downloaded_content, content, "Comparing file content")
+
+
+@Then(
+    r'as "([^"]*)" the space "([^"]*)" should have (?:folder|file) "([^"]*)" in the server',
+    regexp=True,
+)
+def step(context, user, space_name, resource_name):
+    print(user, space_name, resource_name)
+    exists = resource_exists(space_name, resource_name, user)
+    test.compare(exists, True, "Resource should exist")
