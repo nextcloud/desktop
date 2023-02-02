@@ -35,7 +35,6 @@ private slots:
 
     void addFileProviderDomainForAccount(OCC::AccountState *accountState);
     void removeFileProviderDomainForAccount(OCC::AccountState *accountState);
-    void setFileProviderForAccountIsConnected(OCC::AccountState *accountState);
 
 private:
     explicit FileProviderDomainManager(QObject *parent = nullptr);

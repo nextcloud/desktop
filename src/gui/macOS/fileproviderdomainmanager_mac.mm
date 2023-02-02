@@ -126,50 +126,6 @@ class FileProviderDomainManager::Private {
         }];
     }
 
-    void setFileProviderDomainConnected(const AccountState *accountState)
-    {
-        const QString accountDisplayName = accountState->account()->displayName();
-        const QString accountId = accountState->account()->id();
-        const bool accountIsConnected = accountState->isConnected();
-
-        qCDebug(lcMacFileProviderDomainManager) << "Account state for account changed: "
-                                                << accountDisplayName
-                                                << accountIsConnected;
-
-        if(!_registeredDomains.contains(accountId)) {
-            qCDebug(lcMacFileProviderDomainManager) << "File provider domain not found for id: " << accountId;
-            return;
-        }
-
-        NSFileProviderDomain* accountDomain = _registeredDomains.value(accountId);
-        NSFileProviderManager* providerManager = [NSFileProviderManager managerForDomain:accountDomain];
-
-        if(accountIsConnected) {
-            [providerManager reconnectWithCompletionHandler:^(NSError *error) {
-                if(error) {
-                    qCDebug(lcMacFileProviderDomainManager) << "Error reconnecting file provider domain: "
-                                                            << accountDisplayName
-                                                            << [error code]
-                                                            << [error localizedDescription];
-                }
-            }];
-        } else {
-            NSString* reason = @"Nextcloud account disconnected.";
-            const auto isTemporary = accountState->state() != AccountState::SignedOut &&
-                                     accountState->state() != AccountState::ConfigurationError;
-            NSFileProviderManagerDisconnectionOptions disconnectOption = isTemporary ? 0 : NSFileProviderManagerDisconnectionOptionsTemporary;
-
-            [providerManager disconnectWithReason:reason options:disconnectOption completionHandler:^(NSError *error) {
-                if(error) {
-                    qCDebug(lcMacFileProviderDomainManager) << "Error disconnecting file provider domain: "
-                                               << accountDisplayName
-                                               << [error code]
-                                               << [error localizedDescription];
-                }
-            }];
-        }
-    }
-
 private:
     QHash<QString, NSFileProviderDomain*> _registeredDomains;
 };
@@ -211,19 +167,11 @@ void FileProviderDomainManager::setupFileProviderDomains()
 void FileProviderDomainManager::addFileProviderDomainForAccount(AccountState *accountState)
 {
     d->addFileProviderDomain(accountState);
-
-    connect(accountState, &AccountState::isConnectedChanged,
-            this, [this, accountState]{ setFileProviderForAccountIsConnected(accountState); });
 }
 
 void FileProviderDomainManager::removeFileProviderDomainForAccount(AccountState* accountState)
 {
     d->removeFileProviderDomain(accountState);
-}
-
-void FileProviderDomainManager::setFileProviderForAccountIsConnected(AccountState *accountState)
-{
-    d->setFileProviderDomainConnected(accountState);
 }
 
 } // namespace Mac
