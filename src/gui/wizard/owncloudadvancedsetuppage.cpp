@@ -195,12 +195,14 @@ void OwncloudAdvancedSetupPage::initializePage()
     }
     if (Theme::instance()->forceOverrideServerUrl()) {
         QTimer::singleShot(0, this, [this]() {
-            connect(_ocWizard, &QDialog::accepted, []() {
-                ConfigFile cfg;
+            ConfigFile cfg;
+            connect(_ocWizard, &QDialog::accepted, [&]() {
                 cfg.setOverrideServerUrl({});
                 cfg.setOverrideLocalDir({});
             });
-            _ocWizard->accept();
+            if (!cfg.overrideLocalDir().isEmpty()) {
+                _ocWizard->accept();
+            }
         });
     }
 }
