@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.3] - 2022-12-08
+
+### Added
+* Feature: edit file locally restart sync by @allexzander in https://github.com/nextcloud/desktop/pull/5175
+* Add forcefoldersync method to folder manager by @claucambra in https://github.com/nextcloud/desktop/pull/5239
+
+### Changed
+* Make user status selector modal, show user header by claucambra in https://github.com/nextcloud/desktop/pull/5145
+* Make use of plain text-enforcing qml labels by @claucambra in https://github.com/nextcloud/desktop/pull/5233
+* Format some QLabels as plain text by @claucambra in https://github.com/nextcloud/desktop/pull/5247
+
+### Fixed
+* Fix typo of connector by @hefee in https://github.com/nextcloud/desktop/pull/5157
+* Fix renaming of folders with a deep hierarchy inside them by @mgallien in https://github.com/nextcloud/desktop/pull/5182
+* Prevent bad encrypting of folder if E2EE has not been correctly set up by @claucambra in https://github.com/nextcloud/desktop/pull/5223
+* Lock file when editing locally by @claucambra in
+https://github.com/nextcloud/desktop/pull/5226
+
 ## [3.6.2] - 2022-11-10
 
 ### Added
@@ -321,6 +339,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.6.3]: https://github.com/nextcloud/desktop/compare/v3.6.2...v3.6.3
 [3.6.2]: https://github.com/nextcloud/desktop/compare/v3.6.1...v3.6.2
 [3.6.1]: https://github.com/nextcloud/desktop/compare/v3.6.0...v3.6.1
 [3.6.0]: https://github.com/nextcloud/desktop/compare/v3.6.0-rc1...v3.6.0
