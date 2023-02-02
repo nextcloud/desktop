@@ -927,6 +927,33 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Algumas configurações foram definidas em versões mais recentes deste cliente e usam recursos que não estão disponíveis nesta versão. &lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;O arquivo de configuração atual já foi copiado para  &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../src/gui/application.cpp" line="176"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>newer</source>
+        <comment>newer software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>older</source>
+        <comment>older software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>ignoring</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>deleting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>Sair</translation>
@@ -1107,7 +1134,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>arquivo A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
@@ -1140,7 +1167,7 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>arquivo B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>

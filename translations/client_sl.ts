@@ -926,6 +926,33 @@ S tem dejanjem prav tako prekinete vsa trenutna usklajevanja v izvajanju.</trans
         <translation>Nekatere nastavitve so bile nastavljene v novejši različici programa in vključujejo možnosti, ki v trenutni različici niso na voljo.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Za trenutno uporabljeno nastavitveno datoteko je varnostna kopija že shranjena na &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
+        <location filename="../src/gui/application.cpp" line="176"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>newer</source>
+        <comment>newer software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>older</source>
+        <comment>older software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>ignoring</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>deleting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>Končaj</translation>

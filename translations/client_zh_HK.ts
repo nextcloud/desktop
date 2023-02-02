@@ -928,6 +928,33 @@ This action will abort any currently running synchronization.</source>
         <translation>某些設置是在此客戶端的較新版本中配置的，並使用了此版本中不可用的功能。&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt; 當前配置檔案已備份到 &lt;i&gt;%2&lt;/i&gt;。</translation>
     </message>
     <message>
+        <location filename="../src/gui/application.cpp" line="176"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>newer</source>
+        <comment>newer software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>older</source>
+        <comment>older software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>ignoring</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>deleting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>結束</translation>
@@ -1108,7 +1135,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>檔案 A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
@@ -1141,7 +1168,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>檔案 B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>

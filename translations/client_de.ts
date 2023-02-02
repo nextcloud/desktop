@@ -926,6 +926,33 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
         <translation>Einige Einstellungen wurden in neueren Versionen dieses Clients konfiguriert und verwenden Funktionen, die in dieser Version nicht verfügbar sind.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Die aktuelle Konfigurationsdatei wurde bereits auf &lt;i&gt;%2&lt;/i&gt; gesichert.</translation>
     </message>
     <message>
+        <location filename="../src/gui/application.cpp" line="176"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>newer</source>
+        <comment>newer software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>older</source>
+        <comment>older software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>ignoring</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>deleting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>Beenden</translation>
@@ -1048,7 +1075,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Die Datei kann nicht umbenannt werden, da eine Datei mit demselben Namen bereits auf dem Server existiert. Bitte wählen Sie einen anderen Namen.</translation>
+        <translation>Die Datei kann nicht umbenannt werden, da eine Datei mit selben Namen bereits auf dem Server existiert. Bitte einen anderen Namen wählen.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
@@ -1058,12 +1085,12 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>Sie haben nicht die Berechtigung, diese Datei umzubenennen. Bitte wenden Sie sich an den Autor der Datei, um sie umzubenennen.</translation>
+        <translation>Sie haben nicht die Berechtigung, diese Datei umzubenennen. Bitte wenden Sie sich zum Umbenennen der Datei an dereren Ersteller.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>Fehler beim Abrufen der Berechtigungen mit Fehler %1</translation>
+        <translation>Fehler beim Abrufen der Berechtigungen. Fehler %1</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
@@ -1091,7 +1118,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Die Datei konnte nicht synchronisiert werden, da diese einen Konflikt zwischen Groß- und Kleinschreibung mit einer vorhandenen Datei auf diesem System erzeugt.</translation>
+        <translation>Die Datei konnte nicht synchronisiert werden, da diese einen Konflikt bezüglich Groß- und Kleinschreibung mit einer vorhandenen Datei auf diesem System erzeugt.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
@@ -1106,7 +1133,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>Datei A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
@@ -1139,7 +1166,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>Datei B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>

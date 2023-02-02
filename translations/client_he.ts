@@ -922,6 +922,33 @@ This action will abort any currently running synchronization.</source>
         <translation type="unfinished"/>
     </message>
     <message>
+        <location filename="../src/gui/application.cpp" line="176"/>
+        <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>newer</source>
+        <comment>newer software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="182"/>
+        <source>older</source>
+        <comment>older software version</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>ignoring</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/gui/application.cpp" line="183"/>
+        <source>deleting</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../src/gui/application.cpp" line="187"/>
         <source>Quit</source>
         <translation>יציאה</translation>
@@ -4718,7 +4745,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="316"/>
         <location filename="../src/gui/tray/syncstatussummary.h" line="89"/>
         <source>All synced!</source>
-        <translation type="unfinished"/>
+        <translation>הכל מסונכרן!</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="147"/>
@@ -4781,7 +4808,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="182"/>
         <source>Open main dialog</source>
-        <translation type="unfinished"/>
+        <translation>פתח חלון ראשי</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="185"/>
@@ -4808,12 +4835,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/systray.cpp" line="189"/>
         <source>Exit %1</source>
-        <translation type="unfinished"/>
+        <translation>יציאה מ-%1</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="195"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>עצור סנכרונים</translation>
     </message>
     <message>
         <location filename="../src/gui/systray.cpp" line="201"/>
@@ -5652,7 +5679,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchInputContainer.qml" line="27"/>
         <source>Search files, messages, events …</source>
-        <translation type="unfinished"/>
+        <translation>חיפוש קבצים, הודעות, אירועים ...</translation>
     </message>
 </context>
 <context>
@@ -5921,7 +5948,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/Window.qml" line="254"/>
         <location filename="../src/gui/tray/Window.qml" line="389"/>
         <source>Pause sync for all</source>
-        <translation type="unfinished"/>
+        <translation>עצור סנכרונים</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/Window.qml" line="219"/>
