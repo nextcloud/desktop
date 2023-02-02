@@ -4,6 +4,186 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.7.0] - 2023-02-02
+
+### Added
+* Feature: syncjournaldb handle errors by @allexzander in https://github.com/nextcloud/desktop/pull/4819
+* Add a placeholder item for empty activity list by @claucambra in https://github.com/nextcloud/desktop/pull/4959
+* Configure a list of checks for clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/5004
+* Feature: VFS windows sharing and lock state by @allexzander in https://github.com/nextcloud/desktop/pull/4942
+* Add a 'Sync now' button to the sync status header in the tray window by @claucambra in https://github.com/nextcloud/desktop/pull/5018
+* Use new public API to open an edit locally URL by @mgallien in https://github.com/nextcloud/desktop/pull/5116
+* Add a new file details window, unify file activity and sharing by @claucambra in https://github.com/nextcloud/desktop/pull/4929
+* Add support cmake unity build by @tnixeu in https://github.com/nextcloud/desktop/pull/5109
+* Implement context menu entry "Leave this share" by @allexzander in https://github.com/nextcloud/desktop/pull/5081
+* Add end-to-end tests to our CI by @claucambra in https://github.com/nextcloud/desktop/pull/5124
+* Edit file locally restart sync by @allexzander in https://github.com/nextcloud/desktop/pull/5175
+* Add interactive NC Talk notifications on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5143
+* Add an "Encrypt" menu entry in file browser context menu for folders by @claucambra in https://github.com/nextcloud/desktop/pull/5263
+* Add a nix flake for easy building and dev environments  by @claucambra in https://github.com/nextcloud/desktop/pull/5007
+* Add an internal link share to the share dialog by @claucambra in https://github.com/nextcloud/desktop/pull/5131
+* Sets a fixed version for pixman when buildign desktop client via Craft by @mgallien in https://github.com/nextcloud/desktop/pull/5269
+* Remove obsolete names by @mgallien in https://github.com/nextcloud/desktop/pull/5271
+* Do not sync enc folders if e2ee is not setup by @allexzander in https://github.com/nextcloud/desktop/pull/5258
+* Move shellextensions to root installdir by @allexzander in https://github.com/nextcloud/desktop/pull/5295
+* Allow setting up an account with apppasword and folder via command-line arguments. For deployment. by @allexzander in https://github.com/nextcloud/desktop/pull/5296
+* Allow forceoverrideurl via command line by @allexzander in https://github.com/nextcloud/desktop/pull/5329
+* Add ability to disable E2EE by @claucambra in https://github.com/nextcloud/desktop/pull/5167
+* Sync with case clash names by @mgallien in https://github.com/nextcloud/desktop/pull/5232
+
+### Changed
+* Set UnifiedSearchResultNothingFound visibility less messily by @claucambra in https://github.com/nextcloud/desktop/pull/4751
+* Clean up QML type and singleton registration by @claucambra in https://github.com/nextcloud/desktop/pull/4817
+* Simplify activity list delegates by making them ItemDelegates, clean up by @claucambra in https://github.com/nextcloud/desktop/pull/4786
+* Improve activity list highlighting/keyboard item selection by @claucambra in https://github.com/nextcloud/desktop/pull/4781
+* Replace private API QZipWriter with KArchive by @claucambra in https://github.com/nextcloud/desktop/pull/4768
+* Makes Qt WebEngine optional only on macOS by @mgallien in https://github.com/nextcloud/desktop/pull/4875
+* Updated link to documentation by @BMerz in https://github.com/nextcloud/desktop/pull/4792
+* Accept valid lsColJob reply XML content types by @claucambra in https://github.com/nextcloud/desktop/pull/4919
+* Refactor ActivityListModel population mechanisms by @claucambra in https://github.com/nextcloud/desktop/pull/4736
+* Make account setup wizard's adjustWizardSize resize to current page size instead of largest wizard page by @claucambra in https://github.com/nextcloud/desktop/pull/4911
+* Deallocate call notification dialog objects when closed by @claucambra in https://github.com/nextcloud/desktop/pull/4939
+* Do not format text in QML components as HTML by @claucambra in https://github.com/nextcloud/desktop/pull/4944
+* Ensure strings in main window QML are presented as plain text and not HTML by @claucambra in https://github.com/nextcloud/desktop/pull/4972
+* Improve handling of file name clashes by @claucambra in https://github.com/nextcloud/desktop/pull/4970
+* Add a QSortFilterProxyModel-based SortedActivityListModel by @claucambra in https://github.com/nextcloud/desktop/pull/4933
+* Bring back .lnk files on Windows and always treat them as non-virtual files. by @allexzander in https://github.com/nextcloud/desktop/pull/4968
+* Ensure placeholder message in emoji picker wraps correctly by @claucambra in https://github.com/nextcloud/desktop/pull/4960
+* Make activity action button an actual button, clean up contents by @claucambra in https://github.com/nextcloud/desktop/pull/4784
+* Improve the error box QML component by @claucambra in https://github.com/nextcloud/desktop/pull/4976
+* Don't set up tray context menu on macOS, even if not building app bundle by @claucambra in https://github.com/nextcloud/desktop/pull/4988
+* CI: check clang tidy in ci by @mgallien in https://github.com/nextcloud/desktop/pull/4995
+* Check our code with clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/4999
+* Alway use constexpr for all text constants by @mgallien in https://github.com/nextcloud/desktop/pull/4996
+* Switch AppImage CI to latest tag: client-appimage-6 by @mgallien in https://github.com/nextcloud/desktop/pull/5003
+* Apply modernize-use-using via clang-tidy by @mgallien in https://github.com/nextcloud/desktop/pull/4993
+* Use [[nodiscard]] by @mgallien in https://github.com/nextcloud/desktop/pull/4992
+* Update client image by @camilasan in https://github.com/nextcloud/desktop/pull/5002
+* Check the format via some github action by @mgallien in https://github.com/nextcloud/desktop/pull/4991
+* Update after tx migrate by @tobiasKaminsky in https://github.com/nextcloud/desktop/pull/5019
+* Improve 'Handle local file editing' feature. Add loading popup. Add force sync before opening a file. by @allexzander in https://github.com/nextcloud/desktop/pull/4990
+* Do not ignore return value by @mgallien in https://github.com/nextcloud/desktop/pull/4998
+* Improve logs when adding sync errors in activity list of main dialog by @mgallien in https://github.com/nextcloud/desktop/pull/5032
+* Improve "pretty user name"-related strings, display in webflow credentials by @claucambra in https://github.com/nextcloud/desktop/pull/5013
+* Update CMake usage in README build instructions by @NeroBurner in https://github.com/nextcloud/desktop/pull/5086
+* Clean up methods in sync engine by @claucambra in https://github.com/nextcloud/desktop/pull/5071
+* Make Systray's void methods slots by @claucambra in https://github.com/nextcloud/desktop/pull/5042
+* Remove unneeded parameter from CleanupPollsJob constructor by @claucambra in https://github.com/nextcloud/desktop/pull/5070
+* Modernise and improve code in AccountManager by @claucambra in https://github.com/nextcloud/desktop/pull/5026
+* Validate and sanitise edit locally token and relpath before sending to server by @claucambra in https://github.com/nextcloud/desktop/pull/5093
+* Refactor FolderMan's "Edit Locally" capabilities as separate class by @claucambra in https://github.com/nextcloud/desktop/pull/5107
+* Modernise and improve code in AccountSettings by @claucambra in https://github.com/nextcloud/desktop/pull/5027
+* Remove unused internal link widget from old share dialog by @claucambra in https://github.com/nextcloud/desktop/pull/5123
+* Use separate variable for cfg file name in CMAKE. by @allexzander in https://github.com/nextcloud/desktop/pull/5136
+* Remove unused app pointer in CocoaInitializer by @claucambra in https://github.com/nextcloud/desktop/pull/5127
+* Do not use copy-assignment of QDialog. by @allexzander in https://github.com/nextcloud/desktop/pull/5148
+* Remove unused remotePath in User::processCompletedSyncItem by @claucambra in https://github.com/nextcloud/desktop/pull/5118
+* Properly escape a path when creating a test file during tests by @mgallien in https://github.com/nextcloud/desktop/pull/5151
+* Fully qualify types in signals and slots by @mgallien in https://github.com/nextcloud/desktop/pull/5088
+* Switch back to upstream craft by @mgallien in https://github.com/nextcloud/desktop/pull/5178
+* Modernize the Dolphin action plugin by @ivaradi in https://github.com/nextcloud/desktop/pull/5192
+* CI: do not modify configuration file during tests by @mgallien in https://github.com/nextcloud/desktop/pull/5200
+* cmake: Use FindPkgConfig's pkg_get_variable instead of custom macro by @marv in https://github.com/nextcloud/desktop/pull/5199
+* Clearly tell user that E2EE has been enabled for an account by @claucambra in https://github.com/nextcloud/desktop/pull/5164
+* Remove close/dismiss button from encryption message by @claucambra in https://github.com/nextcloud/desktop/pull/5163
+* Update macOS shell integration deployment targets by @claucambra in https://github.com/nextcloud/desktop/pull/5227
+* Differentiate between E2EE not being enabled at all vs. E2EE being enabled already through another device in account settings message by @claucambra in https://github.com/nextcloud/desktop/pull/5179
+* Ensure more QML text components are rendering things as plain text by @claucambra in https://github.com/nextcloud/desktop/pull/5231
+* Make use of plain text-enforcing qml labels by @claucambra in https://github.com/nextcloud/desktop/pull/5233
+* Format some QLabels as plain text by @claucambra in https://github.com/nextcloud/desktop/pull/5247
+* Do not create GUI from a random thread and show error on real error by @mgallien in https://github.com/nextcloud/desktop/pull/5253
+* Only show mnemonic request dialog when user explicitly wants to enable E2EE by @claucambra in https://github.com/nextcloud/desktop/pull/5181
+* Replace share settings popup with a page on a StackView by @claucambra in https://github.com/nextcloud/desktop/pull/5194
+* Show file details within the tray dialog, rather than in a separate dialog by @claucambra in https://github.com/nextcloud/desktop/pull/5139
+* Silence sync termination errors when running EditLocallyJob. by @allexzander in https://github.com/nextcloud/desktop/pull/5261
+* Remove unused HeaderBanner component by @claucambra in https://github.com/nextcloud/desktop/pull/5245
+* Use QFileInfo::exists where we are only creating a QFileInfo to check if file exists by @claucambra in https://github.com/nextcloud/desktop/pull/5291
+* Make correct use of Qt signal 'emit' keyword by @claucambra in https://github.com/nextcloud/desktop/pull/5287
+* Remove unused variables by @claucambra in https://github.com/nextcloud/desktop/pull/5290
+* Declare all QRegularExpressions statically by @claucambra in https://github.com/nextcloud/desktop/pull/5289
+* Improve backup dark mode palette for Windows by @claucambra in https://github.com/nextcloud/desktop/pull/5298
+* Replace now deprecated FSEventStreamScheduleWithRunLoop with FSEventStreamSetDispatchQueue by @claucambra in https://github.com/nextcloud/desktop/pull/5272
+* Drop dependency on Qt Quick Controls 1 by @Flowdalic in https://github.com/nextcloud/desktop/pull/5309
+* Update legal notice to 2023 by @claucambra in https://github.com/nextcloud/desktop/pull/5361
+* Don't try to lock folders when editing locally by @claucambra in https://github.com/nextcloud/desktop/pull/5317
+* Remove unused monochrome icons setting by @claucambra in https://github.com/nextcloud/desktop/pull/5366
+* Always unlock E2EE folders, even when network failure or crash. by @allexzander in https://github.com/nextcloud/desktop/pull/5370
+* Improve config upgrade warning dialog by @camilasan in https://github.com/nextcloud/desktop/pull/5384
+
+### Fixed
+* Fix wrong estimated time when doing sync. by @allexzander in https://github.com/nextcloud/desktop/pull/4902
+* Fix: selective sync abort error by @allexzander in https://github.com/nextcloud/desktop/pull/4903
+* Fix: onflict resolution when selecting folder by @allexzander in https://github.com/nextcloud/desktop/pull/4914
+* Fix fileactivitylistmodel QML registration by @claucambra in https://github.com/nextcloud/desktop/pull/4920
+* Fix menu bar height calculation on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/4917
+* Fix ActivityItem activityHover error by @claucambra in https://github.com/nextcloud/desktop/pull/4921
+* Fix add account window text clipping, enlarge text by @claucambra in https://github.com/nextcloud/desktop/pull/4910
+* Fix low-resolution file changed overlay icons in activities by @claucambra in https://github.com/nextcloud/desktop/pull/4930
+* Ensure that the file being processed has had its etag properly sanitised, log etag more by @claucambra in https://github.com/nextcloud/desktop/pull/4940
+* Fix two factor authentication notification by @camilasan in https://github.com/nextcloud/desktop/pull/4967
+* Fix 'Reply' primary property. by @camilasan in https://github.com/nextcloud/desktop/pull/4985
+* Fix sync progress bar colours in dark mode by @claucambra in https://github.com/nextcloud/desktop/pull/4986
+* Fix predefined status text formatting by @claucambra in https://github.com/nextcloud/desktop/pull/4987
+* Avoid possibly crashing static_cast by @mgallien in https://github.com/nextcloud/desktop/pull/4994
+* Fix link shares default expire date being enforced as maximum expire date even when maximum date enforcement is disabled on the server by @claucambra in https://github.com/nextcloud/desktop/pull/4982
+* Fix files not unlocking after lock time expired by @claucambra in https://github.com/nextcloud/desktop/pull/4962
+* Command-line client. Do not trust SSL certificates by default, unless '--trust' option is set. by @allexzander in https://github.com/nextcloud/desktop/pull/5022
+* Fix files lock fail metadata by @mgallien in https://github.com/nextcloud/desktop/pull/5024
+* Fix invisible user status selector button not being checked when user is in Offline mode by @claucambra in https://github.com/nextcloud/desktop/pull/5012
+* Use correct version copmparison on NSIS updater: fix update from rc by @mgallien in https://github.com/nextcloud/desktop/pull/4979
+* Check token for edit locally requests by @mgallien in https://github.com/nextcloud/desktop/pull/5039
+* Fix the dismiss button: display it whenever possible. by @camilasan in https://github.com/nextcloud/desktop/pull/4989
+* Fix account not found when doing local file editing. by @allexzander in https://github.com/nextcloud/desktop/pull/5040
+* Fix call notification dialog buttons by @claucambra in https://github.com/nextcloud/desktop/pull/5074
+* Validate certificate for E2EE against private key by @mgallien in https://github.com/nextcloud/desktop/pull/4949
+* Emit missing signal to update folder sync status icon by @mgallien in https://github.com/nextcloud/desktop/pull/5087
+* Fix macOS autoupdater settings by @claucambra in https://github.com/nextcloud/desktop/pull/5102
+* Fix compatibility with newer python3-nautilus by @nteodosio in https://github.com/nextcloud/desktop/pull/5105
+* Only show Sync Now button if account is connected by @claucambra in https://github.com/nextcloud/desktop/pull/5097
+* E2EE. Do not generate keypair without user request. by @allexzander in https://github.com/nextcloud/desktop/pull/5067
+* Fix incorrect current user index when adding or removing a user account. Also fix incorrect user avatar lookup by id. by @allexzander in https://github.com/nextcloud/desktop/pull/5092
+* Fix: delete folders during propagation even when propagation has errors by @mgallien in https://github.com/nextcloud/desktop/pull/5104
+* Ensure 'Sync now' button doesn't have its text elided by @claucambra in https://github.com/nextcloud/desktop/pull/5129
+* Fix share delegate button icon colors in dark mode by @claucambra in https://github.com/nextcloud/desktop/pull/5132
+* Make user status selector modal, show user header by @claucambra in https://github.com/nextcloud/desktop/pull/5145
+* Fix typo of connector by @hefee in https://github.com/nextcloud/desktop/pull/5157
+* Remove reference to inexistent property in NCCustomButton by @claucambra in https://github.com/nextcloud/desktop/pull/5173
+* Fix ActivityList delegate warnings by @claucambra in https://github.com/nextcloud/desktop/pull/5172
+* Ensure forcing a folder to be synced unpauses syncing on said folder by @claucambra in https://github.com/nextcloud/desktop/pull/5152
+* Fix renaming of folders with a deep hierarchy inside them by @mgallien in https://github.com/nextcloud/desktop/pull/5182
+* Fix instances of: c++11 range-loop might detach Qt container warnings by @mgallien in https://github.com/nextcloud/desktop/pull/5089
+* Fix tray window margins, stop cutting into window border by @claucambra in https://github.com/nextcloud/desktop/pull/5202
+* Fix bad custom button alignments, sizings, etc. by @claucambra in https://github.com/nextcloud/desktop/pull/5189
+* CI: do not override configuration file by @mgallien in https://github.com/nextcloud/desktop/pull/5206
+* Fix CfApiShellExtensionsIPCTest by @allexzander in https://github.com/nextcloud/desktop/pull/5209
+* l10n: Fixed grammar by @rakekniven in https://github.com/nextcloud/desktop/pull/5220
+* Prevent bad encrypting of folder if E2EE has not been correctly set up by @claucambra in https://github.com/nextcloud/desktop/pull/5223
+* Case clash conflicts should not terminate sync by @mgallien in https://github.com/nextcloud/desktop/pull/5224
+* l10n: Correct spelling by @Valdnet in https://github.com/nextcloud/desktop/pull/5221
+* Fix CI errors for Edit Locally. by @allexzander in https://github.com/nextcloud/desktop/pull/5241
+* Lock file when editing locally by @claucambra in https://github.com/nextcloud/desktop/pull/5226
+* Fix BasicComboBox internal layout by @claucambra in https://github.com/nextcloud/desktop/pull/5216
+* Explicitly size and align user status selector text input to avoid bugs with alternate QtQuick styles by @claucambra in https://github.com/nextcloud/desktop/pull/5214
+* So not use bulk upload for e2ee files by @mgallien in https://github.com/nextcloud/desktop/pull/5256
+* Avoid the Get-Task-Allow Entitlement (macOS Notarization) by @claucambra in https://github.com/nextcloud/desktop/pull/5274
+* Fix migration from old settings configuration files by @mgallien in https://github.com/nextcloud/desktop/pull/5141
+* l10n: Remove space by @Valdnet in https://github.com/nextcloud/desktop/pull/5297
+* Update file's metadata in the local database when the etag changes while file remains unchanged. Fix subsequent conflict when locking and unlocking. by @allexzander in https://github.com/nextcloud/desktop/pull/5293
+* Fix warnings on QPROPERTY-s by @claucambra in https://github.com/nextcloud/desktop/pull/5286
+* Fix full-text search results not being opened in browser by @claucambra in https://github.com/nextcloud/desktop/pull/5279
+* Fix bad string for translation. by @allexzander in https://github.com/nextcloud/desktop/pull/5358
+* Fix migration from legacy client when override server url is set by @claucambra in https://github.com/nextcloud/desktop/pull/5322
+* Fix fetch more unified search result item not being clickable by @claucambra in https://github.com/nextcloud/desktop/pull/5266
+* Edit locally. Do not lock if locking is disabled on the server. by @allexzander in https://github.com/nextcloud/desktop/pull/5371
+* Revert "Merge pull request #5366 from nextcloud/bugfix/remove-mono-icons-setting" by @claucambra in https://github.com/nextcloud/desktop/pull/5372
+* Open calendar notifications in the browser. by @camilasan in https://github.com/nextcloud/desktop/pull/4684
+* Migrate old configs by @camilasan in https://github.com/nextcloud/desktop/pull/5362
+* Fix displaying of file details button for local syncfileitem activities by @claucambra in https://github.com/nextcloud/desktop/pull/5379
+* Fix displaying of file details button for local syncfileitem activities by @claucambra in https://github.com/nextcloud/desktop/pull/5379
+
+### Security
+* Validate and sanitise edit locally token and relpath before sending to server by @claucambra in https://github.com/nextcloud/desktop/pull/5093
+
 ## [3.6.6] - 2023-01-19
 
 ### Fixed
@@ -369,6 +549,7 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.7.0]: https://github.com/nextcloud/desktop/compare/v3.6.6...v3.7.0
 [3.6.6]: https://github.com/nextcloud/desktop/compare/v3.6.5...v3.6.6
 [3.6.5]: https://github.com/nextcloud/desktop/compare/v3.6.4...v3.6.5
 [3.6.4]: https://github.com/nextcloud/desktop/compare/v3.6.3...v3.6.4
