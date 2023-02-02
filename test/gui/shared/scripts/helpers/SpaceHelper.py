@@ -171,3 +171,16 @@ def add_user_to_space(user, space_name, role):
             % (user, space_name, response.status_code)
             + response.text
         )
+
+
+def get_file_content(space_name, file_name, user=None):
+    space_id = get_space_id(space_name, user)
+    url = path.join(get_dav_endpint(), space_id, file_name)
+    response = send_request(url, "GET", as_user=user)
+    if response.status_code != 200:
+        raise Exception(
+            "Getting file '%s' from space '%s' failed with %s\n"
+            % (file_name, space_name, response.status_code)
+            + response.text
+        )
+    return response.text
