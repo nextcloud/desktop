@@ -109,7 +109,7 @@ class NextcloudFilesDatabaseManager : NSObject {
     }
 
     private func processItemMetadatasToDelete(databaseToWriteTo: Realm,
-                                              existingMetadatas: [NextcloudItemMetadataTable],
+                                              existingMetadatas: Results<NextcloudItemMetadataTable>,
                                               updatedMetadatas: [NextcloudItemMetadataTable]) {
 
         assert(databaseToWriteTo.isInWriteTransaction)
@@ -125,12 +125,14 @@ class NextcloudFilesDatabaseManager : NSObject {
                     etag: %@
                   """
                   , metadataToDelete.ocId, metadataToDelete.fileName, metadataToDelete.etag)
-            databaseToWriteTo.delete(metadataToDelete)
+
+            // Can't pass copies, we need the originals from the database
+            databaseToWriteTo.delete(ncDatabase().objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadataToDelete.ocId))
         }
     }
 
     private func processItemMetadatasToUpdate(databaseToWriteTo: Realm,
-                                              existingMetadatas: [NextcloudItemMetadataTable],
+                                              existingMetadatas: Results<NextcloudItemMetadataTable>,
                                               updatedMetadatas: [NextcloudItemMetadataTable]) {
 
         assert(databaseToWriteTo.isInWriteTransaction)
@@ -170,11 +172,11 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             try database.write {
-                let existingMetadatas = itemMetadatas(account: account, serverUrl: serverUrl, status: .normal)
+                let existingMetadatas = ncDatabase().objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@ AND status == %@", account, serverUrl, NextcloudItemMetadataTable.Status.normal.rawValue)
+
                 processItemMetadatasToDelete(databaseToWriteTo: database,
                                              existingMetadatas: existingMetadatas,
                                              updatedMetadatas: updatedMetadatas)
-
 
                 processItemMetadatasToUpdate(databaseToWriteTo: database,
                                              existingMetadatas: existingMetadatas,
@@ -212,7 +214,7 @@ class NextcloudFilesDatabaseManager : NSObject {
     }
 
     private func processDirectoryMetadatasToDelete(databaseToWriteTo: Realm,
-                                           existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable],
+                                           existingDirectoryMetadatas: Results<NextcloudDirectoryMetadataTable>,
                                            updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
 
         assert(databaseToWriteTo.isInWriteTransaction)
@@ -228,12 +230,14 @@ class NextcloudFilesDatabaseManager : NSObject {
                     etag: %@
                   """
                   , metadataToDelete.ocId, metadataToDelete.serverUrl, metadataToDelete.etag)
-            databaseToWriteTo.delete(metadataToDelete)
+
+            // Can't pass copies, we need the originals from the database
+            databaseToWriteTo.delete(databaseToWriteTo.objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", metadataToDelete.ocId))
         }
     }
 
     private func processDirectoryMetadatasToUpdate(databaseToWriteTo: Realm,
-                                           existingDirectoryMetadatas: [NextcloudDirectoryMetadataTable],
+                                           existingDirectoryMetadatas: Results<NextcloudDirectoryMetadataTable>,
                                            updatedDirectoryMetadatas: [NextcloudDirectoryMetadataTable]) {
 
         assert(databaseToWriteTo.isInWriteTransaction)
@@ -272,7 +276,8 @@ class NextcloudFilesDatabaseManager : NSObject {
 
         do {
             try database.write {
-                let existingDirectoryMetadatas = directoryMetadatas(account: account, parentDirectoryServerUrl: parentDirectoryServerUrl)
+                let existingDirectoryMetadatas = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND parentDirectoryServerUrl == %@", account, parentDirectoryServerUrl)
+
                 processDirectoryMetadatasToDelete(databaseToWriteTo: database,
                                                   existingDirectoryMetadatas: existingDirectoryMetadatas,
                                                   updatedDirectoryMetadatas: updatedDirectoryMetadatas)
