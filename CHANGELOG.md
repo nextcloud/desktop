@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.2] - 2022-11-10
+
+### Added
+* Validate and sanitise edit locally token and relpath before sending to server by @claucambra in https://github.com/nextcloud/desktop/pull/5093
+
+### Changed
+* Refactor FolderMan's "Edit Locally" capabilities as separate class by @claucambra in https://github.com/nextcloud/desktop/pull/5107
+* Use new public API to open an edit locally URL by @mgallien in https://github.com/nextcloud/desktop/pull/5116
+* Use separate variable for cfg file name in CMAKE  by @allexzander in https://github.com/nextcloud/desktop/pull/5136
+* Do not use copy-assignment of QDialog by @allexzander in https://github.com/nextcloud/desktop/pull/5148
+
+### Fixed
+* Fix call notification dialog buttons by @claucambra in https://github.com/nextcloud/desktop/pull/5074
+* Emit missing signal to update folder sync status icon by @mgallien in https://github.com/nextcloud/desktop/pull/5087
+* Fix macOS autoupdater settings by @claucambra in https://github.com/nextcloud/desktop/pull/5102
+* Fix compatibility with newer python3-nautilus by @nteodosio in https://github.com/nextcloud/desktop/pull/5105
+* Fix stable-3.6 compile on macOS by @claucambra in https://github.com/nextcloud/desktop/pull/5154
+* Fix bad backport of CustomButton changes in Stable-3.6 by @claucambra in https://github.com/nextcloud/desktop/pull/5155
+* E2EE: Do not generate keypair without user request by @allexzander in https://github.com/nextcloud/desktop/pull/5067
+* Fix incorrect current user index when adding or removing a user account by @allexzander in https://github.com/nextcloud/desktop/pull/5092
+* Properly escape a path when creating a test file during tests by @mgallien in https://github.com/nextcloud/desktop/pull/5151
+
 ## [3.6.1] - 2022-10-18
 
 ### Added
@@ -299,6 +321,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.6.2]: https://github.com/nextcloud/desktop/compare/v3.6.1...v3.6.2
 [3.6.1]: https://github.com/nextcloud/desktop/compare/v3.6.0...v3.6.1
 [3.6.0]: https://github.com/nextcloud/desktop/compare/v3.6.0-rc1...v3.6.0
 [3.6.0-rc1]: https://github.com/nextcloud/desktop/compare/v3.5.0...v3.6.0-rc1
