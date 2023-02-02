@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.6.6] - 2023-01-19
+
+### Fixed
+* Revert "Fix(l10n): capital_abcd Update translations from Transifex" by @allexzander in https://github.com/nextcloud/desktop/commit/33f3975529c0c5028c840a4c5ada037d92e12253
+
 ## [3.6.5] - 2023-01-19
 
 ### Added
@@ -364,6 +369,7 @@ https://github.com/nextcloud/desktop/pull/5226
 * Move CFAPI shell extensions variables to root CMakeLists. by @allexzander in https://github.com/nextcloud/desktop/pull/4810
 
 ## [ChangeLog - Legacy][legacy]
+[3.6.6]: https://github.com/nextcloud/desktop/compare/v3.6.5...v3.6.6
 [3.6.5]: https://github.com/nextcloud/desktop/compare/v3.6.4...v3.6.5
 [3.6.4]: https://github.com/nextcloud/desktop/compare/v3.6.3...v3.6.4
 [3.6.3]: https://github.com/nextcloud/desktop/compare/v3.6.2...v3.6.3
