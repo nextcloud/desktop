@@ -169,7 +169,12 @@ FolderMan::FolderMan(QObject *parent)
         this, &FolderMan::slotRemoveFoldersForAccount);
 
     connect(_lockWatcher.data(), &LockWatcher::fileUnlocked,
-        this, &FolderMan::slotWatchedFileUnlocked);
+        this, [this](const QString &path, FileSystem::LockMode mode) {
+            if (Folder *f = folderForPath(path)) {
+                // Treat this equivalently to the file being reported by the file watcher
+                f->slotWatchedPathChanged(path, Folder::ChangeReason::UnLock);
+            }
+        });
 }
 
 FolderMan *FolderMan::instance()
@@ -767,14 +772,6 @@ void FolderMan::slotServerVersionChanged(Account *account)
                 f->setSyncPaused(true);
             }
         }
-    }
-}
-
-void FolderMan::slotWatchedFileUnlocked(const QString &path)
-{
-    if (Folder *f = folderForPath(path)) {
-        // Treat this equivalently to the file being reported by the file watcher
-        f->slotWatchedPathChanged(path, Folder::ChangeReason::UnLock);
     }
 }
 

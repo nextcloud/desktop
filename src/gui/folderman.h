@@ -321,14 +321,6 @@ private slots:
     void slotServerVersionChanged(Account *account);
 
     /**
-     * A file whose locks were being monitored has become unlocked.
-     *
-     * This schedules the folder for synchronization that contains
-     * the file with the given path.
-     */
-    void slotWatchedFileUnlocked(const QString &path);
-
-    /**
      * Schedules folders whose time to sync has come.
      *
      * Either because a long time has passed since the last sync or

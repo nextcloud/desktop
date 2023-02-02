@@ -24,6 +24,7 @@
 #include <QTimer>
 
 #include <chrono>
+#include <unordered_set>
 
 namespace OCC {
 
@@ -58,18 +59,28 @@ public:
     void setCheckInterval(std::chrono::milliseconds interval);
 
     /** Whether the path is being watched for lock-changes */
-    bool contains(const QString &path);
+    bool contains(const QString &path, OCC::FileSystem::LockMode mode) const;
 
 signals:
     /** Emitted when one of the watched files is no longer
      *  being locked. */
-    void fileUnlocked(const QString &path);
+    void fileUnlocked(const QString &path, OCC::FileSystem::LockMode mode);
 
 private slots:
     void checkFiles();
 
 private:
-    QMap<QString, FileSystem::LockMode> _watchedPaths;
+    using LockKey = std::pair<QString, FileSystem::LockMode>;
+
+    struct HashLockKey
+    {
+        size_t operator()(const LockKey &k) const
+        {
+            return std::hash<QString> {}(k.first) ^ std::hash<int> {}(static_cast<int>(k.second));
+        }
+    };
+
+    std::unordered_set<LockKey, HashLockKey> _watchedPaths;
     QTimer _timer;
 };
 }

@@ -40,8 +40,8 @@ LockWatcher::LockWatcher(QObject *parent)
 
 void LockWatcher::addFile(const QString &path, FileSystem::LockMode mode)
 {
-    qCInfo(lcLockWatcher) << "Watching for lock of" << path << "being released";
-    _watchedPaths.insert(path, mode);
+    qCInfo(lcLockWatcher) << "Watching for lock of" << path << mode << "being released";
+    _watchedPaths.insert({ path, mode });
 }
 
 void LockWatcher::setCheckInterval(std::chrono::milliseconds interval)
@@ -49,24 +49,24 @@ void LockWatcher::setCheckInterval(std::chrono::milliseconds interval)
     _timer.start(interval.count());
 }
 
-bool LockWatcher::contains(const QString &path)
+bool LockWatcher::contains(const QString &path, OCC::FileSystem::LockMode mode) const
 {
-    return _watchedPaths.contains(path);
+    return _watchedPaths.find({ path, mode }) != _watchedPaths.cend();
 }
 
 void LockWatcher::checkFiles()
 {
     // copy as emit fileUnlocked might trigger a new insert
     const auto watchedPathsCopy = _watchedPaths;
-    QSet<QString> unlocked;
-    for (auto it = watchedPathsCopy.cbegin(); it != watchedPathsCopy.cend(); ++it) {
-        if (!FileSystem::isFileLocked(it.key(), it.value())) {
-            qCInfo(lcLockWatcher) << "Lock of" << it.key() << "was released";
-            emit fileUnlocked(it.key());
-            unlocked.insert(it.key());
+    decltype(_watchedPaths) unlocked;
+    for (const auto &p : watchedPathsCopy) {
+        if (!FileSystem::isFileLocked(p.first, p.second)) {
+            qCInfo(lcLockWatcher) << "Lock of" << p.first << p.second << "was released";
+            emit fileUnlocked(p.first, p.second);
+            unlocked.insert(p);
         }
     }
     for (const auto &removed : qAsConst(unlocked)) {
-        _watchedPaths.remove(removed);
+        _watchedPaths.erase(removed);
     }
 }

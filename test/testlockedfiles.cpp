@@ -83,7 +83,7 @@ private slots:
 
         QVERIFY(!FileSystem::isFileLocked(tmpFile, FileSystem::LockMode::Shared));
         watcher.addFile(tmpFile, FileSystem::LockMode::Shared);
-        QVERIFY(watcher.contains(tmpFile));
+        QVERIFY(watcher.contains(tmpFile, FileSystem::LockMode::Shared));
 
         QEventLoop loop;
         QTimer::singleShot(120ms, &loop, [&] { loop.exit(); });
@@ -91,7 +91,7 @@ private slots:
 
         QCOMPARE(count, 1);
         QCOMPARE(file, tmpFile);
-        QVERIFY(!watcher.contains(tmpFile));
+        QVERIFY(!watcher.contains(tmpFile, FileSystem::LockMode::Shared));
 
 #ifdef Q_OS_WIN
         auto h = makeHandle(tmpFile, 0);
@@ -105,7 +105,7 @@ private slots:
 
         QCOMPARE(count, 0);
         QVERIFY(file.isEmpty());
-        QVERIFY(watcher.contains(tmpFile));
+        QVERIFY(watcher.contains(tmpFile, FileSystem::LockMode::Shared));
 
         CloseHandle(h);
         QVERIFY(!FileSystem::isFileLocked(tmpFile, FileSystem::LockMode::Shared));
@@ -115,7 +115,7 @@ private slots:
 
         QCOMPARE(count, 1);
         QCOMPARE(file, tmpFile);
-        QVERIFY(!watcher.contains(tmpFile));
+        QVERIFY(!watcher.contains(tmpFile, FileSystem::LockMode::Shared));
 #endif
         QVERIFY(tmp.remove());
     }
