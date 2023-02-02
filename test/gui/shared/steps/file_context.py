@@ -8,9 +8,15 @@ import shutil
 from pageObjects.AccountSetting import AccountSetting
 
 from helpers.SetupClientHelper import getResourcePath
-from helpers.FilesHelper import buildConflictedRegex, sanitizePath
 from helpers.SyncHelper import waitForClientToBeReady
 from helpers.ConfigHelper import get_config
+from helpers.FilesHelper import (
+    buildConflictedRegex,
+    sanitizePath,
+    can_read,
+    can_write,
+    read_file_content,
+)
 
 
 def folderExists(folderPath, timeout=1000):
@@ -271,3 +277,22 @@ def step(context, username, resourceType, source, destination):
         destination = ""
     destination_dir = getResourcePath(destination, username)
     shutil.move(source_dir, destination_dir)
+
+
+@Then('user "|any|" should be able to open the file "|any|" on the file system')
+def step(context, user, file_name):
+    file_path = getResourcePath(file_name, user)
+    test.compare(can_read(file_path), True, "File should be readable")
+
+
+@Then('as "|any|" the file "|any|" should have content "|any|" on the file system')
+def step(context, user, file_name, content):
+    file_path = getResourcePath(file_name, user)
+    file_content = read_file_content(file_path)
+    test.compare(file_content, content, "Comparing file content")
+
+
+@Then('user "|any|" should not be able to edit the file "|any|" on the file system')
+def step(context, user, file_name):
+    file_path = getResourcePath(file_name, user)
+    test.compare(not can_write(file_path), True, "File should not be writable")
