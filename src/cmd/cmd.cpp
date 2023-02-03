@@ -137,8 +137,6 @@ class HttpCredentialsText : public HttpCredentials
 public:
     HttpCredentialsText(const QString &user, const QString &password)
         : HttpCredentials(user, password)
-        , // FIXME: not working with client certs yet (qknight)
-        _sslTrusted(false)
     {
     }
 
@@ -161,7 +159,8 @@ public:
     }
 
 private:
-    bool _sslTrusted;
+    // FIXME: not working with client certs yet (qknight)
+    bool _sslTrusted{false};
 };
 #endif /* TOKEN_AUTH_ONLY */
 
