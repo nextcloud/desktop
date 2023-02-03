@@ -36,7 +36,7 @@ public:
     ~FolderWatcherPrivate();
 
     void startWatching();
-    void doNotifyParent(const QStringList &);
+    void doNotifyParent(const QSet<QString> &);
 
     /// On OSX the watcher is ready when the ctor finished.
     constexpr bool isReady() const { return true; }

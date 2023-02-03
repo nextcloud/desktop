@@ -15,17 +15,17 @@
 #ifndef MIRALL_FOLDERWATCHER_H
 #define MIRALL_FOLDERWATCHER_H
 
+#include <QElapsedTimer>
+#include <QHash>
 #include <QList>
 #include <QLoggingCategory>
 #include <QObject>
-#include <QString>
-#include <QStringList>
-#include <QElapsedTimer>
-#include <QHash>
 #include <QScopedPointer>
 #include <QSet>
+#include <QString>
+#include <QStringList>
+#include <QTimer>
 
-class QTimer;
 
 namespace OCC {
 
@@ -58,7 +58,7 @@ public:
     void init(const QString &root);
 
     /* Check if the path is ignored. */
-    bool pathIsIgnored(const QString &path);
+    bool pathIsIgnored(const QString &path) const;
 
     /**
      * Returns false if the folder watcher can't be trusted to capture all
@@ -83,7 +83,7 @@ public:
 signals:
     /** Emitted when one of the watched directories or one
      *  of the contained files is changed. */
-    void pathChanged(const QString &path);
+    void pathChanged(const QSet<QString> &path);
 
     /**
      * Emitted if some notifications were lost.
@@ -103,19 +103,15 @@ signals:
 
 protected slots:
     // called from the implementations to indicate a change in path
-    void changeDetected(const QString &path);
-    void changeDetected(const QStringList &paths);
+    void changeDetected(const QSet<QString> &paths);
 
 private slots:
     void startNotificationTestWhenReady();
 
-protected:
-    QHash<QString, int> _pendingPathes;
-
 private:
     QScopedPointer<FolderWatcherPrivate> _d;
-    QElapsedTimer _timer;
-    QSet<QString> _lastPaths;
+    QTimer _timer;
+    QSet<QString> _changeSet;
     Folder *_folder;
     bool _isReliable = true;
 

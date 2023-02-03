@@ -70,7 +70,7 @@ private:
  *   (_timeScheduler and slotScheduleFolderByTime())
  *
  * - A folder watcher receives a notification about a file change
- *   (_folderWatchers and Folder::slotWatchedPathChanged())
+ *   (_folderWatchers and Folder::slotWatchedPathsChanged())
  *
  * - The folder etag on the server has changed
  *   (_etagPollTimer)

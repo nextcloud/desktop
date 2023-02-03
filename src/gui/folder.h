@@ -426,7 +426,7 @@ public slots:
        * changes. Needs to check whether this change should trigger a new
        * sync run to be scheduled.
        */
-    void slotWatchedPathChanged(const QString &path, ChangeReason reason);
+    void slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason reason);
 
     /**
      * Mark a virtual file as being requested for download, and start a sync.
@@ -579,7 +579,7 @@ private:
     /**
      * Watches this folder's local directory for changes.
      *
-     * Created by registerFolderWatcher(), triggers slotWatchedPathChanged()
+     * Created by registerFolderWatcher(), triggers slotWatchedPathsChanged()
      */
     QScopedPointer<FolderWatcher> _folderWatcher;
 

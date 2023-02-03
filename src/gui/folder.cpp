@@ -689,39 +689,40 @@ int Folder::slotWipeErrorBlacklist()
     return _journal.wipeErrorBlacklist();
 }
 
-void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
+void Folder::slotWatchedPathsChanged(const QSet<QString> &paths, ChangeReason reason)
 {
     Q_ASSERT(isReady());
-    if (!FileSystem::isChildPathOf(path, this->path())) {
-        qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
-        return;
-    }
+    for (const auto &path : paths) {
+        if (!FileSystem::isChildPathOf(path, this->path())) {
+            qCDebug(lcFolder) << "Changed path is not contained in folder, ignoring:" << path;
+            return;
+        }
 
-    const QString relativePath = path.mid(this->path().size());
-    if (reason == ChangeReason::UnLock) {
-        journalDb()->wipeErrorBlacklistEntry(relativePath, SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
+        const QString relativePath = path.mid(this->path().size());
+        if (reason == ChangeReason::UnLock) {
+            journalDb()->wipeErrorBlacklistEntry(relativePath, SyncJournalErrorBlacklistRecord::Category::LocalSoftError);
 
-        {
-            // horrible hack to compensate that we don't handle folder deletes on a per file basis
-            int index = 0;
-            QString p = relativePath;
-            while ((index = p.lastIndexOf(QLatin1Char('/'))) != -1) {
-                p = p.left(index);
-                const auto rec = journalDb()->errorBlacklistEntry(p);
-                if (rec.isValid()) {
-                    if (rec._errorCategory == SyncJournalErrorBlacklistRecord::Category::LocalSoftError) {
-                        journalDb()->wipeErrorBlacklistEntry(p);
+            {
+                // horrible hack to compensate that we don't handle folder deletes on a per file basis
+                int index = 0;
+                QString p = relativePath;
+                while ((index = p.lastIndexOf(QLatin1Char('/'))) != -1) {
+                    p = p.left(index);
+                    const auto rec = journalDb()->errorBlacklistEntry(p);
+                    if (rec.isValid()) {
+                        if (rec._errorCategory == SyncJournalErrorBlacklistRecord::Category::LocalSoftError) {
+                            journalDb()->wipeErrorBlacklistEntry(p);
+                        }
                     }
                 }
             }
         }
-    }
 
-    // Add to list of locally modified paths
-    //
-    // We do this before checking for our own sync-related changes to make
-    // extra sure to not miss relevant changes.
-    _localDiscoveryTracker->addTouchedPath(relativePath);
+        // Add to list of locally modified paths
+        //
+        // We do this before checking for our own sync-related changes to make
+        // extra sure to not miss relevant changes.
+        _localDiscoveryTracker->addTouchedPath(relativePath);
 
 // The folder watcher fires a lot of bogus notifications during
 // a sync operation, both for actual user files and the database
@@ -731,43 +732,43 @@ void Folder::slotWatchedPathChanged(const QString &path, ChangeReason reason)
 // On OSX the folder watcher does not report changes done by our
 // own process. Therefore nothing needs to be done here!
 #else
-    // Use the path to figure out whether it was our own change
-    if (_engine->wasFileTouched(path)) {
-        qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
-        return;
-    }
+        // Use the path to figure out whether it was our own change
+        if (_engine->wasFileTouched(path)) {
+            qCDebug(lcFolder) << "Changed path was touched by SyncEngine, ignoring:" << path;
+            return;
+        }
 #endif
 
 
-    SyncJournalFileRecord record;
-    _journal.getFileRecord(relativePath.toUtf8(), &record);
-    if (reason != ChangeReason::UnLock) {
-        // Check that the mtime/size actually changed or there was
-        // an attribute change (pin state) that caused the notification
-        bool spurious = false;
-        if (record.isValid()
-            && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
-            spurious = true;
+        SyncJournalFileRecord record;
+        _journal.getFileRecord(relativePath.toUtf8(), &record);
+        if (reason != ChangeReason::UnLock) {
+            // Check that the mtime/size actually changed or there was
+            // an attribute change (pin state) that caused the notification
+            bool spurious = false;
+            if (record.isValid() && !FileSystem::fileChanged(path, record._fileSize, record._modtime)) {
+                spurious = true;
 
-            if (auto pinState = _vfs->pinState(relativePath)) {
-                if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
-                    spurious = false;
-                if (*pinState == PinState::OnlineOnly && record.isFile())
-                    spurious = false;
+                if (auto pinState = _vfs->pinState(relativePath)) {
+                    if (*pinState == PinState::AlwaysLocal && record.isVirtualFile())
+                        spurious = false;
+                    if (*pinState == PinState::OnlineOnly && record.isFile())
+                        spurious = false;
+                }
+            }
+            if (spurious) {
+                qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
+                return; // probably a spurious notification
             }
         }
-        if (spurious) {
-            qCInfo(lcFolder) << "Ignoring spurious notification for file" << relativePath;
-            return; // probably a spurious notification
-        }
+        warnOnNewExcludedItem(record, relativePath);
+
+        emit watchedFileChangedExternally(path);
+
+        // Also schedule this folder for a sync, but only after some delay:
+        // The sync will not upload files that were changed too recently.
+        scheduleThisFolderSoon();
     }
-    warnOnNewExcludedItem(record, relativePath);
-
-    emit watchedFileChangedExternally(path);
-
-    // Also schedule this folder for a sync, but only after some delay:
-    // The sync will not upload files that were changed too recently.
-    scheduleThisFolderSoon();
 }
 
 void Folder::implicitlyHydrateFile(const QString &relativepath)
@@ -1319,8 +1320,8 @@ void Folder::registerFolderWatcher()
         return;
 
     _folderWatcher.reset(new FolderWatcher(this));
-    connect(_folderWatcher.data(), &FolderWatcher::pathChanged,
-        this, [this](const QString &path) { slotWatchedPathChanged(path, Folder::ChangeReason::Other); });
+    connect(_folderWatcher.data(), &FolderWatcher::pathChanged, this,
+        [this](const QSet<QString> &paths) { slotWatchedPathsChanged(paths, Folder::ChangeReason::Other); });
     connect(_folderWatcher.data(), &FolderWatcher::lostChanges,
         this, &Folder::slotNextSyncFullLocalDiscovery);
     connect(_folderWatcher.data(), &FolderWatcher::becameUnreliable,

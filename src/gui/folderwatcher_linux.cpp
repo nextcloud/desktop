@@ -153,6 +153,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         }
     }
 
+    QSet<QString> paths;
     // iterate over events in buffer
     struct inotify_event *event = nullptr;
     for (size_t bytePosition = 0; // start at the beginning of the buffer
@@ -181,7 +182,7 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         }
 
         const QString p = _watchToPath[event->wd] + QLatin1Char('/') + QString::fromUtf8(fileName);
-        _parent->changeDetected(p);
+        paths.insert(p);
 
         if ((event->mask & (IN_MOVED_TO | IN_CREATE))
             && QFileInfo(p).isDir()
@@ -191,6 +192,9 @@ void FolderWatcherPrivate::slotReceivedNotification(int fd)
         if (event->mask & (IN_MOVED_FROM | IN_DELETE)) {
             removeFoldersBelow(p);
         }
+    }
+    if (!paths.isEmpty()) {
+        _parent->changeDetected(paths);
     }
 }
 

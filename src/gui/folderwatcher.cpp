@@ -37,6 +37,10 @@
 
 using namespace std::chrono_literals;
 
+namespace {
+constexpr auto notificationTimeoutC = 1s;
+}
+
 namespace OCC {
 
 Q_LOGGING_CATEGORY(lcFolderWatcher, "gui.folderwatcher", QtInfoMsg)
@@ -45,6 +49,27 @@ FolderWatcher::FolderWatcher(Folder *folder)
     : QObject(folder)
     , _folder(folder)
 {
+    _timer.setInterval(notificationTimeoutC);
+    connect(&_timer, &QTimer::timeout, this, [this] {
+        auto paths = std::move(_changeSet);
+        // ------- handle ignores:
+        auto it = paths.begin();
+        while (it != paths.cend()) {
+            // we cause a file change from time to time to check whether the folder watcher works as expected
+            if (!_testNotificationPath.isEmpty() && Utility::fileNamesEqual(*it, _testNotificationPath)) {
+                _testNotificationPath.clear();
+            }
+            if (pathIsIgnored(*it)) {
+                it = paths.erase(it);
+            } else {
+                ++it;
+            }
+        }
+        if (!paths.isEmpty()) {
+            qCInfo(lcFolderWatcher) << "Detected changes in paths:" << paths;
+            emit pathChanged(paths);
+        }
+    });
 }
 
 FolderWatcher::~FolderWatcher()
@@ -54,10 +79,9 @@ FolderWatcher::~FolderWatcher()
 void FolderWatcher::init(const QString &root)
 {
     _d.reset(new FolderWatcherPrivate(this, root));
-    _timer.start();
 }
 
-bool FolderWatcher::pathIsIgnored(const QString &path)
+bool FolderWatcher::pathIsIgnored(const QString &path) const
 {
     if (path.isEmpty())
         return true;
@@ -130,40 +154,11 @@ int FolderWatcher::testLinuxWatchCount() const
 #endif
 }
 
-void FolderWatcher::changeDetected(const QString &path)
+void FolderWatcher::changeDetected(const QSet<QString> &paths)
 {
-    QStringList paths(path);
-    changeDetected(paths);
-}
-
-void FolderWatcher::changeDetected(const QStringList &paths)
-{
-    // TODO: this shortcut doesn't look very reliable:
-    //   - why is the timeout only 1 second?
-    //   - what if there is more than one file being updated frequently?
-    //   - why do we skip the file altogether instead of e.g. reducing the upload frequency?
-
-    // Check if the same path was reported within the last second.
-    const QSet<QString> pathsSet = paths.toSet();
-    if (pathsSet == _lastPaths && _timer.elapsed() < 1000) {
-        // the same path was reported within the last second. Skip.
-        return;
-    }
-    _lastPaths = pathsSet;
-    _timer.restart();
-
-    // ------- handle ignores:
-    for (const auto &path : pathsSet) {
-        if (!_testNotificationPath.isEmpty()
-            && Utility::fileNamesEqual(path, _testNotificationPath)) {
-            _testNotificationPath.clear();
-        }
-        if (pathIsIgnored(path)) {
-            continue;
-        }
-
-        qCInfo(lcFolderWatcher) << "Detected changes in paths:" << path;
-        emit pathChanged(path);
+    _changeSet.unite(paths);
+    if (!_timer.isActive()) {
+        _timer.start();
     }
 }
 

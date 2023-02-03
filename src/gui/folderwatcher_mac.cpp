@@ -59,9 +59,7 @@ static void callback(
         | kFSEventStreamEventFlagItemModified; // for content change
     // We ignore other flags, e.g. for owner change, xattr change, Finder label change etc
 
-    qCDebug(lcFolderWatcher) << "FolderWatcherPrivate::callback by OS X";
-
-    QStringList paths;
+    QSet<QString> paths;
     CFArrayRef eventPaths = static_cast<CFArrayRef>(eventPathsVoid);
 
     for (CFIndex i = 0; i < static_cast<CFIndex>(numEvents); ++i) {
@@ -73,10 +71,13 @@ static void callback(
             continue;
         }
 
-        paths.append(qPath);
+        paths.insert(qPath);
     }
 
-    reinterpret_cast<FolderWatcherPrivate *>(clientCallBackInfo)->doNotifyParent(paths);
+    if (!paths.isEmpty()) {
+        qDebug() << paths;
+        reinterpret_cast<FolderWatcherPrivate *>(clientCallBackInfo)->doNotifyParent(paths);
+    }
 }
 
 void FolderWatcherPrivate::startWatching()
@@ -105,7 +106,7 @@ void FolderWatcherPrivate::startWatching()
     FSEventStreamStart(_stream);
 }
 
-void FolderWatcherPrivate::doNotifyParent(const QStringList &paths)
+void FolderWatcherPrivate::doNotifyParent(const QSet<QString> &paths)
 {
     _parent->changeDetected(paths);
 }

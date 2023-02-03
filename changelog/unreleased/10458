@@ -1,0 +1,3 @@
+Bugfix: Under certain conditions the folder watcher could drop events
+
+https://github.com/owncloud/client/pull/10458

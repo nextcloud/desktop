@@ -22,6 +22,7 @@
 namespace OCC {
 
 class FolderWatcher;
+class FolderWatcherPrivate;
 
 /**
  * @brief The WatcherThread class
@@ -31,7 +32,7 @@ class WatcherThread : public QThread
 {
     Q_OBJECT
 public:
-    WatcherThread(const QString &path);
+    WatcherThread(FolderWatcherPrivate *parent, const QString &path);
     ~WatcherThread() override;
 
     void stop();
@@ -49,11 +50,11 @@ protected:
     void closeHandle();
 
 signals:
-    void changed(const QString &path);
+    void changed(const QSet<QString> &path);
     void lostChanges();
-    void ready();
 
 private:
+    FolderWatcherPrivate *_parent;
     const QString _path;
     const QString _longPath;
     HANDLE _directory;
@@ -81,7 +82,8 @@ public:
 private:
     FolderWatcher *_parent;
     QScopedPointer<WatcherThread> _thread;
-    QAtomicInt _ready;
+    bool _ready = false;
+    friend class WatcherThread;
 };
 }
 

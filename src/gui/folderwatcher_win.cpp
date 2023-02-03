@@ -74,7 +74,7 @@ WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferS
             const DWORD errorCode = GetLastError();
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
-                emit changed(_path);
+                emit changed({_path});
                 return WatchChanges::NeedBiggerBuffer;
             } else {
                 qCWarning(lcFolderWatcher) << "ReadDirectoryChangesW error" << Utility::formatWinError(errorCode);
@@ -82,7 +82,7 @@ WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferS
             }
         }
 
-        emit ready();
+        _parent->_ready = true;
 
         HANDLE handles[] = { _resultEvent, _stopEvent };
         DWORD result = WaitForMultipleObjects(
@@ -105,7 +105,7 @@ WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferS
             if (errorCode == ERROR_NOTIFY_ENUM_DIR) {
                 qCDebug(lcFolderWatcher) << "The buffer for changes overflowed! Triggering a generic change and resizing";
                 emit lostChanges();
-                emit changed(_path);
+                emit changed({_path});
                 return WatchChanges::NeedBiggerBuffer;
             } else {
                 qCWarning(lcFolderWatcher) << "GetOverlappedResult error" << Utility::formatWinError(errorCode);
@@ -119,6 +119,7 @@ WatcherThread::WatchChanges WatcherThread::watchChanges(size_t fileNotifyBufferS
 
 void WatcherThread::processEntries(FILE_NOTIFY_INFORMATION *curEntry)
 {
+    QSet<QString> paths;
     while (curEntry) {
         const size_t fileNameBufferSize = 4096;
         TCHAR fileNameBuffer[fileNameBufferSize];
@@ -154,14 +155,17 @@ void WatcherThread::processEntries(FILE_NOTIFY_INFORMATION *curEntry)
         const bool skip = curEntry->Action == FILE_ACTION_MODIFIED && QFileInfo(longfile).isDir();
 
         if (!skip) {
-            emit changed(longfile);
+            paths.insert(longfile);
         }
 
         if (curEntry->NextEntryOffset == 0) {
-            return;
+            break;
         }
         // FILE_NOTIFY_INFORMATION has no fixed size and the offset is in bytes therefor we first need to cast to char
         curEntry = reinterpret_cast<FILE_NOTIFY_INFORMATION *>(reinterpret_cast<char *>(curEntry) + curEntry->NextEntryOffset);
+    }
+    if (!paths.isEmpty()) {
+        Q_EMIT changed(paths);
     }
 }
 
@@ -201,8 +205,9 @@ void WatcherThread::run()
     }
 }
 
-WatcherThread::WatcherThread(const QString &path)
+WatcherThread::WatcherThread(FolderWatcherPrivate *parent, const QString &path)
     : QThread()
+    , _parent(parent)
     , _path(path + (path.endsWith(QLatin1Char('/')) ? QString() : QStringLiteral("/")))
     , _longPath(FileSystem::longWinPath(_path))
     , _directory(0)
@@ -224,10 +229,10 @@ void WatcherThread::stop()
 FolderWatcherPrivate::FolderWatcherPrivate(FolderWatcher *p, const QString &path)
     : _parent(p)
 {
-    _thread.reset(new WatcherThread(path));
-    connect(_thread.get(), &WatcherThread::changed, _parent, qOverload<const QString &>(&FolderWatcher::changeDetected));
-    connect(_thread.get(), &WatcherThread::lostChanges, _parent, &FolderWatcher::lostChanges);
-    connect(_thread.get(), &WatcherThread::ready, this, [this]() { _ready = 1; });
+    _thread.reset(new WatcherThread(this, path));
+    // we are using connects instead of directly emitting on p as we need to cross thread borders
+    connect(_thread.get(), &WatcherThread::changed, _parent, &FolderWatcher::changeDetected, Qt::QueuedConnection);
+    connect(_thread.get(), &WatcherThread::lostChanges, _parent, &FolderWatcher::lostChanges, Qt::QueuedConnection);
     _thread->start();
 }
 
