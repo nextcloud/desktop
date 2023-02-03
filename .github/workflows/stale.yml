@@ -25,3 +25,5 @@ jobs:
         close-issue-message: "The issue was marked as stale for 7 days and closed automatically."
         start-date: "2021-01-01T00:00:00Z"
         close-issue-reason: not_planned
+        # do not close any PRs
+        only-pr-labels: "never-close-any-prs"
