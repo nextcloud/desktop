@@ -182,6 +182,7 @@ private:
     [[nodiscard]] QString avatarUrlForShare(const SharePtr &share) const;
     [[nodiscard]] long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
     [[nodiscard]] bool expireDateEnforcedForShare(const SharePtr &share) const;
+    [[nodiscard]] bool validCapabilities() const;
 
     bool _fetchOngoing = false;
     bool _hasInitialShareFetchCompleted = false;

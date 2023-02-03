@@ -1014,20 +1014,23 @@ bool ShareModel::accountConnected() const
     return _accountState && _accountState->isConnected();
 }
 
-bool ShareModel::sharingEnabled() const
+bool ShareModel::validCapabilities() const
 {
     return _accountState &&
             _accountState->account() &&
-            _accountState->account()->capabilities().isValid() &&
+            _accountState->account()->capabilities().isValid();
+}
+
+bool ShareModel::sharingEnabled() const
+{
+    return validCapabilities() &&
             _accountState->account()->capabilities().shareAPI();
 }
 
 bool ShareModel::publicLinkSharesEnabled() const
 {
     return Theme::instance()->linkSharing() &&
-            _accountState &&
-            _accountState->account() &&
-            _accountState->account()->capabilities().isValid() &&
+            validCapabilities() &&
             _accountState->account()->capabilities().sharePublicLink();
 }
 
