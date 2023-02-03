@@ -912,59 +912,59 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
 <context>
     <name>OCC::Application</name>
     <message>
-        <location filename="../src/gui/application.cpp" line="172"/>
+        <location filename="../src/gui/application.cpp" line="150"/>
         <source>Continuing will mean &lt;b&gt;deleting these settings&lt;/b&gt;.</source>
         <translation>Pokračování bude znamenat &lt;b&gt;vymazání těchto nastavení&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="174"/>
+        <location filename="../src/gui/application.cpp" line="152"/>
         <source>Continuing will mean &lt;b&gt;ignoring these settings&lt;/b&gt;.</source>
         <translation>Pokračování bude znamenat &lt;b&gt;ignorování těchto nastavení&lt;/b&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="180"/>
+        <location filename="../src/gui/application.cpp" line="158"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Některá nastavení byla vytvořena v novejší verzi tohoto klienta a využívají funkce, které tato verze nepodporuje.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Stávající soubory s nastaveními byly zazálohovány do &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Některá nastavení byla vytvořená ve verzi %1 tohoto klienta a využívají funkce, které v nyní nainstalované verzi nejsou k dispozici.&lt;br&gt;&lt;br&gt;Pokračování bude znamenat &lt;b&gt;%2 tato nastavení&lt;/b&gt;&lt;br&gt;&lt;br&gt;Stávající soubor s nastaveními už byl zazálohován do &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>nikdy</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>starší</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>ignoruje se</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>mazání</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="187"/>
+        <location filename="../src/gui/application.cpp" line="185"/>
         <source>Quit</source>
         <translation>Ukončit</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="188"/>
+        <location filename="../src/gui/application.cpp" line="186"/>
         <source>Continue</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="371"/>
+        <location filename="../src/gui/application.cpp" line="386"/>
         <source>Error accessing the configuration file</source>
         <translation>Chyba při přístupu k souboru s nastaveními</translation>
     </message>
@@ -974,12 +974,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
         <translation>Došlo k chybě při přístupu k souboru s nastaveními %1. Ověřte, že váš uživatelský účet má k souboru přístup.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="372"/>
+        <location filename="../src/gui/application.cpp" line="387"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Došlo k chybě při přístupu k souboru s nastaveními %1. Ověřte, že váš účet na systému má k souboru přístup.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="375"/>
+        <location filename="../src/gui/application.cpp" line="390"/>
         <source>Quit %1</source>
         <translation>Ukončit %1</translation>
     </message>
@@ -1134,7 +1134,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>soubor A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
@@ -1167,7 +1167,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>soubor B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
@@ -3134,60 +3134,60 @@ Poznamenejme, že použití jakékoli volby příkazového řádku má před tí
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="255"/>
         <source>Use &amp;virtual files instead of downloading content immediately %1</source>
         <translation>Použít &amp;virtuální soubory místo okamžitého stahování obsahu %1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="104"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="253"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="255"/>
         <source>(experimental)</source>
         <translation> (experimentální)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="249"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="251"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>Ve Windows kořenovém adresáři oddílu disku nejsou virtuální soubory podporovány. Vyberte platný adresář v disku.</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="286"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="288"/>
         <source>%1 folder &quot;%2&quot; is synced to local folder &quot;%3&quot;</source>
         <translation>%1 složka „%2“ je synchronizována do místní složky „%3“</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="289"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="291"/>
         <source>Sync the folder &quot;%1&quot;</source>
         <translation>Synchronizovat složku „%1“</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="294"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="296"/>
         <source>Warning: The local folder is not empty. Pick a resolution!</source>
         <translation>Varování: Místní složka není prázdná. Zvolte další postup!</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="304"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="306"/>
         <source>%1 free space</source>
         <comment>%1 gets replaced with the size and a matching unit. Example: 3 MB or 5 GB</comment>
         <translation>%1 volného místa</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="389"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="391"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Pro označenou složku nejsou virtuální soubory k dispozici</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="449"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="451"/>
         <source>Local Sync Folder</source>
         <translation>Místní synchronizovaná složka</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="492"/>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="533"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="494"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="535"/>
         <source>(%1)</source>
         <translation>(%1)</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="550"/>
+        <location filename="../src/gui/wizard/owncloudadvancedsetuppage.cpp" line="552"/>
         <source>There isn&apos;t enough free space in the local folder!</source>
         <translation>V místní složce není dostatek volného místa!</translation>
     </message>
