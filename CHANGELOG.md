@@ -9,6 +9,7 @@ Summary
 -------
 
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
+* Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
 Details
 -------
@@ -20,6 +21,14 @@ Details
    required a manual log out and log in.
 
    https://github.com/owncloud/client/issues/10408
+
+* Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
+
+   We now upload locked files again when Windows virtual files are used. This was disabled in 2.9.0
+   as it caused the file metadata and the locked files to get out of sync. The new solution
+   implements explicit handling of outdated placeholders.
+
+   https://github.com/owncloud/client/issues/9829
 
 Changelog for ownCloud Desktop Client [3.1.0] (2023-01-25)
 =======================================
