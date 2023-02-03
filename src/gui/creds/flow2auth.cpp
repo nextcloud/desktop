@@ -91,7 +91,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
+        QJsonParseError jsonParseError{};
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString pollToken, pollEndpoint, loginUrl;
 
@@ -208,7 +208,7 @@ void Flow2Auth::slotPollTimerTimeout()
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
+        QJsonParseError jsonParseError{};
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QUrl serverUrl;
         QString loginName, appPassword;

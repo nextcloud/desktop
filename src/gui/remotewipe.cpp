@@ -70,7 +70,7 @@ void RemoteWipe::startCheckJobWithAppPassword(QString pwd){
 void RemoteWipe::checkJobSlot()
 {
     auto jsonData = _networkReplyCheck->readAll();
-    QJsonParseError jsonParseError;
+    QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     bool wipe = false;
 
@@ -148,7 +148,7 @@ void RemoteWipe::notifyServerSuccessJob(AccountState *accountState, bool dataWip
 void RemoteWipe::notifyServerSuccessJobSlot()
 {
     auto jsonData = _networkReplySuccess->readAll();
-    QJsonParseError jsonParseError;
+    QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     if (_networkReplySuccess->error() != QNetworkReply::NoError ||
             jsonParseError.error != QJsonParseError::NoError) {

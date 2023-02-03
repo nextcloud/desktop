@@ -96,7 +96,7 @@ private:
     GETFileJob *_relativeLimitCurrentMeasuredJob;
 
     // for measuring how much progress we made at start
-    qint64 _relativeDownloadLimitProgressAtMeasuringRestart;
+    qint64 _relativeDownloadLimitProgressAtMeasuringRestart = 0LL;
 
     qint64 _currentDownloadLimit;
 };

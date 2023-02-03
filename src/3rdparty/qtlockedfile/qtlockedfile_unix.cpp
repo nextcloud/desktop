@@ -52,7 +52,7 @@ bool QtLockedFile::lock(LockMode mode, bool block)
     if (m_lock_mode != NoLock)
         unlock();
 
-    struct flock fl;
+    struct flock fl{};
     fl.l_whence = SEEK_SET;
     fl.l_start = 0;
     fl.l_len = 0;
@@ -82,7 +82,7 @@ bool QtLockedFile::unlock()
     if (!isLocked())
         return true;
 
-    struct flock fl;
+    struct flock fl{};
     fl.l_whence = SEEK_SET;
     fl.l_start = 0;
     fl.l_len = 0;

@@ -143,8 +143,8 @@ private:
     bool _wasDisabledBefore;
     AccountState *_accountState;
     UserInfo _userInfo;
-    QAction *_toggleSignInOutAction;
-    QAction *_addAccountAction;
+    QAction *_toggleSignInOutAction = nullptr;
+    QAction *_addAccountAction = nullptr;
 
     bool _menuShown;
 

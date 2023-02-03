@@ -74,7 +74,7 @@ public:
 
 protected:
     QString _serviceName;
-    Account *_account;
+    Account *_account = nullptr;
     QString _key;
     bool _insecureFallback = false;
     bool _autoDelete = true;

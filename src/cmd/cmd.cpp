@@ -71,16 +71,16 @@ struct CmdOptions
     QString user;
     QString password;
     QString proxy;
-    bool silent;
-    bool trustSSL;
-    bool useNetrc;
-    bool interactive;
-    bool ignoreHiddenFiles;
+    bool silent = false;
+    bool trustSSL = false;
+    bool useNetrc = false;
+    bool interactive = false;
+    bool ignoreHiddenFiles = false;
     QString exclude;
     QString unsyncedfolders;
-    int restartTimes;
-    int downlimit;
-    int uplimit;
+    int restartTimes = 0;
+    int downlimit = 0;
+    int uplimit = 0;
 };
 
 // we can't use csync_set_userdata because the SyncEngine sets it already.
@@ -118,7 +118,7 @@ private:
     DWORD mode = 0;
     HANDLE hStdin;
 #else
-    termios tios;
+    termios tios{};
 #endif
 };
 

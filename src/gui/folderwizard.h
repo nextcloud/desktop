@@ -70,7 +70,7 @@ protected slots:
 private:
     void changeStyle();
 
-    Ui_FolderWizardSourcePage _ui;
+    Ui_FolderWizardSourcePage _ui{};
     Folder::Map _folderMap;
     AccountPtr _account;
 };
@@ -114,7 +114,7 @@ private:
     LsColJob *runLsColJob(const QString &path);
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
-    Ui_FolderWizardTargetPage _ui;
+    Ui_FolderWizardTargetPage _ui{};
     bool _warnWasVisible;
     AccountPtr _account;
     QTimer _lscolTimer;
