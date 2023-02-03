@@ -147,8 +147,8 @@ public:
     QVector<PreviewData> _previews;
 
     // Stores information about the error
-    SyncFileItem::Status _syncFileItemStatus;
-    SyncResult::Status _syncResultStatus;
+    SyncFileItem::Status _syncFileItemStatus = SyncFileItem::Status::NoStatus;
+    SyncResult::Status _syncResultStatus = SyncResult::Status::Undefined;
 
     QVector<ActivityLink> _links;
     /**
