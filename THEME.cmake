@@ -3,7 +3,6 @@ if (EXISTS "${PROJECT_SOURCE_DIR}/branding")
 else()
     set(OEM_THEME_DIR "${PROJECT_SOURCE_DIR}/src/resources/" CACHE STRING "Define directory containing a custom theme")
 endif()
-set(OEM_THEME_DIR ${OEM_THEME_DIR} PARENT_SCOPE)
 
 if (EXISTS "${OEM_THEME_DIR}/OEM.cmake")
     include("${OEM_THEME_DIR}/OEM.cmake")
