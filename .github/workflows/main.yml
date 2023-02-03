@@ -6,7 +6,8 @@ on:
       - master
       - '[0-9]+.*'
   pull_request:
-  
+  workflow_dispatch:
+
 permissions: {}
 
 defaults:
