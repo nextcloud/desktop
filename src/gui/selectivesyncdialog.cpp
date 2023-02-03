@@ -481,7 +481,6 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
     , _folder(folder)
-    , _okButton(nullptr) // defined in init()
 {
     bool ok = false;
     init(account);
