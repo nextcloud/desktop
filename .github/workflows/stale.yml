@@ -24,3 +24,4 @@ jobs:
         days-before-close: 7
         close-issue-message: "The issue was marked as stale for 7 days and closed automatically."
         start-date: "2021-01-01T00:00:00Z"
+        close-issue-reason: not_planned
