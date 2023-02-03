@@ -196,8 +196,8 @@ private:
     // We cannot pass objects instantiated in QML using smart pointers through the property interface
     // so we have to pass the pointer here. If we kill the dialog using a smart pointer then
     // these objects will be deallocated for the entire application. We do not want that!!
-    AccountState *_accountState;
-    Folder *_folder;
+    AccountState *_accountState = nullptr;
+    Folder *_folder = nullptr;
 
     QString _localPath;
     QString _sharePath;

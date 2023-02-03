@@ -111,9 +111,9 @@ public:
 private:
     void init(const AccountPtr &account);
 
-    SelectiveSyncWidget *_selectiveSync;
+    SelectiveSyncWidget *_selectiveSync = nullptr;
 
     Folder *_folder;
-    QPushButton *_okButton;
+    QPushButton *_okButton = nullptr;
 };
 }

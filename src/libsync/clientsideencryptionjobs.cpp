@@ -54,7 +54,7 @@ bool GetMetadataApiJob::finished()
         emit error(_fileId, retCode);
         return true;
     }
-    QJsonParseError error;
+    QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
@@ -285,7 +285,7 @@ bool LockEncryptFolderApiJob::finished()
         return true;
     }
 
-    QJsonParseError error;
+    QJsonParseError error{};
     const auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     const auto obj = json.object().toVariantMap();
     const auto token = obj["ocs"].toMap()["data"].toMap()["e2e-token"].toByteArray();
@@ -364,7 +364,7 @@ bool StorePrivateKeyApiJob::finished()
     if (retCode != 200)
         qCInfo(lcStorePrivateKeyApiJob()) << "Sending private key ended with"  << path() << errorString() << retCode;
 
-    QJsonParseError error;
+    QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;
@@ -401,7 +401,7 @@ bool SignPublicKeyApiJob::finished()
 {
     qCInfo(lcStorePrivateKeyApiJob()) << "Sending CSR ended with"  << path() << errorString() << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute);
 
-    QJsonParseError error;
+    QJsonParseError error{};
     auto json = QJsonDocument::fromJson(reply()->readAll(), &error);
     emit jsonReceived(json, reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt());
     return true;

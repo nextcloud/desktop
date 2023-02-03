@@ -87,7 +87,7 @@ private:
     // TODO: remove when UX decision is made
     void refreshVirtualFilesAvailibility(const QString &path);
 
-    Ui_OwncloudAdvancedSetupPage _ui;
+    Ui_OwncloudAdvancedSetupPage _ui{};
     bool _checking = false;
     bool _created = false;
     bool _localFolderValid = false;

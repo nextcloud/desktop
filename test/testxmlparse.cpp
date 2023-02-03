@@ -15,7 +15,7 @@ class TestXmlParse : public QObject
     Q_OBJECT
 
 private:
-  bool _success;
+  bool _success = false;
   QStringList _subdirs;
   QStringList _items;
 

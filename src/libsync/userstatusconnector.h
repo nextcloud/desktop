@@ -94,7 +94,7 @@ private:
     QString _message;
     QString _icon;
     OnlineStatus _state = OnlineStatus::Online;
-    bool _messagePredefined;
+    bool _messagePredefined = false;
     Optional<ClearAt> _clearAt;
 };
 

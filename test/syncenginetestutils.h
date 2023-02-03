@@ -304,8 +304,8 @@ class FakeGetReply : public FakeReply
     Q_OBJECT
 public:
     const FileInfo *fileInfo;
-    char payload;
-    int size;
+    char payload = 0;
+    int size = 0;
     bool aborted = false;
 
     FakeGetReply(FileInfo &remoteRootFileInfo, QNetworkAccessManager::Operation op, const QNetworkRequest &request, QObject *parent);

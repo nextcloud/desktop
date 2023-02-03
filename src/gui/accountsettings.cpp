@@ -123,8 +123,8 @@ public:
     {
     }
 
-    QTreeView *folderList;
-    FolderStatusModel *model;
+    QTreeView *folderList = nullptr;
+    FolderStatusModel *model = nullptr;
 
 protected:
     bool eventFilter(QObject *watched, QEvent *event) override
@@ -1004,7 +1004,7 @@ void AccountSettings::slotSetSubFolderAvailability(Folder *folder, const QString
 void AccountSettings::displayMnemonic(const QString &mnemonic)
 {
     QDialog widget;
-    Ui_Dialog ui;
+    Ui_Dialog ui{};
     ui.setupUi(&widget);
     widget.setWindowTitle(tr("End-to-end encryption mnemonic"));
     ui.label->setText(
