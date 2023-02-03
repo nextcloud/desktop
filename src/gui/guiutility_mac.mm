@@ -14,6 +14,7 @@
  */
 
 #include "application.h"
+#include "config.h"
 #include "guiutility.h"
 
 #include <QProcess>

@@ -17,6 +17,8 @@
 #include "configfile.h"
 #include "folderman.h"
 
+#include "libsync/theme.h"
+
 #include <QDir>
 #include <QCoreApplication>
 
@@ -65,7 +67,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
         QStringLiteral("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Desktop\\NameSpace"),
         [&entriesToRemove](HKEY key, const QString &subKey) {
             QVariant appName = Utility::registryGetKeyValue(key, subKey, QStringLiteral("ApplicationName"));
-            if (appName.toString() == QLatin1String(APPLICATION_NAME)) {
+            if (appName.toString() == Theme::instance()->appNameGUI()) {
                 QUuid clsid{ subKey };
                 Q_ASSERT(!clsid.isNull());
                 entriesToRemove.append(clsid);
@@ -136,7 +138,7 @@ void NavigationPaneHelper::updateCloudStorageRegistry()
 
             // For us, to later be able to iterate and find our own namespace entries and associated CLSID.
             // Use the macro instead of the theme to make sure it matches with the uninstaller.
-            Utility::registrySetKeyValue(HKEY_CURRENT_USER, namespacePath, QStringLiteral("ApplicationName"), REG_SZ, QLatin1String(APPLICATION_NAME));
+            Utility::registrySetKeyValue(HKEY_CURRENT_USER, namespacePath, QStringLiteral("ApplicationName"), REG_SZ, Theme::instance()->appNameGUI());
         }
     }
 
