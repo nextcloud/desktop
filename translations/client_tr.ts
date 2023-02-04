@@ -929,29 +929,29 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation type="unfinished"/>
+        <translation>Bazı ayarlar, bu istemcinin %1 sürümleri üzerinden yapılmış ve bu sürümde kullanılamayan bazı özellikleri kullanıyor.&lt;br&gt;&lt;br&gt;İlerlediğinizde &lt;b&gt;bu ayarlar %2&lt;br&gt;&lt;br&gt;Geçerli yapılandırma dosyası zaten&lt;i&gt;%3&lt;/i&gt; üzerine yedeklendi.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>daha yeni</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>daha eski</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>ignoring</source>
-        <translation type="unfinished"/>
+        <translation>yok sayılacak</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>deleting</source>
-        <translation type="unfinished"/>
+        <translation>silinecek</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="185"/>
@@ -1134,7 +1134,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>A dosyası</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
@@ -1167,7 +1167,7 @@ Bu işlem şu anda yürütülmekte olan eşitleme işlemlerini durdurur.</transl
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>B dosyası</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
