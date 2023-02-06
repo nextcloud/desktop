@@ -15,7 +15,6 @@
 #include "accountsetupfromcommandlinejob.h"
 
 #include "accountmanager.h"
-#include "accountstate.h"
 #include "creds/webflowcredentials.h"
 #include "filesystem.h"
 #include "folder.h"
@@ -50,7 +49,11 @@ AccountSetupFromCommandLineJob::AccountSetupFromCommandLineJob(QString appPasswo
 
 void AccountSetupFromCommandLineJob::handleAccountSetupFromCommandLine()
 {
-    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host()))) {
+    const auto userIdSplit = _userId.split((QLatin1Char('@')));
+
+    const auto userIdParsed = QStringLiteral("%1@%2").arg(userIdSplit.first()).arg(_serverUrl.host());
+
+    if (AccountManager::instance()->accountFromUserId(QStringLiteral("%1@%2").arg(_userId).arg(_serverUrl.host())) || AccountManager::instance()->accountFromUserId(userIdParsed)) {
         printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 already exists!").arg(QDir::toNativeSeparators(_userId)), true);
         return;
     }
@@ -97,18 +100,56 @@ void AccountSetupFromCommandLineJob::checkLastModifiedWithPropfind()
     job->start();
 }
 
+void AccountSetupFromCommandLineJob::accountCheckConnectivityFinished(OCC::AccountState::State state)
+{
+    disconnect(_accountState.data(), &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
+    if (_checkConnectivityTimeout.isActive()) {
+        _checkConnectivityTimeout.stop();
+    }
+
+    auto accountState = _accountState.take();
+
+    if (state == OCC::AccountState::State::Connected) {
+        const auto accountManager = AccountManager::instance();
+        accountManager->addAccountState(accountState);
+        accountManager->save(false);
+
+        if (!_localDirPath.isEmpty()) {
+            setupLocalSyncFolder(accountState);
+        } else {
+            qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
+            printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
+        }
+    } else {
+        _accountState->deleteLater();
+        printAccountSetupFromCommandLineStatusAndExit(
+            QStringLiteral("Account %1 setup from command line failed with error: %2.").arg(_account->displayName()).arg(QStringLiteral("could not connect the account")),
+            true);
+    }
+}
+
+void AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone()
+{
+    disconnect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
+
+    connect(_accountState.data(), &OCC::AccountState::stateChanged, this, &AccountSetupFromCommandLineJob::accountCheckConnectivityFinished);
+    _accountState->checkConnectivity();
+
+    connect(&_checkConnectivityTimeout, &QTimer::timeout, this, [this]() {
+        accountCheckConnectivityFinished(_accountState->state());
+    });
+
+    _checkConnectivityTimeout.setInterval(1000 * 30);
+    _checkConnectivityTimeout.setSingleShot(true);
+    _checkConnectivityTimeout.start();
+}
+
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleSuccess()
 {
-    const auto accountManager = AccountManager::instance();
-    const auto accountState = accountManager->addAccount(_account);
-    accountManager->save();
-
-    if (!_localDirPath.isEmpty()) {
-        setupLocalSyncFolder(accountState);
-    } else {
-        qCInfo(lcAccountSetupCommandLineJob) << QStringLiteral("Set up a new account without a folder.");
-        printAccountSetupFromCommandLineStatusAndExit(QStringLiteral("Account %1 setup from command line success.").arg(_account->displayName()), false);
-    }
+    AccountManager::instance()->setIdForAccount(_account.data());
+    _accountState = new OCC::AccountState(_account, false);
+    connect(_account.data(), &OCC::Account::credentialsWriteJobDone, this, &AccountSetupFromCommandLineJob::accountCredentialsWriteJoobDone);
+    _account->saveCredentials();
 }
 
 void AccountSetupFromCommandLineJob::accountSetupFromCommandLinePropfindHandleFailure()

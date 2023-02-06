@@ -15,9 +15,12 @@
 #pragma once
 
 #include "account.h"
+#include "accountstate.h"
 
 #include <QObject>
+#include <QPointer>
 #include <QString>
+#include <QTimer>
 #include <QUrl>
 
 namespace OCC
@@ -43,6 +46,10 @@ public slots:
 private slots:
     void checkLastModifiedWithPropfind();
 
+    void accountCheckConnectivityFinished(OCC::AccountState::State state);
+
+    void accountCredentialsWriteJoobDone();
+
     void accountSetupFromCommandLinePropfindHandleSuccess();
 
     void accountSetupFromCommandLinePropfindHandleFailure();
@@ -60,7 +67,8 @@ private:
     QString _localDirPath;
     bool _isVfsEnabled = true;
     QString _remoteDirPath;
-
+    AccountStatePtr _accountState;
     AccountPtr _account;
+    QTimer _checkConnectivityTimeout;
 };
 }

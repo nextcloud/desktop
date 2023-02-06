@@ -231,14 +231,16 @@ bool WebFlowCredentials::stillValid(QNetworkReply *reply) {
     return (reply->error() != QNetworkReply::AuthenticationRequiredError);
 }
 
-void WebFlowCredentials::persist() {
+void WebFlowCredentials::persist(bool saveAccount) {
     if (_user.isEmpty()) {
         // We don't even have a user nothing to see here move along
         return;
     }
 
     _account->setCredentialSetting(userC, _user);
-    emit _account->wantsAccountSaved(_account);
+    if (saveAccount) {
+        emit _account->wantsAccountSaved(_account);
+    }
 
     // write cert if there is one
     if (!_clientSslCertificate.isNull()) {
@@ -354,6 +356,7 @@ void WebFlowCredentials::slotWriteJobDone(QKeychain::Job *job)
     default:
         qCWarning(lcWebFlowCredentials) << "Error while writing password" << job->errorString();
     }
+    emit _account->credentialsWriteJobDone();
 }
 
 void WebFlowCredentials::invalidateToken() {

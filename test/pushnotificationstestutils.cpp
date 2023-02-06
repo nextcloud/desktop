@@ -203,7 +203,7 @@ bool CredentialsStub::stillValid(QNetworkReply * /*reply*/)
     return false;
 }
 
-void CredentialsStub::persist() { }
+void CredentialsStub::persist(bool saveAccount) { Q_UNUSED(saveAccount) }
 
 void CredentialsStub::invalidateToken() { }
 

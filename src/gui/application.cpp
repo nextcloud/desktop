@@ -374,12 +374,14 @@ Application::Application(int &argc, char **argv)
 
     connect(this, &SharedTools::QtSingleApplication::messageReceived, this, &Application::slotParseMessage);
 
-    if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
+    if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty()
+        && !AccountSetupCommandLineManager::instance()->isCommandLineParsed())) {
         // If there is an error reading the account settings, try again
         // after a couple of seconds, if that fails, give up.
         // (non-existence is not an error)
         Utility::sleep(5);
-        if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty())) {
+        if (!AccountManager::instance()->restore(cfg.overrideServerUrl().isEmpty()
+            && !AccountSetupCommandLineManager::instance()->isCommandLineParsed())) {
             qCCritical(lcApplication) << "Could not read the account settings, quitting";
             QMessageBox::critical(
                 nullptr,
@@ -427,6 +429,8 @@ Application::Application(int &argc, char **argv)
 
     connect(FolderMan::instance()->socketApi(), &SocketApi::fileActivityCommandReceived,
         _gui.data(), &ownCloudGui::slotShowFileActivityDialog);
+
+    _isRunningAccountSetupOnDeployment = AccountSetupCommandLineManager::instance()->isCommandLineParsed();
 
     // startup procedure.
     connect(&_checkConnectionTimer, &QTimer::timeout, this, &Application::slotCheckConnection);
@@ -541,7 +545,10 @@ void Application::slotCheckConnection()
 {
     if (AccountManager::instance()->accounts().isEmpty()) {
         // let gui open the setup wizard
-        _gui->slotOpenSettingsDialog();
+        if (!_isRunningAccountSetupOnDeployment) {
+            _gui->slotOpenSettingsDialog();
+        }
+        _isRunningAccountSetupOnDeployment = false;
 
         _checkConnectionTimer.stop(); // don't popup the wizard on interval;
     }

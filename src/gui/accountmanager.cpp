@@ -88,7 +88,8 @@ bool AccountManager::restore(bool alsoRestoreLegacySettings)
     }
 
     // If there are no accounts, check the old format.
-    if (settings->childGroups().isEmpty() && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
+    if (settings->childGroups().isEmpty()
+        && !settings->contains(QLatin1String(versionC)) && alsoRestoreLegacySettings) {
         restoreFromLegacySettings();
         return true;
     }
@@ -281,6 +282,22 @@ void AccountManager::saveAccountState(AccountState *a)
     qCDebug(lcAccountManager) << "Saved account state settings, status:" << settings->status();
 }
 
+void AccountManager::setIdForAccount(OCC::Account *account)
+{
+    Q_ASSERT(account);
+
+    if (!account) {
+        return;
+    }
+
+    auto id = account->id();
+    if (id.isEmpty() || !isAccountIdAvailable(id)) {
+        id = generateFreeAccountId();
+    }
+    account->_id = id;
+}
+
+
 void AccountManager::saveAccountHelper(Account *acc, QSettings &settings, bool saveCredentials)
 {
     settings.setValue(QLatin1String(versionC), maxAccountVersion);
@@ -436,15 +453,11 @@ AccountStatePtr AccountManager::accountFromUserId(const QString &id) const
     return {};
 }
 
-AccountState *AccountManager::addAccount(const AccountPtr &newAccount)
+AccountState *AccountManager::addAccount(const AccountPtr &newAccount, bool startCheckConnection)
 {
-    auto id = newAccount->id();
-    if (id.isEmpty() || !isAccountIdAvailable(id)) {
-        id = generateFreeAccountId();
-    }
-    newAccount->_id = id;
+    setIdForAccount(newAccount.data());
 
-    const auto newAccountState = new AccountState(newAccount);
+    const auto newAccountState = new AccountState(newAccount, startCheckConnection);
     addAccountState(newAccountState);
     return newAccountState;
 }

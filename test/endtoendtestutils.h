@@ -52,7 +52,7 @@ public:
     bool stillValid(QNetworkReply *) override { return true; }
     void askFromUser() override {};
     void fetchFromKeychain() override { _wasFetched = true; Q_EMIT fetched(); };
-    void persist() override {};
+    void persist(bool saveAccount = true) override { Q_UNUSED(saveAccount) };
     void invalidateToken() override {};
     void forgetSensitiveData() override {};
 
