@@ -37,9 +37,6 @@ UserInfo::UserInfo(AccountState *accountState, bool allowDisconnectedAccountStat
     , _accountState(accountState)
     , _allowDisconnectedAccountState(allowDisconnectedAccountState)
     , _fetchAvatarImage(fetchAvatarImage)
-    , _lastQuotaTotalBytes(0)
-    , _lastQuotaUsedBytes(0)
-    , _active(false)
 {
     connect(accountState, &AccountState::stateChanged,
         this, &UserInfo::slotAccountStateChanged);

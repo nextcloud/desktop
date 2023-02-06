@@ -213,15 +213,6 @@ Application::Application(int &argc, char **argv)
     : SharedTools::QtSingleApplication(Theme::instance()->appName(), argc, argv)
     , _gui(nullptr)
     , _theme(Theme::instance())
-    , _helpOnly(false)
-    , _versionOnly(false)
-    , _showLogWindow(false)
-    , _logExpire(0)
-    , _logFlush(false)
-    , _logDebug(true)
-    , _userTriggeredConnect(false)
-    , _debugMode(false)
-    , _backgroundMode(false)
 {
     _startedAt.start();
 

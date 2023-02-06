@@ -47,11 +47,6 @@ static qint64 relativeLimitMeasuringTimerIntervalMsec = 1000 * 2;
 BandwidthManager::BandwidthManager(OwncloudPropagator *p)
     : QObject()
     , _propagator(p)
-    , _relativeLimitCurrentMeasuredDevice(nullptr)
-    , _relativeUploadLimitProgressAtMeasuringRestart(0)
-    , _currentUploadLimit(0)
-    , _relativeLimitCurrentMeasuredJob(nullptr)
-    , _currentDownloadLimit(0)
 {
     _currentUploadLimit = _propagator->_uploadLimit;
     _currentDownloadLimit = _propagator->_downloadLimit;

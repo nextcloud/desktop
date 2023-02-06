@@ -351,8 +351,8 @@ bool WheelHandler::scrollFlickable(QPointF pixelDelta, QPointF angleDelta, Qt::K
 
     const qreal xTicks = angleDelta.x() / 120;
     const qreal yTicks = angleDelta.y() / 120;
-    qreal xChange;
-    qreal yChange;
+    qreal xChange = NAN;
+    qreal yChange = NAN;
     bool scrolled = false;
 
     // Scroll X

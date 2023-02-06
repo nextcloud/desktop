@@ -92,7 +92,7 @@ private:
 
     QTimer _searchRateLimitingTimer;
 
-    AccountState *_accountState;
+    AccountState *_accountState = nullptr;
     QString _searchString;
     bool _shareItemIsFolder = false;
     bool _fetchOngoing = false;

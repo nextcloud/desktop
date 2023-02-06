@@ -226,7 +226,7 @@ private:
     ConnectionStatus _connectionStatus;
     ConnectionStatus _lastConnectionValidatorStatus = ConnectionStatus::Undefined;
     QStringList _connectionErrors;
-    bool _waitingForNewCredentials;
+    bool _waitingForNewCredentials = false;
     QDateTime _timeOfLastETagCheck;
     QPointer<ConnectionValidator> _connectionValidator;
     QByteArray _notificationsEtagResponseHeader;
@@ -242,20 +242,20 @@ private:
     /**
      * Milliseconds for which to delay reconnection after 503/maintenance.
      */
-    int _maintenanceToConnectedDelay;
+    int _maintenanceToConnectedDelay = 0;
 
     /**
      * Connects remote wipe check with the account
      * the log out triggers the check (loads app password -> create request)
      */
-    RemoteWipe *_remoteWipe;
+    RemoteWipe *_remoteWipe = nullptr;
 
     /**
      * Holds the App names and URLs available on the server
      */
     AccountAppList _apps;
 
-    bool _isDesktopNotificationsAllowed;
+    bool _isDesktopNotificationsAllowed = false;
 
     int _retryCount = 0;
 

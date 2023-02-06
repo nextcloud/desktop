@@ -43,7 +43,6 @@ User::User(AccountStatePtr &account, const bool &isCurrent, QObject *parent)
     , _isCurrentUser(isCurrent)
     , _activityModel(new ActivityListModel(_account.data(), this))
     , _unifiedSearchResultsModel(new UnifiedSearchResultsListModel(_account.data(), this))
-    , _notificationRequestsRunning(0)
 {
     connect(ProgressDispatcher::instance(), &ProgressDispatcher::progressInfo,
         this, &User::slotProgressInfo);

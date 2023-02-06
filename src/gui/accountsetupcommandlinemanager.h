@@ -45,7 +45,7 @@ private:
     QUrl _serverUrl;
     QString _remoteDirPath;
     QString _localDirPath;
-    bool _isVfsEnabled;
+    bool _isVfsEnabled = false;
 };
 
 }

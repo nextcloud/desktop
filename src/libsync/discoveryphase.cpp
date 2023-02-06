@@ -348,10 +348,6 @@ DiscoverySingleDirectoryJob::DiscoverySingleDirectoryJob(const AccountPtr &accou
     : QObject(parent)
     , _subPath(path)
     , _account(account)
-    , _ignoredFirst(false)
-    , _isRootPath(false)
-    , _isExternalStorage(false)
-    , _isE2eEncrypted(false)
 {
 }
 

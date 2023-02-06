@@ -41,7 +41,7 @@ private slots:
     {
         {
             EndToEndTestHelper _helper;
-            OCC::Folder *_testFolder;
+            OCC::Folder *_testFolder = nullptr;
 
             QSignalSpy accountReady(&_helper, &EndToEndTestHelper::accountReady);
             _helper.startAccountConfig();

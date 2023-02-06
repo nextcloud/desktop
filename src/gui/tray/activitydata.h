@@ -50,7 +50,7 @@ public:
     QString _label;
     QString _link;
     QByteArray _verb;
-    bool _primary;
+    bool _primary = false;
 };
 
 /**
@@ -73,9 +73,9 @@ public:
     QString _source;
     QString _link;
     QString _mimeType;
-    int _fileId;
+    int _fileId = 0;
     QString _view;
-    bool _isMimeTypeIcon;
+    bool _isMimeTypeIcon = false;
     QString _filename;
 };
 
@@ -123,9 +123,9 @@ public:
     };
 
     Type _type;
-    qlonglong _id;
+    qlonglong _id = 0LL;
     QString _fileAction;
-    int _objectId;
+    int _objectId = 0;
     TalkNotificationData _talkNotificationData;
     QString _objectType;
     QString _objectName;
@@ -137,7 +137,7 @@ public:
     QString _folder;
     QString _file;
     QString _renamedFile;
-    bool _isMultiObjectActivity;
+    bool _isMultiObjectActivity = false;
     QUrl _link;
     QDateTime _dateTime;
     qint64 _expireAtMsecs = -1;
@@ -147,8 +147,8 @@ public:
     QVector<PreviewData> _previews;
 
     // Stores information about the error
-    SyncFileItem::Status _syncFileItemStatus;
-    SyncResult::Status _syncResultStatus;
+    SyncFileItem::Status _syncFileItemStatus = SyncFileItem::Status::NoStatus;
+    SyncResult::Status _syncResultStatus = SyncResult::Status::Undefined;
 
     QVector<ActivityLink> _links;
     /**

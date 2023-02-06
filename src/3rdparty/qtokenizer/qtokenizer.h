@@ -65,9 +65,6 @@ struct QTokenizerPrivate {
       , tokenBegin(end)
       , tokenEnd(begin)
       , delimiters(_delims)
-      , isDelim(false)
-      , returnDelimiters(false)
-      , returnQuotes(false)
     {
     }
 
@@ -105,9 +102,9 @@ struct QTokenizerPrivate {
     const_iterator tokenEnd;
     T delimiters;
     T quotes;
-    bool isDelim;
-    bool returnDelimiters;
-    bool returnQuotes;
+    bool isDelim = false;
+    bool returnDelimiters = false;
+    bool returnQuotes = false;
 };
 
 template <class T, class const_iterator = typename T::const_iterator>

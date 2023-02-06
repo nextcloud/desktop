@@ -50,10 +50,10 @@ private slots:
 private:
     AccountPtr _account;
     QString _appPassword;
-    bool _accountRemoved;
+    bool _accountRemoved = false;
     QNetworkAccessManager _networkManager;
-    QNetworkReply *_networkReplyCheck;
-    QNetworkReply *_networkReplySuccess;
+    QNetworkReply *_networkReplyCheck = nullptr;
+    QNetworkReply *_networkReplySuccess = nullptr;
 
     friend class ::TestRemoteWipe;
 };

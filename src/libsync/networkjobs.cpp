@@ -418,8 +418,6 @@ namespace {
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC), parent)
-    , _subdirFallback(false)
-    , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
     connect(this, &AbstractNetworkJob::redirected,
@@ -530,7 +528,7 @@ bool CheckServerJob::finished()
         qCWarning(lcCheckServerJob) << "error: status.php replied " << httpStatus << body;
         emit instanceNotFound(reply());
     } else {
-        QJsonParseError error;
+        QJsonParseError error{};
         auto status = QJsonDocument::fromJson(body, &error);
         // empty or invalid response
         if (error.error != QJsonParseError::NoError || status.isNull()) {
@@ -862,7 +860,7 @@ bool JsonApiJob::finished()
     if(reply()->rawHeaderList().contains("ETag"))
         emit etagResponseHeaderReceived(reply()->rawHeader("ETag"), statusCode);
 
-    QJsonParseError error;
+    QJsonParseError error{};
     auto json = QJsonDocument::fromJson(jsonStr.toUtf8(), &error);
     // empty or invalid response and status code is != 304 because jsonStr is expected to be empty
     if ((error.error != QJsonParseError::NoError || json.isNull()) && httpStatusCode != notModifiedStatusCode) {

@@ -164,7 +164,7 @@ private:
     sqlite3 *_db = nullptr;
     sqlite3_stmt *_stmt = nullptr;
     QString _error;
-    int _errId;
+    int _errId = 0;
     QByteArray _sql;
 
     friend class SqlDatabase;

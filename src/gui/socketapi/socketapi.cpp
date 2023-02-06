@@ -411,7 +411,7 @@ void SocketApi::slotReadSocket()
                 socketApiJob->reject(QStringLiteral("command not found"));
             }
         } else if (command.startsWith("V2/")) {
-            QJsonParseError error;
+            QJsonParseError error{};
             const auto json = QJsonDocument::fromJson(argument.toUtf8(), &error).object();
             if (error.error != QJsonParseError::NoError) {
                 qCWarning(lcSocketApi()) << "Invalid json" << argument.toString() << error.errorString();

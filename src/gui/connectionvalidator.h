@@ -140,7 +140,7 @@ private:
     QStringList _errors;
     AccountStatePtr _accountState;
     AccountPtr _account;
-    bool _isCheckingServerAndAuth;
+    bool _isCheckingServerAndAuth = false;
 };
 }
 

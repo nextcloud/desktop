@@ -131,8 +131,8 @@ public:
     {
         QString _file; // The relative path of a file
         QString _url; // the poll url. (This pollinfo is invalid if _url is empty)
-        qint64 _modtime; // The modtime of the file being uploaded
-        qint64 _fileSize;
+        qint64 _modtime = 0LL; // The modtime of the file being uploaded
+        qint64 _fileSize = 0LL;
     };
 
     DownloadInfo getDownloadInfo(const QString &file);
@@ -418,8 +418,8 @@ private:
     QString _dbFile;
     QRecursiveMutex _mutex; // Public functions are protected with the mutex.
     QMap<QByteArray, int> _checksymTypeCache;
-    int _transaction;
-    bool _metadataTableIsEmpty;
+    int _transaction = 0;
+    bool _metadataTableIsEmpty = false;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *

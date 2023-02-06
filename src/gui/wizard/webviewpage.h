@@ -40,7 +40,7 @@ private:
     QString _user;
     QString _pass;
 
-    bool _useSystemProxy;
+    bool _useSystemProxy = false;
 
     QSize _originalWizardSize;
 };

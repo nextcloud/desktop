@@ -40,7 +40,7 @@ class KMessageWidgetPrivate
 public:
     void init(KMessageWidget *);
 
-    KMessageWidget *q;
+    KMessageWidget *q = nullptr;
     QFrame *content = nullptr;
     QLabel *iconLabel = nullptr;
     QLabel *textLabel = nullptr;
@@ -50,7 +50,7 @@ public:
     bool ignoreShowEventDoingAnimatedShow = false;
 
     KMessageWidget::MessageType messageType;
-    bool wordWrap;
+    bool wordWrap = false;
     QList<QToolButton *> buttons;
     QPixmap contentSnapShot;
 

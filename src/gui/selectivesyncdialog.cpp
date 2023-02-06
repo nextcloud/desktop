@@ -67,7 +67,6 @@ private:
 SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     : QWidget(parent)
     , _account(account)
-    , _inserting(false)
     , _folderTree(new QTreeWidget(this))
 {
     _loading = new QLabel(tr("Loading …"), _folderTree);
@@ -481,7 +480,6 @@ qint64 SelectiveSyncWidget::estimatedSize(QTreeWidgetItem *root)
 SelectiveSyncDialog::SelectiveSyncDialog(AccountPtr account, Folder *folder, QWidget *parent, Qt::WindowFlags f)
     : QDialog(parent, f)
     , _folder(folder)
-    , _okButton(nullptr) // defined in init()
 {
     bool ok = false;
     init(account);

@@ -139,7 +139,7 @@ protected:
 
 private:
     QUrl _updateUrl;
-    int _state;
+    int _state = Unknown;
     QNetworkAccessManager *_accessManager;
     QTimer *_timeoutWatchdog; /** Timer to guard the timeout of an individual network request */
     UpdateInfo _updateInfo;

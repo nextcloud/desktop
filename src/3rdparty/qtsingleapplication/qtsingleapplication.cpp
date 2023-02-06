@@ -50,9 +50,7 @@ static QString instancesLockFilename(const QString &appSessionId)
 }
 
 QtSingleApplication::QtSingleApplication(const QString &appId, int &argc, char **argv)
-    : QApplication(argc, argv),
-      firstPeer(-1),
-      pidPeer(nullptr)
+    : QApplication(argc, argv)
 {
     this->appId = appId;
 

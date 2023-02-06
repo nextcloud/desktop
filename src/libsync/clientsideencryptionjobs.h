@@ -193,7 +193,7 @@ signals:
 private:
     QByteArray _fileId;
     QByteArray _token;
-    QBuffer *_tokenBuf;
+    QBuffer *_tokenBuf = nullptr;
     QPointer<SyncJournalDb> _journalDb;
 };
 

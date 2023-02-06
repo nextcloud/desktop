@@ -50,7 +50,7 @@ signals:
 private:
     Account *_account = nullptr;
     QScopedPointer<Flow2Auth> _asyncAuth;
-    Ui_Flow2AuthWidget _ui;
+    Ui_Flow2AuthWidget _ui{};
 
 protected slots:
     void slotOpenBrowser();

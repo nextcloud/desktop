@@ -179,11 +179,11 @@ protected:
     virtual void onTimedOut();
 
     QByteArray _responseTimestamp;
-    bool _timedout; // set to true when the timeout slot is received
+    bool _timedout = false; // set to true when the timeout slot is received
 
     // Automatically follows redirects. Note that this only works for
     // GET requests that don't set up any HTTP body or other flags.
-    bool _followRedirects;
+    bool _followRedirects = true;
 
     QString replyStatusString();
 
@@ -196,7 +196,7 @@ protected:
 
 private:
     QNetworkReply *addTimer(QNetworkReply *reply);
-    bool _ignoreCredentialFailure;
+    bool _ignoreCredentialFailure = false;
     QPointer<QNetworkReply> _reply; // (QPointer because the NetworkManager may be destroyed before the jobs at exit)
     QString _path;
     QTimer _timer;

@@ -40,7 +40,6 @@ ConnectionValidator::ConnectionValidator(AccountStatePtr accountState, QObject *
     : QObject(parent)
     , _accountState(accountState)
     , _account(accountState->account())
-    , _isCheckingServerAndAuth(false)
 {
 }
 

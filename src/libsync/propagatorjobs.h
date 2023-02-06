@@ -45,7 +45,7 @@ public:
 private:
     bool removeRecursively(const QString &path);
     QString _error;
-    bool _moveToTrash;
+    bool _moveToTrash = false;
 };
 
 /**
@@ -58,7 +58,6 @@ class PropagateLocalMkdir : public PropagateItemJob
 public:
     PropagateLocalMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagateItemJob(propagator, item)
-        , _deleteExistingFile(false)
     {
     }
     void start() override;
@@ -75,7 +74,7 @@ private:
     void startLocalMkdir();
     void startDemanglingName(const QString &parentPath);
 
-    bool _deleteExistingFile;
+    bool _deleteExistingFile = false;
 };
 
 /**

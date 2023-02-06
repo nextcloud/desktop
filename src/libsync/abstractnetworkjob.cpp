@@ -49,10 +49,7 @@ int AbstractNetworkJob::httpTimeout = qEnvironmentVariableIntValue("OWNCLOUD_TIM
 
 AbstractNetworkJob::AbstractNetworkJob(AccountPtr account, const QString &path, QObject *parent)
     : QObject(parent)
-    , _timedout(false)
-    , _followRedirects(true)
     , _account(account)
-    , _ignoreCredentialFailure(false)
     , _reply(nullptr)
     , _path(path)
 {
