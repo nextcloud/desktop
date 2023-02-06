@@ -182,22 +182,15 @@ private:
     [[nodiscard]] QString avatarUrlForShare(const SharePtr &share) const;
     [[nodiscard]] long long enforcedMaxExpireDateForShare(const SharePtr &share) const;
     [[nodiscard]] bool expireDateEnforcedForShare(const SharePtr &share) const;
+    [[nodiscard]] bool validCapabilities() const;
 
     bool _fetchOngoing = false;
     bool _hasInitialShareFetchCompleted = false;
     SharePtr _placeholderLinkShare;
     SharePtr _internalLinkShare;
 
-    // DO NOT USE QSHAREDPOINTERS HERE.
-    // QSharedPointers MUST NOT be used with pointers already assigned to other shared pointers.
-    // This is because they do not share reference counters, and as such are not aware of another
-    // smart pointer's use of the same object.
-    //
-    // We cannot pass objects instantiated in QML using smart pointers through the property interface
-    // so we have to pass the pointer here. If we kill the dialog using a smart pointer then
-    // these objects will be deallocated for the entire application. We do not want that!!
-    AccountState *_accountState = nullptr;
-    Folder *_folder = nullptr;
+    QPointer<AccountState> _accountState;
+    QPointer<Folder> _folder;
 
     QString _localPath;
     QString _sharePath;
