@@ -44,20 +44,23 @@ bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QMod
         return false;
     }
 
-    if (const auto rightType = rightActivity._type; leftType != rightType) {
-        return leftType < rightType;
-    }
-
+    // Let's now check for errors as we want those near the top too
     const auto leftSyncFileItemStatus = leftActivity._syncFileItemStatus;
     const auto rightSyncFileItemStatus = rightActivity._syncFileItemStatus;
+    const bool leftIsErrorFileItemStatus = leftSyncFileItemStatus == SyncFileItem::FatalError ||
+                                           leftSyncFileItemStatus == SyncFileItem::SoftError ||
+                                           leftSyncFileItemStatus == SyncFileItem::NormalError;
 
-    // Then compare by status
-    if (leftSyncFileItemStatus != rightSyncFileItemStatus) {
-        // We want to shove errors towards the top.
-        return (leftSyncFileItemStatus != SyncFileItem::NoStatus &&
-                leftSyncFileItemStatus != SyncFileItem::Success) ||
-                leftSyncFileItemStatus == SyncFileItem::FatalError ||
-                leftSyncFileItemStatus < rightSyncFileItemStatus;
+    const bool rightIsErrorFileItemStatus = rightSyncFileItemStatus == SyncFileItem::FatalError ||
+                                            rightSyncFileItemStatus == SyncFileItem::SoftError ||
+                                            rightSyncFileItemStatus == SyncFileItem::NormalError;
+
+    if (leftIsErrorFileItemStatus != rightIsErrorFileItemStatus) {
+        return leftIsErrorFileItemStatus;
+    }
+
+    if (const auto rightType = rightActivity._type; leftType != rightType) {
+        return leftType < rightType;
     }
 
     const auto leftSyncResultStatus = leftActivity._syncResultStatus;
@@ -68,6 +71,11 @@ bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QMod
         return (leftSyncResultStatus != SyncResult::Undefined &&
                 leftSyncResultStatus != SyncResult::Success) ||
                 leftSyncResultStatus == SyncResult::Error;
+    }
+
+    if (leftSyncFileItemStatus != rightSyncFileItemStatus) {
+        // We want to shove erors towards the top.
+        return leftSyncFileItemStatus < rightSyncFileItemStatus;
     }
 
     // Finally sort by time, latest first
