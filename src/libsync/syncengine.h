@@ -250,7 +250,7 @@ private:
     // See SyncEngine::groupNeededScheduledSyncRuns and
     // SyncEngine::slotScheduleFilesDelayedSync for usage.
     struct ScheduledSyncBucket {
-        qint64 scheduledSyncTimerSecs;
+        qint64 scheduledSyncTimerSecs = 0LL;
         QVector<QString> files;
     };
 

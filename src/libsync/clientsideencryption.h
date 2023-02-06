@@ -180,8 +180,8 @@ struct EncryptedFile {
     QByteArray authenticationTag;
     QString encryptedFilename;
     QString originalFilename;
-    int fileVersion;
-    int metadataKey;
+    int fileVersion = 0;
+    int metadataKey = 0;
 };
 
 class OWNCLOUDSYNC_EXPORT FolderMetadata {
