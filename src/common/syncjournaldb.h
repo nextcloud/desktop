@@ -131,8 +131,8 @@ public:
     {
         QString _file; // The relative path of a file
         QString _url; // the poll url. (This pollinfo is invalid if _url is empty)
-        qint64 _modtime; // The modtime of the file being uploaded
-        qint64 _fileSize;
+        qint64 _modtime = 0LL; // The modtime of the file being uploaded
+        qint64 _fileSize = 0LL;
     };
 
     DownloadInfo getDownloadInfo(const QString &file);

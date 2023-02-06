@@ -232,7 +232,7 @@ protected:
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
-      qint64 _size;
+      qint64 _size = 0LL;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
@@ -389,7 +389,7 @@ private:
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     struct ServerChunkInfo
     {
-        qint64 size;
+        qint64 size = 0LL;
         QString originalName;
     };
     QMap<qint64, ServerChunkInfo> _serverChunks;

@@ -274,10 +274,10 @@ public:
     // input
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
-    SyncJournalDb *_statedb;
+    SyncJournalDb *_statedb = nullptr;
     AccountPtr _account;
     SyncOptions _syncOptions;
-    ExcludedFiles *_excludes;
+    ExcludedFiles *_excludes = nullptr;
     QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
     QStringList _leadingAndTrailingSpacesFilesAllowed;
