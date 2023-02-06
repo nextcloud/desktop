@@ -350,6 +350,8 @@ bool EditLocallyJob::isRelPathValid(const QString &relPath)
 
 OCC::Folder *EditLocallyJob::findFolderForFile(const QString &relPath, const QString &userId)
 {
+    qCDebug(lcEditLocallyJob()) << "findFolderForFile" << relPath << userId;
+
     if (relPath.isEmpty()) {
         return nullptr;
     }
@@ -360,7 +362,9 @@ OCC::Folder *EditLocallyJob::findFolderForFile(const QString &relPath, const QSt
 
     // a file is on the first level of remote root, so, we just need a proper folder that points to a remote root
     if (relPathSplit.size() == 1) {
+        qCDebug(lcEditLocallyJob()) << "file in root folder";
         const auto foundIt = std::find_if(std::begin(folderMap), std::end(folderMap), [&userId](const OCC::Folder *folder) {
+            qCDebug(lcEditLocallyJob()) << "comparing" << folder->remotePath() << "/" << folder->accountState()->account()->userIdAtHostWithPort() << userId;
             return folder->remotePath() == QStringLiteral("/") && folder->accountState()->account()->userIdAtHostWithPort() == userId;
         });
 
