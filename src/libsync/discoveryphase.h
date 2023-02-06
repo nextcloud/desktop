@@ -166,13 +166,13 @@ private:
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
-    bool _ignoredFirst;
+    bool _ignoredFirst = false;
     // Set to true if this is the root path and we need to check the data-fingerprint
-    bool _isRootPath;
+    bool _isRootPath = false;
     // If this directory is an external storage (The first item has 'M' in its permission)
-    bool _isExternalStorage;
+    bool _isExternalStorage = false;
     // If this directory is e2ee
-    bool _isE2eEncrypted;
+    bool _isE2eEncrypted = false;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;

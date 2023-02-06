@@ -79,8 +79,8 @@ private:
     QTimer _pollTimer;
     qint64 _secondsLeft = 0LL;
     qint64 _secondsInterval = 0LL;
-    bool _isBusy;
-    bool _hasToken;
+    bool _isBusy = false;
+    bool _hasToken = false;
     bool _enforceHttps = false;
 };
 

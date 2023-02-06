@@ -1056,7 +1056,6 @@ bool OwncloudPropagator::isInBulkUploadBlackList(const QString &file) const
 
 PropagatorJob::PropagatorJob(OwncloudPropagator *propagator)
     : QObject(propagator)
-    , _state(NotYetStarted)
 {
 }
 

@@ -56,7 +56,7 @@ private:
     void customizeStyle();
 
     Ui_OwncloudHttpCredsPage _ui;
-    bool _connected;
+    bool _connected = false;
     QProgressIndicator *_progressIndi;
     OwncloudWizard *_ocWizard;
 };

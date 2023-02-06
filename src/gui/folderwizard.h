@@ -115,7 +115,7 @@ private:
     void recursiveInsert(QTreeWidgetItem *parent, QStringList pathTrail, QString path);
     bool selectByPath(QString path);
     Ui_FolderWizardTargetPage _ui{};
-    bool _warnWasVisible;
+    bool _warnWasVisible = false;
     AccountPtr _account;
     QTimer _lscolTimer;
     QStringList _encryptedPaths;
@@ -167,7 +167,7 @@ public:
 
 private:
     FolderWizardLocalPath *_folderWizardSourcePage;
-    FolderWizardRemotePath *_folderWizardTargetPage;
+    FolderWizardRemotePath *_folderWizardTargetPage = nullptr;
     FolderWizardSelectiveSync *_folderWizardSelectiveSyncPage;
 };
 

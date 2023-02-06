@@ -89,18 +89,11 @@ SyncEngine::SyncEngine(AccountPtr account,
                        const QString &remotePath,
                        OCC::SyncJournalDb *journal)
     : _account(account)
-    , _needsUpdate(false)
-    , _syncRunning(false)
     , _localPath(localPath)
     , _remotePath(remotePath)
     , _journal(journal)
     , _progressInfo(new ProgressInfo)
-    , _hasNoneFiles(false)
-    , _hasRemoveFile(false)
-    , _uploadLimit(0)
-    , _downloadLimit(0)
     , _syncOptions(syncOptions)
-    , _anotherSyncNeeded(NoFollowUpSync)
 {
     qRegisterMetaType<SyncFileItem>("SyncFileItem");
     qRegisterMetaType<SyncFileItemPtr>("SyncFileItemPtr");

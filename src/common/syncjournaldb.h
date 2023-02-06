@@ -418,8 +418,8 @@ private:
     QString _dbFile;
     QRecursiveMutex _mutex; // Public functions are protected with the mutex.
     QMap<QByteArray, int> _checksymTypeCache;
-    int _transaction;
-    bool _metadataTableIsEmpty;
+    int _transaction = 0;
+    bool _metadataTableIsEmpty = false;
 
     /* Storing etags to these folders, or their parent folders, is filtered out.
      *

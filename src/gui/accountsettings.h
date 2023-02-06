@@ -140,13 +140,13 @@ private:
 
     FolderStatusModel *_model;
     QUrl _OCUrl;
-    bool _wasDisabledBefore;
+    bool _wasDisabledBefore = false;
     AccountState *_accountState;
     UserInfo _userInfo;
     QAction *_toggleSignInOutAction = nullptr;
     QAction *_addAccountAction = nullptr;
 
-    bool _menuShown;
+    bool _menuShown = false;
 
     QHash<QString, QMetaObject::Connection> _folderConnections;
 };
