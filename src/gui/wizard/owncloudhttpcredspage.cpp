@@ -28,7 +28,6 @@ namespace OCC {
 OwncloudHttpCredsPage::OwncloudHttpCredsPage(QWidget *parent)
     : AbstractCredentialsWizardPage()
     , _ui()
-    , _connected(false)
     , _progressIndi(new QProgressIndicator(this))
 {
     _ui.setupUi(this);

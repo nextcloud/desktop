@@ -35,8 +35,6 @@ Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMs
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)
     : QObject(parent)
     , _account(account)
-    , _isBusy(false)
-    , _hasToken(false)
 {
     _pollTimer.setInterval(1000);
     QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);
@@ -91,7 +89,7 @@ void Flow2Auth::fetchNewToken(const TokenAction action)
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this, action](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
+        QJsonParseError jsonParseError{};
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString pollToken, pollEndpoint, loginUrl;
 
@@ -208,7 +206,7 @@ void Flow2Auth::slotPollTimerTimeout()
 
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
+        QJsonParseError jsonParseError{};
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QUrl serverUrl;
         QString loginName, appPassword;

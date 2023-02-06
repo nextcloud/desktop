@@ -369,7 +369,7 @@ void ProgressInfo::recomputeCompletedSize()
 
 ProgressInfo::Estimates ProgressInfo::Progress::estimates() const
 {
-    Estimates est;
+    Estimates est{};
     est.estimatedBandwidth = _progressPerSec;
     if (_progressPerSec != 0) {
         est.estimatedEta = qRound64(static_cast<double>(_total - _completed) / _progressPerSec) * 1000;

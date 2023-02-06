@@ -125,7 +125,7 @@ private:
     OwncloudOAuthCredsPage *_browserCredsPage;
     Flow2AuthCredsPage *_flow2CredsPage;
     OwncloudAdvancedSetupPage *_advancedSetupPage;
-    OwncloudWizardResultPage *_resultPage;
+    OwncloudWizardResultPage *_resultPage = nullptr;
     AbstractCredentialsWizardPage *_credentialsPage = nullptr;
     WebViewPage *_webViewPage = nullptr;
 

@@ -130,7 +130,7 @@ bool PollJob::finished()
     }
 
     QByteArray jsonData = reply()->readAll().trimmed();
-    QJsonParseError jsonParseError;
+    QJsonParseError jsonParseError{};
     QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
     qCInfo(lcPollJob) << ">" << jsonData << "<" << reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt() << json << jsonParseError.errorString();
     if (jsonParseError.error != QJsonParseError::NoError) {
@@ -173,8 +173,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _finished(false)
     , _deleteExisting(false)
     , _aborting(false)
-    , _uploadEncryptedHelper(nullptr)
-    , _uploadingEncrypted(false)
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');

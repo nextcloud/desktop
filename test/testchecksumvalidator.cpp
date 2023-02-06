@@ -28,8 +28,8 @@ using namespace OCC::Utility;
         ValidateChecksumHeader::FailureReason _expectedFailureReason = ValidateChecksumHeader::FailureReason::Success;
         QByteArray     _expected;
         QByteArray     _expectedType;
-        bool           _successDown;
-        bool           _errorSeen;
+        bool           _successDown = false;
+        bool           _errorSeen = false;
 
     public slots:
 

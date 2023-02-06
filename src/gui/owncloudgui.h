@@ -120,9 +120,9 @@ private:
     QDBusConnection _bus;
 #endif
 
-    QAction *_actionNewAccountWizard;
-    QAction *_actionSettings;
-    QAction *_actionEstimate;
+    QAction *_actionNewAccountWizard = nullptr;
+    QAction *_actionSettings = nullptr;
+    QAction *_actionEstimate = nullptr;
 
 
     QList<QAction *> _recentItemsActions;

@@ -232,7 +232,7 @@ protected:
     struct UploadFileInfo {
       QString _file; /// I'm still unsure if I should use a SyncFilePtr here.
       QString _path; /// the full path on disk.
-      qint64 _size;
+      qint64 _size = 0LL;
     };
     UploadFileInfo _fileToUpload;
     QByteArray _transmissionChecksumHeader;
@@ -317,8 +317,8 @@ protected:
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
     QMap<QByteArray, QByteArray> headers();
 private:
-  PropagateUploadEncrypted *_uploadEncryptedHelper;
-  bool _uploadingEncrypted;
+  PropagateUploadEncrypted *_uploadEncryptedHelper = nullptr;
+  bool _uploadingEncrypted = false;
   UploadStatus _uploadStatus;
 };
 
@@ -389,7 +389,7 @@ private:
     // (Only used from slotPropfindIterate/slotPropfindFinished because the LsColJob use signals to report data.)
     struct ServerChunkInfo
     {
-        qint64 size;
+        qint64 size = 0LL;
         QString originalName;
     };
     QMap<qint64, ServerChunkInfo> _serverChunks;

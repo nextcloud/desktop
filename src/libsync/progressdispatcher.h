@@ -227,11 +227,11 @@ private:
     Progress _fileProgress;
 
     // All size from completed jobs only.
-    qint64 _totalSizeOfCompletedJobs;
+    qint64 _totalSizeOfCompletedJobs = 0LL;
 
     // The fastest observed rate of files per second in this sync.
-    double _maxFilesPerSecond;
-    double _maxBytesPerSecond;
+    double _maxFilesPerSecond = 0.0;
+    double _maxBytesPerSecond = 0.0;
 };
 
 namespace Progress {

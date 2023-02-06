@@ -126,7 +126,7 @@ private:
 
     QString _searchTerm;
     QString _errorString;
-    bool _waitingForSearchTermEditEnd;
+    bool _waitingForSearchTermEditEnd = false;
 
     QString _currentFetchMoreInProgressProviderId;
 

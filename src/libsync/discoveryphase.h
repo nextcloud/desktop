@@ -166,13 +166,13 @@ private:
     AccountPtr _account;
     // The first result is for the directory itself and need to be ignored.
     // This flag is true if it was already ignored.
-    bool _ignoredFirst;
+    bool _ignoredFirst = false;
     // Set to true if this is the root path and we need to check the data-fingerprint
-    bool _isRootPath;
+    bool _isRootPath = false;
     // If this directory is an external storage (The first item has 'M' in its permission)
-    bool _isExternalStorage;
+    bool _isExternalStorage = false;
     // If this directory is e2ee
-    bool _isE2eEncrypted;
+    bool _isE2eEncrypted = false;
     // If set, the discovery will finish with an error
     int64_t _size = 0;
     QString _error;
@@ -274,10 +274,10 @@ public:
     // input
     QString _localDir; // absolute path to the local directory. ends with '/'
     QString _remoteFolder; // remote folder, ends with '/'
-    SyncJournalDb *_statedb;
+    SyncJournalDb *_statedb = nullptr;
     AccountPtr _account;
     SyncOptions _syncOptions;
-    ExcludedFiles *_excludes;
+    ExcludedFiles *_excludes = nullptr;
     QRegularExpression _invalidFilenameRx; // FIXME: maybe move in ExcludedFiles
     QStringList _serverBlacklistedFiles; // The blacklist from the capabilities
     QStringList _leadingAndTrailingSpacesFilesAllowed;

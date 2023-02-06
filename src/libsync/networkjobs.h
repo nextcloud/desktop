@@ -347,7 +347,7 @@ private slots:
     void slotRedirected(QNetworkReply *reply, const QUrl &targetUrl, int redirectCount);
 
 private:
-    bool _subdirFallback;
+    bool _subdirFallback = false;
 
     /** The permanent-redirect adjusted account url.
      *
@@ -357,7 +357,7 @@ private:
     QUrl _serverUrl;
 
     /** Keep track of how many permanent redirect were applied. */
-    int _permanentRedirects;
+    int _permanentRedirects = 0;
 };
 
 

@@ -228,7 +228,7 @@ qint64 Utility::freeDiskSpace(const QString &path)
         return (qint64)stat.f_bavail * stat.f_frsize;
     }
 #elif defined(Q_OS_UNIX)
-    struct statvfs64 stat;
+    struct statvfs64 stat{};
     if (statvfs64(path.toLocal8Bit().data(), &stat) == 0) {
         return (qint64)stat.f_bavail * stat.f_frsize;
     }

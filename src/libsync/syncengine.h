@@ -250,7 +250,7 @@ private:
     // See SyncEngine::groupNeededScheduledSyncRuns and
     // SyncEngine::slotScheduleFilesDelayedSync for usage.
     struct ScheduledSyncBucket {
-        qint64 scheduledSyncTimerSecs;
+        qint64 scheduledSyncTimerSecs = 0LL;
         QVector<QString> files;
     };
 
@@ -313,8 +313,8 @@ private:
     QVector<SyncFileItemPtr> _syncItems;
 
     AccountPtr _account;
-    bool _needsUpdate;
-    bool _syncRunning;
+    bool _needsUpdate = false;
+    bool _syncRunning = false;
     QString _localPath;
     QString _remotePath;
     QByteArray _remoteRootEtag;
@@ -346,20 +346,20 @@ private:
     void restoreOldFiles(SyncFileItemVector &syncItems);
 
     // true if there is at least one file which was not changed on the server
-    bool _hasNoneFiles;
+    bool _hasNoneFiles = false;
 
     // true if there is at leasr one file with instruction REMOVE
-    bool _hasRemoveFile;
+    bool _hasRemoveFile = false;
 
     // If ignored files should be ignored
     bool _ignore_hidden_files = false;
 
 
-    int _uploadLimit;
-    int _downloadLimit;
+    int _uploadLimit = 0;
+    int _downloadLimit = 0;
     SyncOptions _syncOptions;
 
-    AnotherSyncNeeded _anotherSyncNeeded;
+    AnotherSyncNeeded _anotherSyncNeeded = NoFollowUpSync;
 
     /** Stores the time since a job touched a file. */
     QMultiMap<QElapsedTimer, QString> _touchedFiles;

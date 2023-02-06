@@ -55,7 +55,7 @@ Q_SIGNALS:
 
 private:
     QtLocalPeer* peer;
-    bool block;
+    bool block = false;
 };
 
 } // namespace SharedTools

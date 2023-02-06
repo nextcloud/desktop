@@ -430,7 +430,7 @@ bool HttpCredentials::refreshAccessToken()
     job->setTimeout(qMin(30 * 1000ll, job->timeoutMsec()));
     QObject::connect(job, &SimpleNetworkJob::finishedSignal, this, [this](QNetworkReply *reply) {
         auto jsonData = reply->readAll();
-        QJsonParseError jsonParseError;
+        QJsonParseError jsonParseError{};
         QJsonObject json = QJsonDocument::fromJson(jsonData, &jsonParseError).object();
         QString accessToken = json["access_token"].toString();
         if (jsonParseError.error != QJsonParseError::NoError || json.isEmpty()) {

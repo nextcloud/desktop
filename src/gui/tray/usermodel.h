@@ -149,7 +149,7 @@ private:
 
     // number of currently running notification requests. If non zero,
     // no query for notifications is started.
-    int _notificationRequestsRunning;
+    int _notificationRequestsRunning = 0;
 };
 
 class UserModel : public QAbstractListModel
