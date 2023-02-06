@@ -35,8 +35,6 @@ Q_LOGGING_CATEGORY(lcFlow2auth, "nextcloud.sync.credentials.flow2auth", QtInfoMs
 Flow2Auth::Flow2Auth(Account *account, QObject *parent)
     : QObject(parent)
     , _account(account)
-    , _isBusy(false)
-    , _hasToken(false)
 {
     _pollTimer.setInterval(1000);
     QObject::connect(&_pollTimer, &QTimer::timeout, this, &Flow2Auth::slotPollTimerTimeout);

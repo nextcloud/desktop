@@ -31,8 +31,6 @@ Q_LOGGING_CATEGORY(lcPropagateRemoteMkdir, "nextcloud.sync.propagator.remotemkdi
 
 PropagateRemoteMkdir::PropagateRemoteMkdir(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
     : PropagateItemJob(propagator, item)
-    , _deleteExisting(false)
-    , _uploadEncryptedHelper(nullptr)
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');

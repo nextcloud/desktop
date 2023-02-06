@@ -147,10 +147,8 @@ protected:
 AccountSettings::AccountSettings(AccountState *accountState, QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::AccountSettings)
-    , _wasDisabledBefore(false)
     , _accountState(accountState)
     , _userInfo(accountState, false, true)
-    , _menuShown(false)
 {
     _ui->setupUi(this);
 

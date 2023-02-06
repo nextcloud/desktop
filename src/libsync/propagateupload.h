@@ -317,8 +317,8 @@ protected:
     /** Bases headers that need to be sent on the PUT, or in the MOVE for chunking-ng */
     QMap<QByteArray, QByteArray> headers();
 private:
-  PropagateUploadEncrypted *_uploadEncryptedHelper;
-  bool _uploadingEncrypted;
+  PropagateUploadEncrypted *_uploadEncryptedHelper = nullptr;
+  bool _uploadingEncrypted = false;
   UploadStatus _uploadStatus;
 };
 

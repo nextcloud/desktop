@@ -44,7 +44,6 @@ AccountState::AccountState(AccountPtr account)
     , _account(account)
     , _state(AccountState::Disconnected)
     , _connectionStatus(ConnectionValidator::Undefined)
-    , _waitingForNewCredentials(false)
     , _maintenanceToConnectedDelay(60000 + (qrand() % (4 * 60000))) // 1-5min delay
     , _remoteWipe(new RemoteWipe(_account))
     , _isDesktopNotificationsAllowed(true)

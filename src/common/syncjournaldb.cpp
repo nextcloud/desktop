@@ -104,8 +104,6 @@ static QByteArray defaultJournalMode(const QString &dbPath)
 SyncJournalDb::SyncJournalDb(const QString &dbFilePath, QObject *parent)
     : QObject(parent)
     , _dbFile(dbFilePath)
-    , _transaction(0)
-    , _metadataTableIsEmpty(false)
 {
     // Allow forcing the journal mode for debugging
     static QByteArray envJournalMode = qgetenv("OWNCLOUD_SQLITE_JOURNAL_MODE");

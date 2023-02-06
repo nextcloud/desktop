@@ -67,7 +67,6 @@ private:
 SelectiveSyncWidget::SelectiveSyncWidget(AccountPtr account, QWidget *parent)
     : QWidget(parent)
     , _account(account)
-    , _inserting(false)
     , _folderTree(new QTreeWidget(this))
 {
     _loading = new QLabel(tr("Loading …"), _folderTree);

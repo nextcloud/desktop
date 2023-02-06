@@ -472,11 +472,11 @@ private:
 
     /// The number of syncs that failed in a row.
     /// Reset when a sync is successful.
-    int _consecutiveFailingSyncs;
+    int _consecutiveFailingSyncs = 0;
 
     /// The number of requested follow-up syncs.
     /// Reset when no follow-up is requested.
-    int _consecutiveFollowUpSyncs;
+    int _consecutiveFollowUpSyncs = 0;
 
     mutable SyncJournalDb _journal;
 

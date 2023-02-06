@@ -171,9 +171,7 @@ void FolderWizardLocalPath::changeStyle()
 // =================================================================================
 FolderWizardRemotePath::FolderWizardRemotePath(const AccountPtr &account)
     : FormatWarningsWizardPage()
-    , _warnWasVisible(false)
     , _account(account)
-
 {
     _ui.setupUi(this);
     _ui.warnFrame->hide();
@@ -634,7 +632,6 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
 FolderWizard::FolderWizard(AccountPtr account, QWidget *parent)
     : QWizard(parent)
     , _folderWizardSourcePage(new FolderWizardLocalPath(account))
-    , _folderWizardTargetPage(nullptr)
     , _folderWizardSelectiveSyncPage(new FolderWizardSelectiveSync(account))
 {
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);

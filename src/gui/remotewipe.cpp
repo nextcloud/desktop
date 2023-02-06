@@ -28,10 +28,7 @@ RemoteWipe::RemoteWipe(AccountPtr account, QObject *parent)
     : QObject(parent),
       _account(account),
       _appPassword(QString()),
-      _accountRemoved(false),
-      _networkManager(nullptr),
-      _networkReplyCheck(nullptr),
-      _networkReplySuccess(nullptr)
+      _networkManager(nullptr)
 {
     QObject::connect(AccountManager::instance(), &AccountManager::accountRemoved,
                      this, [=](AccountState *) {

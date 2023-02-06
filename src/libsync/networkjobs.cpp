@@ -418,8 +418,6 @@ namespace {
 
 CheckServerJob::CheckServerJob(AccountPtr account, QObject *parent)
     : AbstractNetworkJob(account, QLatin1String(statusphpC), parent)
-    , _subdirFallback(false)
-    , _permanentRedirects(0)
 {
     setIgnoreCredentialFailure(true);
     connect(this, &AbstractNetworkJob::redirected,

@@ -173,8 +173,6 @@ PropagateUploadFileCommon::PropagateUploadFileCommon(OwncloudPropagator *propaga
     , _finished(false)
     , _deleteExisting(false)
     , _aborting(false)
-    , _uploadEncryptedHelper(nullptr)
-    , _uploadingEncrypted(false)
 {
     const auto path = _item->_file;
     const auto slashPosition = path.lastIndexOf('/');

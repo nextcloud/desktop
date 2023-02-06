@@ -81,7 +81,7 @@ public:
         Running,
         Finished
     };
-    JobState _state;
+    JobState _state = NotYetStarted;
 
     Q_ENUM(JobState)
 
@@ -188,12 +188,11 @@ protected slots:
 
 private:
     QScopedPointer<PropagateItemJob> _restoreJob;
-    JobParallelism _parallelism;
+    JobParallelism _parallelism = FullParallelism;
 
 public:
     PropagateItemJob(OwncloudPropagator *propagator, const SyncFileItemPtr &item)
         : PropagatorJob(propagator)
-        , _parallelism(FullParallelism)
         , _item(item)
     {
         // we should always execute jobs that process the E2EE API calls as sequential jobs
@@ -235,12 +234,11 @@ public:
     QVector<PropagatorJob *> _jobsToDo;
     SyncFileItemVector _tasksToDo;
     QVector<PropagatorJob *> _runningJobs;
-    SyncFileItem::Status _hasError; // NoStatus,  or NormalError / SoftError if there was an error
-    quint64 _abortsCount;
+    SyncFileItem::Status _hasError = SyncFileItem::NoStatus; // NoStatus,  or NormalError / SoftError if there was an error
+    quint64 _abortsCount = 0;
 
     explicit PropagatorCompositeJob(OwncloudPropagator *propagator)
         : PropagatorJob(propagator)
-        , _hasError(SyncFileItem::NoStatus), _abortsCount(0)
     {
     }
 
@@ -411,16 +409,14 @@ class OWNCLOUDSYNC_EXPORT OwncloudPropagator : public QObject
     Q_OBJECT
 public:
     SyncJournalDb *const _journal;
-    bool _finishedEmited; // used to ensure that finished is only emitted once
+    bool _finishedEmited = false; // used to ensure that finished is only emitted once
 
 public:
     OwncloudPropagator(AccountPtr account, const QString &localDir,
                        const QString &remoteFolder, SyncJournalDb *progressDb,
                        QSet<QString> &bulkUploadBlackList)
         : _journal(progressDb)
-        , _finishedEmited(false)
         , _bandwidthManager(this)
-        , _anotherSyncNeeded(false)
         , _chunkSize(10 * 1000 * 1000) // 10 MB, overridden in setSyncOptions
         , _account(account)
         , _localDir((localDir.endsWith(QChar('/'))) ? localDir : localDir + '/')
@@ -464,7 +460,7 @@ public:
     QList<PropagateItemJob *> _activeJobList;
 
     /** We detected that another sync is required after this one */
-    bool _anotherSyncNeeded;
+    bool _anotherSyncNeeded = false;
 
     /** Per-folder quota guesses.
      *
