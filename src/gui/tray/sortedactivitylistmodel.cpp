@@ -64,29 +64,26 @@ bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QMod
     // Then sync file item status errors
     const auto leftSyncFileItemStatus = leftActivity._syncFileItemStatus;
     const auto rightSyncFileItemStatus = rightActivity._syncFileItemStatus;
-    const bool leftIsErrorFileItemStatus = leftSyncFileItemStatus == SyncFileItem::FatalError ||
-                                           leftSyncFileItemStatus == SyncFileItem::SoftError ||
-                                           leftSyncFileItemStatus == SyncFileItem::NormalError;
+    const bool leftIsErrorFileItemStatus = leftSyncFileItemStatus != SyncFileItem::NoStatus &&
+                                           leftSyncFileItemStatus != SyncFileItem::Success;
 
-    const bool rightIsErrorFileItemStatus = rightSyncFileItemStatus == SyncFileItem::FatalError ||
-                                            rightSyncFileItemStatus == SyncFileItem::SoftError ||
-                                            rightSyncFileItemStatus == SyncFileItem::NormalError;
+    const bool rightIsErrorFileItemStatus = rightSyncFileItemStatus != SyncFileItem::NoStatus &&
+                                            rightSyncFileItemStatus != SyncFileItem::Success;
 
     if (leftIsErrorFileItemStatus != rightIsErrorFileItemStatus) {
         return leftIsErrorFileItemStatus;
     }
 
+    // Let's go back to more broadly comparing by type
     if (const auto rightType = rightActivity._type; leftType != rightType) {
         return leftType < rightType;
     }
 
     if (leftSyncResultStatus != rightSyncResultStatus) {
-        return leftSyncResultStatus != SyncResult::Undefined &&
-                leftSyncResultStatus != SyncResult::Success;
+        return leftSyncResultStatus < rightSyncResultStatus;
     }
 
     if (leftSyncFileItemStatus != rightSyncFileItemStatus) {
-        // We want to shove erors towards the top.
         return leftSyncFileItemStatus < rightSyncFileItemStatus;
     }
 
