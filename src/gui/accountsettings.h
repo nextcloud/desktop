@@ -93,7 +93,6 @@ protected slots:
     void slotSetSubFolderAvailability(OCC::Folder *folder, const QString &path, OCC::PinState state);
     void slotFolderWizardAccepted();
     void slotFolderWizardRejected();
-    void slotDeleteAccount();
     void slotToggleSignInState();
     void refreshSelectiveSyncStatus();
     void slotMarkSubfolderEncrypted(OCC::FolderStatusModel::SubFolderInfo *folderInfo);
