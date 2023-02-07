@@ -308,17 +308,17 @@
 <context>
     <name>OCC::AbstractNetworkJob</name>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="317"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="314"/>
         <source>Connection timed out</source>
         <translation>Превышено время ожидания соединения</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="319"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="316"/>
         <source>Unknown error: network reply was deleted</source>
         <translation>Неизвестная ошибка: сетевой ответ был удален</translation>
     </message>
     <message>
-        <location filename="../src/libsync/abstractnetworkjob.cpp" line="450"/>
+        <location filename="../src/libsync/abstractnetworkjob.cpp" line="447"/>
         <source>Server replied &quot;%1 %2&quot; to &quot;%3 %4&quot;</source>
         <translation>На запрос «%3 %4» от сервера получен ответ «%1 %2» </translation>
     </message>
@@ -363,9 +363,9 @@
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="70"/>
-        <location filename="../src/gui/accountsettings.cpp" line="806"/>
-        <location filename="../src/gui/accountsettings.cpp" line="925"/>
-        <location filename="../src/gui/accountsettings.cpp" line="1531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="804"/>
+        <location filename="../src/gui/accountsettings.cpp" line="923"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1529"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -435,19 +435,24 @@
         <translation>Зашифровать папку</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="234"/>
+        <location filename="../src/gui/accountsettings.cpp" line="232"/>
         <source>No account configured.</source>
         <translation>Учётная запись не настроена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="247"/>
+        <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="252"/>
+        <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>Display mnemonic</source>
         <translation>Показать  мнемофразу</translation>
+    </message>
+    <message>
+        <location filename="../src/gui/accountsettings.cpp" line="256"/>
+        <source>End-to-end encryption has been enabled for this account</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
@@ -455,23 +460,18 @@
         <translation>Включить шифрование</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="258"/>
-        <source>End-to-end encryption has been enabled for this account</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="290"/>
+        <location filename="../src/gui/accountsettings.cpp" line="288"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="343"/>
+        <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="368"/>
+        <location filename="../src/gui/accountsettings.cpp" line="366"/>
         <source>You cannot encrypt a folder with contents, please remove the files.
 Wait for the new sync, then encrypt it.</source>
         <translation>Невозможно зашифровать непустую папку. Удалите файлы, дождитесь окончания синхронизации и включите шифрование.</translation>
@@ -483,121 +483,121 @@ Wait for the new sync, then encrypt it.</source>
         <translation>Эта учетная запись поддерживает сквозное шифрование</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="392"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Encryption failed</source>
         <translation>Ошибка шифрования</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="392"/>
+        <location filename="../src/gui/accountsettings.cpp" line="390"/>
         <source>Could not encrypt folder because the folder does not exist anymore</source>
         <translation>Не удалось зашифровать папку, она более не существует</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="505"/>
-        <location filename="../src/gui/accountsettings.cpp" line="597"/>
+        <location filename="../src/gui/accountsettings.cpp" line="503"/>
+        <location filename="../src/gui/accountsettings.cpp" line="595"/>
         <source>Open folder</source>
         <translation>Открыть папку…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="522"/>
+        <location filename="../src/gui/accountsettings.cpp" line="520"/>
         <source>Encrypt</source>
         <translation>Зашифровать</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="530"/>
-        <location filename="../src/gui/accountsettings.cpp" line="600"/>
+        <location filename="../src/gui/accountsettings.cpp" line="528"/>
+        <location filename="../src/gui/accountsettings.cpp" line="598"/>
         <source>Edit Ignored Files</source>
         <translation>Список исключений синхронизации…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="533"/>
-        <location filename="../src/gui/accountsettings.cpp" line="603"/>
+        <location filename="../src/gui/accountsettings.cpp" line="531"/>
+        <location filename="../src/gui/accountsettings.cpp" line="601"/>
         <source>Create new folder</source>
         <translation>Создать папку</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="539"/>
-        <location filename="../src/gui/accountsettings.cpp" line="629"/>
+        <location filename="../src/gui/accountsettings.cpp" line="537"/>
+        <location filename="../src/gui/accountsettings.cpp" line="627"/>
         <source>Availability</source>
         <translation>Доступность</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="608"/>
+        <location filename="../src/gui/accountsettings.cpp" line="606"/>
         <source>Choose what to sync</source>
         <translation>Выбрать объекты для синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="614"/>
+        <location filename="../src/gui/accountsettings.cpp" line="612"/>
         <source>Force sync now</source>
         <translation>Принудительно запустить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="616"/>
+        <location filename="../src/gui/accountsettings.cpp" line="614"/>
         <source>Restart sync</source>
         <translation>Перезапустить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="622"/>
+        <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <source>Resume sync</source>
         <translation>Возобновить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="622"/>
+        <location filename="../src/gui/accountsettings.cpp" line="620"/>
         <source>Pause sync</source>
         <translation>Приостановить синхронизацию</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="625"/>
+        <location filename="../src/gui/accountsettings.cpp" line="623"/>
         <source>Remove folder sync connection</source>
         <translation>Отключить синхронизацию папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="638"/>
+        <location filename="../src/gui/accountsettings.cpp" line="636"/>
         <source>Disable virtual file support …</source>
         <translation>Отключить поддержку виртуальных файлов…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="646"/>
+        <location filename="../src/gui/accountsettings.cpp" line="644"/>
         <source>Enable virtual file support %1 …</source>
         <translation>Включить поддержку виртуальных файлов %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="646"/>
+        <location filename="../src/gui/accountsettings.cpp" line="644"/>
         <source>(experimental)</source>
         <translation>(экспериментальное)</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="740"/>
+        <location filename="../src/gui/accountsettings.cpp" line="738"/>
         <source>Folder creation failed</source>
         <translation>Ошибка создания папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="741"/>
+        <location filename="../src/gui/accountsettings.cpp" line="739"/>
         <source>&lt;p&gt;Could not create local folder &lt;i&gt;%1&lt;/i&gt;.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Не удалось создать локальную папку: &lt;i&gt;«%1»&lt;/i&gt;.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="798"/>
+        <location filename="../src/gui/accountsettings.cpp" line="796"/>
         <source>Confirm Folder Sync Connection Removal</source>
         <translation>Подтверждение отключения синхронизации папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="799"/>
+        <location filename="../src/gui/accountsettings.cpp" line="797"/>
         <source>&lt;p&gt;Do you really want to stop syncing the folder &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Действительно остановить синхронизацию папки &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;НЕ&lt;/b&gt; приведёт к удалению файлов.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="805"/>
+        <location filename="../src/gui/accountsettings.cpp" line="803"/>
         <source>Remove Folder Sync Connection</source>
         <translation>Отключить синхронизацию папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="916"/>
+        <location filename="../src/gui/accountsettings.cpp" line="914"/>
         <source>Disable virtual file support?</source>
         <translation>Отключить поддержку виртуальных файлов?</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="917"/>
+        <location filename="../src/gui/accountsettings.cpp" line="915"/>
         <source>This action will disable virtual file support. As a consequence contents of folders that are currently marked as &quot;available online only&quot; will be downloaded.
 
 The only advantage of disabling virtual file support is that the selective sync feature will become available again.
@@ -610,7 +610,7 @@ This action will abort any currently running synchronization.</source>
 Отключение приведёт к прекращению выполняющейся синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="924"/>
+        <location filename="../src/gui/accountsettings.cpp" line="922"/>
         <source>Disable support</source>
         <translation>Отключить поддержку</translation>
     </message>
@@ -620,157 +620,157 @@ This action will abort any currently running synchronization.</source>
         <translation>Мнемофраза оконечного шифрования</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1007"/>
         <source>End-to-end encryption mnemonic</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1011"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
         <translation>Для защиты личного идентификатора оконечного шифрования используется мнемофраза, состоящая из двенадцати слов. Мнемофразу следует записать и сохранить запись в надёжном месте, она потребуется для подключения к учётной записи ваших дополнительных устройств.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1034"/>
         <source>Disable end-to-end encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1037"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Disable end-to-end encryption for %1?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1038"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1036"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1100"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1098"/>
         <source>Sync Running</source>
         <translation>Синхронизация запущена</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1101"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1099"/>
         <source>The syncing operation is running.&lt;br/&gt;Do you want to terminate it?</source>
         <translation>Выполняется синхронизация.&lt;br/&gt;Действительно прервать операцию? </translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1173"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1171"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
         <translation>Используется %1 (%3%) из %2. Некоторые папки, включая сетевые или общие, могут иметь свои собственные ограничения.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1174"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1172"/>
         <source>%1 of %2 in use</source>
         <translation>Используется %1 из %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1183"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1181"/>
         <source>Currently there is no storage usage information available.</source>
         <translation>В данный момент информация о заполненности хранилища недоступна.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1186"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1184"/>
         <source>%1 in use</source>
         <translation>Используется %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1213"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1211"/>
         <source>%1 as %2</source>
         <translation>%1: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1220"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1218"/>
         <source>The server version %1 is unsupported! Proceed at your own risk.</source>
         <translation>Сервер версии %1 не поддерживается. Продолжайте на свой страх и риск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1222"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1220"/>
         <source>Connected to %1.</source>
         <translation>Соединен с %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1226"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1224"/>
         <source>Server %1 is temporarily unavailable.</source>
         <translation>Сервер %1 временно недоступен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1229"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1227"/>
         <source>Server %1 is currently in maintenance mode.</source>
         <translation>Сервер %1 в настоящее время находится в режиме технического обслуживания.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1232"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1230"/>
         <source>Signed out from %1.</source>
         <translation>Успешно вышли из %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1242"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1240"/>
         <source>Obtaining authorization from the browser. &lt;a href=&apos;%1&apos;&gt;Click here&lt;/a&gt; to re-open the browser.</source>
         <translation>Получение авторизации из браузера. &lt;a href=&apos;%1&apos;&gt;Нажмите здесь&lt;/a&gt;, чтобы повторно открыть браузер.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1246"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1244"/>
         <source>Connecting to %1 …</source>
         <translation>Подключение к %1…</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1251"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1249"/>
         <source>No connection to %1 at %2.</source>
         <translation>Нет соединения с %1 в %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1256"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1254"/>
         <source>Server configuration error: %1 at %2.</source>
         <translation>Ошибка конфигурации сервера: %1: %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1267"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1265"/>
         <source>No %1 connection configured.</source>
         <translation>Нет настроенного подключения %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1509"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1507"/>
         <source>There are folders that were not synchronized because they are too big: </source>
         <translation>Есть папки, которые не синхронизированы, так как их размер превышает установленное ограничение:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1511"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1509"/>
         <source>There are folders that were not synchronized because they are external storages: </source>
         <translation>Есть папки, которые не были синхронизированы, так как они являются внешними хранилищами:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1512"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1510"/>
         <source>There are folders that were not synchronized because they are too big or external storages: </source>
         <translation>Есть папки, которые не были синхронизированы, так как их размер превышает установленное ограничение или они являются внешними хранилищами:</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1524"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Подтверждение удаления учетной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1525"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1523"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Действительно удалить подключение к учётной записи &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;НЕ&lt;/b&gt;  приведёт к удалению файлов.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1530"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Удалить подключение</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1587"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
         <source>This account supports end-to-end encryption</source>
         <translation>Эта учетная запись поддерживает сквозное шифрование</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1591"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1589"/>
         <source>Set up encryption</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1596"/>
+        <location filename="../src/gui/accountsettings.cpp" line="1594"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
         <translation type="unfinished"/>
     </message>
@@ -796,47 +796,47 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::AccountState</name>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="149"/>
+        <location filename="../src/gui/accountstate.cpp" line="148"/>
         <source>Signed out</source>
         <translation>Выполнен выход из учётной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="151"/>
+        <location filename="../src/gui/accountstate.cpp" line="150"/>
         <source>Disconnected</source>
         <translation>Отключено</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="153"/>
+        <location filename="../src/gui/accountstate.cpp" line="152"/>
         <source>Connected</source>
         <translation>Подключено</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="155"/>
+        <location filename="../src/gui/accountstate.cpp" line="154"/>
         <source>Service unavailable</source>
         <translation>Сервис недоступен</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="157"/>
+        <location filename="../src/gui/accountstate.cpp" line="156"/>
         <source>Maintenance mode</source>
         <translation>Режим технического обслуживания.</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="159"/>
+        <location filename="../src/gui/accountstate.cpp" line="158"/>
         <source>Network error</source>
         <translation>Ошибка сети</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="161"/>
+        <location filename="../src/gui/accountstate.cpp" line="160"/>
         <source>Configuration error</source>
         <translation>Ошибка конфигурации</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="163"/>
+        <location filename="../src/gui/accountstate.cpp" line="162"/>
         <source>Asking Credentials</source>
         <translation>Запрос учётных данных</translation>
     </message>
     <message>
-        <location filename="../src/gui/accountstate.cpp" line="165"/>
+        <location filename="../src/gui/accountstate.cpp" line="164"/>
         <source>Unknown account state</source>
         <translation>Неизвестное состояние учетной записи</translation>
     </message>
@@ -962,7 +962,7 @@ This action will abort any currently running synchronization.</source>
         <translation>Продолжить</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="386"/>
+        <location filename="../src/gui/application.cpp" line="377"/>
         <source>Error accessing the configuration file</source>
         <translation>Ошибка при доступе к файлу конфигурации</translation>
     </message>
@@ -972,12 +972,12 @@ This action will abort any currently running synchronization.</source>
         <translation>Ошибка при обращении к файлу конфигурации «%1», убедитесь, что файл доступен.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="387"/>
+        <location filename="../src/gui/application.cpp" line="378"/>
         <source>There was an error while accessing the configuration file at %1. Please make sure the file can be accessed by your system account.</source>
         <translation>Ошибка при обращении к файлу конфигурации «%1», убедитесь, что файл доступен для системной учётной записи.</translation>
     </message>
     <message>
-        <location filename="../src/gui/application.cpp" line="390"/>
+        <location filename="../src/gui/application.cpp" line="381"/>
         <source>Quit %1</source>
         <translation>Выйти из %1</translation>
     </message>
@@ -1232,7 +1232,7 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::CleanupPollsJob</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1511"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1510"/>
         <source>Error writing metadata to the database</source>
         <translation>Ошибка записи метаданных в базу данных</translation>
     </message>
@@ -1385,32 +1385,32 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::ConnectionValidator</name>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="50"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="49"/>
         <source>No Nextcloud account configured</source>
         <translation>Учётная запись Nextcloud не настроена</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="147"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="146"/>
         <source>Authentication error: Either username or password are wrong.</source>
         <translation>Ошибка авторизации: Имя пользователя или пароль не верны.</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="159"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="158"/>
         <source>Timeout</source>
         <translation>Тайм-аут</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="196"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="195"/>
         <source>The provided credentials are not correct</source>
         <translation>Введённые учётные данные не верны</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="267"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="266"/>
         <source>The configured server for this client is too old</source>
         <translation>Настроенный сервер слишком стар для этого клиента</translation>
     </message>
     <message>
-        <location filename="../src/gui/connectionvalidator.cpp" line="268"/>
+        <location filename="../src/gui/connectionvalidator.cpp" line="267"/>
         <source>Please update to the latest server and restart the client.</source>
         <translation>Обновите сервер до последней версии и перезапустите клиент.</translation>
     </message>
@@ -1431,8 +1431,8 @@ This action will abort any currently running synchronization.</source>
 <context>
     <name>OCC::DiscoverySingleDirectoryJob</name>
     <message>
-        <location filename="../src/libsync/discoveryphase.cpp" line="571"/>
-        <location filename="../src/libsync/discoveryphase.cpp" line="601"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="567"/>
+        <location filename="../src/libsync/discoveryphase.cpp" line="597"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
         <translation>Ошибка сервера: ответ PROPFIND не в формате XML.</translation>
     </message>
@@ -1607,36 +1607,36 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Flow2Auth</name>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="104"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="102"/>
         <source>The polling URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
         <translation>При запросе процедуры авторизации с использованием HTTPS получен ответ без использования HTTPS. Продолжение процедуры авторизации будет прервано, так как такой вход небезопасен. Сообщите о ситуации системному администратору.</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="115"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="233"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="113"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="231"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Сервер сообщил об ошибке: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="118"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="236"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="116"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="234"/>
         <source>There was an error accessing the &quot;token&quot; endpoint: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Ошибка при доступе к механизму обработки токенов: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="121"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="239"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="119"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="237"/>
         <source>Could not parse the JSON returned from the server: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</source>
         <translation>Не удалось разобрать ответ сервера в формате JSON: &lt;br&gt;&lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="124"/>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="242"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="122"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="240"/>
         <source>The reply from the server did not contain all expected fields</source>
         <translation>В ответе сервера содержатся не все ожидаемые поля</translation>
     </message>
     <message>
-        <location filename="../src/gui/creds/flow2auth.cpp" line="221"/>
+        <location filename="../src/gui/creds/flow2auth.cpp" line="219"/>
         <source>The returned server URL does not start with HTTPS despite the login URL started with HTTPS. Login will not be possible because this might be a security issue. Please contact your administrator.</source>
         <translation>При запросе процедуры авторизации с использованием HTTPS получен адрес сервера, не использующего HTTPS. Продолжение процедуры авторизации будет прервано, так как такой вход небезопасен. Сообщите о ситуации системному администратору.</translation>
     </message>
@@ -1682,145 +1682,145 @@ This can be an issue with your OpenSSL libraries.</source>
 <context>
     <name>OCC::Folder</name>
     <message>
-        <location filename="../src/gui/folder.cpp" line="179"/>
+        <location filename="../src/gui/folder.cpp" line="177"/>
         <source>Local folder %1 does not exist.</source>
         <translation>Локальная папка «%1» не существует.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="182"/>
+        <location filename="../src/gui/folder.cpp" line="180"/>
         <source>%1 should be a folder but is not.</source>
         <translation>«%1» должен быть папкой, но ей не является.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="185"/>
+        <location filename="../src/gui/folder.cpp" line="183"/>
         <source>%1 is not readable.</source>
         <translation>«%1» не может быть прочитан.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="428"/>
+        <location filename="../src/gui/folder.cpp" line="426"/>
         <source>%1 and %n other file(s) have been removed.</source>
         <translation><numerusform>Удалены «%1» и ещё %n файл.</numerusform><numerusform>Удалены «%1» и ещё %n файла.</numerusform><numerusform>Удалены «%1» и ещё %n файлов.</numerusform><numerusform>Удалены «%1» и ещё %n файлов.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="430"/>
+        <location filename="../src/gui/folder.cpp" line="428"/>
         <source>%1 has been removed.</source>
         <comment>%1 names a file.</comment>
         <translation>«%1» удалён.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="435"/>
+        <location filename="../src/gui/folder.cpp" line="433"/>
         <source>%1 and %n other file(s) have been added.</source>
         <translation><numerusform>%1 и ещё %n файл добавлены.</numerusform><numerusform>%1 и ещё %n файла добавлены.</numerusform><numerusform>%1 и ещё %n файлов добавлены.</numerusform><numerusform>%1 и ещё %n файла добавлены.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="437"/>
+        <location filename="../src/gui/folder.cpp" line="435"/>
         <source>%1 has been added.</source>
         <comment>%1 names a file.</comment>
         <translation>«%1» добавлен.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="442"/>
+        <location filename="../src/gui/folder.cpp" line="440"/>
         <source>%1 and %n other file(s) have been updated.</source>
         <translation><numerusform>Обновлены «%1» и ещё один файл.</numerusform><numerusform>Обновлены «%1» и ещё %n файла.</numerusform><numerusform>Обновлены «%1» и ещё %n файлов.</numerusform><numerusform>Обновлены «%1» и ещё %n файла.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="444"/>
+        <location filename="../src/gui/folder.cpp" line="442"/>
         <source>%1 has been updated.</source>
         <comment>%1 names a file.</comment>
         <translation>«%1» обновлён.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="449"/>
+        <location filename="../src/gui/folder.cpp" line="447"/>
         <source>%1 has been renamed to %2 and %n other file(s) have been renamed.</source>
         <translation><numerusform>«%1» переименован в «%2», ещё переименован один файл.</numerusform><numerusform>«%1» переименован в «%2», ещё переименованы %n файла.</numerusform><numerusform>«%1» переименован в «%2», ещё переименованы %n файлов.</numerusform><numerusform>«%1» переименован в «%2», ещё переименованы %n файлов.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="451"/>
+        <location filename="../src/gui/folder.cpp" line="449"/>
         <source>%1 has been renamed to %2.</source>
         <comment>%1 and %2 name files.</comment>
         <translation>«%1» переименован в «%2».</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="456"/>
+        <location filename="../src/gui/folder.cpp" line="454"/>
         <source>%1 has been moved to %2 and %n other file(s) have been moved.</source>
         <translation><numerusform>%1 был перемещён в %2, и ещё %n другой файл был перемещён.</numerusform><numerusform>%1 был перемещён в %2, и ещё %n других файла были перемещены.</numerusform><numerusform>%1 был перемещён в %2, и ещё %n других файла были перемещены.</numerusform><numerusform>%1 был перемещён в %2, и ещё %n других файла были перемещены.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="458"/>
+        <location filename="../src/gui/folder.cpp" line="456"/>
         <source>%1 has been moved to %2.</source>
         <translation>«%1» перемещён в «%2».</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="463"/>
+        <location filename="../src/gui/folder.cpp" line="461"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
         <translation><numerusform>У %1 и ещё у %n другого файла есть конфликты синхронизации.</numerusform><numerusform>У %1 и ещё у %n других файлов есть конфликты синхронизации.</numerusform><numerusform>У %1 и ещё у %n других файлов есть конфликты синхронизации.</numerusform><numerusform>У %1 и ещё у %n других файлов есть конфликты синхронизации.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="465"/>
+        <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
         <translation>У %1 есть конфликт синхронизации. Пожалуйста, проверьте конфликтный файл!</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="470"/>
+        <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
         <translation><numerusform>%1 и ещё %n другой файл не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform><numerusform>%1 и ещё %n других файла не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform><numerusform>%1 и ещё %n других файлов не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform><numerusform>%1 и ещё %n других файлов не удалось синхронизировать из-за ошибок. Подробности смотрите в журнале.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="472"/>
+        <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
         <translation>%1 не может быть синхронизирован из-за ошибки. Подробности смотрите в журнале.</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/gui/folder.cpp" line="477"/>
+        <location filename="../src/gui/folder.cpp" line="475"/>
         <source>%1 and %n other file(s) are currently locked.</source>
         <translation><numerusform>%1 и ещё %n файл заблокированы.</numerusform><numerusform>%1 и ещё %n файла заблокированы.</numerusform><numerusform>%1 и ещё %n файлов заблокированы.</numerusform><numerusform>%1 и ещё %n файла заблокированы.</numerusform></translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="479"/>
+        <location filename="../src/gui/folder.cpp" line="477"/>
         <source>%1 is currently locked.</source>
         <translation>файл «%1» заблокирован.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="487"/>
+        <location filename="../src/gui/folder.cpp" line="485"/>
         <source>Sync Activity</source>
         <translation>Журнал синхронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="860"/>
+        <location filename="../src/gui/folder.cpp" line="858"/>
         <source>Could not read system exclude file</source>
         <translation>Не удалось прочитать файл исключений сихнронизации</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1138"/>
+        <location filename="../src/gui/folder.cpp" line="1136"/>
         <source>A new folder larger than %1 MB has been added: %2.
 </source>
         <translation>Добавлена новая папка «%2», размер которой превышает %1 МБ.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1141"/>
+        <location filename="../src/gui/folder.cpp" line="1139"/>
         <source>A folder from an external storage has been added.
 </source>
         <translation>Была добавлена папка из внешнего хранилища.
 </translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1142"/>
+        <location filename="../src/gui/folder.cpp" line="1140"/>
         <source>Please go in the settings to select it if you wish to download it.</source>
         <translation>Чтобы скачать новую папку, перейдите в параметры приложения и отметьте её для синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1207"/>
+        <location filename="../src/gui/folder.cpp" line="1205"/>
         <source>The folder %1 was created but was excluded from synchronization previously. Data inside it will not be synchronized.</source>
         <translation>Создана папка «%1» создана, но ранее она была исключена из синхронизации. Данные внутри этой папки не будут синхронизированы.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1210"/>
+        <location filename="../src/gui/folder.cpp" line="1208"/>
         <source>The file %1 was created but was excluded from synchronization previously. It will not be synchronized.</source>
         <translation>Создан файл «%1», но ранее он был исключён из синхронизации. Этот файл не будет синхронизирован.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1221"/>
+        <location filename="../src/gui/folder.cpp" line="1219"/>
         <source>Changes in synchronized folders could not be tracked reliably.
 
 This means that the synchronization client might not upload local changes immediately and will instead only scan for local changes and upload them occasionally (every two hours by default).
@@ -1832,7 +1832,7 @@ This means that the synchronization client might not upload local changes immedi
 %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1312"/>
+        <location filename="../src/gui/folder.cpp" line="1310"/>
         <source>All files in the sync folder &quot;%1&quot; folder were deleted on the server.
 These deletes will be synchronized to your local sync folder, making such files unavailable unless you have a right to restore. 
 If you decide to restore the files, they will be re-synced with the server if you have rights to do so.
@@ -1843,7 +1843,7 @@ If you decide to delete the files, they will be unavailable to you, unless you a
 При выборе «Удалить файлы»,  файлы станут недоступны, кроме случая, когда вы являетесь их владельцем.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1317"/>
+        <location filename="../src/gui/folder.cpp" line="1315"/>
         <source>All the files in your local sync folder &quot;%1&quot; were deleted. These deletes will be synchronized with your server, making such files unavailable unless restored.
 Are you sure you want to sync those actions with the server?
 If this was an accident and you decide to keep your files, they will be re-synced from the server.</source>
@@ -1852,17 +1852,17 @@ If this was an accident and you decide to keep your files, they will be re-synce
 Если это произошло случайно, и вы решите сохранить файлы, они будут повторно скачаны с сервера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1321"/>
+        <location filename="../src/gui/folder.cpp" line="1319"/>
         <source>Remove All Files?</source>
         <translation>Удалить все файлы?</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1325"/>
+        <location filename="../src/gui/folder.cpp" line="1323"/>
         <source>Remove all files</source>
         <translation>Удалить все файлы</translation>
     </message>
     <message>
-        <location filename="../src/gui/folder.cpp" line="1326"/>
+        <location filename="../src/gui/folder.cpp" line="1324"/>
         <source>Keep files</source>
         <translation>Сохранить файлы</translation>
     </message>
@@ -2212,12 +2212,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizard</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="650"/>
+        <location filename="../src/gui/folderwizard.cpp" line="647"/>
         <source>Add Folder Sync Connection</source>
         <translation>Добавление подключения синхронизации папки</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="652"/>
+        <location filename="../src/gui/folderwizard.cpp" line="649"/>
         <source>Add Sync Connection</source>
         <translation>Добавить подключение для синхронизации</translation>
     </message>
@@ -2243,52 +2243,52 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardRemotePath</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="210"/>
+        <location filename="../src/gui/folderwizard.cpp" line="208"/>
         <source>Create Remote Folder</source>
         <translation>Создать папку на сервере</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="211"/>
+        <location filename="../src/gui/folderwizard.cpp" line="209"/>
         <source>Enter the name of the new folder to be created below &quot;%1&quot;:</source>
         <translation>Введите имя папки для создания внутри «%1»:</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="240"/>
+        <location filename="../src/gui/folderwizard.cpp" line="238"/>
         <source>Folder was successfully created on %1.</source>
         <translation>Каталог успешно создан на %1.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="250"/>
+        <location filename="../src/gui/folderwizard.cpp" line="248"/>
         <source>Authentication failed accessing %1</source>
         <translation>Ошибка авторизации при доступе к %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="252"/>
+        <location filename="../src/gui/folderwizard.cpp" line="250"/>
         <source>Failed to create the folder on %1. Please check manually.</source>
         <translation>Невозможно создать каталог по пути %1. Попробуйте создать его вручную.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="270"/>
+        <location filename="../src/gui/folderwizard.cpp" line="268"/>
         <source>Failed to list a folder. Error: %1</source>
         <translation>Ошибка просмотра папки. Ошибка: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="351"/>
+        <location filename="../src/gui/folderwizard.cpp" line="349"/>
         <source>Choose this to sync the entire account</source>
         <translation>Нажмите здесь для синхронизации всей учётной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="494"/>
+        <location filename="../src/gui/folderwizard.cpp" line="492"/>
         <source>This folder is already being synced.</source>
         <translation>Синхронизация этой папки уже настроена.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="496"/>
+        <location filename="../src/gui/folderwizard.cpp" line="494"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a parent folder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Каталог &lt;i&gt;«%1»&lt;/i&gt; уже настроен для синхронизации, и он является родительским для каталога &lt;i&gt;«%2»&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="498"/>
+        <location filename="../src/gui/folderwizard.cpp" line="496"/>
         <source>You are already syncing &lt;i&gt;%1&lt;/i&gt;, which is a subfolder of &lt;i&gt;%2&lt;/i&gt;.</source>
         <translation>Папка &lt;i&gt;«%1»&lt;/i&gt; уже настроена для синхронизации, и она является вложенной для папки &lt;i&gt;«%2»&lt;/i&gt;.</translation>
     </message>
@@ -2296,24 +2296,24 @@ If this was an accident and you decide to keep your files, they will be re-synce
 <context>
     <name>OCC::FolderWizardSelectiveSync</name>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="537"/>
-        <location filename="../src/gui/folderwizard.cpp" line="574"/>
+        <location filename="../src/gui/folderwizard.cpp" line="535"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>Use virtual files instead of downloading content immediately %1</source>
         <translation>Использовать виртуальные файлы вместо загрузки %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="537"/>
-        <location filename="../src/gui/folderwizard.cpp" line="574"/>
+        <location filename="../src/gui/folderwizard.cpp" line="535"/>
+        <location filename="../src/gui/folderwizard.cpp" line="572"/>
         <source>(experimental)</source>
         <translation>(экспериментальная функция)</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="570"/>
+        <location filename="../src/gui/folderwizard.cpp" line="568"/>
         <source>Virtual files are not supported for Windows partition roots as local folder. Please choose a valid subfolder under drive letter.</source>
         <translation>В ОС Windows механизм виртуальных файлов не поддерживается для корневой уровня файловой системы. Для продолжения выберите папку на диске, а не сам диск.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderwizard.cpp" line="593"/>
+        <location filename="../src/gui/folderwizard.cpp" line="591"/>
         <source>Virtual files are not available for the selected folder</source>
         <translation>Использование виртуальные файлов недоступно для выбранной папки</translation>
     </message>
@@ -2857,12 +2857,12 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::NSISUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="409"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="408"/>
         <source>New Version Available</source>
         <translation>Доступна новая версия</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="415"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="414"/>
         <source>&lt;p&gt;A new version of the %1 Client is available.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; is available for download. The installed version is %3.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Доступна новая версия приложения %1.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; доступна для загрузки. Установленная версия: %3.&lt;/p&gt;</translation>
     </message>
@@ -2873,37 +2873,37 @@ Note that using any logging command line options will override this setting.</so
         <translation>Пропустить эту версию</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="427"/>
         <source>Skip this time</source>
         <translation>Пропустить в этот раз</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="429"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="428"/>
         <source>Get update</source>
         <translation>Получить обновление</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="456"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="455"/>
         <source>Update Failed</source>
         <translation>Сбой обновления</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="462"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="461"/>
         <source>&lt;p&gt;A new version of the %1 Client is available but the updating process failed.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; has been downloaded. The installed version is %3. If you confirm restart and update, your computer may reboot to complete the installation.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Новая версия %1 клиента доступна, но произошёл сбой в процессе обновления.&lt;/p&gt;&lt;p&gt;&lt;b&gt;%2&lt;/b&gt; был загружен. Установлена версия %3. При подтверждении перезапуска и обновления, для завершения установки компьютер может быть перезагружен.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="474"/>
         <source>Ask again later</source>
         <translation>Спросить позже</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="475"/>
         <source>Restart and update</source>
         <translation>Перезагрузить и обновить</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="477"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="476"/>
         <source>Update manually</source>
         <translation>Обновить вручную</translation>
     </message>
@@ -3057,67 +3057,67 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OCUpdater</name>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="107"/>
         <source>New %1 update ready</source>
         <translation>Доступно обновление %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="109"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="108"/>
         <source>A new update for %1 is about to be installed. The updater may ask for additional privileges during the process. Your computer may reboot to complete the installation.</source>
         <translation>Обновление %1 готово к установке. Приложение установки может запросить дополнительные разрешения во время работы. Для завершения установки может потребоваться перезагрузка компьютера.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="153"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="152"/>
         <source>Downloading %1. Please wait …</source>
         <translation>Загрузка %1. Пожалуйста ожидайте ...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="155"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="154"/>
         <source>%1 available. Restart application to start the update.</source>
         <translation>%1 доступно. Перезагрузите приложение для начала процесса обновления.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="158"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="157"/>
         <source>Could not download update. Please open &lt;a href=&apos;%1&apos;&gt;%1&lt;/a&gt; to download the update manually.</source>
         <translation>Не удалось загрузить обновление. Откройте &lt;a href=&apos;%1&apos;&gt;1%&lt;/a&gt;, чтобы загрузить обновление вручную.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="160"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="159"/>
         <source>Could not download update. Please open %1 to download the update manually.</source>
         <translation>Не удалось загрузить обновление. Откройте %1, чтобы загрузить обновление вручную.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="163"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="162"/>
         <source>Could not check for new updates.</source>
         <translation>Не удалось проверить наличие новых обновлений.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="166"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="165"/>
         <source>New %1 is available. Please open &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt; to download the update.</source>
         <translation>Доступен новый % 1. Откройте &lt;a href=&apos;%2&apos;&gt;%2&lt;/a&gt;, чтобы загрузить обновление.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="168"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="167"/>
         <source>New %1 is available. Please open %2 to download the update.</source>
         <translation>Доступен новый %1. Пожалуйста, откройте %2, чтобы загрузить обновление.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="171"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="170"/>
         <source>Checking update server …</source>
         <translation>Проверка наличия обновлений на сервере...</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="173"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="172"/>
         <source>Update status is unknown: Did not check for new updates.</source>
         <translation>Статус обновления неизвестен: Не удалось проверить наличие обновлений.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="177"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="176"/>
         <source>No updates available. Your installation is at the latest version.</source>
         <translation>Обновлений в настоящий момент нет. У вас установлена самая последняя версия приложения.</translation>
     </message>
     <message>
-        <location filename="../src/gui/updater/ocupdater.cpp" line="196"/>
+        <location filename="../src/gui/updater/ocupdater.cpp" line="195"/>
         <source>Update Check</source>
         <translation>Проверка обновлений</translation>
     </message>
@@ -3225,17 +3225,17 @@ Note that using any logging command line options will override this setting.</so
 <context>
     <name>OCC::OwncloudHttpCredsPage</name>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="49"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="48"/>
         <source>&amp;Email</source>
         <translation>А&amp;дрес эл. почты</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="58"/>
         <source>Connect to %1</source>
         <translation>Подключение к %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="60"/>
+        <location filename="../src/gui/wizard/owncloudhttpcredspage.cpp" line="59"/>
         <source>Enter user credentials</source>
         <translation>Ввод учётных данных</translation>
     </message>
@@ -3673,22 +3673,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateDirectory</name>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1284"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1283"/>
         <source>could not delete file %1 from local DB</source>
         <translation>не удалось удалить файл %1 из локальной базы данных</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1298"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1297"/>
         <source>Error updating metadata due to invalid modification time</source>
         <translation>Ошибка обновления метаданных из-за недопустимого времени модификации</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1314"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1313"/>
         <source>Error updating metadata: %1</source>
         <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/owncloudpropagator.cpp" line="1318"/>
+        <location filename="../src/libsync/owncloudpropagator.cpp" line="1317"/>
         <source>File is currently in use</source>
         <translation>Файл используется</translation>
     </message>
@@ -3915,17 +3915,17 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateRemoteMkdir</name>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="135"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="133"/>
         <source>Wrong HTTP code returned by server. Expected 201, but received &quot;%1 %2&quot;.</source>
         <translation>Сервер ответил неправильным кодом HTTP . Ожидался 201, но получен «%1 %2».</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="262"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="260"/>
         <source>Error writing metadata to the database: %1</source>
         <translation>Ошибка записи метаданных в базу данных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateremotemkdir.cpp" line="265"/>
+        <location filename="../src/libsync/propagateremotemkdir.cpp" line="263"/>
         <source>The file %1 is currently in use</source>
         <translation>Файл «%1» используется</translation>
     </message>
@@ -3976,55 +3976,55 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::PropagateUploadFileCommon</name>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="235"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="233"/>
         <source>Failed to upload encrypted file.</source>
         <translation>Не удалось передать на сервер зашифрованный файл.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="266"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="264"/>
         <source>File %1 cannot be uploaded because another file with the same name, differing only in case, exists</source>
         <translation>Невозможно загрузить файл «%1», так как уже существует файл с тем же именем, но отличающимся регистром символов</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="277"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="695"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="275"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="693"/>
         <source>Upload of %1 exceeds the quota for the folder</source>
         <translation>При передаче «%1» на сервер будет превышена квота, установленная для папки</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="314"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="389"/>
-        <location filename="../src/libsync/propagateupload.cpp" line="402"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="312"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="387"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="400"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
         <translation>Файл %1 имеет недопустимое время модификации. Не загружайте его на сервер.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="386"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="384"/>
         <source>File Removed (start upload) %1</source>
         <translation>Файл удалён (начало передачи) %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="412"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="410"/>
         <source>Local file changed during syncing. It will be resumed.</source>
         <translation>Локальный файл изменился в процессе синхронизации. Операция будет возобновлена.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="423"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="421"/>
         <source>Local file changed during sync.</source>
         <translation>Локальный файл был изменён во время синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="433"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="431"/>
         <source>Failed to unlock encrypted folder.</source>
         <translation>Не удалось разблокировать зашифрованную папку.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="791"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="789"/>
         <source>Error updating metadata: %1</source>
         <translation>Ошибка обновления метаданных: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/propagateupload.cpp" line="794"/>
+        <location filename="../src/libsync/propagateupload.cpp" line="792"/>
         <source>The file %1 is currently in use</source>
         <translation>Файл «%1» используется</translation>
     </message>
@@ -4116,7 +4116,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SelectiveSyncDialog</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="509"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="507"/>
         <source>Choose What to Sync</source>
         <translation>Уточнить объекты</translation>
     </message>
@@ -4124,33 +4124,33 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::SelectiveSyncWidget</name>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="73"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="72"/>
         <source>Loading …</source>
         <translation>Загрузка…</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="79"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="78"/>
         <source>Deselect remote folders you do not wish to synchronize.</source>
         <translation>Снимите отметки с папок, которые не нужно синхронизировать.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="94"/>
         <source>Name</source>
         <translation>Название</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="96"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="95"/>
         <source>Size</source>
         <translation>Размер</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="237"/>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="314"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="236"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="313"/>
         <source>No subfolders currently on the server.</source>
         <translation>Сейчас на сервере нет вложенных папок.</translation>
     </message>
     <message>
-        <location filename="../src/gui/selectivesyncdialog.cpp" line="316"/>
+        <location filename="../src/gui/selectivesyncdialog.cpp" line="315"/>
         <source>An error occurred while loading the list of sub folders.</source>
         <translation>Ошибка получения списка вложенных папок.</translation>
     </message>
@@ -4602,77 +4602,77 @@ Server replied with error: %2</source>
         <translation>Доверять этому сертификату в любом случае</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="66"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="65"/>
         <source>Untrusted Certificate</source>
         <translation>Сертификат без доверия</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="139"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="138"/>
         <source>Cannot connect securely to &lt;i&gt;%1&lt;/i&gt;:</source>
         <translation>Не удалось осуществить безопасное подключение к &lt;i&gt;%1&lt;/i&gt;:</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="158"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="157"/>
         <source>Additional errors:</source>
         <translation>Дополнительные ошибки</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="184"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="183"/>
         <source>with Certificate %1</source>
         <translation>Сертификат %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="193"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="195"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="192"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="194"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="196"/>
         <source>&amp;lt;not specified&amp;gt;</source>
         <translation>&amp;lt;не указано&amp;gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="223"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="197"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="222"/>
         <source>Organization: %1</source>
         <translation>Организация: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="224"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="198"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="223"/>
         <source>Unit: %1</source>
         <translation>Подразделение: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="200"/>
-        <location filename="../src/gui/sslerrordialog.cpp" line="225"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="199"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="224"/>
         <source>Country: %1</source>
         <translation>Страна: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="207"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="206"/>
         <source>Fingerprint (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Отпечаток (SHA1): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Отпечаток (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="213"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
         <translation>Отпечаток (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
         <source>Effective Date: %1</source>
         <translation>Дата вступления в силу: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="216"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="215"/>
         <source>Expiration Date: %1</source>
         <translation>Дата окончания: %1</translation>
     </message>
     <message>
-        <location filename="../src/gui/sslerrordialog.cpp" line="220"/>
+        <location filename="../src/gui/sslerrordialog.cpp" line="219"/>
         <source>Issuer: %1</source>
         <translation>Издатель: %1</translation>
     </message>
@@ -4680,63 +4680,63 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::SyncEngine</name>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="198"/>
+        <location filename="../src/libsync/syncengine.cpp" line="191"/>
         <source>%1 (skipped due to earlier error, trying again in %2)</source>
         <translation>%1 (пропущено из-за предыдущей ошибки, повторная попытка через %2)</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="382"/>
+        <location filename="../src/libsync/syncengine.cpp" line="375"/>
         <source>Could not update file: %1</source>
         <translation>Не удалось обновить файл: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="394"/>
+        <location filename="../src/libsync/syncengine.cpp" line="387"/>
         <source>Could not update virtual file metadata: %1</source>
         <translation>Не удалось обновить метаданные виртуального файла: %1</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="401"/>
+        <location filename="../src/libsync/syncengine.cpp" line="394"/>
         <source>Could not update file metadata: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="411"/>
+        <location filename="../src/libsync/syncengine.cpp" line="404"/>
         <source>Could not set file record to local DB: %1</source>
         <translation>Не удалось сохранить запись о файле %1 в локальную базу данных</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="441"/>
+        <location filename="../src/libsync/syncengine.cpp" line="434"/>
         <source>Unresolved conflict.</source>
         <translation>Неразрешённый конфликт.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="533"/>
+        <location filename="../src/libsync/syncengine.cpp" line="526"/>
         <source>Only %1 are available, need at least %2 to start</source>
         <comment>Placeholders are postfixed with file sizes using Utility::octetsToString()</comment>
         <translation>Только %1 доступно, нужно как минимум %2 чтобы начать</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="566"/>
+        <location filename="../src/libsync/syncengine.cpp" line="559"/>
         <source>Unable to open or create the local sync database. Make sure you have write access in the sync folder.</source>
         <translation>Не могу открыть или создать локальную базу данных синхронизации. Удостоверьтесь, что у вас есть доступ на запись в каталог синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="582"/>
+        <location filename="../src/libsync/syncengine.cpp" line="575"/>
         <source>Using virtual files with suffix, but suffix is not set</source>
         <translation>Для виртуальных файлов настроено использование специального суффикса, но суффикс не указан</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="594"/>
+        <location filename="../src/libsync/syncengine.cpp" line="587"/>
         <source>Unable to read the blacklist from the local database</source>
         <translation>Не удалось прочитать файл чёрного списка из локальной базы данных.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="635"/>
+        <location filename="../src/libsync/syncengine.cpp" line="628"/>
         <source>Unable to read from the sync journal.</source>
         <translation>Не удалось прочитать из журнала синхронизации.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="764"/>
+        <location filename="../src/libsync/syncengine.cpp" line="757"/>
         <source>Cannot open the sync journal</source>
         <translation>Не удаётся открыть журнал синхронизации</translation>
     </message>
@@ -4746,12 +4746,12 @@ Server replied with error: %2</source>
         <translation>Синхронизация возобновится в ближайшее время.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1214"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1207"/>
         <source>Disk space is low: Downloads that would reduce free space below %1 were skipped.</source>
         <translation>Мало места на диске: Скачивания, которые сократят свободное место ниже %1, будут пропущены.</translation>
     </message>
     <message>
-        <location filename="../src/libsync/syncengine.cpp" line="1221"/>
+        <location filename="../src/libsync/syncengine.cpp" line="1214"/>
         <source>There is insufficient space available on the server for some uploads.</source>
         <translation>На сервере недостаточно места для некоторых закачек.</translation>
     </message>
@@ -4905,22 +4905,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UnifiedSearchResultsListModel</name>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="406"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="405"/>
         <source>Failed to fetch providers.</source>
         <translation>Не удалось получить поставщиков.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="417"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="416"/>
         <source>Failed to fetch search providers for &apos;%1&apos;. Error: %2</source>
         <translation>Не удалось получить список поставщиков поиска %1: Ошибка: %2</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="451"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="450"/>
         <source>Search has failed for &apos;%2&apos;.</source>
         <translation>Ошибка поиска %2.</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="480"/>
+        <location filename="../src/gui/tray/unifiedsearchresultslistmodel.cpp" line="479"/>
         <source>Search has failed for &apos;%1&apos;. Error: %2</source>
         <translation>Ошибка поиска %1: Ошибка %2</translation>
     </message>
@@ -4928,13 +4928,13 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::User</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="564"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="563"/>
         <source>Retry all uploads</source>
         <translation>Повторить передачу файлов на сервер</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="600"/>
-        <location filename="../src/gui/tray/usermodel.cpp" line="724"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="599"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
         <source>Resolve conflict</source>
         <translation type="unfinished"/>
     </message>
@@ -4942,22 +4942,22 @@ Server replied with error: %2</source>
 <context>
     <name>OCC::UserModel</name>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1145"/>
         <source>Confirm Account Removal</source>
         <translation>Подтверждение удаления учётной записи</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1147"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1146"/>
         <source>&lt;p&gt;Do you really want to remove the connection to the account &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This will &lt;b&gt;not&lt;/b&gt; delete any files.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Действительно удалить подключение к учётной записи &lt;i&gt;%1&lt;/i&gt;?&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание:&lt;/b&gt; Это действие &lt;b&gt;не&lt;/b&gt;  приведёт к удалению файлов.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1150"/>
         <source>Remove connection</source>
         <translation>Удалить подключение</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="1152"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="1151"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
@@ -5471,27 +5471,27 @@ Server replied with error: %2</source>
         <translation>Новая папка</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="649"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="648"/>
         <source>You renamed %1</source>
         <translation>Вы переименовали «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="651"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="650"/>
         <source>You deleted %1</source>
         <translation>Вы удалили «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="653"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="652"/>
         <source>You created %1</source>
         <translation>Вы создали «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="655"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="654"/>
         <source>You changed %1</source>
         <translation>Вы изменили «%1»</translation>
     </message>
     <message>
-        <location filename="../src/gui/tray/usermodel.cpp" line="679"/>
+        <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
         <source>Synced %1</source>
         <translation>Файл «%1» синхронизирован</translation>
     </message>
@@ -5672,7 +5672,7 @@ Server replied with error: %2</source>
 <context>
     <name>SyncJournalDb</name>
     <message>
-        <location filename="../src/common/syncjournaldb.cpp" line="928"/>
+        <location filename="../src/common/syncjournaldb.cpp" line="926"/>
         <source>Failed to connect database.</source>
         <translation>Не удалось подключиться к базе данных</translation>
     </message>
