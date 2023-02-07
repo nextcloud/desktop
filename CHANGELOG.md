@@ -9,6 +9,9 @@ Summary
 -------
 
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
+* Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
+* Bugfix - Only hide non VFS settings when enforced and on Windows: [#10456](https://github.com/owncloud/client/issues/10456)
+* Bugfix - Use selective sync settings from FolderWizard dialog: [#10468](https://github.com/owncloud/client/issues/10468)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
 Details
@@ -21,6 +24,23 @@ Details
    required a manual log out and log in.
 
    https://github.com/owncloud/client/issues/10408
+
+* Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
+
+   After a change to how the next button is controlled by user input on the page, we forgot to make
+   this change on the Webfinger page, too.
+
+   https://github.com/owncloud/client/issues/10441
+
+* Bugfix - Only hide non VFS settings when enforced and on Windows: [#10456](https://github.com/owncloud/client/issues/10456)
+
+   https://github.com/owncloud/client/issues/10456
+
+* Bugfix - Use selective sync settings from FolderWizard dialog: [#10468](https://github.com/owncloud/client/issues/10468)
+
+   Due to a bug the user selection was not persisted.
+
+   https://github.com/owncloud/client/issues/10468
 
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
