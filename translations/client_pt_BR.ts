@@ -2127,7 +2127,8 @@ Os itens em que a exclusão é permitida serão excluídos se impedirem que um d
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>O cliente pode gravar logs de depuração em uma pasta temporária. Esses logs são muito úteis para diagnosticar problemas.
+Como os arquivos de log podem ficar grandes, o cliente iniciará um novo para cada execução de sincronização e compactará os mais antigos.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>

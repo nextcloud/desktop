@@ -1,0 +1,5 @@
+Bugfix: Use selective sync settings from FolderWizard dialog
+
+Due to a bug the user selection was not persisted.
+
+https://github.com/owncloud/client/issues/10468

@@ -1,0 +1,3 @@
+Bugfix: Only hide non VFS settings when enforced and on Windows
+
+https://github.com/owncloud/client/issues/10456

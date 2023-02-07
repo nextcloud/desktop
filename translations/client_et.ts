@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Ühendu uuesti</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
@@ -2128,7 +2128,8 @@ Items where deletion is allowed will be deleted if they prevent a directory from
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>Klient saab silumislogisid kirjutada ajutisse kausta. Need logid on väga kasulikud probleemide tuvastamisel.
+Kuna logifailid võivad kasvada suureks, siis iga sünkroniseerimise käivtamisel alustab klient uut ja pakib kokku vanemad.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>

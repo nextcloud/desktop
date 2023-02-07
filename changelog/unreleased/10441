@@ -1,0 +1,6 @@
+Bugfix: Enable next button upon user input on Webfinger setup wizard page
+
+After a change to how the next button is controlled by user input on the page,
+we forgot to make this change on the Webfinger page, too.
+
+https://github.com/owncloud/client/issues/10441

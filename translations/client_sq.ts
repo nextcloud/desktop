@@ -167,7 +167,7 @@
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="119"/>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="155"/>
         <source>We cannot gather useful debug information on your system.</source>
-        <translation>S’mbledhim dot të dhëna të dobishme diagnostikimi mbi sistemin tuaj.</translation>
+        <translation>S’mbledhim dot hollësi të dobishme diagnostikimi mbi sistemin tuaj.</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="113"/>
@@ -181,12 +181,12 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="148"/>
         <source>Ready to send debug information (&lt;a href=&quot;%1&quot;&gt;view backtrace&lt;/a&gt;).</source>
-        <translation>Gati për dërgim të dhënash diagnostikimi (&lt;a href=&quot;%1&quot;&gt;shihni backtrace-in&lt;/a&gt;).</translation>
+        <translation>Gati për dërgim hollësish diagnostikimi (&lt;a href=&quot;%1&quot;&gt;shihni backtrace-in&lt;/a&gt;).</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="164"/>
         <source>Gathering debug information...</source>
-        <translation>Po mblidhen të dhëna diagnostikmi…</translation>
+        <translation>Po mblidhen hollësi diagnostikimi…</translation>
     </message>
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="273"/>
@@ -201,7 +201,7 @@
     <message>
         <location filename="../src/3rdparty/libcrashreporter-qt/src/libcrashreporter-gui/CrashReporter.cpp" line="309"/>
         <source>Failed to send crash info.</source>
-        <translation>S’u arrit të dërgohen të dhëna mbi vithisjen.</translation>
+        <translation>S’u arrit të dërgohen hollësi mbi vithisjen.</translation>
     </message>
 </context>
 <context>
@@ -697,7 +697,7 @@ Ju lutemi, mirëfilltësojeni duke përdorur shfletuesin tuaj.</translation>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="765"/>
         <source>Currently there is no storage usage information available.</source>
-        <translation>Hëpërhë s’ka gati të dhëna përdorimi depozite.</translation>
+        <translation>Aktualisht s’ka të gatshme hollësi përdorimi depozite.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="801"/>
@@ -4583,7 +4583,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="90"/>
         <source>Info</source>
-        <translation>Të dhëna</translation>
+        <translation>Hollësi</translation>
     </message>
     <message>
         <location filename="../src/libsync/syncfileitem.cpp" line="92"/>
