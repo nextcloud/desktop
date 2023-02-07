@@ -112,6 +112,9 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         msgW.append(L"\n");
         OutputDebugString(msgW.c_str());
     }
+#elif defined(QT_DEBUG)
+    QTextStream cout(stdout, QIODevice::WriteOnly);
+    cout << msg << endl;
 #endif
     {
         QMutexLocker lock(&_mutex);
