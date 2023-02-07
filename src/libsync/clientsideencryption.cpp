@@ -1169,6 +1169,7 @@ void ClientSideEncryption::checkAllSensitiveDataDeleted()
     if (_privateKey.isEmpty() && _certificate.isNull() && _mnemonic.isEmpty()) {
         qCDebug(lcCse) << "All sensitive encryption data has been deleted.";
         Q_EMIT sensitiveDataForgotten();
+        return;
     }
 
     qCDebug(lcCse) << "Some sensitive data emaining:"
