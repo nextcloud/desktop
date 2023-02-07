@@ -1102,6 +1102,11 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
 {
     _publicKey = QSslKey();
 
+    if (!sensitiveDataRemaining()) {
+        checkAllSensitiveDataDeleted();
+        return;
+    }
+
     const auto createDeleteJob = [account](const QString user) {
         auto *job = new DeletePasswordJob(Theme::instance()->appName());
         job->setInsecureFallback(false);
@@ -1171,16 +1176,16 @@ bool ClientSideEncryption::sensitiveDataRemaining() const
 
 void ClientSideEncryption::checkAllSensitiveDataDeleted()
 {
-    if (!sensitiveDataRemaining()) {
-        qCDebug(lcCse) << "All sensitive encryption data has been deleted.";
-        Q_EMIT sensitiveDataForgotten();
+    if (sensitiveDataRemaining()) {
+        qCDebug(lcCse) << "Some sensitive data emaining:"
+                       << "Private key:" << _privateKey
+                       << "Certificate is null:" << _certificate.isNull()
+                       << "Mnemonic:" << _mnemonic;
         return;
     }
 
-    qCDebug(lcCse) << "Some sensitive data emaining:"
-                   << "Private key:" << _privateKey
-                   << "Certificate is null:" << _certificate.isNull()
-                   << "Mnemonic:" << _mnemonic;
+    qCDebug(lcCse) << "All sensitive encryption data has been deleted.";
+    Q_EMIT sensitiveDataForgotten();
 }
 
 void ClientSideEncryption::generateKeyPair(const AccountPtr &account)
