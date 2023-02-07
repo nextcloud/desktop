@@ -1422,6 +1422,7 @@ Folder *FolderMan::addFolderFromFolderWizardResult(const AccountStatePtr &accoun
 {
     auto f = addFolderFromWizard(accountStatePtr, config.localPath, config.remotePath, config.davUrl, config.displayName, config.useVirtualFiles);
     if (f) {
+        f->journalDb()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, config.selectiveSyncBlackList);
         f->setPriority(config.priority);
         f->saveToSettings();
     }
