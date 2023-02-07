@@ -83,10 +83,6 @@ AccountState *AccountState::loadFromSettings(AccountPtr account, QSettings & /*s
     return accountState;
 }
 
-void AccountState::writeToSettings(QSettings & /*settings*/)
-{
-}
-
 AccountPtr AccountState::account() const
 {
     return _account;
