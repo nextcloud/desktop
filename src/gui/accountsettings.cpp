@@ -1521,33 +1521,6 @@ void AccountSettings::refreshSelectiveSyncStatus()
     }
 }
 
-void AccountSettings::slotDeleteAccount()
-{
-    // Deleting the account potentially deletes 'this', so
-    // the QMessageBox should be destroyed before that happens.
-    const auto messageBox = new QMessageBox(QMessageBox::Question,
-                                            tr("Confirm Account Removal"),
-                                            tr("<p>Do you really want to remove the connection to the account <i>%1</i>?</p>"
-                                               "<p><b>Note:</b> This will <b>not</b> delete any files.</p>")
-                                            .arg(_accountState->account()->displayName()),
-                                            QMessageBox::NoButton,
-                                            this);
-    const auto yesButton = messageBox->addButton(tr("Remove connection"), QMessageBox::YesRole);
-    messageBox->addButton(tr("Cancel"), QMessageBox::NoRole);
-    messageBox->setAttribute(Qt::WA_DeleteOnClose);
-    connect(messageBox, &QMessageBox::finished, this, [this, messageBox, yesButton]{
-        if (messageBox->clickedButton() == yesButton) {
-            // Else it might access during destruction. This should be better handled by it having a QSharedPointer
-            _model->setAccountState(nullptr);
-
-            const auto manager = AccountManager::instance();
-            manager->deleteAccount(_accountState);
-            manager->save();
-        }
-    });
-    messageBox->open();
-}
-
 bool AccountSettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
