@@ -1164,9 +1164,14 @@ void ClientSideEncryption::handleMnemonicDeleted(const QKeychain::Job* const inc
     checkAllSensitiveDataDeleted();
 }
 
+bool ClientSideEncryption::sensitiveDataRemaining() const
+{
+    return !_privateKey.isEmpty() || !_certificate.isNull() || !_mnemonic.isEmpty();
+}
+
 void ClientSideEncryption::checkAllSensitiveDataDeleted()
 {
-    if (_privateKey.isEmpty() && _certificate.isNull() && _mnemonic.isEmpty()) {
+    if (!sensitiveDataRemaining()) {
         qCDebug(lcCse) << "All sensitive encryption data has been deleted.";
         Q_EMIT sensitiveDataForgotten();
         return;
