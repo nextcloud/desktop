@@ -1124,7 +1124,8 @@ void ClientSideEncryption::forgetSensitiveData(const AccountPtr &account)
 
 void ClientSideEncryption::handlePrivateKeyDeleted(const QKeychain::Job* const incoming)
 {
-    if (incoming->error() != QKeychain::NoError) {
+    const auto error = incoming->error();
+    if (error != QKeychain::NoError && error != QKeychain::EntryNotFound) {
         qCWarning(lcCse) << "Private key could not be deleted:" << incoming->errorString();
         return;
     }
@@ -1137,7 +1138,8 @@ void ClientSideEncryption::handlePrivateKeyDeleted(const QKeychain::Job* const i
 
 void ClientSideEncryption::handleCertificateDeleted(const QKeychain::Job* const incoming)
 {
-    if (incoming->error() != QKeychain::NoError) {
+    const auto error = incoming->error();
+    if (error != QKeychain::NoError && error != QKeychain::EntryNotFound) {
         qCWarning(lcCse) << "Certificate could not be deleted:" << incoming->errorString();
         return;
     }
@@ -1150,7 +1152,8 @@ void ClientSideEncryption::handleCertificateDeleted(const QKeychain::Job* const 
 
 void ClientSideEncryption::handleMnemonicDeleted(const QKeychain::Job* const incoming)
 {
-    if (incoming->error() != QKeychain::NoError) {
+    const auto error = incoming->error();
+    if (error != QKeychain::NoError && error != QKeychain::EntryNotFound) {
         qCWarning(lcCse) << "Mnemonic could not be deleted:" << incoming->errorString();
         return;
     }
