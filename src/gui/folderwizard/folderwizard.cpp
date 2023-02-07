@@ -149,7 +149,7 @@ const AccountStatePtr &FolderWizardPrivate::accountState()
 
 bool FolderWizardPrivate::useVirtualFiles() const
 {
-    const auto mode = bestAvailableVfsMode();
+    const auto mode = VfsPluginManager::instance().bestAvailableVfsMode();
     const bool useVirtualFiles = (Theme::instance()->forceVirtualFilesOption() && mode == Vfs::WindowsCfApi) || (_folderWizardSelectiveSyncPage->useVirtualFiles());
     if (useVirtualFiles) {
         const auto availability = Vfs::checkAvailability(initialLocalPath(), mode);

@@ -76,7 +76,7 @@ private slots:
 
         QTest::newRow("Vfs::Off") << Vfs::Off << false;
 
-        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+        if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
             QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
 
             // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.

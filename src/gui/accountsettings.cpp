@@ -385,7 +385,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
 
             if (Theme::instance()->showVirtualFilesOption()
                 && !folder->virtualFilesEnabled() && FolderMan::instance()->checkVfsAvailability(folder->path())) {
-                const auto mode = bestAvailableVfsMode();
+                const auto mode = VfsPluginManager::instance().bestAvailableVfsMode();
 
                 if (mode == Vfs::WindowsCfApi || (Theme::instance()->enableExperimentalFeatures() && mode != Vfs::Off)) {
                     ac = menu->addAction(tr("Enable virtual file support%1...").arg(mode == Vfs::WindowsCfApi ? QString() : tr(" (experimental)")));
@@ -557,7 +557,7 @@ void AccountSettings::slotEnableVfsCurrentFolder()
 
     // no need to show the message box on Windows
     // as a little shortcut, we just re-use the message box's accept handler
-    if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+    if (VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
         Q_EMIT messageBox->accepted();
     } else {
         messageBox->show();

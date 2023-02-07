@@ -357,7 +357,7 @@ void FolderMan::setupFoldersHelper(QSettings &settings, AccountStatePtr account,
             SyncJournalDb::maybeMigrateDb(folderDefinition.localPath(), folderDefinition.absoluteJournalPath());
         }
 
-        auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
+        auto vfs = VfsPluginManager::instance().createVfsFromPlugin(folderDefinition.virtualFilesMode);
         if (!vfs) {
             // TODO: Must do better error handling
             qFatal("Could not load plugin");
@@ -886,7 +886,7 @@ Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDe
         return nullptr;
     }
 
-    auto vfs = createVfsFromPlugin(folderDefinition.virtualFilesMode);
+    auto vfs = VfsPluginManager::instance().createVfsFromPlugin(folderDefinition.virtualFilesMode);
     if (!vfs) {
         qCWarning(lcFolderMan) << "Could not load plugin for mode" << folderDefinition.virtualFilesMode;
         return nullptr;
@@ -1383,7 +1383,7 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
     folderDefinition.ignoreHiddenFiles = ignoreHiddenFiles();
 
     if (useVfs) {
-        folderDefinition.virtualFilesMode = bestAvailableVfsMode();
+        folderDefinition.virtualFilesMode = VfsPluginManager::instance().bestAvailableVfsMode();
     }
 
     auto newFolder = addFolder(accountStatePtr, folderDefinition);

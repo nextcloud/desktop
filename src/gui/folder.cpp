@@ -170,8 +170,8 @@ Folder::Folder(const FolderDefinition &definition,
         OC_ENFORCE(_vfs);
         if (_definition.virtualFilesMode == Vfs::WithSuffix
             && _definition.upgradeVfsMode) {
-            if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
-                if (auto winvfs = createVfsFromPlugin(Vfs::WindowsCfApi)) {
+            if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+                if (auto winvfs = VfsPluginManager::instance().createVfsFromPlugin(Vfs::WindowsCfApi)) {
                     // Wipe the existing suffix files from fs and journal
                     SyncEngine::wipeVirtualFiles(path(), _journal, *_vfs);
 
@@ -779,7 +779,7 @@ void Folder::setVirtualFilesEnabled(bool enabled)
 {
     Vfs::Mode newMode = _definition.virtualFilesMode;
     if (enabled && _definition.virtualFilesMode == Vfs::Off) {
-        newMode = bestAvailableVfsMode();
+        newMode = VfsPluginManager::instance().bestAvailableVfsMode();
     } else if (!enabled && _definition.virtualFilesMode != Vfs::Off) {
         newMode = Vfs::Off;
     }
@@ -795,7 +795,7 @@ void Folder::setVirtualFilesEnabled(bool enabled)
         disconnect(&_engine->syncFileStatusTracker(), nullptr, _vfs.data(), nullptr);
 
         _vfsIsReady = false;
-        _vfs.reset(createVfsFromPlugin(newMode).release());
+        _vfs.reset(VfsPluginManager::instance().createVfsFromPlugin(newMode).release());
 
         _definition.virtualFilesMode = newMode;
         startVfs();

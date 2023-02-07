@@ -113,11 +113,10 @@ public:
      *
      * Currently plugins and modes are one-to-one but that's not required.
      */
-    enum Mode
-    {
+    enum Mode {
         Off,
         WithSuffix,
-        WindowsCfApi,
+        WindowsCfApi
     };
     Q_ENUM(Mode)
     enum class ConvertToPlaceholderResult {
@@ -276,13 +275,27 @@ private:
     friend class OwncloudPropagator;
 };
 
-/// Check whether the plugin for the mode is available.
-OCSYNC_EXPORT bool isVfsPluginAvailable(Vfs::Mode mode);
+class OCSYNC_EXPORT VfsPluginManager
+{
+public:
+    /// Check whether the plugin for the mode is available.
+    bool isVfsPluginAvailable(Vfs::Mode mode) const;
 
-/// Return the best available VFS mode.
-OCSYNC_EXPORT Vfs::Mode bestAvailableVfsMode();
+    /// Return the best available VFS mode.
+    Vfs::Mode bestAvailableVfsMode() const;
 
-/// Create a VFS instance for the mode, returns nullptr on failure.
-OCSYNC_EXPORT std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode);
+    /// Create a VFS instance for the mode, returns nullptr on failure.
+    std::unique_ptr<Vfs> createVfsFromPlugin(Vfs::Mode mode) const;
+
+    static const VfsPluginManager &instance();
+
+protected:
+    VfsPluginManager() = default;
+
+private:
+    static VfsPluginManager *_instance;
+
+    mutable QMap<Vfs::Mode, bool> _pluginCache;
+};
 
 } // namespace OCC

@@ -271,12 +271,12 @@ Application::Application(int &argc, char **argv, Platform *platform)
     qCInfo(lcApplication) << "Plugin search paths:" << libraryPaths();
 
     // Check vfs plugins
-    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
+    if (Theme::instance()->showVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+    if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi))
         qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
+    if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     if (!configVersionMigration()) {
@@ -294,12 +294,12 @@ Application::Application(int &argc, char **argv, Platform *platform)
     }
 
     // Check vfs plugins
-    if (Theme::instance()->showVirtualFilesOption() && bestAvailableVfsMode() == Vfs::Off) {
+    if (Theme::instance()->showVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::Off) {
         qCWarning(lcApplication) << "Theme wants to show vfs mode, but no vfs plugins are available";
     }
-    if (isVfsPluginAvailable(Vfs::WindowsCfApi))
+    if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi))
         qCInfo(lcApplication) << "VFS windows plugin is available";
-    if (isVfsPluginAvailable(Vfs::WithSuffix))
+    if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WithSuffix))
         qCInfo(lcApplication) << "VFS suffix plugin is available";
 
     if (_quitInstance) {

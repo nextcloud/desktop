@@ -56,7 +56,7 @@ void markForDehydration(FakeFolder &folder, const QByteArray &path)
 
 QSharedPointer<Vfs> setupVfs(FakeFolder &folder)
 {
-    auto suffixVfs = QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::WithSuffix).release());
+    auto suffixVfs = QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(Vfs::WithSuffix).release());
     folder.switchToVfs(suffixVfs);
 
     // Using this directly doesn't recursively unpin everything and instead leaves
@@ -894,7 +894,7 @@ private slots:
         QVERIFY(fakeFolder.currentLocalState().find("A/a3" DVSUFFIX));
         QVERIFY(!fakeFolder.currentLocalState().find("A/B/b1" DVSUFFIX));
 
-        fakeFolder.switchToVfs(QSharedPointer<Vfs>(createVfsFromPlugin(Vfs::Off).release()));
+        fakeFolder.switchToVfs(QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(Vfs::Off).release()));
         QVERIFY(fakeFolder.applyLocalModificationsAndSync());
         QVERIFY(!fakeFolder.currentRemoteState().find("A/a3" DVSUFFIX)); // regular upload
         QVERIFY(fakeFolder.currentLocalState() != fakeFolder.currentRemoteState());

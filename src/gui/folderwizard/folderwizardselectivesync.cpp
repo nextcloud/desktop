@@ -43,7 +43,7 @@ FolderWizardSelectiveSync::FolderWizardSelectiveSync(FolderWizardPrivate *parent
     _selectiveSync = new SelectiveSyncWidget(folderWizardPrivate()->accountState()->account(), this);
     layout->addWidget(_selectiveSync);
 
-    const auto vfsMode = bestAvailableVfsMode();
+    const auto vfsMode = VfsPluginManager::instance().bestAvailableVfsMode();
     if (Theme::instance()->forceVirtualFilesOption() && vfsMode == Vfs::WindowsCfApi) {
         // using an else if to make the condition not even more complex...
     } else if (Theme::instance()->showVirtualFilesOption() && vfsMode != Vfs::Off && (vfsMode == Vfs::WindowsCfApi || Theme::instance()->enableExperimentalFeatures())) {
@@ -100,7 +100,7 @@ void FolderWizardSelectiveSync::virtualFilesCheckboxClicked()
 
         // no need to show the message box on Windows
         // as a little shortcut, we just re-use the message box's accept handler
-        if (bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+        if (VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
             Q_EMIT messageBox->accepted();
         } else {
             messageBox->show();

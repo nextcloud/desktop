@@ -67,7 +67,7 @@ private slots:
 
         QTest::newRow("Vfs::Off") << Vfs::Off << false;
 
-        if (isVfsPluginAvailable(Vfs::WindowsCfApi)) {
+        if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
             QTest::newRow("Vfs::WindowsCfApi dehydrated") << Vfs::WindowsCfApi << true;
 
             // TODO: the hydrated version will fail due to an issue in the winvfs plugin, so leave it disabled for now.
@@ -976,8 +976,7 @@ private slots:
         QTest::newRow("Vfs::Off") << Vfs::Off;
         QTest::newRow("Vfs::WithSuffix") << Vfs::WithSuffix;
 #ifdef Q_OS_WIN32
-        if (isVfsPluginAvailable(Vfs::WindowsCfApi))
-        {
+        if (VfsPluginManager::instance().isVfsPluginAvailable(Vfs::WindowsCfApi)) {
             QTest::newRow("Vfs::WindowsCfApi") << Vfs::WindowsCfApi;
         } else {
             QWARN("Skipping Vfs::WindowsCfApi");
@@ -1007,7 +1006,7 @@ private slots:
 
         if (vfsMode != Vfs::Off)
         {
-            auto vfs = QSharedPointer<Vfs>(createVfsFromPlugin(vfsMode).release());
+            auto vfs = QSharedPointer<Vfs>(VfsPluginManager::instance().createVfsFromPlugin(vfsMode).release());
             QVERIFY(vfs);
             fakeFolder.switchToVfs(vfs);
             fakeFolder.syncJournal().internalPinStates().setForPath("", PinState::OnlineOnly);

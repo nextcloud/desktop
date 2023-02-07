@@ -433,7 +433,7 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
             _version,
             qtVersionString,
             QSslSocket::sslLibraryVersionString(),
-            Vfs::modeToString(bestAvailableVfsMode()),
+            Vfs::modeToString(VfsPluginManager::instance().bestAvailableVfsMode()),
             QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion(),
             br,
             gitUrl,

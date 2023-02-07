@@ -252,7 +252,7 @@ public:
     void setDirtyNetworkLimits();
 
     /** Whether or not vfs is supported in the location. */
-    bool checkVfsAvailability(const QString &path, Vfs::Mode mode = bestAvailableVfsMode()) const;
+    bool checkVfsAvailability(const QString &path, Vfs::Mode mode = VfsPluginManager::instance().bestAvailableVfsMode()) const;
 
     /** If the folder configuration is no longer supported this will return an error string */
     Result<void, QString> unsupportedConfiguration(const QString &path) const;

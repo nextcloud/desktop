@@ -136,7 +136,7 @@ GeneralSettings::GeneralSettings(QWidget *parent)
     if (!Theme::instance()->aboutShowCopyright()) {
         _ui->copyrightLabel->hide();
     }
-    if (Theme::instance()->forceVirtualFilesOption() && bestAvailableVfsMode() == Vfs::WindowsCfApi) {
+    if (Theme::instance()->forceVirtualFilesOption() && VfsPluginManager::instance().bestAvailableVfsMode() == Vfs::WindowsCfApi) {
         _ui->groupBox_non_vfs->hide();
     }
 }

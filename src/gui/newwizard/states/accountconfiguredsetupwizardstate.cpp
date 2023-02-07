@@ -29,7 +29,7 @@ AccountConfiguredSetupWizardState::AccountConfiguredSetupWizardState(SetupWizard
     bool enableVfsByDefault = false;
     bool vfsModeIsExperimental = false;
 
-    switch (bestAvailableVfsMode()) {
+    switch (VfsPluginManager::instance().bestAvailableVfsMode()) {
     case Vfs::WindowsCfApi:
         vfsIsAvailable = true;
         enableVfsByDefault = true;
