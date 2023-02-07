@@ -18,7 +18,7 @@
 #include "folderman.h"
 #include "accountstate.h"
 #include "clientsideencryption.h"
-#include "createe2eesharejob.h"
+#include "updatee2eesharemetadatajob.h"
 
 #include <QUrl>
 #include <QJsonDocument>
@@ -27,8 +27,8 @@
 
 Q_LOGGING_CATEGORY(lcUserGroupShare, "nextcloud.gui.usergroupshare", QtInfoMsg)
 
-namespace OCC {
-
+namespace OCC
+{
 /**
  * When a share is modified, we need to tell the folders so they can adjust overlay icons
  */
@@ -51,16 +51,15 @@ static void updateFolder(const AccountPtr &account, const QString &path)
     }
 }
 
-
 Share::Share(AccountPtr account,
-    const QString &id,
-    const QString &uidowner,
-    const QString &ownerDisplayName,
-    const QString &path,
-    const ShareType shareType,
-    bool isPasswordSet,
-    const Permissions permissions,
-    const ShareePtr shareWith)
+             const QString &id,
+             const QString &uidowner,
+             const QString &ownerDisplayName,
+             const QString &path,
+             const ShareType shareType,
+             bool isPasswordSet,
+             const Permissions permissions,
+             const ShareePtr shareWith)
     : _account(account)
     , _id(id)
     , _uidowner(uidowner)
@@ -110,7 +109,7 @@ ShareePtr Share::getShareWith() const
 
 void Share::setPassword(const QString &password)
 {
-    auto * const job = new OcsShareJob(_account);
+    auto *const job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &Share::slotPasswordSet);
     connect(job, &OcsJob::ocsError, this, &Share::slotSetPasswordError);
     job->setPassword(getId(), password);
@@ -150,8 +149,7 @@ void Share::deleteShare()
 
 bool Share::isShareTypeUserGroupEmailRoomOrRemote(const ShareType type)
 {
-    return (type == Share::TypeUser || type == Share::TypeGroup || type == Share::TypeEmail || type == Share::TypeRoom
-        || type == Share::TypeRemote);
+    return (type == Share::TypeUser || type == Share::TypeGroup || type == Share::TypeEmail || type == Share::TypeRoom || type == Share::TypeRemote);
 }
 
 void Share::slotDeleted()
@@ -194,18 +192,18 @@ QDate LinkShare::getExpireDate() const
 }
 
 LinkShare::LinkShare(AccountPtr account,
-    const QString &id,
-    const QString &uidowner,
-    const QString &ownerDisplayName,
-    const QString &path,
-    const QString &name,
-    const QString &token,
-    Permissions permissions,
-    bool isPasswordSet,
-    const QUrl &url,
-    const QDate &expireDate,
-    const QString &note,
-    const QString &label)
+                     const QString &id,
+                     const QString &uidowner,
+                     const QString &ownerDisplayName,
+                     const QString &path,
+                     const QString &name,
+                     const QString &token,
+                     Permissions permissions,
+                     bool isPasswordSet,
+                     const QUrl &url,
+                     const QDate &expireDate,
+                     const QString &note,
+                     const QString &label)
     : Share(account, id, uidowner, ownerDisplayName, path, Share::TypeLink, isPasswordSet, permissions)
     , _name(name)
     , _token(token)
@@ -272,8 +270,9 @@ void LinkShare::setLabel(const QString &label)
     createShareJob(&LinkShare::slotLabelSet)->setLabel(getId(), label);
 }
 
-template <typename LinkShareSlot>
-OcsShareJob *LinkShare::createShareJob(const LinkShareSlot slotFunction) {
+template<typename LinkShareSlot>
+OcsShareJob *LinkShare::createShareJob(const LinkShareSlot slotFunction)
+{
     auto *job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, slotFunction);
     connect(job, &OcsJob::ocsError, this, &LinkShare::slotOcsError);
@@ -311,16 +310,16 @@ void LinkShare::slotLabelSet(const QJsonDocument &, const QVariant &label)
 }
 
 UserGroupShare::UserGroupShare(AccountPtr account,
-    const QString &id,
-    const QString &owner,
-    const QString &ownerDisplayName,
-    const QString &path,
-    const ShareType shareType,
-    bool isPasswordSet,
-    const Permissions permissions,
-    const ShareePtr shareWith,
-    const QDate &expireDate,
-    const QString &note)
+                               const QString &id,
+                               const QString &owner,
+                               const QString &ownerDisplayName,
+                               const QString &path,
+                               const ShareType shareType,
+                               bool isPasswordSet,
+                               const Permissions permissions,
+                               const ShareePtr shareWith,
+                               const QDate &expireDate,
+                               const QString &note)
     : Share(account, id, owner, ownerDisplayName, path, shareType, isPasswordSet, permissions, shareWith)
     , _note(note)
     , _expireDate(expireDate)
@@ -388,9 +387,7 @@ ShareManager::ShareManager(AccountPtr account, QObject *parent)
 {
 }
 
-void ShareManager::createLinkShare(const QString &path,
-    const QString &name,
-    const QString &password)
+void ShareManager::createLinkShare(const QString &path, const QString &name, const QString &password)
 {
     auto *job = new OcsShareJob(_account);
     connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotLinkShareCreated);
@@ -420,7 +417,7 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
         return;
     }
 
-    //Parse share
+    // Parse share
     auto data = reply.object().value("ocs").toObject().value("data").toObject();
     QSharedPointer<LinkShare> share(parseLinkShare(data));
 
@@ -429,56 +426,67 @@ void ShareManager::slotLinkShareCreated(const QJsonDocument &reply)
     updateFolder(_account, share->path());
 }
 
-
 void ShareManager::createShare(const QString &path,
-    const Share::ShareType shareType,
-    const QString shareWith,
-    const Share::Permissions desiredPermissions,
-    const QString &password)
+                               const Share::ShareType shareType,
+                               const QString shareWith,
+                               const Share::Permissions desiredPermissions,
+                               const QString &password)
 {
     auto job = new OcsShareJob(_account);
     connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-    connect(job, &OcsShareJob::shareJobFinished, this,
-        [=](const QJsonDocument &reply) {
-            // Find existing share permissions (if this was shared with us)
-            Share::Permissions existingPermissions = SharePermissionDefault;
-            foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
-                auto map = element.toObject();
-                if (map["file_target"] == path)
-                    existingPermissions = Share::Permissions(map["permissions"].toInt());
-            }
+    connect(job, &OcsShareJob::shareJobFinished, this, [=](const QJsonDocument &reply) {
+        // Find existing share permissions (if this was shared with us)
+        Share::Permissions existingPermissions = SharePermissionDefault;
+        foreach (const QJsonValue &element, reply.object()["ocs"].toObject()["data"].toArray()) {
+            auto map = element.toObject();
+            if (map["file_target"] == path)
+                existingPermissions = Share::Permissions(map["permissions"].toInt());
+        }
 
-            // Limit the permissions we request for a share to the ones the item
-            // was shared with initially.
-            auto validPermissions = desiredPermissions;
-            if (validPermissions == SharePermissionDefault) {
-                validPermissions = existingPermissions;
-            }
-            if (existingPermissions != SharePermissionDefault) {
-                validPermissions &= existingPermissions;
-            }
+        // Limit the permissions we request for a share to the ones the item
+        // was shared with initially.
+        auto validPermissions = desiredPermissions;
+        if (validPermissions == SharePermissionDefault) {
+            validPermissions = existingPermissions;
+        }
+        if (existingPermissions != SharePermissionDefault) {
+            validPermissions &= existingPermissions;
+        }
 
-            auto *job = new OcsShareJob(_account);
-            connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
-            connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
-            job->createShare(path, shareType, shareWith, validPermissions, password);
-        });
+        auto *job = new OcsShareJob(_account);
+        connect(job, &OcsShareJob::shareJobFinished, this, &ShareManager::slotShareCreated);
+        connect(job, &OcsJob::ocsError, this, &ShareManager::slotOcsError);
+        job->createShare(path, shareType, shareWith, validPermissions, password);
+    });
     job->getSharedWithMe();
 }
 
 void ShareManager::createE2EeShareJob(const QString &path,
-                                   const ShareePtr sharee,
-                                   const Share::Permissions permissions,
-                                   const QSharedPointer<ShareManager> &shareManager,
-                                   const QString &password)
+                                      const ShareePtr sharee,
+                                      const Share::Permissions permissions,
+                                      const QSharedPointer<ShareManager> &shareManager,
+                                      const QByteArray &folderId,
+                                      const QString &password)
 {
-    const auto createE2eeShareJob = new CreateE2eeShareJob(path, sharee, permissions, shareManager, _account, password, this);
+    QString folderAlias;
+    for (const auto &f : FolderMan::instance()->map()) {
+        if (f->accountState()->account() != _account) {
+            continue;
+        }
+        const auto folderPath = f->remotePath();
+        if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
+            folderAlias = f->alias();
+        }
+    }
+
+    const auto createE2eeShareJob = new UpdateE2eeShareMetadataJob(path, sharee, permissions, shareManager, _account, folderId, folderAlias, password, this);
+    connect(createE2eeShareJob, &UpdateE2eeShareMetadataJob::finished, this, &ShareManager::slotCreateE2eeShareJobFinised);
     createE2eeShareJob->start();
 }
 
 void ShareManager::slotShareCreated(const QJsonDocument &reply)
 {
-    //Parse share
+    // Parse share
     auto data = reply.object().value("ocs").toObject().value("data").toObject();
     SharePtr share(parseShare(data));
 
@@ -513,7 +521,7 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 
         if (shareType == Share::TypeLink) {
             newShare = parseLinkShare(data);
-        } else if (Share::isShareTypeUserGroupEmailRoomOrRemote(static_cast <Share::ShareType>(shareType))) {
+        } else if (Share::isShareTypeUserGroupEmailRoomOrRemote(static_cast<Share::ShareType>(shareType))) {
             newShare = parseUserGroupShare(data);
         } else {
             newShare = parseShare(data);
@@ -529,8 +537,8 @@ void ShareManager::slotSharesFetched(const QJsonDocument &reply)
 QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObject &data)
 {
     ShareePtr sharee(new Sharee(data.value("share_with").toString(),
-        data.value("share_with_displayname").toString(),
-        static_cast<Sharee::Type>(data.value("share_type").toInt())));
+                                data.value("share_with_displayname").toString(),
+                                static_cast<Sharee::Type>(data.value("share_type").toInt())));
 
     QDate expireDate;
     if (data.value("expiration").isString()) {
@@ -543,16 +551,16 @@ QSharedPointer<UserGroupShare> ShareManager::parseUserGroupShare(const QJsonObje
     }
 
     return QSharedPointer<UserGroupShare>(new UserGroupShare(_account,
-        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
-        data.value("uid_owner").toVariant().toString(),
-        data.value("displayname_owner").toVariant().toString(),
-        data.value("path").toString(),
-        static_cast<Share::ShareType>(data.value("share_type").toInt()),
-        !data.value("password").toString().isEmpty(),
-        static_cast<Share::Permissions>(data.value("permissions").toInt()),
-        sharee,
-        expireDate,
-        note));
+                                                             data.value("id").toVariant().toString(), // "id" used to be an integer, support both
+                                                             data.value("uid_owner").toVariant().toString(),
+                                                             data.value("displayname_owner").toVariant().toString(),
+                                                             data.value("path").toString(),
+                                                             static_cast<Share::ShareType>(data.value("share_type").toInt()),
+                                                             !data.value("password").toString().isEmpty(),
+                                                             static_cast<Share::Permissions>(data.value("permissions").toInt()),
+                                                             sharee,
+                                                             expireDate,
+                                                             note));
 }
 
 QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
@@ -576,46 +584,60 @@ QSharedPointer<LinkShare> ShareManager::parseLinkShare(const QJsonObject &data)
     if (data.value("expiration").isString()) {
         expireDate = QDate::fromString(data.value("expiration").toString(), "yyyy-MM-dd 00:00:00");
     }
-    
+
     QString note;
     if (data.value("note").isString()) {
         note = data.value("note").toString();
     }
 
     return QSharedPointer<LinkShare>(new LinkShare(_account,
-        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
-        data.value("uid_owner").toString(),
-        data.value("displayname_owner").toString(),
-        data.value("path").toString(),
-        data.value("name").toString(),
-        data.value("token").toString(),
-        (Share::Permissions)data.value("permissions").toInt(),
-        data.value("share_with").isString(), // has password?
-        url,
-        expireDate,
-        note,
-        data.value("label").toString()));
+                                                   data.value("id").toVariant().toString(), // "id" used to be an integer, support both
+                                                   data.value("uid_owner").toString(),
+                                                   data.value("displayname_owner").toString(),
+                                                   data.value("path").toString(),
+                                                   data.value("name").toString(),
+                                                   data.value("token").toString(),
+                                                   (Share::Permissions)data.value("permissions").toInt(),
+                                                   data.value("share_with").isString(), // has password?
+                                                   url,
+                                                   expireDate,
+                                                   note,
+                                                   data.value("label").toString()));
 }
 
 SharePtr ShareManager::parseShare(const QJsonObject &data) const
 {
-    ShareePtr sharee(new Sharee(data.value("share_with").toString(),
-        data.value("share_with_displayname").toString(),
-        (Sharee::Type)data.value("share_type").toInt()));
+    ShareePtr sharee(
+        new Sharee(data.value("share_with").toString(), data.value("share_with_displayname").toString(), (Sharee::Type)data.value("share_type").toInt()));
 
     return SharePtr(new Share(_account,
-        data.value("id").toVariant().toString(), // "id" used to be an integer, support both
-        data.value("uid_owner").toVariant().toString(),
-        data.value("displayname_owner").toVariant().toString(),
-        data.value("path").toString(),
-        (Share::ShareType)data.value("share_type").toInt(),
-        !data.value("password").toString().isEmpty(),
-        (Share::Permissions)data.value("permissions").toInt(),
-        sharee));
+                              data.value("id").toVariant().toString(), // "id" used to be an integer, support both
+                              data.value("uid_owner").toVariant().toString(),
+                              data.value("displayname_owner").toVariant().toString(),
+                              data.value("path").toString(),
+                              (Share::ShareType)data.value("share_type").toInt(),
+                              !data.value("password").toString().isEmpty(),
+                              (Share::Permissions)data.value("permissions").toInt(),
+                              sharee));
 }
 
 void ShareManager::slotOcsError(int statusCode, const QString &message)
 {
     emit serverError(statusCode, message);
+}
+
+void ShareManager::slotCreateE2eeShareJobFinised(int statusCode, const QString &message)
+{
+    const auto job = qobject_cast<UpdateE2eeShareMetadataJob *>(sender());
+    Q_ASSERT(job);
+    if (!job) {
+        qCWarning(lcUserGroupShare) << "slotCreateE2eeShareJobFinised must be called by UpdateE2eeShareMetadataJob::finished signal!";
+    }
+    disconnect(job, &UpdateE2eeShareMetadataJob::finished, this, &ShareManager::slotCreateE2eeShareJobFinised);
+    if (statusCode != 200) {
+        emit serverError(statusCode, message);
+    } else {
+        createShare(job->sharePath(), Share::ShareType(job->sharee()->type()), job->sharee()->shareWith(), job->desiredPermissions(), job->password());
+    }
 }
 }

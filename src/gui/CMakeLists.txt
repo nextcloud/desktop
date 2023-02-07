@@ -84,8 +84,8 @@ set(client_SRCS
     conflictsolver.cpp
     connectionvalidator.h
     connectionvalidator.cpp
-    createe2eesharejob.h
-    createe2eesharejob.cpp
+    updatee2eesharemetadatajob.h
+    updatee2eesharemetadatajob.cpp
     editlocallyjob.h
     editlocallyjob.cpp
     editlocallymanager.h

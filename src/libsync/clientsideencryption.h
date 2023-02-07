@@ -209,6 +209,7 @@ public:
     [[nodiscard]] bool moveFromFileDropToFiles();
 
     [[nodiscard]] QJsonObject fileDrop() const;
+    bool addShareRecipient(const QString &userId, const QSslCertificate certificate);
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -218,16 +219,22 @@ private:
     void setupExistingMetadata(const QByteArray& metadata);
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
+    [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
     [[nodiscard]] QByteArray decryptData(const QByteArray &data) const;
 
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
+    [[nodiscard]] QByteArray getMetadataKey() const;
+
     QVector<EncryptedFile> _files;
     QMap<int, QByteArray> _metadataKeys;
+    QByteArray _metadataKeyShared;
+    QHash<QString, QVariant> _shareRecipients;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
     QJsonObject _fileDrop;
+    QJsonObject _metadataKeysJson;
 };
 
 } // namespace OCC

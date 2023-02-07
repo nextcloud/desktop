@@ -33,6 +33,7 @@
 #include <QUuid>
 #include <QScopeGuard>
 #include <QRandomGenerator>
+#include <QJsonArray>
 
 #include <qt5keychain/keychain.h>
 #include <common/utility.h>
@@ -64,9 +65,14 @@ namespace {
     constexpr char accountProperty[] = "account";
 
     const char e2e_cert[] = "_e2e-certificate";
-    const char e2e_cert_sharing[] = "_sharing";
+    constexpr auto e2e_cert_sharing = "_sharing";
     const char e2e_private[] = "_e2e-private";
     const char e2e_mnemonic[] = "_e2e-mnemonic";
+
+    constexpr auto shareRecipientsKey = "recipients";
+    constexpr auto shareRecipientUserIdKey = "userId";
+    constexpr auto shareRecipientCertificateKey = "certificate";
+    constexpr auto shareRecipientEncryptedMetadataKey = "encryptedMetadataKey";
 
     constexpr qint64 blockSize = 1024;
 
@@ -1594,6 +1600,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
   QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
   QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
   QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
+  const auto shareRecipients = metadataObj[shareRecipientsKey].toArray();
 
   if (metadataKeys.isEmpty()) {
       qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
@@ -1627,10 +1634,35 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
     _metadataKeys.insert(it.key().toInt(), decryptedKey);
   }
 
+  if (!metadataKeys.isEmpty() && _metadataKeys.isEmpty()) {
+      _metadataKeysJson = metadataKeys;
+  }
+
+  for (auto it = shareRecipients.constBegin(); it != shareRecipients.constEnd(); ++it) {
+      const auto shareRecipient = it->toObject();
+      const auto userId = shareRecipient.value(shareRecipientUserIdKey).toString();
+      _shareRecipients[userId] = QVariantMap{
+          {shareRecipientUserIdKey, userId},
+          {shareRecipientCertificateKey, shareRecipient.value(shareRecipientCertificateKey).toString().toUtf8()},
+          {shareRecipientEncryptedMetadataKey, shareRecipient.value(shareRecipientEncryptedMetadataKey).toString().toUtf8()}
+      };
+  }
+
+  if (_metadataKeys.isEmpty() && !_shareRecipients.isEmpty()) {
+      const auto currentUserShareRecipient = _shareRecipients.value(_account->davUser()).toMap();
+      const auto encryptedMetadataKey = currentUserShareRecipient.value(shareRecipientEncryptedMetadataKey).toString().toLocal8Bit();
+      if (!encryptedMetadataKey.isEmpty()) {
+          const auto b64DecryptedKey = decryptData(encryptedMetadataKey);
+          if (!b64DecryptedKey.isEmpty()) {
+              _metadataKeyShared = QByteArray::fromBase64(b64DecryptedKey);
+          }
+      }
+  }
+
   // Cool, We actually have the key, we can decrypt the rest of the metadata.
   qCDebug(lcCse) << "Sharing: " << sharing;
   if (sharing.size()) {
-      const auto metaDataKey = !_metadataKeys.isEmpty() ? _metadataKeys.last() : QByteArray{};
+      const auto metaDataKey = getMetadataKey();
       if (metaDataKey.isEmpty()) {
           qCDebug(lcCse) << "Failed to decrypt sharing! Empty metadata key!";
       } else {
@@ -1658,7 +1690,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         file.initializationVector = QByteArray::fromBase64(fileObj["initializationVector"].toString().toLocal8Bit());
 
         //Decrypt encrypted part
-        const auto key = _metadataKeys.value(file.metadataKey, {});
+        const auto key = !_metadataKeys.isEmpty() ? _metadataKeys.value(file.metadataKey, {}) : _metadataKeyShared;
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
         auto decryptedFile = !key.isEmpty() ? decryptJsonObject(encryptedFile, key) : QByteArray{};
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
@@ -1688,8 +1720,13 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 // RSA/ECB/OAEPWithSHA-256AndMGF1Padding using private / public key.
 QByteArray FolderMetadata::encryptData(const QByteArray& data) const
 {
+    return encryptData(data, _account->e2e()->_publicKey);
+}
+
+QByteArray FolderMetadata::encryptData(const QByteArray &data, const QSslKey key) const
+{
     Bio publicKeyBio;
-    QByteArray publicKeyPem = _account->e2e()->_publicKey.toPem();
+    QByteArray publicKeyPem = key.toPem();
     BIO_write(publicKeyBio, publicKeyPem.constData(), publicKeyPem.size());
     auto publicKey = ClientSideEncryption::PKey::readPublicKey(publicKeyBio);
 
@@ -1726,9 +1763,15 @@ QByteArray FolderMetadata::decryptJsonObject(const QByteArray& encryptedMetadata
     return EncryptionHelper::decryptStringSymmetric(pass, encryptedMetadata);
 }
 
+QByteArray FolderMetadata::getMetadataKey() const
+{
+    return !_metadataKeys.isEmpty() ? _metadataKeys.last()
+        : !_metadataKeyShared.isEmpty() ? _metadataKeyShared : QByteArray{};
+}
+
 bool FolderMetadata::isMetadataSetup() const
 {
-    return !_metadataKeys.isEmpty();
+    return !_metadataKeys.isEmpty() || !_metadataKeyShared.isEmpty();
 }
 
 void FolderMetadata::setupEmptyMetadata() {
@@ -1745,7 +1788,9 @@ void FolderMetadata::setupEmptyMetadata() {
 QByteArray FolderMetadata::encryptedMetadata() const {
     qCDebug(lcCse) << "Generating metadata";
 
-    if (_metadataKeys.isEmpty()) {
+    const auto metadataKey = getMetadataKey();
+
+    if (metadataKey.isEmpty() && _metadataKeysJson.isEmpty()) {
         qCDebug(lcCse) << "Metadata generation failed! Empty metadata key!";
         return {};
     }
@@ -1760,11 +1805,33 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         metadataKeys.insert(QString::number(it.key()), QString(encryptedKey));
     }
 
+    if (metadataKeys.isEmpty()) {
+        metadataKeys = _metadataKeysJson;
+    }
+
+    QJsonArray shareRecipients;
+    for (auto it = _shareRecipients.constBegin(), end = _shareRecipients.constEnd(); it != end; ++it) {
+        const auto recepient = it.value().toMap();
+
+        QJsonObject recepientJson = {
+            {shareRecipientUserIdKey, recepient.value(shareRecipientUserIdKey).toString()},
+            {shareRecipientCertificateKey, QJsonValue::fromVariant(recepient.value(shareRecipientCertificateKey))},
+            {shareRecipientEncryptedMetadataKey, QJsonValue::fromVariant(recepient.value(shareRecipientEncryptedMetadataKey))}
+        };
+        shareRecipients.push_back(recepientJson);
+    }
+
     QJsonObject metadata = {
       {"metadataKeys", metadataKeys},
       // {"sharing", sharingEncrypted},
-      {"version", 1}
+      {"version", 2}
     };
+
+    if (!shareRecipients.isEmpty()) {
+        metadata.insert(shareRecipientsKey, shareRecipients);
+    }
+
+    const auto lastKey = !_metadataKeys.isEmpty() ? _metadataKeys.lastKey() : !metadataKeys.isEmpty() ? metadataKeys.size() - 1 : -1;
 
     QJsonObject files;
     for (auto it = _files.constBegin(), end = _files.constEnd(); it != end; it++) {
@@ -1776,7 +1843,7 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         QJsonDocument encryptedDoc;
         encryptedDoc.setObject(encrypted);
 
-        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), _metadataKeys.last());
+        QString encryptedEncrypted = encryptJsonObject(encryptedDoc.toJson(QJsonDocument::Compact), metadataKey);
         if (encryptedEncrypted.isEmpty()) {
           qCDebug(lcCse) << "Metadata generation failed!";
         }
@@ -1785,7 +1852,7 @@ QByteArray FolderMetadata::encryptedMetadata() const {
         file.insert("encrypted", encryptedEncrypted);
         file.insert("initializationVector", QString(it->initializationVector.toBase64()));
         file.insert("authenticationTag", QString(it->authenticationTag.toBase64()));
-        file.insert("metadataKey", _metadataKeys.lastKey());
+        file.insert("metadataKey", lastKey);
 
         files.insert(it->encryptedFilename, file);
     }
@@ -1875,6 +1942,36 @@ bool FolderMetadata::moveFromFileDropToFiles()
 QJsonObject FolderMetadata::fileDrop() const
 {
     return _fileDrop;
+}
+
+bool FolderMetadata::addShareRecipient(const QString &userId, const QSslCertificate certificate)
+{
+    Q_ASSERT(!userId.isEmpty() && certificate.isValid());
+    if (userId.isEmpty()) {
+        qCDebug(lcCse) << "Could not add a share recipient. Invalid userId.";
+        return false;
+    }
+
+    if (!certificate.isValid()) {
+        qCDebug(lcCse) << "Could not add a share recipient. Invalid certificate.";
+        return false;
+    }
+    const auto certificatePublicKey = certificate.publicKey();
+    if (certificatePublicKey.isNull()) {
+        qCDebug(lcCse) << "Could not add a share recipient. Invalid certificate.";
+        return false;
+    }
+    const auto metaDataKey = getMetadataKey();
+    const auto encryptedMetadataKey = encryptData(metaDataKey.toBase64(), certificatePublicKey);
+    if (encryptedMetadataKey.isEmpty()) {
+        qCDebug(lcCse) << "Could not add a share recipient.";
+        return false;
+    }
+    _shareRecipients[userId] = QVariantMap{{shareRecipientUserIdKey, userId},
+                                           {shareRecipientCertificateKey, certificate.toPem()},
+                                           {shareRecipientEncryptedMetadataKey, encryptedMetadataKey}};
+
+    return true;
 }
 
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)

@@ -205,6 +205,7 @@ private:
     bool _isSecureFileDropSupportedFolder = false;
     SyncJournalFileLockInfo _filelockState;
     QString _privateLinkUrl;
+    QByteArray _folderId;
 
     QSharedPointer<ShareManager> _manager;
 

@@ -414,14 +414,14 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
     }
 
     const auto privateLinkUrl = result["privatelink"].toString();
-    const auto numericFileId = result["fileid"].toByteArray();
+    _folderId = result["fileid"].toByteArray();
 
     if (!privateLinkUrl.isEmpty()) {
         qCInfo(lcShareModel) << "Received private link url for" << _sharePath << privateLinkUrl;
         _privateLinkUrl = privateLinkUrl;
-    } else if (!numericFileId.isEmpty()) {
-        qCInfo(lcShareModel) << "Received numeric file id for" << _sharePath << numericFileId;
-        _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(numericFileId).toString(QUrl::FullyEncoded);
+    } else if (!_folderId.isEmpty()) {
+        qCInfo(lcShareModel) << "Received numeric file id for" << _sharePath << _folderId;
+        _privateLinkUrl = _accountState->account()->deprecatedPrivateLinkUrl(_folderId).toString(QUrl::FullyEncoded);
     }
 
     setupInternalLinkShare();
@@ -986,7 +986,7 @@ void ShareModel::createNewUserGroupShare(const ShareePtr &sharee)
     }
 
     if (_isSecureFileDropSupportedFolder) {
-        _manager->createE2EeShareJob(_sharePath, sharee, _maxSharingPermissions, _manager, {});
+        _manager->createE2EeShareJob(_sharePath, sharee, _maxSharingPermissions, _manager, _folderId, {});
     } else {
         _manager->createShare(_sharePath, Share::ShareType(sharee->type()), sharee->shareWith(), _maxSharingPermissions, {});
     }
@@ -1130,5 +1130,4 @@ QVariantList ShareModel::sharees() const
     }
     return returnSharees;
 }
-
 } // namespace OCC

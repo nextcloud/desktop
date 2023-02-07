@@ -414,6 +414,7 @@ public:
                          const ShareePtr sharee,
                          const Share::Permissions permissions,
                          const QSharedPointer<ShareManager> &shareManager,
+                         const QByteArray &folderId,
                          const QString &password = "");
 
     /**
@@ -445,6 +446,8 @@ private slots:
     void slotLinkShareCreated(const QJsonDocument &reply);
     void slotShareCreated(const QJsonDocument &reply);
     void slotOcsError(int statusCode, const QString &message);
+    void slotCreateE2eeShareJobFinised(int statusCode, const QString &message);
+
 private:
     QSharedPointer<LinkShare> parseLinkShare(const QJsonObject &data);
     QSharedPointer<UserGroupShare> parseUserGroupShare(const QJsonObject &data);

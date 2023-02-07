@@ -19,7 +19,7 @@
 
 namespace OCC
 {
-Q_LOGGING_CATEGORY(lcCreateE2eeShareJob, "nextcloud.gui.createe2eesharejob", QtInfoMsg)
+Q_LOGGING_CATEGORY(lcUpdateE2eeShareMetadataJob, "nextcloud.gui.updatee2eesharemetadatajob", QtInfoMsg)
 
 UpdateE2eeShareMetadataJob::UpdateE2eeShareMetadataJob(const QString &sharePath,
                                        const ShareePtr &sharee,
@@ -114,7 +114,7 @@ void UpdateE2eeShareMetadataJob::slotFetchFolderMetadata()
 
 void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json, int statusCode)
 {
-    qCDebug(lcCreateE2eeShareJob) << "Metadata received, applying it to the result list";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Metadata received, applying it to the result list";
 
     _folderMetadata.reset(new FolderMetadata(_account, json.toJson(QJsonDocument::Compact), statusCode));
 
@@ -123,7 +123,7 @@ void UpdateE2eeShareMetadataJob::slotMetadataReceived(const QJsonDocument &json,
 
 void UpdateE2eeShareMetadataJob::slotMetadataError(const QByteArray &folderId, int httpReturnCode)
 {
-    qCWarning(lcCreateE2eeShareJob) << "E2EE Metadata job error. Trying to proceed without it." << folderId << httpReturnCode;
+    qCWarning(lcUpdateE2eeShareMetadataJob) << "E2EE Metadata job error. Trying to proceed without it." << folderId << httpReturnCode;
     emit finished(404, tr("Could not fetch metadata for folder %1").arg(QString::fromUtf8(_folderId)));
 }
 void UpdateE2eeShareMetadataJob::slotLockFolder()
@@ -179,7 +179,7 @@ void UpdateE2eeShareMetadataJob::slotUnlockFolder()
 
 void UpdateE2eeShareMetadataJob::slotFolderLockedSuccessfully(const QByteArray &folderId, const QByteArray &token)
 {
-    qCDebug(lcCreateE2eeShareJob) << "Folder" << folderId << "Locked Successfully for Upload, Fetching Metadata";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Folder" << folderId << "Locked Successfully for Upload, Fetching Metadata";
     // Should I use a mutex here?
     _currentLockingInProgress = true;
     _folderToken = token;
@@ -200,15 +200,15 @@ void UpdateE2eeShareMetadataJob::slotFolderLockedSuccessfully(const QByteArray &
 void UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess(const QByteArray &folderId)
 {
     Q_UNUSED(folderId);
-    qCDebug(lcCreateE2eeShareJob) << "Uploading of the metadata success, Encrypting the file";
-    qCDebug(lcCreateE2eeShareJob) << "Finalizing the upload part, now the actuall uploader will take over";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Uploading of the metadata success, Encrypting the file";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Finalizing the upload part, now the actuall uploader will take over";
     slotUnlockFolder();
 }
 
 void UpdateE2eeShareMetadataJob::slotUpdateMetadataError(const QByteArray &folderId, int httpErrorResponse)
 {
-    qCDebug(lcCreateE2eeShareJob) << "Update metadata error for folder" << folderId << "with error" << httpErrorResponse;
-    qCDebug(lcCreateE2eeShareJob()) << "Unlocking the folder.";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Update metadata error for folder" << folderId << "with error" << httpErrorResponse;
+    qCDebug(lcUpdateE2eeShareMetadataJob()) << "Unlocking the folder.";
     slotUnlockFolder();
 }
 
@@ -221,7 +221,7 @@ void UpdateE2eeShareMetadataJob::slotFolderUnlocked(const QByteArray &folderId, 
 void UpdateE2eeShareMetadataJob::slotFolderLockedError(const QByteArray &folderId, int httpErrorCode)
 {
     Q_UNUSED(httpErrorCode);
-    qCDebug(lcCreateE2eeShareJob) << "Folder" << folderId << "Coundn't be locked.";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Folder" << folderId << "Coundn't be locked.";
     emit finished(404, tr("Could not lock a folder %1").arg(QString::fromUtf8(_folderId)));
 }
 
