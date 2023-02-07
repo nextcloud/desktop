@@ -35,6 +35,8 @@ WebFingerSetupWizardPage::WebFingerSetupWizardPage(const QUrl &serverUrl)
     if (!Theme::instance()->userIDHint().isEmpty()) {
         _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
     }
+
+    connect(_ui->usernameLineEdit, &QLineEdit::textChanged, this, &AbstractSetupWizardPage::contentChanged);
 }
 
 QString WebFingerSetupWizardPage::username() const
