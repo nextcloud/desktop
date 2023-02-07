@@ -30,11 +30,26 @@ WebFingerSetupWizardPage::WebFingerSetupWizardPage(const QUrl &serverUrl)
         _ui->usernameLineEdit->setFocus();
     });
 
-    _ui->usernameLabel->setText(Utility::enumToDisplayName(Theme::instance()->userIDType()));
+    const QString usernameLabelText = []() {
+        const auto userIdType = Theme::instance()->userIDType();
+
+        switch (userIdType) {
+        case Theme::UserIDCustom:
+            return Theme::instance()->customUserID();
+        default:
+            return Utility::enumToDisplayName(Theme::instance()->userIDType());
+        }
+    }();
+
+    _ui->usernameLabel->setText(usernameLabelText);
+    _ui->usernameLineEdit->setPlaceholderText(usernameLabelText);
 
     if (!Theme::instance()->userIDHint().isEmpty()) {
         _ui->usernameLineEdit->setPlaceholderText(Theme::instance()->userIDHint());
     }
+
+    // in contrast to the basic login widget, we need to adjust the label above the form here, too
+    _ui->enterYourUsernameLabel->setText(tr("Please enter your %1:", "Please enter your [username, e-mail address, ...]:").arg(usernameLabelText));
 
     connect(_ui->usernameLineEdit, &QLineEdit::textChanged, this, &AbstractSetupWizardPage::contentChanged);
 }

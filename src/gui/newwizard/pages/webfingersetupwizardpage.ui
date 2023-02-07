@@ -33,7 +33,7 @@
    <item>
     <widget class="QLabel" name="enterYourUsernameLabel">
      <property name="text">
-      <string>Please enter your username:</string>
+      <string notr="true">Please enter your [username, e-mail address]:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
