@@ -1479,7 +1479,7 @@ See konfiguratsioon põhjustab teadaolevalt andmekaotust ja seda enam ei toetata
 Palun kaaluge selle kausta eemaldamist kontolt ja selle uuesti lisamist.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1434"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -4180,6 +4180,12 @@ Kas olete kindel, et soovite jätkata?</translation>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
         <translation>Ühendumine &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
+        <source>Please enter your %1:</source>
+        <comment>Please enter your [username, e-mail address, ...]:</comment>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::Wizard::WebFingerSetupWizardState</name>
@@ -4701,11 +4707,6 @@ Kas olete kindel, et soovite jätkata?</translation>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
         <translation>Vorm</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
-        <source>Please enter your username:</source>
-        <translation>Palun sisestage oma kasutajanimi:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>

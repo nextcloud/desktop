@@ -1476,7 +1476,7 @@ So eine Konfiguration führt bekanntermaßen zu Datenverlust und wird nicht mehr
 Erwägung Sie diesen Ordner aus dem Konto zu entfernen und erneut hinzuzufügen.</translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1434"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>%1 - %2@%3</source>
         <translation>%1 - %2@%3</translation>
     </message>
@@ -4172,6 +4172,12 @@ Möchten Sie fortfahren?</translation>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
         <translation>Verbinden mit &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</translation>
     </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
+        <source>Please enter your %1:</source>
+        <comment>Please enter your [username, e-mail address, ...]:</comment>
+        <translation type="unfinished"/>
+    </message>
 </context>
 <context>
     <name>OCC::Wizard::WebFingerSetupWizardState</name>
@@ -4693,11 +4699,6 @@ Möchten Sie fortfahren?</translation>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
         <translation>Formular</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
-        <source>Please enter your username:</source>
-        <translation>Bitte geben Sie Ihren Benutzernamen ein:</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="79"/>

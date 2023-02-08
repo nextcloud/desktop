@@ -1486,7 +1486,7 @@ Please consider removing this folder from the account and adding it again.</sour
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/gui/folderman.cpp" line="1434"/>
+        <location filename="../src/gui/folderman.cpp" line="1435"/>
         <source>%1 - %2@%3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4170,6 +4170,12 @@ Are you sure you want to proceed?</source>
         <source>Connecting to &lt;a href=&apos;%1&apos; style=&apos;color: %2;&apos;&gt;%1&lt;/a&gt;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
+        <source>Please enter your %1:</source>
+        <comment>Please enter your [username, e-mail address, ...]:</comment>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>OCC::Wizard::WebFingerSetupWizardState</name>
@@ -4717,11 +4723,6 @@ Are you sure you want to proceed?</source>
     <message>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.ui" line="36"/>
-        <source>Please enter your username:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

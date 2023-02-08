@@ -212,7 +212,7 @@ public:
      */
     QString remotePathTrailingSlash() const;
 
-    void setNavigationPaneClsid(const QUuid &clsid) { _definition.navigationPaneClsid = clsid; }
+    void setNavigationPaneClsid(const QUuid &clsid);
     QUuid navigationPaneClsid() const { return _definition.navigationPaneClsid; }
 
     /**
