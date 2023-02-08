@@ -923,7 +923,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Einige Einstellungen wurden in %1-Versionen dieses Clients konfiguriert und verwenden Funktionen, die in dieser Version nicht verfügbar sind.&lt;br&gt;&lt;br&gt;Fortfahren bedeutet &lt;b&gt;%2 dieser Einstellungen&lt;/b&gt;&lt;br&gt;&lt;br&gt;Die aktuelle Konfigurationsdatei wurde bereits auf &lt;i&gt;%3&lt;/i&gt; gesichert.</translation>
+        <translation>Benötigt keine Übersetzung. Hier wird nur die formelle Übersetzung verwendet (de_DE). &lt;br&gt;&lt;br&gt;&lt;b&gt;&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;i&gt;&lt;/i&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
