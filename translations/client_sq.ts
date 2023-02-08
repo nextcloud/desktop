@@ -4186,7 +4186,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Ju lutemi, jepni %1 tuaj:</translation>
     </message>
 </context>
 <context>
