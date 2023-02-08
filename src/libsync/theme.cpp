@@ -414,10 +414,19 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
             gitUrl = gitSHA1(format) + br;
         }
     }
+
+
+#if defined(OC_PLUGIN_DIR)
+    const QString pluginDirComment = QCoreApplication::translate("ownCloudTheme::pluginDir", "Plugin dir: %1%2").arg(QDir(QCoreApplication::applicationDirPath()).filePath(QStringLiteral(OC_PLUGIN_DIR)), br);
+#else
+    const QString pluginDirComment = QString();
+#endif
+
     return QCoreApplication::translate("ownCloudTheme::aboutVersions()",
         "%1 %2%7"
         "%8"
         "Libraries Qt %3, %4%7"
+        "%9"
         "Using virtual files plugin: %5%7"
         "%6")
         .arg(appName(),
@@ -427,7 +436,8 @@ QString Theme::aboutVersions(Theme::VersionFormat format) const
             Vfs::modeToString(bestAvailableVfsMode()),
             QSysInfo::productType() % QLatin1Char('-') % QSysInfo::kernelVersion(),
             br,
-            gitUrl);
+            gitUrl,
+            pluginDirComment);
 }
 
 
