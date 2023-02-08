@@ -44,7 +44,6 @@ AccountConfiguredWizardPage::AccountConfiguredWizardPage(const QString &defaultS
 
     if (!Theme::instance()->showVirtualFilesOption()) {
         _ui->useVfsRadioButton->setVisible(false);
-        vfsIsAvailable = false;
     }
 
     if (!vfsIsAvailable) {

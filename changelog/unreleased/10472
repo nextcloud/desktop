@@ -1,0 +1,3 @@
+Bugfix: showVirtualFilesOption no longer influences the use of VFS
+
+https://github.com/owncloud/client/issues/10472
