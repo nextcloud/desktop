@@ -914,9 +914,6 @@ Folder *FolderMan::addFolder(const AccountStatePtr &accountState, const FolderDe
         emit folderListChanged();
     }
 
-#ifdef Q_OS_WIN
-    _navigationPaneHelper.scheduleUpdateCloudStorageRegistry();
-#endif
     return folder;
 }
 
@@ -1399,10 +1396,11 @@ Folder *FolderMan::addFolderFromWizard(const AccountStatePtr &accountStatePtr, c
         if (!newFolder->groupInSidebar()) {
             Utility::setupFavLink(localFolder);
 #ifdef Q_OS_WIN
-            // TODO: move to setupFavLink
-            // TODO: don't call setupFavLinkt if showInExplorerNavigationPane is false?
-            if (_navigationPaneHelper.showInExplorerNavigationPane())
-                folderDefinition.navigationPaneClsid = QUuid::createUuid();
+            if (_navigationPaneHelper.showInExplorerNavigationPane()) {
+                newFolder->setNavigationPaneClsid(QUuid::createUuid());
+                // we might need to add or remove the panel entry as cfapi brings this feature out of the box
+                FolderMan::instance()->navigationPaneHelper().scheduleUpdateCloudStorageRegistry();
+            }
 #endif
         }
         if (!ConfigFile().newBigFolderSizeLimit().first) {

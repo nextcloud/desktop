@@ -1,0 +1,3 @@
+Bugfix: Fix generation of Windows sidebar entry when VFS is disabled
+
+https://github.com/owncloud/client/pull/10481

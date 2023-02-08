@@ -1480,6 +1480,12 @@ bool Folder::groupInSidebar() const
     return false;
 }
 
+void Folder::setNavigationPaneClsid(const QUuid &clsid)
+{
+    _definition.navigationPaneClsid = clsid;
+    saveToSettings();
+}
+
 bool FolderDefinition::isDeployed() const
 {
     return _deployed;
