@@ -74,6 +74,10 @@ namespace {
     constexpr auto shareRecipientCertificateKey = "certificate";
     constexpr auto shareRecipientEncryptedMetadataKey = "encryptedMetadataKey";
 
+    constexpr auto folderOwnerKey = "owner";
+    constexpr auto folderOwnerUserIdKey = "userId";
+    constexpr auto folderOwnerCertificateKey = "certificate";
+
     constexpr qint64 blockSize = 1024;
 
     QList<QByteArray> oldCipherFormatSplit(const QByteArray &cipher)
@@ -1599,6 +1603,7 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
 
   QJsonDocument metaDataDoc = QJsonDocument::fromJson(metaDataStr.toLocal8Bit());
   QJsonObject metadataObj = metaDataDoc.object()["metadata"].toObject();
+  const auto folderOwner = metadataObj[folderOwnerKey].toString().toLocal8Bit();
   QJsonObject metadataKeys = metadataObj["metadataKeys"].toObject();
   const auto shareRecipients = metadataObj[shareRecipientsKey].toArray();
 
@@ -1606,7 +1611,6 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
       qCDebug(lcCse()) << "Could not setup existing metadata with missing metadataKeys!";
       return;
   }
-
   QByteArray sharing = metadataObj["sharing"].toString().toLocal8Bit();
   QJsonObject files = metaDataDoc.object()["files"].toObject();
 
@@ -1656,6 +1660,18 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
           if (!b64DecryptedKey.isEmpty()) {
               _metadataKeyShared = QByteArray::fromBase64(b64DecryptedKey);
           }
+      }
+  }
+
+  const auto metaDataKey = getMetadataKey();
+  const auto folderOwnerObjDecrypted = decryptJsonObject(folderOwner, metaDataKey);
+
+  if (!folderOwnerObjDecrypted.isEmpty()) {
+      const auto folderOwnerJsonObject = QJsonDocument::fromJson(folderOwnerObjDecrypted).object();
+      const auto userId = folderOwnerJsonObject.value(folderOwnerUserIdKey).toString();
+      const auto certificate = QSslCertificate(QByteArray::fromBase64(folderOwnerJsonObject.value(folderOwnerCertificateKey).toString().toLocal8Bit()));
+      if (!userId.isEmpty() && !certificate.isNull()) {
+          _folderOwner = {userId, certificate};
       }
   }
 
@@ -1783,6 +1799,8 @@ void FolderMetadata::setupEmptyMetadata() {
     QString displayName = _account->displayName();
 
     _sharing.append({displayName, publicKey});
+
+    _folderOwner = {_account->davUser(), _account->e2e()->_certificate};
 }
 
 QByteArray FolderMetadata::encryptedMetadata() const {
@@ -1829,6 +1847,18 @@ QByteArray FolderMetadata::encryptedMetadata() const {
 
     if (!shareRecipients.isEmpty()) {
         metadata.insert(shareRecipientsKey, shareRecipients);
+    }
+
+    const auto metaDataKey = getMetadataKey();
+
+    QJsonObject folderOwnerJsonObject;
+    folderOwnerJsonObject.insert(folderOwnerUserIdKey, _folderOwner.first);
+    folderOwnerJsonObject.insert(folderOwnerCertificateKey, QJsonValue::fromVariant(_folderOwner.second.toPem().toBase64()));
+
+    const auto folderOwnerObjEncrypted = encryptJsonObject(QJsonDocument(folderOwnerJsonObject).toJson(QJsonDocument::Compact), metaDataKey);
+
+    if (!folderOwnerObjEncrypted.isEmpty()) {
+        metadata.insert(folderOwnerKey, QJsonValue::fromVariant(folderOwnerObjEncrypted));
     }
 
     const auto lastKey = !_metadataKeys.isEmpty() ? _metadataKeys.lastKey() : !metadataKeys.isEmpty() ? metadataKeys.size() - 1 : -1;
@@ -1961,17 +1991,62 @@ bool FolderMetadata::addShareRecipient(const QString &userId, const QSslCertific
         qCDebug(lcCse) << "Could not add a share recipient. Invalid certificate.";
         return false;
     }
-    const auto metaDataKey = getMetadataKey();
+
+    // make sure to update the 'metadataKeys' with a newly added 'metadataKey' such that a folder owner can later decrypt it
+    if (_folderOwner.first.isEmpty()) {
+        _folderOwner = {_account->davUser(), _account->e2e()->_certificate};
+    }
+
+    const auto metaDataKey = EncryptionHelper::generateRandom(16);
+    if (_folderOwner.first == _account->davUser()) {
+        _metadataKeys.insert(_metadataKeys.lastKey() + 1, metaDataKey);
+    } else {
+        _metadataKeyShared = metaDataKey;
+        const auto ownerPublicKey = _folderOwner.second.publicKey();
+        _metadataKeysJson.insert(_metadataKeysJson.keys().last(), QJsonValue::fromVariant(encryptData(metaDataKey.toBase64(), ownerPublicKey)));
+    }
+
     const auto encryptedMetadataKey = encryptData(metaDataKey.toBase64(), certificatePublicKey);
     if (encryptedMetadataKey.isEmpty()) {
         qCDebug(lcCse) << "Could not add a share recipient.";
         return false;
     }
-    _shareRecipients[userId] = QVariantMap{{shareRecipientUserIdKey, userId},
-                                           {shareRecipientCertificateKey, certificate.toPem()},
-                                           {shareRecipientEncryptedMetadataKey, encryptedMetadataKey}};
+    updateShareRecipients(metaDataKey);
+
+    _shareRecipients[userId] = QVariantMap{
+        {shareRecipientUserIdKey, userId},
+        {shareRecipientCertificateKey, certificate.toPem()},
+        {shareRecipientEncryptedMetadataKey, encryptedMetadataKey}
+    };
 
     return true;
+}
+
+void FolderMetadata::updateShareRecipients(const QByteArray &metadataKey)
+{
+    for (auto it = _shareRecipients.constBegin(); it != _shareRecipients.constEnd(); ++it) {
+        const auto recepient = it.value().toMap();
+
+        QSslCertificate certificate(recepient.value(shareRecipientCertificateKey).toString().toUtf8());
+        if (certificate.isNull()) {
+            continue;
+        }
+
+        const auto certificatePublicKey = certificate.publicKey();
+        if (certificatePublicKey.isNull()) {
+            continue;
+        }
+        const auto metaDataKey = getMetadataKey();
+        const auto encryptedMetadataKey = encryptData(metaDataKey.toBase64(), certificatePublicKey);
+        if (encryptedMetadataKey.isEmpty()) {
+            continue;
+        }
+        _shareRecipients[it.key()] = QVariantMap{
+            {shareRecipientUserIdKey, recepient.value(shareRecipientUserIdKey).toString()},
+            {shareRecipientCertificateKey, certificate.toPem()},
+            {shareRecipientEncryptedMetadataKey, encryptedMetadataKey}
+        };
+    }
 }
 
 bool EncryptionHelper::fileEncryption(const QByteArray &key, const QByteArray &iv, QFile *input, QFile *output, QByteArray& returnTag)

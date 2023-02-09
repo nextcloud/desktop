@@ -217,6 +217,7 @@ private:
      */
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
+    void updateShareRecipients(const QByteArray &metadataKey);
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
     [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
@@ -233,6 +234,8 @@ private:
     QHash<QString, QVariant> _shareRecipients;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
+    QPair<QString, QSslCertificate> _folderOwner;
+    QJsonObject _folderOwnerJson;
     QJsonObject _fileDrop;
     QJsonObject _metadataKeysJson;
 };
