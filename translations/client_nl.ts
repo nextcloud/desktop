@@ -4515,13 +4515,13 @@ Weet U zeker dat U verder wilt gaan?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation>WebFinger</translation>
+        <source>Username</source>
+        <translation>Gebruikersnaam</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Inloggegevens</translation>
+        <source>Login</source>
+        <translation>Login</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>

@@ -4513,13 +4513,13 @@ Tem certeza de que deseja continuar?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation>WebFinger</translation>
+        <source>Username</source>
+        <translation>Nome do Usuário</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Credenciais</translation>
+        <source>Login</source>
+        <translation>Login</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
@@ -4733,7 +4733,7 @@ Tem certeza de que deseja continuar?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Bibliotecas Qt %3, %4%7%9Usando o plug-in de arquivos virtuais: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4741,7 +4741,7 @@ Tem certeza de que deseja continuar?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="420"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Plugin dir: %1%2</translation>
     </message>
 </context>
 <context>

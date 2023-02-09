@@ -4513,13 +4513,13 @@ Kas olete kindel, et soovite jätkata?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation>WebFinger</translation>
+        <source>Username</source>
+        <translation>Kasutajanimi</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Kasutajatunnused</translation>
+        <source>Login</source>
+        <translation>Logi sisse</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
@@ -4733,7 +4733,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Qt teegid %3, %4%7%9Kasutatakse virtuaalsete failide pluginat: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4741,7 +4741,7 @@ Kas olete kindel, et soovite jätkata?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="420"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Plugina kaust: %1%2</translation>
     </message>
 </context>
 <context>
