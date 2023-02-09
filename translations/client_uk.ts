@@ -31,7 +31,7 @@
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="204"/>
         <source>Open file details</source>
-        <translation>Відкрити деталі файлу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/tray/ActivityItemContent.qml" line="208"/>
@@ -98,22 +98,22 @@
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="127"/>
         <source>Syncing %1 of %2  (%3 left)</source>
-        <translation>Синхронізація %1 з %2  (залишилося %3)</translation>
+        <translation>Синхронізую %1 з %2  (залишилося %3)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="132"/>
         <source>Syncing %1 of %2</source>
-        <translation>Синхронізація %1 з %2</translation>
+        <translation>Синхронізую %1 з %2</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="139"/>
         <source>Syncing %1 (%2 left)</source>
-        <translation>Синхронізація %1 (залишилося %2)</translation>
+        <translation>Синхронізую %1 (залишилося %2)</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="142"/>
         <source>Syncing %1</source>
-        <translation>Синхронізація %1</translation>
+        <translation>Синхронізую %1</translation>
     </message>
     <message>
         <location filename="../src/gui/cloudproviders/cloudproviderwrapper.cpp" line="163"/>
@@ -172,7 +172,7 @@
     <message>
         <location filename="../src/gui/tray/EditFileLocallyLoadingDialog.qml" line="75"/>
         <source>Opening file for local editing</source>
-        <translation>Відкривається файл для редагування на пристрої</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation>Відхилити</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
-        <translation>Дія</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
-        <translation>Спільний доступ</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -214,7 +214,7 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsWindow.qml" line="34"/>
         <source>File details of %1 · %2</source>
-        <translation>Деталі файлу %1 · %2</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -251,7 +251,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="26"/>
         <source>Browser Authentication</source>
-        <translation>Авторизація у бравзері</translation>
+        <translation>Авторизація у браузері</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="56"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/gui/accountsettings.ui" line="263"/>
         <source>Synchronize none</source>
-        <translation>Не синхронізовувати нічого</translation>
+        <translation>Не синхронізувати нічого</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.ui" line="270"/>
@@ -407,17 +407,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are End-to-End encrypted. To get the best experience with Virtual Files and End-to-End Encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Схоже, що у вас увімкнено підтримку віртуальних файлів для цього каталогу. Наразі, неможливо явно звантажувати віртуальні файли, які було наскрізно шифровано. Для коректної підтримки наскрізного шифрування та віртуальних файлів, будь ласка, переконайтеся, що зашифрований каталог позначено &quot;Зберігати на пристрої&quot;.</translation>
+        <translation>Схоже, що ви увімкнули функціонал віртуальних файлів для цього каталогу. Наразі, явним чином неможливо завантажувати віртуальні файли, які було зашифровано за допомогою наскрізного шифрування. Щоби отримати максимум можливостей від віртуальних файлів та насрізного шифрування, радимо позначити зашифровані каталоги &quot;Зробити завжди доступними на пристрої&quot;.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="93"/>
         <source>End-to-end Encryption with Virtual Files</source>
-        <translation>Наскрізне шифрування для віртуальних файлів</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="94"/>
         <source>You seem to have the Virtual Files feature enabled on this folder. At the moment, it is not possible to implicitly download virtual files that are end-to-end encrypted. To get the best experience with virtual files and end-to-end encryption, make sure the encrypted folder is marked with &quot;Make always available locally&quot;.</source>
-        <translation>Схоже, що у вас увімкнено підтримку віртуальних файлів для цього каталогу. Наразі, неможливо явно звантажувати віртуальні файли, які було наскрізно шифровано. Для коректної підтримки наскрізного шифрування та віртуальних файлів, будь ласка, переконайтеся, що зашифрований каталог позначено &quot;Зберігати на пристрої&quot;.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="97"/>
@@ -442,17 +442,17 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation>Вимкнути шифрування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
         <source>Display mnemonic</source>
-        <translation>Відобразити парольну фразу</translation>
+        <translation>Відобразити мнемоніку</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="256"/>
         <source>End-to-end encryption has been enabled for this account</source>
-        <translation>Наскрізне шифрування увімкнено для цього облікового запису</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1461"/>
@@ -468,8 +468,7 @@
         <location filename="../src/gui/accountsettings.cpp" line="341"/>
         <source>End-to-end encryption is not configured on this device. Once it is configured, you will be able to encrypt this folder.
 Would you like to set up end-to-end encryption?</source>
-        <translation>Наскрізне шифрування не налаштоване на цьому пристрої. Одразу після налаштування ви матимете змогу зашифрувати цей каталог.
-Чи ви бажаєте налаштувати наскрізне шифрування?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="366"/>
@@ -531,7 +530,7 @@ Wait for the new sync, then encrypt it.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="612"/>
         <source>Force sync now</source>
-        <translation>Примусово синхронізувати</translation>
+        <translation>Примусово синхронізувати зараз</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="614"/>
@@ -619,32 +618,32 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation>Парольна фраза для наскрізного шифрування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1007"/>
         <source>End-to-end encryption mnemonic</source>
-        <translation>Парольна фраза для наскрізного шифрування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1009"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Для захисту вашої криптографічної ідентичності ми зашифруємо її парольною фразою із 12 словникових слів. Будь ласка, занотуйте ці фрази та збережіть у безпечному місці. Вони будуть потрібні для додавання інших пристроїв до вашого облікового запису (наприклад, смартфону або ноутбуку).</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1034"/>
         <source>Disable end-to-end encryption</source>
-        <translation>Вимкнути наскрізне шифрування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1035"/>
         <source>Disable end-to-end encryption for %1?</source>
-        <translation>Чи вимкнути шифрування для %1?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1036"/>
         <source>Removing end-to-end encryption will remove locally-synced files that are encrypted.&lt;br&gt;Encrypted files will remain on the server.</source>
-        <translation>Скасування наскрізного шифрування призведе до вилучення файлів, що було зашифровано та які було збережено на вашому пристрої.&lt;br&gt;Зашифровані файли залишатимуться на сервері.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1098"/>
@@ -769,12 +768,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>
         <source>Set up encryption</source>
-        <translation>Налаштуватия шифрування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1594"/>
         <source>End-to-end encryption has been enabled on this account with another device.&lt;br&gt;It can be enabled on this device by entering your mnemonic.&lt;br&gt;This will enable synchronisation of existing encrypted folders.</source>
-        <translation>Для цього облікового запису увімкнено наскрізне шифрування на іншому пристрої.&lt;br&gt;Його також можна увімкнути на цьому пристрої після введення вашої парольної фрази.&lt;br&gt;Це також активує синхронізацію присутніх зашифрованих каталогів.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -782,17 +781,17 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Запит на авторизацію на сервері переспрямовано до &quot;%1&quot;. Посилання є недійсним, сервер не налаштовано належним чином.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
         <source>Access forbidden by server. To verify that you have proper access, &lt;a href=&quot;%1&quot;&gt;click here&lt;/a&gt; to access the service with your browser.</source>
-        <translation>Доступ заборонено сервером. Для перевірки належного доступу,&lt;a href=&quot;%1&quot;&gt;клацніть тут&lt;/a&gt;, щоби отримати доступ у вашому бравзері.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="160"/>
         <source>There was an invalid response to an authenticated WebDAV request</source>
-        <translation>Отримано недійсну відповідь під час надсилання запиту на авторизацію WebDAV</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -929,29 +928,29 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Окремі налаштування було здійснено для версії клієнта %1 та використовують функції, які не доступні у чинній версії.&lt;br&gt;&lt;br&gt;Якщо ви продовжите, то це означатиме &lt;b&gt;%2 ці налаштування&lt;/b&gt;&lt;br&gt;&lt;br&gt;Резервну копію поточного файлу конфігурації було збережено до &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation>новіші</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation>старіші</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>ignoring</source>
-        <translation>ігнорування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>deleting</source>
-        <translation>вилучення</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="185"/>
@@ -1076,37 +1075,37 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
-        <translation>Неможливо перейменувати файл, оскільки файл з таким саме ім&apos;ям вже присутній на сервері. Будь ласка, виберіть інше ім&apos;я.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Неможливо перейменувати файл. Будь ласка, переконайтеся, що ви під&apos;єднані до сервера.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
         <source>You don&apos;t have the permission to rename this file. Please ask the author of the file to rename it.</source>
-        <translation>У вас відсутні повноваження для перейменування цього файлу. Будь ласка, попросіть власника файлу перейменувати його.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="179"/>
         <source>Failed to fetch permissions with error %1</source>
-        <translation>Помилка з отриманням повноважень %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>На початку та наприкінці імені файлу присутні пробіли.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation>На початку імені файлу присутні пробіли.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Наприкінці імені файлу присутні пробіли.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1114,121 +1113,121 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="14"/>
         <source>Case Clash Conflict</source>
-        <translation>Конфлікт з регістром</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="23"/>
         <source>The file could not be synced because it generates a case clash conflict with an existing file on this system.</source>
-        <translation>Файл неможливо синхронізувати, оскільки файл з таким ім&apos;ям, але в іншому регістрі вже присутній.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation>Помилка</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
-        <translation>Присутній файл</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation>файл А</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>fileA</source>
-        <translation>файлА</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
-        <translation>сьогодні</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation>0 байт</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="105"/>
         <source>Open existing file</source>
-        <translation>Відкрити присутній файл</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="165"/>
         <source>Case clashing file</source>
-        <translation>Файл з конфліктом регістру</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation>файл Б</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>fileB</source>
-        <translation>файлБ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="113"/>
         <source>Open clashing file</source>
-        <translation>Відкрити конфліктний файл</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="268"/>
         <source>Please enter a new name for the clashing file:</source>
-        <translation>Будь ласка, зазначте нове ім&apos;я для конфліктного файлу:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation>Нове ім&apos;я файлу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation>Перейменувати файл</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Файл %1 неможливо синхронізувати, оскільки виявлено конфлікт регістру з вже присутнім файлом на цьому пристрої.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
         <source>%1 does not support equal file names with only letter casing differences.</source>
-        <translation>%1 не підтримує однакові імена файлу, які містять тотожні символи в різному регістрі.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation>На початку та наприкінці імені файлу присутні пробіли.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation>На початку імені файлу присутні пробіли.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
         <source>Filename contains trailing spaces.</source>
-        <translation>Наприкінці імені файлу присутні пробіли.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation>Використано нечинне ім&apos;я</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
         <source>Filename contains illegal characters: %1</source>
-        <translation>Ім&apos;я файлу містить недійсні символи: %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1254,7 +1253,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1349"/>
         <source>Please enter your end-to-end encryption passphrase:&lt;br&gt;&lt;br&gt;Username: %2&lt;br&gt;Account: %3&lt;br&gt;</source>
-        <translation>Будь ласка, введіть пароль для наскрізного шифрування:&lt;br&gt;&lt;br&gt;ім&apos;я користувача: %2&lt;br&gt;обліковка: %3&lt;br&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/clientsideencryption.cpp" line="1357"/>
@@ -1472,7 +1471,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
         <source>Invalid token received.</source>
-        <translation>Отримано недійсний токен.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="62"/>
@@ -1482,29 +1481,29 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
         <source>Please try again.</source>
-        <translation>Будь ласка, спробуйте ще раз.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
-        <translation>Зазначено недійсний шлях до файлу.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
         <source>Could not find an account for local editing.</source>
-        <translation>Неможливо знайти ообліковий запис для редагування на пристрої.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="118"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="129"/>
         <source>Could not validate the request to open a file from server.</source>
-        <translation>Не вдалося перевірити запит на відкриття файлу з сервера.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="135"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="148"/>
         <source>Could not find a file for local editing. Make sure its path is valid and it is synced locally.</source>
-        <translation>Неможливо знайти файл для редагування файлу на пристрої. Перевірте, будь ласка, що шлях правильний та синхронізовано з пристроєм.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="143"/>
@@ -1512,43 +1511,43 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/editlocallyjob.cpp" line="171"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="178"/>
         <source>Could not find a file for local editing. Make sure it is not excluded via selective sync.</source>
-        <translation>Не вдалося знайти файл для редагування на пристрої. Будь ласка, переконайтеся, що його не виключено фільтром вибіркової синхронізації.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="485"/>
         <source>Server error: PROPFIND reply is not XML formatted!</source>
-        <translation>Помилка на сервері: PROPFIND reply is not XML formatted!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="487"/>
         <source>Could not find a remote file info for local editing. Make sure its path is valid.</source>
-        <translation>Не вдалося знайти віддлений файл для редагування на пристрої. Перевірте, чи шлях є правильним.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="552"/>
         <source>Could not open %1</source>
-        <translation>Не вдалося відкрити %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="630"/>
         <source>File %1 already locked.</source>
-        <translation>Файл %1 заблоковано.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="631"/>
         <location filename="../src/gui/editlocallyjob.cpp" line="642"/>
         <source>Lock will last for %1 minutes. You can also unlock this file manually once you are finished editing.</source>
-        <translation>Блокування триватиме % хв. Ви також можете розблокувати файл вручну одразу після завершення редагування.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="641"/>
         <source>File %1 now locked.</source>
-        <translation>Файл %1 заблоковано.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="650"/>
         <source>File %1 could not be locked.</source>
-        <translation>Неможливо заблокувати файл %1.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1567,43 +1566,43 @@ This can be an issue with your OpenSSL libraries.</source>
         <location filename="../src/gui/filedetails/filedetails.cpp" line="100"/>
         <source>%1 second(s) ago</source>
         <comment>seconds elapsed since file last modified</comment>
-        <translation><numerusform>%1 с тому</numerusform><numerusform>%1 с тому</numerusform><numerusform>%1 с тому</numerusform><numerusform>%1 с тому</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="103"/>
         <source>%1 minute(s) ago</source>
         <comment>minutes elapsed since file last modified</comment>
-        <translation><numerusform>%1 хв. тому</numerusform><numerusform>%1 хв. тому</numerusform><numerusform>%1 хв. тому</numerusform><numerusform>%1 хв. тому</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="106"/>
         <source>%1 hour(s) ago</source>
         <comment>hours elapsed since file last modified</comment>
-        <translation><numerusform>%1 годину тому</numerusform><numerusform>%1 години тому</numerusform><numerusform>%1 годин тому</numerusform><numerusform>%1 годин тому</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="109"/>
         <source>%1 day(s) ago</source>
         <comment>days elapsed since file last modified</comment>
-        <translation><numerusform>%1 день тому</numerusform><numerusform>%1 дні тому</numerusform><numerusform>%1 днів тому</numerusform><numerusform>%1 днів тому</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="112"/>
         <source>%1 month(s) ago</source>
         <comment>months elapsed since file last modified</comment>
-        <translation><numerusform>%1 місяць тому</numerusform><numerusform>%1 місяці тому</numerusform><numerusform>%1 місяців тому</numerusform><numerusform>%1 місяців тому</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="115"/>
         <source>%1 year(s) ago</source>
         <comment>years elapsed since file last modified</comment>
-        <translation><numerusform>%1 рік тому</numerusform><numerusform>%1 роки тому</numerusform><numerusform>%1 років тому</numerusform><numerusform>%1 років тому</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/filedetails/filedetails.cpp" line="147"/>
         <source>Locked by %1 - Expires in %2 minute(s)</source>
         <comment>remaining time before lock expires</comment>
-        <translation><numerusform>Заблоковано %1 терміном на %2 хв.</numerusform><numerusform>Заблоковано %1 терміном на %2 хв.</numerusform><numerusform>Заблоковано %1 терміном на %2 хв.</numerusform><numerusform>Заблоковано %1 терміном на %2 хв.</numerusform></translation>
+        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
 </context>
 <context>
@@ -2054,7 +2053,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="166"/>
         <source>Could not decrypt!</source>
-        <translation>Не вдалося розшифрувати!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/folderstatusmodel.cpp" line="168"/>
@@ -2798,7 +2797,7 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
         <source>&lt;p&gt;Copyright 2017-2023 Nextcloud GmbH&lt;br /&gt;Copyright 2012-2023 ownCloud GmbH&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Усі права застережено Nextcloud GmbH 2017-2023&lt;br /&gt;Усі права застережено OwnCloud GmbH 2012-2023&lt;/p&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/legalnotice.cpp" line="55"/>
@@ -3566,7 +3565,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="370"/>
         <source>Stat failed.</source>
-        <translation>Статистика не вдалася.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="373"/>
@@ -3576,7 +3575,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="377"/>
         <source>Case Clash Conflict: Server file downloaded and renamed to avoid clash.</source>
-        <translation>Конфлікт регістрів: файл було звантажено з сервера та перейменовано для уникнення конфлікту.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="381"/>
@@ -3771,7 +3770,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1215"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation>Файл %1 звантажено, проте це призвело до конфлікту з файлом, який вже присутній на пристрої.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatedownload.cpp" line="1325"/>
@@ -3812,7 +3811,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="181"/>
         <source>Folder %1 cannot be created because of a local file or folder name clash!</source>
-        <translation>Неможливо створити файл %1, оскільки на пристрої присутній файл або каталог з таким саме ім&apos;ям!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="187"/>
@@ -3853,7 +3852,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="254"/>
         <source>File %1 downloaded but it resulted in a local file name clash!</source>
-        <translation>Файл %1 звантажено, проте це призвело до конфлікту з файлом, який вже присутній на пристрої.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="270"/>
@@ -3887,7 +3886,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="333"/>
         <source>Failed to propagate directory rename in hierarchy</source>
-        <translation>Не вдалося впровадити перейменування каталогу в структурі каталогів.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/propagatorjobs.cpp" line="338"/>
@@ -4169,7 +4168,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
         <source>Dismiss</source>
-        <translation>Відхилити</translation>
+        <translation>Припинити</translation>
     </message>
 </context>
 <context>
@@ -4206,22 +4205,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="531"/>
         <source>Share link</source>
-        <translation>Спільне посилання</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="539"/>
         <source>Link share</source>
-        <translation>Спільне посилання</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="541"/>
         <source>Internal link</source>
-        <translation>Внутрішнє посилання</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="797"/>
         <source>Enter a note for the recipient</source>
-        <translation>Додайте примітку для отримувача</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4306,36 +4305,34 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="527"/>
         <source>Failed to encrypt folder at &quot;%1&quot;</source>
-        <translation>Не вдалося зашифрувати каталог &quot;%1&quot;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="528"/>
         <source>The account %1 does not have end-to-end encryption configured. Please configure this in your account settings to enable folder encryption.</source>
-        <translation>Обліковий запис %1 не має налаштованого наскрізного шифрування. Будь ласка, зробіть відповідні налаштування, щоби активувати функцію шифрування каталогів.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="549"/>
         <source>Failed to encrypt folder</source>
-        <translation>Не вдалося зашифрувати каталог</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="550"/>
         <source>Could not encrypt the following folder: &quot;%1&quot;.
 
 Server replied with error: %2</source>
-        <translation>Не вдалося зашифрувати такий каталог: &quot;%1&quot;.
-
-Помилка серверу: %2</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
         <source>Folder encrypted successfully</source>
-        <translation>Каталог успішно зашифровано</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="556"/>
         <source>The following folder was encrypted successfully: &quot;%1&quot;</source>
-        <translation>Каталог &quot;%1&quot; успішно зашифровано.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="758"/>
@@ -4383,7 +4380,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1131"/>
         <source>Leave this share</source>
-        <translation>Вийти зі спільного доступу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
@@ -4409,7 +4406,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1193"/>
         <source>Encrypt</source>
-        <translation>Зашифрувати</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1204"/>
@@ -4660,12 +4657,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="211"/>
         <source>Fingerprint (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Відбиток (SHA-256): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="212"/>
         <source>Fingerprint (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</source>
-        <translation>Відбиток (SHA-512): &lt;tt&gt;%1&lt;/tt&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/sslerrordialog.cpp" line="214"/>
@@ -4703,7 +4700,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="394"/>
         <source>Could not update file metadata: %1</source>
-        <translation>Не вдалося оновити метадані: %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/syncengine.cpp" line="404"/>
@@ -4942,7 +4939,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/tray/usermodel.cpp" line="599"/>
         <location filename="../src/gui/tray/usermodel.cpp" line="723"/>
         <source>Resolve conflict</source>
-        <translation>Вирішити конфлікт</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5568,17 +5565,17 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="159"/>
         <source>Create a new share link</source>
-        <translation>Створити нове посилання на спільний доступ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="179"/>
         <source>Copy share link location</source>
-        <translation>Копіювати посилання спільного доступу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDelegate.qml" line="208"/>
         <source>Share options</source>
-        <translation>Параметри спільного доступу</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5586,57 +5583,57 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="87"/>
         <source>An error occurred setting the share password.</source>
-        <translation>Помилка під час встановоення паролю на спільний доступ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="220"/>
         <source>Edit share</source>
-        <translation>Редагувати спільний доступ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="237"/>
         <source>Dismiss</source>
-        <translation>Відхилити</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="296"/>
         <source>Share label</source>
-        <translation>Ярлик спільного ресурсу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="329"/>
         <source>Allow editing</source>
-        <translation>Дозволити редагування</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="357"/>
         <source>Password protect</source>
-        <translation>Захистити паролем</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="462"/>
         <source>Set expiration date</source>
-        <translation>Встановити термін</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation>Примітка отримувачу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
         <source>Unshare</source>
-        <translation>Скасувати доступ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="738"/>
         <source>Add another link</source>
-        <translation>Додати ще одне посилання</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="769"/>
         <source>Copy share link</source>
-        <translation>Копіювати спільне посилання</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5644,27 +5641,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="91"/>
         <source>Password required for new share</source>
-        <translation>Потрібний пароль для нового спільного ресурсу</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="133"/>
         <source>Share password</source>
-        <translation>Пароль на спільний доступ</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
         <source>Sharing is disabled</source>
-        <translation>Спільний доступ вимкнено</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
         <source>This item cannot be shared.</source>
-        <translation>Неможливо поділитися цим ресурсом.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
         <source>Sharing is disabled.</source>
-        <translation>Спільний доступ вимкнено.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5672,7 +5669,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareeSearchField.qml" line="47"/>
         <source>Search for users or groups…</source>
-        <translation>Шукати користувачів або групи...</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5688,7 +5685,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation>Синхронізувати зараз</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5741,7 +5738,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultNothingFound.qml" line="26"/>
         <source>No results for</source>
-        <translation>Нічого не знайдено для</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5749,7 +5746,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/UnifiedSearchResultSectionItem.qml" line="20"/>
         <source>Search results section %1</source>
-        <translation>Результати пошуку у розділі %1</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -6132,7 +6129,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="45"/>
         <source>Server version downloaded, copied changed local file into case conflict conflict file</source>
-        <translation>Звантажено версію з сервера, збережено копію файлу, який було змінено на пристрої, до файлу з конфліктом регістру</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/libsync/progressdispatcher.cpp" line="47"/>
@@ -6322,7 +6319,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/accountmanager.cpp" line="407"/>
         <source>To protect your Cryptographic Identity, we encrypt it with a mnemonic of 12 dictionary words. Please note these down and keep them safe. They will be needed to add other devices to your account (like your mobile phone or laptop).</source>
-        <translation>Для захисту вашої криптографічної ідентичності ми зашифруємо її парольною фразою із 12 словникових слів. Будь ласка, занотуйте ці фрази та збережіть у безпечному місці. Вони будуть потрібні для додавання інших пристроїв до вашого облікового запису (наприклад, смартфону або ноутбуку).</translation>
+        <translation>Щоб захистити вашу криптографічну ідентичність, ми зашифруємо її мнемонікою з 12 словникових слів. Зверніть увагу на це та зберігайте їх у безпеці. Вони будуть потрібні для додавання інших пристроїв до вашого облікового запису (наприклад, мобільного телефону чи ноутбука).</translation>
     </message>
 </context>
 <context>
