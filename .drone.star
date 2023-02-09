@@ -58,6 +58,7 @@ def main(ctx):
     build_trigger = {
         "ref": [
             "refs/heads/master",
+            "refs/heads/3.**",
             "refs/tags/**",
             "refs/pull/**",
         ],

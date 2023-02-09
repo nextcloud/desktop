@@ -133,9 +133,6 @@ void migrateLaunchOnStartup()
 
     bool hasLaunchAgentsPlist = QFile::exists(QStringLiteral("%1/Library/LaunchAgents/%2.plist").arg(QDir::homePath(), QCoreApplication::organizationDomain()));
 
-    qCInfo(lcUtility) << "migrateLaunchOnStartup: has launch agent plist:" << hasLaunchAgentsPlist
-                      << "has deprecated launch on startup:" << hasDeprecatedLaunchOnStartup;
-
     // Simple case first:
     if (hasLaunchAgentsPlist && !hasDeprecatedLaunchOnStartup) {
         // Migration has already happened, so nothing to do.
