@@ -51,8 +51,10 @@ if(NOT BUILD_LIBRARIES_ONLY)
 
     target_include_directories(${CRASHREPORTER_EXECUTABLE} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
     target_link_libraries(${CRASHREPORTER_EXECUTABLE}
-        crashreporter-gui
-        Qt5::Core Qt5::Widgets
+        PRIVATE
+            CrashReporterQt::Gui
+            Qt5::Core
+            Qt5::Widgets
     )
 
     if(APPLE)

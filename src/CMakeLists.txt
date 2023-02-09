@@ -2,6 +2,9 @@ find_package(Qt5 5.15 COMPONENTS Core Concurrent Network Widgets Xml REQUIRED)
 get_target_property (QT_QMAKE_EXECUTABLE Qt5::qmake IMPORTED_LOCATION)
 message(STATUS "Using Qt ${Qt5Core_VERSION} (${QT_QMAKE_EXECUTABLE})")
 
+if(WITH_CRASHREPORTER)
+    find_package(CrashReporterQt REQUIRED)
+endif()
 
 find_package(Qt5Keychain REQUIRED)
 
@@ -45,7 +48,6 @@ if (NOT BUILD_LIBRARIES_ONLY)
     add_subdirectory(cmd)
 
     if (WITH_CRASHREPORTER)
-        add_subdirectory(3rdparty/libcrashreporter-qt EXCLUDE_FROM_ALL)
         add_subdirectory(crashreporter)
     endif()
 endif(NOT BUILD_LIBRARIES_ONLY)

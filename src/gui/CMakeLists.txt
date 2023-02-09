@@ -168,7 +168,7 @@ endif()
 
 
 if(WITH_CRASHREPORTER)
-    target_link_libraries(owncloudCore PUBLIC crashreporter-handler)
+    target_link_libraries(owncloudCore PRIVATE CrashReporterQt::Handler)
 
     if(UNIX AND NOT MAC)
         find_package(Threads REQUIRED)
