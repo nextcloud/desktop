@@ -1953,7 +1953,7 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/folderman.cpp" line="1516"/>
         <source>Last Sync was successful.</source>
-        <translation>Остання синхронізація була успішною.</translation>
+        <translation>Остання синхронізація виявилася успішною.</translation>
     </message>
     <message>
         <location filename="../src/gui/folderman.cpp" line="1522"/>
@@ -3287,7 +3287,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/wizard/owncloudsetuppage.cpp" line="350"/>
         <source>Could not load certificate. Maybe wrong password?</source>
-        <translation>Не вдалося завантажити сертифікат. Можливо був введений неправильний пароль?</translation>
+        <translation>Не вдалося завантажити сертифікат. Можливо було введено неправильний пароль?</translation>
     </message>
 </context>
 <context>
@@ -4553,7 +4553,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="117"/>
         <source>&lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; This certificate was manually approved&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Цей сертифікат був схвалений вручну&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;b&gt;Примітка:&lt;/b&gt; Цей сертифікат було схвалено вручну&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/sslbutton.cpp" line="137"/>
@@ -5688,7 +5688,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation>Синхронізувати зараз</translation>
+        <translation>Синхронізувати</translation>
     </message>
 </context>
 <context>

@@ -945,7 +945,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
         <source>ignoring</source>
-        <translation>ignoriere</translation>
+        <translation>Ignoriere</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
