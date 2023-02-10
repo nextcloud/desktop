@@ -74,14 +74,14 @@ void UpdateE2eeShareMetadataJob::start()
     } else if (_operation == Operation::Remove) {
         slotFetchFolderMetadata();
     } else {
-        emit finished(404, tr("Invalid share metadata operation for a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+        emit finished(404, tr("Invalid share metadata operation for a folder user %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
     }
 }
 
-void UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain(QSslCertificate certificate)
+void UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain(const QSslCertificate certificate)
 {
     disconnect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain);
-    if (!certificate.isValid()) {
+    if (certificate.isNull()) {
         // get sharee's public key
         _account->e2e()->getUsersPublicKeyFromServer(_account, {_sharee->shareWith()});
         connect(_account->e2e(), &ClientSideEncryption::certificatesFetchedFromServer, this, &UpdateE2eeShareMetadataJob::slotCertificatesFetchedFromServer);
@@ -93,7 +93,7 @@ void UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain(QSslCertific
 void UpdateE2eeShareMetadataJob::slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results)
 {
     const auto certificate = results.isEmpty() ? QSslCertificate{} : results.value(_sharee->shareWith());
-    if (!certificate.isValid()) {
+    if (certificate.isNull()) {
         emit certificateReady(certificate);
         return;
     }
@@ -101,11 +101,11 @@ void UpdateE2eeShareMetadataJob::slotCertificatesFetchedFromServer(const QHash<Q
     connect(_account->e2e(), &ClientSideEncryption::certificateWriteComplete, this, &UpdateE2eeShareMetadataJob::certificateReady);
 }
 
-void UpdateE2eeShareMetadataJob::slotCertificateReady(QSslCertificate certificate)
+void UpdateE2eeShareMetadataJob::slotCertificateReady(const QSslCertificate certificate)
 {
     _shareeCertificate = certificate;
 
-    if (!certificate.isValid()) {
+    if (certificate.isNull()) {
         emit finished(404, tr("Could not fetch publicKey for user %1").arg(_sharee->shareWith()));
     } else {
         slotFetchFolderMetadata();
@@ -149,38 +149,26 @@ void UpdateE2eeShareMetadataJob::slotLockFolder()
 
 void UpdateE2eeShareMetadataJob::slotUnlockFolder()
 {
-    ASSERT(!_isUnlockRunning);
-
-    if (_isUnlockRunning) {
-        qWarning() << "Double-call to unlockFolder.";
-        return;
-    }
-
-    _isUnlockRunning = true;
-
     const auto folder = FolderMan::instance()->folder(_folderAlias);
     if (!folder && !folder->journalDb()) {
         emit finished(404, tr("Could not find local folder for %1").arg(QString::fromUtf8(_folderId)));
         return;
     }
 
-    qDebug() << "Calling Unlock";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Calling Unlock";
     const auto unlockJob = new UnlockEncryptFolderApiJob(_account, _folderId, _folderToken, folder->journalDb(), this);
 
     connect(unlockJob, &UnlockEncryptFolderApiJob::success, [this](const QByteArray &folderId) {
-        qDebug() << "Successfully Unlocked";
+        qCDebug(lcUpdateE2eeShareMetadataJob) << "Successfully Unlocked";
         _folderToken = "";
         _folderId = "";
-        _isFolderLocked = false;
 
         slotFolderUnlocked(folderId, 200);
-        _isUnlockRunning = false;
     });
     connect(unlockJob, &UnlockEncryptFolderApiJob::error, [this](const QByteArray &folderId, int httpStatus) {
-        qDebug() << "Unlock Error";
+        qCDebug(lcUpdateE2eeShareMetadataJob) << "Unlock Error";
 
         slotFolderUnlocked(folderId, httpStatus);
-        _isUnlockRunning = false;
     });
     unlockJob->start();
 }
@@ -188,28 +176,24 @@ void UpdateE2eeShareMetadataJob::slotUnlockFolder()
 void UpdateE2eeShareMetadataJob::slotFolderLockedSuccessfully(const QByteArray &folderId, const QByteArray &token)
 {
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Folder" << folderId << "Locked Successfully for Upload, Fetching Metadata";
-    // Should I use a mutex here?
-    _currentLockingInProgress = true;
     _folderToken = token;
-    _isFolderLocked = true;
 
     if (_operation == Operation::Add) {
-        if (!_folderMetadata->addShareRecipient(_sharee->shareWith(), _shareeCertificate)) {
-            emit finished(403, tr("Could not add a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+        if (!_folderMetadata->addUser(_sharee->shareWith(), _shareeCertificate)) {
+            emit finished(403, tr("Could not add a folder user %1, for folder %2").arg(_sharee->shareWith()).arg(_sharePath));
             return;
         }
     } else if (_operation == Operation::Remove) {
-        if (!_folderMetadata->removeShareRecipient(_sharee->shareWith())) {
-            emit finished(403, tr("Could not remove a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+        if (!_folderMetadata->removeUser(_sharee->shareWith())) {
+            emit finished(403, tr("Could not remove a folder user %1, for folder %2").arg(_sharee->shareWith()).arg(_sharePath));
             return;
         }
     } else {
-        emit finished(400, tr("Invalid share metadata operation for a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+        emit finished(400, tr("Invalid share metadata operation for a folder user %1, for folder %2").arg(_sharee->shareWith()).arg(_sharePath));
         return;
     }
 
     const auto job = new UpdateMetadataApiJob(_account, _folderId, _folderMetadata->encryptedMetadata(), _folderToken);
-
     connect(job, &UpdateMetadataApiJob::success, this, &UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess);
     connect(job, &UpdateMetadataApiJob::error, this, &UpdateE2eeShareMetadataJob::slotUpdateMetadataError);
     job->start();
@@ -219,7 +203,6 @@ void UpdateE2eeShareMetadataJob::slotUpdateMetadataSuccess(const QByteArray &fol
 {
     Q_UNUSED(folderId);
     qCDebug(lcUpdateE2eeShareMetadataJob) << "Uploading of the metadata success, Encrypting the file";
-    qCDebug(lcUpdateE2eeShareMetadataJob) << "Finalizing the upload part, now the actuall uploader will take over";
     slotUnlockFolder();
 }
 
@@ -239,7 +222,7 @@ void UpdateE2eeShareMetadataJob::slotFolderUnlocked(const QByteArray &folderId, 
 void UpdateE2eeShareMetadataJob::slotFolderLockedError(const QByteArray &folderId, int httpErrorCode)
 {
     Q_UNUSED(httpErrorCode);
-    qCDebug(lcUpdateE2eeShareMetadataJob) << "Folder" << folderId << "Coundn't be locked.";
+    qCDebug(lcUpdateE2eeShareMetadataJob) << "Folder" << folderId << "Couldn't be locked.";
     emit finished(404, tr("Could not lock a folder %1").arg(QString::fromUtf8(_folderId)));
 }
 

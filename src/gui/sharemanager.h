@@ -21,11 +21,9 @@
 
 #include <QObject>
 #include <QDate>
-#include <QHash>
 #include <QString>
 #include <QList>
 #include <QSharedPointer>
-#include <QSslCertificate>
 #include <QUrl>
 
 class QJsonDocument;
@@ -34,8 +32,6 @@ class QJsonObject;
 namespace OCC {
 
 class OcsShareJob;
-
-class CreateE2eeShareJob;
 
 class Share : public QObject
 {
@@ -401,11 +397,13 @@ public:
         const QString &password = "");
 
     /**
-     * Tell the manager to create a new share
+     * Tell the manager to create and start new UpdateE2eeShareMetadataJob job
      *
      * @param path The path of the share relative to the user folder on the server
      * @param shareType The type of share (TypeUser, TypeGroup, TypeRemote)
      * @param Permissions The share permissions
+     * @param folderId The id for an E2EE folder
+     * @param password An optional password for a share
      *
      * On success the signal shareCreated is emitted
      * In case of a server error the serverError signal is emitted
@@ -413,8 +411,8 @@ public:
     void createE2EeShareJob(const QString &path,
                          const ShareePtr sharee,
                          const Share::Permissions permissions,
-                         const QSharedPointer<ShareManager> &shareManager,
                          const QByteArray &folderId,
+                         const QString &folderAlias,
                          const QString &password = "");
 
     /**
@@ -454,8 +452,6 @@ private:
     SharePtr parseShare(const QJsonObject &data) const;
 
     AccountPtr _account;
-
-    QHash<QString ,QMetaObject::Connection> _fetchPublicKeysConnections;
 };
 }
 

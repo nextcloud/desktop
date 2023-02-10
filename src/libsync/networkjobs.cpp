@@ -819,7 +819,6 @@ void JsonApiJob::setBody(const QJsonDocument &body)
 void JsonApiJob::start()
 {
     additionalParams().addQueryItem(QLatin1String("format"), QLatin1String("json"));
-    auto string = additionalParams().toString();
     SimpleApiJob::start();
 }
 

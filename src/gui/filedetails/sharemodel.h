@@ -179,6 +179,7 @@ private slots:
     void slotShareNameSet(const QString &shareId);
     void slotShareLabelSet(const QString &shareId);
     void slotShareExpireDateSet(const QString &shareId);
+    void slotDeleteE2EeShare(const SharePtr &share) const;
 
 private:
     [[nodiscard]] QString displayStringForShare(const SharePtr &share) const;

@@ -144,7 +144,7 @@ public slots:
     void initialize(const AccountPtr &account);
     void forgetSensitiveData(const AccountPtr &account);
     void getUsersPublicKeyFromServer(const AccountPtr &account, const QStringList &userIds);
-    void writeCertificate(const AccountPtr &account, const QString &userId, QSslCertificate certificate);
+    void writeCertificate(const AccountPtr &account, const QString &userId, const QSslCertificate certificate);
     void fetchFromKeyChain(const AccountPtr &account, const QString &userId);
 
 private slots:
@@ -195,6 +195,12 @@ struct EncryptedFile {
 };
 
 class OWNCLOUDSYNC_EXPORT FolderMetadata {
+    struct FolderUser {
+        QString userId;
+        QByteArray certificatePem;
+        QByteArray encryptedMetadataKey;
+    };
+
 public:
     FolderMetadata(AccountPtr account, const QByteArray& metadata = QByteArray(), int statusCode = -1);
     [[nodiscard]] QByteArray encryptedMetadata() const;
@@ -209,8 +215,9 @@ public:
     [[nodiscard]] bool moveFromFileDropToFiles();
 
     [[nodiscard]] QJsonObject fileDrop() const;
-    bool addShareRecipient(const QString &userId, const QSslCertificate certificate);
-    bool removeShareRecipient(const QString &userId);
+
+    bool addUser(const QString &userId, const QSslCertificate certificate);
+    bool removeUser(const QString &userId);
 
 private:
     /* Use std::string and std::vector internally on this class
@@ -218,7 +225,7 @@ private:
      */
     void setupEmptyMetadata();
     void setupExistingMetadata(const QByteArray& metadata);
-    void updateShareRecipients(const QByteArray &metadataKey);
+    void updateUsersEncryptedMetadataKey();
 
     [[nodiscard]] QByteArray encryptData(const QByteArray &data) const;
     [[nodiscard]] QByteArray encryptData(const QByteArray &data, const QSslKey key) const;
@@ -227,18 +234,12 @@ private:
     [[nodiscard]] QByteArray encryptJsonObject(const QByteArray& obj, const QByteArray pass) const;
     [[nodiscard]] QByteArray decryptJsonObject(const QByteArray& encryptedJsonBlob, const QByteArray& pass) const;
 
-    [[nodiscard]] QByteArray getMetadataKey() const;
-
     QVector<EncryptedFile> _files;
-    QMap<int, QByteArray> _metadataKeys;
-    QByteArray _metadataKeyShared;
-    QHash<QString, QVariant> _shareRecipients;
+    QByteArray _metadataKey;
+    QHash<QString, FolderUser> _folderUsers;
     AccountPtr _account;
     QVector<QPair<QString, QString>> _sharing;
-    QPair<QString, QSslCertificate> _folderOwner;
-    QJsonObject _folderOwnerJson;
     QJsonObject _fileDrop;
-    QJsonObject _metadataKeysJson;
 };
 
 } // namespace OCC

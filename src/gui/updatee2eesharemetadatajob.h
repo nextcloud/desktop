@@ -53,8 +53,8 @@ public slots:
 
 private slots:
     void slotCertificatesFetchedFromServer(const QHash<QString, QSslCertificate> &results);
-    void slotCertificateFetchedFromKeychain(QSslCertificate certificate);
-    void slotCertificateReady(QSslCertificate certificate);
+    void slotCertificateFetchedFromKeychain(const QSslCertificate certificate);
+    void slotCertificateReady(const QSslCertificate certificate);
     void slotFetchFolderMetadata();
     void slotMetadataReceived(const QJsonDocument &json, int statusCode);
     void slotMetadataError(const QByteArray &folderId, int httpReturnCode);
@@ -82,9 +82,6 @@ private:
     QSslCertificate _shareeCertificate;
     QByteArray _folderToken;
     QScopedPointer<FolderMetadata> _folderMetadata;
-    bool _currentLockingInProgress = false;
-    bool _isFolderLocked = false;
-    bool _isUnlockRunning = false;
 };
 
 }

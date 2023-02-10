@@ -462,23 +462,12 @@ void ShareManager::createShare(const QString &path,
 }
 
 void ShareManager::createE2EeShareJob(const QString &path,
-                                      const ShareePtr sharee,
-                                      const Share::Permissions permissions,
-                                      const QSharedPointer<ShareManager> &shareManager,
-                                      const QByteArray &folderId,
-                                      const QString &password)
+                                   const ShareePtr sharee,
+                                   const Share::Permissions permissions,
+                                   const QByteArray &folderId,
+                                   const QString &folderAlias,
+                                   const QString &password)
 {
-    QString folderAlias;
-    for (const auto &f : FolderMan::instance()->map()) {
-        if (f->accountState()->account() != _account) {
-            continue;
-        }
-        const auto folderPath = f->remotePath();
-        if (path.startsWith(folderPath) && (path == folderPath || folderPath.endsWith('/') || path[folderPath.size()] == '/')) {
-            folderAlias = f->alias();
-        }
-    }
-
     const auto createE2eeShareJob = new UpdateE2eeShareMetadataJob(_account, folderId, folderAlias, sharee, UpdateE2eeShareMetadataJob::Add, path, permissions, password, this);
     connect(createE2eeShareJob, &UpdateE2eeShareMetadataJob::finished, this, &ShareManager::slotCreateE2eeShareJobFinised);
     createE2eeShareJob->start();
