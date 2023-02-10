@@ -31,13 +31,14 @@ class UpdateE2eeShareMetadataJob : public QObject
     Q_OBJECT
 
 public:
-    explicit UpdateE2eeShareMetadataJob(const QString &sharePath,
-                                const ShareePtr &sharee,
-                                const Share::Permissions desiredPermissions,
-                                const QSharedPointer<ShareManager> &shareManager,
-                                const AccountPtr &account,
+    enum Operation { Invalid = -1, Add = 0, Remove };
+    explicit UpdateE2eeShareMetadataJob(const AccountPtr &account,
                                 const QByteArray &folderId,
                                 const QString &folderAlias,
+                                const ShareePtr &sharee,
+                                const Operation operation,
+                                const QString &sharePath = {},
+                                const Share::Permissions desiredPermissions = {},
                                 const QString &password = {},
                                 QObject *parent = nullptr);
 
@@ -70,14 +71,14 @@ private: signals:
     void finished(int code, const QString &message = {});
 
 private:
-    QString _sharePath;
-    ShareePtr _sharee;
-    Share::Permissions _desiredPermissions = {};
-    QString _password;
-    QString _folderAlias;
-    QSharedPointer<ShareManager> _manager;
     AccountPtr _account;
     QByteArray _folderId;
+    QString _folderAlias;
+    ShareePtr _sharee;
+    Operation _operation;
+    QString _sharePath;
+    Share::Permissions _desiredPermissions = {};
+    QString _password;
     QSslCertificate _shareeCertificate;
     QByteArray _folderToken;
     QScopedPointer<FolderMetadata> _folderMetadata;

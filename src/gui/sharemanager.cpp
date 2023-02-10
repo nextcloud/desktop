@@ -479,7 +479,7 @@ void ShareManager::createE2EeShareJob(const QString &path,
         }
     }
 
-    const auto createE2eeShareJob = new UpdateE2eeShareMetadataJob(path, sharee, permissions, shareManager, _account, folderId, folderAlias, password, this);
+    const auto createE2eeShareJob = new UpdateE2eeShareMetadataJob(_account, folderId, folderAlias, sharee, UpdateE2eeShareMetadataJob::Add, path, permissions, password, this);
     connect(createE2eeShareJob, &UpdateE2eeShareMetadataJob::finished, this, &ShareManager::slotCreateE2eeShareJobFinised);
     createE2eeShareJob->start();
 }

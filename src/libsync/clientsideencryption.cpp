@@ -1976,13 +1976,13 @@ QJsonObject FolderMetadata::fileDrop() const
 
 bool FolderMetadata::addShareRecipient(const QString &userId, const QSslCertificate certificate)
 {
-    Q_ASSERT(!userId.isEmpty() && certificate.isValid());
+    Q_ASSERT(!userId.isEmpty() && !certificate.isNull());
     if (userId.isEmpty()) {
         qCDebug(lcCse) << "Could not add a share recipient. Invalid userId.";
         return false;
     }
 
-    if (!certificate.isValid()) {
+    if (certificate.isNull()) {
         qCDebug(lcCse) << "Could not add a share recipient. Invalid certificate.";
         return false;
     }
@@ -2018,6 +2018,35 @@ bool FolderMetadata::addShareRecipient(const QString &userId, const QSslCertific
         {shareRecipientCertificateKey, certificate.toPem()},
         {shareRecipientEncryptedMetadataKey, encryptedMetadataKey}
     };
+
+    return true;
+}
+
+bool FolderMetadata::removeShareRecipient(const QString &userId)
+{
+    Q_ASSERT(!userId.isEmpty());
+    if (userId.isEmpty()) {
+        qCDebug(lcCse) << "Could not remove a share recipient. Invalid userId.";
+        return false;
+    }
+
+    // make sure to update the 'metadataKeys' with a newly added 'metadataKey' such that a folder owner can later decrypt it
+    if (_folderOwner.first.isEmpty()) {
+        _folderOwner = {_account->davUser(), _account->e2e()->_certificate};
+    }
+
+    const auto metaDataKey = EncryptionHelper::generateRandom(16);
+    if (_folderOwner.first == _account->davUser()) {
+        _metadataKeys.insert(_metadataKeys.lastKey() + 1, metaDataKey);
+    } else {
+        _metadataKeyShared = metaDataKey;
+        const auto ownerPublicKey = _folderOwner.second.publicKey();
+        _metadataKeysJson.insert(_metadataKeysJson.keys().last(), QJsonValue::fromVariant(encryptData(metaDataKey.toBase64(), ownerPublicKey)));
+    }
+
+    _shareRecipients.remove(userId);
+
+    updateShareRecipients(metaDataKey);
 
     return true;
 }

@@ -114,7 +114,7 @@ signals:
     void shareesChanged();
     void internalLinkReady();
 
-    void serverError(const int code, const QString &message);
+    void serverError(const int code, const QString &message) const;
     void passwordSetError(const QString &shareId, const int code, const QString &message);
     void requestPasswordForLinkShare();
     void requestPasswordForEmailSharee(const OCC::ShareePtr &sharee);

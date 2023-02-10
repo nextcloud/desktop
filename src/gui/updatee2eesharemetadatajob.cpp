@@ -21,26 +21,28 @@ namespace OCC
 {
 Q_LOGGING_CATEGORY(lcUpdateE2eeShareMetadataJob, "nextcloud.gui.updatee2eesharemetadatajob", QtInfoMsg)
 
-UpdateE2eeShareMetadataJob::UpdateE2eeShareMetadataJob(const QString &sharePath,
-                                       const ShareePtr &sharee,
-                                       const Share::Permissions desiredPermissions,
-                                       const QSharedPointer<ShareManager> &shareManager,
-                                       const AccountPtr &account,
-                                       const QByteArray &folderId,
-                                       const QString &folderAlias,
-                                       const QString &password,
-                                       QObject *parent)
+UpdateE2eeShareMetadataJob::UpdateE2eeShareMetadataJob(const AccountPtr &account,
+                                const QByteArray &folderId,
+                                const QString &folderAlias,
+                                const ShareePtr &sharee,
+                                const Operation operation,
+                                const QString &sharePath,
+                                const Share::Permissions desiredPermissions,
+                                const QString &password,
+                                QObject *parent)
     : QObject{parent}
-    , _sharePath(sharePath)
-    , _sharee(sharee)
-    , _desiredPermissions(desiredPermissions)
-    , _manager(shareManager)
     , _account(account)
     , _folderId(folderId)
     , _folderAlias(folderAlias)
+    , _sharee(sharee)
+    , _operation(operation)
+    , _sharePath(sharePath)
+    , _desiredPermissions(desiredPermissions)
     , _password(password)
 {
-    connect(this, &UpdateE2eeShareMetadataJob::certificateReady, this, &UpdateE2eeShareMetadataJob::slotCertificateReady);
+    if (_operation == Operation::Add) {
+        connect(this, &UpdateE2eeShareMetadataJob::certificateReady, this, &UpdateE2eeShareMetadataJob::slotCertificateReady);
+    }
     connect(this, &UpdateE2eeShareMetadataJob::finished, this, &UpdateE2eeShareMetadataJob::deleteLater);
 }
 
@@ -66,8 +68,14 @@ ShareePtr UpdateE2eeShareMetadataJob::sharee() const
 
 void UpdateE2eeShareMetadataJob::start()
 {
-    _account->e2e()->fetchFromKeyChain(_account, _sharee->shareWith());
-    connect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain);
+    if (_operation == Operation::Add) {
+        _account->e2e()->fetchFromKeyChain(_account, _sharee->shareWith());
+        connect(_account->e2e(), &ClientSideEncryption::certificateFetchedFromKeychain, this, &UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain);
+    } else if (_operation == Operation::Remove) {
+        slotFetchFolderMetadata();
+    } else {
+        emit finished(404, tr("Invalid share metadata operation for a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+    }
 }
 
 void UpdateE2eeShareMetadataJob::slotCertificateFetchedFromKeychain(QSslCertificate certificate)
@@ -185,8 +193,18 @@ void UpdateE2eeShareMetadataJob::slotFolderLockedSuccessfully(const QByteArray &
     _folderToken = token;
     _isFolderLocked = true;
 
-    if (!_folderMetadata->addShareRecipient(_sharee->shareWith(), _shareeCertificate)) {
-        emit finished(403, tr("Could not add a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+    if (_operation == Operation::Add) {
+        if (!_folderMetadata->addShareRecipient(_sharee->shareWith(), _shareeCertificate)) {
+            emit finished(403, tr("Could not add a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+            return;
+        }
+    } else if (_operation == Operation::Remove) {
+        if (!_folderMetadata->removeShareRecipient(_sharee->shareWith())) {
+            emit finished(403, tr("Could not remove a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
+            return;
+        }
+    } else {
+        emit finished(400, tr("Invalid share metadata operation for a sharee recipient %1, for folder %2").arg(_sharee->shareWith()).arg(QString::fromUtf8(_folderId)));
         return;
     }
 

@@ -21,6 +21,7 @@
 #include "folderman.h"
 #include "theme.h"
 #include "wordlist.h"
+#include "updatee2eesharemetadatajob.h"
 
 namespace {
 
@@ -1023,7 +1024,33 @@ void ShareModel::deleteShare(const SharePtr &share) const
         return;
     }
 
-    share->deleteShare();
+    if (_isSecureFileDropSupportedFolder) {
+        const auto account = accountState()->account();
+        QString folderAlias;
+        for (const auto &f : FolderMan::instance()->map()) {
+            if (f->accountState()->account() != account) {
+                continue;
+            }
+            const auto folderPath = f->remotePath();
+            if (share->path().startsWith(folderPath) && (share->path() == folderPath || folderPath.endsWith('/') || share->path()[folderPath.size()] == '/')) {
+                folderAlias = f->alias();
+            }
+        }
+
+        const auto removeE2eeShareJob = new UpdateE2eeShareMetadataJob(account, _folderId, folderAlias, share->getShareWith(), UpdateE2eeShareMetadataJob::Remove);
+        removeE2eeShareJob->setParent(_manager.data());
+        removeE2eeShareJob->start();
+        connect(removeE2eeShareJob, &UpdateE2eeShareMetadataJob::finished, this, [share, this](int code, const QString &message) {
+            if (code != 200) {
+                qCWarning(lcShareModel) << "Could not remove share from E2EE folder's metadata!";
+                emit serverError(code, message);
+                return;
+            }
+            share->deleteShare();
+        });
+    } else {
+        share->deleteShare();
+    }
 }
 
 void ShareModel::deleteShareFromQml(const QVariant &share) const

@@ -210,6 +210,7 @@ public:
 
     [[nodiscard]] QJsonObject fileDrop() const;
     bool addShareRecipient(const QString &userId, const QSslCertificate certificate);
+    bool removeShareRecipient(const QString &userId);
 
 private:
     /* Use std::string and std::vector internally on this class
