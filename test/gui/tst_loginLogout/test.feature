@@ -16,3 +16,12 @@ Feature:  Logout users
     And user "Alice" has logged out of the client-UI
     When user "Alice" logs in to the client-UI
     Then user "Alice" should be connect to the client-UI
+
+  Scenario: login with oauth2 enabled
+      Given app "oauth2" has been "enabled" on the server
+      And the user has started the client
+      When the user adds the following account with oauth2 enabled:
+          | server   | %local_server% |
+          | user     | Alice          |
+          | password | 12345          |
+      Then the account with displayname "Alice Hansen" and host "%local_server_hostname%" should be displayed

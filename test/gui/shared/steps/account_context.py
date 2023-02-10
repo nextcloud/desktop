@@ -236,3 +236,10 @@ def step(context, key):
 @Then('the log dialog should be opened')
 def step(context):
     test.compare(True, AccountSetting.isLogDialogVisible(), "Log dialog is opened")
+
+
+@When('the user adds the following account with oauth2 enabled:')
+def step(context):
+    print(context.table)
+    # TODO: table parser
+    AccountConnectionWizard.addServer(context)
