@@ -2435,12 +2435,12 @@ If this was an accident and you decide to keep your files, they will be re-synce
     <message>
         <location filename="../src/gui/generalsettings.ui" line="183"/>
         <source>&amp;Restart &amp;&amp; Update</source>
-        <translation>&amp;Перезавантаження &amp;&amp; Оновлення</translation>
+        <translation>&amp;Перезавантажити та оновити</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="198"/>
         <source>&amp;Check for Update now</source>
-        <translation>&amp;Перевірити оновлення зараз</translation>
+        <translation>&amp;Перевірити оновлення</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.ui" line="221"/>
