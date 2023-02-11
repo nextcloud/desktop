@@ -75,7 +75,7 @@ void CaseClashConflictSolver::onRemoteDestinationFileAlreadyExists()
 {
     _allowedToRename = false;
     emit allowedToRenameChanged();
-    _errorString = tr("Cannot rename file because a file with the same name does already exist on the server. Please pick another name.");
+    _errorString = tr("Cannot rename file because a file with the same name already exists on the server. Please pick another name.");
     emit errorStringChanged();
 }
 
