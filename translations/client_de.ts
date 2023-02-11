@@ -781,7 +781,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="142"/>
         <source>The authenticated request to the server was redirected to &quot;%1&quot;. The URL is bad, the server is misconfigured.</source>
-        <translation>Die genehmigte Anfrage an den Server wurde an „%1“ umgeleitet. Die URL ist fehlerhaft, der Server ist falsch konfiguriert.</translation>
+        <translation>Die genehmigte Anfrage an den Server wurde an &quot;%1“ umgeleitet. Die URL ist fehlerhaft, der Server ist falsch konfiguriert.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsetupfromcommandlinejob.cpp" line="152"/>
@@ -1197,7 +1197,7 @@ Diese Aktion bricht jede derzeit laufende Synchronisierung ab.</translation>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
         <source>The file &quot;%1&quot; could not be synced because of a case clash conflict with an existing file on this system.</source>
-        <translation>Die Datei &quot;%1&quot; konnte aufgrund eines Fallkonflikts mit einer vorhandenen Datei auf diesem System nicht synchronisiert werden.</translation>
+        <translation>Die Datei &quot;%1&quot; konnte aufgrund eines Konflikts (Groß- / Kleinschreibung) mit einer vorhandenen Datei auf diesem System nicht synchronisiert werden.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="100"/>
@@ -4324,7 +4324,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn Sie sich entscheiden, ihn zu ver
 Server replied with error: %2</source>
         <translation>Der folgende Ordner konnte nicht verschlüsselt werden: &quot;%1&quot;.
 
-Server antwortete mit folgendem Fehler: %2</translation>
+Server antwortete mit Fehler: %2</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="555"/>
@@ -4904,7 +4904,7 @@ Server antwortete mit folgendem Fehler: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="571"/>
         <source>&lt;p&gt;This release was supplied by %1&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Diese Version wird von %1 bereitgestellt&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Diese Version wird von %1 bereitgestellt&lt;/p&gt;.</translation>
     </message>
 </context>
 <context>
