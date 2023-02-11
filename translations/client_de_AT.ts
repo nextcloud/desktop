@@ -2124,7 +2124,8 @@ Objekte bei denen das Löschen erlaubt ist werden gelöscht, wenn sie die Lösch
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>Der Client kann Protokolldateien in einen temporären Ordner schreiben. Die darin enthaltenen Informationen sind hilfreich zur Diagnose von Problemen.
+Da diese Protokolldateien sehr groß werden können, erstellt der Client für jede Synchronisierung ein neues Protokoll und komprimiert ältere.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -4177,7 +4178,7 @@ Möchten Sie fortfahren?</translation>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Bitte geben Sie Ihr %1 ein:</translation>
     </message>
 </context>
 <context>
@@ -4512,7 +4513,7 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
         <source>Login</source>
-        <translation type="unfinished"/>
+        <translation>Anmelden</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
@@ -4726,7 +4727,7 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Qt Bibliotheken %3, %4%7verwenden die Erweiterung für virtuelle Dateien: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4734,7 +4735,7 @@ Möchten Sie fortfahren?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="420"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Erweiterungsverzeichnis: %1%2</translation>
     </message>
 </context>
 <context>

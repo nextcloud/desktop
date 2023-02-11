@@ -2129,7 +2129,8 @@ Items waar verwijderen is toegestaan zullen gewist worden als ze voorkomen dat e
         <location filename="../src/gui/logbrowser.ui" line="71"/>
         <source>The client can write debug logs to a temporary folder. These logs are very helpful for diagnosing problems.
 Since log files can get large, the client will start a new one for each sync run and compress older ones.</source>
-        <translation type="unfinished"/>
+        <translation>De client kan debug logs wegschrijven naar een tijdelijke map. Deze logs zijn erg nuttig voor het diagnosticeren van problemen.
+Omdat logbestanden groot kunnen worden, zal de client voor elke synchronisatie een nieuwe starten en oudere logbestanden comprimeren.</translation>
     </message>
     <message>
         <location filename="../src/gui/logbrowser.ui" line="116"/>
@@ -3871,7 +3872,7 @@ vragen om extra autorisaties tijdens installatie.</translation>
     <message>
         <location filename="../src/gui/tlserrordialog.cpp" line="75"/>
         <source>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;with Certificate %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organization: %2&lt;br/&gt;Unit: %3&lt;br/&gt;Country: %4&lt;/p&gt;&lt;p&gt;Fingerprint (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Fingerprint (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effective Date: %8Expiration Date: %9&lt;/div&gt;&lt;h3&gt;Issuer: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organization: %11&lt;br/&gt;Unit: %12&lt;br/&gt;Country: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;div id=&quot;cert&quot;&gt;&lt;h3&gt;met certificaat %1&lt;/h3&gt;&lt;div id=&quot;ccert&quot;&gt;&lt;p&gt;Organisatie: %2&lt;br/&gt;Afdeling: %3&lt;br/&gt;Land: %4&lt;/p&gt;&lt;p&gt;Vingerafdruk (MD5): &lt;tt&gt;%5&lt;/tt&gt;&lt;br/&gt;Vingerafdruk (SHA1): &lt;tt&gt;%6&lt;/tt&gt;&lt;br/&gt;Vingerafdruk (SHA256): &lt;tt&gt;%7&lt;/tt&gt;&lt;br/&gt;&lt;br/&gt;Effectief vanaf: %8Verval datum: %9&lt;/div&gt;&lt;h3&gt;Uitgever: %10&lt;/h3&gt;&lt;div id=&quot;issuer&quot;&gt;&lt;p&gt;Organisatie: %11&lt;br/&gt;Afdeling: %12&lt;br/&gt;Land: %13&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;</translation>
     </message>
 </context>
 <context>
@@ -4186,7 +4187,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
         <location filename="../src/gui/newwizard/pages/webfingersetupwizardpage.cpp" line="52"/>
         <source>Please enter your %1:</source>
         <comment>Please enter your [username, e-mail address, ...]:</comment>
-        <translation type="unfinished"/>
+        <translation>Voer uw %1 in:</translation>
     </message>
 </context>
 <context>
@@ -4735,7 +4736,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8bibliotheken Qt %3, %4%7%9Gebruikt virtuele bestandenplugin: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4743,7 +4744,7 @@ Weet U zeker dat U verder wilt gaan?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="420"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Plugin folder: %1%2</translation>
     </message>
 </context>
 <context>
