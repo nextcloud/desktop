@@ -75,7 +75,7 @@
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="248"/>
         <source>Decline</source>
-        <translation type="unfinished"/>
+        <translation>Declinar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/CallNotificationDialog.qml" line="264"/>
@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="50"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Error</translation>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Ignorar</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Activitat</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Partiment</translation>
     </message>
 </context>
 <context>
@@ -653,7 +653,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1171"/>
         <source>%1 (%3%) of %2 in use. Some folders, including network mounted or shared folders, might have different limits.</source>
-        <translation>%1 (%3%) sus %2 utilizat. D’unes dossièrs, coma los dossièrs montats sul ret o partejats, pòdon possedir diferentas limitas.</translation>
+        <translation>%1 (%3%) sus %2 utilizat. D’unes dossièrs, coma los dossièrs montats sul ret o partejats, pòdon possedir diferents limits.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1172"/>
@@ -1090,12 +1090,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="200"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten un espaci inicial e final.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="203"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten d’espacis inicials.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="206"/>
@@ -1202,12 +1202,12 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="243"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten un espaci inicial e final.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="246"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten d’espacis inicials.</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="248"/>
@@ -2718,12 +2718,12 @@ Items where deletion is allowed will be deleted if they prevent a directory from
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="157"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten un espaci inicial e final.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="160"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten d’espacis inicials.</translation>
     </message>
     <message>
         <location filename="../src/gui/invalidfilenamedialog.cpp" line="162"/>
@@ -2935,7 +2935,7 @@ Note that using any logging command line options will override this setting.</so
         <location filename="../src/gui/networksettings.ui" line="210"/>
         <location filename="../src/gui/networksettings.ui" line="299"/>
         <source>No limit</source>
-        <translation>Cap de limita</translation>
+        <translation>Cap de limit</translation>
     </message>
     <message>
         <location filename="../src/gui/networksettings.ui" line="248"/>
@@ -3511,12 +3511,12 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/libsync/discovery.cpp" line="355"/>
         <source>Filename contains leading spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten d’espacis inicials.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="359"/>
         <source>Filename contains leading and trailing spaces.</source>
-        <translation type="unfinished"/>
+        <translation>Lo nom del fichièr conten un espaci inicial e final.</translation>
     </message>
     <message>
         <location filename="../src/libsync/discovery.cpp" line="363"/>
@@ -4753,7 +4753,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="155"/>
         <source>Syncing</source>
-        <translation type="unfinished"/>
+        <translation>Sincronizacion</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="162"/>
@@ -4763,7 +4763,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="169"/>
         <source>Some files could not be synced!</source>
-        <translation type="unfinished"/>
+        <translation>Se podiá pas sincronizar d’unes fichièrs !</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/syncstatussummary.cpp" line="170"/>
@@ -5447,12 +5447,12 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="650"/>
         <source>You deleted %1</source>
-        <translation type="unfinished"/>
+        <translation>Avètz suprimit %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="652"/>
         <source>You created %1</source>
-        <translation type="unfinished"/>
+        <translation>Avètz creat %1</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="654"/>
@@ -5462,7 +5462,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/usermodel.cpp" line="678"/>
         <source>Synced %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 sincronizat</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/common/utility.cpp" line="482"/>
@@ -5651,7 +5651,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation type="unfinished"/>
+        <translation>Sincroniza ara</translation>
     </message>
 </context>
 <context>
