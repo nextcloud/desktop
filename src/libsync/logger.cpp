@@ -52,8 +52,8 @@ Logger::Logger(QObject *parent)
     _crashLog.resize(CrashLogSize);
 #ifndef NO_MSG_HANDLER
     qInstallMessageHandler([](QtMsgType type, const QMessageLogContext &ctx, const QString &message) {
-            Logger::instance()->doLog(type, ctx, message);
-        });
+        Logger::instance()->doLog(type, ctx, message);
+    });
 #endif
 }
 
@@ -112,6 +112,9 @@ void Logger::doLog(QtMsgType type, const QMessageLogContext &ctx, const QString 
         msgW.append(L"\n");
         OutputDebugString(msgW.c_str());
     }
+#elif defined(QT_DEBUG)
+    QTextStream cout(stdout, QIODevice::WriteOnly);
+    cout << msg << endl;
 #endif
     {
         QMutexLocker lock(&_mutex);
