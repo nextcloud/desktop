@@ -5114,7 +5114,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
         <source>Please login with the account: %1</source>
-        <translation type="unfinished"/>
+        <translation>נא להיכנס עם המשתמש: %1</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/webflowcredentials.cpp" line="190"/>
