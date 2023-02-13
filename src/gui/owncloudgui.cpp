@@ -54,7 +54,7 @@
 #include <QtDBus/QDBusInterface>
 #endif
 
-
+#include <QAbstractItemModel>
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQmlApplicationEngine>
@@ -127,6 +127,7 @@ ownCloudGui::ownCloudGui(Application *parent)
     qmlRegisterType<ShareeModel>("com.nextcloud.desktopclient", 1, 0, "ShareeModel");
     qmlRegisterType<SortedShareModel>("com.nextcloud.desktopclient", 1, 0, "SortedShareModel");
     qmlRegisterType<SyncConflictsModel>("com.nextcloud.desktopclient", 1, 0, "SyncConflictsModel");
+    qmlRegisterUncreatableType<QAbstractItemModel>("com.nextcloud.desktopclient", 1, 0, "QAbstractItemModel", "QAbstractItemModel");
 
     qmlRegisterUncreatableType<UnifiedSearchResultsListModel>("com.nextcloud.desktopclient", 1, 0, "UnifiedSearchResultsListModel", "UnifiedSearchResultsListModel");
     qmlRegisterUncreatableType<UserStatus>("com.nextcloud.desktopclient", 1, 0, "UserStatus", "Access to Status enum");
@@ -134,7 +135,6 @@ ownCloudGui::ownCloudGui(Application *parent)
 
     qRegisterMetaTypeStreamOperators<Emoji>();
 
-    qRegisterMetaType<ActivityListModel *>("ActivityListModel*");
     qRegisterMetaType<UnifiedSearchResultsListModel *>("UnifiedSearchResultsListModel*");
     qRegisterMetaType<UserStatus>("UserStatus");
     qRegisterMetaType<SharePtr>("SharePtr");

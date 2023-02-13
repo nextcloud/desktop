@@ -21,37 +21,7 @@ namespace OCC {
 SortedActivityListModel::SortedActivityListModel(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
-}
-
-void SortedActivityListModel::sortModel()
-{
-    sort(0);
-}
-
-ActivityListModel* SortedActivityListModel::activityListModel() const
-{
-    return dynamic_cast<ActivityListModel*>(sourceModel());
-}
-
-void SortedActivityListModel::setActivityListModel(ActivityListModel* activityListModel)
-{
-     if(const auto currentSetModel = sourceModel()) {
-         disconnect(currentSetModel, &ActivityListModel::rowsInserted, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::rowsMoved, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::rowsRemoved, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::dataChanged, this, &SortedActivityListModel::sortModel);
-         disconnect(currentSetModel, &ActivityListModel::modelReset, this, &SortedActivityListModel::sortModel);
-     }
-
-     // Re-sort model when any changes take place
-     connect(activityListModel, &ActivityListModel::rowsInserted, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::rowsMoved, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::rowsRemoved, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::dataChanged, this, &SortedActivityListModel::sortModel);
-     connect(activityListModel, &ActivityListModel::modelReset, this, &SortedActivityListModel::sortModel);
-
-    setSourceModel(activityListModel);
-    Q_EMIT activityListModelChanged();
+    sort(0, Qt::AscendingOrder);
 }
 
 bool SortedActivityListModel::lessThan(const QModelIndex &sourceLeft, const QModelIndex &sourceRight) const
