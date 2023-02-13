@@ -11,6 +11,8 @@ RowLayout {
 
     property variant activityData: {{}}
 
+    property variant activity: {{}}
+
     property color activityTextTitleColor: Style.ncTextColor
 
     property bool showDismissButton: false

@@ -50,6 +50,7 @@ ItemDelegate {
             iconSize: root.iconSize
 
             activityData: model
+            activity: model.activity
 
             onDismissButtonClicked: activityModel.slotTriggerDismiss(model.activityIndex)
         }
