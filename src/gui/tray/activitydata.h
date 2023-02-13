@@ -15,13 +15,14 @@
 #ifndef ACTIVITYDATA_H
 #define ACTIVITYDATA_H
 
-#include <QtCore>
-#include <QIcon>
-#include <QJsonObject>
-
 #include "syncfileitem.h"
 #include "folder.h"
 #include "account.h"
+
+#include <QtCore>
+#include <QIcon>
+#include <QJsonObject>
+#include <QVariantMap>
 
 namespace OCC {
 /**
@@ -131,7 +132,7 @@ public:
     QString _objectName;
     QString _subject;
     QString _subjectRich;
-    QHash<QString, RichSubjectParameter> _subjectRichParameters;
+    QVariantMap _subjectRichParameters;
     QString _subjectDisplay;
     QString _message;
     QString _folder;
@@ -180,6 +181,7 @@ using ActivityList = QList<Activity>;
 Q_DECLARE_METATYPE(OCC::Activity)
 Q_DECLARE_METATYPE(OCC::ActivityList)
 Q_DECLARE_METATYPE(OCC::Activity::Type)
+Q_DECLARE_METATYPE(OCC::Activity::RichSubjectParameter)
 Q_DECLARE_METATYPE(OCC::ActivityLink)
 Q_DECLARE_METATYPE(OCC::PreviewData)
 

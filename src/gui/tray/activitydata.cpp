@@ -109,13 +109,13 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
             const auto parameterJsonObject = i.value().toObject();
 
             const auto richParamLink = stringToUrl(account->url(), parameterJsonObject.value(QStringLiteral("link")).toString());
-            activity._subjectRichParameters[i.key()] = Activity::RichSubjectParameter  {
+            activity._subjectRichParameters[i.key()] = QVariant::fromValue(Activity::RichSubjectParameter{
                 parameterJsonObject.value(QStringLiteral("type")).toString(),
                 parameterJsonObject.value(QStringLiteral("id")).toString(),
                 parameterJsonObject.value(QStringLiteral("name")).toString(),
                 parameterJsonObject.contains(QStringLiteral("path")) ? parameterJsonObject.value(QStringLiteral("path")).toString() : QString(),
                 richParamLink,
-            };
+            });
 
             if (activity._objectType == QStringLiteral("calendar") && activity._link.isEmpty()) {
                 activity._link = richParamLink;
@@ -131,7 +131,7 @@ OCC::Activity Activity::fromActivityJson(const QJsonObject &json, const AccountP
             word.remove(subjectRichParameterBracesRe);
 
             Q_ASSERT(activity._subjectRichParameters.contains(word));
-            displayString = displayString.replace(match.captured(1), activity._subjectRichParameters[word].name);
+            displayString = displayString.replace(match.captured(1), activity._subjectRichParameters[word].value<Activity::RichSubjectParameter>().name);
         }
 
         activity._subjectDisplay = displayString;
