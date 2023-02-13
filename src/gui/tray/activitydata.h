@@ -108,6 +108,22 @@ public:
     QString messageId;
     QString messageSent;
     QString userAvatar;
+
+    [[nodiscard]] bool operator==(const TalkNotificationData &other) const
+    {
+        return conversationToken == other.conversationToken &&
+            messageId == other.messageId &&
+            messageSent == other.messageSent &&
+            userAvatar == other.userAvatar;
+    }
+
+    [[nodiscard]] bool operator!=(const TalkNotificationData &other) const
+    {
+        return conversationToken != other.conversationToken ||
+            messageId != other.messageId ||
+            messageSent != other.messageSent ||
+            userAvatar != other.userAvatar;
+    }
 };
 
 /* ==================================================================== */
@@ -120,6 +136,9 @@ public:
 class Activity
 {
     Q_GADGET
+    Q_PROPERTY(OCC::Activity::Type type MEMBER _type)
+    Q_PROPERTY(OCC::TalkNotificationData talkNotificationData MEMBER _talkNotificationData)
+    Q_PROPERTY(QVariantMap subjectRichParameters MEMBER _subjectRichParameters)
 
 public:
     using Identifier = QPair<qlonglong, QString>;
