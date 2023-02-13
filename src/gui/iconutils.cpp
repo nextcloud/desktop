@@ -155,7 +155,10 @@ QImage drawSvgWithCustomFillColor(
         return {};
     }
 
-    const auto reqSize = requestedSize.isValid() ? requestedSize : svgRenderer.defaultSize();
+    const auto reqSize = (requestedSize.isValid() && requestedSize.height() && requestedSize.height()) ? requestedSize : svgRenderer.defaultSize();
+    if (!reqSize.isValid() || !reqSize.height() || !reqSize.height()) {
+        return {};
+    }
 
     if (originalSize) {
         *originalSize = svgRenderer.defaultSize();
