@@ -458,7 +458,9 @@ void AccountSettings::slotOpenMakeFolderDialog()
 #ifdef Q_OS_MAC
         // The macOS FolderWatcher cannot detect file and folder changes made by the watching process -- us.
         // So we need to manually invoke the slot that is called by watched folder changes.
-        connect(folderCreationDialog, &QDialog::finished, this, [folder, fileName] { folder->slotWatchedPathChanged(fileName, Folder::ChangeReason::Other); });
+        connect(folderCreationDialog, &FolderCreationDialog::folderCreated, this, [folder, fileName](const QString &fullFolderPath) {
+            folder->slotWatchedPathChanged(fullFolderPath, Folder::ChangeReason::Other);
+        });
 #endif
     }
 }
