@@ -90,6 +90,8 @@ public:
     [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
+    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
+
     [[nodiscard]] bool canFetchMore(const QModelIndex &) const override;
     void fetchMore(const QModelIndex &) override;
 
@@ -139,8 +141,6 @@ signals:
     void sendNotificationRequest(const QString &accountName, const QString &link, const QByteArray &verb, int row);
 
 protected:
-    [[nodiscard]] QHash<int, QByteArray> roleNames() const override;
-
     [[nodiscard]] bool currentlyFetching() const;
 
     [[nodiscard]] const ActivityList &finalList() const; // added for unit tests
