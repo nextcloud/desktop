@@ -195,7 +195,7 @@ ColumnLayout {
 
                 enabled: !root.loading
                 model: SortedShareModel {
-                    shareModel: root.shareModel
+                    sourceModel: root.shareModel
                 }
 
                 delegate: ShareDelegate {
