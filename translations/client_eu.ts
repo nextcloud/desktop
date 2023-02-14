@@ -1755,22 +1755,22 @@ Baliteke OpenSSL liburutegiekin arazoa egotea.</translation>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="461"/>
         <source>%1 has and %n other file(s) have sync conflicts.</source>
-        <translation><numerusform>%1 eta beste  fitxategi %n sinkronizazio gatazkak izan dituzte.</numerusform><numerusform>%1 eta beste %n fitxategi sinkronizazio gatazkak izan dituzte.</numerusform></translation>
+        <translation><numerusform>%1 eta beste  fitxategi %n sinkronizazio gatazkak izan dituzte.</numerusform><numerusform>Sinkronizazio gatazkak izan dituzte %1 eta beste %n fitxategik.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="463"/>
         <source>%1 has a sync conflict. Please check the conflict file!</source>
-        <translation>%1 sinkronizazio gatazka izan du. Begiratu gatazkaren fitxategia!</translation>
+        <translation>Sinkronizazio gatazka izan du honek: %1 . Begiratu gatazkadun fitxategia!</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="468"/>
         <source>%1 and %n other file(s) could not be synced due to errors. See the log for details.</source>
-        <translation><numerusform>%1 eta beste  fitxateg %ni ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform><numerusform>%1 eta beste %n fitxategi ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform></translation>
+        <translation><numerusform>%1 eta beste  fitxateg %ni ezin izan dira sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform><numerusform>Ezin izan dira %1 eta beste %n fitxategi  sinkronizatu erroreak direla eta. Ikusi egunkaria xehetasun gehiago izateko.</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/folder.cpp" line="470"/>
         <source>%1 could not be synced due to an error. See the log for details.</source>
-        <translation>%1 ezin izan da sinkronizatu errore bat dela eta. Ikusi egunkaria xehetasun gehiago izateko.</translation>
+        <translation>Ezin izan da %1  sinkronizatu errore bat dela eta. Ikusi egunkaria xehetasun gehiago izateko.</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/folder.cpp" line="475"/>
