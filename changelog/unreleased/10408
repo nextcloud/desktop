@@ -5,3 +5,4 @@ error occurred during the retrieval of the credentials from the system's keychai
 The client then required a manual log out and log in.
 
 https://github.com/owncloud/client/issues/10408
+https://github.com/owncloud/client/pull/10505

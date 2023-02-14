@@ -204,7 +204,7 @@ void HttpCredentials::fetchFromKeychainHelper()
 
     auto job = _account->credentialManager()->get(isUsingOAuth() ? refreshTokenKeyC() : passwordKeyC());
     connect(job, &CredentialJob::finished, this, [job, this] {
-        if (job->error() != QKeychain::NoError) {
+        auto handleError = [job, this] {
             qCWarning(lcHttpCredentials) << "Could not retrieve client password from keychain" << job->errorString();
 
             // we come here if the password is empty or any other keychain
@@ -215,6 +215,9 @@ void HttpCredentials::fetchFromKeychainHelper()
             _password.clear();
             _ready = false;
             emit fetched();
+        };
+        if (job->error() != QKeychain::NoError) {
+            handleError();
             return;
         }
         const auto data = job->data().toString();
@@ -228,8 +231,7 @@ void HttpCredentials::fetchFromKeychainHelper()
                 emit fetched();
             }
         } else {
-            Q_EMIT authenticationFailed();
-            Q_EMIT _account->invalidCredentials();
+            handleError();
         }
     });
 }
