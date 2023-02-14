@@ -187,6 +187,26 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    func setStatusForItemMetadata(_ metadata: NextcloudItemMetadataTable, status: NextcloudItemMetadataTable.Status) -> NextcloudItemMetadataTable? {
+        let database = ncDatabase()
+        var result: NextcloudItemMetadataTable?
+
+        do {
+            try database.write {
+                result = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", metadata.ocId).first
+                result?.status = status.rawValue
+            }
+        } catch let error {
+            NSLog("Could not update status for item metadata with ocID: %@ and filename: %@, received error: %@", metadata.ocId, metadata.fileNameView, error.localizedDescription)
+        }
+
+        if result != nil {
+            return NextcloudItemMetadataTable(value: result!)
+        }
+
+        return nil
+    }
+
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
             return NextcloudDirectoryMetadataTable(value: metadata)
