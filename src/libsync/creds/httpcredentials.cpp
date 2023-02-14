@@ -392,7 +392,10 @@ void HttpCredentials::persist()
 
     // write secrets to the keychain
     if (isUsingOAuth()) {
-        _account->credentialManager()->set(refreshTokenKeyC(), _refreshToken);
+        // _refreshToken should only be empty when we are logged out...
+        if (!_refreshToken.isEmpty()) {
+            _account->credentialManager()->set(refreshTokenKeyC(), _refreshToken);
+        }
     } else {
         _account->credentialManager()->set(passwordKeyC(), _password);
     }

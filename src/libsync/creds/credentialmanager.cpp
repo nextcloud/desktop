@@ -63,6 +63,7 @@ CredentialJob *CredentialManager::get(const QString &key)
 
 QKeychain::Job *CredentialManager::set(const QString &key, const QVariant &data)
 {
+    OC_ASSERT(!data.isNull());
     qCInfo(lcCredentialsManager) << "set" << scopedKey(this, key);
     auto writeJob = new QKeychain::WritePasswordJob(Theme::instance()->appName());
     writeJob->setKey(scopedKey(this, key));
