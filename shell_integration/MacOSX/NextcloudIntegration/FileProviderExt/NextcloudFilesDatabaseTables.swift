@@ -14,6 +14,8 @@
 
 import Foundation
 import RealmSwift
+import FileProvider
+import NextcloudKit
 
 class NextcloudItemMetadataTable: Object {
     enum Status: Int {
@@ -28,6 +30,17 @@ class NextcloudItemMetadataTable: Object {
         case inUpload = 2
         case uploading = 3
         case uploadError = 4
+    }
+
+    enum SharePermissions: Int {
+        case readShare = 1
+        case updateShare = 2
+        case createShare = 4
+        case deleteShare = 8
+        case shareShare = 16
+
+        case maxFileShare = 19
+        case maxFolderShare = 31
     }
 
     override func isEqual(_ object: Any?) -> Bool {
@@ -119,6 +132,72 @@ class NextcloudItemMetadataTable: Object {
     @Persisted var urlBase = ""
     @Persisted var user = ""
     @Persisted var userId = ""
+
+    var fileExtension: String {
+        (fileNameView as NSString).pathExtension
+    }
+
+    var fileNoExtension: String {
+        (fileNameView as NSString).deletingPathExtension
+    }
+
+    var isRenameable: Bool {
+        return lock
+    }
+
+    var isPrintable: Bool {
+        if isDocumentViewableOnly {
+            return false
+        }
+        if ["application/pdf", "com.adobe.pdf"].contains(contentType) || contentType.hasPrefix("text/") || classFile == NKCommon.typeClassFile.image.rawValue {
+            return true
+        }
+        return false
+    }
+
+    var isDocumentViewableOnly: Bool {
+        return sharePermissionsCollaborationServices == SharePermissions.readShare.rawValue &&
+            classFile == NKCommon.typeClassFile.document.rawValue
+    }
+
+    var isCopyableInPasteboard: Bool {
+        !isDocumentViewableOnly && !directory
+    }
+
+    var isModifiableWithQuickLook: Bool {
+        if directory || isDocumentViewableOnly {
+            return false
+        }
+        return contentType == "com.adobe.pdf" || contentType == "application/pdf" || classFile == NKCommon.typeClassFile.image.rawValue
+    }
+
+    var isSettableOnOffline: Bool {
+        return session.isEmpty && !isDocumentViewableOnly
+    }
+
+    var canOpenIn: Bool {
+        return session.isEmpty && !isDocumentViewableOnly && !directory
+    }
+
+    var isDownloadUpload: Bool {
+        return status == Status.inDownload.rawValue ||
+            status == Status.downloading.rawValue ||
+            status == Status.inUpload.rawValue ||
+            status == Status.uploading.rawValue
+    }
+
+    var isDownload: Bool {
+        status == Status.inDownload.rawValue || status == Status.downloading.rawValue
+    }
+
+    var isUpload: Bool {
+        status == Status.inUpload.rawValue || status == Status.uploading.rawValue
+    }
+
+    /// Returns false if the user is lokced out of the file. I.e. The file is locked but by somone else
+    func canUnlock(as user: String) -> Bool {
+        return !lock || (lockOwner == user && lockOwnerType == 0)
+    }
 }
 
 class NextcloudDirectoryMetadataTable: Object {
