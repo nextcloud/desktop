@@ -249,7 +249,6 @@ void AccountManager::save(bool saveCredentials)
     for (const auto &acc : qAsConst(_accounts)) {
         settings->beginGroup(acc->account()->id());
         saveAccountHelper(acc->account().data(), *settings, saveCredentials);
-        acc->writeToSettings(*settings);
         settings->endGroup();
     }
 
@@ -274,7 +273,6 @@ void AccountManager::saveAccountState(AccountState *a)
     qCDebug(lcAccountManager) << "Saving account state" << a->account()->url().toString();
     const auto settings = ConfigFile::settingsWithGroup(QLatin1String(accountsC));
     settings->beginGroup(a->account()->id());
-    a->writeToSettings(*settings);
     settings->endGroup();
 
     settings->sync();

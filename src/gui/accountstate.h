@@ -93,12 +93,6 @@ public:
      */
     static AccountState *loadFromSettings(AccountPtr account, QSettings &settings);
 
-    /** Writes account state information to settings.
-     *
-     * It does not write the Account data.
-     */
-    void writeToSettings(QSettings &settings);
-
     AccountPtr account() const;
 
     ConnectionStatus connectionStatus() const;
