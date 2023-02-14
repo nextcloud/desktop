@@ -27,6 +27,7 @@ Details
    required a manual log out and log in.
 
    https://github.com/owncloud/client/issues/10408
+   https://github.com/owncloud/client/pull/10505
 
 * Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
 
