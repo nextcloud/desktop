@@ -4495,13 +4495,13 @@ Are you sure you want to proceed?</source>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation type="unfinished"/>
+        <source>Username</source>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Учётные данные</translation>
+        <source>Login</source>
+        <translation>Логин</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>

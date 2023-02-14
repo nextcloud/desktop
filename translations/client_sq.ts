@@ -4515,13 +4515,13 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation type="unfinished"/>
+        <source>Username</source>
+        <translation>Emër përdoruesi</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Kredenciale</translation>
+        <source>Login</source>
+        <translation>Hyrje</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
@@ -4735,7 +4735,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="425"/>
         <source>%1 %2%7%8Libraries Qt %3, %4%7%9Using virtual files plugin: %5%7%6</source>
-        <translation type="unfinished"/>
+        <translation>%1 %2%7%8Biblioteka Qt %3, %4%7%9Me përdorim shtojce kartelash virtuale: %5%7%6</translation>
     </message>
 </context>
 <context>
@@ -4743,7 +4743,7 @@ Jeni i sigurt se doni të ecet më tej?</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="420"/>
         <source>Plugin dir: %1%2</source>
-        <translation type="unfinished"/>
+        <translation>Drejtori shtojce: %1%2</translation>
     </message>
 </context>
 <context>

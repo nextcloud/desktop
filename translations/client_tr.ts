@@ -4512,13 +4512,13 @@ Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation>WebFinger</translation>
+        <source>Username</source>
+        <translation>Kullanıcı adı</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Kimlik Bilgileri</translation>
+        <source>Login</source>
+        <translation>Oturum Aç</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>

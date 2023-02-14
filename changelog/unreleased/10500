@@ -1,0 +1,6 @@
+Bugfix: Empty credentials for signed out accounts
+
+We fixed a bug where we saved empty credentials for logged out accounts.
+Under certain conditions we now tried access the server without any authentication.
+
+https://github.com/owncloud/client/issues/10500

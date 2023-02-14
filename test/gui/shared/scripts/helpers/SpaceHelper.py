@@ -184,3 +184,12 @@ def get_file_content(space_name, file_name, user=None):
             + response.text
         )
     return response.text
+
+
+def resource_exists(space_name, resource, user=None):
+    space_id = get_space_id(space_name, user)
+    url = path.join(get_dav_endpint(), space_id, resource)
+    response = send_request(url, "GET", as_user=user)
+    if response.status_code == 200:
+        return True
+    return False

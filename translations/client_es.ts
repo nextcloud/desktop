@@ -4512,13 +4512,13 @@ Está seguro que quiere continuar?</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="34"/>
-        <source>WebFinger</source>
-        <translation>WebFinger</translation>
+        <source>Username</source>
+        <translation>Nombre de usuario</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="36"/>
-        <source>Credentials</source>
-        <translation>Credenciales</translation>
+        <source>Login</source>
+        <translation>Acceder</translation>
     </message>
     <message>
         <location filename="../src/gui/newwizard/enums.cpp" line="38"/>
