@@ -14,6 +14,7 @@ Summary
 * Bugfix - Use selective sync settings from FolderWizard dialog: [#10468](https://github.com/owncloud/client/issues/10468)
 * Bugfix - ShowVirtualFilesOption no longer influences the use of VFS: [#10472](https://github.com/owncloud/client/issues/10472)
 * Bugfix - Fix generation of Windows sidebar entry when VFS is disabled: [#10481](https://github.com/owncloud/client/pull/10481)
+* Bugfix - Empty credentials for signed out accounts: [#10500](https://github.com/owncloud/client/issues/10500)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
 Details
@@ -51,6 +52,13 @@ Details
 * Bugfix - Fix generation of Windows sidebar entry when VFS is disabled: [#10481](https://github.com/owncloud/client/pull/10481)
 
    https://github.com/owncloud/client/pull/10481
+
+* Bugfix - Empty credentials for signed out accounts: [#10500](https://github.com/owncloud/client/issues/10500)
+
+   We fixed a bug where we saved empty credentials for logged out accounts. Under certain
+   conditions we now tried access the server without any authentication.
+
+   https://github.com/owncloud/client/issues/10500
 
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
