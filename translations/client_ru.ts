@@ -1085,7 +1085,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="208"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="209"/>
         <source>Failed to parse credentials %1</source>
         <translation>Не удалось разобрать учётные данные %1</translation>
     </message>
