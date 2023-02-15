@@ -71,7 +71,11 @@ def main(ctx):
 
     pipelines = []
 
-    if ctx.build.event == "cron":
+    if ctx.build.event == "cron" or ctx.build.event == "tag":
+        trigger = cron_trigger
+        if ctx.build.event == "tag":
+            trigger = build_trigger
+
         # cron job pipelines
         unit_tests = unit_test_pipeline(
             ctx,
@@ -79,22 +83,22 @@ def main(ctx):
             "g++",
             "Release",
             "Unix Makefiles",
-            trigger = cron_trigger,
+            trigger = trigger,
         ) + unit_test_pipeline(
             ctx,
             "clang",
             "clang++",
             "Debug",
             "Ninja",
-            trigger = cron_trigger,
+            trigger = trigger,
         )
 
-        gui_tests = gui_test_pipeline(ctx, trigger = cron_trigger) + \
-                    gui_test_pipeline(ctx, trigger = cron_trigger, server_version = ocis_server_version, server_type = "ocis")
+        gui_tests = gui_test_pipeline(ctx, trigger = trigger) + \
+                    gui_test_pipeline(ctx, trigger = trigger, server_version = ocis_server_version, server_type = "ocis")
 
         notify = notification(
-            name = "build",
-            trigger = cron_trigger,
+            name = "nightly" if ctx.build.event == "cron" else "tag",
+            trigger = trigger,
         )
         pipelines = unit_tests + gui_tests + pipelinesDependsOn(notify, unit_tests + gui_tests)
     else:
@@ -165,6 +169,14 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
     pipeline_name = "GUI-tests-%s" % server_type
     squish_parameters = "--reportgen html,%s --envvar QT_LOGGING_RULES=sync.httplogger=true;gui.socketapi=false" % dir["guiTestReport"]
 
+    upload_report_trigger = {
+        "status": [
+            "failure",
+        ],
+    }
+    if ctx.build.event == "tag":
+        upload_report_trigger["status"].append("success")
+
     build_config = {
         "c_compiler": "gcc",
         "cxx_compiler": "g++",
@@ -205,7 +217,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
                  False,
              ) + \
              gui_tests(squish_parameters, server_type) + \
-             uploadGuiTestLogs(server_type) + \
+             uploadGuiTestLogs(server_type, trigger = upload_report_trigger) + \
              buildGithubComment(pipeline_name, server_type) + \
              githubComment(pipeline_name, server_type)
 
@@ -634,7 +646,7 @@ def showGuiTestResult():
         },
     }]
 
-def uploadGuiTestLogs(server_type = "oc10"):
+def uploadGuiTestLogs(server_type = "oc10", trigger = {}):
     return [{
         "name": "upload-gui-test-result",
         "image": PLUGINS_S3,
@@ -658,11 +670,7 @@ def uploadGuiTestLogs(server_type = "oc10"):
                 "from_secret": "cache_public_s3_secret_key",
             },
         },
-        "when": {
-            "status": [
-                "failure",
-            ],
-        },
+        "when": trigger,
     }]
 
 def buildGithubComment(suite = "", server_type = "oc10"):

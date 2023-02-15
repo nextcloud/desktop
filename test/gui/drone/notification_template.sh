@@ -18,18 +18,21 @@ for server in "${SERVERS[@]}"; do
     CURL="curl --write-out %{http_code} --silent --output /dev/null"
 
     LOGS=""
+    GUI_LOG="${LOG_URL_PATH}/index.html"
+
+    GUI_STATUS_CODE=$($CURL "$GUI_LOG")
+
+    if [[ "$GUI_STATUS_CODE" == "200" ]]; then
+        LOGS+=": [Squish Report]($GUI_LOG)"
+    fi
+
     if [ "${DRONE_BUILD_STATUS}" == "failure" ]; then
-        GUI_LOG="${LOG_URL_PATH}/index.html"
         SERVER_LOG="${LOG_URL_PATH}/serverlog.log"
         STACKTRACE="${LOG_URL_PATH}/stacktrace.log"
 
-        GUI_STATUS_CODE=$($CURL "$GUI_LOG")
         SERVER_STATUS_CODE=$($CURL "$SERVER_LOG")
         STACKTRACE_STATUS_CODE=$($CURL "$STACKTRACE")
 
-        if [[ "$GUI_STATUS_CODE" == "200" ]]; then
-            LOGS+=": [Squish Report]($GUI_LOG)"
-        fi
         if [[ "$SERVER_STATUS_CODE" == "200" ]]; then
             LOGS+="\n> [Server log]($SERVER_LOG)  " # 2 spaces at the end act as line-break
         fi
@@ -37,6 +40,7 @@ for server in "${SERVERS[@]}"; do
             LOGS+="\n> [Stacktrace]($STACKTRACE)"
         fi
     fi
+
     if [[ -n "${LOGS}" ]]; then
         LOGS="\n${server}${LOGS}"
         TEST_LOGS+="${LOGS}"
