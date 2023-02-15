@@ -3,18 +3,12 @@ Changelog for ownCloud Desktop Client [unreleased] (UNRELEASED)
 The following sections list the changes in ownCloud Desktop Client unreleased relevant to
 ownCloud admins and users.
 
-[unreleased]: https://github.com/owncloud/client/compare/v3.1.0...master
+[unreleased]: https://github.com/owncloud/client/compare/v3.2.0...master
 
 Summary
 -------
 
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
-* Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
-* Bugfix - Only hide non VFS settings when enforced and on Windows: [#10456](https://github.com/owncloud/client/issues/10456)
-* Bugfix - Use selective sync settings from FolderWizard dialog: [#10468](https://github.com/owncloud/client/issues/10468)
-* Bugfix - ShowVirtualFilesOption no longer influences the use of VFS: [#10472](https://github.com/owncloud/client/issues/10472)
-* Bugfix - Fix generation of Windows sidebar entry when VFS is disabled: [#10481](https://github.com/owncloud/client/pull/10481)
-* Bugfix - Empty credentials for signed out accounts: [#10500](https://github.com/owncloud/client/issues/10500)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 
 Details
@@ -28,6 +22,34 @@ Details
 
    https://github.com/owncloud/client/issues/10408
    https://github.com/owncloud/client/pull/10505
+
+* Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
+
+   We now upload locked files again when Windows virtual files are used. This was disabled in 2.9.0
+   as it caused the file metadata and the locked files to get out of sync. The new solution
+   implements explicit handling of outdated placeholders.
+
+   https://github.com/owncloud/client/issues/9829
+
+Changelog for ownCloud Desktop Client [3.2.0] (2024-02-15)
+=======================================
+The following sections list the changes in ownCloud Desktop Client 3.2.0 relevant to
+ownCloud admins and users.
+
+[3.2.0]: https://github.com/owncloud/client/compare/v3.1.0...v3.2.0
+
+Summary
+-------
+
+* Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
+* Bugfix - Only hide non VFS settings when enforced and on Windows: [#10456](https://github.com/owncloud/client/issues/10456)
+* Bugfix - Use selective sync settings from FolderWizard dialog: [#10468](https://github.com/owncloud/client/issues/10468)
+* Bugfix - ShowVirtualFilesOption no longer influences the use of VFS: [#10472](https://github.com/owncloud/client/issues/10472)
+* Bugfix - Fix generation of Windows sidebar entry when VFS is disabled: [#10481](https://github.com/owncloud/client/pull/10481)
+* Bugfix - Empty credentials for signed out accounts: [#10500](https://github.com/owncloud/client/issues/10500)
+
+Details
+-------
 
 * Bugfix - Enable next button upon user input on Webfinger setup wizard page: [#10441](https://github.com/owncloud/client/issues/10441)
 
@@ -60,14 +82,6 @@ Details
    conditions we now tried access the server without any authentication.
 
    https://github.com/owncloud/client/issues/10500
-
-* Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
-
-   We now upload locked files again when Windows virtual files are used. This was disabled in 2.9.0
-   as it caused the file metadata and the locked files to get out of sync. The new solution
-   implements explicit handling of outdated placeholders.
-
-   https://github.com/owncloud/client/issues/9829
 
 Changelog for ownCloud Desktop Client [3.1.0] (2023-01-25)
 =======================================
