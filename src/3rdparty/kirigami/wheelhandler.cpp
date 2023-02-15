@@ -489,7 +489,7 @@ bool WheelHandler::eventFilter(QObject *watched, QEvent *event)
                 m_horizontalScrollBar->setProperty("interactive", true);
             }
         }
-        QWheelEvent *wheelEvent = static_cast<QWheelEvent *>(event);
+        auto *wheelEvent = static_cast<QWheelEvent *>(event);
 
         // NOTE: On X11 with libinput, pixelDelta is identical to angleDelta when using a mouse that shouldn't use pixelDelta.
         // If faulty pixelDelta, reset pixelDelta to (0,0).
@@ -603,7 +603,7 @@ bool WheelHandler::eventFilter(QObject *watched, QEvent *event)
         if (!m_keyNavigationEnabled) {
             break;
         }
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+        auto *keyEvent = static_cast<QKeyEvent *>(event);
         bool horizontalScroll = keyEvent->modifiers() & m_defaultHorizontalScrollModifiers;
         switch (keyEvent->key()) {
         case Qt::Key_Up: return scrollUp();
