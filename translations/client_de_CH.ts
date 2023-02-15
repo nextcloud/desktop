@@ -1089,7 +1089,7 @@ Dies ist ein neuer, experimenteller Modus. Wenn sie sich dafür entscheiden, ber
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="208"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="209"/>
         <source>Failed to parse credentials %1</source>
         <translation>Fehler beim Verarbeiten der Zugangsdaten %1</translation>
     </message>

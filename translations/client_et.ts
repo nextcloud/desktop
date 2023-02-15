@@ -1093,7 +1093,7 @@ See on uus, eksperimentaalne režiim. Kui otsustate seda kasutada, palun teatage
 <context>
     <name>OCC::CredentialJob</name>
     <message>
-        <location filename="../src/libsync/creds/credentialmanager.cpp" line="208"/>
+        <location filename="../src/libsync/creds/credentialmanager.cpp" line="209"/>
         <source>Failed to parse credentials %1</source>
         <translation>Kasutajaandmete parsimine ebaõnnestus %1</translation>
     </message>
