@@ -240,12 +240,13 @@ void ShareModel::updateData()
     SyncJournalFileRecord fileRecord;
     auto resharingAllowed = true; // lets assume the good
 
-    if(_folder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid()) {
-        if (!fileRecord._remotePerm.isNull() &&
-            !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
+    if(_folder->journalDb()->getFileRecord(relPath, &fileRecord) &&
+       fileRecord.isValid() &&
+       !fileRecord._remotePerm.isNull() &&
+       !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
 
-            resharingAllowed = false;
-        }
+        qCInfo(lcShareModel) << "File record says resharing not allowed";
+        resharingAllowed = false;
     }
 
     _maxSharingPermissions = resharingAllowed ? SharePermissions(_accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
