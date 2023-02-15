@@ -746,6 +746,11 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <translation>Există dosare ce nu au fost sinscronizate deoarece acestea sunt prea mari sau se află pe stocarea externă:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Contul permite criptare end-to-end.</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmați ștergerea contului</translation>
@@ -759,11 +764,6 @@ Această acțiune va opri toate sincronizările în derulare din acest moment.</
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Șterge conexiunea</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Contul permite criptare end-to-end.</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

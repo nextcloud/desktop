@@ -746,6 +746,11 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <translation>Ddoe at cartellas chi non sunt istadas sincronizadas ca sunt tropu mannas o memòrias de archiviatziones de foras:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Custu contu non disponet de sa tzifradura end-to-end</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Cunfirma bogadura contu</translation>
@@ -759,11 +764,6 @@ Custa atzione at a firmare cale si siat sincronizatzione immoe in esecutzione.</
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Boga connessione</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Custu contu non disponet de sa tzifradura end-to-end</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

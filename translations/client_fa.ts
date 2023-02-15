@@ -741,6 +741,11 @@ This action will abort any currently running synchronization.</source>
         <translation>پوشه‌هایی وجود دارند که همگام سازی نشده اند زیرا آن ها بسیار بزرگ یا مخازن خارجی هستند:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>این حساب کاربری امکان رمزنگاری انتها-به-انتها را  دارد</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>تائید حذف حساب‌کاربری</translation>
@@ -754,11 +759,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>حذف ارتباط</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>این حساب کاربری امکان رمزنگاری انتها-به-انتها را  دارد</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

@@ -747,6 +747,11 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <translation>Existem pastas que não foram sincronizadas porque são muito grandes ou são armazenamentos externos: </translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Esta conta suporta criptografia de ponta-a-ponta</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Confirmar a Remoção da Conta</translation>
@@ -760,11 +765,6 @@ Esta ação irá cancelar qualquer sincronização atualmente em execução.</tr
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Remover conexão</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Esta conta suporta criptografia de ponta-a-ponta</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

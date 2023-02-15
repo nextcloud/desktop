@@ -747,6 +747,11 @@ This action will abort any currently running synchronization.</translation>
         <translation>There are folders that were not synchronised because they are too big or external storages: </translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>This account supports end-to-end encryption</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Confirm Account Removal</translation>
@@ -760,11 +765,6 @@ This action will abort any currently running synchronization.</translation>
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Remove connection</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>This account supports end-to-end encryption</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

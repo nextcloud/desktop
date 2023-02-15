@@ -741,6 +741,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Има папки кој не се синхронизирани бидејќи се премногу големи или се надворешни складишта:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>На оваа сметка е овозможена крај-до-крај енкрипција</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Потврди отстранување на сметка</translation>
@@ -754,11 +759,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Отстрани врска</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>На оваа сметка е овозможена крај-до-крај енкрипција</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

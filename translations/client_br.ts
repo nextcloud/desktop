@@ -742,6 +742,11 @@ This action will abort any currently running synchronization.</source>
         <translation>Teuliadoù so n&apos;int ke bet kemredet peogwir e oant pe re vra pe lec&apos;hioù klenkañ diavaez :</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>Douget e vez gant ar c&apos;hont ar sifrañ  penn-kil-ha-troad</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>Gwiriañ Lamaden ar C&apos;hont</translation>
@@ -755,11 +760,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>Lemel kenstagdenn</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>Douget e vez gant ar c&apos;hont ar sifrañ  penn-kil-ha-troad</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>

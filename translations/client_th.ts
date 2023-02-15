@@ -741,6 +741,11 @@ This action will abort any currently running synchronization.</source>
         <translation>มีบางโฟลเดอร์ที่ไม่ถูกซิงโครไนซ์เพราะมีขนาดใหญ่เกินไป หรือเป็นพื้นที่จัดเก็บข้อมูลภายนอก:</translation>
     </message>
     <message>
+        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
+        <source>This account supports end-to-end encryption</source>
+        <translation>บัญชีนี้รองรับการเข้ารหัสลับแบบต้นทางถึงปลายทาง</translation>
+    </message>
+    <message>
         <location filename="../src/gui/accountsettings.cpp" line="1522"/>
         <source>Confirm Account Removal</source>
         <translation>ยืนยันการนำบัญชีออก</translation>
@@ -754,11 +759,6 @@ This action will abort any currently running synchronization.</source>
         <location filename="../src/gui/accountsettings.cpp" line="1528"/>
         <source>Remove connection</source>
         <translation>ลบการเชื่อมต่อ</translation>
-    </message>
-    <message>
-        <location filename="../src/gui/accountsettings.cpp" line="1585"/>
-        <source>This account supports end-to-end encryption</source>
-        <translation>บัญชีนี้รองรับการเข้ารหัสลับแบบต้นทางถึงปลายทาง</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1589"/>
