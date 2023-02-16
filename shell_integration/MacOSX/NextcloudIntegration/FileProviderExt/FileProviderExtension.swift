@@ -53,6 +53,8 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         let session = URLSession(configuration: configuration, delegate: ncKitBackground, delegateQueue: OperationQueue.main)
         return session
     }()
+    var outstandingSessionTasks: [String: URLSessionTask] = [:]
+    var outstandingOcIdTemp: [String: String] = [:]
 
     private var itemIdsForEnumeratorsNeedingSignalling: NSMutableSet = NSMutableSet()
 
@@ -107,9 +109,80 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     }
     
     func fetchContents(for itemIdentifier: NSFileProviderItemIdentifier, version requestedVersion: NSFileProviderItemVersion?, request: NSFileProviderRequest, completionHandler: @escaping (URL?, NSFileProviderItem?, Error?) -> Void) -> Progress {
-        // TODO: implement fetching of the contents for the itemIdentifier at the specified version
-        
-        completionHandler(nil, nil, NSError(domain: NSCocoaErrorDomain, code: NSFeatureUnsupportedError, userInfo:[:]))
+
+        NSLog("Received request to fetch contents of item with identifier: %@", itemIdentifier.rawValue)
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        let ocId = itemIdentifier.rawValue
+        guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
+            NSLog("Could not acquire metadata of item with identifier: %@", itemIdentifier.rawValue)
+            completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
+        guard !metadata.isDocumentViewableOnly else {
+            NSLog("Could not get contents of item as is readonly: %@ %@", itemIdentifier.rawValue, metadata.fileName)
+            completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+            return Progress()
+        }
+
+        let serverUrlFileName = metadata.serverUrl + "/" + metadata.fileName
+
+        NSLog("Fetching file with name %@ at URL: %@", metadata.fileName, serverUrlFileName)
+
+        do {
+            let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
+
+            _ = dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading)
+
+            self.ncKit.download(serverUrlFileName: serverUrlFileName,
+                                fileNameLocalPath: fileNameLocalPath.path,
+                                requestHandler: { _ in
+
+            }, taskHandler: { task in
+                self.outstandingSessionTasks[serverUrlFileName] = task
+                NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemIdentifier, completionHandler: { _ in })
+            }, progressHandler: { _ in
+
+            }) { _, etag, date, _, _, _, error in
+                self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
+                guard let updatedMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+                    NSLog("Could not acquire updated metadata of item with identifier: %@", itemIdentifier.rawValue)
+                    completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+                    return
+                }
+
+                if error == .success {
+                    NSLog("Acquired contents of item with identifier: %@ and filename: %@", itemIdentifier.rawValue, updatedMetadata.fileName)
+                    updatedMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+                    updatedMetadata.date = (date ?? NSDate()) as Date
+                    updatedMetadata.etag = etag ?? ""
+
+                    dbManager.addLocalFileMetadataFromItemMetadata(updatedMetadata)
+                    dbManager.addItemMetadata(updatedMetadata)
+
+                    guard let parentItemIdentifier = parentItemIdentifierFromMetadata(updatedMetadata) else {
+                        completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+                        return
+                    }
+                    let fpItem = FileProviderItem(metadata: updatedMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+
+                    completionHandler(fileNameLocalPath, fpItem, nil)
+                } else {
+                    NSLog("Could not acquire contents of item with identifier: %@ and fileName: %@", itemIdentifier.rawValue, updatedMetadata.fileName)
+
+                    updatedMetadata.status = NextcloudItemMetadataTable.Status.downloadError.rawValue
+                    updatedMetadata.sessionError = error.errorDescription
+
+                    dbManager.addItemMetadata(updatedMetadata)
+
+                    completionHandler(nil, nil, NSFileProviderError(.cannotSynchronize))
+                }
+            }
+        } catch let error {
+            NSLog("Could not find local path for file %@, received error: %@", metadata.fileNameView, error.localizedDescription)
+        }
+
         return Progress()
     }
     
