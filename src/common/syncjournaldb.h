@@ -128,7 +128,7 @@ public:
         bool validate(qint64 size, qint64 modtime, const QByteArray &checksum) const
         {
             Q_ASSERT(!checksum.isEmpty());
-            Q_ASSERT(!_contentChecksum.isEmpty());
+            Q_ASSERT(!_valid || !_contentChecksum.isEmpty());
             return _valid && _size == size && _modtime == modtime && _contentChecksum == checksum;
         }
     };
