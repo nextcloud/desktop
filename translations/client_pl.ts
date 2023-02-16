@@ -1075,6 +1075,11 @@ Ta czynność spowoduje przerwanie aktualnie uruchomionej synchronizacji.</trans
     <name>OCC::CaseClashConflictSolver</name>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
+        <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Nie można zmienić nazwy pliku, ponieważ plik o tej samej nazwie już istnieje na serwerze. Wybierz inną nazwę.</translation>
     </message>
