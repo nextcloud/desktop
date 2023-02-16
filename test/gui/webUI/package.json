@@ -2,7 +2,8 @@
     "name": "oidc-login",
     "version": "0.0.1",
     "scripts": {
-        "login": "playwright test"
+        "oidc-login": "playwright test --grep @oidc",
+        "oauth-login": "playwright test --grep @oauth"
     },
     "devDependencies": {
         "@playwright/test": "^1.27.1",

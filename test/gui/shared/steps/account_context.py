@@ -240,6 +240,9 @@ def step(context):
 
 @When('the user adds the following account with oauth2 enabled:')
 def step(context):
-    print(context.table)
-    # TODO: table parser
-    AccountConnectionWizard.addServer(context)
+    account_details = getClientDetails(context)
+    AccountConnectionWizard.addServer(account_details['server'])
+    AccountConnectionWizard.oauthLogin(
+        account_details['user'], account_details['password']
+    )
+    AccountConnectionWizard.nextStep()

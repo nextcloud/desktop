@@ -3,7 +3,7 @@ import subprocess
 import squish
 
 
-def authorize_via_webui(username, password):
+def authorize_via_webui(username, password, login_type="oidc"):
     script_path = os.path.dirname(os.path.realpath(__file__))
 
     webui_path = os.path.join(script_path, "..", "..", "..", 'webUI')
@@ -15,7 +15,10 @@ def authorize_via_webui(username, password):
         'OC_AUTH_URL': squish.getClipboardText(),
     }
     proc = subprocess.run(
-        "pnpm run login", capture_output=True, shell=True, env={**os.environ, **envs}
+        "pnpm run %s-login" % login_type,
+        capture_output=True,
+        shell=True,
+        env={**os.environ, **envs},
     )
     if proc.returncode != 0:
         if proc.stderr.decode('utf-8'):
