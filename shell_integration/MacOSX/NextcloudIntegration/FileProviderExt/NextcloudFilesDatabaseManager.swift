@@ -207,6 +207,25 @@ class NextcloudFilesDatabaseManager : NSObject {
         return nil
     }
 
+    func addItemMetadata(_ metadata: NextcloudItemMetadataTable) {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                database.add(metadata, update: .all)
+                NSLog("""
+                        Created new metadata (addItemMetadata).
+                        ocID: %@,
+                        fileName: %@,
+                        etag: %@
+                      """
+                      , metadata.ocId, metadata.fileName, metadata.etag)
+            }
+        } catch let error {
+            NSLog("Could not add item metadata with ocID: %@ and filename: %@, received error: %@", metadata.ocId, metadata.fileNameView, error.localizedDescription)
+        }
+    }
+
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
             return NextcloudDirectoryMetadataTable(value: metadata)
