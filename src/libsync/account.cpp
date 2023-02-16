@@ -163,15 +163,7 @@ QString Account::displayName() const
 
 QString Account::userIdAtHostWithPort() const
 {
-    const auto credentialsUserSplit = credentials() ? credentials()->user().split(QLatin1Char('@')) : QStringList{};
-
-    if (credentialsUserSplit.isEmpty()) {
-        return {};
-    }
-
-    const auto userName = credentialsUserSplit.first();
-
-    QString dn = QStringLiteral("%1@%2").arg(userName, _url.host());
+    QString dn = QStringLiteral("%1@%2").arg(_davUser, _url.host());
     const auto port = url().port();
     if (port > 0 && port != 80 && port != 443) {
         dn.append(QLatin1Char(':'));
