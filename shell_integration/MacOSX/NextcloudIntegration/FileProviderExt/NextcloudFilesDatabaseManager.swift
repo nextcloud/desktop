@@ -374,6 +374,28 @@ class NextcloudFilesDatabaseManager : NSObject {
         return nil
     }
 
+    func addLocalFileMetadataFromItemMetadata(_ itemMetadata: NextcloudItemMetadataTable) {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                let newLocalFileMetadata = NextcloudLocalFileMetadataTable()
+
+                newLocalFileMetadata.ocId = itemMetadata.ocId
+                newLocalFileMetadata.fileName = itemMetadata.fileName
+                newLocalFileMetadata.account = itemMetadata.account
+                newLocalFileMetadata.etag = itemMetadata.etag
+                newLocalFileMetadata.exifDate = Date()
+                newLocalFileMetadata.exifLatitude = "-1"
+                newLocalFileMetadata.exifLongitude = "-1"
+
+                database.add(newLocalFileMetadata, update: .all)
+            }
+        } catch let error {
+            NSLog("Could not add local file metadata from item metadata with ocID: %@ and filename: %@, received error: %@", itemMetadata.ocId, itemMetadata.fileNameView, error.localizedDescription)
+        }
+    }
+
     @objc func convertNKFileToItemMetadata(_ file: NKFile, account: String) -> NextcloudItemMetadataTable {
 
         let metadata = NextcloudItemMetadataTable()
