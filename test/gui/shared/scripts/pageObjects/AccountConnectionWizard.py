@@ -189,14 +189,14 @@ class AccountConnectionWizard:
 
     @staticmethod
     def oidcLogin(username, password):
-        AccountConnectionWizard.browser_login(username, password, 'oidc')
+        AccountConnectionWizard.browserLogin(username, password, 'oidc')
 
     @staticmethod
     def oauthLogin(username, password):
-        AccountConnectionWizard.browser_login(username, password, 'oauth')
+        AccountConnectionWizard.browserLogin(username, password, 'oauth')
 
     @staticmethod
-    def browser_login(username, password, login_type=None):
+    def browserLogin(username, password, login_type=None):
         # wait 500ms for copy button to fully load
         squish.snooze(1 / 2)
         squish.clickButton(

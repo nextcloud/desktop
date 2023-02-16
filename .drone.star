@@ -54,6 +54,13 @@ notify_channels = {
     },
 }
 
+oc_extra_apps = {
+    "oauth2": {
+        "enabled": False,
+        "command": "make dist",
+    },
+}
+
 def main(ctx):
     build_trigger = {
         "ref": [
@@ -195,6 +202,7 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
 
         steps += installCore(server_version) + \
                  setupServerAndApp() + \
+                 installExtraApps(oc_extra_apps) + \
                  fixPermissions() + \
                  owncloudLog()
         services += owncloudService() + \
@@ -202,11 +210,11 @@ def gui_test_pipeline(ctx, trigger = {}, filterTags = [], server_version = oc10_
     else:
         squish_parameters += " --tags ~@skip --tags ~@skipOnOCIS"
 
-        steps += installPnpm() + \
-                 ocisService(server_version) + \
+        steps += ocisService(server_version) + \
                  waitForOcisService()
 
-    steps += setGuiTestReportDir() + \
+    steps += installPnpm() + \
+             setGuiTestReportDir() + \
              build_client(
                  build_config["c_compiler"],
                  build_config["cxx_compiler"],
@@ -501,6 +509,23 @@ def setupServerAndApp(logLevel = 2):
             "php occ config:system:set skeletondirectory --value=/var/www/owncloud/server/apps/testing/data/tinySkeleton",
             "php occ config:system:set sharing.federation.allowHttpFallback --value=true --type=bool",
         ],
+    }]
+
+def installExtraApps(extra_apps = {}):
+    commands = []
+    for app, param in extra_apps.items():
+        commands.append("ls %s/apps/%s || git clone --depth 1 https://github.com/owncloud/%s.git %s/apps/%s" % (dir["server"], app, app, dir["server"], app))
+        if (param["command"] != ""):
+            commands.append("cd %s/apps/%s" % (dir["server"], app))
+            commands.append(param["command"])
+        if param["enabled"]:
+            commands.append("cd %s" % dir["server"])
+            commands.append("php occ a:e %s" % app)
+
+    return [{
+        "name": "install-extra-apps",
+        "image": OC_CI_PHP % DEFAULT_PHP_VERSION,
+        "commands": commands,
     }]
 
 def owncloudService():
