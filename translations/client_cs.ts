@@ -1075,6 +1075,11 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <name>OCC::CaseClashConflictSolver</name>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
+        <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Soubor není možné přejmenovat, protože soubor se stejným názvem na serveru už existuje. Vyberte jiný název.</translation>
     </message>

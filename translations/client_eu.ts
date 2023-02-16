@@ -1075,6 +1075,11 @@ Ekintza honek unean uneko sinkronizazioa bertan behera utziko du.</translation>
     <name>OCC::CaseClashConflictSolver</name>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
+        <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation>Ezin da fitxategia berrizendatu izen berdina duen fitxategi bat existitzen delako zerbitzarian dagoeneko. Mesedez, aukeratu beste izen bat.</translation>
     </message>

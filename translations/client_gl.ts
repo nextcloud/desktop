@@ -1074,6 +1074,11 @@ Esta acción interromperá calquera sincronización que estea a executarse actua
     <name>OCC::CaseClashConflictSolver</name>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
+        <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
         <translation type="unfinished"/>
     </message>

@@ -188,7 +188,7 @@
     <message>
         <location filename="../src/gui/ErrorBox.qml" line="50"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
 </context>
 <context>
@@ -196,17 +196,17 @@
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="128"/>
         <source>Dismiss</source>
-        <translation type="unfinished"/>
+        <translation>Negeren</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="172"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Activiteit</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/FileDetailsPage.qml" line="179"/>
         <source>Sharing</source>
-        <translation type="unfinished"/>
+        <translation>Delen</translation>
     </message>
 </context>
 <context>
@@ -427,7 +427,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="102"/>
         <source>Do not encrypt folder</source>
-        <translation type="unfinished"/>
+        <translation>Map niet versleutelen</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
@@ -442,7 +442,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="245"/>
         <source>Disable encryption</source>
-        <translation type="unfinished"/>
+        <translation>Encryptie deactiveren</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="250"/>
@@ -480,7 +480,7 @@ Wait for the new sync, then encrypt it.</source>
         <location filename="../src/gui/accountsettings.cpp" line="249"/>
         <location filename="../src/gui/accountsettings.cpp" line="1458"/>
         <source>This account supports End-to-End encryption</source>
-        <translation type="unfinished"/>
+        <translation>Dit account ondersteunt end-to-end-versleuteling</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="390"/>
@@ -617,7 +617,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="979"/>
         <source>End-to-End encryption mnemonic</source>
-        <translation type="unfinished"/>
+        <translation>Geheugensteun voor end-to-end versleuteling</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="1007"/>
@@ -933,13 +933,13 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>recenter</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>ouder</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
@@ -1030,7 +1030,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="301"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand %1 heeft een ongeldige laatste wijziging datum. Upload niet naar de server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/bulkpropagatorjob.cpp" line="309"/>
@@ -1071,6 +1071,11 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
 </context>
 <context>
     <name>OCC::CaseClashConflictSolver</name>
+    <message>
+        <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
+        <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
+        <translation type="unfinished"/>
+    </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name does already exist on the server. Please pick another name.</source>
@@ -1122,34 +1127,34 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="36"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Fout</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="53"/>
         <source>Existing file</source>
-        <translation type="unfinished"/>
+        <translation>Bestaand bestand</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>file A</source>
-        <translation type="unfinished"/>
+        <translation>bestand A</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="60"/>
         <source>fileA</source>
-        <translation type="unfinished"/>
+        <translation>bestandA</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="107"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="213"/>
         <source>today</source>
-        <translation type="unfinished"/>
+        <translation>vandaag</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="114"/>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="220"/>
         <source>0 byte</source>
-        <translation type="unfinished"/>
+        <translation>0 bytes</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="121"/>
@@ -1165,12 +1170,12 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>file B</source>
-        <translation type="unfinished"/>
+        <translation>bestand B</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="172"/>
         <source>fileB</source>
-        <translation type="unfinished"/>
+        <translation>bestandB</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="227"/>
@@ -1186,12 +1191,12 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.ui" line="281"/>
         <source>New filename</source>
-        <translation type="unfinished"/>
+        <translation>Nieuwe bestandsnaam</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="97"/>
         <source>Rename file</source>
-        <translation type="unfinished"/>
+        <translation>Bestand hernoemen</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="99"/>
@@ -1221,7 +1226,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="253"/>
         <source>Use invalid name</source>
-        <translation type="unfinished"/>
+        <translation>Gebruik ongeldige naam</translation>
     </message>
     <message>
         <location filename="../src/gui/caseclashfilenamedialog.cpp" line="278"/>
@@ -1420,12 +1425,12 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="190"/>
         <source>Error while canceling deletion of a file</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij het annuleren van verwijdering van een bestand</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="191"/>
         <source>Error while canceling deletion of %1</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij annuleren verwijderen van %1</translation>
     </message>
 </context>
 <context>
@@ -1485,7 +1490,7 @@ Dit zal alle synchronisaties, die op dit moment bezig zijn, afbreken.</translati
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="68"/>
         <source>Invalid file path was provided.</source>
-        <translation type="unfinished"/>
+        <translation>Ongeldig pad was ingegeven.</translation>
     </message>
     <message>
         <location filename="../src/gui/editlocallyjob.cpp" line="76"/>
@@ -3686,7 +3691,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1297"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij bijwerken metadata door ongeldige laatste wijziging datum</translation>
     </message>
     <message>
         <location filename="../src/libsync/owncloudpropagator.cpp" line="1313"/>
@@ -4002,7 +4007,7 @@ Dit is een nieuwe, experimentele modus. Als je besluit het te gebruiken, vragen 
         <location filename="../src/libsync/propagateupload.cpp" line="387"/>
         <location filename="../src/libsync/propagateupload.cpp" line="400"/>
         <source>File %1 has invalid modification time. Do not upload to the server.</source>
-        <translation type="unfinished"/>
+        <translation>Bestand %1 heeft een ongeldige laatste wijziging datum. Upload niet naar de server.</translation>
     </message>
     <message>
         <location filename="../src/libsync/propagateupload.cpp" line="384"/>
@@ -5104,7 +5109,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="80"/>
         <location filename="../src/libsync/vfs/suffix/vfs_suffix.cpp" line="90"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij bijwerken metadata door ongeldige laatste wijziging datum</translation>
     </message>
 </context>
 <context>
@@ -5113,7 +5118,7 @@ Server replied with error: %2</source>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="75"/>
         <location filename="../src/libsync/vfs/xattr/vfs_xattr.cpp" line="85"/>
         <source>Error updating metadata due to invalid modification time</source>
-        <translation type="unfinished"/>
+        <translation>Fout bij bijwerken metadata door ongeldige laatste wijziging datum</translation>
     </message>
 </context>
 <context>
