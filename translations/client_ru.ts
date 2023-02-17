@@ -5687,7 +5687,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/tray/SyncStatus.qml" line="114"/>
         <source>Sync now</source>
-        <translation>Сихнронизировать</translation>
+        <translation>Синхронизировать</translation>
     </message>
 </context>
 <context>
