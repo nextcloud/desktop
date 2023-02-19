@@ -5622,7 +5622,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="291"/>
         <source>Sharing is disabled</source>
-        <translation type="unfinished"/>
+        <translation>Lo partiment es desactivat</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="299"/>
@@ -5632,7 +5632,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareView.qml" line="308"/>
         <source>Sharing is disabled.</source>
-        <translation type="unfinished"/>
+        <translation>Lo partiment es desactivat.</translation>
     </message>
 </context>
 <context>

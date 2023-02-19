@@ -287,7 +287,7 @@
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="131"/>
         <source>Select a remote destination folder</source>
-        <translation>Vyberte federovanou cílovou složku</translation>
+        <translation>Vyberte vzdálenou cílovou složku</translation>
     </message>
     <message>
         <location filename="../src/gui/folderwizardtargetpage.ui" line="143"/>
@@ -341,7 +341,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="908"/>
         <source>File %1 is already locked by %2.</source>
-        <translation>Soubor %1 už je uzamčeno %2.</translation>
+        <translation>Soubor %1 už je uzamčen %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="910"/>
@@ -432,7 +432,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="105"/>
         <source>Encrypt folder</source>
-        <translation>Zašifrovat složku</translation>
+        <translation>Šifrovat složku</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="232"/>
@@ -924,12 +924,12 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/gui/application.cpp" line="158"/>
         <source>Some settings were configured in newer versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%2&lt;/i&gt;.</source>
-        <translation>Některá nastavení byla vytvořena v novejší verzi tohoto klienta a využívají funkce, které tato verze nepodporuje.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Stávající soubory s nastaveními byly zazálohovány do &lt;i&gt;%2&lt;/i&gt;.</translation>
+        <translation>Některá nastavení byla vytvořena v novějších verzích tohoto klienta a využívají funkce, které v nyní nainstalované (starší) verzi nejsou k dispozici.&lt;br&gt;&lt;br&gt;%1&lt;br&gt;&lt;br&gt;Stávající soubor s nastaveními už byl zazálohován do &lt;i&gt;%2&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="176"/>
         <source>Some settings were configured in %1 versions of this client and use features that are not available in this version.&lt;br&gt;&lt;br&gt;Continuing will mean &lt;b&gt;%2 these settings&lt;/b&gt;&lt;br&gt;&lt;br&gt;The current configuration file was already backed up to &lt;i&gt;%3&lt;/i&gt;.</source>
-        <translation>Některá nastavení byla vytvořená ve verzi %1 tohoto klienta a využívají funkce, které v nyní nainstalované verzi nejsou k dispozici.&lt;br&gt;&lt;br&gt;Pokračování bude znamenat &lt;b&gt;%2 tato nastavení&lt;/b&gt;&lt;br&gt;&lt;br&gt;Stávající soubor s nastaveními už byl zazálohován do &lt;i&gt;%3&lt;/i&gt;.</translation>
+        <translation>Některá nastavení byla vytvořená ve verzích %1 tohoto klienta a využívají funkce, které v nyní nainstalované (starší) verzi nejsou k dispozici.&lt;br&gt;&lt;br&gt;Pokračování bude znamenat &lt;b&gt;%2 tato nastavení&lt;/b&gt;&lt;br&gt;&lt;br&gt;Stávající soubor s nastaveními už byl zazálohován do &lt;i&gt;%3&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
@@ -1086,7 +1086,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="121"/>
         <source>Could not rename file. Please make sure you are connected to the server.</source>
-        <translation>Přejmenovat soubor se nepodařilo. Ujistěte se, že jste připojení k serveru.</translation>
+        <translation>Přejmenování souboru se nezdařilo –ověřte, zda jste připojení k serveru.</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="172"/>
@@ -1454,7 +1454,7 @@ Současně tato akce zruší jakoukoli právě probíhající synchronizaci.</tr
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="280"/>
         <source>Directory not accessible on client, permission denied</source>
-        <translation>Adresář není klientem přístupný, oprávnění odepřeno</translation>
+        <translation>Adresář není na klientovi přístupný – oprávnění odepřeno</translation>
     </message>
     <message>
         <location filename="../src/libsync/discoveryphase.cpp" line="284"/>
