@@ -2507,17 +2507,17 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="369"/>
         <source>Change update channel</source>
-        <translation type="unfinished"/>
+        <translation>Endre oppdateringskanal</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="370"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="474"/>
         <source>Zip Archives</source>
-        <translation type="unfinished"/>
+        <translation>Zip-arkiv</translation>
     </message>
     <message>
         <location filename="../src/gui/generalsettings.cpp" line="480"/>
@@ -2535,7 +2535,7 @@ Note that this selects only what pool upgrades are taken from, and that there ar
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="786"/>
         <source>Password for share required</source>
-        <translation type="unfinished"/>
+        <translation>Passord for deling kreves</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="787"/>
@@ -3006,7 +3006,7 @@ Note that using any logging command line options will override this setting.</so
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="115"/>
         <source>Error returned from the server: &lt;em&gt;%1&lt;/em&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Feil returnert fra serveren: &lt;em&gt;%1&lt;/em&gt;</translation>
     </message>
     <message>
         <location filename="../src/gui/creds/oauth.cpp" line="118"/>
@@ -5204,7 +5204,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="301"/>
         <source>Disconnected from some accounts</source>
-        <translation type="unfinished"/>
+        <translation>Disconnected from some accounts</translation>
     </message>
     <message>
         <location filename="../src/gui/owncloudgui.cpp" line="309"/>
