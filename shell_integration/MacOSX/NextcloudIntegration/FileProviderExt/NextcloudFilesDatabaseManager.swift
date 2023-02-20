@@ -330,7 +330,7 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
-    private func directoryMetadataFromItemMetadata(directoryItemMetadata: NextcloudItemMetadataTable, recordEtag: Bool = false) -> NextcloudDirectoryMetadataTable {
+    func directoryMetadataFromItemMetadata(directoryItemMetadata: NextcloudItemMetadataTable, recordEtag: Bool = false) -> NextcloudDirectoryMetadataTable {
         var newDirectoryMetadata = NextcloudDirectoryMetadataTable()
         let directoryOcId = directoryItemMetadata.ocId
 
