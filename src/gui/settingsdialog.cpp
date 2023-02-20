@@ -234,16 +234,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    QAction *accountAction = nullptr;
-    QImage avatar = s->account()->avatar();
-    const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
-    if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"),
-            actionText);
-    } else {
-        QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
-        accountAction = createActionWithIcon(icon, actionText);
-    }
+    const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
+    const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
