@@ -420,26 +420,25 @@ void AccountSettings::slotEditCurrentIgnoredFiles()
 
 void AccountSettings::slotOpenMakeFolderDialog()
 {
-    const auto &selected = _ui->_folderList->selectionModel()->currentIndex();
+    const auto selected = _ui->_folderList->selectionModel()->currentIndex();
 
     if (!selected.isValid()) {
         qCWarning(lcAccountSettings) << "Selection model current folder index is not valid.";
         return;
     }
 
-    const auto &classification = _model->classify(selected);
+    const auto classification = _model->classify(selected);
 
     if (classification != FolderStatusModel::SubFolder && classification != FolderStatusModel::RootFolder) {
         return;
     }
 
-    const auto fileName = [this, &selected, &classification] {
+    const auto folder = _model->infoForIndex(selected)->_folder;
+    Q_ASSERT(folder);
+    const auto fileName = [selected, classification, folder, this] {
         QString result;
         if (classification == FolderStatusModel::RootFolder) {
-            const auto alias = _model->data(selected, FolderStatusDelegate::FolderAliasRole).toString();
-            if (const auto folder = FolderMan::instance()->folder(alias)) {
-                result = folder->path();
-            }
+            result = folder->path();
         } else {
             result = _model->data(selected, FolderStatusDelegate::FolderPathRole).toString();
         }
@@ -455,6 +454,14 @@ void AccountSettings::slotOpenMakeFolderDialog()
         const auto folderCreationDialog = new FolderCreationDialog(fileName, this);
         folderCreationDialog->setAttribute(Qt::WA_DeleteOnClose);
         folderCreationDialog->open();
+
+#ifdef Q_OS_MAC
+        // The macOS FolderWatcher cannot detect file and folder changes made by the watching process -- us.
+        // So we need to manually invoke the slot that is called by watched folder changes.
+        connect(folderCreationDialog, &FolderCreationDialog::folderCreated, this, [folder, fileName](const QString &fullFolderPath) {
+            folder->slotWatchedPathChanged(fullFolderPath, Folder::ChangeReason::Other);
+        });
+#endif
     }
 }
 
