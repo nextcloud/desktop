@@ -133,7 +133,11 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
         do {
             let fileNameLocalPath = try localPathForNCFile(ocId: metadata.ocId, fileNameView: metadata.fileNameView)
 
-            _ = dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading)
+            guard let updatedMetadata = dbManager.setStatusForItemMetadata(metadata, status: NextcloudItemMetadataTable.Status.downloading) else {
+                NSLog("Could not acquire updated metadata of item with identifier: %@", itemIdentifier.rawValue)
+                completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
 
             self.ncKit.download(serverUrlFileName: serverUrlFileName,
                                 fileNameLocalPath: fileNameLocalPath.path,
@@ -146,11 +150,6 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
             }) { _, etag, date, _, _, _, error in
                 self.outstandingSessionTasks.removeValue(forKey: serverUrlFileName)
-                guard let updatedMetadata = dbManager.itemMetadataFromOcId(ocId) else {
-                    NSLog("Could not acquire updated metadata of item with identifier: %@", itemIdentifier.rawValue)
-                    completionHandler(nil, nil, NSFileProviderError(.noSuchItem))
-                    return
-                }
 
                 if error == .success {
                     NSLog("Acquired contents of item with identifier: %@ and filename: %@", itemIdentifier.rawValue, updatedMetadata.fileName)
@@ -188,7 +187,7 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     
     func createItem(basedOn itemTemplate: NSFileProviderItem, fields: NSFileProviderItemFields, contents url: URL?, options: NSFileProviderCreateItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
         // TODO: a new item was created on disk, process the item's creation
-        
+
         completionHandler(itemTemplate, [], false, nil)
         return Progress()
     }
