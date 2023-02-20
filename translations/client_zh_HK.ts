@@ -1079,7 +1079,7 @@ This action will abort any currently running synchronization.</source>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>
         <source>Cannot rename file because a file with the same name already exists on the server. Please pick another name.</source>
-        <translation type="unfinished"/>
+        <translation>無法重新命名檔案，因為伺服器上已有同名檔案。請換一個名字。</translation>
     </message>
     <message>
         <location filename="../src/libsync/caseclashconflictsolver.cpp" line="78"/>

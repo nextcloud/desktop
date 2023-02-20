@@ -4144,7 +4144,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="116"/>
         <source>Reply</source>
-        <translation type="unfinished"/>
+        <translation>Svar</translation>
     </message>
     <message>
         <location filename="../src/gui/tray/notificationhandler.cpp" line="159"/>
@@ -4163,7 +4163,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
         <location filename="../src/gui/settingsdialog.cpp" line="102"/>
         <source>%1 Settings</source>
         <extracomment>This name refers to the application name e.g Nextcloud</extracomment>
-        <translation type="unfinished"/>
+        <translation>%1 Innstillinger</translation>
     </message>
     <message>
         <location filename="../src/gui/settingsdialog.cpp" line="120"/>
@@ -4186,22 +4186,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="531"/>
         <source>Share link</source>
-        <translation type="unfinished"/>
+        <translation>Del lenke</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="539"/>
         <source>Link share</source>
-        <translation type="unfinished"/>
+        <translation>Lenkedeling</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="541"/>
         <source>Internal link</source>
-        <translation type="unfinished"/>
+        <translation>Intern lenke</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/sharemodel.cpp" line="797"/>
         <source>Enter a note for the recipient</source>
-        <translation type="unfinished"/>
+        <translation>Skriv inn en melding for mottakeren</translation>
     </message>
 </context>
 <context>
@@ -4214,22 +4214,22 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareuserline.ui" line="115"/>
         <source>Can edit</source>
-        <translation type="unfinished"/>
+        <translation>Kan redigere</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="149"/>
         <source>Note:</source>
-        <translation type="unfinished"/>
+        <translation>Melding:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="205"/>
         <source>Password:</source>
-        <translation type="unfinished"/>
+        <translation>Passord:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareuserline.ui" line="277"/>
         <source>Expires:</source>
-        <translation type="unfinished"/>
+        <translation>Utløper:</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="487"/>
@@ -4239,7 +4239,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="498"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Melding til mottaker</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="514"/>
@@ -4269,7 +4269,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="559"/>
         <source>Password protect</source>
-        <translation type="unfinished"/>
+        <translation>Passordbeskytt</translation>
     </message>
 </context>
 <context>
@@ -4323,7 +4323,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1030"/>
         <source>Select new location …</source>
-        <translation type="unfinished"/>
+        <translation>Velg ny plassering…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1090"/>
@@ -4340,7 +4340,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1104"/>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1321"/>
         <source>Activity</source>
-        <translation type="unfinished"/>
+        <translation>Aktivitet</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1106"/>
@@ -4350,13 +4350,13 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1107"/>
         <source>Send private link by email …</source>
-        <translation type="unfinished"/>
+        <translation>Send privat lenke på e-post...</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1105"/>
         <source>Expire in %1 minutes</source>
         <comment>remaining time before lock expire</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Utløper om %1 minutt</numerusform><numerusform>Utløper om %1 minutter</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1131"/>
@@ -4371,7 +4371,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1137"/>
         <source>Resharing this folder is not allowed</source>
-        <translation type="unfinished"/>
+        <translation>Videredeling av denne mappen er ikke tillatt</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1151"/>
@@ -4387,28 +4387,28 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1193"/>
         <source>Encrypt</source>
-        <translation type="unfinished"/>
+        <translation>Krypter</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1204"/>
         <source>Lock file</source>
-        <translation type="unfinished"/>
+        <translation>Lås fil</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1207"/>
         <source>Unlock file</source>
-        <translation type="unfinished"/>
+        <translation>Lås opp filen</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1222"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>Låst av %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1226"/>
         <source>Expires in %1 minutes</source>
         <comment>remaining time before lock expires</comment>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Utløper om %1 minutt</numerusform><numerusform>Utløper om %1 minutter</numerusform></translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1327"/>
@@ -4423,27 +4423,27 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1354"/>
         <source>Resolve conflict …</source>
-        <translation type="unfinished"/>
+        <translation>Løs konflikt...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1358"/>
         <source>Move and rename …</source>
-        <translation type="unfinished"/>
+        <translation>Flytt og gi nytt navn…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1361"/>
         <source>Move, rename and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Flytt, gi nytt navn og last opp…</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1363"/>
         <source>Delete local changes</source>
-        <translation type="unfinished"/>
+        <translation>Slett lokale endringer</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1369"/>
         <source>Move and upload …</source>
-        <translation type="unfinished"/>
+        <translation>Flytt og last opp...</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1370"/>
@@ -5599,7 +5599,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="653"/>
         <source>Note to recipient</source>
-        <translation type="unfinished"/>
+        <translation>Melding til mottaker</translation>
     </message>
     <message>
         <location filename="../src/gui/filedetails/ShareDetailsPage.qml" line="721"/>
@@ -6386,7 +6386,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="167"/>
         <source>Note</source>
-        <translation type="unfinished"/>
+        <translation>Melding</translation>
     </message>
     <message>
         <location filename="../src/gui/sharelinkwidget.ui" line="244"/>
