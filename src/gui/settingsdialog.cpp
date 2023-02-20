@@ -263,6 +263,15 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
+
+    const auto userInfo = new UserInfo(s, false, true, this);
+    connect(userInfo, &UserInfo::fetchedLastInfo, this, [userInfo](const UserInfo *fetchedInfo) {
+        // UserInfo will go and update the account avatar
+        Q_UNUSED(fetchedInfo);
+        userInfo->deleteLater();
+    });
+    userInfo->setActive(true);
+    userInfo->slotFetchInfo();
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
