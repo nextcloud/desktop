@@ -188,7 +188,126 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
     func createItem(basedOn itemTemplate: NSFileProviderItem, fields: NSFileProviderItemFields, contents url: URL?, options: NSFileProviderCreateItemOptions = [], request: NSFileProviderRequest, completionHandler: @escaping (NSFileProviderItem?, NSFileProviderItemFields, Bool, Error?) -> Void) -> Progress {
         // TODO: a new item was created on disk, process the item's creation
 
-        completionHandler(itemTemplate, [], false, nil)
+        NSLog("Received create item request for item with identifier: %@ and filename: %@", itemTemplate.itemIdentifier.rawValue, itemTemplate.filename)
+
+        guard let ncAccount = ncAccount else {
+            NSLog("Not creating item: %@ as account not set up yet", itemTemplate.itemIdentifier.rawValue)
+            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.notAuthenticated))
+            return Progress()
+        }
+
+        let dbManager = NextcloudFilesDatabaseManager.shared
+        let parentItemIdentifier = itemTemplate.parentItemIdentifier
+        let itemTemplateIsFolder = itemTemplate.contentType == .folder ||
+                                   itemTemplate.contentType == .directory
+
+        if options.contains(.mayAlreadyExist) {
+            // TODO: This needs to be properly handled with a check in the db
+            NSLog("Not creating item: %@ as it may already exist", itemTemplate.itemIdentifier.rawValue)
+            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
+        var parentItemMetadata: NextcloudDirectoryMetadataTable?
+
+        if parentItemIdentifier == .rootContainer {
+            let rootMetadata = NextcloudDirectoryMetadataTable()
+
+            rootMetadata.account = ncAccount.ncKitAccount
+            rootMetadata.ocId = NSFileProviderItemIdentifier.rootContainer.rawValue
+            rootMetadata.serverUrl = ncAccount.davFilesUrl
+
+            parentItemMetadata = rootMetadata
+        } else {
+            parentItemMetadata = dbManager.directoryMetadata(ocId: parentItemIdentifier.rawValue)
+        }
+
+        guard let parentItemMetadata = parentItemMetadata else {
+            NSLog("Not creating item: %@, could not find metadata for parentItemIdentifier %@", itemTemplate.itemIdentifier.rawValue, parentItemIdentifier.rawValue)
+            completionHandler(itemTemplate, NSFileProviderItemFields(), false, NSFileProviderError(.noSuchItem))
+            return Progress()
+        }
+
+        let fileNameLocalPath = url?.path ?? ""
+        let newServerUrlFileName = parentItemMetadata.serverUrl + "/" + itemTemplate.filename
+
+        NSLog("About to upload item with identifier: %@ of type: %@ (is folder: %@) and filename: %@ to server url: %@ with contents located at: %@", itemTemplate.itemIdentifier.rawValue, itemTemplate.contentType?.identifier ?? "UNKNOWN", itemTemplateIsFolder ? "yes" : "no", itemTemplate.filename, newServerUrlFileName, fileNameLocalPath)
+
+        if itemTemplateIsFolder {
+            self.ncKit.createFolder(serverUrlFileName: newServerUrlFileName) { account, ocId, _, error in
+                guard error == .success else {
+                    NSLog("Could not create new folder with name: %@, received error: %@", itemTemplate.filename, error.errorDescription)
+                    completionHandler(itemTemplate, [], false, NSFileProviderError(.serverUnreachable))
+                    return
+                }
+
+                self.ncKit.readFileOrFolder(serverUrlFileName: newServerUrlFileName, depth: "0", showHiddenFiles: true) { account, files, _, error in
+                    guard error == .success else {
+                        NSLog("Could not read new folder with name: %@, received error: %@", itemTemplate.filename, error.errorDescription)
+                        return
+                    }
+
+                    DispatchQueue.global().async {
+                        dbManager.convertNKFilesToItemMetadatas(files, account: account) { directoryMetadata, childDirectoriesMetadata, metadatas in
+
+                            let newDirectoryMetadata = dbManager.directoryMetadataFromItemMetadata(directoryItemMetadata: directoryMetadata)
+                            dbManager.addDirectoryMetadata(newDirectoryMetadata)
+                            dbManager.addItemMetadata(directoryMetadata)
+
+                            let fpItem = FileProviderItem(metadata: directoryMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+
+                            completionHandler(fpItem, [], true, nil)
+                        }
+                    }
+                }
+            }
+
+            return Progress()
+        }
+
+        self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
+                          fileNameLocalPath: fileNameLocalPath,
+                          requestHandler: { _ in
+        }, taskHandler: { task in
+            self.outstandingSessionTasks[newServerUrlFileName] = task
+            NSFileProviderManager(for: self.domain)?.register(task, forItemWithIdentifier: itemTemplate.itemIdentifier, completionHandler: { _ in })
+        }, progressHandler: { _ in
+
+        }) { account, ocId, etag, date, size, _, _, error  in
+            self.outstandingSessionTasks.removeValue(forKey: newServerUrlFileName)
+
+            guard error == .success, let ocId = ocId/*, size == itemTemplate.documentSize as! Int64*/ else {
+                NSLog("Could not upload item with filename: %@, received error: %@", itemTemplate.filename, error.errorDescription)
+                completionHandler(itemTemplate, [], false, NSFileProviderError(.cannotSynchronize))
+                return
+            }
+
+            NSLog("Successfully uploaded item with identifier: %@ and filename: %@", ocId, itemTemplate.filename)
+
+            let newMetadata = NextcloudItemMetadataTable()
+            newMetadata.date = (date ?? NSDate()) as Date
+            newMetadata.etag = etag ?? ""
+            newMetadata.account = account
+            newMetadata.fileName = itemTemplate.filename
+            newMetadata.fileNameView = itemTemplate.filename
+            newMetadata.ocId = ocId
+            newMetadata.size = size
+            newMetadata.contentType = itemTemplate.contentType?.preferredMIMEType ?? ""
+            newMetadata.directory = itemTemplateIsFolder
+            newMetadata.serverUrl = parentItemMetadata.serverUrl
+            newMetadata.session = ""
+            newMetadata.sessionError = ""
+            newMetadata.sessionTaskIdentifier = 0
+            newMetadata.status = NextcloudItemMetadataTable.Status.normal.rawValue
+
+            dbManager.addLocalFileMetadataFromItemMetadata(newMetadata)
+            dbManager.addItemMetadata(newMetadata)
+
+            let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+
+            completionHandler(fpItem, [], false, nil)
+        }
+
         return Progress()
     }
     
