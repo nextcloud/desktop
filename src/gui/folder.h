@@ -143,7 +143,7 @@ private:
     QString _targetPath;
     bool _deployed = false;
 
-    uint32_t _priority;
+    uint32_t _priority = 0;
 
     friend class FolderMan;
 };
