@@ -267,7 +267,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     }
 
     const auto isDeployed = index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsDeployed)).data().toBool();
-    const auto removeFolderAction = [isDeployed, this](QMenu *menu) {
+    const auto addRemoveFolderAction = [isDeployed, this](QMenu *menu) {
         Q_ASSERT(!isDeployed);
         return menu->addAction(tr("Remove folder sync connection"), this, &AccountSettings::slotRemoveCurrentFolder);
     };
@@ -281,7 +281,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
     if (classification == FolderStatusModel::RootFolder && !index.siblingAtColumn(static_cast<int>(FolderStatusModel::Columns::IsReady)).data().toBool() && !isDeployed) {
         QMenu *menu = new QMenu(tv);
         menu->setAttribute(Qt::WA_DeleteOnClose);
-        removeFolderAction(menu);
+        addRemoveFolderAction(menu);
         menu->popup(QCursor::pos());
         return;
     }
@@ -369,7 +369,7 @@ void AccountSettings::slotCustomContextMenuRequested(const QPoint &pos)
         connect(ac, &QAction::triggered, this, &AccountSettings::slotEnableCurrentFolder);
 
         if (!isDeployed) {
-            removeFolderAction(menu);
+            addRemoveFolderAction(menu);
 
             if (Theme::instance()->showVirtualFilesOption()) {
                 if (folder->virtualFilesEnabled()) {
