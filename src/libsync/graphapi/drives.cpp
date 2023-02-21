@@ -73,7 +73,7 @@ uint32_t Drives::getDrivePriority(const OpenAPI::OAIDrive &drive)
 {
     if (drive.getDriveType() == personalC) {
         return 100;
-    } else if (drive.getDriveType() == sharesIdC) {
+    } else if (drive.getId() == sharesIdC) {
         return 50;
     }
     return 0;
