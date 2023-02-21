@@ -1591,7 +1591,14 @@ void FolderMetadata::setupExistingMetadata(const QByteArray& metadata)
         auto encryptedFile = fileObj["encrypted"].toString().toLocal8Bit();
         auto decryptedFile = !key.isEmpty() ? decryptJsonObject(encryptedFile, key) : QByteArray{};
         auto decryptedFileDoc = QJsonDocument::fromJson(decryptedFile);
+
         auto decryptedFileObj = decryptedFileDoc.object();
+
+        if (decryptedFileObj["filename"].toString().isEmpty()) {
+            qCDebug(lcCse) << "decrypted metadata" << decryptedFileDoc.toJson(QJsonDocument::Indented);
+            qCWarning(lcCse) << "skipping encrypted file" << file.encryptedFilename << "metadata has an empty file name";
+            continue;
+        }
 
         file.originalFilename = decryptedFileObj["filename"].toString();
         file.encryptionKey = QByteArray::fromBase64(decryptedFileObj["key"].toString().toLocal8Bit());
