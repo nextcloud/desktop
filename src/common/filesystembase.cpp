@@ -54,7 +54,7 @@ void FileSystem::setFileHidden(const QString &filename, bool hidden)
 {
 #ifdef _WIN32
     QString fName = longWinPath(filename);
-    DWORD dwAttrs;
+    DWORD dwAttrs = 0;
 
     dwAttrs = GetFileAttributesW((wchar_t *)fName.utf16());
 
@@ -197,7 +197,7 @@ bool FileSystem::uncheckedRenameReplace(const QString &originFileName,
         setFileReadOnly(destinationFileName, false);
     }
 
-    BOOL ok;
+    BOOL ok = 0;
     QString orig = longWinPath(originFileName);
     QString dest = longWinPath(destinationFileName);
 
@@ -267,7 +267,7 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
     }
 
     // Seek to the right spot
-    LARGE_INTEGER *li = reinterpret_cast<LARGE_INTEGER *>(&seek);
+    auto li = reinterpret_cast<LARGE_INTEGER *>(&seek);
     DWORD newFilePointer = SetFilePointer(fileHandle, li->LowPart, &li->HighPart, FILE_BEGIN);
     if (newFilePointer == 0xFFFFFFFF && GetLastError() != NO_ERROR) {
         error = qt_error_string();
@@ -292,7 +292,7 @@ bool FileSystem::openAndSeekFileSharedRead(QFile *file, QString *errorOrNull, qi
 static bool fileExistsWin(const QString &filename)
 {
     WIN32_FIND_DATA FindFileData;
-    HANDLE hFind;
+    HANDLE hFind = nullptr;
     QString fName = FileSystem::longWinPath(filename);
 
     hFind = FindFirstFileW((wchar_t *)fName.utf16(), &FindFileData);

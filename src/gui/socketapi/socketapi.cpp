@@ -1556,7 +1556,7 @@ void SocketApi::command_ASYNC_WAIT_FOR_WIDGET_SIGNAL(const QSharedPointer<Socket
         return;
     }
 
-    ListenerClosure *closure = new ListenerClosure([job]() { job->resolve("signal emitted"); });
+    auto closure = new ListenerClosure([job]() { job->resolve("signal emitted"); });
 
     auto signalSignature = arguments["signalSignature"].toString();
     signalSignature.prepend("2");

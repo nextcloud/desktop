@@ -120,7 +120,7 @@ namespace {
 #ifdef Q_OS_WIN
 class WindowsNativeEventFilter : public QAbstractNativeEventFilter {
 public:
-    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) {
+    bool nativeEventFilter(const QByteArray &eventType, void *message, long *result) override {
         const auto msg = static_cast<MSG *>(message);
         if(msg->message == WM_SYSCOLORCHANGE || msg->message == WM_SETTINGCHANGE) {
             if (const auto ptr = qobject_cast<QGuiApplication *>(QGuiApplication::instance())) {
@@ -765,7 +765,7 @@ static inline void toHtml(QString &t)
 static void displayHelpText(QString t) // No console on Windows.
 {
     toHtml(t);
-    QMessageBox::information(0, Theme::instance()->appNameGUI(), t);
+    QMessageBox::information(nullptr, Theme::instance()->appNameGUI(), t);
 }
 
 #else
