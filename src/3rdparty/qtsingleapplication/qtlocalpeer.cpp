@@ -37,7 +37,7 @@
 #include <QLibrary>
 #include <qt_windows.h>
 using PProcessIdToSessionId = BOOL (WINAPI*)(DWORD, DWORD*);
-static PProcessIdToSessionId pProcessIdToSessionId = 0;
+static PProcessIdToSessionId pProcessIdToSessionId = nullptr;
 #endif
 
 #if defined(Q_OS_UNIX)

@@ -1,5 +1,7 @@
 include(GenerateIconsUtils)
 
+unset(CMAKE_CXX_CLANG_TIDY)
+
 # generate custom states icons
 set(theme_dir ${CMAKE_SOURCE_DIR}/theme)
 set(custom_state_icons_path "${theme_dir}/cfapishellext_custom_states")

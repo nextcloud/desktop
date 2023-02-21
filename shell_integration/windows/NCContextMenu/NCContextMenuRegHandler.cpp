@@ -21,7 +21,7 @@ namespace {
 
 HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR pszData)
 {
-    HRESULT hr;
+    HRESULT hr = 0;
     HKEY hKey = nullptr;
 
     // Creates the specified registry key. If the key already exists, the 
@@ -31,8 +31,8 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
 
     if (SUCCEEDED(hr))
     {
-        DWORD cbData;
-        const BYTE * lpData;
+        DWORD cbData = 0;
+        const BYTE * lpData = nullptr;
 
         if (pszData)
         {
@@ -43,7 +43,7 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
         else
         {
             cbData = 0;
-            lpData = NULL;
+            lpData = nullptr;
         }
 
         hr = HRESULT_FROM_WIN32(RegSetValueEx(hKey, pszValueName, 0,
@@ -57,7 +57,7 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PCWSTR
 
 HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName, PWSTR pszData, DWORD cbData)
 {
-    HRESULT hr;
+    HRESULT hr = 0;
     HKEY hKey = nullptr;
 
     // Try to open the specified registry key. 
@@ -85,7 +85,7 @@ HRESULT NCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CL
         return E_INVALIDARG;
     }
 
-    HRESULT hr;
+    HRESULT hr = 0;
 
     wchar_t szCLSID[MAX_PATH];
     StringFromGUID2(clsid, szCLSID, ARRAYSIZE(szCLSID));
@@ -100,7 +100,7 @@ HRESULT NCContextMenuRegHandler::RegisterInprocServer(PCWSTR pszModule, const CL
 
         // Create the HKCR\CLSID\{<CLSID>}\ContextMenuOptIn subkey.
         if (SUCCEEDED(hr)) {
-            hr = SetHKCRRegistryKeyAndValue(szSubkey, L"ContextMenuOptIn", NULL);
+            hr = SetHKCRRegistryKeyAndValue(szSubkey, L"ContextMenuOptIn", nullptr);
         }
 
         // Create the HKCR\CLSID\{<CLSID>}\InprocServer32 key.
@@ -154,7 +154,7 @@ HRESULT NCContextMenuRegHandler::RegisterShellExtContextMenuHandler(
         return E_INVALIDARG;
     }
 
-    HRESULT hr;
+    HRESULT hr = 0;
 
     wchar_t szCLSID[MAX_PATH];
     StringFromGUID2(clsid, szCLSID, ARRAYSIZE(szCLSID));
@@ -198,7 +198,7 @@ HRESULT NCContextMenuRegHandler::UnregisterShellExtContextMenuHandler(
         return E_INVALIDARG;
     }
 
-    HRESULT hr;
+    HRESULT hr = 0;
     
     wchar_t szSubkey[MAX_PATH];
 

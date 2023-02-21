@@ -43,7 +43,7 @@ IFACEMETHODIMP NCContextMenu::QueryInterface(REFIID riid, void **ppv)
     {
         QITABENT(NCContextMenu, IContextMenu),
         QITABENT(NCContextMenu, IShellExtInit),
-        { 0 },
+        { nullptr },
     };
     return QISearch(this, qit, riid, ppv);
 }
@@ -85,7 +85,7 @@ IFACEMETHODIMP NCContextMenu::Initialize(
 
     if (SUCCEEDED(pDataObj->GetData(&fe, &stm))) {
         // Get an HDROP handle.
-        HDROP hDrop = static_cast<HDROP>(GlobalLock(stm.hGlobal));
+        const auto hDrop = static_cast<HDROP>(GlobalLock(stm.hGlobal));
         if (hDrop) {
             UINT nFiles = DragQueryFile(hDrop, 0xFFFFFFFF, nullptr, 0);
             for (UINT i = 0; i < nFiles; ++i) {
