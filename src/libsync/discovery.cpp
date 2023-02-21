@@ -84,7 +84,8 @@ void ProcessDirectoryJob::start()
     // Check whether a normal local query is even necessary
     if (_queryLocal == NormalQuery) {
         if (!_discoveryData->_shouldDiscoverLocaly(_currentFolder._local)
-            && (_currentFolder._local == _currentFolder._original || !_discoveryData->_shouldDiscoverLocaly(_currentFolder._original))) {
+            && (_currentFolder._local == _currentFolder._original || !_discoveryData->_shouldDiscoverLocaly(_currentFolder._original))
+            && !_discoveryData->isInSelectiveSyncBlackList(_currentFolder._original)) {
             _queryLocal = ParentNotChanged;
             qCDebug(lcDisco) << "adjusted discovery policy" << _currentFolder._server << _queryServer << _currentFolder._local << _queryLocal;
         }
@@ -1586,6 +1587,7 @@ void ProcessDirectoryJob::processBlacklisted(const PathTuple &path, const OCC::L
         item->_instruction = CSYNC_INSTRUCTION_IGNORE;
         item->_status = SyncFileItem::FileIgnored;
         item->_errorString = tr("Ignored because of the \"choose what to sync\" blacklist");
+        qCInfo(lcDisco) << "Ignored because of the \"choose what to sync\" blacklist" << item->_file << "direction" << item->_direction;
         _childIgnored = true;
     }
 
@@ -1785,6 +1787,7 @@ int ProcessDirectoryJob::processSubJobs(int nbJobs)
             }
             if (_childIgnored && _dirItem->_instruction == CSYNC_INSTRUCTION_REMOVE) {
                 // Do not remove a directory that has ignored files
+                qCInfo(lcDisco) << "Child ignored for a folder to remove" << _dirItem->_file << "direction" << _dirItem->_direction;
                 _dirItem->_instruction = CSYNC_INSTRUCTION_NONE;
             }
         }
