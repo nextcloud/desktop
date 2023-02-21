@@ -240,12 +240,13 @@ void ShareModel::updateData()
     SyncJournalFileRecord fileRecord;
     auto resharingAllowed = true; // lets assume the good
 
-    if(_folder->journalDb()->getFileRecord(relPath, &fileRecord) && fileRecord.isValid()) {
-        if (!fileRecord._remotePerm.isNull() &&
-            !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
+    if(_folder->journalDb()->getFileRecord(relPath, &fileRecord) &&
+       fileRecord.isValid() &&
+       !fileRecord._remotePerm.isNull() &&
+       !fileRecord._remotePerm.hasPermission(RemotePermissions::CanReshare)) {
 
-            resharingAllowed = false;
-        }
+        qCInfo(lcShareModel) << "File record says resharing not allowed";
+        resharingAllowed = false;
     }
 
     _maxSharingPermissions = resharingAllowed ? SharePermissions(_accountState->account()->capabilities().shareDefaultPermissions()) : SharePermissions({});
@@ -356,9 +357,17 @@ void ShareModel::slotPropfindReceived(const QVariantMap &result)
 
     const QVariant receivedPermissions = result["share-permissions"];
     if (!receivedPermissions.toString().isEmpty()) {
+        const auto oldCanShare = canShare();
+
         _maxSharingPermissions = static_cast<SharePermissions>(receivedPermissions.toInt());
         Q_EMIT sharePermissionsChanged();
         qCInfo(lcShareModel) << "Received sharing permissions for" << _sharePath << _maxSharingPermissions;
+
+        if (!oldCanShare && canShare()) {
+            qCInfo(lcShareModel) << "Received updated sharing data that says we have permission to share now."
+                                 << "Trying to init share manager again.";
+            initShareManager();
+        }
     }
 
     const auto privateLinkUrl = result["privatelink"].toString();
