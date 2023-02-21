@@ -568,7 +568,7 @@ QString Theme::aboutDetails() const
               .arg(MIRALL_VERSION_STRING)
               .arg(helpUrl());
 
-    devString += tr("<p>This release was supplied by %1</p>")
+    devString += tr("<p>This release was supplied by %1.</p>")
               .arg(APPLICATION_VENDOR);
 
     devString += gitSHA1();
