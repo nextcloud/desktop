@@ -807,10 +807,14 @@ void Account::deleteAppPassword()
     job->setKey(kck);
     connect(job, &DeletePasswordJob::finished, [this](Job *incoming) {
         auto *deleteJob = dynamic_cast<DeletePasswordJob *>(incoming);
-        if (deleteJob->error() == NoError)
+        const auto jobError = deleteJob->error();
+        if (jobError == NoError) {
             qCInfo(lcAccount) << "appPassword deleted from keychain";
-        else
+        } else if (jobError == EntryNotFound) {
+            qCInfo(lcAccount) << "no appPassword entry found";
+        } else {
             qCWarning(lcAccount) << "Unable to delete appPassword from keychain" << deleteJob->errorString();
+        }
 
         // Allow storing a new app password on re-login
         _wroteAppPassword = false;

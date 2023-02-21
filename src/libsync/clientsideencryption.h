@@ -168,6 +168,7 @@ private:
 
     [[nodiscard]] bool checkPublicKeyValidity(const AccountPtr &account) const;
     [[nodiscard]] bool checkServerPublicKeyValidity(const QByteArray &serverPublicKeyString) const;
+    [[nodiscard]] bool sensitiveDataRemaining() const;
 
     bool isInitialized = false;
 };
