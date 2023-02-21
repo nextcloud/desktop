@@ -25,7 +25,9 @@
 #include <QByteArray>
 #include <QNetworkAccessManager>
 #include <QNetworkCookie>
+#include <QNetworkDiskCache>
 #include <QNetworkRequest>
+#include <QPixmap>
 #include <QSharedPointer>
 #include <QSslCertificate>
 #include <QSslCipher>
@@ -34,7 +36,6 @@
 #include <QSslSocket>
 #include <QUrl>
 #include <QUuid>
-#include <QPixmap>
 
 #include <memory>
 
@@ -249,6 +250,7 @@ private:
     QSet<QSslCertificate> _approvedCerts;
     Capabilities _capabilities;
     QPointer<AccessManager> _am;
+    QPointer<QNetworkDiskCache> _networkCache = nullptr;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;
 

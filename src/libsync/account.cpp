@@ -23,17 +23,18 @@
 #include "networkjobs.h"
 #include "theme.h"
 
-#include <QSettings>
+#include <QAuthenticator>
+#include <QDir>
+#include <QFileInfo>
 #include <QLoggingCategory>
 #include <QMutex>
-#include <QNetworkReply>
 #include <QNetworkAccessManager>
-#include <QSslSocket>
 #include <QNetworkCookieJar>
-#include <QFileInfo>
-#include <QDir>
+#include <QNetworkDiskCache>
+#include <QNetworkReply>
+#include <QSettings>
 #include <QSslKey>
-#include <QAuthenticator>
+#include <QSslSocket>
 #include <QStandardPaths>
 
 namespace OCC {
@@ -160,6 +161,14 @@ void Account::setCredentials(AbstractCredentials *cred)
     cred->setAccount(this);
 
     _am = _credentials->createAM();
+
+    // the network access manager takes ownership when setCache is called, so we have to reinitialize it every time we reset the manager
+    _networkCache = new QNetworkDiskCache(this);
+    const QString cacheLocation =
+        QStringLiteral("%1/accounts/%2/network/").arg(QStandardPaths::writableLocation(QStandardPaths::CacheLocation), _uuid.toString());
+    qCDebug(lcAccount) << "Cache location for account" << this << "set to" << cacheLocation;
+    _networkCache->setCacheDirectory(cacheLocation);
+    _am->setCache(_networkCache);
 
     if (jar) {
         _am->setCookieJar(jar);
