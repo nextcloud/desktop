@@ -155,20 +155,33 @@ void AbstractNetworkJob::sendRequest(const QByteArray &verb,
     const QNetworkRequest &req, QIODevice *requestBody)
 {
     _verb = verb;
+
     _request = req;
+    _request.setAttribute(QNetworkRequest::CacheSaveControlAttribute, _storeInCache);
+
+    if (_cacheLoadControl.has_value()) {
+        _request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, _cacheLoadControl.value());
+    }
+
     _requestBody = requestBody;
+
     Q_ASSERT(_request.url().isEmpty() || _request.url() == url());
     Q_ASSERT(_request.transferTimeout() == 0 || _request.transferTimeout() == duration_cast<milliseconds>(_timeout).count());
+
     _request.setUrl(url());
     _request.setPriority(_priority);
     _request.setTransferTimeout(duration_cast<milliseconds>(_timeout).count());
+
     if (!isAuthenticationJob() && _account->jobQueue()->enqueue(this)) {
         return;
     }
+
     auto reply = _account->sendRawRequest(verb, _request.url(), _request, requestBody);
+
     if (_requestBody) {
         _requestBody->setParent(this);
     }
+
     adoptRequest(reply);
 }
 
@@ -391,6 +404,16 @@ QNetworkRequest::Priority AbstractNetworkJob::priority() const
 int AbstractNetworkJob::httpStatusCode() const
 {
     return reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+}
+
+void AbstractNetworkJob::setStoreInCache(bool storeInCache)
+{
+    _storeInCache = storeInCache;
+}
+
+void AbstractNetworkJob::setCacheLoadControl(QNetworkRequest::CacheLoadControl cacheLoadControl)
+{
+    _cacheLoadControl = cacheLoadControl;
 }
 
 } // namespace OCC

@@ -32,6 +32,7 @@
 #include <QUrlQuery>
 
 #include <chrono>
+#include <optional>
 
 class QUrl;
 
@@ -130,6 +131,24 @@ public:
     virtual bool needsRetry() const;
 
     void setTimeout(const std::chrono::seconds sec);
+
+    /**
+     * Configure whether to store replies in a cache configured in the corresponding network access manager (if one is set there).
+     * By default, replies are not stored in the cache. Qt normally would store all eligible resources (as configured by server policies) in the cache.
+     * See also \ref setCacheLoadControl
+     * @param storeInCache whether to store replies in the cache
+     */
+    void setStoreInCache(bool storeInCache);
+
+    /**
+     * Configure whether to load data from the cache.
+     * We inherit Qt's default behavior (which in Qt 5.15 and 6.4 is to prefer a network response but provide a cached value if the server permits it in its
+     * cache policies when the server cannot be reached).
+     * See also \ref setStoreInCache
+     * @param cacheLoadControl a policy suitable for the current job
+     */
+    void setCacheLoadControl(QNetworkRequest::CacheLoadControl cacheLoadControl);
+
 signals:
     /** Emitted on network error.
      *
@@ -212,6 +231,11 @@ private:
 
     bool _isAuthenticationJob = false;
     int _retryCount = 0;
+
+    // by default, we don't intend to store responses in the cache (if one is set in the account's access manager)
+    bool _storeInCache = false;
+    // we use Qt's default cache load behavior unless the user explicitly requests a different behavior
+    std::optional<QNetworkRequest::CacheLoadControl> _cacheLoadControl = std::nullopt;
 
     QNetworkRequest::Priority _priority = QNetworkRequest::NormalPriority;
 
