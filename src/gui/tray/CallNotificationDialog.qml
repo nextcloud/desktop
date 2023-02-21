@@ -225,7 +225,7 @@ Window {
 
                         textColor: Style.ncHeaderTextColor
 
-                        imageSource: root.talkIcon + Style.ncHeaderTextColor
+                        icon.source: root.talkIcon + Style.ncHeaderTextColor
                         imageSourceHover: root.talkIcon + Style.ncHeaderTextColor
 
                         Layout.fillWidth: true
@@ -252,7 +252,7 @@ Window {
 
                     textColor: Style.ncHeaderTextColor
 
-                    imageSource: root.deleteIcon + "white"
+                    icon.source: root.deleteIcon + "white"
                     imageSourceHover: root.deleteIcon + "white"
 
                     Layout.fillWidth: true

@@ -20,8 +20,7 @@ import Style 1.0
 Button {
     id: root
 
-    property string imageSource: ""
-    property string imageSourceHover: imageSource
+    property string imageSourceHover: root.icon.source
     property var iconItem: icon
 
     property string toolTipText: ""
@@ -55,7 +54,7 @@ Button {
         id: contents
         hovered: root.hovered
         imageSourceHover: root.imageSourceHover
-        imageSource: root.imageSource
+        imageSource: root.icon.source
         text: root.text
         textColor: root.textColor
         textColorHovered: root.textColorHovered

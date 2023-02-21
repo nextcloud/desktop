@@ -44,7 +44,7 @@ RowLayout {
 
             adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
 
-            imageSource: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
+            icon.source: model.modelData.imageSource ? model.modelData.imageSource + Style.adjustedCurrentUserHeaderColor : ""
             imageSourceHover: model.modelData.imageSourceHovered ? model.modelData.imageSourceHovered + Style.currentUserHeaderTextColor : ""
 
             onClicked: isTalkReplyButton ? root.showReplyField() : root.triggerAction(model.index)

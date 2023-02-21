@@ -185,7 +185,7 @@ RowLayout {
 
         visible: root.showDismissButton && !fileDetailsButton.visible
 
-        imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+        icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
         imageSourceHover: "image://svgimage-custom-color/clear.svg" + "/" + UserModel.currentUser.headerTextColor
 
         toolTipText: qsTr("Dismiss")
@@ -201,7 +201,7 @@ RowLayout {
         Layout.preferredWidth: Style.trayListItemIconSize
         Layout.preferredHeight: Style.trayListItemIconSize
 
-        imageSource: "image://svgimage-custom-color/more.svg" + "/" + Style.adjustedCurrentUserHeaderColor
+        icon.source: "image://svgimage-custom-color/more.svg" + "/" + Style.adjustedCurrentUserHeaderColor
         imageSourceHover: "image://svgimage-custom-color/more.svg" + "/" + Style.currentUserHeaderTextColor
         toolTipText: qsTr("Open file details")
         bgColor: Style.currentUserHeaderColor

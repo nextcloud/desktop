@@ -10,7 +10,6 @@ AbstractButton {
 
     property bool primaryButton: false
 
-    property string imageSource: ""
     property string imageSourceHover: ""
 
     property color adjustedHeaderColor: Style.adjustedCurrentUserHeaderColor
@@ -69,7 +68,7 @@ AbstractButton {
             anchors.fill: parent
             hovered: root.hovered
             imageSourceHover: root.imageSourceHover
-            imageSource: root.imageSource
+            imageSource: root.icon.source
             text: root.text
             textColor: root.textColor
             textColorHovered: root.textColorHovered

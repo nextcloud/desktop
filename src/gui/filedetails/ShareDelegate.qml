@@ -164,7 +164,7 @@ GridLayout {
             bgColor: Style.lightHover
             bgNormalOpacity: 0
 
-            imageSource: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
+            icon.source: "image://svgimage-custom-color/add.svg/" + Style.ncTextColor
 
             visible: (root.isPlaceholderLinkShare || root.isSecureFileDropPlaceholderLinkShare) && root.canCreateLinkShares
             enabled: visible
@@ -199,7 +199,7 @@ GridLayout {
             bgColor: shareLinkCopied ? Style.positiveColor : Style.lightHover
             bgNormalOpacity: shareLinkCopied ? 1 : 0
 
-            imageSource: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor :
+            icon.source: shareLinkCopied ? "image://svgimage-custom-color/copy.svg/" + Style.ncHeaderTextColor :
                                            "image://svgimage-custom-color/copy.svg/" + Style.ncTextColor
             icon.width: 16
             icon.height: 16
@@ -245,7 +245,7 @@ GridLayout {
             bgColor: Style.lightHover
             bgNormalOpacity: 0
 
-            imageSource: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
+            icon.source: "image://svgimage-custom-color/more.svg/" + Style.ncTextColor
 
             visible: !root.isPlaceholderLinkShare && !root.isSecureFileDropPlaceholderLinkShare && !root.isInternalLinkShare
             enabled: visible

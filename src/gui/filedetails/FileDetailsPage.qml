@@ -134,7 +134,7 @@ Page {
                 Layout.preferredHeight: width
                 Layout.rightMargin: headerGridLayout.textRightMargin
 
-                imageSource: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
+                icon.source: "image://svgimage-custom-color/clear.svg" + "/" + Style.ncTextColor
                 bgColor: Style.lightHover
                 bgNormalOpacity: 0
                 toolTipText: qsTr("Dismiss")
