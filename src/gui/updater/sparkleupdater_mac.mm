@@ -76,19 +76,24 @@
 
 namespace OCC {
 
-class SparkleUpdater::Private
+class Q_DECL_HIDDEN SparkleUpdater::Private
 {
-    public:
-        SUUpdater* updater;
-        DelegateObject *delegate;
+public:
+    ~Private()
+    {
+        [updater release];
+        [delegate release];
+    }
+
+    SUUpdater* updater;
+    DelegateObject *delegate;
 };
 
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
 SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
+    , d(std::make_unique<Private>())
 {
-    d = new Private;
-
     d->delegate = [[DelegateObject alloc] init];
     [d->delegate retain];
 
@@ -107,11 +112,7 @@ SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     [d->updater setUserAgentString: userAgent];
 }
 
-SparkleUpdater::~SparkleUpdater()
-{
-    [d->updater release];
-    delete d;
-}
+SparkleUpdater::~SparkleUpdater() = default;
 
 void SparkleUpdater::setUpdateUrl(const QUrl &url)
 {
