@@ -1,0 +1,5 @@
+Bugfix: Handle showVirtualFilesOption as disableVirtual files
+
+Due to legacy reasons the branding flag and its fuction differ.
+
+https://github.com/owncloud/enterprise/issues/5612
