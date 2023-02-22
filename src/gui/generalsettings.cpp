@@ -314,6 +314,8 @@ void GeneralSettings::slotUpdateInfo()
 
 void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
 {
+    Q_UNUSED(translatedChannel);
+
     const auto updateChannelToLocalized = [](const QString &channel) {
         auto decodedTranslatedChannel = QString{};
 
@@ -345,8 +347,7 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
-
-    if (translatedChannel == ConfigFile().updateChannel()) {
+    if (channel == ConfigFile().updateChannel()) {
         return;
     }
 
