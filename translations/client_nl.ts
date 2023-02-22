@@ -4371,7 +4371,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1106"/>
         <source>Copy private link to clipboard</source>
-        <translation>Kopiëren privé-link naar klembord</translation>
+        <translation>Kopieer privé-link  naar klembord</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1107"/>
@@ -5451,7 +5451,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/wizard/owncloudoauthcredspage.ui" line="69"/>
         <source>Copy link</source>
-        <translation>Kopiëren link </translation>
+        <translation>Link kopiëren</translation>
     </message>
 </context>
 <context>
@@ -6520,7 +6520,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="321"/>
         <source>Copy link</source>
-        <translation>Kopiëren link </translation>
+        <translation>Link kopiëren</translation>
     </message>
     <message>
         <location filename="../src/gui/shareusergroupwidget.cpp" line="333"/>

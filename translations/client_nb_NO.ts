@@ -266,7 +266,7 @@
     <message>
         <location filename="../src/gui/wizard/flow2authwidget.ui" line="148"/>
         <source>An error occurred while connecting. Please try again.</source>
-        <translation>Det oppstod en feil under tilkobling. Vennligst prøv igjen.</translation>
+        <translation>Det oppsto en feil under tilkobling. Vennligst prøv igjen.</translation>
     </message>
 </context>
 <context>
@@ -4135,7 +4135,7 @@ This is a new, experimental mode. If you decide to use it, please report any iss
     <message>
         <location filename="../src/gui/selectivesyncdialog.cpp" line="315"/>
         <source>An error occurred while loading the list of sub folders.</source>
-        <translation>Det oppstod en feil ved lasting av liten med undermapper.</translation>
+        <translation>Det oppsto en feil ved lasting av liten med undermapper.</translation>
     </message>
 </context>
 <context>
@@ -6251,7 +6251,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="47"/>
         <source>There was an error when launching the browser to go to URL %1. Maybe no default browser is configured?</source>
-        <translation>Det oppstod en feil ved start av nettleseren for å gå til URL %1. Kanskje ingen standard nettleser er konfigurert?</translation>
+        <translation>Det oppsto en feil ved start av nettleseren for å gå til URL %1. Kanskje ingen standard nettleser er konfigurert?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="70"/>
@@ -6261,7 +6261,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="71"/>
         <source>There was an error when launching the email client to create a new message. Maybe no default email client is configured?</source>
-        <translation>Det oppstod en feil ved oppstart av e-post klienten for å lage en ny melding. Kanskje ingen standard e-post klient er konfigurert?</translation>
+        <translation>Det oppsto en feil ved oppstart av e-post klienten for å lage en ny melding. Kanskje ingen standard e-post klient er konfigurert?</translation>
     </message>
     <message>
         <location filename="../src/gui/guiutility.cpp" line="86"/>
