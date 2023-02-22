@@ -346,6 +346,7 @@ const QHash<QString, qint64> &PropfindJob::sizes() const
 AvatarJob::AvatarJob(AccountPtr account, const QString &userId, int size, QObject *parent)
     : AbstractNetworkJob(account, account->url(), QStringLiteral("remote.php/dav/avatars/%1/%2.png").arg(userId, QString::number(size)), parent)
 {
+    setStoreInCache(true);
 }
 
 void AvatarJob::start()
