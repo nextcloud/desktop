@@ -697,6 +697,13 @@ QString ConfigFile::updateChannel() const
 
 void ConfigFile::setUpdateChannel(const QString &channel)
 {
+    if (channel != QStringLiteral("stable") || channel != QStringLiteral("beta")) {
+        qCWarning(lcConfigFile()) << "Received invalid update channel:"
+                                  << channel
+                                  << "can only accept 'stable' or 'beta'. Ignoring.";
+        return;
+    }
+
     QSettings settings(configFile(), QSettings::IniFormat);
     settings.setValue(QLatin1String(updateChannelC), channel);
 }
