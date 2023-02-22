@@ -714,9 +714,9 @@ void ownCloudGui::updateContextMenu()
     if (atLeastOnePaused) {
         QString text;
         if (accountList.count() > 1) {
-            text = tr("Unpause all synchronization");
+            text = tr("Restart all synchronization");
         } else {
-            text = tr("Unpause synchronization");
+            text = tr("Restart synchronization");
         }
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotUnpauseAllFolders);
@@ -724,9 +724,9 @@ void ownCloudGui::updateContextMenu()
     if (atLeastOneNotPaused) {
         QString text;
         if (accountList.count() > 1) {
-            text = tr("Pause all synchronization");
+            text = tr("Stop all synchronization");
         } else {
-            text = tr("Pause synchronization");
+            text = tr("Stop synchronization");
         }
         QAction *action = _contextMenu->addAction(text);
         connect(action, &QAction::triggered, this, &ownCloudGui::slotPauseAllFolders);

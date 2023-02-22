@@ -1,0 +1,10 @@
+Enhancement: Replace term (un)pause with a more suitable one
+
+We used the terms pause and unpause synchronization where the synchronization was actually
+terminated and restarted.
+
+Now, we use the terms stop and start synchronization, which better communicate the actual
+behavior.
+
+https://github.com/owncloud/client/issues/10231
+https://github.com/owncloud/client/issues/10529

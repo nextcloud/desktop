@@ -657,7 +657,7 @@ void AccountSettings::slotEnableCurrentFolder(bool terminate)
             // check if a sync is still running and if so, ask if we should terminate.
             if (folder->isSyncRunning()) { // its still running
                 auto msgbox = new QMessageBox(QMessageBox::Question, tr("Sync Running"),
-                    tr("The syncing operation is running.<br/>Do you want to terminate it?"),
+                    tr("The sync operation is running.<br/>Do you want to stop it?"),
                     QMessageBox::Yes | QMessageBox::No, this);
                 msgbox->setAttribute(Qt::WA_DeleteOnClose);
                 msgbox->setDefaultButton(QMessageBox::Yes);
