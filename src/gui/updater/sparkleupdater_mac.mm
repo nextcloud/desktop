@@ -23,9 +23,24 @@
 #include "updater/sparkleupdater.h"
 
 @interface NCSparkleUpdaterDelegate : NSObject <SUUpdaterDelegate>
+
+@property (readwrite, assign) OCC::SparkleUpdater::SparkleInterface *owner;
+
+- (instancetype)initWithOwner:(OCC::SparkleUpdater::SparkleInterface *)owner;
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
+
 @end
-@implementation NCSparkleUpdaterDelegate //(SUUpdaterDelegateInformalProtocol)
+
+@implementation NCSparkleUpdaterDelegate
+
+- (instancetype)initWithOwner:(OCC::SparkleUpdater::SparkleInterface *)owner
+{
+    self = [super init];
+    if (self) {
+        _owner = owner;
+    }
+    return self;
+}
 
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
@@ -57,7 +72,7 @@
     qCDebug(OCC::lcUpdater) << "About to install update.";
 }
 
-- (void) updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
+- (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
     Q_UNUSED(updater)
     qCDebug(OCC::lcUpdater) << error.description;
@@ -70,16 +85,15 @@
     qCDebug(OCC::lcUpdater) << "Finished loading appcast.";
 }
 
-
 @end
 
 
 namespace OCC {
 
-class Q_DECL_HIDDEN SparkleUpdater::Private
+class Q_DECL_HIDDEN SparkleUpdater::SparkleInterface
 {
 public:
-    ~Private()
+    ~SparkleInterface()
     {
         [updater release];
         [delegate release];
@@ -92,33 +106,32 @@ public:
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
 SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
-    , d(std::make_unique<Private>())
+    , _interface(std::make_unique<SparkleInterface>())
 {
-    d->delegate = [[NCSparkleUpdaterDelegate alloc] init];
-    [d->delegate retain];
+    _interface->delegate = [[NCSparkleUpdaterDelegate alloc] init];
+    [_interface->delegate retain];
 
-    d->updater = [SUUpdater sharedUpdater];
-    [d->updater setDelegate:d->delegate];
-    [d->updater setAutomaticallyChecksForUpdates:YES];
-    [d->updater setAutomaticallyDownloadsUpdates:NO];
-    [d->updater setSendsSystemProfile:NO];
-    [d->updater resetUpdateCycle];
-    [d->updater retain];
+    _interface->updater = [SUUpdater sharedUpdater];
+    [_interface->updater setDelegate:_interface->delegate];
+    [_interface->updater setAutomaticallyChecksForUpdates:YES];
+    [_interface->updater setAutomaticallyDownloadsUpdates:NO];
+    [_interface->updater setSendsSystemProfile:NO];
+    [_interface->updater resetUpdateCycle];
+    [_interface->updater retain];
 
     setUpdateUrl(appCastUrl);
 
     // Sparkle 1.8 required
     NSString *userAgent = [NSString stringWithUTF8String: Utility::userAgentString().data()];
-    [d->updater setUserAgentString: userAgent];
+    [_interface->updater setUserAgentString: userAgent];
 }
 
 SparkleUpdater::~SparkleUpdater() = default;
 
 void SparkleUpdater::setUpdateUrl(const QUrl &url)
 {
-    NSURL* nsurl = [NSURL URLWithString:
-            [NSString stringWithUTF8String: url.toString().toUtf8().data()]];
-    [d->updater setFeedURL: nsurl];
+    NSURL* nsurl = [NSURL URLWithString:[NSString stringWithUTF8String:url.toString().toUtf8().data()]];
+    [_interface->updater setFeedURL: nsurl];
 }
 
 // FIXME: Should be changed to not instantiate the SparkleUpdater at all in this case
@@ -145,7 +158,7 @@ void SparkleUpdater::checkForUpdate()
 {
     qCDebug(OCC::lcUpdater) << "Checking for updates.";
     if (autoUpdaterAllowed()) {
-        [d->updater checkForUpdates: NSApp];
+        [_interface->updater checkForUpdates: NSApp];
     }
 }
 
@@ -153,7 +166,7 @@ void SparkleUpdater::backgroundCheckForUpdate()
 {
     qCDebug(OCC::lcUpdater) << "launching background check";
     if (autoUpdaterAllowed()) {
-        [d->updater checkForUpdatesInBackground];
+        [_interface->updater checkForUpdatesInBackground];
     }
 }
 
