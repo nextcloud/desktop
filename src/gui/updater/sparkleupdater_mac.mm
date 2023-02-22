@@ -22,10 +22,10 @@
 #include "configfile.h"
 #include "updater/sparkleupdater.h"
 
-@interface DelegateObject : NSObject <SUUpdaterDelegate>
+@interface NCSparkleUpdaterDelegate : NSObject <SUUpdaterDelegate>
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle;
 @end
-@implementation DelegateObject //(SUUpdaterDelegateInformalProtocol)
+@implementation NCSparkleUpdaterDelegate //(SUUpdaterDelegateInformalProtocol)
 
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
@@ -86,7 +86,7 @@ public:
     }
 
     SUUpdater* updater;
-    DelegateObject *delegate;
+    NCSparkleUpdaterDelegate *delegate;
 };
 
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
@@ -94,7 +94,7 @@ SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
     , d(std::make_unique<Private>())
 {
-    d->delegate = [[DelegateObject alloc] init];
+    d->delegate = [[NCSparkleUpdaterDelegate alloc] init];
     [d->delegate retain];
 
     d->updater = [SUUpdater sharedUpdater];
