@@ -41,7 +41,7 @@ int c_utimes(const QString &uri, const struct timeval *times) {
 //after Microsoft KB167296
 static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
 {
-    LONGLONG ll;
+    LONGLONG ll = 0;
     ll = Int32x32To64(t.tv_sec, CSYNC_USEC_IN_SEC*10) + t.tv_usec*10 + CSYNC_SECONDS_SINCE_1601*CSYNC_USEC_IN_SEC*10;
     pft->dwLowDateTime = (DWORD)ll;
     pft->dwHighDateTime = ll >> 32;
@@ -50,7 +50,7 @@ static void UnixTimevalToFileTime(struct timeval t, LPFILETIME pft)
 int c_utimes(const QString &uri, const struct timeval *times) {
     FILETIME LastAccessTime;
     FILETIME LastModificationTime;
-    HANDLE hFile;
+    HANDLE hFile = nullptr;
 
     auto wuri = uri.toStdWString();
 
@@ -64,7 +64,7 @@ int c_utimes(const QString &uri, const struct timeval *times) {
     }
 
     hFile=CreateFileW(wuri.data(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_DELETE | FILE_SHARE_READ | FILE_SHARE_WRITE,
-                      NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, NULL);
+                      nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL+FILE_FLAG_BACKUP_SEMANTICS, nullptr);
     if(hFile==INVALID_HANDLE_VALUE) {
         switch(GetLastError()) {
             case ERROR_FILE_NOT_FOUND:
@@ -87,7 +87,7 @@ int c_utimes(const QString &uri, const struct timeval *times) {
         return -1;
     }
 
-    if(!SetFileTime(hFile, NULL, &LastAccessTime, &LastModificationTime)) {
+    if(!SetFileTime(hFile, nullptr, &LastAccessTime, &LastModificationTime)) {
         //can this happen?
         errno=ENOENT;
         CloseHandle(hFile);

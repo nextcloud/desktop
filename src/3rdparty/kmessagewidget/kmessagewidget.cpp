@@ -49,7 +49,7 @@ public:
     QIcon icon;
     bool ignoreShowEventDoingAnimatedShow = false;
 
-    KMessageWidget::MessageType messageType;
+    KMessageWidget::MessageType messageType = KMessageWidget::Positive;
     bool wordWrap = false;
     QList<QToolButton *> buttons;
     QPixmap contentSnapShot;
