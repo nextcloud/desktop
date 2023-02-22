@@ -93,6 +93,11 @@ namespace OCC {
 class Q_DECL_HIDDEN SparkleUpdater::SparkleInterface
 {
 public:
+    explicit SparkleInterface(SparkleUpdater *parent)
+        : q(parent)
+    {
+    }
+
     ~SparkleInterface()
     {
         [updater release];
@@ -101,12 +106,15 @@ public:
 
     SUUpdater* updater;
     NCSparkleUpdaterDelegate *delegate;
+
+private:
+    SparkleUpdater * const q;
 };
 
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
 SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
-    , _interface(std::make_unique<SparkleInterface>())
+    , _interface(std::make_unique<SparkleInterface>(this))
 {
     _interface->delegate = [[NCSparkleUpdaterDelegate alloc] init];
     [_interface->delegate retain];
@@ -152,7 +160,6 @@ bool autoUpdaterAllowed()
 
     return true;
 }
-
 
 void SparkleUpdater::checkForUpdate()
 {
