@@ -26,7 +26,7 @@ class SparkleUpdater : public Updater
     Q_OBJECT
 public:
     SparkleUpdater(const QUrl &appCastUrl);
-    ~SparkleUpdater() override;
+    ~SparkleUpdater();
 
     void setUpdateUrl(const QUrl &url);
 
@@ -39,7 +39,7 @@ public:
 
 private:
     class Private;
-    Private *d;
+    std::unique_ptr<Private> d;
 };
 
 } // namespace OCC
