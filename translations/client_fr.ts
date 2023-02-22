@@ -4438,7 +4438,7 @@ Le serveur a répondu avec l&apos;erreur : %2</translation>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1327"/>
         <source>Edit</source>
-        <translation>Modifier</translation>
+        <translation>Éditer</translation>
     </message>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1329"/>

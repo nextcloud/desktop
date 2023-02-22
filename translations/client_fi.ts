@@ -932,13 +932,13 @@ Tämä toiminto peruu kaikki tämänhetkiset synkronoinnit.</translation>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>newer</source>
         <comment>newer software version</comment>
-        <translation type="unfinished"/>
+        <translation>uudempi</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="182"/>
         <source>older</source>
         <comment>older software version</comment>
-        <translation type="unfinished"/>
+        <translation>vanhempi</translation>
     </message>
     <message>
         <location filename="../src/gui/application.cpp" line="183"/>
