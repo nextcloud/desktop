@@ -329,21 +329,11 @@ void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
     };
 
     const auto updateChannelFromLocalized = [](const int index) {
-        auto channel = QString{};
-
-        switch (index)
-        {
-        case 0:
-            channel = QStringLiteral("stable");
-            break;
-        case 1:
-            channel = QStringLiteral("beta");
-            break;
-        default:
-            channel = QString{};
+        if (index == 1) {
+            return QStringLiteral("beta");
         }
 
-        return channel;
+        return QStringLiteral("stable");
     };
 
     const auto channel = updateChannelFromLocalized(_ui->updateChannel->currentIndex());
