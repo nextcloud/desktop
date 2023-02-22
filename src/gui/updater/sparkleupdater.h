@@ -37,9 +37,10 @@ public:
 
     QString statusString();
 
+    class SparkleInterface;
+
 private:
-    class Private;
-    std::unique_ptr<Private> d;
+    std::unique_ptr<SparkleInterface> _interface;
 };
 
 } // namespace OCC
