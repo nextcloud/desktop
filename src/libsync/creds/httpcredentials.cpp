@@ -402,7 +402,9 @@ void HttpCredentials::persist()
             _account->credentialManager()->set(refreshTokenKeyC(), _refreshToken);
         }
     } else {
-        _account->credentialManager()->set(passwordKeyC(), _password);
+        if (!_password.isEmpty()) {
+            _account->credentialManager()->set(passwordKeyC(), _password);
+        }
     }
 }
 
