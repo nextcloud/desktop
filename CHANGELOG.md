@@ -10,6 +10,7 @@ Summary
 
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
+* Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
 
 Details
 -------
@@ -30,6 +31,17 @@ Details
    implements explicit handling of outdated placeholders.
 
    https://github.com/owncloud/client/issues/9829
+
+* Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
+
+   We used the terms pause and unpause synchronization where the synchronization was actually
+   terminated and restarted.
+
+   Now, we use the terms stop and start synchronization, which better communicate the actual
+   behavior.
+
+   https://github.com/owncloud/client/issues/10231
+   https://github.com/owncloud/client/issues/10529
 
 Changelog for ownCloud Desktop Client [3.2.0] (2024-02-15)
 =======================================
