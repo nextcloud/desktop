@@ -26,6 +26,13 @@ class SparkleUpdater : public Updater
     Q_OBJECT
 
 public:
+    enum class State {
+        Unknown = 0,
+        Idle,
+        Working,
+        AwaitingUserInput
+    };
+
     SparkleUpdater(const QUrl &appCastUrl);
     ~SparkleUpdater();
 
@@ -36,7 +43,8 @@ public:
     void backgroundCheckForUpdate() override;
     bool handleStartup() override { return false; }
 
-    QString statusString();
+    QString statusString() const;
+    State state() const;
 
     class SparkleInterface;
 
@@ -46,6 +54,7 @@ signals:
 private:
     std::unique_ptr<SparkleInterface> _interface;
     QString _statusString;
+    State _state = State::Unknown;
     friend class SparkleInterface;
 };
 
