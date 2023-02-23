@@ -22,6 +22,35 @@
 #include "configfile.h"
 #include "updater/sparkleupdater.h"
 
+@class NCSparkleUpdaterDelegate;
+
+class Q_DECL_HIDDEN OCC::SparkleUpdater::SparkleInterface
+{
+public:
+    explicit SparkleInterface(SparkleUpdater *parent)
+        : q(parent)
+    {
+    }
+
+    ~SparkleInterface()
+    {
+        [updater release];
+        [delegate release];
+    }
+
+    void statusChanged()
+    {
+        emit q->statusChanged();
+    }
+
+    SUUpdater* updater;
+    NCSparkleUpdaterDelegate *delegate;
+
+private:
+    SparkleUpdater * const q;
+};
+
+
 @interface NCSparkleUpdaterDelegate : NSObject <SUUpdaterDelegate>
 
 @property (readwrite, assign) OCC::SparkleUpdater::SparkleInterface *owner;
@@ -49,12 +78,18 @@
     return YES;
 }
 
+- (void)notifyChange
+{
+    _owner->statusChanged();
+}
+
 // Sent when a valid update is found by the update driver.
 - (void)updater:(SUUpdater *)updater didFindValidUpdate:(SUAppcastItem *)update
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
     qCDebug(OCC::lcUpdater) << "Found a valid update.";
+    [self notifyChange];
 }
 
 // Sent when a valid update is not found.
@@ -62,6 +97,7 @@
 {
     Q_UNUSED(update)
     qCDebug(OCC::lcUpdater) << "No valid update found.";
+    [self notifyChange];
 }
 
 // Sent immediately before installing the specified update.
@@ -70,53 +106,38 @@
     Q_UNUSED(updater)
     Q_UNUSED(update)
     qCDebug(OCC::lcUpdater) << "About to install update.";
+    [self notifyChange];
 }
 
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
     Q_UNUSED(updater)
     qCDebug(OCC::lcUpdater) << error.description;
+    [self notifyChange];
 }
 
 - (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
 {
     Q_UNUSED(updater)
     Q_UNUSED(appcast)
+
     qCDebug(OCC::lcUpdater) << "Finished loading appcast.";
+    [self notifyChange];
 }
+
+
 
 @end
 
 
 namespace OCC {
 
-class Q_DECL_HIDDEN SparkleUpdater::SparkleInterface
-{
-public:
-    explicit SparkleInterface(SparkleUpdater *parent)
-        : q(parent)
-    {
-    }
-
-    ~SparkleInterface()
-    {
-        [updater release];
-        [delegate release];
-    }
-
-    SUUpdater* updater;
-    NCSparkleUpdaterDelegate *delegate;
-
-private:
-    SparkleUpdater * const q;
-};
-
 // Delete ~/Library//Preferences/com.owncloud.desktopclient.plist to re-test
 SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     : Updater()
     , _interface(std::make_unique<SparkleInterface>(this))
 {
-    _interface->delegate = [[NCSparkleUpdaterDelegate alloc] init];
+    _interface->delegate = [[NCSparkleUpdaterDelegate alloc] initWithOwner:_interface.get()];
     [_interface->delegate retain];
 
     _interface->updater = [SUUpdater sharedUpdater];

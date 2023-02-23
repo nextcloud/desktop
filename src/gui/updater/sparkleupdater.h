@@ -24,6 +24,7 @@ namespace OCC {
 class SparkleUpdater : public Updater
 {
     Q_OBJECT
+
 public:
     SparkleUpdater(const QUrl &appCastUrl);
     ~SparkleUpdater();
@@ -38,6 +39,9 @@ public:
     QString statusString();
 
     class SparkleInterface;
+
+signals:
+    void statusChanged();
 
 private:
     std::unique_ptr<SparkleInterface> _interface;
