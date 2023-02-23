@@ -41,7 +41,7 @@ public:
     void statusChanged(const OCC::SparkleUpdater::State state, const QString &statusString = {})
     {
         q->_state = state;
-        q->_statusString = tr(statusString.toUtf8());
+        q->_statusString = statusString;
         emit q->statusChanged();
     }
 
@@ -106,7 +106,7 @@ private:
     Q_UNUSED(update)
 
     const auto versionQstring = QString::fromNSString(update.displayVersionString);
-    const auto message = QStringLiteral("Found a valid update: version %1").arg(versionQstring);
+    const auto message = QObject::tr("Found a valid update: version %1", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::AwaitingUserInput
               displayStatus:message];
@@ -117,7 +117,7 @@ private:
 {
     Q_UNUSED(updater)
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
-              displayStatus:QStringLiteral("No valid update found.")];
+              displayStatus:QObject::tr("No valid update found.")];
 }
 
 // Sent immediately before installing the specified update.
@@ -126,7 +126,7 @@ private:
     Q_UNUSED(updater)
 
     const auto versionQstring = QString::fromNSString(update.displayVersionString);
-    const auto message = QStringLiteral("About to install version %1 update.").arg(versionQstring);
+    const auto message = QObject::tr("About to install version %1 update.", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
               displayStatus:message];
@@ -136,7 +136,8 @@ private:
 {
     Q_UNUSED(updater)
 
-    const QString message(QStringLiteral("Aborted with error: ") + QString::fromNSString(error.description));
+    const auto errorQstring = QString::fromNSString(error.localizedDescription);
+    const auto message = QObject::tr("Aborted with error: %1", "%1 is version number").arg(errorQstring);
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
 }
@@ -146,16 +147,16 @@ private:
     Q_UNUSED(updater)
     Q_UNUSED(appcast)
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
-              displayStatus:QStringLiteral("Finished loading appcast.")];
+              displayStatus:QObject::tr("Finished loading appcast.")];
 }
 
 - (void)updater:(SUUpdater *)updater didDismissUpdateAlertPermanently:(BOOL)permanently forItem:(nonnull SUAppcastItem *)item
 {
     Q_UNUSED(updater)
 
-    const auto permanencyString = permanently ? QStringLiteral("Permanently") : QStringLiteral("Temporarily");
+    const auto permanencyString = permanently ? QObject::tr("Permanently") : QObject::tr("Temporarily");
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QStringLiteral("%1 dismissed %2 update").arg(permanencyString, versionQstring);
+    const auto message = QObject::tr("%1 dismissed %2 update", "%1 is permanently or temporarily, %2 is version number").arg(permanencyString, versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
@@ -166,7 +167,7 @@ private:
     Q_UNUSED(updater)
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QStringLiteral("Update %1 will not be applied as it was chosen to be skipped.").arg(versionQstring);
+    const auto message = QObject::tr("Update version %1 will not be applied as it was chosen to be skipped.",  "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
@@ -178,7 +179,7 @@ private:
     Q_UNUSED(request)
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QStringLiteral("Downloading version %1 update.").arg(versionQstring);
+    const auto message = QObject::tr("Downloading version %1 update.", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
               displayStatus:message];
@@ -189,7 +190,7 @@ private:
     Q_UNUSED(updater)
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QStringLiteral("Downloaded version %1 update.").arg(versionQstring);
+    const auto message = QObject::tr("Downloaded version %1 update.", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
               displayStatus:message];
@@ -201,7 +202,7 @@ private:
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
     const auto errorQstring = QString::fromNSString(error.localizedDescription);
-    const auto message = QStringLiteral("Error downloading version %1 update: %2").arg(versionQstring);
+    const auto message = QObject::tr("Error downloading version %1 update: %2", "%1 is version number, %2 is error message").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
@@ -212,7 +213,7 @@ private:
     Q_UNUSED(updater)
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QStringLiteral("Extracting version %1 update.").arg(versionQstring);
+    const auto message = QObject::tr("Extracting version %1 update.", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
               displayStatus:message];
@@ -223,7 +224,7 @@ private:
     Q_UNUSED(updater)
 
     const auto versionQstring = QString::fromNSString(item.displayVersionString);
-    const auto message = QStringLiteral("Extracted version %1 update.").arg(versionQstring);
+    const auto message = QObject::tr("Extracted version %1 update.", "%1 is version number").arg(versionQstring);
 
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
               displayStatus:message];
@@ -233,7 +234,7 @@ private:
 {
     Q_UNUSED(updater);
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
-              displayStatus:QStringLiteral("Update download cancelled.")];
+              displayStatus:QObject::tr("Update download cancelled.")];
 }
 
 @end
