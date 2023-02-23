@@ -247,7 +247,8 @@ SparkleUpdater::SparkleUpdater(const QUrl& appCastUrl)
     setUpdateUrl(appCastUrl);
 
     // Sparkle 1.8 required
-    NSString *userAgent = [NSString stringWithUTF8String: Utility::userAgentString().data()];
+    const auto userAgentString = QString::fromUtf8(Utility::userAgentString());
+    NSString *userAgent = userAgentString.toNSString();
     [_interface->updater setUserAgentString: userAgent];
 }
 
@@ -255,7 +256,7 @@ SparkleUpdater::~SparkleUpdater() = default;
 
 void SparkleUpdater::setUpdateUrl(const QUrl &url)
 {
-    NSURL* nsurl = [NSURL URLWithString:[NSString stringWithUTF8String:url.toString().toUtf8().data()]];
+    NSURL* nsurl = [NSURL URLWithString:url.toString().toNSString()];
     [_interface->updater setFeedURL: nsurl];
 }
 
