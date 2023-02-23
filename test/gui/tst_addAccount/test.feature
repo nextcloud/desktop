@@ -9,6 +9,17 @@ Feature: adding accounts
         Given user "Alice" has been created on the server with default attributes and without skeleton files
 
 
+    Scenario: Check default options in advanced configuration
+        Given the user has started the client
+        When the user adds the following account information:
+            | server   | %local_server% |
+            | user     | Alice          |
+            | password | 1234           |
+        And the user opens the advanced configuration
+        Then the download everything option should be selected by default
+        And the user should be able to choose the local download directory
+
+
     Scenario: Adding normal Account
         Given the user has started the client
         When the user adds the first account with

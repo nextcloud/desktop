@@ -196,3 +196,33 @@ def step(context, action):
     else:
         AccountConnectionWizard.cancelEnableExperimentalVFSOption()
     AccountConnectionWizard.nextStep()
+
+
+@When('the user adds the following account information:')
+def step(context):
+    account_details = getClientDetails(context)
+    AccountConnectionWizard.addServer(account_details['server'])
+    if get_config('ocis'):
+        AccountConnectionWizard.acceptCertificate()
+    AccountConnectionWizard.addUserCreds(
+        account_details['user'], account_details['password']
+    )
+
+
+@When("the user opens the advanced configuration")
+def step(context):
+    AccountConnectionWizard.selectAdvancedConfig()
+
+
+@Then("the user should be able to choose the local download directory")
+def step(context):
+    test.compare(True, AccountConnectionWizard.canChangeLocalSyncDir())
+
+
+@Then("the download everything option should be selected by default")
+def step(context):
+    test.compare(
+        True,
+        AccountConnectionWizard.isSyncEverythingOptionChecked(),
+        "Sync everything option is checked",
+    )

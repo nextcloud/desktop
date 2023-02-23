@@ -125,6 +125,12 @@ class AccountConnectionWizard:
         "unnamed": 1,
         "visible": 1,
     }
+    CONF_SYNC_EVERYTHING_RADIO_BUTTON = {
+        "container": names.advancedConfigGroupBox_syncModeGroupBox_QGroupBox,
+        "name": "syncEverythingRadioButton",
+        "type": "QRadioButton",
+        "visible": 1,
+    }
 
     @staticmethod
     def sanitizeFolderPath(folderPath):
@@ -200,9 +206,7 @@ class AccountConnectionWizard:
         # create sync folder for user
         syncPath = createUserSyncPath(user)
 
-        squish.waitForObject(
-            AccountConnectionWizard.ADVANCED_CONFIGURATION_CHECKBOX
-        ).setChecked(True)
+        AccountConnectionWizard.selectAdvancedConfig()
         squish.mouseClick(
             squish.waitForObject(AccountConnectionWizard.DIRECTORY_NAME_BOX)
         )
@@ -281,3 +285,32 @@ class AccountConnectionWizard:
         except:
             pass
         return visible
+
+    @staticmethod
+    def selectAdvancedConfig():
+        squish.waitForObject(
+            AccountConnectionWizard.ADVANCED_CONFIGURATION_CHECKBOX
+        ).setChecked(True)
+
+    @staticmethod
+    def canChangeLocalSyncDir():
+        can_change = False
+        try:
+            squish.waitForObjectExists(AccountConnectionWizard.SELECT_LOCAL_FOLDER)
+            squish.clickButton(
+                squish.waitForObject(AccountConnectionWizard.DIRECTORY_NAME_BOX)
+            )
+            squish.waitForObjectExists(AccountConnectionWizard.CHOOSE_BUTTON)
+            can_change = True
+        except:
+            pass
+        return can_change
+
+    @staticmethod
+    def isSyncEverythingOptionChecked():
+        return (
+            squish.waitForObjectExists(
+                AccountConnectionWizard.CONF_SYNC_EVERYTHING_RADIO_BUTTON
+            ).checked
+            == True
+        )
