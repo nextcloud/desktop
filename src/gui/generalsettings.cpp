@@ -304,7 +304,11 @@ void GeneralSettings::slotUpdateInfo()
         connect(sparkleUpdater, &SparkleUpdater::statusChanged, this, &GeneralSettings::slotUpdateInfo, Qt::UniqueConnection);
         _ui->updateStateLabel->setText(sparkleUpdater->statusString());
         _ui->restartButton->setVisible(false);
-        _ui->updateButton->setEnabled(true);
+
+        const auto updaterState = sparkleUpdater->state();
+        const auto enableUpdateButton = updaterState == SparkleUpdater::State::Idle ||
+                                        updaterState == SparkleUpdater::State::Unknown;
+        _ui->updateButton->setEnabled(enableUpdateButton);
     }
 #endif
 
