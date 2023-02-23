@@ -312,10 +312,8 @@ void GeneralSettings::slotUpdateInfo()
         this, &GeneralSettings::slotUpdateChannelChanged, Qt::UniqueConnection);
 }
 
-void GeneralSettings::slotUpdateChannelChanged(const QString &translatedChannel)
+void GeneralSettings::slotUpdateChannelChanged()
 {
-    Q_UNUSED(translatedChannel);
-
     const auto updateChannelToLocalized = [](const QString &channel) {
         auto decodedTranslatedChannel = QString{};
 
