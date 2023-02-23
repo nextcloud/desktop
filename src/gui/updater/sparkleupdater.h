@@ -45,6 +45,8 @@ signals:
 
 private:
     std::unique_ptr<SparkleInterface> _interface;
+    QString _statusString;
+    friend class SparkleInterface;
 };
 
 } // namespace OCC
