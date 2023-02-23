@@ -73,11 +73,24 @@ private:
     return self;
 }
 
+- (BOOL)backgroundUpdateChecksAllowed
+{
+    BOOL allowUpdateCheck = OCC::ConfigFile().skipUpdateCheck() ? NO : YES;
+    qCDebug(OCC::lcUpdater) << "Updater may check for updates:" << (allowUpdateCheck ? "YES" : "NO");
+    return allowUpdateCheck;
+}
+
 - (BOOL)updaterMayCheckForUpdates:(SUUpdater *)bundle
 {
     Q_UNUSED(bundle)
-    qCDebug(OCC::lcUpdater) << "Updater may check for updates: YES";
-    return YES;
+    return [self backgroundUpdateChecksAllowed];
+}
+
+- (BOOL)updaterShouldShowUpdateAlertForScheduledUpdate:(SUUpdater *)updater forItem:(SUAppcastItem *)item
+{
+    Q_UNUSED(updater)
+    Q_UNUSED(item)
+    return [self backgroundUpdateChecksAllowed];
 }
 
 - (void)notifyStateChange:(const OCC::SparkleUpdater::State)state displayStatus:(const QString&)statusString
@@ -288,9 +301,11 @@ void SparkleUpdater::checkForUpdate()
 
 void SparkleUpdater::backgroundCheckForUpdate()
 {
-    qCDebug(OCC::lcUpdater) << "launching background check";
-    if (autoUpdaterAllowed()) {
+    if (autoUpdaterAllowed() && !ConfigFile().skipUpdateCheck()) {
+        qCDebug(OCC::lcUpdater) << "launching background check";
         [_interface->updater checkForUpdatesInBackground];
+    } else {
+        qCDebug(OCC::lcUpdater) << "not launching background check, auto updater not allowed or update check skipped in config";
     }
 }
 
