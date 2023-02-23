@@ -57,7 +57,9 @@ QUrl Updater::updateUrl()
     auto urlQuery = getQueryParams();
 
 #if defined(Q_OS_MAC) && defined(HAVE_SPARKLE)
-    urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+    if (SparkleUpdater::autoUpdaterAllowed()) {
+        urlQuery.addQueryItem(QLatin1String("sparkle"), QLatin1String("true"));
+    }
 #endif
 
 #if defined(Q_OS_WIN)
@@ -142,7 +144,11 @@ Updater *Updater::create()
     }
 
 #if defined(Q_OS_MACOS) && defined(HAVE_SPARKLE) && defined(BUILD_OWNCLOUD_OSX_BUNDLE)
-    return new SparkleUpdater(url);
+    if (SparkleUpdater::autoUpdaterAllowed()) {
+        return new SparkleUpdater(url);
+    }
+
+    return new PassiveUpdateNotifier(url);
 #elif defined(Q_OS_WIN32)
     // Also for MSI
     return new NSISUpdater(url);

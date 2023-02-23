@@ -260,8 +260,7 @@ void SparkleUpdater::setUpdateUrl(const QUrl &url)
     [_interface->updater setFeedURL: nsurl];
 }
 
-// FIXME: Should be changed to not instantiate the SparkleUpdater at all in this case
-bool autoUpdaterAllowed()
+bool SparkleUpdater::autoUpdaterAllowed()
 {
     // See https://github.com/owncloud/client/issues/2931
     NSString *bundlePath = [[NSBundle mainBundle] bundlePath];

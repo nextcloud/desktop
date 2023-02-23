@@ -36,6 +36,8 @@ public:
     SparkleUpdater(const QUrl &appCastUrl);
     ~SparkleUpdater();
 
+    static bool autoUpdaterAllowed();
+
     void setUpdateUrl(const QUrl &url);
 
     // unused in this updater
