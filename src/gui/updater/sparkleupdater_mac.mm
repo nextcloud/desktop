@@ -41,7 +41,7 @@ public:
     void statusChanged(const OCC::SparkleUpdater::State state, const QString &statusString = {})
     {
         q->_state = state;
-        q->_statusString = statusString;
+        q->_statusString = tr(statusString.toUtf8());
         emit q->statusChanged();
     }
 
@@ -91,14 +91,18 @@ private:
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
+
+    const auto versionQstring = QString::fromNSString(update.displayVersionString);
+    const auto message = QStringLiteral("Found a valid update: version %1").arg(versionQstring);
+
     [self notifyStateChange:OCC::SparkleUpdater::State::AwaitingUserInput
-              displayStatus:QStringLiteral("Found a valid update.")];
+              displayStatus:message];
 }
 
 // Sent when a valid update is not found.
-- (void)updaterDidNotFindUpdate:(SUUpdater *)update
+- (void)updaterDidNotFindUpdate:(SUUpdater *)updater
 {
-    Q_UNUSED(update)
+    Q_UNUSED(updater)
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:QStringLiteral("No valid update found.")];
 }
@@ -107,14 +111,18 @@ private:
 - (void)updater:(SUUpdater *)updater willInstallUpdate:(SUAppcastItem *)update
 {
     Q_UNUSED(updater)
-    Q_UNUSED(update)
+
+    const auto versionQstring = QString::fromNSString(update.displayVersionString);
+    const auto message = QStringLiteral("About to install version %1 update.").arg(versionQstring);
+
     [self notifyStateChange:OCC::SparkleUpdater::State::Working
-              displayStatus:QStringLiteral("About to install update.")];
+              displayStatus:message];
 }
 
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
     Q_UNUSED(updater)
+
     const QString message(QStringLiteral("Aborted with error: ") + QString::fromNSString(error.description));
     [self notifyStateChange:OCC::SparkleUpdater::State::Idle
               displayStatus:message];
@@ -128,7 +136,92 @@ private:
               displayStatus:QStringLiteral("Finished loading appcast.")];
 }
 
+- (void)updater:(SUUpdater *)updater didDismissUpdateAlertPermanently:(BOOL)permanently forItem:(nonnull SUAppcastItem *)item
+{
+    Q_UNUSED(updater)
 
+    const auto permanencyString = permanently ? QStringLiteral("Permanently") : QStringLiteral("Temporarily");
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto message = QStringLiteral("%1 dismissed %2 update").arg(permanencyString, versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
+              displayStatus:message];
+}
+
+- (void)updater:(nonnull SUUpdater *)updater userDidSkipThisVersion:(nonnull SUAppcastItem *)item
+{
+    Q_UNUSED(updater)
+
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto message = QStringLiteral("Update %1 will not be applied as it was chosen to be skipped.").arg(versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
+              displayStatus:message];
+}
+
+- (void)updater:(nonnull SUUpdater *)updater willDownloadUpdate:(nonnull SUAppcastItem *)item withRequest:(nonnull NSMutableURLRequest *)request
+{
+    Q_UNUSED(updater)
+    Q_UNUSED(request)
+
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto message = QStringLiteral("Downloading version %1 update.").arg(versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Working
+              displayStatus:message];
+}
+
+- (void)updater:(nonnull SUUpdater *)updater didDownloadUpdate:(nonnull SUAppcastItem *)item
+{
+    Q_UNUSED(updater)
+
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto message = QStringLiteral("Downloaded version %1 update.").arg(versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Working
+              displayStatus:message];
+}
+
+- (void)updater:(nonnull SUUpdater *)updater failedToDownloadUpdate:(nonnull SUAppcastItem *)item error:(nonnull NSError *)error
+{
+    Q_UNUSED(updater)
+
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto errorQstring = QString::fromNSString(error.localizedDescription);
+    const auto message = QStringLiteral("Error downloading version %1 update: %2").arg(versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
+              displayStatus:message];
+}
+
+- (void)updater:(nonnull SUUpdater *)updater willExtractUpdate:(nonnull SUAppcastItem *)item
+{
+    Q_UNUSED(updater)
+
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto message = QStringLiteral("Extracting version %1 update.").arg(versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Working
+              displayStatus:message];
+}
+
+- (void)updater:(nonnull SUUpdater *)updater didExtractUpdate:(nonnull SUAppcastItem *)item
+{
+    Q_UNUSED(updater)
+
+    const auto versionQstring = QString::fromNSString(item.displayVersionString);
+    const auto message = QStringLiteral("Extracted version %1 update.").arg(versionQstring);
+
+    [self notifyStateChange:OCC::SparkleUpdater::State::Working
+              displayStatus:message];
+}
+
+- (void)userDidCancelDownload:(SUUpdater *)updater
+{
+    Q_UNUSED(updater);
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
+              displayStatus:QStringLiteral("Update download cancelled.")];
+}
 
 @end
 
