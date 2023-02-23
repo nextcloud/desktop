@@ -38,8 +38,9 @@ public:
         [delegate release];
     }
 
-    void statusChanged()
+    void statusChanged(const QString &statusString)
     {
+        q->_statusString = statusString;
         emit q->statusChanged();
     }
 
@@ -78,9 +79,10 @@ private:
     return YES;
 }
 
-- (void)notifyChange
+- (void)notifyChange:(const QString&)statusString
 {
-    _owner->statusChanged();
+    qCDebug(OCC::lcUpdater) << statusString;
+    _owner->statusChanged(statusString);
 }
 
 // Sent when a valid update is found by the update driver.
@@ -88,16 +90,14 @@ private:
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
-    qCDebug(OCC::lcUpdater) << "Found a valid update.";
-    [self notifyChange];
+    [self notifyChange:QStringLiteral("Found a valid update.")];
 }
 
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
     Q_UNUSED(update)
-    qCDebug(OCC::lcUpdater) << "No valid update found.";
-    [self notifyChange];
+    [self notifyChange:QStringLiteral("No valid update found.")];
 }
 
 // Sent immediately before installing the specified update.
@@ -105,24 +105,21 @@ private:
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
-    qCDebug(OCC::lcUpdater) << "About to install update.";
-    [self notifyChange];
+    [self notifyChange:QStringLiteral("About to install update.")];
 }
 
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
     Q_UNUSED(updater)
-    qCDebug(OCC::lcUpdater) << error.description;
-    [self notifyChange];
+    const QString message(QStringLiteral("Aborted with error: ") + QString::fromNSString(error.description));
+    [self notifyChange:message];
 }
 
 - (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
 {
     Q_UNUSED(updater)
     Q_UNUSED(appcast)
-
-    qCDebug(OCC::lcUpdater) << "Finished loading appcast.";
-    [self notifyChange];
+    [self notifyChange:QStringLiteral("Finished loading appcast.")];
 }
 
 
@@ -200,8 +197,7 @@ void SparkleUpdater::backgroundCheckForUpdate()
 
 QString SparkleUpdater::statusString()
 {
-    // FIXME Show the real state depending on the callbacks
-    return QString();
+    return _statusString;
 }
 
 } // namespace OCC
