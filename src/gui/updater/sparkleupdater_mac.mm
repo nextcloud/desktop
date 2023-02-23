@@ -38,8 +38,9 @@ public:
         [delegate release];
     }
 
-    void statusChanged(const QString &statusString)
+    void statusChanged(const OCC::SparkleUpdater::State state, const QString &statusString = {})
     {
+        q->_state = state;
         q->_statusString = statusString;
         emit q->statusChanged();
     }
@@ -79,10 +80,10 @@ private:
     return YES;
 }
 
-- (void)notifyChange:(const QString&)statusString
+- (void)notifyStateChange:(const OCC::SparkleUpdater::State)state displayStatus:(const QString&)statusString
 {
     qCDebug(OCC::lcUpdater) << statusString;
-    _owner->statusChanged(statusString);
+    _owner->statusChanged(state, statusString);
 }
 
 // Sent when a valid update is found by the update driver.
@@ -90,14 +91,16 @@ private:
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
-    [self notifyChange:QStringLiteral("Found a valid update.")];
+    [self notifyStateChange:OCC::SparkleUpdater::State::AwaitingUserInput
+              displayStatus:QStringLiteral("Found a valid update.")];
 }
 
 // Sent when a valid update is not found.
 - (void)updaterDidNotFindUpdate:(SUUpdater *)update
 {
     Q_UNUSED(update)
-    [self notifyChange:QStringLiteral("No valid update found.")];
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
+              displayStatus:QStringLiteral("No valid update found.")];
 }
 
 // Sent immediately before installing the specified update.
@@ -105,21 +108,24 @@ private:
 {
     Q_UNUSED(updater)
     Q_UNUSED(update)
-    [self notifyChange:QStringLiteral("About to install update.")];
+    [self notifyStateChange:OCC::SparkleUpdater::State::Working
+              displayStatus:QStringLiteral("About to install update.")];
 }
 
 - (void)updater:(SUUpdater *)updater didAbortWithError:(NSError *)error
 {
     Q_UNUSED(updater)
     const QString message(QStringLiteral("Aborted with error: ") + QString::fromNSString(error.description));
-    [self notifyChange:message];
+    [self notifyStateChange:OCC::SparkleUpdater::State::Idle
+              displayStatus:message];
 }
 
 - (void)updater:(SUUpdater *)updater didFinishLoadingAppcast:(SUAppcast *)appcast
 {
     Q_UNUSED(updater)
     Q_UNUSED(appcast)
-    [self notifyChange:QStringLiteral("Finished loading appcast.")];
+    [self notifyStateChange:OCC::SparkleUpdater::State::Working
+              displayStatus:QStringLiteral("Finished loading appcast.")];
 }
 
 
@@ -195,9 +201,14 @@ void SparkleUpdater::backgroundCheckForUpdate()
     }
 }
 
-QString SparkleUpdater::statusString()
+QString SparkleUpdater::statusString() const
 {
     return _statusString;
+}
+
+SparkleUpdater::State SparkleUpdater::state() const
+{
+    return _state;
 }
 
 } // namespace OCC
