@@ -17,6 +17,87 @@ class TestLocalDiscovery : public QObject
     Q_OBJECT
 
 private slots:
+    void testSelectiveSyncQuotaExceededDataLoss()
+    {
+        FakeFolder fakeFolder{FileInfo{}};
+
+        // folders that fit the quota
+        fakeFolder.localModifier().mkdir("big-files");
+        fakeFolder.localModifier().insert("big-files/bigfile_A.data", 1000);
+        fakeFolder.localModifier().insert("big-files/bigfile_B.data", 1000);
+        fakeFolder.localModifier().insert("big-files/bigfile_C.data", 1000);
+        fakeFolder.localModifier().mkdir("more-big-files");
+        fakeFolder.localModifier().insert("more-big-files/bigfile_A.data", 1000);
+        fakeFolder.localModifier().insert("more-big-files/bigfile_B.data", 1000);
+        fakeFolder.localModifier().insert("more-big-files/bigfile_C.data", 1000);
+        QVERIFY(fakeFolder.syncOnce());
+        QCOMPARE(fakeFolder.currentLocalState(), fakeFolder.currentRemoteState());
+
+        // folders that won't fit
+        fakeFolder.localModifier().mkdir("big-files-wont-fit");
+        fakeFolder.localModifier().insert("big-files-wont-fit/bigfile_A.data", 800);
+        fakeFolder.localModifier().insert("big-files-wont-fit/bigfile_B.data", 800);
+        fakeFolder.localModifier().mkdir("more-big-files-wont-fit");
+        fakeFolder.localModifier().insert("more-big-files-wont-fit/bigfile_A.data", 800);
+        fakeFolder.localModifier().insert("more-big-files-wont-fit/bigfile_B.data", 800);
+
+        const auto remoteQuota = 600;
+        QObject parent;
+        fakeFolder.setServerOverride([&](QNetworkAccessManager::Operation op, const QNetworkRequest &request, QIODevice *outgoingData) -> QNetworkReply * {
+            Q_UNUSED(outgoingData)
+            if (op == QNetworkAccessManager::PutOperation) {
+                if (request.rawHeader("OC-Total-Length").toInt() > remoteQuota) {
+                    return new FakeErrorReply(op, request, &parent, 507);
+                }
+            }
+            return nullptr;
+        });
+
+        QVERIFY(!fakeFolder.syncOnce());
+
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {"big-files-wont-fit/", "more-big-files-wont-fit/"});
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {"big-files-wont-fit/", "more-big-files-wont-fit/"});
+
+        QVERIFY(fakeFolder.syncEngine().journal()->wipeErrorBlacklist());
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("more-big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("more-big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("more-big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("more-big-files-wont-fit/bigfile_B.data"));
+
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {"big-files-wont-fit/", "more-big-files-wont-fit/", "big-files/"});
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {"more-big-files/"});
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {"big-files/", "more-big-files/"});
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("more-big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("more-big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("more-big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("more-big-files-wont-fit/bigfile_B.data"));
+
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncWhiteList, {"big-files/", "more-big-files/"});
+        fakeFolder.syncEngine().journal()->setSelectiveSyncList(SyncJournalDb::SelectiveSyncBlackList, {"big-files-wont-fit/", "more-big-files-wont-fit/"});
+        fakeFolder.syncEngine().setLocalDiscoveryOptions(LocalDiscoveryStyle::DatabaseAndFilesystem, {"big-files/", "more-big-files/"});
+
+        QVERIFY(fakeFolder.syncOnce());
+        QVERIFY(fakeFolder.currentLocalState().find("big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("more-big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(fakeFolder.currentLocalState().find("more-big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("big-files-wont-fit/bigfile_B.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("more-big-files-wont-fit/bigfile_A.data"));
+        QVERIFY(!fakeFolder.currentRemoteState().find("more-big-files-wont-fit/bigfile_B.data"));
+    }
+
     // Check correct behavior when local discovery is partially drawn from the db
     void testLocalDiscoveryStyle()
     {
