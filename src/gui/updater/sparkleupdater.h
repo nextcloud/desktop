@@ -24,8 +24,11 @@ namespace OCC {
 class SparkleUpdater : public Updater
 {
     Q_OBJECT
+    Q_PROPERTY(QString statusString READ statusString NOTIFY statusChanged)
+    Q_PROPERTY(State state READ state NOTIFY statusChanged)
 
 public:
+    class SparkleInterface;
     enum class State {
         Unknown = 0,
         Idle,
@@ -33,22 +36,19 @@ public:
         AwaitingUserInput
     };
 
-    SparkleUpdater(const QUrl &appCastUrl);
-    ~SparkleUpdater();
+    explicit SparkleUpdater(const QUrl &appCastUrl);
+    ~SparkleUpdater() override;
 
-    static bool autoUpdaterAllowed();
+    [[nodiscard]] static bool autoUpdaterAllowed();
 
+    [[nodiscard]] bool handleStartup() override { return false; }
+    [[nodiscard]] QString statusString() const;
+    [[nodiscard]] State state() const;
+
+public slots:
     void setUpdateUrl(const QUrl &url);
-
-    // unused in this updater
     void checkForUpdate() override;
     void backgroundCheckForUpdate() override;
-    bool handleStartup() override { return false; }
-
-    QString statusString() const;
-    State state() const;
-
-    class SparkleInterface;
 
 signals:
     void statusChanged();
