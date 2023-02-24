@@ -344,10 +344,12 @@ void ownCloudGui::slotComputeOverallSyncStatus()
     case SyncResult::Problem:
         if (trayOverallStatusResult.overallStatus().hasUnresolvedConflicts()) {
             setStatusText(tr("Unresolved %1 conflicts").arg(QString::number(trayOverallStatusResult.overallStatus().numNewConflictItems())));
+            break;
         } else if (trayOverallStatusResult.overallStatus().numBlacklistErrors() != 0) {
             setStatusText(tr("Ignored errors %1").arg(QString::number(trayOverallStatusResult.overallStatus().numBlacklistErrors())));
+            break;
         }
-        break;
+        [[fallthrough]];
     case SyncResult::Success: {
         QString lastSyncDoneString;
         // display only the time in case the last sync was today

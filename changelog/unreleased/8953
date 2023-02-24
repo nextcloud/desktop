@@ -1,0 +1,3 @@
+Bugfix: Display sync date in system tray context menu when files where ignored
+
+https://github.com/owncloud/client/issues/8953
