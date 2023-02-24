@@ -22,6 +22,7 @@ namespace OCC {
 WinPlatform::WinPlatform()
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
+    QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton, true);
 }
 
 WinPlatform::~WinPlatform()

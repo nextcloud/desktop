@@ -404,7 +404,6 @@ void NSISUpdater::showNoUrlDialog(const UpdateInfo &info)
     // if the version tag is set, there is a newer version.
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);
@@ -455,7 +454,6 @@ void NSISUpdater::showUpdateErrorDialog(const QString &targetVersion)
 {
     QDialog *msgBox = new QDialog;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setWindowFlags(msgBox->windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     QIcon infoIcon = msgBox->style()->standardIcon(QStyle::SP_MessageBoxInformation);
     int iconSize = msgBox->style()->pixelMetric(QStyle::PM_MessageBoxIconSize);

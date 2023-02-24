@@ -173,7 +173,7 @@ private:
 };
 
 SettingsDialog::SettingsDialog(ownCloudGui *gui, QWidget *parent)
-    : QMainWindow(parent, Qt::WindowFlags() & ~Qt::WindowContextHelpButtonHint)
+    : QMainWindow(parent)
     , _ui(new Ui::SettingsDialog)
     , _gui(gui)
 {

@@ -223,5 +223,4 @@ void Utility::setModal(QWidget *w)
 #else
     w->setWindowModality(Qt::ApplicationModal);
 #endif
-    w->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 }
