@@ -4914,7 +4914,7 @@ Server replied with error: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="571"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
