@@ -342,7 +342,7 @@ void ShareModel::handlePlaceholderLinkShare()
 
     if (linkSharePresent && placeholderLinkSharePresent) {
         slotRemoveShareWithId(placeholderLinkShareId);
-    } else if (!linkSharePresent && !placeholderLinkSharePresent) {
+    } else if (!linkSharePresent && !placeholderLinkSharePresent && publicLinkSharesEnabled()) {
         slotAddShare(_placeholderLinkShare);
     }
 }
@@ -402,6 +402,7 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     }
 
     handlePlaceholderLinkShare();
+    Q_EMIT sharesChanged();
 }
 
 void ShareModel::setupInternalLinkShare()
