@@ -19,10 +19,6 @@
 
 namespace OCC {
 
-void Utility::tweakUIStyle()
-{
-}
-
 void Utility::startShellIntegration()
 {
 }

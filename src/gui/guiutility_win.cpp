@@ -19,18 +19,6 @@
 
 namespace OCC {
 
-void Utility::tweakUIStyle()
-{
-    // The Windows style still has pixelated elements with Qt 5.6,
-    // it's recommended to use the Fusion style in this case, even
-    // though it looks slightly less native. Check here after the
-    // QApplication was constructed, but before any QWidget is
-    // constructed.
-    if (qGuiApp->devicePixelRatio() > 1) {
-        QApplication::setStyle(QStringLiteral("fusion"));
-    }
-}
-
 void Utility::startShellIntegration()
 {
 }

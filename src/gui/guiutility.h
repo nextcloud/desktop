@@ -55,8 +55,6 @@ namespace Utility {
 
     QIcon getCoreIcon(const QString &icon_name);
 
-    void tweakUIStyle();
-
     void startShellIntegration();
 
     QString socketApiSocketPath();

@@ -22,10 +22,6 @@
 
 namespace OCC {
 
-void Utility::tweakUIStyle()
-{
-}
-
 void Utility::startShellIntegration()
 {
     QString bundlePath = QUrl::fromNSURL([NSBundle mainBundle].bundleURL).path();

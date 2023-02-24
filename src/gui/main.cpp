@@ -56,8 +56,6 @@ int main(int argc, char **argv)
     // Create the (Q)Application instance:
     OCC::Application app(argc, argv, platform.get());
 
-    Utility::tweakUIStyle();
-
 #ifdef Q_OS_WIN
     // TODO: 2.11 move to platform class
     Utility::startShutdownWatcher();
