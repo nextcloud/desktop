@@ -19,6 +19,7 @@
 #include <QJsonArray>
 
 #include "ocsshareejob.h"
+#include "theme.h"
 
 namespace OCC {
 
@@ -29,7 +30,10 @@ ShareeModel::ShareeModel(QObject *parent)
 {
     _searchRateLimitingTimer.setSingleShot(true);
     _searchRateLimitingTimer.setInterval(500);
+    _searchGloballyPlaceholder.reset(new Sharee({}, tr("Search globally"), Sharee::LookupServerSearch, QStringLiteral("magnifying-glass.svg")));
+    _searchGloballyPlaceholder->setIsIconColourful(true);
     connect(&_searchRateLimitingTimer, &QTimer::timeout, this, &ShareeModel::fetch);
+    connect(Theme::instance(), &Theme::darkModeChanged, this, &ShareeModel::slotDarkModeChanged);
 }
 
 // ---------------------- QAbstractListModel methods ---------------------- //
@@ -48,6 +52,8 @@ QHash<int, QByteArray> ShareeModel::roleNames() const
     auto roles = QAbstractListModel::roleNames();
     roles[ShareeRole] = "sharee";
     roles[AutoCompleterStringMatchRole] = "autoCompleterStringMatch";
+    roles[TypeRole] = "type";
+    roles[IconRole] = "icon";
 
     return roles;
 }
@@ -68,6 +74,10 @@ QVariant ShareeModel::data(const QModelIndex &index, const int role) const
     case AutoCompleterStringMatchRole:
         // Don't show this to the user
         return QString(sharee->displayName() + " (" + sharee->shareWith() + ")");
+    case IconRole:
+        return sharee->iconUrlColoured();
+    case TypeRole:
+        return sharee->type();
     case ShareeRole:
         return QVariant::fromValue(sharee);
     }
@@ -119,6 +129,12 @@ void ShareeModel::setSearchString(const QString &searchString)
         return;
     }
 
+    beginResetModel();
+    _sharees.clear();
+    endResetModel();
+
+    Q_EMIT shareesReady();
+
     _searchString = searchString;
     Q_EMIT searchStringChanged();
 
@@ -165,16 +181,28 @@ void ShareeModel::setShareeBlocklist(const QVariantList shareeBlocklist)
     filterSharees();
 }
 
+void ShareeModel::searchGlobally()
+{
+    setLookupMode(ShareeModel::LookupMode::GlobalSearch);
+    beginResetModel();
+    _sharees.clear();
+    endResetModel();
+
+    Q_EMIT shareesReady();
+    fetch();
+}
+
 // ------------------------- Internal data methods ------------------------- //
 
 void ShareeModel::fetch()
 {
-    if(!_accountState || !_accountState->account() || _searchString.isEmpty()) {
+    if (!_accountState || !_accountState->account() || _searchString.isEmpty()) {
         qCInfo(lcShareeModel) << "Not fetching sharees for searchString: " << _searchString;
         return;
     }
 
     _fetchOngoing = true;
+
     Q_EMIT fetchOngoingChanged();
 
     const auto shareItemTypeString = _shareItemIsFolder ? QStringLiteral("folder") : QStringLiteral("file");
@@ -233,9 +261,35 @@ void ShareeModel::shareesFetched(const QJsonDocument &reply)
 
     beginResetModel();
     _sharees = newSharees;
+    insertSearchGloballyItem(newSharees);
     endResetModel();
 
     Q_EMIT shareesReady();
+
+    setLookupMode(LookupMode::LocalSearch);
+}
+
+void ShareeModel::insertSearchGloballyItem(const QVector<ShareePtr> &newShareesFetched)
+{
+    const auto foundIt = std::find_if(std::begin(_sharees), std::end(_sharees), [](const ShareePtr &sharee) {
+        return sharee->type() == Sharee::LookupServerSearch || sharee->type() == Sharee::LookupServerSearchResults;
+    });
+
+    // remove it if it somehow appeared not at the end, to avoid writing complex proxy models for sorting
+    if (foundIt != std::end(_sharees) && (foundIt + 1) != std::end(_sharees)) {
+        _sharees.erase(foundIt);
+    }
+
+    _sharees.push_back(_searchGloballyPlaceholder);
+
+    if (lookupMode() == LookupMode::GlobalSearch) {
+        const auto displayName = newShareesFetched.isEmpty() ? tr("No results found") : tr("Global search results");
+        _searchGloballyPlaceholder->setDisplayName(displayName);
+        _searchGloballyPlaceholder->setType(Sharee::LookupServerSearchResults);
+    } else {
+        _searchGloballyPlaceholder->setDisplayName(tr("Search globally"));
+        _searchGloballyPlaceholder->setType(Sharee::LookupServerSearch);
+    }
 }
 
 ShareePtr ShareeModel::parseSharee(const QJsonObject &data) const
@@ -273,6 +327,15 @@ void ShareeModel::filterSharees()
     }
 
     Q_EMIT shareesReady();
+}
+
+void ShareeModel::slotDarkModeChanged()
+{
+    for (int i = 0; i < _sharees.size(); ++i) {
+        if (_sharees[i]->updateIconUrl()) {
+            Q_EMIT dataChanged(index(i), index(i), {IconRole});
+        }
+    }
 }
 
 }

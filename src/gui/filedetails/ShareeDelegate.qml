@@ -20,8 +20,54 @@ import QtQuick.Controls 2.15
 import com.nextcloud.desktopclient 1.0
 import Style 1.0
 
+import "../tray"
+
 ItemDelegate {
     id: root
 
     text: model.display
+
+    contentItem: RowLayout {
+        height: visible ? implicitHeight : 0
+
+        Loader {
+              id: shareeIconLoader
+
+              Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+              active: model.icon !== ""
+
+              sourceComponent: Image {
+                  id: shareeIcon
+
+                  horizontalAlignment: Qt.AlignLeft
+                  verticalAlignment: Qt.AlignVCenter
+
+                  width: height
+                  height: shareeLabel.height
+
+                  smooth: true
+                  antialiasing: true
+                  mipmap: true
+                  fillMode: Image.PreserveAspectFit
+
+                  source: model.icon
+
+                  sourceSize: Qt.size(shareeIcon.height * 1.0, shareeIcon.height * 1.0)
+              }
+        }
+
+        EnforcedPlainTextLabel {
+            id: shareeLabel
+            Layout.preferredHeight: unifiedSearchResultSkeletonItemDetails.iconWidth
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+
+            Layout.fillWidth: true
+
+            horizontalAlignment: Text.AlignLeft
+            verticalAlignment: Text.AlignVCenter
+            text: model.display
+            color: Style.ncTextColor
+        }
+    }
 }
