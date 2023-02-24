@@ -1,0 +1,3 @@
+Bugfix: Fix computation of sync status when multiple folders are synced
+
+https://github.com/owncloud/client/issues/9270

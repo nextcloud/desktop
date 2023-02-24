@@ -37,8 +37,8 @@ public:
     // overall status
     enum Status {
         Undefined,
-        NotYetStarted,
         Success,
+        NotYetStarted,
         SyncPrepare,
         SyncRunning,
         SyncAbortRequested,

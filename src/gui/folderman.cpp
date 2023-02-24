@@ -85,42 +85,12 @@ void TrayOverallStatusResult::addResult(Folder *f)
         lastSyncDone = time;
     }
 
-    const auto status = f->syncPaused() ? SyncResult::Paused : f->syncResult().status();
-    switch (status) {
-    case SyncResult::Paused:
-        Q_FALLTHROUGH();
-    case SyncResult::SyncAbortRequested:
-        // Problem has a high enum value but real problems and errors
-        // take precedence
-        if (_overallStatus.status() < SyncResult::Success) {
-            _overallStatus.setStatus(status);
-        }
-        break;
-    case SyncResult::Success:
-        Q_FALLTHROUGH();
-    case SyncResult::NotYetStarted:
-        Q_FALLTHROUGH();
-    case SyncResult::SyncPrepare:
-        Q_FALLTHROUGH();
-    case SyncResult::SyncRunning:
-        if (_overallStatus.status() < SyncResult::Problem) {
-            _overallStatus.setStatus(status);
-        }
-        break;
-    case SyncResult::Undefined:
-        if (_overallStatus.status() < SyncResult::Problem) {
-            _overallStatus.setStatus(SyncResult::Problem);
-        }
-        break;
-    case SyncResult::Problem:
-        Q_FALLTHROUGH();
-    case SyncResult::Error:
-        Q_FALLTHROUGH();
-    case SyncResult::SetupError:
-        if (_overallStatus.status() < status) {
-            _overallStatus.setStatus(status);
-        }
-        break;
+    auto status = f->syncPaused() ? SyncResult::Paused : f->syncResult().status();
+    if (status == SyncResult::Undefined) {
+        status = SyncResult::Problem;
+    }
+    if (status > _overallStatus.status()) {
+        _overallStatus.setStatus(status);
     }
 }
 
@@ -1158,6 +1128,7 @@ QString FolderMan::trayTooltipStatusString(
         folderMessage = tr("Sync is running.");
         break;
     case SyncResult::Success:
+        [[fallthrough]];
     case SyncResult::Problem:
         if (result.hasUnresolvedConflicts()) {
             folderMessage = tr("Sync was successful, unresolved conflicts.");
