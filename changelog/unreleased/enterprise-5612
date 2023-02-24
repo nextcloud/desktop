@@ -1,4 +1,4 @@
-Bugfix: Handle showVirtualFilesOption as disableVirtualFiles
+Bugfix: Handle hide VirtualFiles options as disable VirtualFiles
 
 Due to legacy reasons the branding flag and its fuction differ.
 
