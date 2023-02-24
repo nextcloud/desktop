@@ -93,11 +93,8 @@ private:
  *
  * Jobs are built by the startJob factory method, which creates a job instance as well as a network request, wires the required signals up, then sends the request.
  */
-class OWNCLOUDSYNC_EXPORT AbstractCoreJobFactory : public QObject
+class OWNCLOUDSYNC_EXPORT AbstractCoreJobFactory
 {
-    // TODO: 4.0 don't inherit QObject
-    Q_OBJECT
-
 public:
     /**
      * Create a new instance
@@ -105,7 +102,7 @@ public:
      * @param parent optional parent which will be set at this object's parent as well as all jobs' parent.
      */
     explicit AbstractCoreJobFactory(QNetworkAccessManager *nam);
-    ~AbstractCoreJobFactory() override;
+    virtual ~AbstractCoreJobFactory();
 
     /**
      * Send network request and return associated job.
@@ -147,5 +144,4 @@ protected:
 private:
     QNetworkAccessManager *_nam;
 };
-
 }

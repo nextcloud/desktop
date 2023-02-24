@@ -22,6 +22,7 @@
 #include "gui/tlserrordialog.h"
 #include "gui/updateurldialog.h"
 
+#include <QApplication>
 #include <QNetworkReply>
 
 namespace {
@@ -54,7 +55,7 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url, QObject *parent)
 
                 qCCritical(lcResolveUrl) << QStringLiteral("Failed to resolve URL %1, error: %2").arg(oldUrl.toDisplayString(), reply->errorString());
 
-                setJobError(job, tr("Could not detect compatible server at %1").arg(oldUrl.toDisplayString()));
+                setJobError(job, QApplication::translate("ResolveUrlJobFactory", "Could not detect compatible server at %1").arg(oldUrl.toDisplayString()));
                 qCWarning(lcResolveUrl) << job->errorMessage();
                 return;
             }
@@ -78,12 +79,12 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url, QObject *parent)
                         newUrl,
                         nullptr);
 
-                    connect(dialog, &UpdateUrlDialog::accepted, job, [=]() {
+                    QObject::connect(dialog, &UpdateUrlDialog::accepted, job, [=]() {
                         setJobResult(job, newUrl);
                     });
 
-                    connect(dialog, &UpdateUrlDialog::rejected, job, [=]() {
-                        setJobError(job, tr("User rejected redirect from %1 to %2").arg(oldUrl.toDisplayString(), newUrl.toDisplayString()));
+                    QObject::connect(dialog, &UpdateUrlDialog::rejected, job, [=]() {
+                        setJobError(job, QApplication::translate("ResolveUrlJobFactory", "User rejected redirect from %1 to %2").arg(oldUrl.toDisplayString(), newUrl.toDisplayString()));
                     });
 
                     dialog->show();
@@ -94,24 +95,24 @@ CoreJob *ResolveUrlJobFactory::startJob(const QUrl &url, QObject *parent)
         };
     };
 
-    connect(job->reply(), &QNetworkReply::finished, job, makeFinishedHandler(job->reply()));
+    QObject::connect(job->reply(), &QNetworkReply::finished, job, makeFinishedHandler(job->reply()));
 
-    connect(job->reply(), &QNetworkReply::sslErrors, job, [req, job, makeFinishedHandler, nam = nam()](const QList<QSslError> &errors) mutable {
+    QObject::connect(job->reply(), &QNetworkReply::sslErrors, job, [req, job, makeFinishedHandler, nam = nam()](const QList<QSslError> &errors) mutable {
         auto *tlsErrorDialog = new TlsErrorDialog(errors, job->reply()->url().host(), ocApp()->gui()->settingsDialog());
 
         job->reply()->setProperty(abortedBySslErrorHandlerC, true);
         job->reply()->abort();
 
-        connect(tlsErrorDialog, &TlsErrorDialog::accepted, job, [job, req, errors, nam, makeFinishedHandler]() mutable {
+        QObject::connect(tlsErrorDialog, &TlsErrorDialog::accepted, job, [job, req, errors, nam, makeFinishedHandler]() mutable {
             for (const auto &error : errors) {
                 Q_EMIT job->caCertificateAccepted(error.certificate());
             }
             auto *reply = nam->get(req);
-            connect(reply, &QNetworkReply::finished, job, makeFinishedHandler(reply));
+            QObject::connect(reply, &QNetworkReply::finished, job, makeFinishedHandler(reply));
         });
 
-        connect(tlsErrorDialog, &TlsErrorDialog::rejected, job, [job]() {
-            setJobError(job, tr("User rejected invalid SSL certificate"));
+        QObject::connect(tlsErrorDialog, &TlsErrorDialog::rejected, job, [job]() {
+            setJobError(job, QApplication::translate("ResolveUrlJobFactory", "User rejected invalid SSL certificate"));
         });
 
         tlsErrorDialog->show();

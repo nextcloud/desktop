@@ -38,8 +38,6 @@ private:
 
 class OWNCLOUDSYNC_EXPORT CheckServerJobFactory : public AbstractCoreJobFactory
 {
-    Q_OBJECT
-
 public:
     using AbstractCoreJobFactory::AbstractCoreJobFactory;
 

@@ -19,6 +19,7 @@
 #include "creds/httpcredentials.h"
 #include "theme.h"
 
+#include <QApplication>
 #include <QLoggingCategory>
 
 Q_LOGGING_CATEGORY(lcDetermineAuthTypeJob, "sync.networkjob.determineauthtype2", QtInfoMsg);
@@ -42,15 +43,15 @@ CoreJob *DetermineAuthTypeJobFactory::startJob(const QUrl &url, QObject *parent)
 
     auto job = new CoreJob(nam()->sendCustomRequest(req, "PROPFIND"), parent);
 
-    connect(job->reply(), &QNetworkReply::finished, job, [job] {
+    QObject::connect(job->reply(), &QNetworkReply::finished, job, [job] {
         switch (job->reply()->error()) {
         case QNetworkReply::AuthenticationRequiredError:
             break;
         case QNetworkReply::NoError:
-            setJobError(job, tr("Server did not ask for authorization"));
+            setJobError(job, QApplication::translate("DetermineAuthTypeJobFactory", "Server did not ask for authorization"));
             return;
         default:
-            setJobError(job, tr("Failed to determine auth type: %1").arg(job->reply()->errorString()));
+            setJobError(job, QApplication::translate("DetermineAuthTypeJobFactory", "Failed to determine auth type: %1").arg(job->reply()->errorString()));
             return;
         }
 

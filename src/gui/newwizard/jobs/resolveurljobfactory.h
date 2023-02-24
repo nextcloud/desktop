@@ -20,12 +20,9 @@ namespace OCC::Wizard::Jobs {
 
 class ResolveUrlJobFactory : public AbstractCoreJobFactory
 {
-    Q_OBJECT
-
 public:
     explicit ResolveUrlJobFactory(QNetworkAccessManager *nam);
 
     CoreJob *startJob(const QUrl &url, QObject *parent) override;
 };
-
 }

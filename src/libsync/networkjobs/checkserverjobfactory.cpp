@@ -91,14 +91,14 @@ CoreJob *CheckServerJobFactory::startJob(const QUrl &url, QObject *parent)
 
     auto job = new CheckServerCoreJob(nam()->get(req), parent);
 
-    connect(job->reply(), &QNetworkReply::redirected, job, [job] {
+    QObject::connect(job->reply(), &QNetworkReply::redirected, job, [job] {
         const auto code = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
         if (code == 302 || code == 307) {
             job->_redirectDistinct = false;
         }
     });
 
-    connect(job->reply(), &QNetworkReply::finished, job, [url, job] {
+    QObject::connect(job->reply(), &QNetworkReply::finished, job, [url, job] {
         // need a mutable copy
         auto serverUrl = url;
 

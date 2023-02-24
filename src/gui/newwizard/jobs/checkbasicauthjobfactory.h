@@ -20,8 +20,6 @@ namespace OCC::Wizard::Jobs {
 
 class CheckBasicAuthJobFactory : public AbstractCoreJobFactory
 {
-    Q_OBJECT
-
 public:
     CheckBasicAuthJobFactory(QNetworkAccessManager *nam, const QString &username, const QString &password);
 
@@ -31,5 +29,4 @@ private:
     QString _username;
     QString _password;
 };
-
 }

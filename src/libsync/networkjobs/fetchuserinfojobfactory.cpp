@@ -16,6 +16,7 @@
 #include "common/utility.h"
 #include "creds/httpcredentials.h"
 
+#include <QApplication>
 #include <QJsonParseError>
 #include <QNetworkReply>
 #include <QStringLiteral>
@@ -58,12 +59,12 @@ CoreJob *FetchUserInfoJobFactory::startJob(const QUrl &url, QObject *parent)
 
     auto *job = new CoreJob(nam()->get(req), parent);
 
-    connect(job->reply(), &QNetworkReply::finished, job, [job] {
+    QObject::connect(job->reply(), &QNetworkReply::finished, job, [job] {
         const auto data = job->reply()->readAll();
         const auto statusCode = job->reply()->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 
         if (job->reply()->error() != QNetworkReply::NoError || statusCode != 200) {
-            setJobError(job, tr("Failed to retrieve user info"));
+            setJobError(job, QApplication::translate("FetchUserInfoJobFactory", "Failed to retrieve user info"));
         } else {
             qCDebug(lcFetchUserInfoJob) << data;
 

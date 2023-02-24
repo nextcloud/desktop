@@ -21,6 +21,7 @@
 #include "gui/updateurldialog.h"
 #include "theme.h"
 
+#include <QApplication>
 #include <QNetworkReply>
 
 namespace OCC::Wizard::Jobs {
@@ -36,7 +37,7 @@ CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url, QObject *parent)
 
     auto *job = new CoreJob(nam()->sendCustomRequest(req, "PROPFIND"), parent);
 
-    connect(job->reply(), &QNetworkReply::finished, job, [job]() {
+    QObject::connect(job->reply(), &QNetworkReply::finished, job, [job]() {
         switch (job->reply()->error()) {
         case QNetworkReply::NoError:
             setJobResult(job, true);
@@ -48,7 +49,7 @@ CoreJob *CheckBasicAuthJobFactory::startJob(const QUrl &url, QObject *parent)
             }
             Q_FALLTHROUGH();
         default:
-            setJobError(job, tr("Invalid reply received from server"));
+            setJobError(job, QApplication::translate("CheckBasicAuthJobFactory", "Invalid reply received from server"));
             return;
         }
     });

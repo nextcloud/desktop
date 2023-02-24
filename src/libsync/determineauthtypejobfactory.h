@@ -25,7 +25,6 @@ namespace OCC {
 
 class OWNCLOUDSYNC_EXPORT DetermineAuthTypeJobFactory : public AbstractCoreJobFactory
 {
-    Q_OBJECT
 public:
     using AuthType = DetermineAuthTypeJob::AuthType;
 
@@ -34,5 +33,4 @@ public:
 
     CoreJob *startJob(const QUrl &url, QObject *parent) override;
 };
-
 }

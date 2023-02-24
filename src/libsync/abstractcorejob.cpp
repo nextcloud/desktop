@@ -18,8 +18,7 @@
 using namespace OCC;
 
 AbstractCoreJobFactory::AbstractCoreJobFactory(QNetworkAccessManager *nam)
-    : QObject()
-    , _nam(nam)
+    : _nam(nam)
 {
 }
 
@@ -85,7 +84,6 @@ CoreJob::CoreJob(QNetworkReply *reply, QObject *parent)
     : QObject(parent)
     , _reply(reply)
 {
-    Q_ASSERT(!qobject_cast<AbstractCoreJobFactory *>(parent));
     _reply->setParent(this);
 }
 
