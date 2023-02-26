@@ -4913,7 +4913,7 @@ Sunucunun verdiği hata yanıtı: %2</translation>
     <message>
         <location filename="../src/libsync/theme.cpp" line="571"/>
         <source>&lt;p&gt;This release was supplied by %1.&lt;/p&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;p&gt;Bu sürüm %1 tarafından hazırlanmıştır.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
