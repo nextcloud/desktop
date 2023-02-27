@@ -357,6 +357,48 @@ class FileProviderExtension: NSObject, NSFileProviderReplicatedExtension, NKComm
 
         NSLog("About to upload item with identifier: %@ of type: %@ (is folder: %@) and filename: %@ to server url: %@ with contents located at: %@", item.itemIdentifier.rawValue, item.contentType?.identifier ?? "UNKNOWN", itemTemplateIsFolder ? "yes" : "no", item.filename, newServerUrlFileName, fileNameLocalPath)
 
+        if itemTemplateIsFolder {
+            let ocId = item.itemIdentifier.rawValue
+
+            guard changedFields.contains(.filename) else {
+                NSLog("System requested modification for folder with ocID %@ (%@) of something other than folder name.", ocId, newServerUrlFileName)
+                completionHandler(item, [], false, nil)
+                return Progress()
+            }
+
+            guard let metadata = dbManager.itemMetadataFromOcId(ocId) else {
+                NSLog("Could not acquire metadata of item with identifier: %@", ocId)
+                completionHandler(nil, [], false, NSFileProviderError(.noSuchItem))
+                return Progress()
+            }
+
+            let oldServerUrlFileName = metadata.serverUrl + "/" + metadata.fileName
+
+            self.ncKit.moveFileOrFolder(serverUrlFileNameSource: oldServerUrlFileName,
+                                        serverUrlFileNameDestination: newServerUrlFileName,
+                                        overwrite: false) { account, error in
+                guard error == .success else {
+                    NSLog("Could not move folder with name: %@, received error: %@", item.filename, error.errorDescription)
+                    completionHandler(nil, [], false, NSFileProviderError(.serverUnreachable))
+                    return
+                }
+
+                dbManager.renameDirectoryAndPropagateToChildren(ocId: ocId, newServerUrl: newServerUrlFileName, newFileName: item.filename)
+
+                guard let newMetadata = dbManager.itemMetadataFromOcId(ocId) else {
+                    NSLog("Could not acquire metadata of item with identifier: %@", ocId)
+                    completionHandler(nil, [], false, NSFileProviderError(.noSuchItem))
+                    return
+                }
+
+                let fpItem = FileProviderItem(metadata: newMetadata, parentItemIdentifier: parentItemIdentifier, ncKit: self.ncKit)
+
+                completionHandler(fpItem, [], false, nil)
+            }
+
+            return Progress()
+        }
+
         self.ncKit.upload(serverUrlFileName: newServerUrlFileName,
                           fileNameLocalPath: fileNameLocalPath,
                           requestHandler: { _ in
