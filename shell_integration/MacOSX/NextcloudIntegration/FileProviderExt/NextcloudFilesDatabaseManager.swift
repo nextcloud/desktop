@@ -416,6 +416,54 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    func renameDirectoryAndPropagateToChildren(ocId: String, newServerUrl: String, newFileName: String) {
+
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                guard let directoryTableResult = database.objects(NextcloudDirectoryMetadataTable.self).filter("ocId == %@", ocId).first,
+                      let directoryItemResult = database.objects(NextcloudItemMetadataTable.self).filter("ocId == %@", ocId).first else {
+                    NSLog("Could not find a directory with ocID %@", ocId)
+                    return
+                }
+
+                let oldServerUrl = directoryTableResult.serverUrl
+
+                let childItemResults = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryTableResult.account, oldServerUrl)
+                let childDirectoryResults = database.objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", directoryTableResult.account, oldServerUrl)
+
+                directoryTableResult.serverUrl = newServerUrl
+                database.add(directoryTableResult, update: .all)
+                directoryItemResult.fileName = newFileName
+                directoryItemResult.fileNameView = newFileName
+                database.add(directoryItemResult, update: .all)
+                NSLog("Renamed directory at %@ to %@", oldServerUrl, newServerUrl)
+
+                for childItem in childItemResults {
+                    let oldServerUrl = childItem.serverUrl
+                    let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldServerUrl, with: newServerUrl)
+                    childItem.serverUrl = movedServerUrl
+                    database.add(childItem, update: .all)
+                    NSLog("Moved childItem at %@ to %@", oldServerUrl, movedServerUrl)
+                }
+
+                for childDirectory in childDirectoryResults {
+                    let oldServerUrl = childDirectory.serverUrl
+                    let oldParentServerUrl = childDirectory.parentDirectoryServerUrl
+                    let movedServerUrl = oldServerUrl.replacingOccurrences(of: oldServerUrl, with: newServerUrl)
+                    let movedParentServerUrl = oldServerUrl.replacingOccurrences(of: oldParentServerUrl, with: newServerUrl)
+                    childDirectory.serverUrl = movedServerUrl
+                    childDirectory.parentDirectoryServerUrl = movedParentServerUrl
+                    database.add(childDirectory, update: .all)
+                    NSLog("Moved childDirectory at %@ to %@", oldServerUrl, movedServerUrl)
+                }
+            }
+        } catch let error {
+            NSLog("Could not rename directory metadata with ocId: %@ serverUrl: %@, received error: %@", ocId, newServerUrl, error.localizedDescription)
+        }
+    }
+
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId).first {
             return NextcloudLocalFileMetadataTable(value: metadata)
