@@ -226,6 +226,19 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    func deleteItemMetadata(account: String, serverUrl: String) {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                let results = database.objects(NextcloudItemMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl)
+                database.delete(results)
+            }
+        } catch let error {
+            NSLog("Could not delete item metadata with serverUrl: %@, received error: %@", serverUrl, error.localizedDescription)
+        }
+    }
+
     func directoryMetadata(account: String, serverUrl: String) -> NextcloudDirectoryMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl == %@", account, serverUrl).first {
             return NextcloudDirectoryMetadataTable(value: metadata)
@@ -385,6 +398,24 @@ class NextcloudFilesDatabaseManager : NSObject {
         }
     }
 
+    func deleteDirectoryAndSubdirectoriesMetadata(account: String, serverUrl: String) {
+        let database = ncDatabase()
+        let results = database.objects(NextcloudDirectoryMetadataTable.self).filter("account == %@ AND serverUrl BEGINSWITH %@", account, serverUrl)
+
+        for result in results {
+            deleteItemMetadata(account: result.account, serverUrl: result.serverUrl)
+            deleteLocalFileMetadata(ocId: result.ocId)
+        }
+
+        do {
+            try database.write {
+                database.delete(results)
+            }
+        } catch let error {
+            NSLog("Could not relete directory metadata with serverUrl: %@, received error: %@", serverUrl, error.localizedDescription)
+        }
+    }
+
     func localFileMetadataFromOcId(_ ocId: String) -> NextcloudLocalFileMetadataTable? {
         if let metadata = ncDatabase().objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId).first {
             return NextcloudLocalFileMetadataTable(value: metadata)
@@ -412,6 +443,19 @@ class NextcloudFilesDatabaseManager : NSObject {
             }
         } catch let error {
             NSLog("Could not add local file metadata from item metadata with ocID: %@ and filename: %@, received error: %@", itemMetadata.ocId, itemMetadata.fileNameView, error.localizedDescription)
+        }
+    }
+
+    func deleteLocalFileMetadata(ocId: String) {
+        let database = ncDatabase()
+
+        do {
+            try database.write {
+                let results = database.objects(NextcloudLocalFileMetadataTable.self).filter("ocId == %@", ocId)
+                database.delete(results)
+            }
+        } catch let error {
+            NSLog("Could not delete local file metadata with ocId: %@, received error: %@", ocId, error.localizedDescription)
         }
     }
 
