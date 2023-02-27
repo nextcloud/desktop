@@ -226,3 +226,13 @@ def step(context):
         AccountConnectionWizard.isSyncEverythingOptionChecked(),
         "Sync everything option is checked",
     )
+
+
+@When(r'^the user presses the "([^"]*)" key(?:s)?', regexp=True)
+def step(context, key):
+    AccountSetting.pressKey(key)
+
+
+@Then('the log dialog should be opened')
+def step(context):
+    test.compare(True, AccountSetting.isLogDialogVisible(), "Log dialog is opened")

@@ -35,6 +35,11 @@ class AccountSetting:
         "type": "QLabel",
         "visible": 1,
     }
+    LOG_BROWSER_WINDOW = {
+        "name": "OCC__LogBrowser",
+        "type": "OCC::LogBrowser",
+        "visible": 1,
+    }
 
     @staticmethod
     def accountAction(action):
@@ -108,3 +113,19 @@ class AccountSetting:
     @staticmethod
     def confirmRemoveAllFiles():
         squish.clickButton(squish.waitForObject(AccountSetting.REMOVE_ALL_FILES))
+
+    @staticmethod
+    def pressKey(key):
+        key = "<%s>" % key.replace('"', "")
+        squish.nativeType(key)
+
+    @staticmethod
+    def isLogDialogVisible():
+        visible = False
+        try:
+            visible = squish.waitForObjectExists(
+                AccountSetting.LOG_BROWSER_WINDOW
+            ).visible
+        except:
+            pass
+        return visible
