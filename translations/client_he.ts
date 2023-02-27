@@ -5147,7 +5147,7 @@ Server replied with error: %2</source>
         <location filename="../src/gui/wizard/welcomepage.ui" line="143"/>
         <location filename="../src/gui/wizard/welcomepage.cpp" line="89"/>
         <source>Log in to your %1</source>
-        <translation type="unfinished"/>
+        <translation>כניסה ל-%1</translation>
     </message>
     <message>
         <location filename="../src/gui/wizard/welcomepage.ui" line="156"/>
