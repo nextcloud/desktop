@@ -12,6 +12,7 @@ Summary
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
+* Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 
 Details
 -------
@@ -49,6 +50,10 @@ Details
 
    https://github.com/owncloud/client/issues/10231
    https://github.com/owncloud/client/issues/10529
+
+* Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
+
+   https://github.com/owncloud/client/issues/10537
 
 Changelog for ownCloud Desktop Client [3.2.0] (2024-02-15)
 =======================================
