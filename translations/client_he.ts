@@ -341,7 +341,7 @@
     <message>
         <location filename="../src/libsync/account.cpp" line="904"/>
         <source>File %1 is already locked by %2.</source>
-        <translation type="unfinished"/>
+        <translation>קובץ %1 כבר נעול על ידי %2.</translation>
     </message>
     <message>
         <location filename="../src/libsync/account.cpp" line="906"/>
@@ -4398,7 +4398,7 @@ Server replied with error: %2</source>
     <message>
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1222"/>
         <source>Locked by %1</source>
-        <translation type="unfinished"/>
+        <translation>ננעל על ידי %1</translation>
     </message>
     <message numerus="yes">
         <location filename="../src/gui/socketapi/socketapi.cpp" line="1226"/>
