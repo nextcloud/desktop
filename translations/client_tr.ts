@@ -504,7 +504,7 @@
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="221"/>
         <source>Reconnect</source>
-        <translation type="unfinished"/>
+        <translation>Yeniden bağlan</translation>
     </message>
     <message>
         <location filename="../src/gui/accountsettings.cpp" line="375"/>
