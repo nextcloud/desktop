@@ -12,6 +12,7 @@ Summary
 * Bugfix - Undefined client state after fetching credentials failed: [#10408](https://github.com/owncloud/client/issues/10408)
 * Enhancement - Sync virtual files that are locked by office etc: [#9829](https://github.com/owncloud/client/issues/9829)
 * Enhancement - Replace term (un)pause with a more suitable one: [#10231](https://github.com/owncloud/client/issues/10231)
+* Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 
 Details
@@ -50,6 +51,12 @@ Details
 
    https://github.com/owncloud/client/issues/10231
    https://github.com/owncloud/client/issues/10529
+
+* Enhancement - Disable DPI scaling factor rounding on Windows: [#10406](https://github.com/owncloud/client/issues/10406)
+
+   Qt5 By default rounds up the selected scale for values > .5 We now use the actual scale factor.
+
+   https://github.com/owncloud/client/issues/10406
 
 * Enhancement - Build the client without the auto updater by default: [#10537](https://github.com/owncloud/client/issues/10537)
 
