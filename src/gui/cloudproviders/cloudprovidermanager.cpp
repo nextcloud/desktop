@@ -44,7 +44,8 @@ void on_name_lost (GDBusConnection *connection, const gchar *name, gpointer user
 void CloudProviderManager::registerSignals()
 {
     OCC::FolderMan *folderManager = OCC::FolderMan::instance();
-    connect(folderManager, SIGNAL(folderListChanged(const Folder::Map &)), SLOT(slotFolderListChanged(const Folder::Map &)));
+    connect(folderManager, &OCC::FolderMan::folderListChanged,
+            this, &CloudProviderManager::slotFolderListChanged);
     slotFolderListChanged(folderManager->map());
 }
 
