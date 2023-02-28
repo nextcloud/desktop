@@ -6,6 +6,7 @@ set(CMAKE_AUTOMOC TRUE)
 
 add_library(testutils
   STATIC
+  activitylistmodeltestutils.cpp
   syncenginetestutils.cpp
   pushnotificationstestutils.cpp
   themeutils.cpp
