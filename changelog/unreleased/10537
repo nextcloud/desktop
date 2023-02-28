@@ -1,0 +1,3 @@
+Enhancement: Build the client without the auto updater by default
+
+https://github.com/owncloud/client/issues/10537
