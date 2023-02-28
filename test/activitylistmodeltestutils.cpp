@@ -323,3 +323,50 @@ int FakeRemoteActivityStorage::startingIdLast() const
 {
     return _startingId;
 }
+
+
+void TestingALM::startFetchJob()
+{
+    auto *job = new OCC::JsonApiJob(
+        accountState()->account(), QLatin1String("ocs/v2.php/apps/activity/api/v2/activity"), this);
+    QObject::connect(this, &TestingALM::activityJobStatusCode, this, &TestingALM::slotProcessReceivedActivities);
+    QObject::connect(job, &OCC::JsonApiJob::jsonReceived, this, &TestingALM::activitiesReceived);
+
+    QUrlQuery params;
+    params.addQueryItem(QLatin1String("since"), QString::number(currentItem()));
+    params.addQueryItem(QLatin1String("limit"), QString::number(50));
+    job->addQueryParams(params);
+
+    setAndRefreshCurrentlyFetching(true);
+    job->start();
+}
+
+void TestingALM::slotProcessReceivedActivities()
+{
+    if (rowCount() > _numRowsPrev) {
+        auto finalListCopy = finalList();
+        for (int i = _numRowsPrev; i < rowCount(); ++i) {
+            const auto modelIndex = index(i, 0);
+            auto activity = finalListCopy.at(modelIndex.row());
+            if (activity._links.isEmpty()) {
+                const auto activityJsonObject = FakeRemoteActivityStorage::instance()->activityById(activity._id);
+
+                if (!activityJsonObject.isNull()) {
+                    // because "_links" are normally populated within the notificationhandler.cpp, which we don't run as part of this unit test, we have to fill them here
+                    // TODO: move the logic to populate "_links" to "activitylistmodel.cpp"
+                    auto actions = activityJsonObject.toObject().value("actions").toArray();
+                    foreach (auto action, actions) {
+                        activity._links.append(OCC::ActivityLink::createFomJsonObject(action.toObject()));
+                    }
+
+                    finalListCopy[modelIndex.row()] = activity;
+                }
+            }
+        }
+
+        setFinalList(finalListCopy);
+    }
+    _numRowsPrev = rowCount();
+    setAndRefreshCurrentlyFetching(false);
+    emit activitiesProcessed();
+}

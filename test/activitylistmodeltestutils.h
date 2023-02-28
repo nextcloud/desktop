@@ -15,6 +15,12 @@
 #include <QJsonArray>
 #include <QVariantMap>
 
+#include "gui/tray/activitylistmodel.h"
+
+#include "libsync/account.h"
+#include "gui/accountstate.h"
+#include "gui/accountmanager.h"
+
 #pragma once
 
 class QByteArray;
@@ -45,4 +51,23 @@ private:
     int _startingId = 90000;
 
     static FakeRemoteActivityStorage *_instance;
+};
+
+class TestingALM : public OCC::ActivityListModel
+{
+    Q_OBJECT
+
+public:
+    TestingALM() = default;
+
+    void startFetchJob() override;
+
+public slots:
+    void slotProcessReceivedActivities();
+
+signals:
+    void activitiesProcessed();
+
+private:
+    int _numRowsPrev = 0;
 };

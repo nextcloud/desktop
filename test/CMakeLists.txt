@@ -6,13 +6,13 @@ set(CMAKE_AUTOMOC TRUE)
 
 add_library(testutils
   STATIC
-  activitylistmodeltestutils.cpp
   syncenginetestutils.cpp
   pushnotificationstestutils.cpp
   themeutils.cpp
   testhelper.cpp
   sharetestutils.cpp
   endtoendtestutils.cpp
+  activitylistmodeltestutils.cpp
 )
 
 target_link_libraries(testutils PUBLIC Nextcloud::sync Qt5::Test)
