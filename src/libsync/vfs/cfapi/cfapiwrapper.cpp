@@ -806,7 +806,11 @@ OCC::Result<OCC::Vfs::ConvertToPlaceholderResult, QString> OCC::CfApiWrapper::de
 
     const qint64 result = CfUpdatePlaceholder(handleForPath(path).get(), nullptr,
                                               fileIdentity.data(), sizeToDWORD(fileIdentitySize),
-                                              &dehydrationRange, 1, CF_UPDATE_FLAG_MARK_IN_SYNC, nullptr, nullptr);
+                                              &dehydrationRange,
+                                              1,
+                                              CF_UPDATE_FLAG_MARK_IN_SYNC | CF_UPDATE_FLAG_DEHYDRATE,
+                                              nullptr,
+                                              nullptr);
 
     if (result != S_OK) {
         qCWarning(lcCfApiWrapper) << "Couldn't update placeholder info for" << path << ":" << QString::fromWCharArray(_com_error(result).ErrorMessage());
