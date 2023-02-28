@@ -345,6 +345,8 @@ void ShareModel::handlePlaceholderLinkShare()
     } else if (!linkSharePresent && !placeholderLinkSharePresent && publicLinkSharesEnabled()) {
         slotAddShare(_placeholderLinkShare);
     }
+
+    Q_EMIT sharesChanged();
 }
 
 void ShareModel::slotPropfindReceived(const QVariantMap &result)
@@ -402,7 +404,6 @@ void ShareModel::slotSharesFetched(const QList<SharePtr> &shares)
     }
 
     handlePlaceholderLinkShare();
-    Q_EMIT sharesChanged();
 }
 
 void ShareModel::setupInternalLinkShare()
@@ -479,7 +480,6 @@ void ShareModel::slotAddShare(const SharePtr &share)
     }
 
     handlePlaceholderLinkShare();
-    Q_EMIT sharesChanged();
 }
 
 void ShareModel::slotRemoveShareWithId(const QString &shareId)
@@ -506,8 +506,6 @@ void ShareModel::slotRemoveShareWithId(const QString &shareId)
     endRemoveRows();
 
     handlePlaceholderLinkShare();
-
-    Q_EMIT sharesChanged();
 }
 
 void ShareModel::slotServerError(const int code, const QString &message)
