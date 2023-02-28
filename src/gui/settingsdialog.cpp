@@ -234,16 +234,8 @@ void SettingsDialog::accountAdded(AccountState *s)
     auto height = _toolBar->sizeHint().height();
     bool brandingSingleAccount = !Theme::instance()->multiAccount();
 
-    QAction *accountAction = nullptr;
-    QImage avatar = s->account()->avatar();
-    const QString actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
-    if (avatar.isNull()) {
-        accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"),
-            actionText);
-    } else {
-        QIcon icon(QPixmap::fromImage(AvatarJob::makeCircularAvatar(avatar)));
-        accountAction = createActionWithIcon(icon, actionText);
-    }
+    const auto actionText = brandingSingleAccount ? tr("Account") : s->account()->displayName();
+    const auto accountAction = createColorAwareAction(QLatin1String(":/client/theme/account.svg"), actionText);
 
     if (!brandingSingleAccount) {
         accountAction->setToolTip(s->account()->displayName());
@@ -271,6 +263,15 @@ void SettingsDialog::accountAdded(AccountState *s)
 
     // Connect styleChanged event, to adapt (Dark-/Light-Mode switching)
     connect(this, &SettingsDialog::styleChanged, accountSettings, &AccountSettings::slotStyleChanged);
+
+    const auto userInfo = new UserInfo(s, false, true, this);
+    connect(userInfo, &UserInfo::fetchedLastInfo, this, [userInfo](const UserInfo *fetchedInfo) {
+        // UserInfo will go and update the account avatar
+        Q_UNUSED(fetchedInfo);
+        userInfo->deleteLater();
+    });
+    userInfo->setActive(true);
+    userInfo->slotFetchInfo();
 }
 
 void SettingsDialog::slotAccountAvatarChanged()
