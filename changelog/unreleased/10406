@@ -1,0 +1,6 @@
+Enhancement: Disable DPI scaling factor rounding on Windows
+
+Qt5 By default rounds up the selected scale for values > .5
+We now use the actual scale factor.
+
+https://github.com/owncloud/client/issues/10406

@@ -23,6 +23,7 @@ WinPlatform::WinPlatform()
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling, true);
     QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton, true);
+    QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
 }
 
 WinPlatform::~WinPlatform()
