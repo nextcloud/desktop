@@ -1,0 +1,5 @@
+Enhancement: Display quota for Spaces
+
+Quota is now displayed for all folders.
+
+https://github.com/owncloud/client/issues/10453

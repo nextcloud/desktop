@@ -18,6 +18,8 @@
 #include "common/asserts.h"
 #include "folderman.h"
 #include "folderstatusdelegate.h"
+#include "gui/quotainfo.h"
+#include "libsync/graphapi/spacesmanager.h"
 #include "theme.h"
 
 #include <QDir>
@@ -40,6 +42,38 @@ namespace {
 
     const char propertyParentIndexC[] = "oc_parentIndex";
     const char propertyPermissionMap[] = "oc_permissionMap";
+
+    uint64_t getQuota(const AccountStatePtr &accountState, const QUrl &davUrl, FolderStatusModel::Columns type)
+    {
+        if (accountState->supportsSpaces()) {
+            if (auto spacesManager = accountState->account()->spacesManager()) {
+                const auto space = spacesManager->driveByUrl(davUrl);
+                if (space.isValid()) {
+                    const auto quota = space.getQuota();
+                    if (quota.isValid()) {
+                        switch (type) {
+                        case FolderStatusModel::Columns::QuotaTotal:
+                            return quota.getTotal();
+                        case FolderStatusModel::Columns::QuotaUsed:
+                            return quota.getUsed();
+                        default:
+                            Q_UNREACHABLE();
+                        }
+                    }
+                }
+            }
+        } else {
+            switch (type) {
+            case FolderStatusModel::Columns::QuotaTotal:
+                return accountState->quotaInfo()->lastQuotaTotalBytes();
+            case FolderStatusModel::Columns::QuotaUsed:
+                return accountState->quotaInfo()->lastQuotaUsedBytes();
+            default:
+                Q_UNREACHABLE();
+            }
+        }
+        return {};
+    }
 }
 
 FolderStatusModel::FolderStatusModel(QObject *parent)
@@ -221,9 +255,8 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
             return errors;
         }
         case Columns::FolderInfoMsg:
-            return f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi
-                ? QStringList(tr("Virtual file support is enabled."))
-                : QStringList();
+            return f->isReady() && f->virtualFilesEnabled() && f->vfs().mode() != Vfs::Mode::WindowsCfApi ? QStringList(tr("Virtual file support is enabled."))
+                                                                                                          : QStringList();
         case Columns::SyncRunning:
             return f->syncResult().status() == SyncResult::SyncRunning;
         case Columns::HeaderRole:
@@ -258,7 +291,11 @@ QVariant FolderStatusModel::data(const QModelIndex &index, int role) const
         case Columns::IsDeployed:
             return f->isDeployed();
         case Columns::Priority:
-            return f->priority() + 1; // add one to have a higher prio than the hacked add button
+            return f->priority();
+        case Columns::QuotaTotal:
+            return QVariant::fromValue(getQuota(_accountState, f->webDavUrl(), Columns::QuotaTotal));
+        case Columns::QuotaUsed:
+            return QVariant::fromValue(getQuota(_accountState, f->webDavUrl(), Columns::QuotaUsed));
         case Columns::IsUsingSpaces: // handled before
             [[fallthrough]];
         case Columns::ItemType: // handled before

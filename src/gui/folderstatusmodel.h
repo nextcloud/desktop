@@ -65,6 +65,9 @@ public:
         Priority, // uint32_t
         IsDeployed, // bool
 
+        QuotaUsed,
+        QuotaTotal,
+
         ColumnCount
     };
     Q_ENUMS(Columns);
