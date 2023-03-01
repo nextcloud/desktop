@@ -459,37 +459,31 @@ void TestingALM::startFetchJob()
     job->start();
 }
 
-void TestingALM::insertOrRemoveDummyFetchingActivity()
-{
-    OCC::ActivityListModel::insertOrRemoveDummyFetchingActivity();
-}
-
 void TestingALM::slotProcessReceivedActivities()
 {
-    if (rowCount() > _numRowsPrev) {
-        auto finalListCopy = finalList();
-        for (int i = _numRowsPrev; i < rowCount(); ++i) {
-            const auto modelIndex = index(i, 0);
-            auto activity = finalListCopy.at(modelIndex.row());
-            if (activity._links.isEmpty()) {
-                const auto activityJsonObject = FakeRemoteActivityStorage::instance()->activityById(activity._id);
+    auto finalListCopy = finalList();
+    for (int i = _numRowsPrev; i < rowCount(); ++i) {
+        const auto modelIndex = index(i, 0);
+        auto activity = finalListCopy.at(modelIndex.row());
+        if (activity._links.isEmpty()) {
+            const auto activityJsonObject = FakeRemoteActivityStorage::instance()->activityById(activity._id);
 
-                if (!activityJsonObject.isNull()) {
-                    // because "_links" are normally populated within the notificationhandler.cpp, which we don't run as part of this unit test, we have to fill them here
-                    // TODO: move the logic to populate "_links" to "activitylistmodel.cpp"
-                    auto actions = activityJsonObject.toObject().value("actions").toArray();
-                    foreach (auto action, actions) {
-                        activity._links.append(OCC::ActivityLink::createFomJsonObject(action.toObject()));
-                    }
-
-                    finalListCopy[modelIndex.row()] = activity;
+            if (!activityJsonObject.isNull()) {
+                // because "_links" are normally populated within the notificationhandler.cpp, which we don't run as part of this unit test, we have to fill them here
+                // TODO: move the logic to populate "_links" to "activitylistmodel.cpp"
+                const auto actions = activityJsonObject.toObject().value("actions").toArray();
+                for (const auto &action : actions) {
+                    activity._links.append(OCC::ActivityLink::createFomJsonObject(action.toObject()));
                 }
             }
         }
 
-        setFinalList(finalListCopy);
+        finalListCopy[modelIndex.row()] = activity;
+        qDebug() << activity._subject << activity._subjectDisplay;
     }
-    _numRowsPrev = rowCount();
+
+    setFinalList(finalListCopy);
+
     setAndRefreshCurrentlyFetching(false);
     emit activitiesProcessed();
 }
