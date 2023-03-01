@@ -21,17 +21,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-static QByteArray fake404Response = R"(
-{"ocs":{"meta":{"status":"failure","statuscode":404,"message":"Invalid query, please check the syntax. API specifications are here: http:\/\/www.freedesktop.org\/wiki\/Specifications\/open-collaboration-services.\n"},"data":[]}}
-)";
-
-static QByteArray fake400Response = R"(
-{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"Parameter is incorrect.\n"},"data":[]}}
-)";
-
-static QByteArray fake500Response = R"(
-{"ocs":{"meta":{"status":"failure","statuscode":500,"message":"Internal Server Error.\n"},"data":[]}}
-)";
+using namespace ActivityListModelTestUtils;
 
 class TestActivityListModel : public QObject
 {
@@ -107,31 +97,13 @@ private slots:
         accountState.reset(new OCC::AccountState(account));
 
         fakeQnam->setOverride([this](QNetworkAccessManager::Operation op, const QNetworkRequest &req, QIODevice *device) {
-            Q_UNUSED(device);
-            QNetworkReply *reply = nullptr;
-
-            const auto urlQuery = QUrlQuery(req.url());
-            const auto format = urlQuery.queryItemValue(QStringLiteral("format"));
-            const auto since = urlQuery.queryItemValue(QStringLiteral("since")).toInt();
-            const auto limit = urlQuery.queryItemValue(QStringLiteral("limit")).toInt();
-            const auto path = req.url().path();
-
-            if (!req.url().toString().startsWith(accountState->account()->url().toString())) {
-                reply = new FakeErrorReply(op, req, this, 404, fake404Response);
-            }
-            if (format != QStringLiteral("json")) {
-                reply = new FakeErrorReply(op, req, this, 400, fake400Response);
-            }
-
-            if (path.startsWith(QStringLiteral("/ocs/v2.php/apps/activity/api/v2/activity"))) {
-                reply = new FakePayloadReply(op, req, FakeRemoteActivityStorage::instance()->activityJsonData(since, limit), searchResultsReplyDelay, fakeQnam.data());
-            }
-
-            if (!reply) {
-                return qobject_cast<QNetworkReply*>(new FakeErrorReply(op, req, this, 404, QByteArrayLiteral("{error: \"Not found!\"}")));
-            }
-
-            return reply;
+            Q_UNUSED(device)
+            return almTestQnamOverride(fakeQnam.data(),
+                                       op,
+                                       req,
+                                       accountState->account()->url().toString(),
+                                       this,
+                                       searchResultsReplyDelay);
         });
 
         OCC::AccountManager::instance()->addAccount(account);

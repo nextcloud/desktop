@@ -23,8 +23,20 @@
 
 #pragma once
 
+class FakeQNAM;
 class QByteArray;
 class QJsonValue;
+
+namespace ActivityListModelTestUtils
+{
+
+[[nodiscard]] QNetworkReply *almTestQnamOverride(FakeQNAM * const fakeQnam,
+                                                 const QNetworkAccessManager::Operation op,
+                                                 const QNetworkRequest &req,
+                                                 const QString &accountUrl,
+                                                 QObject * const parent = nullptr,
+                                                 const int searchResultsReplyDelay = 0,
+                                                 QIODevice * const device = nullptr);
 
 class FakeRemoteActivityStorage
 {
@@ -71,3 +83,5 @@ signals:
 private:
     int _numRowsPrev = 0;
 };
+
+}

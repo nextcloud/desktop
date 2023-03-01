@@ -13,11 +13,64 @@
  */
 
 #include "activitylistmodeltestutils.h"
+#include "syncenginetestutils.h"
 
 #include <QString>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+
+namespace {
+static QByteArray fake404Response = R"(
+{"ocs":{"meta":{"status":"failure","statuscode":404,"message":"Invalid query, please check the syntax. API specifications are here: http:\/\/www.freedesktop.org\/wiki\/Specifications\/open-collaboration-services.\n"},"data":[]}}
+)";
+
+static QByteArray fake400Response = R"(
+{"ocs":{"meta":{"status":"failure","statuscode":400,"message":"Parameter is incorrect.\n"},"data":[]}}
+)";
+
+static QByteArray fake500Response = R"(
+{"ocs":{"meta":{"status":"failure","statuscode":500,"message":"Internal Server Error.\n"},"data":[]}}
+)";
+}
+
+namespace ActivityListModelTestUtils
+{
+
+QNetworkReply *almTestQnamOverride(FakeQNAM * const fakeQnam,
+                                   const QNetworkAccessManager::Operation op,
+                                   const QNetworkRequest &req,
+                                   const QString &accountUrl,
+                                   QObject * const parent,
+                                   const int searchResultsReplyDelay,
+                                   QIODevice * const device)
+{
+    Q_UNUSED(device);
+    QNetworkReply *reply = nullptr;
+
+    const auto urlQuery = QUrlQuery(req.url());
+    const auto format = urlQuery.queryItemValue(QStringLiteral("format"));
+    const auto since = urlQuery.queryItemValue(QStringLiteral("since")).toInt();
+    const auto limit = urlQuery.queryItemValue(QStringLiteral("limit")).toInt();
+    const auto path = req.url().path();
+
+    if (!req.url().toString().startsWith(accountUrl)) {
+        reply = new FakeErrorReply(op, req, parent, 404, fake404Response);
+    }
+    if (format != QStringLiteral("json")) {
+        reply = new FakeErrorReply(op, req, parent, 400, fake400Response);
+    }
+
+    if (path.startsWith(QStringLiteral("/ocs/v2.php/apps/activity/api/v2/activity"))) {
+        reply = new FakePayloadReply(op, req, FakeRemoteActivityStorage::instance()->activityJsonData(since, limit), searchResultsReplyDelay, fakeQnam);
+    }
+
+    if (!reply) {
+        return qobject_cast<QNetworkReply*>(new FakeErrorReply(op, req, parent, 404, QByteArrayLiteral("{error: \"Not found!\"}")));
+    }
+
+    return reply;
+}
 
 FakeRemoteActivityStorage *FakeRemoteActivityStorage::_instance = nullptr;
 
@@ -369,4 +422,6 @@ void TestingALM::slotProcessReceivedActivities()
     _numRowsPrev = rowCount();
     setAndRefreshCurrentlyFetching(false);
     emit activitiesProcessed();
+}
+
 }
