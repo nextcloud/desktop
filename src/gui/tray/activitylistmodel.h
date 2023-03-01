@@ -21,6 +21,10 @@
 
 class QJsonDocument;
 
+namespace ActivityListModelTestUtils {
+class TestingALM;
+}
+
 namespace OCC {
 
 Q_DECLARE_LOGGING_CATEGORY(lcActivity)
@@ -217,6 +221,8 @@ private:
     QElapsedTimer _durationSinceDisconnection;
 
     static constexpr quint32 MaxActionButtons = 3;
+
+    friend class ActivityListModelTestUtils::TestingALM;
 };
 }
 
