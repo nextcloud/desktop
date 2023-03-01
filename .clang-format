@@ -12,7 +12,7 @@
 BasedOnStyle: WebKit
 
 Standard: c++17
-ColumnLimit: 0
+ColumnLimit: 160
 
 # Disable reflow of qdoc comments: indentation rules are different.
 # Translation comments are also excluded
