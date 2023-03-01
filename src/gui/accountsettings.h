@@ -103,7 +103,6 @@ private:
     QUrl _OCUrl;
     bool _wasDisabledBefore;
     AccountStatePtr _accountState;
-    QuotaInfo *_quotaInfo = nullptr;
     QAction *_toggleSignInOutAction;
     QAction *_toggleReconnect;
 

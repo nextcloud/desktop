@@ -206,9 +206,7 @@ AccountSettings::AccountSettings(const AccountStatePtr &accountState, QWidget *p
         QColor color = palette().highlight().color();
         ui->quotaProgressBar->setStyleSheet(QString::fromLatin1(progressBarStyleC).arg(color.name()));
 
-        _quotaInfo = new QuotaInfo(_accountState, this);
-        connect(_quotaInfo, &QuotaInfo::quotaUpdated,
-            this, &AccountSettings::slotUpdateQuota);
+        connect(_accountState->quotaInfo(), &QuotaInfo::quotaUpdated, this, &AccountSettings::slotUpdateQuota);
         ui->addButton->setText(tr("Add Folder"));
     }
 
@@ -1081,8 +1079,8 @@ void AccountSettings::slotDeleteAccount()
 bool AccountSettings::event(QEvent *e)
 {
     if (e->type() == QEvent::Hide || e->type() == QEvent::Show) {
-        if (_quotaInfo) {
-            _quotaInfo->setActive(isVisible());
+        if (!_accountState->supportsSpaces()) {
+            _accountState->quotaInfo()->setActive(isVisible());
         }
     }
     if (e->type() == QEvent::Show) {

@@ -30,15 +30,14 @@ namespace {
     const auto failIntervalT = 5s;
 }
 
-QuotaInfo::QuotaInfo(const AccountStatePtr &accountState, QObject *parent)
+QuotaInfo::QuotaInfo(AccountState *parent)
     : QObject(parent)
-    , _accountState(accountState)
+    , _accountState(parent)
     , _lastQuotaTotalBytes(0)
     , _lastQuotaUsedBytes(0)
     , _active(false)
 {
-    connect(accountState.data(), &AccountState::stateChanged,
-        this, &QuotaInfo::slotAccountStateChanged);
+    connect(parent, &AccountState::stateChanged, this, &QuotaInfo::slotAccountStateChanged);
     connect(&_jobRestartTimer, &QTimer::timeout, this, &QuotaInfo::slotCheckQuota);
     _jobRestartTimer.setSingleShot(true);
 }

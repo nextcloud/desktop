@@ -49,7 +49,6 @@ class CredentialManager;
 class AbstractCredentials;
 class Account;
 typedef QSharedPointer<Account> AccountPtr;
-class QuotaInfo;
 class AccessManager;
 class SimpleNetworkJob;
 
@@ -243,7 +242,6 @@ private:
 
     QSet<QSslCertificate> _approvedCerts;
     Capabilities _capabilities;
-    QuotaInfo *_quotaInfo;
     QPointer<AccessManager> _am;
     QScopedPointer<AbstractCredentials> _credentials;
     bool _http2Supported = false;

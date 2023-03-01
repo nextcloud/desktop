@@ -17,10 +17,14 @@
 #include "accountmanager.h"
 #include "application.h"
 #include "configfile.h"
-#include "creds/abstractcredentials.h"
-#include "creds/httpcredentials.h"
+
+#include "libsync/creds/abstractcredentials.h"
+#include "libsync/creds/httpcredentials.h"
+
+#include "gui/quotainfo.h"
 #include "gui/settingsdialog.h"
 #include "gui/tlserrordialog.h"
+
 #include "logger.h"
 #include "settingsdialog.h"
 #include "socketapi/socketapi.h"
@@ -516,6 +520,16 @@ std::unique_ptr<QSettings> AccountState::settings()
 bool AccountState::supportsSpaces() const
 {
     return _supportsSpaces && _account->hasCapabilities() && _account->capabilities().spacesSupport().enabled;
+}
+
+QuotaInfo *AccountState::quotaInfo()
+{
+    // QuotaInfo should not be used with spaces
+    Q_ASSERT(!supportsSpaces());
+    if (!_quotaInfo) {
+        _quotaInfo = new QuotaInfo(this);
+    }
+    return _quotaInfo;
 }
 
 } // namespace OCC
