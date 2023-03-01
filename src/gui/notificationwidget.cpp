@@ -18,6 +18,8 @@
 #include "common/asserts.h"
 #include "guiutility.h"
 
+#include "ui_notificationwidget.h"
+
 #include <QPushButton>
 
 namespace OCC {
@@ -26,10 +28,16 @@ Q_LOGGING_CATEGORY(lcNotifications, "gui.notifications", QtInfoMsg)
 
 NotificationWidget::NotificationWidget(QWidget *parent)
     : QWidget(parent)
+    , _ui(new Ui_NotificationWidget)
 {
-    _ui.setupUi(this);
+    _ui->setupUi(this);
     _progressIndi = new QProgressIndicator(this);
-    _ui.horizontalLayout->addWidget(_progressIndi);
+    _ui->horizontalLayout->addWidget(_progressIndi);
+}
+
+NotificationWidget::~NotificationWidget()
+{
+    delete _ui;
 }
 
 void NotificationWidget::setActivity(const Activity &activity)
@@ -39,23 +47,23 @@ void NotificationWidget::setActivity(const Activity &activity)
     _accountName = activity.accName();
     OC_ASSERT(!_accountName.isEmpty());
 
-    // _ui._headerLabel->setText( );
-    _ui._subjectLabel->setVisible(!activity.subject().isEmpty());
-    _ui._messageLabel->setVisible(!activity.message().isEmpty());
+    // _ui->_headerLabel->setText( );
+    _ui->_subjectLabel->setVisible(!activity.subject().isEmpty());
+    _ui->_messageLabel->setVisible(!activity.message().isEmpty());
 
     if (activity.link().isEmpty()) {
-        _ui._subjectLabel->setText(activity.subject());
+        _ui->_subjectLabel->setText(activity.subject());
     } else {
-        _ui._subjectLabel->setText(QStringLiteral("<a href=\"%1\">%2</a>")
-                                       .arg(activity.link().toString(QUrl::FullyEncoded),
-                                           activity.subject().toHtmlEscaped()));
-        _ui._subjectLabel->setTextFormat(Qt::RichText);
-        _ui._subjectLabel->setOpenExternalLinks(true);
+        _ui->_subjectLabel->setText(QStringLiteral("<a href=\"%1\">%2</a>")
+                                        .arg(activity.link().toString(QUrl::FullyEncoded),
+                                            activity.subject().toHtmlEscaped()));
+        _ui->_subjectLabel->setTextFormat(Qt::RichText);
+        _ui->_subjectLabel->setOpenExternalLinks(true);
     }
 
-    _ui._messageLabel->setText(activity.message());
+    _ui->_messageLabel->setText(activity.message());
     QString tText = tr("Created at %1").arg(Utility::timeAgoInWords(activity.dateTime()));
-    _ui._timeLabel->setText(tText);
+    _ui->_timeLabel->setText(tText);
 
     // always remove the buttons
     qDeleteAll(_buttons);
@@ -64,17 +72,17 @@ void NotificationWidget::setActivity(const Activity &activity)
     // display buttons for the links
     if (activity.links().isEmpty()) {
         // in case there is no action defined, do a close button.
-        QPushButton *b = _ui._buttonBox->addButton(QDialogButtonBox::Close);
+        QPushButton *b = _ui->_buttonBox->addButton(QDialogButtonBox::Close);
         b->setDefault(true);
         connect(b, &QAbstractButton::clicked, this, [this]{
             QString doneText = tr("Closing in a few seconds...");
-            _ui._timeLabel->setText(doneText);
+            _ui->_timeLabel->setText(doneText);
             emit requestCleanupAndBlacklist(_myActivity);
             return;
         });
     } else {
         for (const auto &link : activity.links()) {
-            QPushButton *b = _ui._buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
+            QPushButton *b = _ui->_buttonBox->addButton(link._label, QDialogButtonBox::AcceptRole);
             b->setDefault(link._isPrimary);
             connect(b, &QAbstractButton::clicked, this, [this, b, link] {
                 slotButtonClicked(b, link);
@@ -116,12 +124,12 @@ void NotificationWidget::slotNotificationRequestFinished(bool success)
         doneText = tr("%1 request failed at %2").arg(_actionLabel, timeStr);
     } else {
         // the call to the ocs API succeeded.
-        _ui._buttonBox->hide();
+        _ui->_buttonBox->hide();
 
         //: The second parameter is a time, such as 'selected at 09:58pm'
         doneText = tr("'%1' selected at %2").arg(_actionLabel, timeStr);
     }
-    _ui._timeLabel->setText(doneText);
+    _ui->_timeLabel->setText(doneText);
 
     _progressIndi->stopAnimation();
 }
@@ -132,7 +140,7 @@ void NotificationWidget::changeEvent(QEvent *e)
     case QEvent::StyleChange:
     case QEvent::PaletteChange:
     case QEvent::ThemeChange:
-        _ui._notifIcon->setPixmap(Utility::getCoreIcon(QStringLiteral("bell")).pixmap(_ui._notifIcon->size()));
+        _ui->_notifIcon->setPixmap(Utility::getCoreIcon(QStringLiteral("bell")).pixmap(_ui->_notifIcon->size()));
         break;
     default:
         break;

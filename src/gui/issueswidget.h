@@ -26,8 +26,6 @@
 #include "owncloudgui.h"
 #include "progressdispatcher.h"
 
-#include "ui_issueswidget.h"
-
 class QSortFilterProxyModel;
 
 namespace OCC {
@@ -35,7 +33,7 @@ class SyncResult;
 class SyncFileItemStatusSetSortFilterProxyModel;
 
 namespace Ui {
-    class ProtocolWidget;
+    class IssuesWidget;
 }
 class Application;
 

@@ -24,7 +24,6 @@
 #include "models/protocolitemmodel.h"
 
 #include "protocolitem.h"
-#include "ui_protocolwidget.h"
 
 #include "models/models.h"
 

@@ -28,10 +28,10 @@
 
 #include "models/models.h"
 
-#include "ui_activitywidget.h"
-
 class QPushButton;
 class QProgressIndicator;
+class QTabWidget;
+class QVBoxLayout;
 
 namespace OCC {
 

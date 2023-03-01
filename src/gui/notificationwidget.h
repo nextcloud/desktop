@@ -19,9 +19,10 @@
 
 #include "activitydata.h"
 
-#include "ui_notificationwidget.h"
-
 class QProgressIndicator;
+class QPushButton;
+
+class Ui_NotificationWidget;
 
 namespace OCC {
 
@@ -30,6 +31,7 @@ class NotificationWidget : public QWidget
     Q_OBJECT
 public:
     explicit NotificationWidget(QWidget *parent = nullptr);
+    ~NotificationWidget();
 
     bool readyToClose();
     Activity activity() const;
@@ -48,7 +50,7 @@ protected:
 private:
     void slotButtonClicked(QPushButton *buttonWidget, const ActivityLink &triggeredLink);
 
-    Ui_NotificationWidget _ui;
+    Ui_NotificationWidget *_ui;
     Activity _myActivity;
     QList<QPushButton *> _buttons;
     QString _accountName;
