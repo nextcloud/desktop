@@ -77,6 +77,10 @@ class TestingALM : public OCC::ActivityListModel
 public:
     TestingALM() = default;
 
+    int maxActivities() const { return _maxActivities; };
+    // Need to include the dummy "show more in activities app" activity
+    int maxPossibleActivities() const { return maxActivities() + 1; }
+
 public slots:
     void startFetchJob() override;
     void startMaxActivitiesFetchJob();
